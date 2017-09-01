@@ -27,6 +27,7 @@
 <meta property="og:url" content="http://skyrover.me/2017/04/12/Python函数信息/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="最近在搞pyExcelerator这个库，希望能对其进行更新，并且适配到Python3上来，其实这个库开发了很久了，也挺好用的，所以fork下来学习一下。 项目地址：https://github.com/Microndgt/py3Excelerator 然后看到一段代码是这样的： 12345678910111213141516171819202122232425262728293031323334">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T06:14:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python函数信息">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2017-04-12 15:22:53 15:22:53" datetime="2017-04-12T07:22:53.000Z"  itemprop="datePublished">2017-04-12 15:22:53</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -193,7 +194,7 @@
             <p>最近在搞<code>pyExcelerator</code>这个库，希望能对其进行更新，并且适配到Python3上来，其实这个库开发了很久了，也挺好用的，所以fork下来学习一下。</p>
 <p>项目地址：<a href="https://github.com/Microndgt/py3Excelerator" target="_blank" rel="external">https://github.com/Microndgt/py3Excelerator</a></p>
 <p>然后看到一段代码是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"># 多个位置参数</div><div class="line">def accepts(*types):</div><div class="line">    def check_accepts(f):</div><div class="line">				# 检测被装饰函数的函数参数个数是否与装饰器传递参数个数相同</div><div class="line">        assert len(types) == f.func_code.co_argcount</div><div class="line">        def new_f(*args, **kwds):</div><div class="line">            for (a, t) in zip(args, types):</div><div class="line">						    # 检测被装饰的函数的位置参数类型是不是accepts指定的类型</div><div class="line">                assert isinstance(a, t), \</div><div class="line">                       &quot;arg %r does not match %s&quot; % (a,t)</div><div class="line">            return f(*args, **kwds)</div><div class="line">				# 这里将名字改过来主要原因是以后还有可能需要调用被装饰的函数</div><div class="line">				# 但是装饰器装饰后相当于返回变成了new_f这个函数</div><div class="line">				# 带参数的装饰器，第一层函数先将参数传递进去然后返回一个函数</div><div class="line">				# 返回的这个函数才真正装饰 定义的函数</div><div class="line">        new_f.func_name = f.func_name</div><div class="line">        return new_f</div><div class="line">    return check_accepts</div><div class="line">def returns(rtype):</div><div class="line">    def check_returns(f):</div><div class="line">        def new_f(*args, **kwds):</div><div class="line">            result = f(*args, **kwds)</div><div class="line">						# 如果为假，则会raise AssertError并且包含错误信息</div><div class="line">            assert isinstance(result, rtype), \</div><div class="line">                   &quot;return value %r does not match %s&quot; % (result,rtype)</div><div class="line">            return result</div><div class="line">        new_f.func_name = f.func_name</div><div class="line">				# 返回之后相当于new_f代替了func，所以也就相当于new_f(*args, **kwargs)了</div><div class="line">        return new_f</div><div class="line">    return check_returns</div><div class="line"># returns装饰的其实是accepts装饰后的new_f函数</div><div class="line">@returns(int)</div><div class="line">@accepts(int, (int, float))</div><div class="line">def func(arg1, arg2):</div><div class="line">    return arg1 * arg2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"># 多个位置参数</div><div class="line">def accepts(*types):</div><div class="line">    def check_accepts(f):</div><div class="line">truetruetruetrue# 检测被装饰函数的函数参数个数是否与装饰器传递参数个数相同</div><div class="line">        assert len(types) == f.func_code.co_argcount</div><div class="line">        def new_f(*args, **kwds):</div><div class="line">            for (a, t) in zip(args, types):</div><div class="line">truetruetruetruetruetrue    # 检测被装饰的函数的位置参数类型是不是accepts指定的类型</div><div class="line">                assert isinstance(a, t), \</div><div class="line">                       &quot;arg %r does not match %s&quot; % (a,t)</div><div class="line">            return f(*args, **kwds)</div><div class="line">truetruetruetrue# 这里将名字改过来主要原因是以后还有可能需要调用被装饰的函数</div><div class="line">truetruetruetrue# 但是装饰器装饰后相当于返回变成了new_f这个函数</div><div class="line">truetruetruetrue# 带参数的装饰器，第一层函数先将参数传递进去然后返回一个函数</div><div class="line">truetruetruetrue# 返回的这个函数才真正装饰 定义的函数</div><div class="line">        new_f.func_name = f.func_name</div><div class="line">        return new_f</div><div class="line">    return check_accepts</div><div class="line">def returns(rtype):</div><div class="line">    def check_returns(f):</div><div class="line">        def new_f(*args, **kwds):</div><div class="line">            result = f(*args, **kwds)</div><div class="line">truetruetruetruetruetrue# 如果为假，则会raise AssertError并且包含错误信息</div><div class="line">            assert isinstance(result, rtype), \</div><div class="line">                   &quot;return value %r does not match %s&quot; % (result,rtype)</div><div class="line">            return result</div><div class="line">        new_f.func_name = f.func_name</div><div class="line">truetruetruetrue# 返回之后相当于new_f代替了func，所以也就相当于new_f(*args, **kwargs)了</div><div class="line">        return new_f</div><div class="line">    return check_returns</div><div class="line"># returns装饰的其实是accepts装饰后的new_f函数</div><div class="line">@returns(int)</div><div class="line">@accepts(int, (int, float))</div><div class="line">def func(arg1, arg2):</div><div class="line">    return arg1 * arg2</div></pre></td></tr></table></figure>
 <p>其中<code>f.func_code.co_argcount</code>这里是Python2中函数众多属性的一个，这里值的意义是函数位置参数的个数，在Python3中是这样的<code>f.__code__.argcount</code>，借此下面就深入探索一下Python函数信息，当然都是基于Python3。</p>
 <h2 id="查看函数属性"><a href="#查看函数属性" class="headerlink" title="查看函数属性"></a>查看函数属性</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def yes(): pass  # 统一定义这个函数</div><div class="line">yes.__dir__()</div><div class="line">dir(yes)</div><div class="line">yes.__name__ # 函数名称</div></pre></td></tr></table></figure>
 <h2 id="函数编码信息-code-属性"><a href="#函数编码信息-code-属性" class="headerlink" title="函数编码信息__code__(属性)"></a>函数编码信息<code>__code__</code>(属性)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"># 位置参数个数</div><div class="line">yes.__code__.co_argcount</div><div class="line"># 被其他嵌套函数引用了的yes的函数的局部变量</div><div class="line">yes.__code__.co_cellvars</div><div class="line"># 编译后的字节码</div><div class="line">yes.__code__.co_code</div><div class="line"># 函数中所有常量</div><div class="line">yes.__code__.co_consts</div><div class="line"># 函数定义所在的源文件路径</div><div class="line">yes.__code__.co_filename</div><div class="line"># 函数定义在其源文件的第一行的行号</div><div class="line">yes.__code__.co_firstlineno</div><div class="line"># 函数参数传递方式的编码</div><div class="line">yes.__code__.co_flags</div><div class="line"># 函数中所有自由变量的名称</div><div class="line">yes.__code__.co_freevars</div><div class="line"># 函数的名称</div><div class="line">yes.__code__.co_name</div><div class="line"># 函数中所有的被字节码使用到的名称，比如模块名，方法名</div><div class="line">yes.__code__.co_names</div><div class="line"># 函数用到的局部变量的数目</div><div class="line">yes.__code__.co_nlocals</div><div class="line"># 函数中所有使用的局部变量的名称，参数按顺序在最前面</div><div class="line">yes.__code__.co_varnames</div></pre></td></tr></table></figure>
@@ -209,7 +210,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T06:14:42.000Z" itemprop="dateUpdated">2017-09-01 14:14:42 14:14:42</time>
+    最后更新时间：<time datetime="2017-09-01T06:14:42.000Z" itemprop="dateUpdated">2017-09-01 14:14:42 14:14:42</time>
 </span><br>
 
 
@@ -384,7 +385,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -457,7 +458,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -477,7 +478,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 

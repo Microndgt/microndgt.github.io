@@ -27,6 +27,7 @@
 <meta property="og:url" content="http://skyrover.me/2017/05/07/理解Flask的Context/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="Flask中的Context包括App Context和Request Context，从一个 Flask App 读入配置并启动开始，就进入了 App Context。当一个请求进入开始被处理时，就进入了 Request Context，在其中我们可以访问请求携带的信息。 Thread Local从面向对象设计的角度看，对象是保存“状态”的地方。一个对象的状态都被保存在对象携带的一个特殊字典中，">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T06:21:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解Flask的Context">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2017-05-07 12:03:47 12:03:47" datetime="2017-05-07T04:03:47.000Z"  itemprop="datePublished">2017-05-07 12:03:47</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -252,7 +253,7 @@
 <p>比如数据库连接，将会有一个 get_X() 函数来创建资源 X ，如果它还不存在的话。 存在的话就直接返回它。另外还会有一个 teardown_X() 的回调函数用于销毁资源 X。其实Flask扩展中也是如此。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">import sqlite3</div><div class="line">from flask import g</div><div class="line">def get_db():</div><div class="line">    db = getattr(g, &apos;_database&apos;, None)</div><div class="line">    if db is None:</div><div class="line">        db = g._database = connect_to_database()</div><div class="line">    return db</div><div class="line">@app.teardown_appcontext</div><div class="line">def teardown_db(exception):</div><div class="line">    db = getattr(g, &apos;_database&apos;, None)</div><div class="line">    if db is not None:</div><div class="line">        db.close()</div><div class="line">from werkzeug.local import LocalProxy</div><div class="line">db = LocalProxy(get_db)</div></pre></td></tr></table></figure>
 <p>这样，可以在应用上下文中直接通过访问 db 来获取数据句柄了，db已经在内部完成了对get_db()的调用。</p>
-<h2 id="Flask扩展开发"><a href="#Flask扩展开发" class="headerlink" title="Flask扩展开发"></a>Flask扩展开发</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">import sqlite3</div><div class="line">from flask import current_app</div><div class="line"># Find the stack on which we want to store the database connection.</div><div class="line"># Starting with Flask 0.9, the _app_ctx_stack is the correct one,</div><div class="line"># before that we need to use the _request_ctx_stack.</div><div class="line">try:</div><div class="line">    from flask import _app_ctx_stack as stack</div><div class="line">except ImportError:</div><div class="line">    from flask import _request_ctx_stack as stack</div><div class="line">class SQLite3(object):</div><div class="line">    def __init__(self, app=None):</div><div class="line">        self.app = app</div><div class="line">				# 接受一个应用对象，如果有，则调用init_app</div><div class="line">        if app is not None:</div><div class="line">            self.init_app(app)</div><div class="line">    def init_app(self, app):</div><div class="line">				# 没有分配app到self，只在应用传递到构造函数时在对象上存储应用</div><div class="line">				# 默认一个内存的数据库</div><div class="line">        app.config.setdefault(&apos;SQLITE3_DATABASE&apos;, &apos;:memory:&apos;)</div><div class="line">        # Use the newstyle teardown_appcontext if it&apos;s available,</div><div class="line">        # otherwise fall back to the request context</div><div class="line">        if hasattr(app, &apos;teardown_appcontext&apos;):</div><div class="line">						# 使用应用上下文处理器，如果不存在退回到上下文处理器</div><div class="line">            app.teardown_appcontext(self.teardown)</div><div class="line">        else:</div><div class="line">            app.teardown_request(self.teardown)</div><div class="line">    def connect(self):</div><div class="line">				# 打开一个数据库连接</div><div class="line">        return sqlite3.connect(current_app.config[&apos;SQLITE3_DATABASE&apos;])</div><div class="line">    def teardown(self, exception):</div><div class="line">        ctx = stack.top</div><div class="line">        if hasattr(ctx, &apos;sqlite3_db&apos;):</div><div class="line">            ctx.sqlite3_db.close()</div><div class="line">    @property</div><div class="line">    def connection(self):</div><div class="line">        ctx = stack.top</div><div class="line">        if ctx is not None:</div><div class="line">				    # 首次访问时候打开数据库连接，将其存储在上下文</div><div class="line">						# 这是处理资源的推荐方式，在资源第一次使用时候惰性获取资源</div><div class="line">            if not hasattr(ctx, &apos;sqlite3_db&apos;):</div><div class="line">                ctx.sqlite3_db = self.connect()</div><div class="line">            return ctx.sqlite3_db</div></pre></td></tr></table></figure>
+<h2 id="Flask扩展开发"><a href="#Flask扩展开发" class="headerlink" title="Flask扩展开发"></a>Flask扩展开发</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">import sqlite3</div><div class="line">from flask import current_app</div><div class="line"># Find the stack on which we want to store the database connection.</div><div class="line"># Starting with Flask 0.9, the _app_ctx_stack is the correct one,</div><div class="line"># before that we need to use the _request_ctx_stack.</div><div class="line">try:</div><div class="line">    from flask import _app_ctx_stack as stack</div><div class="line">except ImportError:</div><div class="line">    from flask import _request_ctx_stack as stack</div><div class="line">class SQLite3(object):</div><div class="line">    def __init__(self, app=None):</div><div class="line">        self.app = app</div><div class="line">truetruetruetrue# 接受一个应用对象，如果有，则调用init_app</div><div class="line">        if app is not None:</div><div class="line">            self.init_app(app)</div><div class="line">    def init_app(self, app):</div><div class="line">truetruetruetrue# 没有分配app到self，只在应用传递到构造函数时在对象上存储应用</div><div class="line">truetruetruetrue# 默认一个内存的数据库</div><div class="line">        app.config.setdefault(&apos;SQLITE3_DATABASE&apos;, &apos;:memory:&apos;)</div><div class="line">        # Use the newstyle teardown_appcontext if it&apos;s available,</div><div class="line">        # otherwise fall back to the request context</div><div class="line">        if hasattr(app, &apos;teardown_appcontext&apos;):</div><div class="line">truetruetruetruetruetrue# 使用应用上下文处理器，如果不存在退回到上下文处理器</div><div class="line">            app.teardown_appcontext(self.teardown)</div><div class="line">        else:</div><div class="line">            app.teardown_request(self.teardown)</div><div class="line">    def connect(self):</div><div class="line">truetruetruetrue# 打开一个数据库连接</div><div class="line">        return sqlite3.connect(current_app.config[&apos;SQLITE3_DATABASE&apos;])</div><div class="line">    def teardown(self, exception):</div><div class="line">        ctx = stack.top</div><div class="line">        if hasattr(ctx, &apos;sqlite3_db&apos;):</div><div class="line">            ctx.sqlite3_db.close()</div><div class="line">    @property</div><div class="line">    def connection(self):</div><div class="line">        ctx = stack.top</div><div class="line">        if ctx is not None:</div><div class="line">truetruetruetrue    # 首次访问时候打开数据库连接，将其存储在上下文</div><div class="line">truetruetruetruetruetrue# 这是处理资源的推荐方式，在资源第一次使用时候惰性获取资源</div><div class="line">            if not hasattr(ctx, &apos;sqlite3_db&apos;):</div><div class="line">                ctx.sqlite3_db = self.connect()</div><div class="line">            return ctx.sqlite3_db</div></pre></td></tr></table></figure>
 <p>这里通过<code>_app_ctx_stack.top</code> 附加到应用上下文的栈顶。扩展应该使用上下文的栈顶来存储它们自己的信息，并使用足够复杂的名称，也就实现了在应用上下文中对数据库连接的管理了。</p>
 <p>可以这样使用：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">from flask_sqlite3 import SQLite3</div><div class="line">app = Flask(__name__)</div><div class="line">app.config.from_pyfile(&apos;the-config.cfg&apos;)</div><div class="line">db = SQLite3(app)</div><div class="line">@app.route(&apos;/&apos;)</div><div class="line">def show_all():</div><div class="line">    cur = db.connection.cursor()</div><div class="line">    cur.execute(...)</div><div class="line">with app.app_context():</div><div class="line">    cur = db.connection.cursor()</div><div class="line">    cur.execute(...)</div></pre></td></tr></table></figure>
@@ -275,9 +276,9 @@
 <p>需要访问潜在的被代理的对象，你可以使用 <code>_get_current_object()</code> 方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">app = current_app._get_current_object()</div><div class="line">my_signal.send(app)</div></pre></td></tr></table></figure>
 <h1 id="使用上下文"><a href="#使用上下文" class="headerlink" title="使用上下文"></a>使用上下文</h1><p>典型应用场景是缓存一些在发生请求之前要使用的资源，比如数据库连接和缓存一些对象。请求上下文发生在HTTP请求开始，WSGI Server调用<code>Flask.__call__()</code>之后。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class RequestContext(object):</div><div class="line">  self._implicit_app_ctx_stack = []</div><div class="line">	def push(self):</div><div class="line">	  app_ctx = _app_ctx_stack.top</div><div class="line">		# 栈顶为空，或者栈顶app对象不是当前的上下文请求app对象</div><div class="line">		if app_ctx is None or app_ctx.app != self.app:</div><div class="line">		  # 进入当前应用上下文</div><div class="line">		  app_ctx = self.app.app_context()</div><div class="line">			app_ctx.push()</div><div class="line">			self._implicit_app_ctx_stack.append(app_ctx)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class RequestContext(object):</div><div class="line">  self._implicit_app_ctx_stack = []</div><div class="line">truedef push(self):</div><div class="line">true  app_ctx = _app_ctx_stack.top</div><div class="line">truetrue# 栈顶为空，或者栈顶app对象不是当前的上下文请求app对象</div><div class="line">truetrueif app_ctx is None or app_ctx.app != self.app:</div><div class="line">truetrue  # 进入当前应用上下文</div><div class="line">truetrue  app_ctx = self.app.app_context()</div><div class="line">truetruetrueapp_ctx.push()</div><div class="line">truetruetrueself._implicit_app_ctx_stack.append(app_ctx)</div></pre></td></tr></table></figure>
 <p>从此可以看出应用上下文是被动的在推入请求上下文过程中生成的，在请求结束的时候也会把请求上下文弹出。所以变量的名字就是隐式的应用上下文栈。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class RequestContext(object):</div><div class="line">  def pop(self, exc=_sentinel):</div><div class="line">	  app_ctx = self._implicit_app_ctx_stack.pop()</div><div class="line">		try:</div><div class="line">		  # some</div><div class="line">		finally:</div><div class="line">		  if app_ctx is not None:</div><div class="line">			  app_ctx.pop(exc)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class RequestContext(object):</div><div class="line">  def pop(self, exc=_sentinel):</div><div class="line">true  app_ctx = self._implicit_app_ctx_stack.pop()</div><div class="line">truetruetry:</div><div class="line">truetrue  # some</div><div class="line">truetruefinally:</div><div class="line">truetrue  if app_ctx is not None:</div><div class="line">truetruetrue  app_ctx.pop(exc)</div></pre></td></tr></table></figure>
 <p>应用上下文和请求上下文分开的目的是：首先有可能出现多app，app之前也要隔离，然后是非Web模式下，一个应用上下文可能有多个请求上下文，但是退出一个请求上下文不能将应用上下文也直接退出了。</p>
 <p>flask有4个上下文变量</p>
 <ol>
@@ -296,7 +297,7 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@app.context_processor</div><div class="line">def template_extras():</div><div class="line">  return &#123;&apos;enumerate&apos;: enumerate, &apos;current_user&apos;: g.user&#125;</div></pre></td></tr></table></figure>
 <h2 id="使用LocalProxy代替g"><a href="#使用LocalProxy代替g" class="headerlink" title="使用LocalProxy代替g"></a>使用LocalProxy代替g</h2><p>实现一个全局可以访问的current_user</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">from werkzeug.local import LocalStack, LocalProxy</div><div class="line">_user_stack = LocalStack()</div><div class="line">def get_current_user():</div><div class="line">  top = _user_stack.top</div><div class="line">	if top is None:</div><div class="line">	  raise RuntimeError()</div><div class="line">	return top</div><div class="line">current_user = LocalProxy(get_current_user)</div><div class="line">@app.before_request</div><div class="line">def before_request():</div><div class="line">  users = User.query.all()</div><div class="line">	user = random.choice(users)</div><div class="line">	_user_stack.push(user)</div><div class="line">@app.teardown_appcontext</div><div class="line">def teardown(exc=None):</div><div class="line">  _user_stack.pop()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">from werkzeug.local import LocalStack, LocalProxy</div><div class="line">_user_stack = LocalStack()</div><div class="line">def get_current_user():</div><div class="line">  top = _user_stack.top</div><div class="line">trueif top is None:</div><div class="line">true  raise RuntimeError()</div><div class="line">truereturn top</div><div class="line">current_user = LocalProxy(get_current_user)</div><div class="line">@app.before_request</div><div class="line">def before_request():</div><div class="line">  users = User.query.all()</div><div class="line">trueuser = random.choice(users)</div><div class="line">true_user_stack.push(user)</div><div class="line">@app.teardown_appcontext</div><div class="line">def teardown(exc=None):</div><div class="line">  _user_stack.pop()</div></pre></td></tr></table></figure>
 <p>相当于每次请求中，要访问current_user就会在这个独立的线程来执行get_current_user函数来获取栈顶对象，另外堆栈也是线程独立的。所以在请求上下文中就可以直接访问current_user了。所以可以按照这种方法将一些全局使用的资源放进去，数据库连接是肯定可以放的。</p>
 <p>所以之前战斗力项目中，<code>app=LocalProxy(get_app)</code>其实就是多app支持的啊！多app有什么特性呢？等待继续研究。</p>
 <p>参考：</p>
@@ -313,7 +314,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T06:21:25.000Z" itemprop="dateUpdated">2017-09-01 14:21:25 14:21:25</time>
+    最后更新时间：<time datetime="2017-09-01T06:21:25.000Z" itemprop="dateUpdated">2017-09-01 14:21:25 14:21:25</time>
 </span><br>
 
 
@@ -488,7 +489,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -561,7 +562,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -581,7 +582,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 

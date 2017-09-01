@@ -27,6 +27,7 @@
 <meta property="og:url" content="http://skyrover.me/2017/04/22/信号在Flask中的使用/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="Blinker提供了信号支持，信号就是在框架核心功能或者一些Flask扩展发生动作时所发送的通知，用于解耦应用。 123456from blinker import signalstarted = signal(&amp;apos;test-started&amp;apos;)def each(round):  print(&amp;quot;round &amp;#123;&amp;#125;&amp;quot;.format(round))">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T06:19:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="信号在Flask中的使用">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2017-04-22 16:41:56 16:41:56" datetime="2017-04-22T08:41:56.000Z"  itemprop="datePublished">2017-04-22 16:41:56</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -219,7 +220,7 @@
 <h1 id="flask-login中的信号"><a href="#flask-login中的信号" class="headerlink" title="flask-login中的信号"></a>flask-login中的信号</h1><p>中有6种信号，可以基于其中信号做一些额外的工作，比如使用user_logged_in来记录用户的登录次数和登录IP</p>
 <p>其中flask-login中发送信号的代码是：<code>user_logged_in.send(current_app._get_current_object(), user=_get_user())</code></p>
 <p>所以只要订阅这个信号，每次登录的时候就会触发订阅这个信号的函数，然后就执行这个函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@flask_login.user_logged_in.connect_via(app)</div><div class="line">def _track_logins(sender, user, **extra):</div><div class="line">  user.login_count += 1</div><div class="line">	user.last_login_ip = request.remote_addr</div><div class="line">	db.session.add(user)</div><div class="line">	db.session.commit()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@flask_login.user_logged_in.connect_via(app)</div><div class="line">def _track_logins(sender, user, **extra):</div><div class="line">  user.login_count += 1</div><div class="line">trueuser.last_login_ip = request.remote_addr</div><div class="line">truedb.session.add(user)</div><div class="line">truedb.session.commit()</div></pre></td></tr></table></figure>
 <h1 id="实战应用"><a href="#实战应用" class="headerlink" title="实战应用"></a>实战应用</h1><p>大概是这样的，每次在我发表新文章或者更新了一篇文章后，或者是更新了网站历史，发布了新版本的时候，都会连接新浪微博，然后发一条微博。这个机制中就用到了信号，实现了不同业务之间的解耦。很好用！</p>
 <p>其中使用到了微博的API，或者你也可以直接通过模拟登录的方式。需要使用到一个第三方的包weibo，你可以<a href="https://github.com/lxyu/weibo" target="_blank" rel="external">点击这里</a>找到它。</p>
 <p>发送微博的代码如下：</p>
@@ -235,7 +236,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T06:19:20.000Z" itemprop="dateUpdated">2017-09-01 14:19:20 14:19:20</time>
+    最后更新时间：<time datetime="2017-09-01T06:19:20.000Z" itemprop="dateUpdated">2017-09-01 14:19:20 14:19:20</time>
 </span><br>
 
 
@@ -410,7 +411,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -483,7 +484,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -503,7 +504,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 

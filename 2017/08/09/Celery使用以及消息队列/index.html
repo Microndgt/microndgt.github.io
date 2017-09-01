@@ -19,14 +19,15 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="Celery,Python">
+    <meta name="keywords" content="Python,Celery">
     <meta name="description" content="Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。 这是其使用场景：  web应用，需要较长时间完成的任务，就可以作为任务交给celery异步执行，执行完返回给用户。 网站的定时任务 异步执行的其他任务。比如清理/设置缓存  有以下特点：  任务执行情况 管理后台管理任务 任务和配置管理相关联 多进程，EventLet和Gevent">
-<meta name="keywords" content="Celery,Python">
+<meta name="keywords" content="Python,Celery">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Celery使用以及消息队列">
 <meta property="og:url" content="http://skyrover.me/2017/08/09/Celery使用以及消息队列/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。 这是其使用场景：  web应用，需要较长时间完成的任务，就可以作为任务交给celery异步执行，执行完返回给用户。 网站的定时任务 异步执行的其他任务。比如清理/设置缓存  有以下特点：  任务执行情况 管理后台管理任务 任务和配置管理相关联 多进程，EventLet和Gevent">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T06:20:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Celery使用以及消息队列">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2017-08-09 11:57:53 11:57:53" datetime="2017-08-09T03:57:53.000Z"  itemprop="datePublished">2017-08-09 11:57:53</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -228,7 +229,7 @@
 <li>Celery配置文件</li>
 </ul>
 <p>如果都在实例化的时候指定好了配置，那么就不需要了，如果需要指定额外的参数，那么就可以放在配置文件里，以下是几个常用的参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"># 导入tasks</div><div class="line">from celery.schedules import crontab</div><div class="line">from datetime import timedelta</div><div class="line"># 防止内存泄漏</div><div class="line">CELERYD_MAX_TASKS_PER_CHILD = 40</div><div class="line"># 指定时区</div><div class="line">CELERY_TIMEZONE = &apos;Asia/Shanghai&apos;</div><div class="line">CELERY_IMPORTS = (&quot;tasks&quot;, &quot;graph_data_tasks&quot;)</div><div class="line"># broker代理地址</div><div class="line">BROKER_URL = &apos;&apos;</div><div class="line"># backend地址</div><div class="line">CELERY_RESULT_BACKEND = &apos;&apos;</div><div class="line">CELERY_TASK_SERIALIZER = &apos;msgpack&apos;</div><div class="line">CELERY_RESULT_SERIALIZER = &apos;json&apos;</div><div class="line"># A value of None or 0 means results will never expire</div><div class="line">CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24 # 任务结果过期时间</div><div class="line">CELERY_ACCEPT_CONTENT = [&apos;json&apos;, &apos;msgpack&apos;]</div><div class="line"># 路由，指定队列</div><div class="line">CELERY_ROUTES = &#123;&apos;backend.celery_tasks.calc_ability&apos;: &#123;&apos;queue&apos;: &apos;capacity&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.graph_data_tasks&apos;: &#123;&apos;queue&apos;: &apos;celery&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.calc_plat&apos;: &#123;&apos;queue&apos;: &apos;celery&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.calc_sections&apos;: &#123;&apos;queue&apos;: &apos;guchong&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.publish_data&apos;: &#123;&apos;queue&apos;: &apos;mysql&apos;&#125;&#125;</div><div class="line"># celery worker的并发数</div><div class="line">CELERYD_CONCURRENCY = 2</div><div class="line"># 使用任务调度，使用Beat进程自动生成任务</div><div class="line">CELERYBEAT_SCHEDULE = &#123;</div><div class="line">    &apos;graph_data&apos;: &#123;</div><div class="line">        &apos;task&apos;: &apos;graph_data_tasks.sync_graph&apos;,</div><div class="line">        &apos;schedule&apos;: timedelta(minutes=60),</div><div class="line">        &apos;args&apos;: ()</div><div class="line">    &#125;,</div><div class="line">		&apos;rank_for_guchong&apos;: &#123;</div><div class="line">        &apos;task&apos;: &apos;backend.celerytasks.rank_for_guchong.calc_ability_schedule&apos;,</div><div class="line">        &apos;schedule&apos;: crontab(hour=11, minute=55),</div><div class="line">        &apos;args&apos;: ()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"># 导入tasks</div><div class="line">from celery.schedules import crontab</div><div class="line">from datetime import timedelta</div><div class="line"># 防止内存泄漏</div><div class="line">CELERYD_MAX_TASKS_PER_CHILD = 40</div><div class="line"># 指定时区</div><div class="line">CELERY_TIMEZONE = &apos;Asia/Shanghai&apos;</div><div class="line">CELERY_IMPORTS = (&quot;tasks&quot;, &quot;graph_data_tasks&quot;)</div><div class="line"># broker代理地址</div><div class="line">BROKER_URL = &apos;&apos;</div><div class="line"># backend地址</div><div class="line">CELERY_RESULT_BACKEND = &apos;&apos;</div><div class="line">CELERY_TASK_SERIALIZER = &apos;msgpack&apos;</div><div class="line">CELERY_RESULT_SERIALIZER = &apos;json&apos;</div><div class="line"># A value of None or 0 means results will never expire</div><div class="line">CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24 # 任务结果过期时间</div><div class="line">CELERY_ACCEPT_CONTENT = [&apos;json&apos;, &apos;msgpack&apos;]</div><div class="line"># 路由，指定队列</div><div class="line">CELERY_ROUTES = &#123;&apos;backend.celery_tasks.calc_ability&apos;: &#123;&apos;queue&apos;: &apos;capacity&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.graph_data_tasks&apos;: &#123;&apos;queue&apos;: &apos;celery&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.calc_plat&apos;: &#123;&apos;queue&apos;: &apos;celery&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.calc_sections&apos;: &#123;&apos;queue&apos;: &apos;guchong&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.publish_data&apos;: &#123;&apos;queue&apos;: &apos;mysql&apos;&#125;&#125;</div><div class="line"># celery worker的并发数</div><div class="line">CELERYD_CONCURRENCY = 2</div><div class="line"># 使用任务调度，使用Beat进程自动生成任务</div><div class="line">CELERYBEAT_SCHEDULE = &#123;</div><div class="line">    &apos;graph_data&apos;: &#123;</div><div class="line">        &apos;task&apos;: &apos;graph_data_tasks.sync_graph&apos;,</div><div class="line">        &apos;schedule&apos;: timedelta(minutes=60),</div><div class="line">        &apos;args&apos;: ()</div><div class="line">    &#125;,</div><div class="line">truetrue&apos;rank_for_guchong&apos;: &#123;</div><div class="line">        &apos;task&apos;: &apos;backend.celerytasks.rank_for_guchong.calc_ability_schedule&apos;,</div><div class="line">        &apos;schedule&apos;: crontab(hour=11, minute=55),</div><div class="line">        &apos;args&apos;: ()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
 <li>Celery的tasks</li>
 </ul>
@@ -250,10 +251,10 @@
 <li>指定队列</li>
 </ul>
 <p>Celery通常使用默认名为celery的队列来存放任务，可以通过CELERY_DEFAULT_QUEUE修改，可以使用优先级不同的队列来确保高优先级的任务不需要等待就可以得到相应。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from kombu import Queue</div><div class="line">CELERY_QUEUES = (</div><div class="line">  Queue(&apos;default&apos;, routing_key=&apos;task.#&apos;),</div><div class="line">	Queue(&apos;web_tasks&apos;, routing_key=&apos;web.#&apos;)</div><div class="line">)</div><div class="line"># 默认交换机名字为tasks</div><div class="line">CELERY_DEFAULT_EXCHANGE = &apos;tasks&apos;</div><div class="line"># 交换类型是topic</div><div class="line">CELERY_DEFAULT_EXCHANGE_TYPE = &apos;topic&apos;</div><div class="line"># 默认的路由键是task.default</div><div class="line">CELERY_DEFAULT_ROUTING_KEY = &apos;task.default&apos;</div><div class="line">CELERY_ROUTES = &#123;</div><div class="line">  &apos;projq.tasks.add&apos;: &#123;</div><div class="line">    &apos;queue&apos;: &apos;web_tasks&apos;,</div><div class="line">    &apos;routing_key&apos;: &apos;web.add&apos;,</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from kombu import Queue</div><div class="line">CELERY_QUEUES = (</div><div class="line">  Queue(&apos;default&apos;, routing_key=&apos;task.#&apos;),</div><div class="line">trueQueue(&apos;web_tasks&apos;, routing_key=&apos;web.#&apos;)</div><div class="line">)</div><div class="line"># 默认交换机名字为tasks</div><div class="line">CELERY_DEFAULT_EXCHANGE = &apos;tasks&apos;</div><div class="line"># 交换类型是topic</div><div class="line">CELERY_DEFAULT_EXCHANGE_TYPE = &apos;topic&apos;</div><div class="line"># 默认的路由键是task.default</div><div class="line">CELERY_DEFAULT_ROUTING_KEY = &apos;task.default&apos;</div><div class="line">CELERY_ROUTES = &#123;</div><div class="line">  &apos;projq.tasks.add&apos;: &#123;</div><div class="line">    &apos;queue&apos;: &apos;web_tasks&apos;,</div><div class="line">    &apos;routing_key&apos;: &apos;web.add&apos;,</div><div class="line">true&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>指定队列方式启动消费者进程：<code>celery -A projq worker -Q web_tasks -l info</code></p>
 <h2 id="celery中的任务绑定"><a href="#celery中的任务绑定" class="headerlink" title="celery中的任务绑定"></a>celery中的任务绑定</h2><p>任务可以通过 app.task 装饰器进行注册，需要注意的一点是，当函数有多个装饰器时，为了保证 Celery 的正常运行，app.task 装饰器需要在最外层。其中有一个bind 参数，当设置了 bind 参数，则会为这个任务绑定一个 Task 实例，通过第一个 self 参数传入，可以通过这个 self 参数访问到 Task 对象的所有属性。绑定任务用于尝试重新执行任务（使用app.Task.retry()),绑定了任务就可以访问当前请求的任务信息和任何你添加到指定任务基类中的方法。也可以使用<code>self.update_state()</code>方法来更新状态信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@celery.task(bind=True)</div><div class="line">def calc_ability(self, fundIds, start_date, end_date, increment_end_date, maxsize):</div><div class="line">    start_date = parse_date(start_date)</div><div class="line">    end_date = parse_date(end_date)</div><div class="line">		self.update_state(state=&apos;PROGRESS&apos;,</div><div class="line">                              meta=&#123;&apos;current&apos;: index, &apos;total&apos;: total,</div><div class="line">                              &apos;time&apos;: used_time.used_time() / 60, &apos;status&apos;: &apos;running&apos;, &apos;reason&apos;: &apos;&apos;&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@celery.task(bind=True)</div><div class="line">def calc_ability(self, fundIds, start_date, end_date, increment_end_date, maxsize):</div><div class="line">    start_date = parse_date(start_date)</div><div class="line">    end_date = parse_date(end_date)</div><div class="line">truetrueself.update_state(state=&apos;PROGRESS&apos;,</div><div class="line">                              meta=&#123;&apos;current&apos;: index, &apos;total&apos;: total,</div><div class="line">                              &apos;time&apos;: used_time.used_time() / 60, &apos;status&apos;: &apos;running&apos;, &apos;reason&apos;: &apos;&apos;&#125;)</div></pre></td></tr></table></figure>
 <h2 id="停止任务"><a href="#停止任务" class="headerlink" title="停止任务"></a>停止任务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">rs = add.delay(1, 2)</div><div class="line">rs.revoke()  # 只是撤销，如果任务已经在执行，则撤销无效</div><div class="line">rs.task_id  # 任务id</div><div class="line">app.control.revoke(rs.task_id) # 通过task_id撤销</div><div class="line">app.control.revoke(rs.task_id, terminate=True) ＃ 撤销正在执行的任务，默认使用TERM信号</div><div class="line">app.control.revoke(rs.task_id, terminate=True, signal=&apos;SIGKILL&apos;) # 撤销正在执行的任务，使用KILL信号</div><div class="line"># 而在最新的celery3版本中，这样停止一个任务</div><div class="line">from .. import celery  # 就是创建的celery实例</div><div class="line">celery.control.terminate(task_id)</div><div class="line"># 其实本质还是调用了revoke</div><div class="line">return self.revoke(task_id, destination=destination, terminate=True, signal=signal, **kwargs)</div></pre></td></tr></table></figure>
 <h2 id="Celery监控工具Flower"><a href="#Celery监控工具Flower" class="headerlink" title="Celery监控工具Flower"></a>Celery监控工具Flower</h2><p><code>pip install flower</code></p>
 <p>需要在celery_settings中指定<code>CELERY_SEND_TASK_SENT_EVENT = True</code>，然后和启动celery同样的目录下运行<code>flower -A backend.celery --port=5555</code>，即可看到管理界面了。访问<code>http://localhost:5555</code></p>
@@ -268,7 +269,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T06:20:19.000Z" itemprop="dateUpdated">2017-09-01 14:20:19 14:20:19</time>
+    最后更新时间：<time datetime="2017-09-01T06:20:19.000Z" itemprop="dateUpdated">2017-09-01 14:20:19 14:20:19</time>
 </span><br>
 
 
@@ -443,7 +444,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -516,7 +517,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -536,7 +537,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 

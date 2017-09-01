@@ -27,6 +27,7 @@
 <meta property="og:url" content="http://skyrover.me/2016/12/02/shell命令总结/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="工作中遇到的shell命令总结～ 清除cache在运行程序过程中，free -h发现cache占用太大，于是：  sync 保存数据 echo 1 &amp;gt; /proc/sys/vm/drop_caches  这样之后即可清除内存中的cache占用 awk重新生成idawk &amp;#39;BEGIN{FS=&amp;quot;,&amp;quot;;OFS=&amp;quot;,&amp;quot;;}{$1=NR;print $0">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T04:57:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell命令总结">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2016-12-02 15:57:57 15:57:57" datetime="2016-12-02T07:57:57.000Z"  itemprop="datePublished">2016-12-02 15:57:57</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -216,7 +217,7 @@
 <h1 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h1><p>删除grep出的特定行,形成新文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for id in $(cat inf_ids.txt)</div><div class="line">do</div><div class="line">    sed -i “/$id/d” summary.csv</div><div class="line">done</div></pre></td></tr></table></figure>
 <p>将新生成的文件贴到某个文件末尾</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for line in $(cat summary.csv)</div><div class="line">do</div><div class="line">	sed -i &quot;\$a $line&quot; summary_45.csv</div><div class="line">done</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for line in $(cat summary.csv)</div><div class="line">do</div><div class="line">truesed -i &quot;\$a $line&quot; summary_45.csv</div><div class="line">done</div></pre></td></tr></table></figure>
 <p>其实这样就OK了。。</p>
 <p><code>cat test1 test2 &gt; test3</code></p>
 <p><code>cat test2 &gt;&gt; test1</code> 使用追加</p>
@@ -254,7 +255,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T04:57:42.000Z" itemprop="dateUpdated">2017-09-01 12:57:42 12:57:42</time>
+    最后更新时间：<time datetime="2017-09-01T04:57:42.000Z" itemprop="dateUpdated">2017-09-01 12:57:42 12:57:42</time>
 </span><br>
 
 
@@ -422,7 +423,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -495,7 +496,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -515,7 +516,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 

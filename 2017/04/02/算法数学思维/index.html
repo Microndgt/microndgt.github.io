@@ -27,6 +27,7 @@
 <meta property="og:url" content="http://skyrover.me/2017/04/02/算法数学思维/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="两种求和式循环赛等价于，如果在一个有n个专家参加的会议中，需要和之间所有人互相握手，需要多少次握手。或者一个含有n个节点的完全图中应该有多少条边，都是一种整体对整体的计数问题。 一种思维是这样的，每一位人都会跟别的人握手，这样就是n*(n-1)，然后每个人都握手了两次，所以除以2，n*(n-1)/2，这和(n-1)+(n-2)+...+1是等价的。 淘汰赛比赛合计为k/2 + k/4 + k/8">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T06:04:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="算法数学思维">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2017-04-02 16:45:04 16:45:04" datetime="2017-04-02T08:45:04.000Z"  itemprop="datePublished">2017-04-02 16:45:04</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -201,7 +202,7 @@
 <p>子集关系：如果每个比特所表示的是一个对象是否存在于某个k大小的集合中的话，那么每个比特串所表示的就是该集合的2^k个可能子集的某一个。</p>
 <p>所以也就是说，<strong>对于一个需要检查其输入对象中每个子集的算法，时间复杂度必然是指数级的</strong></p>
 <h2 id="伪多项式算法"><a href="#伪多项式算法" class="headerlink" title="伪多项式算法"></a>伪多项式算法</h2><p>这些算法的运行时间都是指数级的，但是看上去像是一个多项式时间的算法。比如对于一个某个数是不是质数的问题，直接的解决办法是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def is_prime(n):</div><div class="line">    for i in range(2, n):</div><div class="line">		    if n % i == 0: return False</div><div class="line">    return True</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def is_prime(n):</div><div class="line">    for i in range(2, n):</div><div class="line">truetrue    if n % i == 0: return False</div><div class="line">    return True</div></pre></td></tr></table></figure>
 <p>虽然看起来好像是Θ(n)的算法，但是一个问题的规模值包含n，不是说就是等于n，而是用来编码n的比特数，对于这个问题，如果n等于2的某次方，那么需要的比特数就是<code>lgn + 1</code>，比如8，需要4位比特才能表示。如果将问题规模(比特数)设置为k，那么<code>n=2^(k-1)</code>，所以时间复杂度就是Θ(2^k)，就是一个指数级别的算法。</p>
 <h2 id="排列组合"><a href="#排列组合" class="headerlink" title="排列组合"></a>排列组合</h2><p>排序问题的本质是顺序问题。这块内容还好印象比较深刻吧，就不多说了。下面摘录下书中所给出的一些有意思的思考角度。</p>
 <p>比如n个人要排队看电影，电影院只有k个座位，这样k大小的子集有多少个可能性呢。这种问题潜意识就是<code>{n k}</code>，表示组合。书中给的解释如下：首先排在前面的人的可能性是k!种，剩下的人排列可能性为(n-k)!种，总共有n!中可能，所以<code>{n k} = n!/(k!(n-k)!)</code></p>
@@ -227,13 +228,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">T(n) = 2T(n/2) + n</div><div class="line">T(n) = 2(2T(n/4)+n/2) + n</div><div class="line">T(n) = 4T(n/4) + 2n</div><div class="line">...</div><div class="line">T(n) = 2^i T(n/2^i) + i*n</div></pre></td></tr></table></figure>
 <p>所以当<code>n/2^i = 1</code>时候，即<code>i=log2n</code>时候，<code>T(n) = n+nlgn</code>，所以可以得T(n)的时间复杂度是Θ(nlgn)</p>
 <h2 id="归纳法证明"><a href="#归纳法证明" class="headerlink" title="归纳法证明"></a>归纳法证明</h2><p>对于<code>T(n)=T(n-1)+1</code>，对于T(1)=1，有T(1)&lt;=c成立，假设在T(n-1)上是成立的，即<code>T(n-1)&lt;=c(n-1)</code>成立，那么</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">T(n)=T(n-1)+1</div><div class="line">     &lt;= c(n-1) + 1</div><div class="line">		 = cn - c + 1</div><div class="line">		 &lt;= cn (c&gt;=1)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">T(n)=T(n-1)+1</div><div class="line">     &lt;= c(n-1) + 1</div><div class="line">truetrue = cn - c + 1</div><div class="line">truetrue &lt;= cn (c&gt;=1)</div></pre></td></tr></table></figure>
 <p>所以成立</p>
 <h2 id="主定理"><a href="#主定理" class="headerlink" title="主定理"></a>主定理</h2><p>对于<code>T(n)=aT(n/b)+f(n)</code></p>
 <p>有a重递归调用，对应于树来说就是a个分支，每重处理掉一定比例的数据(数据集的1/b)，除了这些递归调用外，算法中还有一个额外的f(n)操作单元。</p>
 <p>分配到每层树的每一个节点的问题规模为f(n/b^i)，如果要让问题规模为1，那么树的高度就是<code>logbn</code></p>
 <p>树每个内部节点下面都有a个子节点，所有逐层增加之后，节点数只和就不等于n了，按照树高logbn来算，树宽值为<code>a^(logbn)</code>，也就是<code>n^(logba)</code>，推导如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a^(logbn) = (n^(logna))^(logbn)</div><div class="line">              = n^(logbn * logna)</div><div class="line">							= n^(logba)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a^(logbn) = (n^(logna))^(logbn)</div><div class="line">              = n^(logbn * logna)</div><div class="line">truetruetruetruetruetruetrue= n^(logba)</div></pre></td></tr></table></figure>
 <ul>
 <li>大部分操作运行在根节点上</li>
 </ul>
@@ -252,9 +253,9 @@
 <p>即<code>f(n)∈Θ(n^(logba))</code></p>
 <p>这样就变成了求该树各层操作之和的求和式，可以通过乘以其高度的方式计算总和，<code>T(n)∈Θ(n^(logba) * lgn)</code></p>
 <p>比如<code>T(n)=2T(n/4)+n^0.5</code>，<code>a=2,b=4,n^(logba) = n^0.5</code>，树根节点，叶节点以及各层节点的操作时间都等于<code>Θ(n^0.5)</code>，所以总的运行时间是<code>T(n)∈Θ(n^(0.5) * lgn)</code></p>
-<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><h2 id="侏儒排序法"><a href="#侏儒排序法" class="headerlink" title="侏儒排序法"></a>侏儒排序法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def gnomesort(seq):</div><div class="line">    i = 0</div><div class="line">		while i &lt; len(seq):</div><div class="line">		    if i == 0 or seq[i-1] &lt;= seq[i]:</div><div class="line">				    i += 1</div><div class="line">			  else:</div><div class="line">				    # 这里需要注意，如果找到没有排序的数字，会一直向开始找到一个合适的位置</div><div class="line">						seq[i], seq[i-1] = seq[i-1], seq[i]</div><div class="line">						i -= 1</div></pre></td></tr></table></figure>
+<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><h2 id="侏儒排序法"><a href="#侏儒排序法" class="headerlink" title="侏儒排序法"></a>侏儒排序法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def gnomesort(seq):</div><div class="line">    i = 0</div><div class="line">truetruewhile i &lt; len(seq):</div><div class="line">truetrue    if i == 0 or seq[i-1] &lt;= seq[i]:</div><div class="line">truetruetruetrue    i += 1</div><div class="line">truetruetrue  else:</div><div class="line">truetruetruetrue    # 这里需要注意，如果找到没有排序的数字，会一直向开始找到一个合适的位置</div><div class="line">truetruetruetruetruetrueseq[i], seq[i-1] = seq[i-1], seq[i]</div><div class="line">truetruetruetruetruetruei -= 1</div></pre></td></tr></table></figure>
 <p>那么最坏的情况就是查找并且移动错位元素，也就是当序列是倒序的时候，是最糟糕的情况，那么移动次数是<code>1 + 2 + 3 + ... + n - 1</code>，最好情况是顺序时候，什么也不需要做，那么时间复杂度应该是<code>Ω(n)</code>和<code>O(n^2)</code>来表示</p>
-<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">def mergesort(seq):</div><div class="line">    mid = len(seq) / 2</div><div class="line">    lft, rgt = seq[:mid], seq[mid:]</div><div class="line">		if len(lft) &gt; 1: lft = mergesort(lft)</div><div class="line">		if len(rgt) &gt; 1: rgt = mergesort(rgt)</div><div class="line">		res = []</div><div class="line">		while lft and rgt:</div><div class="line">		    if lft[-1] &gt;= rgt[-1]:</div><div class="line">				    # 默认移除最后一个元素</div><div class="line">				    res.append(lft.pop())</div><div class="line">				else:</div><div class="line">				    res.append(rgt.pop())</div><div class="line">		# 由小到大排序</div><div class="line">		res.reverse()</div><div class="line">		return (lft or rgt) + res</div></pre></td></tr></table></figure>
+<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">def mergesort(seq):</div><div class="line">    mid = len(seq) / 2</div><div class="line">    lft, rgt = seq[:mid], seq[mid:]</div><div class="line">truetrueif len(lft) &gt; 1: lft = mergesort(lft)</div><div class="line">truetrueif len(rgt) &gt; 1: rgt = mergesort(rgt)</div><div class="line">truetrueres = []</div><div class="line">truetruewhile lft and rgt:</div><div class="line">truetrue    if lft[-1] &gt;= rgt[-1]:</div><div class="line">truetruetruetrue    # 默认移除最后一个元素</div><div class="line">truetruetruetrue    res.append(lft.pop())</div><div class="line">truetruetruetrueelse:</div><div class="line">truetruetruetrue    res.append(rgt.pop())</div><div class="line">truetrue# 由小到大排序</div><div class="line">truetrueres.reverse()</div><div class="line">truetruereturn (lft or rgt) + res</div></pre></td></tr></table></figure>
 <p>分析其时间复杂度：输入规模为n，有两重递归调用，每次子问题的规模为n/2，<code>res.reverse()</code>包含了一些操作，时间复杂度为Θ(n)，所以递归式为<code>T(n)=2T(n/2)+Θ(n)</code>，时间复杂度为<code>Θ(nlgn)</code></p>
 <p>参考自：<em>Python 算法教程</em> – <em>Magnus Lie Hetland</em></p>
 
@@ -264,7 +265,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T06:04:25.000Z" itemprop="dateUpdated">2017-09-01 14:04:25 14:04:25</time>
+    最后更新时间：<time datetime="2017-09-01T06:04:25.000Z" itemprop="dateUpdated">2017-09-01 14:04:25 14:04:25</time>
 </span><br>
 
 
@@ -439,7 +440,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -512,7 +513,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -532,7 +533,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 

@@ -27,6 +27,7 @@
 <meta property="og:url" content="http://skyrover.me/2017/08/03/Thrift在Python Web应用中的使用(二) - 处理器/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="从make_server入手首先来看看官方给的服务器demo 1234567891011import thriftpypingpong_thrift = thriftpy.load(&amp;quot;pingpong.thrift&amp;quot;, module_name=&amp;quot;pingpong_thrift&amp;quot;)from thriftpy.rpc import make_serverclas">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T06:31:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Thrift在Python Web应用中的使用(二) - 处理器">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2017-08-03 17:14:25 17:14:25" datetime="2017-08-03T09:14:25.000Z"  itemprop="datePublished">2017-08-03 17:14:25</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -194,7 +195,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">pingpong_thrift = thriftpy.load(&quot;pingpong.thrift&quot;, module_name=&quot;pingpong_thrift&quot;)</div><div class="line"></div><div class="line">from thriftpy.rpc import make_server</div><div class="line"></div><div class="line">class Dispatcher(object):</div><div class="line">    def ping(self):</div><div class="line">        return &quot;pong&quot;</div><div class="line"></div><div class="line">server = make_server(pingpong_thrift.PingPong, Dispatcher(), &apos;127.0.0.1&apos;, 6000)</div><div class="line">server.serve()</div></pre></td></tr></table></figure>
 <p>首先载入thrift文件没话说，下来是创建服务器，它是直接用里面的一个函数<code>make_server</code> ，这个函数会接收thrift导入协议中定义的服务和处理这个服务的处理对象，以及host和port作为参数，然后调用<code>serve()</code>方法，来创建一个服务器。</p>
 <p>那么关键就在<code>make_server</code>函数上了，进入查看源码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">def make_server(service, handler, host=&quot;localhost&quot;, port=9090, unix_socket=None, proto_factory=TBinaryProtocolFactory(), trans_factory=TBufferedTransportFactory(), client_timeout=3000, certfile=None):</div><div class="line">		# 为传入的服务和处理方法创建处理器</div><div class="line">    processor = TProcessor(service, handler)</div><div class="line"></div><div class="line">		# 如果是Unix_socket</div><div class="line">    if unix_socket:</div><div class="line">        server_socket = TServerSocket(unix_socket=unix_socket)</div><div class="line">        if certfile:</div><div class="line">            warnings.warn(&quot;SSL only works with host:port, not unix_socket.&quot;)</div><div class="line">    elif host and port:</div><div class="line">        if certfile:</div><div class="line">            server_socket = TSSLServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout,</div><div class="line">                certfile=certfile)</div><div class="line">        else:</div><div class="line">            server_socket = TServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout)</div><div class="line">    else:</div><div class="line">        raise ValueError(&quot;Either host/port or unix_socket must be provided.&quot;)</div><div class="line"></div><div class="line">    server = TThreadedServer(processor, server_socket,</div><div class="line">                             iprot_factory=proto_factory,</div><div class="line">                             itrans_factory=trans_factory)</div><div class="line">    return server</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">def make_server(service, handler, host=&quot;localhost&quot;, port=9090, unix_socket=None, proto_factory=TBinaryProtocolFactory(), trans_factory=TBufferedTransportFactory(), client_timeout=3000, certfile=None):</div><div class="line">truetrue# 为传入的服务和处理方法创建处理器</div><div class="line">    processor = TProcessor(service, handler)</div><div class="line"></div><div class="line">truetrue# 如果是Unix_socket</div><div class="line">    if unix_socket:</div><div class="line">        server_socket = TServerSocket(unix_socket=unix_socket)</div><div class="line">        if certfile:</div><div class="line">            warnings.warn(&quot;SSL only works with host:port, not unix_socket.&quot;)</div><div class="line">    elif host and port:</div><div class="line">        if certfile:</div><div class="line">            server_socket = TSSLServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout,</div><div class="line">                certfile=certfile)</div><div class="line">        else:</div><div class="line">            server_socket = TServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout)</div><div class="line">    else:</div><div class="line">        raise ValueError(&quot;Either host/port or unix_socket must be provided.&quot;)</div><div class="line"></div><div class="line">    server = TThreadedServer(processor, server_socket,</div><div class="line">                             iprot_factory=proto_factory,</div><div class="line">                             itrans_factory=trans_factory)</div><div class="line">    return server</div></pre></td></tr></table></figure>
 <p>可以看到，创建一个服务器其实过程非常简单，首先创建一个处理器Processor，然后创建一个Socket，接下来创建服务器，这里使用的是<code>TThreadedServer</code>，顾名思义是多线程的服务器了。</p>
 <p>其中有进行判断<code>unix_socket</code>和SSL的，SSL不多解释了。但是<code>unix_socket</code>是什么呢，UNIX 域套接字（UNIX domain socket），即通过文件系统（而非网络地址）进行寻址和访问的套接字。因此其不需要host和port。其实是进程间通信的一种方式吧，在一台电脑上进程间通信也可以使用TCP套接字或者UDP套接字，但它们的效率都没有域套接字高，另外域套接字使用的库函数和TCP套接字使用的库函数一样，这样操作比较简单。</p>
 <p>那么不管这些<code>unix_socket</code>还有SSL这些东西，我们抽象一下就可以发现，其实只有5个东西：</p>
@@ -215,7 +216,7 @@
 <p>handler的话比如这样，实例方法也ok，我这里函数都是独立的，所以使用静态方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class CalcAbility(object):</div><div class="line">    @staticmethod</div><div class="line">    def sync_ability(fundId, assets, flows, stocks, start, stop, calc_type):</div><div class="line">        try:</div><div class="line">            assert fundId and assets and start and stop, &quot;fundId or assets or start or end not found - testing&quot;</div><div class="line">            start_date = strpdate(start)</div><div class="line">            stop_date = strpdate(stop)</div><div class="line">            calc_type = calc_type or DEFAULT_CALC_TYPE</div><div class="line">            res = is_continuous_trade_day(start, stop, assets)</div><div class="line">            assert res[0], res[1]</div><div class="line">        except Exception as e:</div><div class="line">            sentry_logger.exception(e)</div><div class="line">            return gen_response(data=None, msg=str(e), errorcode=1)</div><div class="line">        return assets</div></pre></td></tr></table></figure>
 <p>thrift文件定义如下，thrift文件定义花样比较多，后面再说。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">	string sync_ability(</div><div class="line">		1: string fundId,</div><div class="line">		2: string assets,</div><div class="line">		3: string flows,</div><div class="line">		4: string stocks,</div><div class="line">		5: string start,</div><div class="line">		6: string stop,</div><div class="line">		7: string calc_type,)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="TMultiplexedProcessor"><a href="#TMultiplexedProcessor" class="headerlink" title="TMultiplexedProcessor"></a><code>TMultiplexedProcessor</code></h2><p>这个处理器支持多个服务分别对应不同的处理方法，其实是一堆<code>TProcessor</code>和处理方法的集合，使用字典实现，其中<code>service_name</code>对应<code>processor</code>，所以定义<code>TMultiplexedProcessor</code>后，必须进行注册：<code>register_processor</code></p>
 <p>源码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">class TMultiplexedProcessor(TProcessor):</div><div class="line">    SEPARATOR = &quot;:&quot;</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        self.processors = &#123;&#125;</div><div class="line"></div><div class="line">    def register_processor(self, service_name, processor):</div><div class="line">        if service_name in self.processors:</div><div class="line">            raise TApplicationException(</div><div class="line">                type=TApplicationException.INTERNAL_ERROR,</div><div class="line">                message=&apos;processor for `&#123;0&#125;` already registered&apos;</div><div class="line">                .format(service_name))</div><div class="line">        self.processors[service_name] = processor</div><div class="line"></div><div class="line">    def process_in(self, iprot):</div><div class="line">        api, type, seqid = iprot.read_message_begin()</div><div class="line">        if type not in (TMessageType.CALL, TMessageType.ONEWAY):</div><div class="line">            raise TException(&quot;TMultiplex protocol only supports CALL &amp; ONEWAY&quot;)</div><div class="line">        if TMultiplexedProcessor.SEPARATOR not in api:</div><div class="line">            raise TException(&quot;Service name not found in message. &quot;</div><div class="line">                             &quot;You should use TMultiplexedProtocol in client.&quot;)</div><div class="line"></div><div class="line">        service_name, api = api.split(TMultiplexedProcessor.SEPARATOR)</div><div class="line">        if service_name not in self.processors:</div><div class="line">            iprot.skip(TType.STRUCT)</div><div class="line">            iprot.read_message_end()</div><div class="line">            e = TApplicationException(TApplicationException.UNKNOWN_METHOD)</div><div class="line">            return api, seqid, e, None</div><div class="line"></div><div class="line">        proc = self.processors[service_name]</div><div class="line">        args = getattr(proc._service, api + &quot;_args&quot;)()</div><div class="line">        args.read(iprot)</div><div class="line">        iprot.read_message_end()</div><div class="line">        result = getattr(proc._service, api + &quot;_result&quot;)()</div><div class="line"></div><div class="line">        # convert kwargs to args</div><div class="line">        api_args = [args.thrift_spec[k][1] for k in sorted(args.thrift_spec)]</div><div class="line"></div><div class="line">        def call():</div><div class="line">            f = getattr(proc._handler, api)</div><div class="line">            return f(*(args.__dict__[k] for k in api_args))</div><div class="line"></div><div class="line">        return api, seqid, result, call</div></pre></td></tr></table></figure>
@@ -233,7 +234,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T06:31:34.000Z" itemprop="dateUpdated">2017-09-01 14:31:34 14:31:34</time>
+    最后更新时间：<time datetime="2017-09-01T06:31:34.000Z" itemprop="dateUpdated">2017-09-01 14:31:34 14:31:34</time>
 </span><br>
 
 
@@ -408,7 +409,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -481,7 +482,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -501,7 +502,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 

@@ -27,6 +27,7 @@
 <meta property="og:url" content="http://skyrover.me/2017/04/01/金融和R语言/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="金融货币的时间价值货币时间价值是指货币随着时间的推移而发生的增值，也称为资金时间价值。 货币的时间价值(TVM)是指当前持有的一定量的货币比未来获得的等量货币具有更高的价值。这是因为，货币用于投资可获得收益，存入银行可获得利息，货币的购买力会因通货膨胀的影响改变。 货币的时间价值就是指当前所持有的一定量货币比未来获得的等量货币具有更高的价值。从经济学的角度而言，现在的一单位货币与未来的一单位货币的">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T06:02:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="金融和R语言">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2017-04-01 17:38:05 17:38:05" datetime="2017-04-01T09:38:05.000Z"  itemprop="datePublished">2017-04-01 17:38:05</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -215,7 +216,7 @@
 <ul>
 <li>R版计算简单版本(只使用向量作为输入)：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">Sharpe_ratio_annual &lt;- function (R, Rf = 0, scale = NA, geometric = TRUE)</div><div class="line">&#123;</div><div class="line">  R = check_Data(R)</div><div class="line">  if (!is.null(dim(Rf)))</div><div class="line">    Rf = check_Data(Rf)</div><div class="line">	scale = 252</div><div class="line">  sr &lt;- function(R, Rf, scale) &#123;</div><div class="line">    xR = Return.excess(R, Rf)</div><div class="line">		# 年化超额报酬除以年化标准差</div><div class="line">    SR = Return.annualized(xR, scale = scale, geometric = geometric)/StdDev.annualized(R, scale = scale)</div><div class="line">    SR</div><div class="line">  &#125;</div><div class="line">  result = sapply(R, sr, Rf = Rf, scale = scale)</div><div class="line">  dim(result) = c(1, NCOL(R))</div><div class="line">  colnames(result) = colnames(R)</div><div class="line">  rownames(result) = paste(&quot;Annualized Sharpe Ratio (Rf=&quot;,</div><div class="line">                           round(mean(Rf) * scale * 100, 1), &quot;%)&quot;, sep = &quot;&quot;)</div><div class="line">  return(result)</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">Sharpe_ratio_annual &lt;- function (R, Rf = 0, scale = NA, geometric = TRUE)</div><div class="line">&#123;</div><div class="line">  R = check_Data(R)</div><div class="line">  if (!is.null(dim(Rf)))</div><div class="line">    Rf = check_Data(Rf)</div><div class="line">truescale = 252</div><div class="line">  sr &lt;- function(R, Rf, scale) &#123;</div><div class="line">    xR = Return.excess(R, Rf)</div><div class="line">truetrue# 年化超额报酬除以年化标准差</div><div class="line">    SR = Return.annualized(xR, scale = scale, geometric = geometric)/StdDev.annualized(R, scale = scale)</div><div class="line">    SR</div><div class="line">  &#125;</div><div class="line">  result = sapply(R, sr, Rf = Rf, scale = scale)</div><div class="line">  dim(result) = c(1, NCOL(R))</div><div class="line">  colnames(result) = colnames(R)</div><div class="line">  rownames(result) = paste(&quot;Annualized Sharpe Ratio (Rf=&quot;,</div><div class="line">                           round(mean(Rf) * scale * 100, 1), &quot;%)&quot;, sep = &quot;&quot;)</div><div class="line">  return(result)</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
 <li>Python版计算简单版本(输入日收益率列表):</li>
 </ul>
@@ -239,7 +240,7 @@
 <h1 id="R语言"><a href="#R语言" class="headerlink" title="R语言"></a>R语言</h1><h2 id="match-fun"><a href="#match-fun" class="headerlink" title="match.fun"></a>match.fun</h2><p>R允许将函数作为参数，但是如果有一个与函数同名的对象，将有可能找不到这个函数，所以使用<code>match.fun(fun)</code>来匹配函数对象</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test &lt;- function(o, func)&#123;</div><div class="line">    func &lt;- match.fun(func)</div><div class="line">    func(o)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="函数参数中的省略号"><a href="#函数参数中的省略号" class="headerlink" title="函数参数中的省略号"></a>函数参数中的省略号</h2><p>出现在哪个函数中，就是这个函数的默认参数，也就是可以将这个函数的默认参数传递到内部函数的参数里，这两个函数的参数是一致的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">fun1 &lt;- function(data, graph=TRUE, ...) &#123;</div><div class="line">    if (graph)</div><div class="line">		    plot(data,...)</div><div class="line">&#125;</div><div class="line">data=data.frame(x=c(1,2,3),y=c(1,2,3))</div><div class="line">fun1(data,col=&quot;red&quot;,type=&quot;l&quot;)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">fun1 &lt;- function(data, graph=TRUE, ...) &#123;</div><div class="line">    if (graph)</div><div class="line">truetrue    plot(data,...)</div><div class="line">&#125;</div><div class="line">data=data.frame(x=c(1,2,3),y=c(1,2,3))</div><div class="line">fun1(data,col=&quot;red&quot;,type=&quot;l&quot;)</div></pre></td></tr></table></figure>
 <h2 id="dim"><a href="#dim" class="headerlink" title="dim"></a>dim</h2><p><code>dim(x)</code>:查看变量的维数</p>
 <h2 id="NCOL"><a href="#NCOL" class="headerlink" title="NCOL"></a>NCOL</h2><p>获取x的列数</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">NCOL &lt;- function(x)</div><div class="line">    if (length(d&lt;-dim(x))&gt;1L) d[2L] else 1L</div></pre></td></tr></table></figure>
@@ -255,7 +256,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T06:02:45.000Z" itemprop="dateUpdated">2017-09-01 14:02:45 14:02:45</time>
+    最后更新时间：<time datetime="2017-09-01T06:02:45.000Z" itemprop="dateUpdated">2017-09-01 14:02:45 14:02:45</time>
 </span><br>
 
 
@@ -430,7 +431,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -503,7 +504,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -523,7 +524,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 

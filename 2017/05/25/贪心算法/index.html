@@ -27,6 +27,7 @@
 <meta property="og:url" content="http://skyrover.me/2017/05/25/贪心算法/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="贪心算法是一种短视的算法，所做的每个选择都是独立的，并且是在当时环境下所能采取的最佳决策。 贪心算法由一系列选择组成，贪心体现在每一个基于当时信息所做的选择中，在不考虑整体或者将来的情况，做出最好的选择。但是必须确保每个选择的安全。主要在于如何确保这种安全性。贪心算法的问题解决方案都是逐步形成的，可以先分别取得一组方案片段，然后将其合并成最终的解决方案。 总体来讲，过程如下：首先形成局部解决方案，">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-09-01T06:26:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="贪心算法">
@@ -35,7 +36,7 @@
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
     <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -124,7 +125,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -148,7 +149,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
             
         </h5>
@@ -178,7 +179,7 @@
             <time class="post-time" title="2017-05-25 18:38:55 18:38:55" datetime="2017-05-25T10:38:55.000Z"  itemprop="datePublished">2017-05-25 18:38:55</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
 
 
 
@@ -203,7 +204,7 @@
 <p>考虑这些节点从单个节点到整个树的过程。最后的结果就是，在权值和深度最小的情况下，遍历完每个叶节点。使用堆结构将反复选取，合并两个最小无序列表项的平方操作，化简成了线性对数级操作。如果森林结构中的两棵树概率相同时，堆结构需要找出较小的那棵树，所以使用到了计数器。</p>
 <p>要进行压缩的话，需要预处理和后期加工，首先对字符出现的概率进行计数，然后构建哈夫曼树，然后找到所有字符的<strong>编码</strong>。</p>
 <p>提取哈夫曼编码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def codes(tree, prefix=&quot;&quot;):</div><div class="line">  if len(tree) == 1:</div><div class="line">	  yield (tree, prefix)</div><div class="line">		return</div><div class="line">	for bit, child in zip(&quot;01&quot;, tree):</div><div class="line">	  for pair in codes(child, prefix+bit):</div><div class="line">		  yield pair</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def codes(tree, prefix=&quot;&quot;):</div><div class="line">  if len(tree) == 1:</div><div class="line">true  yield (tree, prefix)</div><div class="line">truetruereturn</div><div class="line">truefor bit, child in zip(&quot;01&quot;, tree):</div><div class="line">true  for pair in codes(child, prefix+bit):</div><div class="line">truetrue  yield pair</div></pre></td></tr></table></figure>
 <p>每次拿出最小的两个，使用最小堆实现，然后将其合并，节点值也是概率值的和，创建出了新的值，然后再添到树中。这样下去，就可以创建出一个树。那么为什么这种贪心策略就可以将该结构到达任何一个叶节点的预期深度实现为最小。</p>
 <p>贪心选择性，每次都通过贪心选择得到了一个最优解决方案的一部分。最优子结构，作出选择之后剩下的子问题和原有的问题有着同样的解决方案。如果可以找到子问题的最佳解决方案，就可以用贪心选择将其合并成整个问题的解决方案。一个问题的最佳解决方案由其子问题的最佳解决方案构建而成。</p>
 <h2 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h2><p>一个连通无向图G的生成树T，她的节点集和G相同，边集是G的子集。最小生成树问题中，找出一种权重最小，但是能够覆盖整个G的生成树。最小生成树可以用递增步骤构建，使用贪心策略。通过一次增加一条边线的方式来逐步构建树结构。每一步中，都会选择当前构建过程中能允许加入的值最低的边。最优选择，不可撤销。主要任务就是当下部分的最优选择是全局的最优解决方案。</p>
@@ -228,7 +229,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2017-09-01T06:26:10.000Z" itemprop="dateUpdated">2017-09-01 14:26:10 14:26:10</time>
+    最后更新时间：<time datetime="2017-09-01T06:26:10.000Z" itemprop="dateUpdated">2017-09-01 14:26:10 14:26:10</time>
 </span><br>
 
 
@@ -403,7 +404,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
         </p>
     </div>
     <div class="bottom">
@@ -476,7 +477,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.6.13"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -496,7 +497,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.6.13" async></script>
 
 
 
