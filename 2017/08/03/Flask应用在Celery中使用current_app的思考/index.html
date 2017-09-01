@@ -19,9 +19,9 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="Python,Celery,Flask">
+    <meta name="keywords" content="Celery,Python,Flask">
     <meta name="description" content="写应用的时候遇到这样的一个问题，定义的celery task中无法使用current_app，并且有时候会出现pop wrong app context。 这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的">
-<meta name="keywords" content="Python,Celery,Flask">
+<meta name="keywords" content="Celery,Python,Flask">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flask应用在Celery中使用current_app的思考">
 <meta property="og:url" content="http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/index.html">

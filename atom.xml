@@ -66,9 +66,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>
     
       <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
     
@@ -749,9 +749,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
   </entry>
   
@@ -896,9 +896,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
   </entry>
   
@@ -1098,9 +1098,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
