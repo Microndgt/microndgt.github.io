@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Using Celery With Flask | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,Celery,Flask,翻译">
+    <meta name="description" content="翻译自https://blog.miguelgrinberg.com/post/using-celery-with-flask http://www.cnblogs.com/jay54520/p/6212623.html 终于得到自己web程序要进行计算密集型的解决办法了，所以将此文翻译留作后用，也方便有需要的人。 正文Working with Flask and CeleryCelery和Fla">
+<meta name="keywords" content="Python,Celery,Flask,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using Celery With Flask">
+<meta property="og:url" content="http://skyrover.me/2017/03/01/Using-Celery-With-Flask/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="翻译自https://blog.miguelgrinberg.com/post/using-celery-with-flask http://www.cnblogs.com/jay54520/p/6212623.html 终于得到自己web程序要进行计算密集型的解决办法了，所以将此文翻译留作后用，也方便有需要的人。 正文Working with Flask and CeleryCelery和Fla">
+<meta property="og:updated_time" content="2017-09-01T06:49:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Using Celery With Flask">
+<meta name="twitter:description" content="翻译自https://blog.miguelgrinberg.com/post/using-celery-with-flask http://www.cnblogs.com/jay54520/p/6212623.html 终于得到自己web程序要进行计算密集型的解决办法了，所以将此文翻译留作后用，也方便有需要的人。 正文Working with Flask and CeleryCelery和Fla">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Using Celery With Flask</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Using Celery With Flask</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-03-01T08:59:01.000Z" itemprop="datePublished" class="page-time">
+  2017-03-01 16:59:01
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#正文"><span class="post-toc-number">1.</span> <span class="post-toc-text">正文</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Working-with-Flask-and-Celery"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Working with Flask and Celery</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Simple-Example-Sending-Asynchronous-Emails"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Simple Example: Sending Asynchronous Emails</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Complex-Example-Showing-Status-Updates-and-Results"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Complex Example: Showing Status Updates and Results</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Background-Tasks-with-Status-Updates"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Background Tasks with Status Updates</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Accessing-Task-Status-from-the-Flask-Application"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Accessing Task Status from the Flask Application</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#防坑指南"><span class="post-toc-number">2.</span> <span class="post-toc-text">防坑指南</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在Celery-tasks里面使用多进程"><span class="post-toc-number">3.</span> <span class="post-toc-text">在Celery tasks里面使用多进程</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#一些其他的总结"><span class="post-toc-number">4.</span> <span class="post-toc-text">一些其他的总结</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#向docker里面传文件"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">向docker里面传文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">运行</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#shell"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">shell</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Linux"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">Linux</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python模块包"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">Python模块包</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-Using-Celery-With-Flask"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Using Celery With Flask</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-03-01 16:59:01 16:59:01" datetime="2017-03-01T08:59:01.000Z"  itemprop="datePublished">2017-03-01 16:59:01</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>翻译自<a href="https://blog.miguelgrinberg.com/post/using-celery-with-flask" target="_blank" rel="external">https://blog.miguelgrinberg.com/post/using-celery-with-flask</a></p>
+<p><a href="http://www.cnblogs.com/jay54520/p/6212623.html" target="_blank" rel="external">http://www.cnblogs.com/jay54520/p/6212623.html</a></p>
+<p>终于得到自己web程序要进行计算密集型的解决办法了，所以将此文翻译留作后用，也方便有需要的人。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="Working-with-Flask-and-Celery"><a href="#Working-with-Flask-and-Celery" class="headerlink" title="Working with Flask and Celery"></a>Working with Flask and Celery</h2><p>Celery和Flask的整合是非常容易的，没有其他需要的扩展包。一个使用Celery的Flask应用需要这样初始化Celery客户端：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">from celery import Celery</div><div class="line">app = Flask(__name__)</div><div class="line">app.config[&apos;CELERY_BROKER_URL&apos;] = &apos;redis://localhost:6379/0&apos;</div><div class="line">app.config[&apos;CELERY_RESULT_BACKEND&apos;] = ‘redis://localhost:6379/0’</div><div class="line">celery = Celery(app.name, broker=app.config[&apos;CELERY_BROKER_URL&apos;])</div><div class="line">celery.conf.update(app.config)</div></pre></td></tr></table></figure>
+<p>正如所看到的，Celery是通过创建Celery的实例初始化的，传递了应用的名称和连接URL作为消息代理，将<code>CELERY_BROKER_URL</code>作为键放入<code>app.config</code>字典。这个URL告诉代理服务在哪里运行。如果你运行的不是Redis，或者有在不同的机器上的代理，那么你需要相应的改变这个URL。</p>
+<p>另外的可选配置选项可以直接从Flask的配置通过<code>celery.conf.update()</code>传递，<code>CELERY_RESULT_BACKEND</code>只有你需要存储任务状态和结果值的时候才是必须的。第一个例子不需要这个功能，但是第二个需要，所以最好从一开始配置好。</p>
+<p>任何你想作为后台任务的函数都需要使用<code>celery.task</code>装饰器装饰，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@celery.task</div><div class="line">def my_background_task(arg1, arg2):</div><div class="line">    return result</div></pre></td></tr></table></figure>
+<p>然后Flask应用就可以像如下请求后台任务的运行了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">task = my_background_task.delay(10, 20)</div></pre></td></tr></table></figure>
+<p><code>delay()</code>方法是更加强大的<code>apply_async()</code>调用的一个缩略，这里是一个同等的调用使用<code>apply_async()</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">task = my_background_task.apply_async(args=[10, 20])</div></pre></td></tr></table></figure>
+<p>当使用<code>apply_async()</code>，你可以给Celery关于后台任务如何被运行更加详细的指示，一个有用的选项是请求任务在将来的某个时候运行。例如，下面的语句将会使任务在大约1分钟后运行</p>
+<p><code>task = my_background_task.apply_async(args=[10, 20], countdown=60)</code></p>
+<p><code>delay()</code>和<code>apply_async()</code>的返回值都是一个代表任务的对象，这个对象被用来获取状态。我将在稍后的文章里展示如何完成的，但是现在<code>keep it simple</code>并且不要关心这些任务的结果。</p>
+<h2 id="Simple-Example-Sending-Asynchronous-Emails"><a href="#Simple-Example-Sending-Asynchronous-Emails" class="headerlink" title="Simple Example: Sending Asynchronous Emails"></a>Simple Example: Sending Asynchronous Emails</h2><p>第一个例子将要展示的是一个非常普通的应用需求：不阻塞主应用去发送电子邮件。</p>
+<p>作为示例我将使用<code>Flask-Mail</code>扩展，我已经在其他文章中详细的介绍了。我将假定你对这这个扩展很熟悉，因此如果你需要复习一下请看我的Flask book或者这篇介绍。</p>
+<p>这个我将用于展示的示例应用包含有只有一个输入的简单web表单。用户被要求输入email地址在这个区域，然后提交，服务器将会向该地址发送一封email。表单含有两个提交按钮，一个是立即发送email，另外一个是等待一分钟后发送。截图最上面的部分展示了这个表单的样子。</p>
+<p>这里是支持这个例子的HTML模板：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;title&gt;Flask + Celery Examples&lt;/title&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body&gt;</div><div class="line">    &lt;h1&gt;Flask + Celery Examples&lt;/h1&gt;</div><div class="line">    &lt;h2&gt;Example 1: Send Asynchronous Email&lt;/h2&gt;</div><div class="line">    &#123;% for message in get_flashed_messages() %&#125;</div><div class="line">    &lt;p style=&quot;color: red;&quot;&gt;&#123;&#123; message &#125;&#125;&lt;/p&gt;</div><div class="line">    &#123;% endfor %&#125;</div><div class="line">    &lt;form method=&quot;POST&quot;&gt;</div><div class="line">      &lt;p&gt;Send test email to: &lt;input type=&quot;text&quot; name=&quot;email&quot; value=&quot;&#123;&#123; email &#125;&#125;&quot;&gt;&lt;/p&gt;</div><div class="line">      &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Send&quot;&gt;</div><div class="line">      &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Send in 1 minute&quot;&gt;</div><div class="line">    &lt;/form&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<p>希望你没有觉得惊讶，只是常规的HTML表单，加上可以从Flask闪现消息的能力。</p>
+<p>Flask-Mail扩展需要一些配置，特别是当发送email的时候使用的邮件服务器，我使用Gmail账户作为email服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Flask-Mail configuration</div><div class="line">app.config[&apos;MAIL_SERVER&apos;] = &apos;smtp.googlemail.com&apos;</div><div class="line">app.config[&apos;MAIL_PORT&apos;] = 587</div><div class="line">app.config[&apos;MAIL_USE_TLS&apos;] = True</div><div class="line">app.config[&apos;MAIL_USERNAME&apos;] = os.environ.get(&apos;MAIL_USERNAME&apos;)</div><div class="line">app.config[&apos;MAIL_PASSWORD&apos;] = os.environ.get(&apos;MAIL_PASSWORD&apos;)</div><div class="line">app.config[&apos;MAIL_DEFAULT_SENDER&apos;] = &apos;flask@example.com&apos;</div></pre></td></tr></table></figure>
+<p>现在为了防止我的email账户处于风险中，我将它们设置成环境变量，然后导入到应用中。</p>
+<p>这是一个支持这个例子的简单路由</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/&apos;, methods=[’GET&apos;, &apos;POST&apos;])</div><div class="line">def index():</div><div class="line">    if request.method == &apos;GET&apos;:</div><div class="line">        return render_template(&apos;index.html&apos;, email=session.get(&apos;email&apos;, &apos;&apos;))</div><div class="line">    email = request.form[&apos;email&apos;]</div><div class="line">    session[&apos;email&apos;] = email</div><div class="line">    msg = Message(&apos;Hello from flask&apos;, recipients=[request.form[&apos;email&apos;]])</div><div class="line">    msg.body = &apos;This is a test email sent from a background celery task&apos;</div><div class="line">    if request.form[&apos;submit&apos;] == &apos;Send&apos;:</div><div class="line">        send_async_email.delay(msg)</div><div class="line">        flash(&apos;Sending email to &#123;0&#125;&apos;.format(email))</div><div class="line">    else:</div><div class="line">        # 使用了两种不同的调用方法</div><div class="line">        send_async_email.apply_async(args=[msg], countdown=60)</div><div class="line">    return redirect(url_for(&apos;index&apos;))</div></pre></td></tr></table></figure>
+<p>同样的，这是一个标准的Flask，因为只是一个非常简单的表单，所以我没有使用任何扩展，我使用了<code>request.method</code>和<code>request.form</code>来做所有的管理。我在<code>session</code>中保存了用户在文本输入区输入的值，这样我就可以在页面重新载入之后记住它。</p>
+<p>有意思的一点是发送email，它是被一个<code>Celery</code>任务叫<code>send_async_email</code>处理的， 通过<code>delay()</code>或者<code>apply_async()</code>来激发的</p>
+<p>应用最后一部分是让任务完成的异步任务函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@celery.task</div><div class="line">def send_async_email(msg):</div><div class="line">    with app.app_context():</div><div class="line">        mail.send(msg)</div></pre></td></tr></table></figure>
+<p>这个函数被<code>celery.task</code>装饰器装饰，变成了后台任务。这个函数值得关注的是<code>Flask-Mail</code>需要应用上下文才能运行，所以在<code>send()</code>方法被调用之前首先应该获取应用上下文。</p>
+<p>应该注意的是在这个异步调用中返回的值没有被保存，所以应用不会知道调用是否成功。当运行这个例子的时候，应该在发送邮件时候出现问题去查看Celery工作者的输出。</p>
+<h2 id="Complex-Example-Showing-Status-Updates-and-Results"><a href="#Complex-Example-Showing-Status-Updates-and-Results" class="headerlink" title="Complex Example: Showing Status Updates and Results"></a>Complex Example: Showing Status Updates and Results</h2><p>上面的例子很简单，后台任务启动后，应用就不用管了。大多数的Celery的web开发指南就到这里结束了，但是事实上对很多应用来说，管理后台任务和获取结果是很必要的。</p>
+<p>我现在要做的是扩展上面的应用，这个例子展示了一个长时间运行的任务。用户可以通过点击按钮来启动一个或者多个任务，浏览器上的web页面通过ajax来获取这些任务的状态更新。对于每一个任务页面将会有一个状态条，完成的百分比和一个状态信息，当任务完成后，结果值也将会显示。</p>
+<h2 id="Background-Tasks-with-Status-Updates"><a href="#Background-Tasks-with-Status-Updates" class="headerlink" title="Background Tasks with Status Updates"></a>Background Tasks with Status Updates</h2><p>第二个例子中使用的后台任务，这里就相当于计算任务，然后结束的时候返回状态，使用<code>update_state</code>来更新状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">@celery.task(bind=True)</div><div class="line">def long_task(self):</div><div class="line">    &quot;&quot;&quot;Background task that runs a long function with progress reports.&quot;&quot;&quot;</div><div class="line">    verb = [&apos;Starting up&apos;, &apos;Booting&apos;, &apos;Repairing&apos;, &apos;Loading&apos;, &apos;Checking&apos;]</div><div class="line">    adjective = [&apos;master&apos;, &apos;radiant&apos;, &apos;silent&apos;, &apos;harmonic&apos;, &apos;fast&apos;]</div><div class="line">    noun = [&apos;solar array&apos;, &apos;particle reshaper&apos;, &apos;cosmic ray&apos;, &apos;orbiter&apos;, &apos;bit&apos;]</div><div class="line">    message = &apos;&apos;</div><div class="line">    total = random.randint(10, 50)</div><div class="line">    for i in range(total):</div><div class="line">        if not message or random.random() &lt; 0.25:</div><div class="line">            message = &apos;&#123;0&#125; &#123;1&#125; &#123;2&#125;...&apos;.format(random.choice(verb),</div><div class="line">                                              random.choice(adjective),</div><div class="line">                                              random.choice(noun))</div><div class="line">        self.update_state(state=&apos;PROGRESS&apos;,</div><div class="line">                          meta=&#123;&apos;current&apos;: i, &apos;total&apos;: total,</div><div class="line">                                &apos;status&apos;: message&#125;)</div><div class="line">        time.sleep(1)</div><div class="line">    return &#123;&apos;current&apos;: 100, &apos;total&apos;: 100, &apos;status&apos;: &apos;Task completed!&apos;,</div><div class="line">            &apos;result&apos;: 42&#125;</div></pre></td></tr></table></figure>
+<p>这个任务中我在Celery装饰器中添加了<code>bind=True</code>参数，用来传递一个<code>self</code>参数给这个函数，这样可以用来记录状态的更新。</p>
+<p>既然这个任务没有做任何有用的事，我决定使用一些动词，形容词和名字的集合来创建一个有趣的状态消息。你可以在上面看到我所用到的词语。没有什么错但是有趣是吧？</p>
+<p>函数有一个10到50的随机数字的循环，每一次运行任务都会有不同的时间。在第一次迭代的时候会创建一个不同的状态消息，在随后的循环中有25%的可能性改变这个消息。</p>
+<p><code>self.update_state()</code>调用使得Celery接受这些任务更新。那里有好几个内置状态，比如<code>STARTED</code>, <code>SUCCESS</code>等等，但是Celery也允许自定义状态。这里我用到了自定义状态<code>PROGRESS</code>。这个状态附带了一个附加的元数据，以Python字典的形式包含了当前和总的迭代数，还有一个随机的状态消息。客户端可以使用这些元素来形成一个进度条。每一次迭代休眠一秒，模拟一些完成的工作。</p>
+<p>当循环退出的时候，Python字典作为函数返回值返回。字典包涵了更新的迭代计数，最终的状态信息和有趣的结果。</p>
+<p><code>long_task()</code>函数在一个Celery工作者中处理，下面是Flask应用的路由来启动后台任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/longtask&apos;, methods=[&apos;POST&apos;])</div><div class="line">def longtask():</div><div class="line">    task = long_task.apply_async()</div><div class="line">    return jsonify(&#123;&#125;), 202, &#123;&apos;Location&apos;: url_for(&apos;taskstatus&apos;, task_id=task.id)&#125;</div></pre></td></tr></table></figure>
+<p>客户端需要向<code>/longtask</code>提交一个POST请求来开始一个任务，服务器开始任务并且存储返回值。响应状态值用的是202，通常用在REST APIs来标志一个请求正在被处理。我也加上了<code>Location</code>头，里面的URL用户可以用来获取状态信息。这个URL指向了Flask路由taskstatus，使用<code>task.id</code>作为动态参数</p>
+<h2 id="Accessing-Task-Status-from-the-Flask-Application"><a href="#Accessing-Task-Status-from-the-Flask-Application" class="headerlink" title="Accessing Task Status from the Flask Application"></a>Accessing Task Status from the Flask Application</h2><p><code>taskstatus</code>路由负责报告由后台任务提供的状态更新，这是这个路由的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/status/&lt;task_id&gt;&apos;)</div><div class="line">def taskstatus(task_id):</div><div class="line">    task = long_task.AsyncResult(task_id)</div><div class="line">    if task.state == &apos;PENDING&apos;:</div><div class="line">        response = &#123;</div><div class="line">            &apos;state&apos;: task.state,</div><div class="line">            &apos;current&apos;: 0,</div><div class="line">            &apos;total&apos;: 1,</div><div class="line">            &apos;status&apos;: &apos;Pending...&apos;</div><div class="line">        &#125;</div><div class="line">    elif taks.state != &apos;FAILURE&apos;:</div><div class="line">        response = &#123;</div><div class="line">          &apos;state&apos;: task.state,</div><div class="line">          &apos;current&apos;: task.info.get(&apos;current&apos;, 0),</div><div class="line">          &apos;total&apos;: task.info.get(&apos;total&apos;, 1),</div><div class="line">          &apos;status&apos;: task.info.get(&apos;status&apos;, &apos;&apos;)</div><div class="line">      &#125;</div><div class="line">        if &apos;result&apos; in task.info:</div><div class="line">            response[&apos;result&apos;] = task.info[&apos;result&apos;]</div><div class="line">    else:</div><div class="line">      # something went wrong in the background job</div><div class="line">      response = &#123;</div><div class="line">          &apos;state&apos;: task.state,</div><div class="line">          &apos;current&apos;: 1,</div><div class="line">          &apos;total&apos;: 1,</div><div class="line">          &apos;status&apos;: str(task.info),  # this is the exception raised</div><div class="line">      &#125;</div><div class="line">return jsonify(response)</div></pre></td></tr></table></figure>
+<p>路由生成了一个JSON响应，包涵了任务状态和所有我在<code>update_state()</code>中meta设置的值，这样客户端就可以用这个来创建一个进度条了。不幸的是，运行函数需要检查一些边界条件，因此它会运行一段时间。为了取得任务数据，我重新创建了任务对象，它是<code>AsyncResult</code>类的对象，使用在URL中传递的<code>task id</code></p>
+<h1 id="防坑指南"><a href="#防坑指南" class="headerlink" title="防坑指南"></a>防坑指南</h1><p>以上内容是原文的主要内容，下面我要写一下自己在使用Celery中出现的问题和解决方法。我使用的是redis做为broker和backend，代码如下：</p>
+<p><code>celery = Celery(&#39;backend&#39;, broker=&#39;redis://%s:%d/%d&#39; % (REDISHOST, REDISPORT, REDISDB),backend=&#39;redis://%s:%d/%d&#39; % (REDISHOST, REDISPORT, REDISDB))</code></p>
+<p>这句话在<code>celery.py</code>文件里，该文件在应用目录最高层，和<code>__init__.py</code>是同一级的，所以在启动celery时候这样：<code>celery --app=backend.celery worker --loglevel=DEBUG --config=celery_settings</code>， <code>--app</code>这个参数就不必解释了，最后一个<code>--config</code>参数，这个是导入celery的参数，其实有很多参数，我在应用中只用到了<code>CELERY_IMPORTS = (&quot;tasks&quot;, )</code>，作用就是将<code>tasks.py</code>中的task都注册了。</p>
+<p>其中<code>tasks.py</code>也是和<code>celery.py</code>同一级的，里面包涵了所有要计算的task函数，比如这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@celery.task(bind=True)</div><div class="line">def test_ing(self, a):</div><div class="line">    self.update_state(state=&apos;PROGRESS&apos;,</div><div class="line">                      meta=&#123;&apos;current&apos;: 10, &apos;total&apos;: 10, &apos;time&apos;: 10&#125;)</div><div class="line">    time.sleep(10)</div><div class="line">    return &#123;&apos;current&apos;: a, &apos;total&apos;: a, &apos;time&apos;: a / 60&#125;</div></pre></td></tr></table></figure>
+<p>然后将这些函数导入到路由那块，然后启动就好了。</p>
+<p>启动时候出现错误<code>connection refused</code>，这个原因应该是redis在这样的启动方式下无法连接，所以我使用<code>inv web.gunicorn</code>启动，<code>inv</code>就是<code>invoke</code>，这个是自定义启动方式的一个包，其实就是相当于gunicorn启动。启动之后就好了，可以正常运行了。</p>
+<h1 id="在Celery-tasks里面使用多进程"><a href="#在Celery-tasks里面使用多进程" class="headerlink" title="在Celery tasks里面使用多进程"></a>在Celery tasks里面使用多进程</h1><p>这个可是极好的功能，我试了一下在我的程序里加入多进程，由一个Python进程中运行变成现在四个进程运行，运行时间从0.36分钟减少到0.13分钟，大概3倍，因为多进程调度有损耗，所以不会完全的是4倍，但是已经很好啦。如果是8核16线程的话，大概能有12倍左右的提升。</p>
+<p>以下是一个使用例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">from celery import Celery</div><div class="line">import time</div><div class="line">import multiprocessing as mp</div><div class="line">app = Celery(&apos;proj&apos;, broker=&apos;amqp://admin:admin@ip:5672&apos;, include=&quot;tasks&quot;)</div><div class="line">def test_func(i):</div><div class="line">    print &quot;beg...:&quot;, i</div><div class="line">    time.sleep(5)</div><div class="line">    print &quot;....end:&quot;, i</div><div class="line">    return i * 5</div><div class="line">@app.task</div><div class="line">def fun_1(n):</div><div class="line">    curr_proc = mp.current_process()</div><div class="line">    curr_proc.daemon = False</div><div class="line">    p = mp.Pool(mp.cpu_count())</div><div class="line">    curr_proc.daemon = True</div><div class="line">    for i in range(n):</div><div class="line">        p.apply_async(test_func, args=(i,))</div><div class="line">    p.close()</div><div class="line">    p.join()</div><div class="line">    return 1</div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.start()</div></pre></td></tr></table></figure>
+<p>直接启动多进程是肯定不可以的，因为是守候进程<code>curr_proc.daemon=True</code>，所以启多进程之前主动设置为非守候进程<code>curr_proc.daemon=False</code>，启动了以后再设为守候进程</p>
+<h1 id="一些其他的总结"><a href="#一些其他的总结" class="headerlink" title="一些其他的总结"></a>一些其他的总结</h1><h2 id="向docker里面传文件"><a href="#向docker里面传文件" class="headerlink" title="向docker里面传文件"></a>向docker里面传文件</h2><p><code>cat invtasks/__init__.py | docker exec -i -u root beehive_ sh -c &#39;cat &gt; /opt/beehive/invtasks/__init__.py&#39;</code></p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>运行</p>
+<p><code>docker run -d --net=host --name=ability_stable -p 8888:8888 -it ability:170304</code></p>
+<h2 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h2><p>shell中单引号和双引号是有区别的,单引号不执行里面的命令,双引号执行里面的命令</p>
+<h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>时区有问题:<code>cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</code></p>
+<h2 id="Python模块包"><a href="#Python模块包" class="headerlink" title="Python模块包"></a>Python模块包</h2><p><code>sudo vim /usr/local/lib/python3.5/dist-packages/capacity/</code></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:49:23.000Z" itemprop="dateUpdated">2017-09-01 14:49:23 14:49:23</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/03/01/Using-Celery-With-Flask/" target="_blank" rel="external">http://skyrover.me/2017/03/01/Using-Celery-With-Flask/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Celery/">Celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flask/">Flask</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/&title=《Using Celery With Flask》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/&title=《Using Celery With Flask》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Using Celery With Flask》 — SkyRover&url=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/03/10/环境以及部署问题汇总/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">环境以及部署问题汇总</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/02/19/BAIDU的DNS解析/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">BAIDU的DNS解析</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/&title=《Using Celery With Flask》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/&title=《Using Celery With Flask》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Using Celery With Flask》 — SkyRover&url=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/03/01/Using-Celery-With-Flask/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNUlEQVR42u3azW7DIBBF4bz/S7ubLiqlxufOkEjA8apKUsPHYsT8vF74uf48d9++//L9c/Kbu1UmPDJkyFiWcQ2fuwVqS/I3873JkCHjHAYJo+NlWpsAb3vYswwZMmQMAysPvvziKEOGDBlzAy5JaDsXRxkyZMjgSWy6WBpAxynutFxchgwZCzJ4KPz+3x/pb8iQIWMpxhU+aRJLwndnP7/vkSFDxtYMHuB4Wb8TuGtlOxkyZJzGIMWy8ee8tUkOgqwlQ4aMcxi83FYr649DKj+aW4wMGTK2ZtTK9HyZdLQiTZ5lyJBxMoMExE+weUku6GbIkCFjWcasMYg0NSW5Z7CKDBkyDmDwklanhZCOfAWptQwZMrZmkBZjmoKmqWmnDCdDhowTGCQspkV/fk1MRzceBsJkyJCxKaO/of63/BDjmREZMmRsxEi7B7zF2LmrkgN9uOHKkCFjI0baVmydE24bpMckQ4aMvRn9lmStDZm2JYJUVoYMGdsxeMuQB+V0zKJ2oURTGzJkyNiaMaug32lk8iOTIUPGOYzO+EV6ZeyEXXS3lSFDxnaMWpmeD431S2kPGBkyZGzKuMKnM05BjiC9JgZZuAwZMpZl1ILdOLwGaWfYUu00SmXIkLE6gwRZ8rpa4K4dmQwZMs5kdAIf4cUtyTAcy5AhQ0Y6csEHJmqt0FftH2TIkHEMo3ZNnEv65/cyZMg4gDG3lF8r6PN0V4YMGacx0tSRl9hqG03DrgwZMrZm/ABz8UupKblKPAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

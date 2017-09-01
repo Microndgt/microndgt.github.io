@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>分治法 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法">
+    <meta name="description" content="先将问题实例分解成若干个子问题，然后递归解决这些子问题，并将结果合并。 以子问题为节点，并且以它们之间的依赖关系为边构建一个子问题图，比如树，每个子问题都会依赖于一个或者多个别的子问题，而这些问题本身又都可以被独立解决，只要能够利用这种相对简单的结构找出合适的归简方案，就可以利用递归公式来解决问题了。 弱归纳法中，通常问题会被分解成：n-1和1，如果归纳步骤是一个线性级，那么递推公式就是T(n)">
+<meta name="keywords" content="Python,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分治法">
+<meta property="og:url" content="http://skyrover.me/2017/05/22/分治法/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="先将问题实例分解成若干个子问题，然后递归解决这些子问题，并将结果合并。 以子问题为节点，并且以它们之间的依赖关系为边构建一个子问题图，比如树，每个子问题都会依赖于一个或者多个别的子问题，而这些问题本身又都可以被独立解决，只要能够利用这种相对简单的结构找出合适的归简方案，就可以利用递归公式来解决问题了。 弱归纳法中，通常问题会被分解成：n-1和1，如果归纳步骤是一个线性级，那么递推公式就是T(n)">
+<meta property="og:image" content="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png">
+<meta property="og:image" content="http://7xq6lu.com1.z0.glb.clouddn.com/split.png">
+<meta property="og:updated_time" content="2017-09-01T06:25:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分治法">
+<meta name="twitter:description" content="先将问题实例分解成若干个子问题，然后递归解决这些子问题，并将结果合并。 以子问题为节点，并且以它们之间的依赖关系为边构建一个子问题图，比如树，每个子问题都会依赖于一个或者多个别的子问题，而这些问题本身又都可以被独立解决，只要能够利用这种相对简单的结构找出合适的归简方案，就可以利用递归公式来解决问题了。 弱归纳法中，通常问题会被分解成：n-1和1，如果归纳步骤是一个线性级，那么递推公式就是T(n)">
+<meta name="twitter:image" content="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">分治法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">分治法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-22T13:10:56.000Z" itemprop="datePublished" class="page-time">
+  2017-05-22 21:10:56
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#经典分治算法"><span class="post-toc-number">1.</span> <span class="post-toc-text">经典分治算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#折半搜索"><span class="post-toc-number">2.</span> <span class="post-toc-text">折半搜索</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#搜索树的遍历及其剪枝"><span class="post-toc-number">3.</span> <span class="post-toc-text">搜索树的遍历及其剪枝</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#选取算法"><span class="post-toc-number">4.</span> <span class="post-toc-text">选取算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#折半排序"><span class="post-toc-number">5.</span> <span class="post-toc-text">折半排序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#树的平衡与再平衡"><span class="post-toc-number">6.</span> <span class="post-toc-text">树的平衡与再平衡</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二分堆结构与heapq，heapsort"><span class="post-toc-number">7.</span> <span class="post-toc-text">二分堆结构与heapq，heapsort</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-分治法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">分治法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-22 21:10:56 21:10:56" datetime="2017-05-22T13:10:56.000Z"  itemprop="datePublished">2017-05-22 21:10:56</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>先将问题实例分解成若干个子问题，然后递归解决这些子问题，并将结果合并。</p>
+<p>以子问题为节点，并且以它们之间的依赖关系为边构建一个子问题图，比如树，每个子问题都会依赖于一个或者多个别的子问题，而这些问题本身又都可以被独立解决，只要能够利用这种相对简单的结构找出合适的归简方案，就可以利用递归公式来解决问题了。</p>
+<p>弱归纳法中，通常问题会被分解成：n-1和1，如果归纳步骤是一个线性级，那么递推公式就是<code>T(n) = T(n-1) + T(1) + n</code>，这样两个递归调用就是不平衡的，时间复杂度也是n2。推导见<a href="http://skyrover.me/post/7/">算法数学思维</a>。但是如果两个子问题是同等规模的，也就是平衡的话，递归式会转换成<code>T(n)=2T(n/2)+n</code>，这就是分治递归式。时间复杂度是Θ(nlgn)。</p>
+<h2 id="经典分治算法"><a href="#经典分治算法" class="headerlink" title="经典分治算法"></a>经典分治算法</h2><p>输入一个元素集合，这些元素会被对半分成两个规模大致相同的集合，然后算法会在这两半元素持续递归下去，并最终合并出结果。</p>
+<p>下面是一个分治的通用函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def divide_and_conquer(S, divide, combine):</div><div class="line">  if len(S) == 1: return S</div><div class="line">	L, R = divide(S)</div><div class="line">	A = divide_and_conquer(L, divide, combine)</div><div class="line">	B = divide_and_conquer(R, divide, combine)</div><div class="line">	return combine(A,B)</div></pre></td></tr></table></figure>
+<p>有些算法侧重于分解，如快速排序，有些算法侧重于归并，如归并排序。</p>
+<h2 id="折半搜索"><a href="#折半搜索" class="headerlink" title="折半搜索"></a>折半搜索</h2><p>一个递归版本的折半搜索</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def bisect_rec(s, x, lo, hi):</div><div class="line">  if lo &gt; hi:</div><div class="line">	  return</div><div class="line">  mid = (hi + lo) // 2</div><div class="line">	if x == s[mid]:</div><div class="line">	  return mid</div><div class="line">	elif x &gt; s[mid]:</div><div class="line">	  return bisect_rec(s, x, mid+1, hi)</div><div class="line">	else:</div><div class="line">	  return bisect_rec(s, x, lo, mid)</div></pre></td></tr></table></figure>
+<p>迭代版</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def bisect_iter(a, x, lo=0, hi=None):</div><div class="line">  if hi is None:</div><div class="line">	  hi = len(a)</div><div class="line">	while lo &lt; hi:</div><div class="line">	  mid = (lo+hi)//2</div><div class="line">		if x &lt; a[mid]: hi = mid</div><div class="line">		else: lo = mid+1</div><div class="line">	return lo</div></pre></td></tr></table></figure>
+<h2 id="搜索树的遍历及其剪枝"><a href="#搜索树的遍历及其剪枝" class="headerlink" title="搜索树的遍历及其剪枝"></a>搜索树的遍历及其剪枝</h2><p>在链表中无法实现二分搜索，但是在数组无法实现常数级的插入操作。所以需要一种有利于高效搜索的可修改结构。</p>
+<p>其实就是实现一个二叉搜索树，然后在遍历的时候在某个节点上实现了二分法，相当于剪枝。当查找操作从根节点上开始时，要做的就是将两个子树中的一个剪掉，如果在某个内部节点找到了目标值，树上不存在重复的话，该节点的两个子树都可以被剪掉。</p>
+<p>一个二分搜索树：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Tree:</div><div class="line">  root = None</div><div class="line">	def __setitem__(self, key, val):</div><div class="line">	  self.root = insert(self.root, key, val)</div><div class="line">	def __getitem(self, key):</div><div class="line">	  return search(self.root, key)</div><div class="line">	def __contains__(self, key):</div><div class="line">	  try:</div><div class="line">		  search(self.root, key)</div><div class="line">		except KeyError:</div><div class="line">		  return False</div><div class="line">		return True</div><div class="line"># 节点</div><div class="line">class Node:</div><div class="line">  lft = None</div><div class="line">	rgt = None</div><div class="line">	def __init__(self, key, val):</div><div class="line">	  self.key = key</div><div class="line">		self.val = val</div></pre></td></tr></table></figure>
+<p>插入的时候伴随着剪枝</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def insert(node, key, val):</div><div class="line">  if node is None:</div><div class="line">	  return Node(key, val)</div><div class="line">	if node.key == key:</div><div class="line">	  node.val = val</div><div class="line">	elif key &lt; node.key:</div><div class="line">	  node.lft = insert(node.left, key, val)</div><div class="line">	else:</div><div class="line">	  node.rgt = insert(node.rgt, key, val)</div><div class="line">	return node</div></pre></td></tr></table></figure>
+<p>遍历搜索：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def search(node, key):</div><div class="line">  if node is None: raise KeyError</div><div class="line">  if node.key == key:</div><div class="line">	  return node.val</div><div class="line">	elif key &lt; node.key:</div><div class="line">	  return search(node.lft, key)</div><div class="line">	else:</div><div class="line">	  return search(node.rgt, key)</div></pre></td></tr></table></figure>
+<p>在有序数组中，二分搜索速度很快，但是依赖于排序，并且在数组中添加元素是线性操作。搜索树开销会更大，但是由于动态性，插入和移除元素很方便。两者都是对数级时间。</p>
+<h2 id="选取算法"><a href="#选取算法" class="headerlink" title="选取算法"></a>选取算法</h2><p>该算法可以在线性时间内找到一个无序序列中第k大的数。在Python中，如果要在一个可迭代容器中查找k个值最小的对象。当k相比总数很小的时候，可以使用heapq模块中的nsmallest函数。当比较大的时候，使用排序然后再选取k个元素。</p>
+<p>递归调用<code>T(n)=T(n/2)+n</code>的时间复杂度是线性级别的，所以需要用某种线性操作将问题一分为2，所有要找的对象在某一半中。一种简单的分割方式是找出这些值中的分割点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">def partition(seq):</div><div class="line">  pi, seq = seq[0], seq[1:]</div><div class="line">	lo = [x for x in seq if x &lt;= pi]</div><div class="line">	hi = [x for x in seq if x &gt; pi]</div><div class="line">	return lo, pi, hi</div><div class="line">def select(seq, k):</div><div class="line">  lo, pi, hi = partition(seq)</div><div class="line">	m = len(lo)</div><div class="line">	if m == k:</div><div class="line">	  return pi</div><div class="line">	elif m &lt; k:</div><div class="line">	  # 在大的部分选择剩下的元素，减1是因为pi</div><div class="line">	  return select(hi, k-m-1)</div><div class="line">	else:</div><div class="line">	  # 在小的值中选择k</div><div class="line">	  return select(lo, k)</div></pre></td></tr></table></figure>
+<h2 id="折半排序"><a href="#折半排序" class="headerlink" title="折半排序"></a>折半排序</h2><ul>
+<li>快速排序</li>
+</ul>
+<p>快速选取法所代表的是剪枝式的遍历操作，在递归树中找出一条通往第k小元素的路径，快速排序法就是一个完全遍历操作。会对每个k提出一个解决方案，找出序列最小的元素等。然后把元素放到合适的位置上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def quicksort(seq):</div><div class="line">  if len(seq) &lt;= 1:</div><div class="line">	  return seq</div><div class="line">	lo, pi, hi = partition(seq)</div><div class="line">	return partition(lo) + [pi] + partition(hi)</div></pre></td></tr></table></figure>
+<p>体会一下，便可以明显感觉到快速排序的侧重点在于分解问题， 从一个整体序列分解成部分有序，直到相当于叶子节点，每个叶子节点都有序，那么整体就是有序的。快速排序算法在平均情况下是一个线性对数级算法，在最坏情况下是一个平方级算法。</p>
+<ul>
+<li>归并排序</li>
+</ul>
+<p>其算法核心就是首先分解整体，直到最底层，然后对左右进行排序合并，这里就是相对有序的，然后把相对有序的子序列合并。回溯到整体，整体就是有序的了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">def mergesort(seq):</div><div class="line">  # 先分解</div><div class="line">	mid = len(seq) // 2</div><div class="line">	# 左右序列</div><div class="line">  lft, rgt = seq[:mid], seq[mid:]</div><div class="line">	# 分解，直到分解序列只有一个元素</div><div class="line">	if len(lft)&gt;1: lft = mergesort(lft)</div><div class="line">	if len(rgt)&gt;1: rgt = mergesort(rgt)</div><div class="line">	res = []</div><div class="line">	# 合并，其lft和rgt应该是有序的</div><div class="line">	while lft and rgt:</div><div class="line">	  if lft[-1] &gt;= rgt[-1]:</div><div class="line">	    res.append(lft.pop())</div><div class="line">		else:</div><div class="line">		  res.append(rgt.pop())</div><div class="line">	res.reverse()</div><div class="line">	return (lft or rgt) + res</div></pre></td></tr></table></figure>
+<p><code>list.sort()</code>使用的是Timsort，归并排序的改进版，它会在开始阶段查找该数组哪些已经处于有序状态的分区。然后在后面合并这些run。</p>
+<p>对于排序，归并排序这种分治算法已经处于最优状态了，最坏情况下至少要消耗nlgn的时间。</p>
+<h2 id="树的平衡与再平衡"><a href="#树的平衡与再平衡" class="headerlink" title="树的平衡与再平衡"></a>树的平衡与再平衡</h2><p>大多数搜索树结构都有再平衡的形式，是一组用于重组树结构，确保其平衡状态的操作。各种树结构及其再平衡方法基本是以下：</p>
+<ul>
+<li>节点的分割和合并，节点可以拥有两个以上的子节点和一个以上的键，在某些情况下，一个节点可能出现溢出，这时候就可以被分割成两个节点，这样也有可能使得父节点溢出，递归</li>
+<li>节点的翻转，会对边进行切换，如果x是y的父节点，现在就要让y成为x的父节点，x还必须接管y的另外一个子节点。</li>
+</ul>
+<p>2-3树是B树的一种特殊情况，B树是几乎所有数据库，以及基于磁盘的树形系统的基石。B树结构可以拥有上千个键和子树，每个节点通常会在磁盘上被存储为一个连续的块。使用大块存储主要是为了减少访问磁盘的次数。</p>
+<p>2-3树中，插入节点的话需要往叶节点内添加新的值，节点还有空间的话，就直接将值添加进去，没有的话，就是三个键了，这时候就要溢出了。方法是分割节点，将中间值向上移到父节点中。如果父节点也溢出，递归，最后树就是完全平衡。</p>
+<ul>
+<li>AA树</li>
+</ul>
+<p>是二叉树，但是模拟了三节点型的平衡法。两个节点连接在一起模拟单一的伪节点。并且树上的每个节点都会被分配层次，叶节点的层次是1。并且三节点型内部边线只可以指向右边。也就是右边节点大于左边节点，反正类似于2-3树吧。如果是非法节点，则必须翻转一下。因为其实还是二叉树，而且左侧节点的右指针只能指向内部的那个节点。原来的那个右子树就应该挂到右边节点的左边去。这种操作就是偏斜。</p>
+<p>还有一个情况，就是溢出，应该要分割。把中间的元素移动到父节点上去。形成一个2个键的内部节点。然后将中间元素的节点的左子树挂靠在左侧节点的右部。然后中间节点左右分别挂靠的是之前要溢出的节点的左节点和右节点。</p>
+<p>AA树中插入节点与二叉树结构中基本相同，后期要进行清理，对每个节点进行检测，应用偏斜和分割。</p>
+<p>节点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Node:</div><div class="line">  lft = None</div><div class="line">	rgt = None</div><div class="line">	lvl = 1</div><div class="line">	def __init__(self, key, val):</div><div class="line">	  self.key = key</div><div class="line">		self.val = val</div></pre></td></tr></table></figure>
+<p>偏斜即翻转操作</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def skew(node):</div><div class="line">  # 如果都没有左侧节点，说明不需要偏斜</div><div class="line">  if None in [node, node.left]: return node</div><div class="line">	# 左侧节点的level和现在节点不一样，说明不是一个内部节点</div><div class="line">	if node.lft.lvl != node.lvl: return node</div><div class="line">	# 剩余情况就是既有左侧节点，而且level还一样</div><div class="line">	# 过程参考想象2-3树</div><div class="line">	lft = node.lft</div><div class="line">	node.lft = lft.rgt</div><div class="line">	lft.rgt = node</div><div class="line">	# 将真正的节点返回给父节点进行索引</div><div class="line">	return lft</div></pre></td></tr></table></figure>
+<p>分割操作，溢出</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/split.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def split(node):</div><div class="line">  # 说明没有溢出的节点</div><div class="line">  if None in [node.rgt, node.rgt.rgt, node]: return node</div><div class="line">	if node.rgt.rgt.lvl != node.lvl: return node</div><div class="line">	# 溢出操作，想象2-3节点</div><div class="line">	rgt = node.rgt</div><div class="line">	node.rgt = rgt.lft</div><div class="line">	rgt.lft = node</div><div class="line">	# 将level上升，即上升到父节点</div><div class="line">	rgt.lvl += 1</div><div class="line">	return rgt</div></pre></td></tr></table></figure>
+<p>插入操作，普通的二叉树剪枝操作加偏斜和溢出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def insert(node, key, val):</div><div class="line">  if node is None: return Node(key, val)</div><div class="line">	if node.key == key: node.val = val</div><div class="line">	elif key &lt; node.key:</div><div class="line">	  node.lft = insert(node.lft, key, val)</div><div class="line">	else:</div><div class="line">	  node.rgt = insert(node.rgt, key, val)</div><div class="line">	# 插入完成之后，对每一个节点进行偏斜和溢出（分割）操作</div><div class="line">	# 返回正确的node</div><div class="line">	node = skew(node)</div><div class="line">	node = split(node)</div><div class="line">	return node</div></pre></td></tr></table></figure>
+<h2 id="二分堆结构与heapq，heapsort"><a href="#二分堆结构与heapq，heapsort" class="headerlink" title="二分堆结构与heapq，heapsort"></a>二分堆结构与heapq，heapsort</h2><p>优先级队列每个元素都会有优先级，总是会获取到剩余元素优先级最低的那一个。优先级队列数据结构是许多算法的重要组成，如Prim最小生成树算法，Dijkstra最短路径搜索算法。实现就是二分堆。</p>
+<p>二分堆是一个二叉树结构，会始终保持平衡。除了底层可能不满，每一层都是满的，而且会从左边开始填满最底层。堆树形规定每个父节点的值都要小于子节点，那么根节点就是最小的。维持平衡方面，只需要根据堆属性对父节点和子节点进行交换即可，并且递归。</p>
+<p>heapq实现了堆结构，list实现，并且a[i]的子节点是<code>a[2*i+1]</code>与<code>a[2*i+2]</code>两个位置，根节点始终位于a[0]。heappush()和heappop()来创建堆，或者使用heapify()函数。</p>
+<p>堆排序：首先创建最大值堆，使用heapify操作，然后使用heappop()操作弹出。整体是线性对数级的。</p>
+<p>分治法，将大问题分解，然后解决这些小问题，递归法，然后合并。主要基础是工作量的平衡性。可以将一个平方级的问题将为线性级。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:25:35.000Z" itemprop="dateUpdated">2017-09-01 14:25:35 14:25:35</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/05/22/分治法/" target="_blank" rel="external">http://skyrover.me/2017/05/22/分治法/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/22/分治法/&title=《分治法》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/22/分治法/&title=《分治法》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/22/分治法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《分治法》 — SkyRover&url=http://skyrover.me/2017/05/22/分治法/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/22/分治法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/25/贪心算法/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">贪心算法</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/21/动态规划/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">动态规划</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/22/分治法/&title=《分治法》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/22/分治法/&title=《分治法》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/22/分治法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《分治法》 — SkyRover&url=http://skyrover.me/2017/05/22/分治法/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/22/分治法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAByElEQVR42u3aQW7DMAwEwPz/0ynQU4FWxpKUlaQYnQwnjkc5ENKKj0c8nt9jdf3zzurZ39+8fmo0cHFxx9zn5VixkjvXE17dWRlwcXHPc/MXVCc2KWq4uLjvz72+7k0MFxf3P3F7CFxc3M/i5ojeneTTzXs1XFzcAXcemM6vj+a7uLi4g1OJaniaL5t6AxcX9wx3cgja4+YlrLAiw8XF3crNH+uVsG2bGVxc3OPc/EdXn+bTyGPWaHGDi4t7A7dajHaVvEmDFy4u7kluHoXkQcm85euPPxQXF/c4t7qgqS6MerFLc52Fi4u7J6VstlbkL6s2Y0VoXFzcrdz5lmayZUpK5OZ8FxcXN+D2jjyr8Wg1gtlWznBxcQfcJNqYN29t6BPBxcU9wq02RuTfL5SkfHq4uLgv4uaxZq9U5YueqJDh4uLewK0WoOoipnAcMlmX4eLibuX2Nja96DOPR5sdpri4uJu41bIyD1AmB664uLgnub2WzerGpnqkGvWR4eLi3szNN0L5y3pVs9kzgouL+yJuwuptcvI4FRcX9525VWJyJFM+PsHFxb2ZW220yhF5mHLLXg0XF7fFrQamk2ijeojbpOPi4va5XxRle4qd9NcXAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

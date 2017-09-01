@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>理解Flask的Context | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,Flask">
+    <meta name="description" content="Flask中的Context包括App Context和Request Context，从一个 Flask App 读入配置并启动开始，就进入了 App Context。当一个请求进入开始被处理时，就进入了 Request Context，在其中我们可以访问请求携带的信息。 Thread Local从面向对象设计的角度看，对象是保存“状态”的地方。一个对象的状态都被保存在对象携带的一个特殊字典中，">
+<meta name="keywords" content="Python,Flask">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解Flask的Context">
+<meta property="og:url" content="http://skyrover.me/2017/05/07/理解Flask的Context/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="Flask中的Context包括App Context和Request Context，从一个 Flask App 读入配置并启动开始，就进入了 App Context。当一个请求进入开始被处理时，就进入了 Request Context，在其中我们可以访问请求携带的信息。 Thread Local从面向对象设计的角度看，对象是保存“状态”的地方。一个对象的状态都被保存在对象携带的一个特殊字典中，">
+<meta property="og:updated_time" content="2017-09-01T06:21:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解Flask的Context">
+<meta name="twitter:description" content="Flask中的Context包括App Context和Request Context，从一个 Flask App 读入配置并启动开始，就进入了 App Context。当一个请求进入开始被处理时，就进入了 Request Context，在其中我们可以访问请求携带的信息。 Thread Local从面向对象设计的角度看，对象是保存“状态”的地方。一个对象的状态都被保存在对象携带的一个特殊字典中，">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">理解Flask的Context</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">理解Flask的Context</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-07T04:03:47.000Z" itemprop="datePublished" class="page-time">
+  2017-05-07 12:03:47
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Thread-Local"><span class="post-toc-number">1.</span> <span class="post-toc-text">Thread Local</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Werkzeug实现的本地线程"><span class="post-toc-number">2.</span> <span class="post-toc-text">Werkzeug实现的本地线程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#LocalStack"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">LocalStack</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#LocalProxy"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">LocalProxy</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Flask-基于-Local-Stack-的-Context"><span class="post-toc-number">3.</span> <span class="post-toc-text">Flask 基于 Local Stack 的 Context</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#App-Context和Request-Context两者独立"><span class="post-toc-number">4.</span> <span class="post-toc-text">App Context和Request Context两者独立</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#离线脚本或者测试运行Flask关联的代码"><span class="post-toc-number">5.</span> <span class="post-toc-text">离线脚本或者测试运行Flask关联的代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#App-Factory"><span class="post-toc-number">6.</span> <span class="post-toc-text">App Factory</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#详解应用上下文"><span class="post-toc-number">7.</span> <span class="post-toc-text">详解应用上下文</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#应用上下文的作用"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">应用上下文的作用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建应用上下文"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">创建应用上下文</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#应用上下文局部变量"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">应用上下文局部变量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#上下文用法"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">上下文用法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Flask扩展开发"><span class="post-toc-number">7.5.</span> <span class="post-toc-text">Flask扩展开发</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#请求上下文"><span class="post-toc-number">8.</span> <span class="post-toc-text">请求上下文</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#上下文如何工作"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">上下文如何工作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#请求的一个处理过程和错误处理"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">请求的一个处理过程和错误处理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#销毁回调"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">销毁回调</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代理"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">代理</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用上下文"><span class="post-toc-number">9.</span> <span class="post-toc-text">使用上下文</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用LocalProxy代替g"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">使用LocalProxy代替g</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-理解Flask的Context"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">理解Flask的Context</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-07 12:03:47 12:03:47" datetime="2017-05-07T04:03:47.000Z"  itemprop="datePublished">2017-05-07 12:03:47</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>Flask中的Context包括App Context和Request Context，从一个 Flask App 读入配置并启动开始，就进入了 App Context。当一个请求进入开始被处理时，就进入了 Request Context，在其中我们可以访问请求携带的信息。</p>
+<h1 id="Thread-Local"><a href="#Thread-Local" class="headerlink" title="Thread Local"></a>Thread Local</h1><p>从面向对象设计的角度看，对象是保存“状态”的地方。一个对象的状态都被保存在对象携带的一个特殊字典中，可以通过 vars 函数拿到它。</p>
+<p>Thread Local 则是一种特殊的对象，它的“状态”对线程隔离 —— 也就是说每个线程对一个 Thread Local 对象的修改都不会影响其他线程。本地线程希望不同的线程对于内容的修改只在线程内发挥作用，线程之前互不影响。实现的原理就是在<code>threading.current_thread().__dict__</code>里面添加一个包含对象ID的key，每一个线程保存不同的状态字典，所以每一个线程中的值都不一样。</p>
+<p>在 Python 中获得一个这样的 Thread Local 最简单的方法是<code>threading.local()</code></p>
+<p>所以只要能构造出 Thread Local 对象，就能够让同一个对象在多个线程下做到状态隔离。</p>
+<h1 id="Werkzeug实现的本地线程"><a href="#Werkzeug实现的本地线程" class="headerlink" title="Werkzeug实现的本地线程"></a>Werkzeug实现的本地线程</h1><p>Werkzeug自己实现了本地线程，werkzeug.local.Local和threading.local的区别：</p>
+<ol>
+<li>werkzeug使用了自定义的<code>__storage__</code>保存不同线程下的状态</li>
+<li>werkzeug提供了释放本地线程的release_local方法，可以被 Werkzeug 自己的 release_pool 函数释放（析构）掉当前线程下的状态</li>
+<li>Werkzeug使用get_ident函数，用来获得线程’/协程标识符</li>
+<li>werkzeug会在 Greenlet 可用的情况下优先使用 Greenlet 的 ID 而不是线程 ID 以支持 Gevent 或 Eventlet 的调度，threading.local只支持多线程调度</li>
+</ol>
+<p>除了Local外，Werkzeug 还实现了两种数据结构：LocalStack 和 LocalProxy。</p>
+<h2 id="LocalStack"><a href="#LocalStack" class="headerlink" title="LocalStack"></a>LocalStack</h2><p>LocalStack 是用 Local (werkzeug的本地线程）实现的栈结构，可以将对象推入、弹出，也可以快速拿到栈顶对象。所有的修改都只在本线程可见。和 Local 一样，LocalStack 也同样实现了支持 release_pool 的接口。</p>
+<h2 id="LocalProxy"><a href="#LocalProxy" class="headerlink" title="LocalProxy"></a>LocalProxy</h2><p>是一个典型的代理模式实现，它在构造时接受一个 callable 的参数（比如一个函数），这个参数被调用后的返回值本身应该是一个 Thread Local 对象，即通过LocalStack实例化的栈的栈顶对象。对一个 LocalProxy 对象的所有操作，包括属性访问、方法调用（当然方法调用就是属性访问）甚至是二元操作都会转发到那个 callable 参数返回的 Thread Local 对象上。</p>
+<h1 id="Flask-基于-Local-Stack-的-Context"><a href="#Flask-基于-Local-Stack-的-Context" class="headerlink" title="Flask 基于 Local Stack 的 Context"></a>Flask 基于 Local Stack 的 Context</h1><p>Flask 的 App Context 和 Request Context 也基于 Werkzeug 的 Local Stack 实现。App Context 代表了“应用级别的上下文”，比如配置文件中的数据库连接信息；Request Context 代表了“请求级别的上下文”，比如当前访问的 URL。</p>
+<p>这两种上下文对象的类定义在 flask.ctx 中，它们的用法是推入 flask.globals 中创建的 <code>_app_ctx_stack</code> 和 <code>_request_ctx_stack</code> 这两个单例 Local Stack 中，分别表示应用上下文栈和请求上下文栈。因为 Local Stack 的状态是线程隔离的，而 Web 应用中每个线程（或 Greenlet）同时只处理一个请求，所以 App Context 对象和 Request Context 对象也是请求间隔离的。</p>
+<p>当 app = Flask(<code>__name__</code>) 构造出一个 Flask App 时，App Context 并不会被自动推入 Stack 中。所以此时 Local Stack 的栈顶是空的，current_app 也是 unbound 状态。所以编写离线脚本的时候，必须将App的App Context推入栈中，栈顶不为空，则current_app就是一个Local Proxy对象，就可以将动作转发到App上了。</p>
+<p>应用运行的时候不需要手动app_context().push()，因为 Flask App 在作为 WSGI Application 运行时，会在每个请求进入的时候将请求上下文推入 <code>_request_ctx_stack</code> 中，而请求上下文一定是 App 上下文之中，所以推入部分的逻辑有这样一条：如果发现 <code>_app_ctx_stack</code>为空，则隐式地推入一个 App 上下文。</p>
+<h1 id="App-Context和Request-Context两者独立"><a href="#App-Context和Request-Context两者独立" class="headerlink" title="App Context和Request Context两者独立"></a>App Context和Request Context两者独立</h1><p>一个 Flask App 实例就是一个 WSGI Application，那么 WSGI Middleware 是允许使用组合模式的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from werkzeug.wsgi import DispatcherMiddleware</div><div class="line">from biubiu.app import create_app</div><div class="line">from biubiu.admin.app import create_app as create_admin_app</div><div class="line">application = DispatcherMiddleware(create_app(), &#123;</div><div class="line">    &apos;/admin&apos;: create_admin_app()</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>这样将两个 Flask App 组合成一个一个 WSGI Application。这种情况下两个 App 都同时在运行，只是根据 URL 的不同而将请求分发到不同的 App 上处理。多个 Blueprint 可能共享了同一个 Flask App；而这种面向的是所有 WSGI Application，而不仅仅是 Flask App，即使是把一个 Django App 和一个 Flask App 用这种用法整合起来也是可行的。</p>
+<p>在web运行中，多个Flask App可以同时工作是因为每个请求被处理的时候是身处不同的Thread Local中的，也就是Web Runtime情况中使用。下面是非Web环境中需要访问上下文代码的。<code>Running code outside of a request</code></p>
+<h1 id="离线脚本或者测试运行Flask关联的代码"><a href="#离线脚本或者测试运行Flask关联的代码" class="headerlink" title="离线脚本或者测试运行Flask关联的代码"></a>离线脚本或者测试运行Flask关联的代码</h1><p>这种情况，一般只在主线程中运行，但是如果需要操作两个 Flask App 关联的上下文，这时候栈结构的 App Context就很有用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from biubiu.app import create_app</div><div class="line">from biubiu.admin.app import create_app as create_admin_app</div><div class="line">app = create_app()</div><div class="line">admin_app = create_admin_app()</div><div class="line">def copy_data():</div><div class="line">    with app.app_context():</div><div class="line">        data = read_data()  # fake function for demo</div><div class="line">        with admin_app.app_context():</div><div class="line">            write_data(data)  # fake function for demo</div><div class="line">        mark_data_copied()  # fake function for demo</div></pre></td></tr></table></figure>
+<p>无论有多少个 App，只要主动去 Push 它的 App Context，Context Stack 中就会累积起来。这样，栈顶永远是当前操作的 App Context。当一个 App Context 结束的时候，相应的栈顶元素也随之出栈。</p>
+<p>单线程运行的时候，只有<strong><em>栈结构</em></strong>才能保存多个上下文，并且定位哪个是当前上下文。离线脚本只需要 App 关联的上下文，不需要构造出请求，所以 <strong><em>App Context 也应该和 Request Context 分离</em></strong>。</p>
+<p>测试中我们可能会需要构造一个请求，并验证相关的状态是否符合预期。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def test_app():</div><div class="line">    app = create_app()</div><div class="line">    client = app.test_client()</div><div class="line">    resp = client.get(&apos;/&apos;)</div><div class="line">    assert &apos;Home&apos; in resp.data</div></pre></td></tr></table></figure>
+<p>这里调用 client.get 时，Request Context 就被推入了。</p>
+<h1 id="App-Factory"><a href="#App-Factory" class="headerlink" title="App Factory"></a>App Factory</h1><p>尽量使用 App Factory 模式比较好。况且配合 Blueprint 的情况下，App Factory 还能帮助我们良好地组织应用结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">from werkzeug.utils import import_string</div><div class="line">extensions = [</div><div class="line">    &apos;happytree.ext:db&apos;,</div><div class="line">    &apos;happytree.ext:login_manager&apos;,</div><div class="line">]</div><div class="line">blueprints = [</div><div class="line">    &apos;happytree.views:bp&apos;,</div><div class="line">]</div><div class="line">def create_app():</div><div class="line">    app = Flask(__name__)</div><div class="line">    for ext_name in extensions:</div><div class="line">        ext = import_string(ext_name)</div><div class="line">        ext.init_app(app)</div><div class="line">    for bp_name in blueprints:</div><div class="line">        bp = import_string(bp_name)</div><div class="line">        app.register_blueprint(bp)</div><div class="line">    return app</div></pre></td></tr></table></figure>
+<h1 id="详解应用上下文"><a href="#详解应用上下文" class="headerlink" title="详解应用上下文"></a>详解应用上下文</h1><p>当 Flask 对象被实例化后在模块层次上应用便开始隐式地处于应用配置状态。一直到第一个请求到达这种状态才隐式地结束。这样使用上下文把某些对象变成全局可访问，实际上是特定环境的局部对象的代理，每个线程看到的上下文对象是不通的。</p>
+<p>在应用处于应用配置状态的时候：</p>
+<ul>
+<li>可以安全地修改应用对象</li>
+<li>目前还没有处理任何请求</li>
+<li>必须得有一个指向应用对象的引用来修改它</li>
+</ul>
+<p>到了第二个状态，在处理请求的时候，相当于已经申请到了应用上下文和请求上下文</p>
+<ul>
+<li>当一个请求激活时，上下文的本地对象（ flask.request 和其它对象等） 指向当前的请求</li>
+<li>可以在任何时间里使用任何代码与这些对象通信</li>
+</ul>
+<p>current_app 上下文本地变量就是应用上下文驱动的。</p>
+<h2 id="应用上下文的作用"><a href="#应用上下文的作用" class="headerlink" title="应用上下文的作用"></a>应用上下文的作用</h2><p> Flask 设计的支柱之一是你可以在一个 Python 进程中拥有多个应用。代码如何找到“正确的”应用，常用方法是使用后面将会提到的 current_app 代理对象，它被绑定到当前请求的应用的引用。在没有请求时创建一个这样的请求上下文是一个没有必要的昂贵操作，应用上下文就被引入了。</p>
+<h2 id="创建应用上下文"><a href="#创建应用上下文" class="headerlink" title="创建应用上下文"></a>创建应用上下文</h2><p>有两种方式来创建应用上下文。</p>
+<ol>
+<li>在当一个请求上下文被压栈的时候，如果发现 <code>_app_ctx_stack</code>为空，则隐式地推入一个 App 上下文。</li>
+<li>显式的调用app_context()方法</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from flask import Flask, current_app</div><div class="line">app = Flask(__name__)</div><div class="line">with app.app_context():</div><div class="line">    # within this block, current_app points to app.</div><div class="line">    print current_app.name</div></pre></td></tr></table></figure>
+<h2 id="应用上下文局部变量"><a href="#应用上下文局部变量" class="headerlink" title="应用上下文局部变量"></a>应用上下文局部变量</h2><p>应用上下文会在必要时被创建和销毁。它不会在线程间移动，并且也不会在不同的请求之间共享。它是一个存储数据库连接信息或是别的东西的最佳位置。内部的栈对象叫做 <code>flask._app_ctx_stack</code> 。扩展可以在最顶层自由地存储额外信息</p>
+<h2 id="上下文用法"><a href="#上下文用法" class="headerlink" title="上下文用法"></a>上下文用法</h2><p>一个典型应用场景就是用来缓存一些我们需要在发生请求之前或者要使用的资源。比如数据库连接。在应用上下文中来存储东西的时候你得选择一个唯一的名字，这是因为应用上下文为 Flask 应用和扩展所共享。</p>
+<p>最常见的应用就是把资源的管理分成如下两个部分：</p>
+<ol>
+<li>一个缓存在上下文中的隐式资源</li>
+<li>当上下文被销毁时候重新分配基础资源</li>
+</ol>
+<p>比如数据库连接，将会有一个 get_X() 函数来创建资源 X ，如果它还不存在的话。 存在的话就直接返回它。另外还会有一个 teardown_X() 的回调函数用于销毁资源 X。其实Flask扩展中也是如此。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">import sqlite3</div><div class="line">from flask import g</div><div class="line">def get_db():</div><div class="line">    db = getattr(g, &apos;_database&apos;, None)</div><div class="line">    if db is None:</div><div class="line">        db = g._database = connect_to_database()</div><div class="line">    return db</div><div class="line">@app.teardown_appcontext</div><div class="line">def teardown_db(exception):</div><div class="line">    db = getattr(g, &apos;_database&apos;, None)</div><div class="line">    if db is not None:</div><div class="line">        db.close()</div><div class="line">from werkzeug.local import LocalProxy</div><div class="line">db = LocalProxy(get_db)</div></pre></td></tr></table></figure>
+<p>这样，可以在应用上下文中直接通过访问 db 来获取数据句柄了，db已经在内部完成了对get_db()的调用。</p>
+<h2 id="Flask扩展开发"><a href="#Flask扩展开发" class="headerlink" title="Flask扩展开发"></a>Flask扩展开发</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">import sqlite3</div><div class="line">from flask import current_app</div><div class="line"># Find the stack on which we want to store the database connection.</div><div class="line"># Starting with Flask 0.9, the _app_ctx_stack is the correct one,</div><div class="line"># before that we need to use the _request_ctx_stack.</div><div class="line">try:</div><div class="line">    from flask import _app_ctx_stack as stack</div><div class="line">except ImportError:</div><div class="line">    from flask import _request_ctx_stack as stack</div><div class="line">class SQLite3(object):</div><div class="line">    def __init__(self, app=None):</div><div class="line">        self.app = app</div><div class="line">				# 接受一个应用对象，如果有，则调用init_app</div><div class="line">        if app is not None:</div><div class="line">            self.init_app(app)</div><div class="line">    def init_app(self, app):</div><div class="line">				# 没有分配app到self，只在应用传递到构造函数时在对象上存储应用</div><div class="line">				# 默认一个内存的数据库</div><div class="line">        app.config.setdefault(&apos;SQLITE3_DATABASE&apos;, &apos;:memory:&apos;)</div><div class="line">        # Use the newstyle teardown_appcontext if it&apos;s available,</div><div class="line">        # otherwise fall back to the request context</div><div class="line">        if hasattr(app, &apos;teardown_appcontext&apos;):</div><div class="line">						# 使用应用上下文处理器，如果不存在退回到上下文处理器</div><div class="line">            app.teardown_appcontext(self.teardown)</div><div class="line">        else:</div><div class="line">            app.teardown_request(self.teardown)</div><div class="line">    def connect(self):</div><div class="line">				# 打开一个数据库连接</div><div class="line">        return sqlite3.connect(current_app.config[&apos;SQLITE3_DATABASE&apos;])</div><div class="line">    def teardown(self, exception):</div><div class="line">        ctx = stack.top</div><div class="line">        if hasattr(ctx, &apos;sqlite3_db&apos;):</div><div class="line">            ctx.sqlite3_db.close()</div><div class="line">    @property</div><div class="line">    def connection(self):</div><div class="line">        ctx = stack.top</div><div class="line">        if ctx is not None:</div><div class="line">				    # 首次访问时候打开数据库连接，将其存储在上下文</div><div class="line">						# 这是处理资源的推荐方式，在资源第一次使用时候惰性获取资源</div><div class="line">            if not hasattr(ctx, &apos;sqlite3_db&apos;):</div><div class="line">                ctx.sqlite3_db = self.connect()</div><div class="line">            return ctx.sqlite3_db</div></pre></td></tr></table></figure>
+<p>这里通过<code>_app_ctx_stack.top</code> 附加到应用上下文的栈顶。扩展应该使用上下文的栈顶来存储它们自己的信息，并使用足够复杂的名称，也就实现了在应用上下文中对数据库连接的管理了。</p>
+<p>可以这样使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">from flask_sqlite3 import SQLite3</div><div class="line">app = Flask(__name__)</div><div class="line">app.config.from_pyfile(&apos;the-config.cfg&apos;)</div><div class="line">db = SQLite3(app)</div><div class="line">@app.route(&apos;/&apos;)</div><div class="line">def show_all():</div><div class="line">    cur = db.connection.cursor()</div><div class="line">    cur.execute(...)</div><div class="line">with app.app_context():</div><div class="line">    cur = db.connection.cursor()</div><div class="line">    cur.execute(...)</div></pre></td></tr></table></figure>
+<h1 id="请求上下文"><a href="#请求上下文" class="headerlink" title="请求上下文"></a>请求上下文</h1><p><code>request.args.get(&#39;next&#39;)</code>这访问了请求对象，如果没有请求上下文，那么就没有可以访问的请求，所以就会出错。需要制造一个请求并且绑定到当前的上下文， test_request_context 方法为我们创建一个 RequestContext:<code>ctx = app.test_request_context(&#39;/?next=http://example.com/&#39;)</code></p>
+<p>使用这个上下文，使用with声明或者是调用push()和pop方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ctx.push()</div><div class="line">redirect_url()</div><div class="line">ctx.pop()</div></pre></td></tr></table></figure>
+<p>因为请求上下文在内部作为一个栈来维护，所以你可以多次压栈出栈。这在实现内部重定向之类的东西时很方便。</p>
+<h2 id="上下文如何工作"><a href="#上下文如何工作" class="headerlink" title="上下文如何工作"></a>上下文如何工作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def wsgi_app(self, environ):</div><div class="line">    with self.request_context(environ):</div><div class="line">        try:</div><div class="line">            response = self.full_dispatch_request()</div><div class="line">        except Exception, e:</div><div class="line">            response = self.make_response(self.handle_exception(e))</div><div class="line">        return response(environ, start_response)</div></pre></td></tr></table></figure>
+<p>request_context() 方法返回一个新的 RequestContext 对象，并结合 with 声明来绑定上下文。在这个上下文中就可以访问全局的请求变量比如flask.request，请求上下文内部工作如同一个栈。栈顶是当前活动的请求。 push() 把上下文添加到栈顶， pop() 把它移出栈。在出栈时，应用的 teardown_request() 函数也会被执行。请求上下文被压入栈时，并且没有当前应用的应用上下文， 它会自动创建一个 应用上下文 。</p>
+<h2 id="请求的一个处理过程和错误处理"><a href="#请求的一个处理过程和错误处理" class="headerlink" title="请求的一个处理过程和错误处理"></a>请求的一个处理过程和错误处理</h2><ol>
+<li>在请求之前，执行before_request()上绑定的函数，如果这个函数返回了一个响应，那么这个返回值就会代替视图函数的返回值，并且视图函数不会被调用</li>
+<li>如果 before_request() 上绑定的函数没有返回一个响应， 常规的请求处理将会生效，匹配的视图函数有机会返回一个响应。</li>
+<li>视图的返回值之后会被转换成一个实际的响应对象，并交给 after_request() 上绑定的函数适当地替换或修改它。</li>
+<li>请求的最后，会执行teardonw_request()上绑定的函数。这是一定会发生的。</li>
+</ol>
+<p>在生产模式中，如果一个异常没有被捕获，将调用 500 internal server 的处理。在生产模式中，即便异常没有被处理过，也会往上冒泡抛给给 WSGI 服务器。</p>
+<h2 id="销毁回调"><a href="#销毁回调" class="headerlink" title="销毁回调"></a>销毁回调</h2><p>当请求上下文出栈时， teardown_request() 上绑定的函数会被调用。销毁回调总是会被执行，即使没有请求前回调执行过，或是异常发生。在with声明中，或者在命令行中使用请求上下文的时候，其寿命会被延长，直到with声明结束，或者出栈，在此之前有可能一个请求已经完毕。</p>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>Flask 中提供的一些对象是其它对象的代理。这些代理在线程间共享， 并且它们在必要的情景中被调度到限定在一个线程中。</p>
+<p>代理对象不会伪造它们继承的类型，所以如果你想运行真正的实例检查，你需要在被代理的实例上这么做（见下面的 <code>_get_current_object</code> ）。对象引用是重要的，比如发送信号。</p>
+<p>需要访问潜在的被代理的对象，你可以使用 <code>_get_current_object()</code> 方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">app = current_app._get_current_object()</div><div class="line">my_signal.send(app)</div></pre></td></tr></table></figure>
+<h1 id="使用上下文"><a href="#使用上下文" class="headerlink" title="使用上下文"></a>使用上下文</h1><p>典型应用场景是缓存一些在发生请求之前要使用的资源，比如数据库连接和缓存一些对象。请求上下文发生在HTTP请求开始，WSGI Server调用<code>Flask.__call__()</code>之后。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class RequestContext(object):</div><div class="line">  self._implicit_app_ctx_stack = []</div><div class="line">	def push(self):</div><div class="line">	  app_ctx = _app_ctx_stack.top</div><div class="line">		# 栈顶为空，或者栈顶app对象不是当前的上下文请求app对象</div><div class="line">		if app_ctx is None or app_ctx.app != self.app:</div><div class="line">		  # 进入当前应用上下文</div><div class="line">		  app_ctx = self.app.app_context()</div><div class="line">			app_ctx.push()</div><div class="line">			self._implicit_app_ctx_stack.append(app_ctx)</div></pre></td></tr></table></figure>
+<p>从此可以看出应用上下文是被动的在推入请求上下文过程中生成的，在请求结束的时候也会把请求上下文弹出。所以变量的名字就是隐式的应用上下文栈。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class RequestContext(object):</div><div class="line">  def pop(self, exc=_sentinel):</div><div class="line">	  app_ctx = self._implicit_app_ctx_stack.pop()</div><div class="line">		try:</div><div class="line">		  # some</div><div class="line">		finally:</div><div class="line">		  if app_ctx is not None:</div><div class="line">			  app_ctx.pop(exc)</div></pre></td></tr></table></figure>
+<p>应用上下文和请求上下文分开的目的是：首先有可能出现多app，app之前也要隔离，然后是非Web模式下，一个应用上下文可能有多个请求上下文，但是退出一个请求上下文不能将应用上下文也直接退出了。</p>
+<p>flask有4个上下文变量</p>
+<ol>
+<li>flask.current_app: 应用上下文，当前app实例对象</li>
+<li>flask.g: 应用上下文，处理请求时用作临时存储的对象</li>
+<li>flask.request: 请求上下文，封装了客户端发出的HTTP请求中的内容</li>
+<li>flask.session: 请求上下文，存储了用户会话</li>
+</ol>
+<p>有这么几个钩子装饰器</p>
+<ul>
+<li>before_first_request</li>
+<li>before_request</li>
+<li>teardown_appcontext： 不管是否有异常，注册的函数都会在每次请求之后执行</li>
+<li>context_processor: 上下文处理的装饰器，返回的字典中的键可以在上下文中使用，其中对于模版，就可以将上下文资源传递进去，就可以用这些函数了。</li>
+<li>after_request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@app.context_processor</div><div class="line">def template_extras():</div><div class="line">  return &#123;&apos;enumerate&apos;: enumerate, &apos;current_user&apos;: g.user&#125;</div></pre></td></tr></table></figure>
+<h2 id="使用LocalProxy代替g"><a href="#使用LocalProxy代替g" class="headerlink" title="使用LocalProxy代替g"></a>使用LocalProxy代替g</h2><p>实现一个全局可以访问的current_user</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">from werkzeug.local import LocalStack, LocalProxy</div><div class="line">_user_stack = LocalStack()</div><div class="line">def get_current_user():</div><div class="line">  top = _user_stack.top</div><div class="line">	if top is None:</div><div class="line">	  raise RuntimeError()</div><div class="line">	return top</div><div class="line">current_user = LocalProxy(get_current_user)</div><div class="line">@app.before_request</div><div class="line">def before_request():</div><div class="line">  users = User.query.all()</div><div class="line">	user = random.choice(users)</div><div class="line">	_user_stack.push(user)</div><div class="line">@app.teardown_appcontext</div><div class="line">def teardown(exc=None):</div><div class="line">  _user_stack.pop()</div></pre></td></tr></table></figure>
+<p>相当于每次请求中，要访问current_user就会在这个独立的线程来执行get_current_user函数来获取栈顶对象，另外堆栈也是线程独立的。所以在请求上下文中就可以直接访问current_user了。所以可以按照这种方法将一些全局使用的资源放进去，数据库连接是肯定可以放的。</p>
+<p>所以之前战斗力项目中，<code>app=LocalProxy(get_app)</code>其实就是多app支持的啊！多app有什么特性呢？等待继续研究。</p>
+<p>参考：</p>
+<ol>
+<li><strong><em><a href="https://blog.tonyseek.com/post/the-context-mechanism-of-flask/#id12" target="_blank" rel="external">https://blog.tonyseek.com/post/the-context-mechanism-of-flask/#id12</a></em></strong></li>
+<li><a href="http://docs.jinkan.org/docs/flask/appcontext.html" target="_blank" rel="external">应用上下文 - Flask官方文档</a></li>
+<li><a href="http://docs.jinkan.org/docs/flask/reqcontext.html" target="_blank" rel="external">请求上下文 - Flask官方文档</a></li>
+<li>董伟明 Python Web开发实战</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:21:25.000Z" itemprop="dateUpdated">2017-09-01 14:21:25 14:21:25</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/05/07/理解Flask的Context/" target="_blank" rel="external">http://skyrover.me/2017/05/07/理解Flask的Context/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flask/">Flask</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/07/理解Flask的Context/&title=《理解Flask的Context》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/07/理解Flask的Context/&title=《理解Flask的Context》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/07/理解Flask的Context/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《理解Flask的Context》 — SkyRover&url=http://skyrover.me/2017/05/07/理解Flask的Context/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/07/理解Flask的Context/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/13/LeetCode刷题(1)/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">LeetCode刷题(1)</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/25/docker安装和使用/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Docker安装和使用</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/07/理解Flask的Context/&title=《理解Flask的Context》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/07/理解Flask的Context/&title=《理解Flask的Context》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/07/理解Flask的Context/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《理解Flask的Context》 — SkyRover&url=http://skyrover.me/2017/05/07/理解Flask的Context/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/07/理解Flask的Context/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3a0W7CMAxGYd7/pTtpd9NEen47IDU+uUIw2nydZBzbrxde1+8in17/1ru/WX/39YklQ4aMxzKu5VrfeH018t01g+xNhgwZcxg8jPYB6w2RRyZDhgwZtQRufZ1aQJchQ4aMWsBdb4IkefxxyJAhQ0YaENfb5ezafbedxWXIkPFARtoY+ObrD/Y3ZMiQ8RDGFS5SeiNhMb3Cza5kyJBxNIO0Ffulf55c8uugeRAZMmQcyiC34cW42pE4vbsMGTImMMjBlRfX0oCLiv5h20CGDBnnMdKCfme0K20YBP8BGTJkHM3oHCY77/DAGvxuyJAh4zhGOgzBN8dTwE5TU4YMGRMYaarX33oaTOM7ypAh42hGbSCMpH38uLvrgC1DhoyTGGjcqhQWyZhXBylDhoxpjPSoGQ9shYU2PrImQ4aMCYy0e1B7p1Zc29DIlCFDxgAG3xZPDdfJYppiypAhYw6D3DgNmrUjblod/PO+DBkyBjNqZbJa0Z+U827GLGTIkHEcozbIlRbC0gEvnizKkCFjDiNN1NJGAk89OfWmvyFDhoyDGLXCWQdQa3+ib8mQIeNQxhUuEpRr7NagmAwZMo5m8LV3aJXjycOSIUPGBMbe0Yd0SKJzZRkyZExjpEF2b8KXBn0ZMmTI4A3LdKgrPdaSHwMZMmTI4KMVnYEJ3tR8i5EhQ8YABm8G7A2m25JLGTJkHM3oNwZIw4C8JuG1hZEhQ8bzGD+TYhkG+efPUAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

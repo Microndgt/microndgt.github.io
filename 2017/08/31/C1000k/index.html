@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>C1000k | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Linux,Python,并发">
+    <meta name="description" content="C1000k 这里关注操作系统是否支持百万连接 全局最大打开文件数cat /proc/sys/fs/file-nr，为了修改这个数值, 用 root 权限修改 /etc/sysctl.conf 文件 123fs.file-max = 1020000net.ipv4.ip_conntrack_max = 1020000net.ipv4.netfilter.ip_conntrack_max = 102">
+<meta name="keywords" content="Linux,Python,并发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C1000k">
+<meta property="og:url" content="http://skyrover.me/2017/08/31/C1000k/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="C1000k 这里关注操作系统是否支持百万连接 全局最大打开文件数cat /proc/sys/fs/file-nr，为了修改这个数值, 用 root 权限修改 /etc/sysctl.conf 文件 123fs.file-max = 1020000net.ipv4.ip_conntrack_max = 1020000net.ipv4.netfilter.ip_conntrack_max = 102">
+<meta property="og:updated_time" content="2017-09-01T06:50:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C1000k">
+<meta name="twitter:description" content="C1000k 这里关注操作系统是否支持百万连接 全局最大打开文件数cat /proc/sys/fs/file-nr，为了修改这个数值, 用 root 权限修改 /etc/sysctl.conf 文件 123fs.file-max = 1020000net.ipv4.ip_conntrack_max = 1020000net.ipv4.netfilter.ip_conntrack_max = 102">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">C1000k</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">C1000k</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-31T03:01:35.000Z" itemprop="datePublished" class="page-time">
+  2017-08-31 11:01:35
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#全局最大打开文件数"><span class="post-toc-number">1.</span> <span class="post-toc-text">全局最大打开文件数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程限制"><span class="post-toc-number">2.</span> <span class="post-toc-text">进程限制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#docker容器中修改ulimit"><span class="post-toc-number">3.</span> <span class="post-toc-text">docker容器中修改ulimit</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#有关协程的一些问题"><span class="post-toc-number">4.</span> <span class="post-toc-text">有关协程的一些问题</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-C1000k"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">C1000k</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-31 11:01:35 11:01:35" datetime="2017-08-31T03:01:35.000Z"  itemprop="datePublished">2017-08-31 11:01:35</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>C1000k 这里关注操作系统是否支持百万连接</p>
+<h2 id="全局最大打开文件数"><a href="#全局最大打开文件数" class="headerlink" title="全局最大打开文件数"></a>全局最大打开文件数</h2><p><code>cat /proc/sys/fs/file-nr</code>，为了修改这个数值, 用 root 权限修改 <code>/etc/sysctl.conf</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">fs.file-max = 1020000</div><div class="line">net.ipv4.ip_conntrack_max = 1020000</div><div class="line">net.ipv4.netfilter.ip_conntrack_max = 1020000</div></pre></td></tr></table></figure>
+<p>重启系统服务</p>
+<p><code>sudo sysctl -p /etc/sysctl.conf</code></p>
+<h2 id="进程限制"><a href="#进程限制" class="headerlink" title="进程限制"></a>进程限制</h2><p><code>ulimit -n</code></p>
+<p>Linux 系统的每一个进程只能最多打开 1024 个文件. 为了支持 C1000K, 你同样需要修改这个限制.</p>
+<p>临时修改: <code>ulimit -n 1020000</code></p>
+<p>永久修改：</p>
+<p>编辑 <code>/etc/security/limits.conf</code> 文件，加入以下行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">*         hard    nofile      1020000</div><div class="line">*         soft    nofile      1020000</div></pre></td></tr></table></figure>
+<h2 id="docker容器中修改ulimit"><a href="#docker容器中修改ulimit" class="headerlink" title="docker容器中修改ulimit"></a>docker容器中修改ulimit</h2><p>容器中应该是无法直接修改的，可以通过修改docker daemon的设置，这种方式要重启docker服务</p>
+<p><code>docker -d --default-ulimit nproc=20480:40960</code></p>
+<p>或者在启动容器时，单独对其ulimit进行设置：</p>
+<p><code>docker run -d --ulimit nofile=20480:40960 nproc=1024:2048 gitlab</code></p>
+<ul>
+<li><code>nofile</code> 指的是单个进程能够打开的最大文件数</li>
+<li><code>file-max</code> 是所有进程能够打开的最大文件数</li>
+<li><code>nproc</code>是操作系统对每个用户创建的进程数的限制</li>
+</ul>
+<h2 id="有关协程的一些问题"><a href="#有关协程的一些问题" class="headerlink" title="有关协程的一些问题"></a>有关协程的一些问题</h2><p>昨天在Flask+Celery中写了一个使用gevent的程序，大概是这样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">def distribute_calc_gevent(self, fundIds, start, end, stype):</div><div class="line">    from gevent.pool import Pool</div><div class="line">    from gevent import monkey</div><div class="line">    monkey.patch_all()</div><div class="line">    length = len(fundIds)</div><div class="line">    current_app.logger.info(&apos;handling fundId: &#123;&#125;&apos;.format(length))</div><div class="line">    pool = Pool(size=GEVENTLETS_NUM)</div><div class="line"></div><div class="line">    def calc(fundId):</div><div class="line">        try:</div><div class="line">            plat_calc_whole_call(fundId, start, end, stype)</div><div class="line">            gc.collect()</div><div class="line">        except Exception as e:</div><div class="line">            return e, fundId</div><div class="line">        return None, fundId</div><div class="line"></div><div class="line">    # imap是惰性的，所以要list一下吧，或者迭代一下</div><div class="line">    try:</div><div class="line">        for index, res, fundId in enumerate(pool.imap_unordered(calc, fundIds)):</div><div class="line">            if isinstance(res, Exception):</div><div class="line">                if isinstance(res, StockError):</div><div class="line">                    current_app.logger.error(&quot;[** CALC ERROR] fundId: &#123;&#125; date: &#123;&#125; symbol:&quot;</div><div class="line">                                             &quot; &#123;&#125; stock not exists error&quot;.format(res.fundId, res.date, res.symbol))</div><div class="line">                elif isinstance(res, FlowsMissingError):</div><div class="line">                    current_app.logger.error(&quot;[** CALC ERROR] fundId: &#123;&#125; start_date: &#123;&#125; assets_start: &#123;&#125;&quot;</div><div class="line">                                             &quot; assets_end: &#123;&#125; missing flows&quot;.</div><div class="line">                                             format(res.fundId, res.calc_start, res.assets_start, res.assets_end))</div><div class="line">                else:</div><div class="line">                    current_app.logger.exception(res)</div><div class="line">        pool.join()</div><div class="line">    except Exception as e:</div><div class="line">        current_app.logger.exception(e)</div><div class="line">    finally:</div><div class="line">        current_app.ssdb.close()</div></pre></td></tr></table></figure>
+<ul>
+<li><code>GEVENTLETS_NUM</code>可以指定并发量</li>
+<li><code>monkey.patch_all()</code>如果在全局使用，就会导致整个模块的程序被patch，这不是我想要的，所以在启动task之后才patch_all</li>
+<li>使用gevent的pool，这样可以限制并发量</li>
+<li>pool里面的imap是惰性的，因此需要迭代或者之类操作激活</li>
+<li>在calc函数里面不能使用<code>current_app</code>，因为协程的id和外部app上下文所在线程id不是同一个，所以会导致<code>working out of context</code></li>
+<li>可以在calc里使用<code>with app.app_context():</code>来取得上下文，就可以使用<code>current_app</code>，但是没什么意义，所以暂时在外部获取结果的时候使用</li>
+<li>获取异常，目前没有好的办法，所以只能在迭代imap的时候来处理，如果以后有更好的操作，再记之</li>
+<li>因为并发量太大，会导致ssdb连接池出现过多连接，所以完成任务后，手动关闭连接池，否则没有显式关闭由于垃圾回收的那个原理，会导致一些连接没有关闭，再启动下一次计算会出现问题</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:50:53.000Z" itemprop="dateUpdated">2017-09-01 14:50:53 14:50:53</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/31/C1000k/" target="_blank" rel="external">http://skyrover.me/2017/08/31/C1000k/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/31/C1000k/&title=《C1000k》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/31/C1000k/&title=《C1000k》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/31/C1000k/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《C1000k》 — SkyRover&url=http://skyrover.me/2017/08/31/C1000k/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/31/C1000k/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">翻译 -  concurrent.futures — Launching parallel tasks</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/31/C1000k/&title=《C1000k》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/31/C1000k/&title=《C1000k》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/31/C1000k/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《C1000k》 — SkyRover&url=http://skyrover.me/2017/08/31/C1000k/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/31/C1000k/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3aQWrEMAwF0Ln/pVvoqlAcviTHSeF5NUyG5GUWQvr25xOvr591/fn3N6v19zefOxYuLu6Ymz/gmriirK5ef798JVxc3IPcpHj1Ss91scsNuLi47+Tm5W/1enlxxMXF/S/c3hhTpePi4r6HmwcZvQEpaXE2z2q4uLgD7q7AdPL5gXwXFxe3tSuRjzGTtqbwdFxc3CPcZGskiT7zJqa3ATNC4OLiFrmTQKTXgSRhSqGE4eLi3sC9o2VJgo9JycPFxT3DrZanXoxSjUTLB7NwcXE3cZNDFb2GZvIaSzQuLu5BbtKmzEFzOi4u7rPcZFqaDELVlAMXF/cpbkLvHc+qBqPLe+Li4j7E3Xt4oorGxcV9MzdpXCYHMqqFDxcX9yS3OvBUW5PqNm1hQwUXF/c27h0BaL41Ug1ScXFxT3LzA1K9DZhCJJoUMlxc3CPcfFVHoDwuGW2l4OLibuVWC0qvDcrj1/wqLi7u3dxe8aoOPNVmaPkH4eLiHuTm5SlvU6rxaCHfxcXFfQ23Go5UR6/oPri4uC/m7opXyqEtLi7uQW711nmM0gteN8QiuLi4A+788btGo+p2Ly4u7g3cbyKxJQswJbRaAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

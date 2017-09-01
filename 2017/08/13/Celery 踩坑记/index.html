@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Celery 踩坑记 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,Celery">
+    <meta name="description" content="最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。 使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。 另外，使用RabbitMQ的时候，实例化">
+<meta name="keywords" content="Python,Celery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Celery 踩坑记">
+<meta property="og:url" content="http://skyrover.me/2017/08/13/Celery 踩坑记/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。 使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。 另外，使用RabbitMQ的时候，实例化">
+<meta property="og:updated_time" content="2017-09-01T06:37:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Celery 踩坑记">
+<meta name="twitter:description" content="最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。 使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。 另外，使用RabbitMQ的时候，实例化">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Celery 踩坑记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Celery 踩坑记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-13T08:47:05.000Z" itemprop="datePublished" class="page-time">
+  2017-08-13 16:47:05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用RabbitMQ而不是Redis做Broker"><span class="post-toc-number">1.</span> <span class="post-toc-text">使用RabbitMQ而不是Redis做Broker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#RabbitMQ的安装"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">RabbitMQ的安装</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#RabbitMQ的配置"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">RabbitMQ的配置</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Celery中的Signature"><span class="post-toc-number">2.</span> <span class="post-toc-text">Celery中的Signature</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#subtask"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">subtask</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Signature"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Signature</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#原语"><span class="post-toc-number">3.</span> <span class="post-toc-text">原语</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#group"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">group</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#chain"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">chain</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#chord"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">chord</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#map"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">map</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#starmap"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">starmap</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#chunks"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">chunks</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Result"><span class="post-toc-number">4.</span> <span class="post-toc-text">Result</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#AsyncResult"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">AsyncResult</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GroupResult"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">GroupResult</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Configuration"><span class="post-toc-number">5.</span> <span class="post-toc-text">Configuration</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小结"><span class="post-toc-number">6.</span> <span class="post-toc-text">小结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-Celery 踩坑记"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Celery 踩坑记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-13 16:47:05 16:47:05" datetime="2017-08-13T08:47:05.000Z"  itemprop="datePublished">2017-08-13 16:47:05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。</p>
+<h1 id="使用RabbitMQ而不是Redis做Broker"><a href="#使用RabbitMQ而不是Redis做Broker" class="headerlink" title="使用RabbitMQ而不是Redis做Broker"></a>使用RabbitMQ而不是Redis做Broker</h1><p>这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。</p>
+<p>另外，使用RabbitMQ的时候，实例化celery的时候，Broker应该使用pyamqp: <code>celery = Celery(app.__name__, broker=&#39;pyamqp://{}:{}@{}:{}/{}&#39;.format(RM_USER, RM_PWD, RM_HOST, RM_PORT, RM_VHOST))</code></p>
+<h2 id="RabbitMQ的安装"><a href="#RabbitMQ的安装" class="headerlink" title="RabbitMQ的安装"></a>RabbitMQ的安装</h2><p>参考：<a href="http://docs.celeryproject.org/en/v4.1.0/getting-started/brokers/rabbitmq.html" target="_blank" rel="external">Using RabbitMQ</a></p>
+<ul>
+<li>MacOS:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">brew install rabbitmq</div><div class="line"># 设置PATH</div><div class="line">PATH=$PATH:/usr/local/sbin</div></pre></td></tr></table></figure>
+<ul>
+<li>Ubuntu</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install rabbitmq-server</div></pre></td></tr></table></figure>
+<ul>
+<li>docker</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># management是带管理界面的，latest没有管理界面</div><div class="line">docker pull hub.c.163.com/library/rabbitmq:3.6.10-management</div></pre></td></tr></table></figure>
+<h2 id="RabbitMQ的配置"><a href="#RabbitMQ的配置" class="headerlink" title="RabbitMQ的配置"></a>RabbitMQ的配置</h2><ul>
+<li>普通</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo rabbitmqctl add_user celery celerypwd</div><div class="line">sudo rabbitmqctl add_vhost celery_host</div><div class="line">sudo rabbitmqctl set_permissions -p celery_host celery &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</div><div class="line"># 启动</div><div class="line">sudo rabbitmq-server</div><div class="line">sudo rabbitmq-server -detached</div><div class="line">sudo rabbitmqctl stop</div></pre></td></tr></table></figure>
+<ul>
+<li>docker</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># http://localhost:15672/ 是管理界面</div><div class="line">docker run -d --name=rabbitmq_ability --net=host -e RABBITMQ_DEFAULT_USER=celery -e RABBITMQ_DEFAULT_VHOST=celery_host -e RABBITMQ_DEFAULT_PASS=celerypwd -p 5672:5672 -p 15672:15672 -it hub.c.163.com/library/rabbitmq:3.6.10-management</div></pre></td></tr></table></figure>
+<h1 id="Celery中的Signature"><a href="#Celery中的Signature" class="headerlink" title="Celery中的Signature"></a>Celery中的Signature</h1><h2 id="subtask"><a href="#subtask" class="headerlink" title="subtask"></a>subtask</h2><p>Broker是Redis，在一个函数中，如果重复调用一个task执行<code>apply_async</code>，第一个可以执行，后面的都是<code>NotRegisted</code>，但是如果改成subtask就可以正常运行。subtask的意义和Signature相似的，感觉是Signature的前身吧。下面是几个用法，这个subtask概念理解起来很简单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tasks.add.subtask((2,2), countdown=10)</div><div class="line">test_print_cp = subtask(test_print, app=celery_current_app)</div><div class="line">test_print_cp.apply_async()</div></pre></td></tr></table></figure>
+<p>子任务的调用和普通任务都是一样的</p>
+<h2 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h2><p>作用就是为了可以将一个任务调用的签名传递给其他处理函数或者是作为其他函数的参数，signature包含了参数，关键字参数和单个任务调用的执行选项，这样就可以传递给函数或者是序列化传递给其他地方。functools里面有一个partial和这个概念很像，以下是几个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from celery import signature</div><div class="line">signature(&apos;tasks.add&apos;, args=(2, 2), countdown=10)</div><div class="line"># 也可以这么调用</div><div class="line">tasks.add.signature((2, 2), countdown=10)</div><div class="line">tasks.add.s(2, 2)</div></pre></td></tr></table></figure>
+<ul>
+<li><code>add.s()</code> 可变signature</li>
+</ul>
+<p>上面这些只是创建了签名但是并不会调用，注意在后面的概念理解上，需要明确的区分哪些是signature，哪些是result，这很关键，这样可以清楚的区分一长串的原语是怎么构成的。如果要调用的话，需要使用调用API，比如<code>delay</code>, <code>apply_async</code>也可以直接调用，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tasks.add.s(2, 2).delay()</div><div class="line">tasks.add.s(2, 2)()</div><div class="line">tasks.add.s(2, 2).apply_async()</div></pre></td></tr></table></figure>
+<ul>
+<li>partial signature</li>
+</ul>
+<p>上面这些都返回的是<code>AsyncResult</code>的实例，这里面包含了许多控制task还有获取结果的方法。除了在创建signature的时候将参数传递进去，也可以传递一部分参数，然后在调用的时候再传递剩余的，比如这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">partial = add.s(2)</div><div class="line">partial.delay(4)  </div><div class="line">partial.apply_async((4,))</div><div class="line"># 可以在task上面调用clone方法，根据之前的task创建目前的task</div><div class="line">s = add.s(2)</div><div class="line">s.clone(args=(4,), kwargs=&#123;&apos;debug&apos;: True&#125;)</div><div class="line"># 等同于 add.s(4, 2, debug=True)</div></pre></td></tr></table></figure>
+<ul>
+<li>不可变的signature</li>
+</ul>
+<p>就是在创建了这个signature之后，signature的参数就是不可变的了，partial这种会用到callbacks或者其他的工作流上，就会动态的给其signature传递参数，但是使用不可变的signature，就不会传参数了。这个特性是很经常用到的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">add.si(2, 2)</div></pre></td></tr></table></figure>
+<h1 id="原语"><a href="#原语" class="headerlink" title="原语"></a>原语</h1><p>想起一句话<code>May the force be with you</code>，原力，感觉原语就和原力一样强大</p>
+<h2 id="group"><a href="#group" class="headerlink" title="group"></a>group</h2><p>group可以使得一组任务并行，比如这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># task集合必须是signature或者子任务的集合，也就是不会立即启动的任务</div><div class="line">tasks = [distribute_calc.si(fundId, start, end, stype) for fundId in fundIds_group]</div><div class="line"># 返回的是group对象</div><div class="line">grp = group(tasks)</div><div class="line"># 调用后返回的是GroupResult对象,就可以使用相应的方法来处理了</div><div class="line">grp()</div><div class="line"># 可以使用任何调用API来调用</div><div class="line">grp.apply_async()</div></pre></td></tr></table></figure>
+<p>如果后面要在其他地方可以取到GroupResult，必须在调用后获得GroupResult对象后，调用save方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">res = grp.apply_async()</div><div class="line">res.save()</div></pre></td></tr></table></figure>
+<p>在其他地方调用<code>restore()</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># res就是一个GroupResult对象</div><div class="line">res = celery_result.GroupResult.restore(task_id, app=celery_current_app, backend=celery_app.backend)</div></pre></td></tr></table></figure>
+<h2 id="chain"><a href="#chain" class="headerlink" title="chain"></a>chain</h2><p>顾名思义，这个就是将一串signature串在一起运行，一个接一个，本质是组成了一组回调函数，chain会将前一个函数的结果传递到后一个函数来，不过也可以使用<code>si()</code>方法来拒绝传递，chain会返回最后一个调用的task的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 返回的是chain对象</div><div class="line">task = chain(add.s(4,4) | mul.s(8))</div><div class="line"># 任意方式调用</div><div class="line">res = task.apply_async()</div><div class="line"># 调用后返回的是AsyncResult</div><div class="line">res.get()</div><div class="line"># 也可以这么调用</div><div class="line">(add.s(2, 2) | add.s(4) | add.s(8))</div><div class="line"># 也可以使用partial</div><div class="line">c1 = (add.s(4) | mul.s(8))</div><div class="line">res = c1(16)</div></pre></td></tr></table></figure>
+<p>与group的连接，如果group在前面，会导致变成一个chord，也就是这个group运行完成后，会执行后面的函数作为回调，如果group在后面，则group的每一个任务都会使用前面的task的结果作为参数，可以使用si来拒绝参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 调用后返回的还是AsyncResult</div><div class="line">c3 = (group(add.s(i, i) for i in xrange(10)) | xsum.s())</div><div class="line"></div><div class="line"># group在后面</div><div class="line">new_user_workflow = (create_user.s() | group(import_contacts.s(), send_welcome_email.s()))</div><div class="line">new_user_workflow.delay(username=&apos;artv&apos;, first=&apos;Art&apos;, last=&apos;Vandelay&apos;, email=&apos;art@vandelay.com&apos;)</div></pre></td></tr></table></figure>
+<p><em>如何在先调用group，然后调用普通任务的情况下，获得GroupResult，这个还没有好的方法。</em></p>
+<p><code>group([(group(add.s(i, i) for i in xrange(10)) | xsum.s())])</code>这个呢？</p>
+<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>，目前这种操作有点问题，可能不能将task完全的停掉。这里再考虑更有效的方法吧。</p>
+<p>P.S. 可能需要以下的参数配置</p>
+<p><code>task_sent</code> event 当一个任务消息被发布并且<code>CELERY_TASK_SEND_SENT_EVENT</code>配置有效的时候的时候发送这个event</p>
+<p><code>CELERY_TASK_SEND_SENT_EVENT</code> 如果启用，<code>task_sent</code> event 将会发送给每一个task，这样在task被worker运行之前tasks可以被追踪到</p>
+<p><code>CELERY_SEND_EVENTS</code> # 发送task相关的event，这样task就可以被比如flower之类的进行控制了</p>
+<p>目前可以停止，但是不完全。</p>
+<h2 id="chord"><a href="#chord" class="headerlink" title="chord"></a>chord</h2><p>chord可以使得你完成group所有的task之后来调用一个回调函数，这个方法经常会在易并行(embarrassingly parallel)的场景使用，关于这个embarrassingly…<a href="https://english.stackexchange.com/questions/83677/what-is-embarrassing-about-an-embarrassingly-parallel-problem" target="_blank" rel="external">What is “embarrassing” about an embarrassingly parallel problem?</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from celery import chord</div><div class="line"># 这样会导致前面的十个任务并行处理，并且将结果组成一个list，传递给后面的xsum</div><div class="line"># 当然后面的也可以不用前面的结果，使用si()就行了</div><div class="line">res = chord((add.s(i, i) for i in xrange(10)), xsum.s())()</div></pre></td></tr></table></figure>
+<p>下面这个是我自己写的一个并发处理，并且还能拿到状态用于后续的控制和状态读取的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">task = group([chord(group(gen_group_tasks.si(start, end, stype)()))(publish.si(start, end, stype))]).apply_async()</div><div class="line"># first 这个会返回所有的要并行的tasks列表</div><div class="line">gen_group_tasks.si(start, end, stype)()</div><div class="line"># 然后形成并行group</div><div class="line">group(gen_group_tasks.si(start, end, stype)())</div><div class="line"># 然后是chord，增加回调函数，回调函数不接受参数</div><div class="line">chord(group(gen_group_tasks.si(start, end, stype)()))(publish.si(start, end, stype))</div><div class="line"># 然后将这个chord组建成为一个group，可以获取到GroupResult，否则就只能得到publish的AsyncResult</div></pre></td></tr></table></figure>
+<p>实现的机理是：有一个循环任务不断的(间隔1秒)去检测group任务是否完成，当完成的时候调用signature回调。但是在Redis和 Memcached: 它们实现了一个计数器，在每个并行的任务完成后给计数器增加，直到计数器的数字等于并行任务的数目时候调用回调函数。</p>
+<p>另外：chord不能在redis 2.2版本以前正常工作，最好升级到2.2以上。</p>
+<p>尽可能的不要用chord因为它是一个同步操作，但是如果并行任务后面的同步操作是必须的，那么chord很有用，只有header里面的所有task任务被执行完成后并且返回，回调函数才可以被调用。header里面的每一步都是并行处理的，在不同的节点。然后header里面每个任务的返回值会传给回调函数，然后执行。返回的task id是回调函数的，所以可以等待最终的返回值。</p>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><h2 id="starmap"><a href="#starmap" class="headerlink" title="starmap"></a>starmap</h2><h2 id="chunks"><a href="#chunks" class="headerlink" title="chunks"></a>chunks</h2><h1 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h1><h2 id="AsyncResult"><a href="#AsyncResult" class="headerlink" title="AsyncResult"></a>AsyncResult</h2><h2 id="GroupResult"><a href="#GroupResult" class="headerlink" title="GroupResult"></a>GroupResult</h2><h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:37:01.000Z" itemprop="dateUpdated">2017-09-01 14:37:01 14:37:01</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/13/Celery 踩坑记/" target="_blank" rel="external">http://skyrover.me/2017/08/13/Celery 踩坑记/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Celery/">Celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/13/Celery 踩坑记/&title=《Celery 踩坑记》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/13/Celery 踩坑记/&title=《Celery 踩坑记》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/13/Celery 踩坑记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Celery 踩坑记》 — SkyRover&url=http://skyrover.me/2017/08/13/Celery 踩坑记/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/13/Celery 踩坑记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">翻译 - Testing (asyncio) coroutines with pytest</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/09/contextlib 详解/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">contextlib 详解</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/13/Celery 踩坑记/&title=《Celery 踩坑记》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/13/Celery 踩坑记/&title=《Celery 踩坑记》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/13/Celery 踩坑记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Celery 踩坑记》 — SkyRover&url=http://skyrover.me/2017/08/13/Celery 踩坑记/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/13/Celery 踩坑记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3aS27DMAwFwNz/0i7QVYM07iOpFLA8WgWua3u0IMTP4xGv43vlf3135ef119+v9yxeGBgYl2Ucp+vdK895yT3J/cm3YWBg3IcxeXTyv+dXkqD8xzdjYGBgDALxJEBjYGBgzI931RB5HmoxMDAwzhlJEruqqldNmBfn4hgYGBdkVBsD//n7g/0NDAyMizCO1po0L+dB9pcnYGBgbM04L9PPxy+SZDXBRIEYAwNja0Z+4soZCTtvM4y2HgMD4+KMallt1dEwb5SW9xsDA2M7xqRwPxntSp7ZGyzDwMDYlZFb809MfufUZrkNAwNjC0Yv8FXD7vloV04dJbEYGBiXZVST26TclpfP8mCNgYGB0Ws0Vg+F1TZAuS2BgYFxG8aqFPQTpf8oF8fAwLgBY1WJfzJ4Ud1WDAyMOzCS18xD7aQY1xxKw8DA2IKRl8zypmZ+pEveHm0QBgbGbRjVF+RpbXWMIy//PXViMTAwNmX0xiYmA2TVDy00JzAwMG7AmLQnkyNgNYyWC20YGBi3YaxNaCdjYeVmAAYGxtaMasm+iqyOizWHLTAwMDZlHMWVY3qHznw7nq5gYGBszchXj5F/7qpNwcDA2JWRBNlqaSwfLMuPp9FwGAYGxtaMahjtNSmb8T55AgYGBkYxgM7vLwd0DAwMjPigVk1oe6NjhTwbAwNjI0YvNc3Hwibbh4GBgVFtDPQCa75xSXq8oL+BgYFxDcYXDI2TYcPj5pQAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

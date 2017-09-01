@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>shell命令总结 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Linux,Shell">
+    <meta name="description" content="工作中遇到的shell命令总结～ 清除cache在运行程序过程中，free -h发现cache占用太大，于是：  sync 保存数据 echo 1 &amp;gt; /proc/sys/vm/drop_caches  这样之后即可清除内存中的cache占用 awk重新生成idawk &amp;#39;BEGIN{FS=&amp;quot;,&amp;quot;;OFS=&amp;quot;,&amp;quot;;}{$1=NR;print $0">
+<meta name="keywords" content="Linux,Shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell命令总结">
+<meta property="og:url" content="http://skyrover.me/2016/12/02/shell命令总结/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="工作中遇到的shell命令总结～ 清除cache在运行程序过程中，free -h发现cache占用太大，于是：  sync 保存数据 echo 1 &amp;gt; /proc/sys/vm/drop_caches  这样之后即可清除内存中的cache占用 awk重新生成idawk &amp;#39;BEGIN{FS=&amp;quot;,&amp;quot;;OFS=&amp;quot;,&amp;quot;;}{$1=NR;print $0">
+<meta property="og:updated_time" content="2017-09-01T04:57:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell命令总结">
+<meta name="twitter:description" content="工作中遇到的shell命令总结～ 清除cache在运行程序过程中，free -h发现cache占用太大，于是：  sync 保存数据 echo 1 &amp;gt; /proc/sys/vm/drop_caches  这样之后即可清除内存中的cache占用 awk重新生成idawk &amp;#39;BEGIN{FS=&amp;quot;,&amp;quot;;OFS=&amp;quot;,&amp;quot;;}{$1=NR;print $0">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">shell命令总结</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">shell命令总结</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-12-02T07:57:57.000Z" itemprop="datePublished" class="page-time">
+  2016-12-02 15:57:57
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#清除cache"><span class="post-toc-number">1.</span> <span class="post-toc-text">清除cache</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#awk"><span class="post-toc-number">2.</span> <span class="post-toc-text">awk</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#重新生成id"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">重新生成id</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#打印出前两个字段"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">打印出前两个字段</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#获取含有inf的id"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">获取含有inf的id</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用if语句"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">使用if语句</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#sort"><span class="post-toc-number">3.</span> <span class="post-toc-text">sort</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#find"><span class="post-toc-number">4.</span> <span class="post-toc-text">find</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#vim"><span class="post-toc-number">5.</span> <span class="post-toc-text">vim</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#sed"><span class="post-toc-number">6.</span> <span class="post-toc-text">sed</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-shell命令总结"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">shell命令总结</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-12-02 15:57:57 15:57:57" datetime="2016-12-02T07:57:57.000Z"  itemprop="datePublished">2016-12-02 15:57:57</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>工作中遇到的shell命令总结～</p>
+<h1 id="清除cache"><a href="#清除cache" class="headerlink" title="清除cache"></a>清除cache</h1><p>在运行程序过程中，<code>free -h</code>发现cache占用太大，于是：</p>
+<ul>
+<li><code>sync</code> 保存数据</li>
+<li><code>echo 1 &gt; /proc/sys/vm/drop_caches</code></li>
+</ul>
+<p>这样之后即可清除内存中的cache占用</p>
+<h1 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h1><h2 id="重新生成id"><a href="#重新生成id" class="headerlink" title="重新生成id"></a>重新生成id</h2><p><code>awk &#39;BEGIN{FS=&quot;,&quot;;OFS=&quot;,&quot;;}{$1=NR;print $0}&#39; summary.csv &gt; summary_ex.csv</code></p>
+<h2 id="打印出前两个字段"><a href="#打印出前两个字段" class="headerlink" title="打印出前两个字段"></a>打印出前两个字段</h2><p><code>awk &#39;BEGIN{FS=&quot;,&quot;;OFS=&quot;,&quot;;}{print $1,$2}&#39; summary.csv &gt; summary_ex.csv</code></p>
+<h2 id="获取含有inf的id"><a href="#获取含有inf的id" class="headerlink" title="获取含有inf的id"></a>获取含有inf的id</h2><p><code>cat summary.csv | grep inf | awk -F &#39;,&#39; &#39;{print $2}&#39; &gt; inf_ids.txt</code></p>
+<h2 id="使用if语句"><a href="#使用if语句" class="headerlink" title="使用if语句"></a>使用if语句</h2><p>第三个不为空，但是第四个为空</p>
+<p><code>cat find_result.txt | awk -F &#39;,&#39; &#39;{if(!($3==&quot;&quot;) &amp;&amp; $4==&quot;&quot;){print $0}&#39; | awk -F &#39;,&#39; &#39;{if($1==20160624){print $0}}&#39; | wc -l</code></p>
+<p>不匹配正则表达式，不匹配数字</p>
+<p><code>cat find_result.txt | awk -F &#39;,&#39; &#39;{if($3!~&quot;[0-9]&quot;) &amp;&amp; $4==&quot;&quot;){print $0}&#39; | awk -F &#39;,&#39; &#39;{if($1==20160624){print $0}}&#39; | wc -l</code></p>
+<h1 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h1><p>根据第一个字段，分隔符是, 按数字排序</p>
+<p><code>sort -t , -k1 -n summary_ex.csv &gt; summary_ex_sort.csv</code></p>
+<h1 id="find"><a href="#find" class="headerlink" title="find"></a>find</h1><p>查找此类文件有多少个</p>
+<p><code>find /data/output/ -type f -name ability*.csv | wc -l</code></p>
+<p>在所有文件内容中查找有220010的行</p>
+<p><code>find /data/output/errors/ -name &#39;stk*.csv&#39; | xargs grep &#39;220010&#39;</code></p>
+<p>查找内容为空的ability文件</p>
+<p><code>find /data/output -name ability*.csv -type f －empty | wc -l</code></p>
+<h1 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h1><p><code>:%s/app/data/gc</code> 全文提醒替换</p>
+<h1 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h1><p>删除grep出的特定行,形成新文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for id in $(cat inf_ids.txt)</div><div class="line">do</div><div class="line">    sed -i “/$id/d” summary.csv</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>将新生成的文件贴到某个文件末尾</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for line in $(cat summary.csv)</div><div class="line">do</div><div class="line">	sed -i &quot;\$a $line&quot; summary_45.csv</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>其实这样就OK了。。</p>
+<p><code>cat test1 test2 &gt; test3</code></p>
+<p><code>cat test2 &gt;&gt; test1</code> 使用追加</p>
+<p>接下来重新生成id</p>
+<p><code>-e</code> 以选项中指定的script来处理输入的文本文件</p>
+<p>在文件第四行后面添加一行,a表示新增，在下一行</p>
+<p><code>sed -e 4a\newLine testfile</code></p>
+<p>删除第2-5行,不加-e也是可以的，记得加单引号</p>
+<p><code>cat -n /etc/passwd | sed &#39;2,5d&#39;</code></p>
+<p>删除到最后一行</p>
+<p><code>cat -n /etc/passwd | sed &#39;3,$d&#39;</code></p>
+<p>i表示插入，在目前的上一行</p>
+<p><code>cat -n /etc/passwd | sed &#39;2i drink tea&#39;</code></p>
+<p>反斜杠加入多行</p>
+<p><code>cat -n /etc/passwd | sed &#39;2a drink tea or ...\drink beer?&#39;</code></p>
+<p>c表示取代</p>
+<p><code>cat -n /etc/passwd | sed &#39;2,5c no 2-5 number&#39;</code></p>
+<p>p显示</p>
+<p><code>cat -n /etc/passwd | sed -n &#39;5,7p&#39;</code></p>
+<p>显示特定关键字的行,-n表示仅打印包含模板的行</p>
+<p><code>cat -n /etc/passwd | sed &#39;/root/p&#39;</code></p>
+<p>删除所有包含关键字的行，其他行输出</p>
+<p><code>cat -n /etc/passwd | sed &#39;/root/d&#39;</code></p>
+<p>数据搜寻并且执行命令</p>
+<p><code>cat -n /etc/passwd | sed -n &#39;/root/{s/bash/blueshell/;p}&#39;</code></p>
+<p>多点编辑</p>
+<p><code>cat -n /etc/passwd | sed -e &#39;3,$d&#39; -e &#39;s/bash/blueshell/&#39;</code></p>
+<p>-i 直接修改文件内容</p>
+<p><code>sed -i &#39;s/\.$/\!/g&#39; regular.txt</code></p>
+<p><code>sed -i &#39;$a # This is a test&#39; regular.txt</code></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T04:57:42.000Z" itemprop="dateUpdated">2017-09-01 12:57:42 12:57:42</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2016/12/02/shell命令总结/" target="_blank" rel="external">http://skyrover.me/2016/12/02/shell命令总结/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shell/">Shell</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2016/12/02/shell命令总结/&title=《shell命令总结》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2016/12/02/shell命令总结/&title=《shell命令总结》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2016/12/02/shell命令总结/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《shell命令总结》 — SkyRover&url=http://skyrover.me/2016/12/02/shell命令总结/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2016/12/02/shell命令总结/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/12/08/Pandas使用笔记/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Pandas使用笔记</h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2016/12/02/shell命令总结/&title=《shell命令总结》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2016/12/02/shell命令总结/&title=《shell命令总结》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2016/12/02/shell命令总结/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《shell命令总结》 — SkyRover&url=http://skyrover.me/2016/12/02/shell命令总结/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2016/12/02/shell命令总结/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACP0lEQVR42u3a0W7DIAxG4bz/S2fSrja1Sc9v063A4aqqIuBLJRdjHwce5/d4/Pzzm6tnzodxNf/9MwOGDBkypmWct4Nvi8/AXxPZmwwZMvZhjAqyJGiSF8H3JkOGDBlki2dp8IArQ4YMGbWAm85AnvyH/w0ZMmRMxSApaLoMCazpugNycRkyZEzI6BQG3v35j+obMmTI+GBGP/msVRLTY+KLOWXIkLE04/4Yx1PWdKNpiwYKxDJkyFiU0WmYIAVI8ppqB8TL/w0ZMmQsyuABLm2w4NdtaSHh6E8qQ4aMqRi1kMpDMwmsvDzwZE4ZMmQszSBb7zRb1O72OTX495AhQ8a0jFoK2g+XJK3lZQMZMmTswOAXYbWLsyD21zJTGTJkLM1Ir8x40OwEcf5SXkViGTJkrMOoFS950kuCby3dRb+JDBkyJmfwRJEvyQuZ5OiJWjFkyJCxDSNts0jbKTrHyrh4KUOGjIUY/FDIj3edzXFkMX2VIUPGhIy0tSu9SqslxunFnAwZMtZm1BLLUWVOPk+wigwZMhZlkGu1fsKZBt+4eCBDhowNGGkAJbBRqTLiyZAhY2lGGsEGXOI3bgeLt4kyZMiYlnGGgyyfhshOyeFXW5gMGTIWZYyK1rXF+HHw/gXJkCFjB0bnOqyTvvbbOGTIkLEbI71p7z+ZHu9QDVaGDBkywqaKd4Tp+PQqQ4aMzRj8m3S7/aKpDBkydmB0miFGtYV1kmcZMmSszeg3XtxvnbPTZHhw/4gMGTI+kfEFjI8ZBvjGZIoAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

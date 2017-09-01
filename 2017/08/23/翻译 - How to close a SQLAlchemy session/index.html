@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>翻译 - How to close a SQLAlchemy session | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,翻译,StackOverFlow">
+    <meta name="description" content="在StackOverFlow中看到这个问题，比较有意思How to close a SQLAlchemy session? 题目继续我们在How to close sqlalchemy connection in MySQL的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python 如果我在python控制台中运行这一段程序，它将会保持session打">
+<meta name="keywords" content="Python,翻译,StackOverFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="翻译 - How to close a SQLAlchemy session">
+<meta property="og:url" content="http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="在StackOverFlow中看到这个问题，比较有意思How to close a SQLAlchemy session? 题目继续我们在How to close sqlalchemy connection in MySQL的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python 如果我在python控制台中运行这一段程序，它将会保持session打">
+<meta property="og:updated_time" content="2017-09-01T06:40:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="翻译 - How to close a SQLAlchemy session">
+<meta name="twitter:description" content="在StackOverFlow中看到这个问题，比较有意思How to close a SQLAlchemy session? 题目继续我们在How to close sqlalchemy connection in MySQL的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python 如果我在python控制台中运行这一段程序，它将会保持session打">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">翻译 - How to close a SQLAlchemy session</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">翻译 - How to close a SQLAlchemy session</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-23T06:29:33.000Z" itemprop="datePublished" class="page-time">
+  2017-08-23 14:29:33
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#题目"><span class="post-toc-number">1.</span> <span class="post-toc-text">题目</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#回答"><span class="post-toc-number">2.</span> <span class="post-toc-text">回答</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#后记"><span class="post-toc-number">3.</span> <span class="post-toc-text">后记</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-翻译 - How to close a SQLAlchemy session"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">翻译 - How to close a SQLAlchemy session</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-23 14:29:33 14:29:33" datetime="2017-08-23T06:29:33.000Z"  itemprop="datePublished">2017-08-23 14:29:33</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>在StackOverFlow中看到这个问题，比较有意思<a href="https://stackoverflow.com/questions/21738944/how-to-close-a-sqlalchemy-session" target="_blank" rel="external">How to close a SQLAlchemy session?</a></p>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>继续我们在<a href="https://stackoverflow.com/questions/8645250/how-to-close-sqlalchemy-connection-in-mysql/8705750?noredirect=1#comment32872652_8705750" target="_blank" rel="external">How to close sqlalchemy connection in MySQL</a>的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python</p>
+<p>如果我在python控制台中运行这一段程序，它将会保持session打开一直到我退出Python</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy.orm import sessionmaker</div><div class="line">from models import OneTable, get_engine</div><div class="line"></div><div class="line">engine = get_engine(database=&quot;mydb&quot;)</div><div class="line">session = sessionmaker(bind=engine)()</div><div class="line"></div><div class="line">results = session.query(OneTable.company_name).all()</div><div class="line"></div><div class="line"># some work with the data #</div><div class="line"></div><div class="line">session.close()</div></pre></td></tr></table></figure>
+<p>唯一我发现的解决方式是<code>engine.dispose()</code></p>
+<p>按照我给出连接的讨论，我的问题是：</p>
+<ul>
+<li>为什么<code>engine.dispose()</code>是关闭session所必须的</li>
+<li><code>session.close()</code>不够吗</li>
+</ul>
+<h1 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h1><p>高票回答：</p>
+<p>这主要是对<code>session</code>这个词有混淆。你可能混淆了<code>SQLAlchemy Session</code>和<code>MySQL session</code>，后者指的是当你第一次连接到MySQL和断开连接之间这一段范围。</p>
+<p>这两个概念是不同的，SQLAlchemy Session指的是一个或者多个transactions的范围，在一个特定的数据库连接之上。</p>
+<p>因此，就你所问的答案应该是调用<code>session.close()</code>，也就是，如何正确的关闭SQLAlchemy Session</p>
+<p>然后，剩下的问题说明你想凭借一些功能性的东西，当特定的Session关闭时候，而且真实的DBAPI连接也要关闭</p>
+<p>也就是说你希望禁止connection pooling连接池，就像其他答案一样，非常容易，使用NullPool，<code>poolclass=NullPool</code></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>最近在应用中出现了这个问题<code>Too many open files:/sqlalchemy/dialects</code></p>
+<p>首先这个<code>too many open files</code>原因是因为程序打开的文件/socket连接数量超过系统设定值，然后又是sqlalchemy报错的，因此很大可能性是因为sqlalchemy建立的连接过多。</p>
+<p>然后给所有使用<code>db.session.commit()</code>的后面加入一行<code>db.session.close()</code>用来关闭连接会话。</p>
+<p>看来涉及数据库连接等连接问题时候还是得谨慎啊。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:40:56.000Z" itemprop="dateUpdated">2017-09-01 14:40:56 14:40:56</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/23/翻译 - How to close a SQLAlchemy session/" target="_blank" rel="external">http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/StackOverFlow/">StackOverFlow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/&title=《翻译 - How to close a SQLAlchemy session》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/&title=《翻译 - How to close a SQLAlchemy session》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 - How to close a SQLAlchemy session》 — SkyRover&url=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/25/Python内存管理和gc/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Python内存管理和gc</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">翻译 - use pytest-asyncio to test your coroutines</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/&title=《翻译 - How to close a SQLAlchemy session》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/&title=《翻译 - How to close a SQLAlchemy session》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 - How to close a SQLAlchemy session》 — SkyRover&url=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3aQXLjMAwEQP//09nrXqTMAOSWa6t1csUyxdYBRAB8PvH189f1/m1y5/tTnp74/tvVhYeHh7fY+tMW3x/2von3vyQvJfnV4wp4eHh413jJcnmI/5dx+5dd4eHh4X0lrwjT6/vx8PDw/idekgrvDww8PDy87+FtlnsK66eOh/ck+1itBQ8PD6/LWqMw/T2fr/T38PDw8NYl1DxYJ9/OjpnNhYeHh3eDlwfcWQq7GcDK1/nlTjw8PLyjvLbEkAT6Nui3heNiHTw8PLwLvH0rq30FbfI9W7Po4+Hh4eEteLM2WH48zNZsC8p1fw8PDw+v5CXpb3IMbBpms4JFVMjAw8PDu8a7N1B19ghJXtBjfw8PDw/vKC8P+nkjqi1knE21P0nGjYeHhzfiten1qa3sRw3qUQY8PDy8Q7x96G9bYvlfZgl6vTk8PDy8yTxAXXTY3Jkj2yLyIxgPDw/vAi8PuMWQ6OjwmLXlhh0/PDw8vAUvKY8mqXYb6NvX2pZI8PDw8O7xNkG/LVXMGmBtcSSaycXDw8Mb8fJB0nawYD+CkA9dPX7Gw8PDu8CbFWrzfLVl7NepM308PDy80bhq25hvW/6zYsRsiOGXIwEPDw9vzcuXvhHi23JDPsaKh4eH9+95e9KsXLsfOHg8/fDw8PAu8/KlZ+WJ/NW0B0ORrePh4eEd4m0KCkWauwj3dTsNDw8P7zJvtpW2CHt20CqqVePh4eEd4v2U1ywVPlWWbV8cHh4e3g3e6jxZB/rkzvbYmL1oPDw8vJaXHwbteMG+eJEfDI/PxcPDw7vG26S2Z0sYn7MXHh4e3hfw2oGDGy+uSLXx8PDwvoCXDKTm1YA2QW/HXvHw8PDu8dqmV1LknaXdyX6Kp+Dh4eFd4J39jz5vU7XF4iulCjw8PLyO9wcBBj+kUVZybQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

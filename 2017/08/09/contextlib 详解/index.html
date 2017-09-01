@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>contextlib 详解 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,源码">
+    <meta name="description" content="今天我们来看看contextlib这个库里面的contextmanager和closing怎么用，为什么这么用，背后的原理是什么。首先看看contextmanager： contextmanager使用12345678910111213141516from contextlib import contextmanagerclass Query(object):    def __init__(se">
+<meta name="keywords" content="Python,源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="contextlib 详解">
+<meta property="og:url" content="http://skyrover.me/2017/08/09/contextlib 详解/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="今天我们来看看contextlib这个库里面的contextmanager和closing怎么用，为什么这么用，背后的原理是什么。首先看看contextmanager： contextmanager使用12345678910111213141516from contextlib import contextmanagerclass Query(object):    def __init__(se">
+<meta property="og:updated_time" content="2017-09-01T06:35:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="contextlib 详解">
+<meta name="twitter:description" content="今天我们来看看contextlib这个库里面的contextmanager和closing怎么用，为什么这么用，背后的原理是什么。首先看看contextmanager： contextmanager使用12345678910111213141516from contextlib import contextmanagerclass Query(object):    def __init__(se">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">contextlib 详解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">contextlib 详解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-09T09:44:21.000Z" itemprop="datePublished" class="page-time">
+  2017-08-09 17:44:21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#contextmanager"><span class="post-toc-number">1.</span> <span class="post-toc-text">contextmanager</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">使用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#源代码"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">源代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GeneratorContextManager"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">_GeneratorContextManager</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#closing"><span class="post-toc-number">2.</span> <span class="post-toc-text">closing</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小结"><span class="post-toc-number">3.</span> <span class="post-toc-text">小结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-contextlib 详解"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">contextlib 详解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-09 17:44:21 17:44:21" datetime="2017-08-09T09:44:21.000Z"  itemprop="datePublished">2017-08-09 17:44:21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>今天我们来看看<code>contextlib</code>这个库里面的<code>contextmanager</code>和<code>closing</code>怎么用，为什么这么用，背后的原理是什么。首先看看<code>contextmanager</code>：</p>
+<h1 id="contextmanager"><a href="#contextmanager" class="headerlink" title="contextmanager"></a><code>contextmanager</code></h1><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">from contextlib import contextmanager</div><div class="line"></div><div class="line">class Query(object):</div><div class="line"></div><div class="line">    def __init__(self, name):</div><div class="line">        self.name = name</div><div class="line"></div><div class="line">    def query(self):</div><div class="line">        print(&apos;Query info about %s...&apos; % self.name)</div><div class="line"></div><div class="line">@contextmanager</div><div class="line">def create_query(name):</div><div class="line">    print(&apos;Begin&apos;)</div><div class="line">    q = Query(name)</div><div class="line">    yield q</div><div class="line">    print(&apos;End&apos;)</div></pre></td></tr></table></figure>
+<p>这样就定义了一个上下文管理器，<code>create_query</code>也可以使用with语句了，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">with create_query(&apos;Bob&apos;) as q:</div><div class="line">    q.query()</div></pre></td></tr></table></figure>
+<p>with语句首先执行yield之前的语句，yield调用会返回后面的变量，然后执行with语句内部的所有语句，with内部语句执行完成之后执行yield之后的语句</p>
+<p>所以我们就可以在yield之前定义类似<code>__enter__</code>的代码，yield后面的变量就是<code>__enter__</code>的返回值，然后yield之后的语句是定义类似<code>__exit__</code>的代码。</p>
+<p>清楚了使用，来看看源代码：</p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><p><code>contextmanager</code>是一个装饰器函数，其中的注释也清楚的解释了自己的用法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&quot;&quot;&quot;@contextmanager decorator.</div><div class="line"></div><div class="line">    Typical usage:</div><div class="line"></div><div class="line">        @contextmanager</div><div class="line">        def some_generator(&lt;arguments&gt;):</div><div class="line">            &lt;setup&gt;  # 初始化代码 __enter__</div><div class="line">            try:</div><div class="line">                yield &lt;value&gt;  # __enter__返回的值</div><div class="line">            finally:</div><div class="line">                &lt;cleanup&gt;  # __exit__</div><div class="line"></div><div class="line">    This makes this:</div><div class="line"></div><div class="line">        with some_generator(&lt;arguments&gt;) as &lt;variable&gt;:</div><div class="line">            &lt;body&gt;</div><div class="line"></div><div class="line">    equivalent to this:</div><div class="line"></div><div class="line">        &lt;setup&gt;</div><div class="line">        try:</div><div class="line">            &lt;variable&gt; = &lt;value&gt;</div><div class="line">            &lt;body&gt;</div><div class="line">        finally:</div><div class="line">            &lt;cleanup&gt;</div><div class="line"></div><div class="line">    &quot;&quot;&quot;</div></pre></td></tr></table></figure>
+<p>其代码是调用了一个<code>_GeneratorContextManager</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def contextmanager(func):</div><div class="line">    @wraps(func)</div><div class="line">    def helper(*args, **kwds):</div><div class="line">        return _GeneratorContextManager(func, args, kwds)</div><div class="line">    return helper</div></pre></td></tr></table></figure>
+<p>相当于用<code>contextmanager</code>装饰的函数在调用的时候，比如<code>with func() as f:</code>的时候，<code>func()</code>其实是调用了<code>helper()</code>，而这个返回的是一个<code>_GeneratorContextManager</code>对象，也就是说其实是<code>_GeneratorContextManager</code>对象实现了上下文协议，这个对象肯定就定义了<code>__enter__</code>和<code>__exit__</code>方法，当然这个方法是与func有关的，那么继续来看看<code>_GeneratorContextManager</code></p>
+<h2 id="GeneratorContextManager"><a href="#GeneratorContextManager" class="headerlink" title="_GeneratorContextManager"></a><code>_GeneratorContextManager</code></h2><p>这里有一个要点就是使用类来实现了一个装饰器，这种做法被推荐过，因为可以更好的弄清楚内部变量的作用域之类的东西。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">class _GeneratorContextManager(ContextDecorator):</div><div class="line">    &quot;&quot;&quot;Helper for @contextmanager decorator. 发现helper这个经常用，啊哈，以后我也开始用这个变量名&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, func, args, kwds):</div><div class="line">        # func是一个生成器函数，这里首先&quot;实例化&quot;</div><div class="line">        self.gen = func(*args, **kwds)</div><div class="line">        # 保存之前函数的一些参数</div><div class="line">        self.func, self.args, self.kwds = func, args, kwds</div><div class="line">        doc = getattr(func, &quot;__doc__&quot;, None)</div><div class="line">        if doc is None:</div><div class="line">            doc = type(self).__doc__</div><div class="line">        self.__doc__ = doc</div><div class="line"></div><div class="line">    def _recreate_cm(self):</div><div class="line">        # _GCM instances are one-shot context managers, so the</div><div class="line">        # CM must be recreated each time a decorated function is</div><div class="line">        # called</div><div class="line">        return self.__class__(self.func, self.args, self.kwds)</div><div class="line"></div><div class="line">    def __enter__(self):</div><div class="line">        try:</div><div class="line">            # enter方法，返回的肯定是生成器yield的值</div><div class="line">            # 在next执行的过程中，已经将yield之前的代码执行了</div><div class="line">            return next(self.gen)</div><div class="line">        except StopIteration:</div><div class="line">            raise RuntimeError(&quot;generator didn&apos;t yield&quot;) from None</div><div class="line"></div><div class="line">    def __exit__(self, type, value, traceback):</div><div class="line">        # 如果没有错误，继续next生成器</div><div class="line">        # 如果生成器没有结束，那么引发异常</div><div class="line">        if type is None:</div><div class="line">            try:</div><div class="line">                next(self.gen)</div><div class="line">            except StopIteration:</div><div class="line">                return</div><div class="line">            else:</div><div class="line">                raise RuntimeError(&quot;generator didn&apos;t stop&quot;)</div><div class="line">        # 如果在with语句中有异常</div><div class="line">        else:</div><div class="line">            if value is None:</div><div class="line">                # 实例化异常类型的实例</div><div class="line">                value = type()</div><div class="line">            try:</div><div class="line">                # 向生成器发送这个异常，使其停止</div><div class="line">                self.gen.throw(type, value, traceback)</div><div class="line">                # 如果没有停止，则引发RuntimeError异常</div><div class="line">                raise RuntimeError(&quot;generator didn&apos;t stop after throw()&quot;)</div><div class="line">            except StopIteration as exc:</div><div class="line">                # 生成器停止异常，如果exit处理的异常是StopIteration,则返回True，相当于已经执行了清理代码</div><div class="line">                # 如果exit处理的异常不是停止异常，则继续向上引发这个异常，说明这个异常已经使得清理代码执行，但是需要往上引发</div><div class="line">                return exc is not value</div><div class="line">            except RuntimeError as exc:</div><div class="line">                # 如果在将exit的异常（比如是生成器停止异常）发送给生成器，但是没有停止，所以捕捉到了RuntimeError异常</div><div class="line">                # 如果该RuntimeError的异常是由于exit处理的异常（生成器停止异常）引发的，则继续引发这个异常，因为是先发生生成器停止异常，然后再发生RuntimeError，所以会继续向上引发RuntimeError</div><div class="line">                if exc.__cause__ is value:</div><div class="line">                    return False</div><div class="line">                # 否则向上引发RuntimeError</div><div class="line">                raise</div><div class="line">            except:</div><div class="line">                # 只会重新引发不是传递给throw的异常，因为__exit__一定不会引发异常除非__exit__本身失败了</div><div class="line">                # 但是throw方法不得不引发异常导致异常传播，因此这里修正了throw协议和__exit__协议的不匹配问题</div><div class="line">                # 也就是说，这个异常一定不能是throw发出的，因为__exit__不会引发异常的，所以只有当这个处理的异常不是throw发出的，即exit传递进来的value，就会重新引发</div><div class="line">                if sys.exc_info()[1] is not value:</div><div class="line">                    raise</div></pre></td></tr></table></figure>
+<p>有一点需要说明的是<code>__exit__</code>方法返回True，说明已经处理好了，返回False，会继续抛出异常。</p>
+<p>这里有一大堆的错误处理，以后可以参考。要理解其核心点在于，exit方法接收到的异常可能是StopIteration，因为可能在with语句中将生成器迭代完成了，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">with create_query(&apos;Bob&apos;) as q:</div><div class="line">    next(q)</div></pre></td></tr></table></figure>
+<p>当然形式可能不一样，但是效果都是在with中引发了StopIteration异常，然后这里处理的时候就会有这么多种情况，异常处理的主要目的是抑制StopIteration异常的发出。</p>
+<h1 id="closing"><a href="#closing" class="headerlink" title="closing"></a><code>closing</code></h1><p>还有一个简单的上下文处理器就是这个closing，主要的功能就是给加了一个<code>__exit__</code>方法和<code>__enter__</code>方法，使其可以支持上下文管理器协议，下面是使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from contextlib import closing</div><div class="line">from urllib.request import urlopen</div><div class="line"></div><div class="line">with closing(urlopen(&apos;https://www.python.org&apos;)) as page:</div><div class="line">    for line in page:</div><div class="line">        print(line)</div></pre></td></tr></table></figure>
+<p>下面是源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class closing(object):</div><div class="line">    def __init__(self, thing):</div><div class="line">        self.thing = thing</div><div class="line">    def __enter__(self):</div><div class="line">        return self.thing</div><div class="line">    def __exit__(self, *exc_info):</div><div class="line">        self.thing.close()</div></pre></td></tr></table></figure>
+<p>也可以这么实现，很机智吧！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@contextmanager</div><div class="line">def closing(thing):</div><div class="line">    try:</div><div class="line">        yield thing</div><div class="line">    finally:</div><div class="line">        thing.close()</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p><code>contextlib</code>库常用的内容就是这些了，不得不感叹设计真的是巧妙，非常不错。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:35:41.000Z" itemprop="dateUpdated">2017-09-01 14:35:41 14:35:41</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/09/contextlib 详解/" target="_blank" rel="external">http://skyrover.me/2017/08/09/contextlib 详解/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码/">源码</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/09/contextlib 详解/&title=《contextlib 详解》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/09/contextlib 详解/&title=《contextlib 详解》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/09/contextlib 详解/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《contextlib 详解》 — SkyRover&url=http://skyrover.me/2017/08/09/contextlib 详解/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/09/contextlib 详解/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/13/Celery 踩坑记/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Celery 踩坑记</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/09/Celery使用以及消息队列/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Celery使用以及消息队列</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/09/contextlib 详解/&title=《contextlib 详解》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/09/contextlib 详解/&title=《contextlib 详解》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/09/contextlib 详解/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《contextlib 详解》 — SkyRover&url=http://skyrover.me/2017/08/09/contextlib 详解/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/09/contextlib 详解/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aO24DMQxFUe9/0xPAVZrR3EcqgU1dVYY/ss4UBEnx9cLreq+717/X+le172xbMmTI+FrGtVx3f7B+Z33c9ffXe95SZciQcQCDBFkSCslxydH52WTIkCGj85okgndgGTJkyNjFqKWJabopQ4YMGWnqlh6d/JakpNtqcRkyZHwho38x8Hev//V+Q4YMGR/JuMJF9uH/yAP3w6lkyJAxmpGmdKSVxtm7HoQMGTJOYKTlIk/jOoVxsQyWIUPGaEZaLaahtvOYNlftMmTI+CoGb+vXBsJqgZiXsugmQYYMGQcwak38fkEbpI8yZMg4gNEpLNMhjDSVREWsDBkyDmB0At+uZhlPRlERK0OGjHGM2nADb66lY2dxKStDhozRDN4s63zKQy0pmB9KaBkyZIxmdMJcmhSmCSJJE2XIkDGbUWui1RLEtLUX7CBDhozRDHJQfkkZFJxg8ILvI0OGjKmMWv5YG57otO3iYQsZMmQMYqTjFLtSxvRhBUWsDBkyxjE6RWbt/V1JpAwZMs5k8IDbD69pIviQYsqQIWM0gydkpA3HS9POQnvKkCFjEOMKFw+FPERuGN2QIUPGaEYtzMW3oyDRrAV6GTJknMPgw1jkEGlil+78ULjKkCFjNCMtaNPUkDy+Vi0uQ4YMGaWyll9kpvvcjoXJkCFDRuM6kzN4MSxDhozTGLUiliPTAYt4gEyGDBmjGZ02WRo0199MLzg3TGrIkCHj0xk/869lq5BJbvwAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

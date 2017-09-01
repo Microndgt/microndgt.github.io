@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>信号在Flask中的使用 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,Flask">
+    <meta name="description" content="Blinker提供了信号支持，信号就是在框架核心功能或者一些Flask扩展发生动作时所发送的通知，用于解耦应用。 123456from blinker import signalstarted = signal(&amp;apos;test-started&amp;apos;)def each(round):  print(&amp;quot;round &amp;#123;&amp;#125;&amp;quot;.format(round))">
+<meta name="keywords" content="Python,Flask">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信号在Flask中的使用">
+<meta property="og:url" content="http://skyrover.me/2017/04/22/信号在Flask中的使用/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="Blinker提供了信号支持，信号就是在框架核心功能或者一些Flask扩展发生动作时所发送的通知，用于解耦应用。 123456from blinker import signalstarted = signal(&amp;apos;test-started&amp;apos;)def each(round):  print(&amp;quot;round &amp;#123;&amp;#125;&amp;quot;.format(round))">
+<meta property="og:updated_time" content="2017-09-01T06:19:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="信号在Flask中的使用">
+<meta name="twitter:description" content="Blinker提供了信号支持，信号就是在框架核心功能或者一些Flask扩展发生动作时所发送的通知，用于解耦应用。 123456from blinker import signalstarted = signal(&amp;apos;test-started&amp;apos;)def each(round):  print(&amp;quot;round &amp;#123;&amp;#125;&amp;quot;.format(round))">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">信号在Flask中的使用</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">信号在Flask中的使用</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-22T08:41:56.000Z" itemprop="datePublished" class="page-time">
+  2017-04-22 16:41:56
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#自定义信号"><span class="post-toc-number">1.</span> <span class="post-toc-text">自定义信号</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#信号订阅的高级用法"><span class="post-toc-number">2.</span> <span class="post-toc-text">信号订阅的高级用法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#flask-login中的信号"><span class="post-toc-number">3.</span> <span class="post-toc-text">flask-login中的信号</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实战应用"><span class="post-toc-number">4.</span> <span class="post-toc-text">实战应用</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-信号在Flask中的使用"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">信号在Flask中的使用</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-04-22 16:41:56 16:41:56" datetime="2017-04-22T08:41:56.000Z"  itemprop="datePublished">2017-04-22 16:41:56</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>Blinker提供了信号支持，信号就是在框架核心功能或者一些Flask扩展发生动作时所发送的通知，用于解耦应用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from blinker import signal</div><div class="line">started = signal(&apos;test-started&apos;)</div><div class="line">def each(round):</div><div class="line">  print(&quot;round &#123;&#125;&quot;.format(round))</div><div class="line">started.connect(each)</div><div class="line">started.send(1)</div></pre></td></tr></table></figure>
+<p>connect和send方法不再一个文件中的时候，通过started作为桥梁达到解耦的作用。</p>
+<p>Flask可以发送9种信号，第三方扩展中也会有额外的信号，需要做的是添加对应的信号订阅。</p>
+<ul>
+<li>flask.template_rendered</li>
+</ul>
+<p>模版渲染成功的时候发送，这个信号和模版实例template，上下文的字典一起调用。刚才有一个想法，就是可以用这些信号订阅来实现一个日志系统，将相应信号发生时候的参数都记录下来，这样方便调试和记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def log_template_renders(sender, template, context, **extra):</div><div class="line">    pass</div><div class="line">from flask import template_rendered</div><div class="line">template_rendered.connect(log_template_renders, app)</div></pre></td></tr></table></figure>
+<ul>
+<li>flask.request_started</li>
+</ul>
+<p>建立请求上下文后，在请求处理开始之前发送，订阅者可以使用request之类的标准全局代理访问请求。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from flask import request_started</div><div class="line">request_started.connect(log_request, app)</div></pre></td></tr></table></figure>
+<ul>
+<li>flask.request_finished</li>
+<li>flask.got_request_exception 在请求处理中抛出异常时候发送，异常本身会通过exception传递到订阅函数</li>
+<li>flask.request_tearing_down</li>
+<li>flask.appcontext_tearing_down</li>
+</ul>
+<h1 id="自定义信号"><a href="#自定义信号" class="headerlink" title="自定义信号"></a>自定义信号</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from blinker import Namespace</div><div class="line">web_signals = Namespace()</div><div class="line">large_file_saved = web_signals.singal(&apos;large-file-saved&apos;)</div></pre></td></tr></table></figure>
+<p>当上传文件大于某个值，就可以使用send方法来发送这个信号。</p>
+<h1 id="信号订阅的高级用法"><a href="#信号订阅的高级用法" class="headerlink" title="信号订阅的高级用法"></a>信号订阅的高级用法</h1><p>可以使用connect_via()装饰器订阅信号了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@appcontext_tearing_down.connect_via(app)</div><div class="line">def close_db_connection(sender, **extra):</div><div class="line">  session.close()</div></pre></td></tr></table></figure>
+<p>装饰器来使用connect方法，和上面的是一个作用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@started.connect</div><div class="line">def each(round):</div><div class="line">  print(&quot;round &#123;&#125;&quot;.format(round))</div></pre></td></tr></table></figure>
+<h1 id="flask-login中的信号"><a href="#flask-login中的信号" class="headerlink" title="flask-login中的信号"></a>flask-login中的信号</h1><p>中有6种信号，可以基于其中信号做一些额外的工作，比如使用user_logged_in来记录用户的登录次数和登录IP</p>
+<p>其中flask-login中发送信号的代码是：<code>user_logged_in.send(current_app._get_current_object(), user=_get_user())</code></p>
+<p>所以只要订阅这个信号，每次登录的时候就会触发订阅这个信号的函数，然后就执行这个函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@flask_login.user_logged_in.connect_via(app)</div><div class="line">def _track_logins(sender, user, **extra):</div><div class="line">  user.login_count += 1</div><div class="line">	user.last_login_ip = request.remote_addr</div><div class="line">	db.session.add(user)</div><div class="line">	db.session.commit()</div></pre></td></tr></table></figure>
+<h1 id="实战应用"><a href="#实战应用" class="headerlink" title="实战应用"></a>实战应用</h1><p>大概是这样的，每次在我发表新文章或者更新了一篇文章后，或者是更新了网站历史，发布了新版本的时候，都会连接新浪微博，然后发一条微博。这个机制中就用到了信号，实现了不同业务之间的解耦。很好用！</p>
+<p>其中使用到了微博的API，或者你也可以直接通过模拟登录的方式。需要使用到一个第三方的包weibo，你可以<a href="https://github.com/lxyu/weibo" target="_blank" rel="external">点击这里</a>找到它。</p>
+<p>发送微博的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">from .weibo import Client</div><div class="line">import random</div><div class="line">APP_KEY = &apos;&apos;</div><div class="line">APP_SECRET = &apos;&apos;</div><div class="line">CALLBACK_URL = &apos;https://api.weibo.com/oauth2/default.html&apos;  # callback url</div><div class="line">USERNAME = &apos;&apos;</div><div class="line">PASSWORD = &apos;&apos;</div><div class="line">def gen_location():</div><div class="line">    # -90 - +90</div><div class="line">    # -180 - +180</div><div class="line">    lat = random.randrange(-9000, 9000) / 100</div><div class="line">    long = random.randrange(-18000, 18000) / 100</div><div class="line">    return lat, long</div><div class="line">def post_new(status):</div><div class="line">    c = Client(APP_KEY, APP_SECRET, CALLBACK_URL, username=USERNAME, password=PASSWORD)</div><div class="line">    location = gen_location()</div><div class="line">    # f = open(filename, &apos;rb&apos;)</div><div class="line">    c.post(&apos;statuses/update&apos;, status=status, lat=location[0], long=location[1])</div><div class="line">    # f.close()</div></pre></td></tr></table></figure>
+<p>接下来参考上面讲的信号理论内容来实践啦，首先创建signal，然后在发表新文章，更新文章或者历史的时候，来一句这个<code>new_post.send(p)</code></p>
+<p>signal定义和函数绑定如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from blinker import signal</div><div class="line">from weiboRobot import post_new</div><div class="line">new_post = signal(&apos;new_post&apos;)</div><div class="line">update_post = signal(&apos;update_post&apos;)</div><div class="line">new_history = signal(&apos;new_history&apos;)</div><div class="line">@new_post.connect</div><div class="line">def new_post_weibo(post):</div><div class="line">    status = &quot;SkyRover 发表了新的文章《&#123;&#125;》, 快来围观吧! http://skyrover.me/post/&#123;&#125;&quot;.format(post.title, post.id)</div><div class="line">    post_new(status)</div><div class="line">@update_post.connect</div><div class="line">def update_post_weibo(post):</div><div class="line">    status = &quot;SkyRover 更新文章《&#123;&#125;》, 快来围观吧! http://skyrover.me/post/&#123;&#125;&quot;.format(post.title, post.id)</div><div class="line">    post_new(status)</div><div class="line">@new_history.connect</div><div class="line">def new_history_weibo(history):</div><div class="line">    status = &apos;SkyRover 发布了新版本&lt;&#123;&#125;&gt;\n&#123;&#125;\n快来围观吧! http://skyrover.me&apos;.format(history.title, history.body)</div><div class="line">    post_new(status)</div></pre></td></tr></table></figure>
+<p><strong><em>参考自：Python Web 开发实战 – 董伟明</em></strong></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:19:20.000Z" itemprop="dateUpdated">2017-09-01 14:19:20 14:19:20</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/04/22/信号在Flask中的使用/" target="_blank" rel="external">http://skyrover.me/2017/04/22/信号在Flask中的使用/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flask/">Flask</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/22/信号在Flask中的使用/&title=《信号在Flask中的使用》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/22/信号在Flask中的使用/&title=《信号在Flask中的使用》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/22/信号在Flask中的使用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《信号在Flask中的使用》 — SkyRover&url=http://skyrover.me/2017/04/22/信号在Flask中的使用/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/22/信号在Flask中的使用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/25/docker安装和使用/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Docker安装和使用</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/13/遍历/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">遍历</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/22/信号在Flask中的使用/&title=《信号在Flask中的使用》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/22/信号在Flask中的使用/&title=《信号在Flask中的使用》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/22/信号在Flask中的使用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《信号在Flask中的使用》 — SkyRover&url=http://skyrover.me/2017/04/22/信号在Flask中的使用/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/22/信号在Flask中的使用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACGklEQVR42u3abc7qQAgGUPe/ae8CTOc+QF8T6ekvo/3g1GTCAK9XfLw/jvOvn2fmnz/vf9uBgYHxs4w8iKsH5KGfX0Ry1WUkGBgYD2BcBZcHdGb3XlYSGwYGBsb5nKtltwfLn4uBgYFRZVR/TVJMDAwMjLuKZedvquWzXkKJgYHxBEb+gO9//pP+BgYGxk8x3sXjfNWZnS+U5agwMDBWM+altIRR3dz24sHAwNjKSG40H7zI75DD/vM/YGBgrGbk6V2yOOYNy0k7EwMDYzdjMjCRh3UXqfA3YGBgrGb0UrQkWTxj8hALxTsMDIwVjF5w1aDzhK85ToGBgbGakcPOC/Gcl29lmxkuBgbGCsZdhbDJWEYPj4GBsZuRtCqri3I+YFHlXcaGgYGxmpHsAc8X97ajdw1hYGBgPIFR3Ubm30+aB3kzFQMD4wmMXotx0jbIm5TNUTAMDIyljHwTWz0n3wb3xsswMDCeyfjSshhjysU+DAyMpYzqwEQ1fcybEPlCXO5yYGBgLGJMCmG9kly1VIeBgYExH5voleryGKLUEAMDYxHjXTzmVyUb4DIVAwNjNeP7pbEkrB4eAwNjN6O6XFZ7Dj1GtWCHgYHxBMakSZm3P3sLdxQVBgYGRlzQ77Uq81fzmrxLDAyMxzCS0JNld5Jc3pAaYmBg/CAjbwZUHzBnJFtcDAyM3Yy7RivyxC4fBcvbDBgYGEsZ/wB+eUupCGlj1gAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

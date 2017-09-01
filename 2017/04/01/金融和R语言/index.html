@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>金融和R语言 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="R,金融">
+    <meta name="description" content="金融货币的时间价值货币时间价值是指货币随着时间的推移而发生的增值，也称为资金时间价值。 货币的时间价值(TVM)是指当前持有的一定量的货币比未来获得的等量货币具有更高的价值。这是因为，货币用于投资可获得收益，存入银行可获得利息，货币的购买力会因通货膨胀的影响改变。 货币的时间价值就是指当前所持有的一定量货币比未来获得的等量货币具有更高的价值。从经济学的角度而言，现在的一单位货币与未来的一单位货币的">
+<meta name="keywords" content="R,金融">
+<meta property="og:type" content="article">
+<meta property="og:title" content="金融和R语言">
+<meta property="og:url" content="http://skyrover.me/2017/04/01/金融和R语言/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="金融货币的时间价值货币时间价值是指货币随着时间的推移而发生的增值，也称为资金时间价值。 货币的时间价值(TVM)是指当前持有的一定量的货币比未来获得的等量货币具有更高的价值。这是因为，货币用于投资可获得收益，存入银行可获得利息，货币的购买力会因通货膨胀的影响改变。 货币的时间价值就是指当前所持有的一定量货币比未来获得的等量货币具有更高的价值。从经济学的角度而言，现在的一单位货币与未来的一单位货币的">
+<meta property="og:updated_time" content="2017-09-01T06:02:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="金融和R语言">
+<meta name="twitter:description" content="金融货币的时间价值货币时间价值是指货币随着时间的推移而发生的增值，也称为资金时间价值。 货币的时间价值(TVM)是指当前持有的一定量的货币比未来获得的等量货币具有更高的价值。这是因为，货币用于投资可获得收益，存入银行可获得利息，货币的购买力会因通货膨胀的影响改变。 货币的时间价值就是指当前所持有的一定量货币比未来获得的等量货币具有更高的价值。从经济学的角度而言，现在的一单位货币与未来的一单位货币的">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">金融和R语言</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">金融和R语言</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-01T09:38:05.000Z" itemprop="datePublished" class="page-time">
+  2017-04-01 17:38:05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#金融"><span class="post-toc-number">1.</span> <span class="post-toc-text">金融</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#货币的时间价值"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">货币的时间价值</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#无风险收益率-risk-free-rate"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">无风险收益率 risk free rate</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#VaR方法"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">VaR方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#夏普比率-Sharpe-Ratio"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">夏普比率 Sharpe Ratio</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#回撤率"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">回撤率</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最大回撤率-max-drawdown"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">最大回撤率 max drawdown</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#R语言"><span class="post-toc-number">2.</span> <span class="post-toc-text">R语言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#match-fun"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">match.fun</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数参数中的省略号"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">函数参数中的省略号</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dim"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">dim</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#NCOL"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">NCOL</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#na-rm"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">na.rm</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#na-omit"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">na.omit</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Return-excess"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">Return.excess</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-金融和R语言"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">金融和R语言</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-04-01 17:38:05 17:38:05" datetime="2017-04-01T09:38:05.000Z"  itemprop="datePublished">2017-04-01 17:38:05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="金融"><a href="#金融" class="headerlink" title="金融"></a>金融</h1><h2 id="货币的时间价值"><a href="#货币的时间价值" class="headerlink" title="货币的时间价值"></a>货币的时间价值</h2><p>货币时间价值是指货币随着时间的推移而发生的增值，也称为资金时间价值。</p>
+<p>货币的时间价值(TVM)是指当前持有的一定量的货币比未来获得的等量货币具有更高的价值。这是因为，货币用于投资可获得收益，存入银行可获得利息，货币的购买力会因通货膨胀的影响改变。</p>
+<p>货币的时间价值就是指当前所持有的一定量货币比未来获得的等量货币具有更高的价值。从经济学的角度而言，现在的一单位货币与未来的一单位货币的购买力之所以不同，是因为要节省现在的一单位货币不消费而改在未来消费，则在未来消费时必须有大于一单位的货币可供消费，作为弥补延迟消费的贴水。</p>
+<h2 id="无风险收益率-risk-free-rate"><a href="#无风险收益率-risk-free-rate" class="headerlink" title="无风险收益率 risk free rate"></a>无风险收益率 risk free rate</h2><p>无风险收益率(Risk-free Rate)，也称无风险报酬率（risk-free return rate)，无风险收益率是指把资金投资于一个没有任何风险的投资对象所能得到的收益率。一般会把这一收益率作为基本收益，再考虑可能出现的各种风险。</p>
+<p>无风险收益率是资金时间价值与通货膨胀补偿率之和，是除了通货膨胀风险之外，没有风险情况下的投资收益率。</p>
+<h2 id="VaR方法"><a href="#VaR方法" class="headerlink" title="VaR方法"></a>VaR方法</h2><p>Value at Risk 风险价值模型，也称受险价值方法、在险价值方法</p>
+<p>VaR按字面解释就是“在险价值”，其含义指：在市场正常波动下，某一金融资产或证券组合的最大可能损失。更为确切的是指，在一定概率水平（置信度）下，某一金融资产或证券组合价值在未来特定时期内的最大可能损失。</p>
+<p>用公式表示为：<code>P(ΔPΔt≤VaR)=a</code></p>
+<p>a给定的置信水平，默认是0.95，P资产价值损失小于可能损失上限的概率，ΔP某一金融资产在一定持有期Δt的价值损失额。VaR给定置信水平a下的在险价值，即可能的损失上限。</p>
+<p>VaR从统计的意义上讲，本身是个数字，是指面临“正常”的市场波动时“处于风险状态的价值”。即在给定的置信水平和一定的持有期限内，预期的最大损失量(可以是绝对值，也可以是相对值)。</p>
+<p>某一投资公司持有的证券组合在未来24小时内，置信度为95%，在证券市场正常波动的情况下，VaR值为520万元，其含义是指，该公司的证券组合在一天内(24小时)，由于市场价格变化而带来的最大损失超过520万元的概率为5%，平均20个交易日才可能出现一次这种情况。或者说有95%的把握判断该投资公司在下一个交易日内的损失在520万元以内。5%的几率反映了金融资产管理者的风险厌恶程度，可根据不同的投资者对风险的偏好程度和承受能力来确定。</p>
+<h2 id="夏普比率-Sharpe-Ratio"><a href="#夏普比率-Sharpe-Ratio" class="headerlink" title="夏普比率 Sharpe Ratio"></a>夏普比率 Sharpe Ratio</h2><p>基金绩效评价标准化指标，风险的大小在决定组合的表现上具有基础性的作用。风险调整后的收益率就是一个可以同时对收益与风险加以考虑的综合指标,以期能够排除风险因素对绩效评估的不利影响。夏普比率就是一个可以同时对收益与风险加以综合考虑的三大经典指标之一。</p>
+<p>投资中有一个常规的特点，即投资标的的预期报酬越高，投资人所能忍受的波动风险越高；反之，预期报酬越低，波动风险也越低。所以理性的投资人选择投资标的与投资组合的主要目的为：在固定所能承受的风险下，追求最大的报酬；或在固定的预期报酬下，追求最低的风险。</p>
+<p>理性的投资者将选择并持有有效的投资组合，即那些在给定的风险水平下使期望回报最大化的投资组合，或那些在给定期望回报率的水平上使风险最小化的投资组合。解释起来非常简单，他认为投资者在建立有风险的投资组合时，至少应该要求投资回报达到无风险投资的回报，或者更多。</p>
+<ul>
+<li>夏普比率计算公式</li>
+</ul>
+<p><code>[E(Rp)－Rf]/σp</code></p>
+<p>其中E(Rp)：投资组合预期报酬率，Rf：无风险利率，σp：投资组合的标准差</p>
+<p>目的是计算投资组合每承受一单位总风险，会产生多少的超额报酬。</p>
+<p>当投资组合内的资产皆为风险性资产时，适用夏普比率。夏普指数代表投资人每多承担一分风险，可以拿到几分报酬；若为正值，代表基金报酬率高过波动风险；若为负值，代表基金操作风险大过于报酬率。这样一来，每个投资组合都可以计算Sharpe Ratio,即投资回报与多冒风险的比例，这个比例越高，投资组合越佳。</p>
+<p><strong>假如国债的回报是3%，而您的投资组合预期回报是15%，您的投资组合的标准偏差是6%，那么用15%－3%,可以得出12%（代表您超出无风险投资的回报），再用12%÷6%＝2，代表投资者风险每增长1%，换来的是2%的多余收益。</strong></p>
+<ul>
+<li>R版计算简单版本(只使用向量作为输入)：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">Sharpe_ratio_annual &lt;- function (R, Rf = 0, scale = NA, geometric = TRUE)</div><div class="line">&#123;</div><div class="line">  R = check_Data(R)</div><div class="line">  if (!is.null(dim(Rf)))</div><div class="line">    Rf = check_Data(Rf)</div><div class="line">	scale = 252</div><div class="line">  sr &lt;- function(R, Rf, scale) &#123;</div><div class="line">    xR = Return.excess(R, Rf)</div><div class="line">		# 年化超额报酬除以年化标准差</div><div class="line">    SR = Return.annualized(xR, scale = scale, geometric = geometric)/StdDev.annualized(R, scale = scale)</div><div class="line">    SR</div><div class="line">  &#125;</div><div class="line">  result = sapply(R, sr, Rf = Rf, scale = scale)</div><div class="line">  dim(result) = c(1, NCOL(R))</div><div class="line">  colnames(result) = colnames(R)</div><div class="line">  rownames(result) = paste(&quot;Annualized Sharpe Ratio (Rf=&quot;,</div><div class="line">                           round(mean(Rf) * scale * 100, 1), &quot;%)&quot;, sep = &quot;&quot;)</div><div class="line">  return(result)</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Python版计算简单版本(输入日收益率列表):</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def sharpe_ratio(profit_list, risk_free_rate=0.03/252):</div><div class="line">    &apos;&apos;&apos;计算年化夏普比率</div><div class="line">    :param profit_list: 每日收益率列表</div><div class="line">    :param risk_free_rate: 无风险收益率(年度)</div><div class="line">    :return: 年化夏普比率&apos;&apos;&apos;</div><div class="line">    profits_array = np.array(profit_list)</div><div class="line">    risk_free_rate_array = np.array([risk_free_rate] * profits_array.size)</div><div class="line">    excess = profits_array - risk_free_rate_array</div><div class="line">    # 年化超额报酬</div><div class="line">    annual_excess = ((excess + 1).prod()) ** (252/len(excess)) - 1</div><div class="line">    std_dev = np.std(profit_list) * np.sqrt(252)</div><div class="line">    return annual_excess / std_dev</div></pre></td></tr></table></figure>
+<p>年化夏普率，使用年化超额报酬和年化标准差，详情见<a href="https://cran.r-project.org/web/packages/PerformanceAnalytics/PerformanceAnalytics.pdf" target="_blank" rel="external">SharpeRatio.annualized</a></p>
+<h2 id="回撤率"><a href="#回撤率" class="headerlink" title="回撤率"></a>回撤率</h2><p>回撤率是指该产品历史上一段时间最大跌幅。</p>
+<h2 id="最大回撤率-max-drawdown"><a href="#最大回撤率-max-drawdown" class="headerlink" title="最大回撤率 max drawdown"></a>最大回撤率 max drawdown</h2><p>在选定周期内任一历史时点往后推，产品净值走到最低点时的收益率回撤幅度的最大值。最大回撤用来描述买入产品后可能出现的最糟糕的情况。</p>
+<ul>
+<li>公式</li>
+</ul>
+<p><code>drawdown=max((Di-Dj)/Di)</code></p>
+<p>D为某一天的净值，i为某一天，j为i后的某一天，Di为第i天的产品净值，Dj则是Di后面某一天的净值。其实就是对每一个净值进行回撤率求值，然后找出最大的</p>
+<ul>
+<li>R版本简单代码(输入为向量)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">maxdrawdown &lt;- function (R)</div><div class="line">&#123;</div><div class="line">    R = na.omit(R)</div><div class="line">    drawdown = Drawdowns(R)</div><div class="line">    result = min(drawdown)</div><div class="line">    result &lt;- -result</div><div class="line">    return(result)</div><div class="line">&#125;</div><div class="line">Drawdowns &lt;- function (R)</div><div class="line">&#123;</div><div class="line">  x = R</div><div class="line">  colDrawdown &lt;- function(x) &#123;</div><div class="line">      Return.cumulative = cumprod(1+x)</div><div class="line">      maxCumulativeReturn = cummax(c(1,Return.cumulative))[-1]</div><div class="line">      column.drawdown = Return.cumulative/maxCumulativeReturn - 1</div><div class="line">  &#125;    </div><div class="line">  drawdown &lt;- colDrawdown(x)</div><div class="line">  return(drawdown)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Python版本简单代码(输入为列表)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">def max_drawdown(profit_list):</div><div class="line">    profits_series = pd.Series(list(map(lambda x: x + 1, profit_list)))</div><div class="line">    cumulative_return = profits_series.cumprod()</div><div class="line">    # 累计乘的array对象</div><div class="line">    cumulative_return_array = cumulative_return.values</div><div class="line">    cumulative_return_tmp = pd.Series([1]).append(cumulative_return)</div><div class="line">    # 最大累积乘</div><div class="line">    max_cumulative_return_array = cumulative_return_tmp.cummax().values[1:]</div><div class="line">    # 回撤</div><div class="line">    drawdowns = cumulative_return_array / max_cumulative_return_array - 1</div><div class="line">    # 最大回撤</div><div class="line">    drawdown = - min(drawdowns)</div><div class="line">    return drawdown</div></pre></td></tr></table></figure>
+<h1 id="R语言"><a href="#R语言" class="headerlink" title="R语言"></a>R语言</h1><h2 id="match-fun"><a href="#match-fun" class="headerlink" title="match.fun"></a>match.fun</h2><p>R允许将函数作为参数，但是如果有一个与函数同名的对象，将有可能找不到这个函数，所以使用<code>match.fun(fun)</code>来匹配函数对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test &lt;- function(o, func)&#123;</div><div class="line">    func &lt;- match.fun(func)</div><div class="line">    func(o)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="函数参数中的省略号"><a href="#函数参数中的省略号" class="headerlink" title="函数参数中的省略号"></a>函数参数中的省略号</h2><p>出现在哪个函数中，就是这个函数的默认参数，也就是可以将这个函数的默认参数传递到内部函数的参数里，这两个函数的参数是一致的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">fun1 &lt;- function(data, graph=TRUE, ...) &#123;</div><div class="line">    if (graph)</div><div class="line">		    plot(data,...)</div><div class="line">&#125;</div><div class="line">data=data.frame(x=c(1,2,3),y=c(1,2,3))</div><div class="line">fun1(data,col=&quot;red&quot;,type=&quot;l&quot;)</div></pre></td></tr></table></figure>
+<h2 id="dim"><a href="#dim" class="headerlink" title="dim"></a>dim</h2><p><code>dim(x)</code>:查看变量的维数</p>
+<h2 id="NCOL"><a href="#NCOL" class="headerlink" title="NCOL"></a>NCOL</h2><p>获取x的列数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">NCOL &lt;- function(x)</div><div class="line">    if (length(d&lt;-dim(x))&gt;1L) d[2L] else 1L</div></pre></td></tr></table></figure>
+<h2 id="na-rm"><a href="#na-rm" class="headerlink" title="na.rm"></a>na.rm</h2><p>表示是否去除数据结构中的na值，True or False</p>
+<h2 id="na-omit"><a href="#na-omit" class="headerlink" title="na.omit"></a>na.omit</h2><p>删除含有缺失值的观测</p>
+<p><code>if (na.rm) x = na.omit(x)</code></p>
+<h2 id="Return-excess"><a href="#Return-excess" class="headerlink" title="Return.excess"></a>Return.excess</h2><p>计算某段时间给定无风险收益率下的超额报酬，<code>Return.excess(R, Rf = 0)</code></p>
+<p>对于一个简单的向量，就是计算其向量R中的每一个收益率和无风险收益率的差值</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:02:45.000Z" itemprop="dateUpdated">2017-09-01 14:02:45 14:02:45</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/04/01/金融和R语言/" target="_blank" rel="external">http://skyrover.me/2017/04/01/金融和R语言/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/R/">R</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/金融/">金融</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/01/金融和R语言/&title=《金融和R语言》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/01/金融和R语言/&title=《金融和R语言》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/01/金融和R语言/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《金融和R语言》 — SkyRover&url=http://skyrover.me/2017/04/01/金融和R语言/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/01/金融和R语言/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/02/算法/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">算法</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/10/环境以及部署问题汇总/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">环境以及部署问题汇总</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/01/金融和R语言/&title=《金融和R语言》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/01/金融和R语言/&title=《金融和R语言》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/01/金融和R语言/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《金融和R语言》 — SkyRover&url=http://skyrover.me/2017/04/01/金融和R语言/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/01/金融和R语言/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aS47CQAwFQO5/aWaLxCR5dgck3JUVgny6sjBu249HfDxfjtdv3n89P47OP3rKzQcGBsbPMqoPThjv9z+/T+8FYWBg7MY4imBH5ySBciUQ52vDwMDASBjVYFoNuBgYGBg9Rr7tzBNHDAwMjHNGkrTljOrSk6Tztr04BgbGDzLyqvv3P3+kv4GBgfFTjGfxqKaD6+dHq8LAwBjNyANcL2XMg3h12AIDA2Mfxvll9w5e9PDRNhgDA2M0Y6WktZ7wVQtzF4EYAwNjNCMv/X8isCbb18KaMTAwhjLyAa98SKKXYvaoGBgY+zDy5Czn9TbAzWIcBgbGUEYv4eu1BHJSXmI7bAxgYGCMY+Q3zUcx8kJesmWNZkYwMDA2YOQ3XRmV6G1ilwptGBgYIxjVBy8VxVoFuAsqBgbGaEaSflUbjVXqvYNlGBgY8xhJKOyNauUpYDXEl7NUDAyMEYxqEEyWu9IWLa8QAwNjNKPXAKiW9fMWZl5oK2xfMTAwhjJWRr56v1bbqFHAxcDAGMqowqpNgl7jIQrrGBgYGzB6n6vNy14BLiq9YWBgDGX0Nq7VQHnvKMY/98fAwBjNqAa73nKTM1f+ADAwMHZg5A2AQr4Zp6G9gFtuYWJgYIxg3FUIy5fVeykXLUwMDAyM06vWW5L5qjAwMDA+EXCbi4tfEAYGxg6MZBNbLZ8lV+Xp48WZGBgYoxkrZbJqWzG5tteEwMDAGMr4AwmGqHbpcesHAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

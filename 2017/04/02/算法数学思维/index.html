@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>算法数学思维 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法">
+    <meta name="description" content="两种求和式循环赛等价于，如果在一个有n个专家参加的会议中，需要和之间所有人互相握手，需要多少次握手。或者一个含有n个节点的完全图中应该有多少条边，都是一种整体对整体的计数问题。 一种思维是这样的，每一位人都会跟别的人握手，这样就是n*(n-1)，然后每个人都握手了两次，所以除以2，n*(n-1)/2，这和(n-1)+(n-2)+...+1是等价的。 淘汰赛比赛合计为k/2 + k/4 + k/8">
+<meta name="keywords" content="Python,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法数学思维">
+<meta property="og:url" content="http://skyrover.me/2017/04/02/算法数学思维/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="两种求和式循环赛等价于，如果在一个有n个专家参加的会议中，需要和之间所有人互相握手，需要多少次握手。或者一个含有n个节点的完全图中应该有多少条边，都是一种整体对整体的计数问题。 一种思维是这样的，每一位人都会跟别的人握手，这样就是n*(n-1)，然后每个人都握手了两次，所以除以2，n*(n-1)/2，这和(n-1)+(n-2)+...+1是等价的。 淘汰赛比赛合计为k/2 + k/4 + k/8">
+<meta property="og:updated_time" content="2017-09-01T06:04:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="算法数学思维">
+<meta name="twitter:description" content="两种求和式循环赛等价于，如果在一个有n个专家参加的会议中，需要和之间所有人互相握手，需要多少次握手。或者一个含有n个节点的完全图中应该有多少条边，都是一种整体对整体的计数问题。 一种思维是这样的，每一位人都会跟别的人握手，这样就是n*(n-1)，然后每个人都握手了两次，所以除以2，n*(n-1)/2，这和(n-1)+(n-2)+...+1是等价的。 淘汰赛比赛合计为k/2 + k/4 + k/8">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">算法数学思维</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">算法数学思维</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-02T08:45:04.000Z" itemprop="datePublished" class="page-time">
+  2017-04-02 16:45:04
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#两种求和式"><span class="post-toc-number">1.</span> <span class="post-toc-text">两种求和式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#循环赛"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">循环赛</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#淘汰赛"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">淘汰赛</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#子集和排列组合"><span class="post-toc-number">2.</span> <span class="post-toc-text">子集和排列组合</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#伪多项式算法"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">伪多项式算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#排列组合"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">排列组合</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#递归和递归式"><span class="post-toc-number">3.</span> <span class="post-toc-text">递归和递归式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#T-n-T-n-1-n"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">T(n) = T(n - 1) + n</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#T-n-2T-n-1-1"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">T(n) = 2T(n-1) + 1</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#T-n-T-n-2-1"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">T(n) = T(n/2) + 1</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#T-n-T-n-2-n"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">T(n) = T(n/2) + n</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#T-n-2T-n-2-1"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">T(n) = 2T(n/2) + 1</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#T-n-2T-n-2-n"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">T(n) = 2T(n/2) + n</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#归纳法证明"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">归纳法证明</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#主定理"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">主定理</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实践"><span class="post-toc-number">4.</span> <span class="post-toc-text">实践</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#侏儒排序法"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">侏儒排序法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#归并排序"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">归并排序</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-算法数学思维"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">算法数学思维</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-04-02 16:45:04 16:45:04" datetime="2017-04-02T08:45:04.000Z"  itemprop="datePublished">2017-04-02 16:45:04</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="两种求和式"><a href="#两种求和式" class="headerlink" title="两种求和式"></a>两种求和式</h1><h2 id="循环赛"><a href="#循环赛" class="headerlink" title="循环赛"></a>循环赛</h2><p>等价于，如果在一个有n个专家参加的会议中，需要和之间所有人互相握手，需要多少次握手。或者一个含有n个节点的完全图中应该有多少条边，都是一种整体对整体的计数问题。</p>
+<p>一种思维是这样的，每一位人都会跟别的人握手，这样就是<code>n*(n-1)</code>，然后每个人都握手了两次，所以除以2，<code>n*(n-1)/2</code>，这和<code>(n-1)+(n-2)+...+1</code>是等价的。</p>
+<h2 id="淘汰赛"><a href="#淘汰赛" class="headerlink" title="淘汰赛"></a>淘汰赛</h2><p>比赛合计为<code>k/2 + k/4 + k/8 + ... + 1</code>，也就是一个等比数列，<code>q=2, a1=1</code>，所以按公式<code>Sn=a1*(1-q^n)/(1-q)</code>计算下来是<code>2^n - 1</code>，但是在这里k和n是不相等的，k是总人数，n是序数，所以要有一个转换关系，查看关系可以知道<code>2^(n-1)=k/2</code>，所以<code>2^n=k</code>，<code>n=log2k</code>，代入<code>2^n - 1</code>计算可以得出最后结果是<code>n-1</code></p>
+<p>所以淘汰赛需要<code>n-1</code>场比赛才能最终除冠军以外的所有人都会被淘汰</p>
+<p><strong>其实这个比赛可以用带根的完全二叉树结构来表示，所以n相当于树的高度，k相当于当前高度这一层的节点数，当k=0也就是只有一个根节点，k=1也就是高度为1，第二层的时候，这一层节点数为2。同样给定了当层节点总数n，可以得到高度为k=lgn(以2为底)</strong></p>
+<p>另一个有意思的假设：人口如果每一代翻一倍，那么如果当代人口结构是由n个人组成的，之前各代人口的数量总和就只是n-1</p>
+<p>二分法或者二分搜索法是一个对数级算法</p>
+<h1 id="子集和排列组合"><a href="#子集和排列组合" class="headerlink" title="子集和排列组合"></a>子集和排列组合</h1><p>k长度的二进制数串可以看成一个完全平衡二叉树，从根节点到叶节点的遍历走向看成一个字符串，根节点只相当于起点，字符串数串的长度k就相当于树的高度，那么其字符可能的数串数量应该等于其叶节点数<code>2^k</code></p>
+<p>子集关系：如果每个比特所表示的是一个对象是否存在于某个k大小的集合中的话，那么每个比特串所表示的就是该集合的2^k个可能子集的某一个。</p>
+<p>所以也就是说，<strong>对于一个需要检查其输入对象中每个子集的算法，时间复杂度必然是指数级的</strong></p>
+<h2 id="伪多项式算法"><a href="#伪多项式算法" class="headerlink" title="伪多项式算法"></a>伪多项式算法</h2><p>这些算法的运行时间都是指数级的，但是看上去像是一个多项式时间的算法。比如对于一个某个数是不是质数的问题，直接的解决办法是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def is_prime(n):</div><div class="line">    for i in range(2, n):</div><div class="line">		    if n % i == 0: return False</div><div class="line">    return True</div></pre></td></tr></table></figure>
+<p>虽然看起来好像是Θ(n)的算法，但是一个问题的规模值包含n，不是说就是等于n，而是用来编码n的比特数，对于这个问题，如果n等于2的某次方，那么需要的比特数就是<code>lgn + 1</code>，比如8，需要4位比特才能表示。如果将问题规模(比特数)设置为k，那么<code>n=2^(k-1)</code>，所以时间复杂度就是Θ(2^k)，就是一个指数级别的算法。</p>
+<h2 id="排列组合"><a href="#排列组合" class="headerlink" title="排列组合"></a>排列组合</h2><p>排序问题的本质是顺序问题。这块内容还好印象比较深刻吧，就不多说了。下面摘录下书中所给出的一些有意思的思考角度。</p>
+<p>比如n个人要排队看电影，电影院只有k个座位，这样k大小的子集有多少个可能性呢。这种问题潜意识就是<code>{n k}</code>，表示组合。书中给的解释如下：首先排在前面的人的可能性是k!种，剩下的人排列可能性为(n-k)!种，总共有n!中可能，所以<code>{n k} = n!/(k!(n-k)!)</code></p>
+<p><strong>公式的含义就是拿全体排队的可能性总数n!去除以累积出来的各种获胜者子集数</strong></p>
+<h1 id="递归和递归式"><a href="#递归和递归式" class="headerlink" title="递归和递归式"></a>递归和递归式</h1><p>需要找到函数的非递归版本，用来定义递归算法的运行时间复杂度，其实就是要归纳出递推等式，也就是递归关系。</p>
+<p>递归式的一般形式：<code>T(n) = a * T(g(n)) + f(n)</code>，然后寻找其通用的递归式，然后将右边等式的T(n)或者其他形式变成T(1)，就可以得到其时间复杂度。</p>
+<h2 id="T-n-T-n-1-n"><a href="#T-n-T-n-1-n" class="headerlink" title="T(n) = T(n - 1) + n"></a>T(n) = T(n - 1) + n</h2><p>这个递推关系代表了握手问题，下面是对其的一个推导：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">T(n) = T(n - 1) + n</div><div class="line">T(n) = T(n - 2) + 2n</div><div class="line">...</div><div class="line">T(n) = T(n - i) + in</div></pre></td></tr></table></figure>
+<p>所以当<code>n - i = 1</code>时候，即<code>i=n-1</code>时候，<code>T(n) = n(n-1)</code>，所以可以得T(n)的时间复杂度是Θ(n^2)</p>
+<h2 id="T-n-2T-n-1-1"><a href="#T-n-2T-n-1-1" class="headerlink" title="T(n) = 2T(n-1) + 1"></a>T(n) = 2T(n-1) + 1</h2><p>这个递推关系代表了汉诺塔问题，下面是对其的一个推导：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">T(n) = 2T(n-1) + 1</div><div class="line">T(n) = 2(2T(n-2)+1) + 1</div><div class="line">T(n) = 4T(n-2) + 3</div><div class="line">...</div><div class="line">T(n) = 2^i T(n-i) + 2^i - 1</div></pre></td></tr></table></figure>
+<p>所以当<code>n-i = 1</code>时候，即<code>i=n-1</code>时候，<code>T(n) = 2^n - 1</code>，所以可以得T(n)的时间复杂度是Θ(2^n)</p>
+<h2 id="T-n-T-n-2-1"><a href="#T-n-T-n-2-1" class="headerlink" title="T(n) = T(n/2) + 1"></a>T(n) = T(n/2) + 1</h2><p>这个递推关系代表了二分搜索问题，下面是对其的一个推导：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">T(n) = T(n/2) + 1</div><div class="line">T(n) = T(n/4) + 2</div><div class="line">...</div><div class="line">T(n) = T(n/2^i) + i</div></pre></td></tr></table></figure>
+<p>所以当<code>n/2^i = 1</code>时候，即<code>i=log2n</code>时候，<code>T(n) = log2n</code>，所以可以得T(n)的时间复杂度是Θ(lgn)</p>
+<h2 id="T-n-T-n-2-n"><a href="#T-n-T-n-2-n" class="headerlink" title="T(n) = T(n/2) + n"></a>T(n) = T(n/2) + n</h2><p>这个递推关系代表了随机选择问题，平均情况问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">T(n) = T(n/2) + n</div><div class="line">T(n) = T(n/4) + n/2 + n</div><div class="line">...</div><div class="line"># 后面相当于一个等比数列，直接求和得2n(1-1/2^i)</div><div class="line">T(n) = T(n/2^i) + 2n(1-1/2^i)</div></pre></td></tr></table></figure>
+<p>所以当<code>n/2^i = 1</code>时候，即<code>i=log2n</code>时候，<code>T(n) = 2n - 2</code>，所以可以得T(n)的时间复杂度是Θ(n)</p>
+<h2 id="T-n-2T-n-2-1"><a href="#T-n-2T-n-2-1" class="headerlink" title="T(n) = 2T(n/2) + 1"></a>T(n) = 2T(n/2) + 1</h2><p>这个递推关系代表了树的遍历问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">T(n) = 2T(n/2) + 1</div><div class="line">T(n) = 2(2T(n/4)+1) + 1</div><div class="line">T(n) = 4T(n/4) + 3</div><div class="line">...</div><div class="line">T(n) = 2^i T(n/2^i) + 2^i - 1</div></pre></td></tr></table></figure>
+<p>所以当<code>n/2^i = 1</code>时候，即<code>i=log2n</code>时候，<code>T(n) = 2n - 1</code>，所以可以得T(n)的时间复杂度是Θ(n)</p>
+<h2 id="T-n-2T-n-2-n"><a href="#T-n-2T-n-2-n" class="headerlink" title="T(n) = 2T(n/2) + n"></a>T(n) = 2T(n/2) + n</h2><p>这个递推关系代表了分治法进行排序问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">T(n) = 2T(n/2) + n</div><div class="line">T(n) = 2(2T(n/4)+n/2) + n</div><div class="line">T(n) = 4T(n/4) + 2n</div><div class="line">...</div><div class="line">T(n) = 2^i T(n/2^i) + i*n</div></pre></td></tr></table></figure>
+<p>所以当<code>n/2^i = 1</code>时候，即<code>i=log2n</code>时候，<code>T(n) = n+nlgn</code>，所以可以得T(n)的时间复杂度是Θ(nlgn)</p>
+<h2 id="归纳法证明"><a href="#归纳法证明" class="headerlink" title="归纳法证明"></a>归纳法证明</h2><p>对于<code>T(n)=T(n-1)+1</code>，对于T(1)=1，有T(1)&lt;=c成立，假设在T(n-1)上是成立的，即<code>T(n-1)&lt;=c(n-1)</code>成立，那么</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">T(n)=T(n-1)+1</div><div class="line">     &lt;= c(n-1) + 1</div><div class="line">		 = cn - c + 1</div><div class="line">		 &lt;= cn (c&gt;=1)</div></pre></td></tr></table></figure>
+<p>所以成立</p>
+<h2 id="主定理"><a href="#主定理" class="headerlink" title="主定理"></a>主定理</h2><p>对于<code>T(n)=aT(n/b)+f(n)</code></p>
+<p>有a重递归调用，对应于树来说就是a个分支，每重处理掉一定比例的数据(数据集的1/b)，除了这些递归调用外，算法中还有一个额外的f(n)操作单元。</p>
+<p>分配到每层树的每一个节点的问题规模为f(n/b^i)，如果要让问题规模为1，那么树的高度就是<code>logbn</code></p>
+<p>树每个内部节点下面都有a个子节点，所有逐层增加之后，节点数只和就不等于n了，按照树高logbn来算，树宽值为<code>a^(logbn)</code>，也就是<code>n^(logba)</code>，推导如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a^(logbn) = (n^(logna))^(logbn)</div><div class="line">              = n^(logbn * logna)</div><div class="line">							= n^(logba)</div></pre></td></tr></table></figure>
+<ul>
+<li>大部分操作运行在根节点上</li>
+</ul>
+<p>即<code>f(n)∈Ω(n^(logba))</code></p>
+<p><code>af(n/b) &lt;= cf(n)</code>，并且f(n)的增长趋势严格快于叶节点数的增长即<code>f(n)∈Ω(n^(logba))</code></p>
+<p>比如对于<code>T(n)=2T(n/3)+n</code>这种情况，<code>a=2,b=3</code>，那么<code>af(n/b)=2n/3</code>是小于n的，并且<code>n^(logba)=n^0.6</code>，反正只要<code>a&lt;b</code>那么结果都是小于1的，所以<code>f(n)∈Ω(n^(logba))</code>，那么就可以说n属于表达式的主导部分了。</p>
+<ul>
+<li>大部分时间在叶节点上</li>
+</ul>
+<p>即<code>f(n)∈O(n^(logba))</code></p>
+<p>将上面的根叶关系翻转一下，就可以得到<code>f(n)∈O(n^(logba))</code>，所以<code>T(n)∈Θ(n^(logba))</code></p>
+<p>所以首先是判断根节点操作是否始终多于叶节点，然后判断f(n)的增长趋势是不是比叶节点数增长的快。</p>
+<ul>
+<li>根节点和叶节点操作时间有相同的渐进增长趋势</li>
+</ul>
+<p>即<code>f(n)∈Θ(n^(logba))</code></p>
+<p>这样就变成了求该树各层操作之和的求和式，可以通过乘以其高度的方式计算总和，<code>T(n)∈Θ(n^(logba) * lgn)</code></p>
+<p>比如<code>T(n)=2T(n/4)+n^0.5</code>，<code>a=2,b=4,n^(logba) = n^0.5</code>，树根节点，叶节点以及各层节点的操作时间都等于<code>Θ(n^0.5)</code>，所以总的运行时间是<code>T(n)∈Θ(n^(0.5) * lgn)</code></p>
+<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><h2 id="侏儒排序法"><a href="#侏儒排序法" class="headerlink" title="侏儒排序法"></a>侏儒排序法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def gnomesort(seq):</div><div class="line">    i = 0</div><div class="line">		while i &lt; len(seq):</div><div class="line">		    if i == 0 or seq[i-1] &lt;= seq[i]:</div><div class="line">				    i += 1</div><div class="line">			  else:</div><div class="line">				    # 这里需要注意，如果找到没有排序的数字，会一直向开始找到一个合适的位置</div><div class="line">						seq[i], seq[i-1] = seq[i-1], seq[i]</div><div class="line">						i -= 1</div></pre></td></tr></table></figure>
+<p>那么最坏的情况就是查找并且移动错位元素，也就是当序列是倒序的时候，是最糟糕的情况，那么移动次数是<code>1 + 2 + 3 + ... + n - 1</code>，最好情况是顺序时候，什么也不需要做，那么时间复杂度应该是<code>Ω(n)</code>和<code>O(n^2)</code>来表示</p>
+<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">def mergesort(seq):</div><div class="line">    mid = len(seq) / 2</div><div class="line">    lft, rgt = seq[:mid], seq[mid:]</div><div class="line">		if len(lft) &gt; 1: lft = mergesort(lft)</div><div class="line">		if len(rgt) &gt; 1: rgt = mergesort(rgt)</div><div class="line">		res = []</div><div class="line">		while lft and rgt:</div><div class="line">		    if lft[-1] &gt;= rgt[-1]:</div><div class="line">				    # 默认移除最后一个元素</div><div class="line">				    res.append(lft.pop())</div><div class="line">				else:</div><div class="line">				    res.append(rgt.pop())</div><div class="line">		# 由小到大排序</div><div class="line">		res.reverse()</div><div class="line">		return (lft or rgt) + res</div></pre></td></tr></table></figure>
+<p>分析其时间复杂度：输入规模为n，有两重递归调用，每次子问题的规模为n/2，<code>res.reverse()</code>包含了一些操作，时间复杂度为Θ(n)，所以递归式为<code>T(n)=2T(n/2)+Θ(n)</code>，时间复杂度为<code>Θ(nlgn)</code></p>
+<p>参考自：<em>Python 算法教程</em> – <em>Magnus Lie Hetland</em></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2017-09-01T06:04:25.000Z" itemprop="dateUpdated">2017-09-01 14:04:25 14:04:25</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/04/02/算法数学思维/" target="_blank" rel="external">http://skyrover.me/2017/04/02/算法数学思维/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/02/算法数学思维/&title=《算法数学思维》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/02/算法数学思维/&title=《算法数学思维》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/02/算法数学思维/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《算法数学思维》 — SkyRover&url=http://skyrover.me/2017/04/02/算法数学思维/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/02/算法数学思维/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/06/算法设计思想/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">算法设计思想</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/02/算法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">算法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/02/算法数学思维/&title=《算法数学思维》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/02/算法数学思维/&title=《算法数学思维》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/02/算法数学思维/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《算法数学思维》 — SkyRover&url=http://skyrover.me/2017/04/02/算法数学思维/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/02/算法数学思维/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3awW4DIQxF0fz/T0+lrroo0/tsEnXwZRUlKcMhkmtsXi88ru/x8/Xqnfux+v5q5s1DhgwZj2XwB++iruZMN0iGDBnTGLVlpcF6NTP/dPm+DBkyZISJIA+g5H0ZMmTIqAVcngKSNDQN6zJkyJjJSB9wj+Hzdwp5MmTImMOoNQY+8/rt/Q0ZMmT8e8YVDhJqeQvhPtEMViVDhoyjGaQ0f/8YsqzaMTjeJhkyZAxmpAdXUuLnRTSyQTJkyJjD4MUsHiL718v4cVqGDBlnM3YVv+43onOdgrcoZMiQcR6jk9jVSnLBvvK0VYYMGUcz+ofP2rUJPltcepMhQ8ZxDJLMpQfOzuUtgvyFJEOGjAGMXctKL0/UAvryzogMGTIGMHjw5QfXtFXAj6wyZMiYyeDtyVc40hZp/A9AhgwZRzP6l7F2NSM3bKgMGTLGMIIiV4ipbVwQuGXIkDGAwZe7q2SWMv5oWsiQIeNoBglw/FP+/RRTPE7LkCHj4QzSYiQJYkrlaR/6BWTIkDGA0Sm68WNnrTyHtlKGDBlHM9JsMW0YdNLEeCUyZMg4lHGFoxZSyd/WWpsyZMiYwEgDXC0d7IRvvikyZMg4m1ErdXUuTPB5gvRRhgwZAxhxeav0SN7y5OuUIUOGDPJ40uBMW57kiCtDhgwZtdSwdgDmF8Li/oYMGTIOYvAw9+6GAZ+hFa1lyJDxKMbexgBJEHkqGSeIMmTIOI3xBVRCS6no+qvUAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
