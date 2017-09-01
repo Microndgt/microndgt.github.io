@@ -1007,9 +1007,9 @@
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
-      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
-    
       <category term="gevent" scheme="http://skyrover.me/tags/gevent/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
   </entry>
   
