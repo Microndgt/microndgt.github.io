@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>动态规划 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法">
+    <meta name="description" content="动态规划是运筹学中用于求解决策过程中的最优化数学方法。一种使用多阶段决策过程最优的通用方法。 如果问题是由交叠的子问题所构成，我们就可以用动态规划技术来解决它，一般来说，这样的子问题出现在对给定问题求解的递推关系中，这个递推关系包含了相同问题的更小子问题的解。动态规划法建议，与其对交叠子问题一次又一次的求解，不如把每个较小子问题只求解一次并把结果记录在表中（动态规划也是空间换时间的），这样就可以从">
+<meta name="keywords" content="Python,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态规划">
+<meta property="og:url" content="http://skyrover.me/2017/05/21/动态规划/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="动态规划是运筹学中用于求解决策过程中的最优化数学方法。一种使用多阶段决策过程最优的通用方法。 如果问题是由交叠的子问题所构成，我们就可以用动态规划技术来解决它，一般来说，这样的子问题出现在对给定问题求解的递推关系中，这个递推关系包含了相同问题的更小子问题的解。动态规划法建议，与其对交叠子问题一次又一次的求解，不如把每个较小子问题只求解一次并把结果记录在表中（动态规划也是空间换时间的），这样就可以从">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xq6lu.com1.z0.glb.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170520112910.png">
+<meta property="og:updated_time" content="2017-09-01T06:24:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="动态规划">
+<meta name="twitter:description" content="动态规划是运筹学中用于求解决策过程中的最优化数学方法。一种使用多阶段决策过程最优的通用方法。 如果问题是由交叠的子问题所构成，我们就可以用动态规划技术来解决它，一般来说，这样的子问题出现在对给定问题求解的递推关系中，这个递推关系包含了相同问题的更小子问题的解。动态规划法建议，与其对交叠子问题一次又一次的求解，不如把每个较小子问题只求解一次并把结果记录在表中（动态规划也是空间换时间的），这样就可以从">
+<meta name="twitter:image" content="http://7xq6lu.com1.z0.glb.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170520112910.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">动态规划</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">动态规划</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-21T03:53:14.000Z" itemprop="datePublished" class="page-time">
+  2017-05-21 11:53:14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算二项式系数"><span class="post-toc-number">1.</span> <span class="post-toc-text">计算二项式系数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#象棋问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">象棋问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最大子数组之和"><span class="post-toc-number">3.</span> <span class="post-toc-text">最大子数组之和</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#拓扑排序"><span class="post-toc-number">4.</span> <span class="post-toc-text">拓扑排序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#有向无环图中的最短路径问题"><span class="post-toc-number">5.</span> <span class="post-toc-text">有向无环图中的最短路径问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最长递增子序列问题"><span class="post-toc-number">6.</span> <span class="post-toc-text">最长递增子序列问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#序列比对问题"><span class="post-toc-number">7.</span> <span class="post-toc-text">序列比对问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#背包问题"><span class="post-toc-number">8.</span> <span class="post-toc-text">背包问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#0-1背包问题"><span class="post-toc-number">9.</span> <span class="post-toc-text">0-1背包问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#序列的二元分割"><span class="post-toc-number">10.</span> <span class="post-toc-text">序列的二元分割</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-动态规划"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">动态规划</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-21 11:53:14 11:53:14" datetime="2017-05-21T03:53:14.000Z"  itemprop="datePublished">2017-05-21 11:53:14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>动态规划是运筹学中用于求解决策过程中的最优化数学方法。一种使用多阶段决策过程最优的通用方法。</p>
+<p>如果问题是由交叠的子问题所构成，我们就可以用动态规划技术来解决它，一般来说，这样的子问题出现在对给定问题求解的递推关系中，这个递推关系包含了相同问题的更小子问题的解。动态规划法建议，与其对交叠子问题一次又一次的求解，不如把每个较小子问题只求解一次并把结果记录在表中（动态规划也是空间换时间的），这样就可以从表中得到原始问题的解。</p>
+<p>动态规划的思想是什么：记忆，空间换时间，不重复求解，由交叠子问题从较小问题解逐步决策，构造较大问题的解。</p>
+<h2 id="计算二项式系数"><a href="#计算二项式系数" class="headerlink" title="计算二项式系数"></a>计算二项式系数</h2><p><code>C(n, k) = C(n-1, k-1) + C(n-1, k)</code></p>
+<p>如果元素存在于这n个数选出的k个数中间，那么就将其计数在剩余n-1个元素的k-1大小的子集里<code>C(n-1, k-1)</code>，如果元素不在其中，那么就检查k大小的子集<code>C(n-1, k)</code>，所以<code>C(n, k) = C(n-1, k-1) + C(n-1, k)</code></p>
+<p>这个式子将C(n , k)的计算问题表述为了（问题描述）C(n-1 , k-1)和C(n-1, k)两个较小的交叠子问题。</p>
+<p>初始条件：<code>C(n , n) = C(n , 0) = 1</code>，<code>C(0, k) = 0, k&gt;0</code></p>
+<p>一个递归版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@memo</div><div class="line">def C(n, k):</div><div class="line">  if k == 0: return 1</div><div class="line">  if n == 0: return 0</div><div class="line">  return C(n-1, k-1) + C(n-1, k)</div></pre></td></tr></table></figure>
+<p>迭代版的，辅助数据结构是一个二维列表或者一个以坐标为键的字典。但是填充的基本是下三角矩阵，因为不可能有<code>C(1,3)</code>这种出现，最多是对角线上的<code>C(3,3)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">def iter_C(n, k):</div><div class="line">  from collections import defaultdict</div><div class="line">  C = defaultdict(int)</div><div class="line">  # 遍历所有行，n中每一个元素代表一行</div><div class="line">  # 控制行，填到n行</div><div class="line">  for row in range(n+1):</div><div class="line">    # 第二个for控制每行到哪，最大不超过n，n和k的最小值</div><div class="line">    for col in range(min(n+1,k+1)):</div><div class="line">      if col == row or col == 0 or row == 0:</div><div class="line">        C[row, col] = 1</div><div class="line">        continue</div><div class="line">      C[row, col] = C[row-1, col-1] + C[row-1, col]</div><div class="line">  return C[n, k]</div></pre></td></tr></table></figure>
+<p>可以看出来这个算法复杂度是<code>n*k</code></p>
+<p>动态规划的几个要点：</p>
+<ul>
+<li>怎么描述问题，要把问题描述为交叠的子问题</li>
+<li>交叠子问题的初始条件（边界条件）</li>
+<li>动态规划在形式上往往表现为填矩阵的形式，有的可以优化空间复杂度，开一个数组即可，优化也是根据递推式的依赖形式的，</li>
+<li>填矩阵的方式（或者说顺序）表明了什么？–它表明了这个动态规划从小到大产生的过程，专业点的说就是递推式的依赖形式决定了填矩阵的顺序。</li>
+</ul>
+<p>一是填矩阵的顺序，二是动态规划空间复杂度的优化：这2点都跟递推式的依赖关系有关（这是本质），在形式上就表现为填矩阵的时候你的顺序要确保每填一个新位置时你所用到的那些位置（即它依赖的）要已经填好了，在空间优化上表现为当一个位置在以后还有用的时候你不能覆盖它。</p>
+<h2 id="象棋问题"><a href="#象棋问题" class="headerlink" title="象棋问题"></a>象棋问题</h2><p>国际象棋中的车可以水平的或竖直的移动，一个车要从一个棋盘的一角移到对角线的另一角，有多少种最短路径？</p>
+<ul>
+<li>用动态规划算法求解</li>
+<li>用初等排列组合知识求解</li>
+</ul>
+<p>对于第二种，很简单，棋盘大小是n，那么从(0,0)到(n,n)不论怎样要走2n步，而且横走n，竖走n，所以应该是有C(2n, n)种</p>
+<p>动态规划，主要是建立递推式</p>
+<p>设<code>C[i , j]</code>表示从（0,0）移动到（i ,j）的方法数。那么主要是怎么刻画<code>C[i, j]</code>的含义，这是动态规划的一个关键点。</p>
+<p>那么要走到<code>C[i, j]</code>那么上一步必定是<code>C[i-1,j]</code>或者<code>C[i,j-1]</code>，分析动态规划问题的逆向思维，这样就把问题描述成了交叠子问题</p>
+<p><code>C[i , j]  =  C[i -1, j]   +  C[i , j-1]</code></p>
+<p>初始条件：</p>
+<p><code>C[0, j] = 1, j从0到n</code>，<code>C[i, 0] = 1, i从0到n</code></p>
+<p>实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def chess(i, j):</div><div class="line">  if i == 0 or j == 0: return 1</div><div class="line">  return chess(i-1, j) + chess(i, j-1)</div></pre></td></tr></table></figure>
+<p>但是如果只是这样，计算<code>chess(100, 100)</code>就很慢了，所以加上记忆体化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">from functools import wraps</div><div class="line">def memo(func):</div><div class="line">    cache = &#123;&#125;</div><div class="line">    @wraps(func)</div><div class="line">    def wrapper(*args):</div><div class="line">        if args not in cache:</div><div class="line">            cache[args] = func(*args)</div><div class="line">        return cache[args]</div><div class="line">    return wrapper</div><div class="line">@memo</div><div class="line">def chess(i, j):</div><div class="line">    if i == 0 or j == 0: return 1</div><div class="line">    return chess(i-1, j) + chess(i, j-1)</div></pre></td></tr></table></figure>
+<p>迭代版：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def iter_chess(i, j):</div><div class="line">    from collections import defaultdict</div><div class="line">    chess = defaultdict(int)</div><div class="line">    for row in range(i+1):</div><div class="line">        for col in range(j+1):</div><div class="line">            if row == 0 or col == 0:</div><div class="line">                chess[row, col] = 1</div><div class="line">                continue</div><div class="line">            chess[row, col] = chess[row-1, col] + chess[row, col-1]</div><div class="line">    return chess[i, j]</div></pre></td></tr></table></figure>
+<h2 id="最大子数组之和"><a href="#最大子数组之和" class="headerlink" title="最大子数组之和"></a>最大子数组之和</h2><p>一个经典的动态规划问题：最大子数组之和。其原理就是将求全局最优解变成了求解局部最优解，然后推得全局最优解。本身是一种最优化算法。这里就是将整个数组的最大子数组之和变成了局部小数组的最大子数组之和，然后递推到全部数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        dp = &#123;&#125;</div><div class="line">        dp[0] = nums[0]</div><div class="line">        res = dp[0]</div><div class="line">        for i in range(1, len(nums)):</div><div class="line">            if dp[i-1] &gt; 0:</div><div class="line">                dp[i] = nums[i] + dp[i-1]</div><div class="line">            else:</div><div class="line">                dp[i] = nums[i]</div><div class="line">            res = max(dp[i], res)</div><div class="line">        return res</div></pre></td></tr></table></figure>
+<p>规划Programming是指完成一组选择，线性规划。动态是指会随时间发生变化，其所做的每一个选择都必须依赖于前一个选择。具体到算法设计的运用中，DP技术的核心其实就是一种高速缓存caching。问题分解依然是递归和归纳。DP算法通常是通过反转相应的递归函数，使其对某些数据结构进行逐步迭代和填充，如多维数组。在Python中，一般在实现相关递归函数时候直接从缓存中返回值。如果可以用同一个参数执行多次调用，其返回结果就会直接来自于缓存，这种方式是记忆体化。</p>
+<p>对于一个斐波那契函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def fib(i):</div><div class="line">    if i &lt; 2: return 1</div><div class="line">truetruereturn fib(i-1) + fib(i-2)</div></pre></td></tr></table></figure>
+<p>记忆体化的装饰器函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from functools import wraps</div><div class="line">def memo(func):</div><div class="line">    cache = &#123;&#125;</div><div class="line">truetrue@wraps(func)</div><div class="line">truetruedef wrap(*args):</div><div class="line">truetrue    if args not in cache:</div><div class="line">truetruetruetrue    cache[args] = func(*args)</div><div class="line">truetruetruetruereturn cache[args]</div><div class="line">truetruereturn wrap</div></pre></td></tr></table></figure>
+<p>这样<code>fib = meme(fib)</code>，在使用<code>fib(100)</code>的时候，就不会崩掉了。这个内存化函数的思路就是缓存其自身的返回值。就是如果将同一参数再次调用的话，就可以返回缓存中的值。可以将其作为函数中的一种缓存逻辑，memo函数是一个可重用更好的解决方案。</p>
+<p>斐波那契函数有两个子问题，并且两个子问题中存在复杂依赖，所以面对的事一组相互重叠的子问题。</p>
+<p>求2的指数的递归式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def two_pow(i):</div><div class="line">    if i == 0: return 1</div><div class="line">truetruereturn two_pow(i-1) + two_pow(i-1)</div></pre></td></tr></table></figure>
+<p>如果引入memo函数，那么就很高效了，因为缓存会给第二次或者以上的调用直接返回值。这样就把递归调用的数量从2降到了1，从而将指数级的运行时间降为了线性级。666。当各级子问题之间存在重叠的时候，其带来的冗余运算就会变成指数级操作。如下图</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170520112910.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>那么最开始的那个迭代版的最大子数组和的问题，转换成递归版就是这样：但是将这个代码在leetcode提交，爆栈~</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def dp_solution(i, max_num):</div><div class="line">            if i == 0:</div><div class="line">                return nums[0], nums[0]</div><div class="line">            dp_deep, max_num = dp_solution(i-1, max_num)</div><div class="line">            if dp_deep &gt; 0:</div><div class="line">                res = dp_deep + nums[i]</div><div class="line">            else:</div><div class="line">                res = nums[i]</div><div class="line">            max_num = max(max_num, res)</div><div class="line">            return res, max_num</div><div class="line">        return dp_solution(len(nums) - 1, 0)[1]</div></pre></td></tr></table></figure>
+<p>使用了记忆体来缓存，然后再用迭代的方式来逐个求值，这样就解决了上述问题，因为即使在做最大长度的时候，之前的值都已经缓存了，所以栈的深度就保持在1。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        from functools import wraps</div><div class="line">        def memo(func):</div><div class="line">            cache = &#123;&#125;</div><div class="line">            @wraps(func)</div><div class="line">            def wrapper(*args):</div><div class="line">                if args not in cache:</div><div class="line">                    cache[args] = func(*args)</div><div class="line">                return cache[args]</div><div class="line">            return wrapper</div><div class="line">        @memo</div><div class="line">        def dp_solution(i):</div><div class="line">            if i == 0:</div><div class="line">                return nums[0]</div><div class="line">            dp_deep = dp_solution(i-1)</div><div class="line">            if dp_deep &gt; 0:</div><div class="line">                res = dp_deep + nums[i]</div><div class="line">            else:</div><div class="line">                res = nums[i]</div><div class="line">            return res</div><div class="line">        return max(dp_solution(i) for i in range(len(nums)))</div></pre></td></tr></table></figure>
+<h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><p>拓扑排序，对一个有向无环图，寻找其中依赖顺序的过程，寻找所有沿着特定顺序前进的边和点。基于DAG的算法，寻找DAG的最短路径，以及大多数的基于动态规划的算法，都是先进行拓扑排序作为初始化步骤的，至于为什么，仔细悟一下就知道了，子问题的求解嘛，要按顺序来。</p>
+<p>一个简单递归版的拓扑排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def naive_topsort(G, S=None):</div><div class="line">    if S is None: S = set(G)</div><div class="line">truetrueif len(s) == 1: return list(S)</div><div class="line">truetruev = S.pop()</div><div class="line">truetrueseq = naive_topsort(G, S)</div><div class="line">truetruemin_i = 0</div><div class="line">truetruefor i, u in enumerate(seq):</div><div class="line">truetrue    if v in G[u]: min_i = i + 1</div><div class="line">truetrueseq.insert(min_i, v)</div><div class="line">truetruereturn seq</div></pre></td></tr></table></figure>
+<p>程序的关键在于每次移除一个节点，然后解决其余n-1个节点的问题。然后再结束迭代的时候，根据是否被索引确定在排序结果中的位置。当然如果是同级的话，后面的插入的顺序在之前插入的前面。</p>
+<p>但是更加优化的算法应该是找出放在首端的元素，然后从图中移除，这样图仍然是一个DAG，所以是一个等效的，规模缩小的问题。要找的是一个没有入边的节点。</p>
+<p>首先用计数的方式来查找没有入边的节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">def topsort(G):</div><div class="line">    count = dict((u, 0) for u in G)</div><div class="line">truetruefor u in G:</div><div class="line">truetrue    for v in G[u]:</div><div class="line">truetruetruetrue    count[v] += 1</div><div class="line">truetrue# 首端元素</div><div class="line">truetrueQ = [u for u in G if count[u] == 0]</div><div class="line">truetrueS = []</div><div class="line">truetruewhile Q:</div><div class="line">truetrue    u = Q.pop()</div><div class="line">truetruetruetrueS.append(u)</div><div class="line">truetruetruetruefor v in G[u]:</div><div class="line">truetruetruetrue    count[v] -= 1</div><div class="line">truetruetruetruetruetrueif count[v] == 0:</div><div class="line">truetruetruetruetruetrue    Q.append(v)</div><div class="line">truetruereturn S</div></pre></td></tr></table></figure>
+<h2 id="有向无环图中的最短路径问题"><a href="#有向无环图中的最短路径问题" class="headerlink" title="有向无环图中的最短路径问题"></a>有向无环图中的最短路径问题</h2><p>动态规划的核心是决策顺序的问题，每一次决策都会导致新的局面，所以需要根据期望的局面来找出最好的选择顺序。贪心算法类似，只是它是基于当下做出最好的选择，并没有考虑全局。</p>
+<p>有向无环图的最短路径问题就是一个决策顺序的问题，将决策过程中的每一个可能的决策状态视为一个独立的节点，出边表示了在各种状态下所做出的可能选择。</p>
+<p>设v到终点的距离是<code>d(v)</code>，边<code>(u,v)</code>的权值是<code>w(u, v)</code>，如果位于节点u，那么就知道了其邻接节点v的<code>d(v)</code>，所以最小表达式是<code>w(u, v) + d(v)</code></p>
+<p>一个解决DAG的最短路径问题的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def rec_dag_sp(W, s, t):</div><div class="line">    @memo</div><div class="line">truetruedef d(u):</div><div class="line">truetrue    if u == t: return 0</div><div class="line">truetruetruetrue# 对于所有可能的u出度的节点，求最小值</div><div class="line">truetruetruetruereturn min(W[u][v] + d[v] for v in W[u])</div><div class="line">truetruereturn d(s)</div></pre></td></tr></table></figure>
+<p>对于DP算法，将其转换成迭代形式会更好。迭代版采用了松弛法，通过逐步扩展局部方案来解决问题，可以被用来反转归纳法的设计。即考虑是如何到达节点v的，所以就得扩展来自v之前的所有节点的答案。就是将入边松弛化。</p>
+<p>松弛化的方法就是拓扑排序。在递归版本中并没有单独进行一次拓扑排序，因为其隐式的进行了一次DFS遍历，并且按照遍历顺序来进行所有的更新。但是对于迭代方式来说，需要一次独立的拓扑排序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def dag_sp(W, s, t):</div><div class="line">truetrue# 将所有边都最大化，然后再松弛</div><div class="line">    d = &#123;u: float(&apos;inf&apos;) for u in W&#125;</div><div class="line">truetrued[s] = 0</div><div class="line">truetruefor u in topsort(W):</div><div class="line">truetruetruetrue# 从s开始，d[u] = d[s] = 0</div><div class="line">truetrue    if u == t: break</div><div class="line">truetruetruetruefor v in W[u]:</div><div class="line">truetruetruetruetruetrue# 找到 u到v的最小值，其实也是一种递归方法</div><div class="line">truetruetruetruetruetrue# 从u的最小距离推v的最小距离</div><div class="line">truetruetruetrue    d[v] = min(d[v], d[u] + W[u][v])</div><div class="line">truetruereturn d[t]</div></pre></td></tr></table></figure>
+<p>原理就是找到拓扑排序，就找到了一种顺序先后位置。这样从起点开始，松弛出边，按照拓扑排序循环下去，找到 从起点到该节点的最小距离。</p>
+<p>尽量松弛化出自之前所有可能的节点的边，拓扑排序靠前的。所以必须给当前节点的入边进行松弛化。</p>
+<p>记忆体化的递归方式，带松弛法的迭代方式。递归方式，从起点开始，尝试各种下一步的操作，然后对其余部分进行递归处理。迭代版本的话，可以按照拓扑排序对各个节点的出边进行松弛化，也可以松弛化每个节点的入边。</p>
+<h2 id="最长递增子序列问题"><a href="#最长递增子序列问题" class="headerlink" title="最长递增子序列问题"></a>最长递增子序列问题</h2><p>大多数DP问题中，可能没有一个明确的关系图，必须发掘出响应的DAG或者决策序列进程。DP问题首先要对子问题进行定义。需要了解所有需要知道的预置行为（也就是说子问题的可能）以及归纳步骤，这是弄清楚其他元素的前提条件。意味着需要找到每一种预置条件下的最长递增子序列。所以以各个指定的位置为重点，找序列的最长递增子序列。如果知道了前k位子序列的方法，也就知道了k+1位的子序列。但是用直接递归来实现会带来指数运行的时间，所以需要使用缓存，去掉指数级的冗余部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def rec_lis(seq):</div><div class="line">    @memo</div><div class="line">truetruedef L(cur):</div><div class="line">truetrue    res = 1</div><div class="line">truetruetruetruefor pre in range(cur):</div><div class="line">truetruetruetrue    if seq[pre] &lt;= seq[cur]:</div><div class="line">truetruetruetruetruetrue    res = max(res, 1 + L(pre))</div><div class="line">truetruetruetruereturn res</div><div class="line">truetruereturn max(L(i) for i in range(len(seq)))</div></pre></td></tr></table></figure>
+<p>迭代版需要将递归调用切换成一个查找过程，然后封装成循环。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def basic_lis(seq):</div><div class="line">    L = [1] * len(seq)</div><div class="line">truetruefor cur, val in enumerate(seq):</div><div class="line">truetrue    for pre in range(cur):</div><div class="line">truetruetruetrue    if seq[pre] &lt;= val:</div><div class="line">truetruetruetruetruetrue    L[cur] = max(L[cur], 1+L[pre])</div><div class="line">truetruereturn max(L)</div></pre></td></tr></table></figure>
+<p>DAG的思路，序列中的每个元素都被视为图中一个节点，并且每个节点到比它大的节点之间都会存在一条隐藏的边，都会存在一个递增子序列。现在就是DAG的最长路径问题。其实在判断每个前面的元素是不是一个有效的节点，如果是，则会当成入边进行松弛化处理，遍历完所有的前面节点，取最大值。前置步骤就是当前节点的入边或者有效前辈节点，也就是说在得到这个节点的结果所需要的条件。</p>
+<p>DP问题有时会使用递归分解和归纳法，有时会用DAG结构来构建问题。当然这个算法是一个n2的算法。算法时间主要集中在查找上，从当前位置之前的元素找出最符合条件的前辈节点集。可以将线性搜索转换成二分搜索。</p>
+<p>对于一个长度为m的子序列，终点有多个前辈节点，那么应该选用值比较小的那一个前辈节点，因为这样不会漏掉后面介于小和大之前的元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from bisect import bisect</div><div class="line">def lis(seq):</div><div class="line">    end = []</div><div class="line">truetruefor val in seq:</div><div class="line">truetrue    idx = bisect(end, val)</div><div class="line">truetruetruetrue# 找到大的，插入</div><div class="line">truetruetruetrueif idx == len(end): end.append(val)</div><div class="line">truetruetruetrueelse: end[idx] = val  # 小的只改变值，但是长度不变</div><div class="line">truetruereturn len(end)</div></pre></td></tr></table></figure>
+<p>DP方式解决问题的时候，递归分解和归纳思想，需要证明一个问题的整体的最佳方案或者正确方案取决于子问题的最佳方案或正确方案。DP和分治法的区别在于DP允许子问题之间彼此重叠。其实就是寻找带有重叠的分解操作，只要消除重叠部分，就是一个有效的方案。</p>
+<h2 id="序列比对问题"><a href="#序列比对问题" class="headerlink" title="序列比对问题"></a>序列比对问题</h2><p>两个序列之间的最长公用子序列(LCS)，编辑距离是将一个序列更改成另一个序列所需的编辑操作数。如果长度为m，n的两个序列之间的最长公用子序列的长度为k，那么不允许替换操作下，之间的编辑距离应为m+n-2k。</p>
+<p>关键是要设计出一个能够反映彼此关联的子问题的集合，是一种带有复杂依赖的递归分解。这些子问题设计为索引之类的参数可以称为归纳变量。</p>
+<p>可以将a和b的LCS长度表示一个关于i，j的函数，i，j就是两个序列的长度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def rec_lcs(a, b):</div><div class="line">    @memo</div><div class="line">truetruedef L(i, j):</div><div class="line">truetrue    if min(i, j) &lt; 0: return 0</div><div class="line">truetruetruetrueif a[i] == b[j]: return 1 + L(i-1, j-1)</div><div class="line">truetruetruetruereturn max(L(i-1, j), L(i, j-1))</div><div class="line">truetruereturn L(len(a) - 1, len(b) - 1)</div></pre></td></tr></table></figure>
+<p>可以简单的将其看作一个动态决策过程，是拿掉第一个序列的元素，还是第二个的，还是两边都拿掉。</p>
+<p>反转成下面的迭代版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def lcs(a, b):</div><div class="line">    n, m = len(a), len(b)</div><div class="line">    pre, cur = [0] * (n + 1), [0] * (n+1)</div><div class="line">truetruefor j in range(1, m+1):</div><div class="line">truetrue    pre, cur = cur, pre</div><div class="line">truetruetruetruefor i in range(i, n+1):</div><div class="line">truetruetruetrue    if a[i-1] == b[j-1]:</div><div class="line">truetruetruetruetruetrue    cur[i] = pre[i-1] + 1</div><div class="line">truetruetruetruetruetrueelse:</div><div class="line">truetruetruetruetruetrue    cur[i] = max(pre[i], cur[i-1])</div><div class="line">truetruereturn cur[n]</div></pre></td></tr></table></figure>
+<p><code>pre[i-1]</code>是<code>L(i-1, j-1)</code>，<code>cur[i-1]</code>是<code>L(i-1, j)</code>，<code>pre[i]</code>表示<code>L(i, j-1)</code>，反正我是想不出来这个算法的。。。</p>
+<h2 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h2><p>一组物品，有各自的质量和价值，背包有一定的容量，放入背包的东西应该总质量小于或者等于背包容量，总价值最大。</p>
+<p>这种问题应该作为一种模式来思考，就是需要以某种形式来定义问题的子问题，递归这些子问题之间的关系，确保每个子问题都只被计算一次，隐式或者显式的记忆体化处理。</p>
+<p>使用背包容量归纳推导来参数化问题，如果设背包剩余容量r所能达到的最大价值为m(r)，r中的每一个值都表示一个子问题。递归分解过程就围绕这背包容量中最后一个单元是否有用来进行，没用m(r) = m(r-1)，有用则选取合适对象。<code>m(r) = v[i] + m(r-w[i])</code>，嗯，很有道理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def rec_unbounded_knapsack(w, v, c):</div><div class="line">    @memo</div><div class="line">truetruedef m(r):</div><div class="line">truetrue    if r == 0: return 0</div><div class="line">truetruetruetrue# 递归到最后一层，然后找最大价值符合质量的</div><div class="line">truetruetruetrueval = m(r-1)</div><div class="line">truetruetruetruefor i, wi in enumerate(w):</div><div class="line">truetruetruetrue    if wi &gt; r: continue</div><div class="line">truetruetruetruetruetrue# 当前节点以及剩余质量所满足的节点</div><div class="line">truetruetruetruetruetrueval = max(val, v[i] + m(r-wi))</div><div class="line">truetruetruetruereturn val</div><div class="line">truetruereturn m(c)</div></pre></td></tr></table></figure>
+<p>下面是迭代版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def unbounded_knapsack(w, v, c):</div><div class="line">  # 使用列表作为缓存</div><div class="line">  m = [0]</div><div class="line">truefor r in range(1, c+1):</div><div class="line">true  val = m[r-1]</div><div class="line">truetruefor i, wi in enumerate(w):</div><div class="line">truetrue  if wi &gt; r: continue</div><div class="line">truetruetrueval = max(val, v[i] + m[r-wi])</div><div class="line">truetruem.append(val)</div><div class="line">truereturn m[c]</div></pre></td></tr></table></figure>
+<h2 id="0-1背包问题"><a href="#0-1背包问题" class="headerlink" title="0-1背包问题"></a>0-1背包问题</h2><p>每个对象最多只能用一次。</p>
+<p>思路如下：设前k个对象的最大价值为<code>m(k,r)</code>，r为剩余背包容量，如果k=0或者r=0，那么<code>m(k,r)=0</code>，其他情况，就是一种决策了。只需要考虑是否要纳入最后一个对象，如果否，那么<code>m(k,r) = m(k-1, r)</code>，而且如果<code>w[i]&gt;r</code>，就只能删除这个对象。</p>
+<p>如果是，<code>m(k,r) = v[i] + m(k-1, r-w[i])</code>，然后选择值最大的那个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def rec_knapsack(w, v, c):</div><div class="line">  @memo</div><div class="line">truedef m(k, r):</div><div class="line">true  if k == 0 or r == 0: return 0</div><div class="line">truetruei = k - 1</div><div class="line">truetruedrop = m(k-1, r)</div><div class="line">truetrueif w[i] &gt; r: return drop</div><div class="line">truetruereturn max(drop, v[i] + m(k-1, r-w[i]))</div><div class="line">truereturn m(len(w), c)</div></pre></td></tr></table></figure>
+<p>这样看来的确很简单，看来分析是比较重要的。迭代版：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">def knapsack(w, v, c):</div><div class="line">  n = len(w)</div><div class="line">truem = [[0] * (c+1) for i in range(n+1)]</div><div class="line">trueP = [[False]*(c+1) for i in range(n+1)]</div><div class="line">truefor k in range(1, n+1):  ＃使用的前k个东西</div><div class="line">true  i = k -1</div><div class="line">truetruefor r in range(1, c+1):  # 每一个可能的容量</div><div class="line">truetrue  m[k][r] = drop = m[k-1][r] # 扔掉</div><div class="line">truetruetrueif w[i] &gt; r: continue</div><div class="line">truetruetruekeep = v[i] + m[k-1][r-w[i]]</div><div class="line">truetruetruem[k][r] = max(drop, keep)</div><div class="line">truetruetrueP[k][r] = keep &gt; drop</div><div class="line">truereturn m, P</div></pre></td></tr></table></figure>
+<h2 id="序列的二元分割"><a href="#序列的二元分割" class="headerlink" title="序列的二元分割"></a>序列的二元分割</h2><p>用某种方式来递归分割某些序列</p>
+<ul>
+<li>矩阵连乘</li>
+<li>解析与上下文无关的语言</li>
+<li>最优搜索树</li>
+</ul>
+<p>问题的本质是按层次将序列分成区块，使其中每一区块都包含另外两个区块，同时找到产生最佳性能或者最佳值的划分方式。</p>
+<p>如果想要创建一颗按序排列的平衡二叉搜索树，需要选择中间值作为分割点，也就是根节点，然后递归创建左平衡子树和右平衡子树。这就是leetcode里面刷过的一道题。</p>
+<p>这里要从多个分割点中选择一个最合理的分割点，要试遍每一个可能的分割点，就是一个DP问题，在有向无环图中找到最短路径。最短路径问题可以概括为DP中的序列选择。序列分解问题可归类于包含重叠部分的递归分解。</p>
+<p>困了，明日再研究～。。。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-01T06:24:58.000Z" itemprop="dateUpdated">2017-09-01 14:24:58 14:24:58</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/05/21/动态规划/" target="_blank" rel="external">http://skyrover.me/2017/05/21/动态规划/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/21/动态规划/&title=《动态规划》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/21/动态规划/&title=《动态规划》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/21/动态规划/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《动态规划》 — SkyRover&url=http://skyrover.me/2017/05/21/动态规划/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/21/动态规划/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/22/分治法/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">分治法</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/20/LeetCode刷题(2)/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">LeetCode刷题(2)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/21/动态规划/&title=《动态规划》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/21/动态规划/&title=《动态规划》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/21/动态规划/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《动态规划》 — SkyRover&url=http://skyrover.me/2017/05/21/动态规划/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/21/动态规划/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3ay47CMAwFUP7/pxlptqjptV2Qmp6sUBFNTxfGj7xe8Xr/r/W3yfq82+fn9V6jhYGBcVtGb+PkytEuvStHz4aBgfEcxjrIrm+xvrImVX97eB0DAwOjldhNrmBgYGB8L+CuC9GT9A4DAwNjyUiK2KS87DXjflqLY2Bg3JBRHQz88vMX5xsYGBg3YbyLq4pM9k3S0JOnwsDA2JqRtPXnA4B1cVv91eFrwsDAeBgjb43ljbkJKXrRGBgYWzOS9lleWF51n2YaioGBsR0jCXC9UnMSvsuNOQwMjK0ZeUJWTf4mgDz1jCpsDAyMmzOS0rSX6lUPUuRpZfS/gYGBsRHjNwPIakjNxwMYGBjPYVQTu7zdXw3Z6yQ1KpgxMDC2Y/SONVSHkXnCVx1qYmBgPJMxORjRC5qTlLE8Q8DAwLg5I2+WFUrKYvLXG6ZiYGA8gdHbpteqK7fPknIaAwNja8ZVRek8NczD7uhgCQYGxm0ZhaBWLF/zVC9PFqPgjoGBsRGj96C9AeQkTp7gMTAwHsDondGolp09doTBwMDYmlG9XT5cTJp01VYdBgbGMxnv4qq29SdBuXBPDAyMrRnVTnsSWK89+FVNRjEwMHZl9JpcyQhhMi4tp6cYGBgPYPS2rE5Kq+x8RIqBgYExaYf1jlkkfwMYGBgYVcZVgTgvdJupIQYGxm0ZvaMV83FCr5A+OeOGgYGxHeOqoJkfp5i8oNGsAwMD436MP/OoapjWRGwDAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

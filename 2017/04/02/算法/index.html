@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>算法 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法">
+    <meta name="description" content="程序设计不仅仅是软件架构以及面向对象设计方面的事情，算法设计问题也是它要解决的一个方面。 算法指的是一个执行过程，包含了能够解决某个特定问题的有限步骤集。 python中的list其实是一个数组，append操作通常会采用一种被称为动态数组或者向量的特定解决方案。 渐进记法O(g)表示，存在自然数n0和c，对于所有的n&amp;gt;=n0都有f(n)&amp;lt;=cg(n)，也就是说O(g)表示的是一个函数">
+<meta name="keywords" content="Python,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法">
+<meta property="og:url" content="http://skyrover.me/2017/04/02/算法/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="程序设计不仅仅是软件架构以及面向对象设计方面的事情，算法设计问题也是它要解决的一个方面。 算法指的是一个执行过程，包含了能够解决某个特定问题的有限步骤集。 python中的list其实是一个数组，append操作通常会采用一种被称为动态数组或者向量的特定解决方案。 渐进记法O(g)表示，存在自然数n0和c，对于所有的n&amp;gt;=n0都有f(n)&amp;lt;=cg(n)，也就是说O(g)表示的是一个函数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-01T06:01:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="算法">
+<meta name="twitter:description" content="程序设计不仅仅是软件架构以及面向对象设计方面的事情，算法设计问题也是它要解决的一个方面。 算法指的是一个执行过程，包含了能够解决某个特定问题的有限步骤集。 python中的list其实是一个数组，append操作通常会采用一种被称为动态数组或者向量的特定解决方案。 渐进记法O(g)表示，存在自然数n0和c，对于所有的n&amp;gt;=n0都有f(n)&amp;lt;=cg(n)，也就是说O(g)表示的是一个函数">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">算法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">算法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-02T08:43:47.000Z" itemprop="datePublished" class="page-time">
+  2017-04-02 16:43:47
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#渐进记法"><span class="post-toc-number">1.</span> <span class="post-toc-text">渐进记法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用Python来分析性能"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用Python来分析性能</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#图与树的实现"><span class="post-toc-number">3.</span> <span class="post-toc-text">图与树的实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#邻接列表"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">邻接列表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#邻接矩阵"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">邻接矩阵</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#树的实现"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">树的实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Bunch模式"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">Bunch模式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一些概念"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">一些概念</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能问题"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">性能问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#浮点运算"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">浮点运算</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-算法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">算法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-04-02 16:43:47 16:43:47" datetime="2017-04-02T08:43:47.000Z"  itemprop="datePublished">2017-04-02 16:43:47</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>程序设计不仅仅是软件架构以及面向对象设计方面的事情，算法设计问题也是它要解决的一个方面。</p>
+<p>算法指的是一个执行过程，包含了能够解决某个特定问题的有限步骤集。</p>
+<p>python中的list其实是一个数组，append操作通常会采用一种被称为动态数组或者向量的特定解决方案。</p>
+<h1 id="渐进记法"><a href="#渐进记法" class="headerlink" title="渐进记法"></a>渐进记法</h1><p>O(g)表示，存在自然数n0和c，对于所有的n&gt;=n0都有f(n)&lt;=cg(n)，也就是说O(g)表示的是一个函数集，它的增长速度不会快于g，表示渐进上界</p>
+<p>Ω(g)表示，存在自然数n0和c，对于所有的n&gt;=n0都有f(n)&gt;=cg(n)，也就是说Ω(g)表示的函数集，它的增长速度都快于g，表示渐进下界</p>
+<p>Θ(g)表示，存在自然数n0和c，对于所有的n&gt;=n0都有,c1g(n)&lt;=f(n)&lt;=c2g(n)，也就是说f和g有着相同程度的渐进式增长</p>
+<table>
+<thead>
+<tr>
+<th>时间复杂度</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:right">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Θ(1)</td>
+<td style="text-align:center">常数级</td>
+<td style="text-align:right">哈希表，表示这一集合函数的增长速度是常数级别</td>
+</tr>
+<tr>
+<td>Θ(lg n)</td>
+<td style="text-align:center">对数级</td>
+<td style="text-align:right">二分搜索</td>
+</tr>
+<tr>
+<td>Θ(n)</td>
+<td style="text-align:center">线性级</td>
+<td style="text-align:right">列表遍历</td>
+</tr>
+<tr>
+<td>Θ(nlg n)</td>
+<td style="text-align:center">线性对数级</td>
+<td style="text-align:right">序列的最优化排序</td>
+</tr>
+<tr>
+<td>Θ(n2)</td>
+<td style="text-align:center">平方级</td>
+<td style="text-align:right">n个对象互相比较</td>
+</tr>
+<tr>
+<td>Θ(n3)</td>
+<td style="text-align:center">立方级</td>
+<td style="text-align:right">不知道</td>
+</tr>
+<tr>
+<td>O(nk)</td>
+<td style="text-align:center">多项式级</td>
+<td style="text-align:right">基于n的k层循环</td>
+</tr>
+<tr>
+<td>Ω(kn)</td>
+<td style="text-align:center">指数级</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>Θ(n!)</td>
+<td style="text-align:center">阶乘级</td>
+<td style="text-align:right">n个值全排列</td>
+</tr>
+</tbody>
+</table>
+<p><code>Θ(f) + Θ(g) = Θ(f+g)</code></p>
+<p><code>Θ(g) * Θ(g) =  Θ(g)</code></p>
+<p>代码块的复杂度由其先后执行的语句累加而成，而嵌套循环的复杂度则在此基础上成倍增长。</p>
+<p>O(n)这就同时概括了最好的和最坏的情况。</p>
+<p>当没有把握的时候，就用蛮力试试</p>
+<h1 id="使用Python来分析性能"><a href="#使用Python来分析性能" class="headerlink" title="使用Python来分析性能"></a>使用Python来分析性能</h1><p>打印出程序中各个函数的计时结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import cProfile</div><div class="line">cProfile.run(&apos;main()&apos;)</div></pre></td></tr></table></figure>
+<h1 id="图与树的实现"><a href="#图与树的实现" class="headerlink" title="图与树的实现"></a>图与树的实现</h1><p>如果我们的问题可以诠释成图问题的话，那么该问题至少已经接近解决方案了，而我们的问题如果可以用树结构来诠释的话，那么问题已经拥有一个真正有效的解决方案了。</p>
+<p>散列常用于字典类型的实现，dict就是散列表，同样，集合类型set也是这种机制实现的，用散列值对其进行访问的平均时间是Θ(1)</p>
+<h2 id="邻接列表"><a href="#邻接列表" class="headerlink" title="邻接列表"></a>邻接列表</h2><p>邻接集的表示法，同样的还有邻接表的表示法，set是hash实现的，所以在成员检测中会快一点，但是邻接表在成员遍历上会更加快一点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 其实是一个有向图</div><div class="line">a, b, c, d, e, f, g, h = range(8)</div><div class="line">N = [</div><div class="line">true&#123;b, c, d, e, f&#125;,</div><div class="line">true&#123;c, e&#125;,</div><div class="line">true&#123;d&#125;,</div><div class="line">true&#123;e&#125;,</div><div class="line">true&#123;f&#125;,</div><div class="line">true&#123;c, g, h&#125;,</div><div class="line">true&#123;f, h&#125;,</div><div class="line">true&#123;f, g&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>另外实现一个加权邻接字典，可以使用字典类型来代替set或者list</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">a, b, c, d, e, f, g, h = range(8)</div><div class="line">N = [</div><div class="line">true&#123;b:2, c:3, d:4, e:5, f:9&#125;,</div><div class="line">true&#123;c:2, e:3&#125;,</div><div class="line">true&#123;d:8&#125;,</div><div class="line">true&#123;e:7&#125;,</div><div class="line">true&#123;f:2&#125;,</div><div class="line">true&#123;c:2, g:2, h:2&#125;,</div><div class="line">true&#123;f:1, h:6&#125;,</div><div class="line">true&#123;f:9, g8&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<h2 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h2><p>将每个节点可能的邻居位置排成一行，用某种值比如True或者False来表示相关节点是否为当前节点的邻居。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a, b, c, d, e, f, g, h = range(8)</div><div class="line">N = [[0,1,1,1,1,1,0,0], ...]</div></pre></td></tr></table></figure>
+<p>通过向现有表示法中加入双向边元素的方式来实现一个无向图，也就是无向图的邻接矩阵应该是一个对称矩阵。</p>
+<p>可以使用<code>float(&#39;inf&#39;)</code>来获取一个无穷大的值</p>
+<p>一些有意思的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sum(1 for w in W[a] if w &lt; inf) - 1</div><div class="line">N = [[0] * 10 for i in range(10)]</div></pre></td></tr></table></figure>
+<h2 id="树的实现"><a href="#树的实现" class="headerlink" title="树的实现"></a>树的实现</h2><p>可以将树表示成一个二维列表，但是这只是表示了叶子节点而已，<code>T = [[&quot;a&quot;, &quot;b&quot;], [&quot;c&quot;], [&quot;d&quot;, [&quot;e&quot;, &quot;f&quot;]]]</code>，每个列表表示的都是内部节点拥有的包含其所有子节点的列表。</p>
+<p>二叉树可以这样表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Tree:</div><div class="line">    def __init__(self, left, right):</div><div class="line">truetrue    self.left = left</div><div class="line">truetruetruetrueself.right = right</div><div class="line"># 其实就是用到了递归吧</div><div class="line">t = Tree(Tree(&quot;a&quot;, &quot;b&quot;), Tree(&quot;c&quot;, &quot;d&quot;))</div><div class="line">t.right.left # c</div></pre></td></tr></table></figure>
+<p>可以使用None来表示不存在的子节点</p>
+<p>还有一种树的实现方式是用 <code>先子节点，然后兄弟节点</code> 的表示法，这里的各个节点用到的是一个子节点的兄弟节点链表，并且这些兄弟节点又各自引用了属于它们自己的那个兄弟节点链表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Tree:</div><div class="line">    def __init__(self, kids, next=None):</div><div class="line">truetrue    self.kids = self.val = kids</div><div class="line">truetruetruetrueself.next = next</div><div class="line">t = Tree(Tree(&quot;a&quot;, Tree(&quot;b&quot;, Tree(&quot;c&quot;, Tree(&quot;d&quot;)))))</div></pre></td></tr></table></figure>
+<p>可以分析一下得，一个根节点下面a是其子节点，然后b是a的兄弟节点，c是b的兄弟节点，d是c的兄弟节点。也就是说，根节点下面有a,b,c,d四个子节点。</p>
+<h2 id="Bunch模式"><a href="#Bunch模式" class="headerlink" title="Bunch模式"></a>Bunch模式</h2><p>可以用命令行参数的形式来创建相关对象，并且设置属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Bunch(dict):</div><div class="line">    def __init__(self, *args, **kwargs):</div><div class="line">truetrue    super(Bunch, self).__init__(*args, **kwargs)</div><div class="line">truetruetruetrue# __dict__里面存的就是属性值，这样就可以使用对象的用法了</div><div class="line">truetruetruetrue# 使用dict集成，这样可以使用字典的方式，比如关键值属性值的遍历，查询属性是否存在</div><div class="line">truetruetruetrueself.__dict__ = self</div><div class="line">T = Bunch</div><div class="line">t = T(left=T(left=&quot;a&quot;, right=&quot;b&quot;), right=T(left=&quot;c&quot;))</div><div class="line">t.left # &#123;&apos;rigth&apos;: &apos;b&apos;, &apos;left&apos;: &apos;a&apos;&#125;</div><div class="line">t.left.right # &apos;b&apos;</div><div class="line">t[&apos;left&apos;][&apos;right&apos;] # &apos;b&apos;</div></pre></td></tr></table></figure>
+<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><p>子问题图：绝大部分问题应该都可以被分成若干个子问题，这些子问题在结构上往往都非常相似，因此，这些结构可以被看作相关子问题图中的节点，而它们之间的依赖关系(也就是这些子问题之间的依存关系)就成为该图的边。分治法和动态规划就出自这些分析。</p>
+<p>在一般情况下，程序越重要，就应当越去研究某些库或者包的细节，看看背后都隐藏了什么。</p>
+<ul>
+<li>当性能成为重点问题时，要着重于实际分析而不是直觉，一些性能瓶颈，可能隐藏于不是自己所认为的地方</li>
+<li>正确性至关重要的时候，最好的方法是不同的实现体对答案进行多次计算</li>
+</ul>
+<p>即使相关操作已经足够好了，但也有可能会由一个线性级操作变成一个平方级操作。</p>
+<h2 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h2><p>成员查询在list中是线性级的，在set中是常数级的，如果每次往集合中添加新值，然后检查值是否已经被添加，那么用list是平方级的，set就是线性级的。</p>
+<p>使用双向队列优于在某个list首端插入对象</p>
+<p>字符串的合并，使用<code>&#39;&#39;.join(list)</code>会比较好</p>
+<h2 id="浮点运算"><a href="#浮点运算" class="headerlink" title="浮点运算"></a>浮点运算</h2><ul>
+<li>不要对浮点数进行等值比较，可以检查它们是否接近于相等</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def almost_equal(x, y, places=7):</div><div class="line">    return round(abs(x-y), places) == 0</div></pre></td></tr></table></figure>
+<ul>
+<li>如果需要精确的十进制浮点数表示法，使用decimal模块，或者对一定数位的十进制数进行精确计算</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from decimal import *</div><div class="line">sum(Decimal(&quot;0.1&quot;) for i in range(10)) == Decimal(&quot;1.0&quot;)</div></pre></td></tr></table></figure>
+<p>如果将两个相近等值的子表达式相减，通常会丢失大量的有效数字。</p>
+<p>参考自：<em>Python 算法教程</em> – <em>Magnus Lie Hetland</em></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-01T06:01:27.000Z" itemprop="dateUpdated">2017-09-01 14:01:27 14:01:27</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/04/02/算法/" target="_blank" rel="external">http://skyrover.me/2017/04/02/算法/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/02/算法/&title=《算法》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/02/算法/&title=《算法》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/02/算法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《算法》 — SkyRover&url=http://skyrover.me/2017/04/02/算法/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/02/算法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/02/算法数学思维/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">算法数学思维</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/01/金融和R语言/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">金融和R语言</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/02/算法/&title=《算法》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/02/算法/&title=《算法》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/02/算法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《算法》 — SkyRover&url=http://skyrover.me/2017/04/02/算法/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/02/算法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABuUlEQVR42u3aW47CMBAEQO5/afYALNDtcQxI5a+Ih1PJx8jT9u0Wj/vDePz82S+Tf20euLi4Y+7aDdqbvZ4hMeDi4p7nPrvBaOrydbw24OLifjM3XwC1rwAXF/fXuZOH/EAhw8XFXeLmS5Ak4Hj2SdJcbevVcHFxB9w81Lju+pJ8FxcXd4l7L8c8+pwMXFzcM9y8oOzaNG0LGS4u7qe4k4VIW8KSx4uaH1xc3Iu5bRg630wdhSO4uLgXc/M2ZldEkr+Of2bAxcU9ws1bjjYESaDJxknUVuHi4m7l1mFlGWe0hy3eFEFcXNyD3Dw7yW+czFwHKLi4uEe4a9MlrVH+SO0mLi4u7knuJArJN1nXoLi4uJ/ltsudtaBz7bgGLi7u93CTB5gcuUgikqKQ4eLibuVO4tH5MqjYksHFxT3ObVnF+a+lbZjbZH2Ei4u7xL2XI49E23mil4WLi3uEm4+1dqjdiJ0XWVxc3F3cvOi8Llu7NlnffIuLi3uQu1Zo2jC0raC4uLi/wm2bmbwsRu0QLi7uF3Pz610pBy4u7nnu/PBE2zi1B0NxcXFPcndtrLaHLdrZcHFxj3D/ABnakJ/JvalYAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

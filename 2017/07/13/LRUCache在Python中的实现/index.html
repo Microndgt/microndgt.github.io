@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>LRU Cache在Python中的实现 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法">
+    <meta name="description" content="LRU Cache在Python中的实现 LRU Cache - Least Recently Used Cache 最近最久未使用缓存 今天问了同事一个问题，LRU Cache系统如何实现，同事答使用时间戳。那么使用时间戳的话，他可能的想法是在Python里的字典中实现，这样通过判断时间戳的迟早来实现LRU。 首先缓存，比如对于一个这样的函数,task(arg1, arg2)，缓存主要是缓存其参">
+<meta name="keywords" content="Python,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LRU Cache在Python中的实现">
+<meta property="og:url" content="http://skyrover.me/2017/07/13/LRUCache在Python中的实现/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="LRU Cache在Python中的实现 LRU Cache - Least Recently Used Cache 最近最久未使用缓存 今天问了同事一个问题，LRU Cache系统如何实现，同事答使用时间戳。那么使用时间戳的话，他可能的想法是在Python里的字典中实现，这样通过判断时间戳的迟早来实现LRU。 首先缓存，比如对于一个这样的函数,task(arg1, arg2)，缓存主要是缓存其参">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-01T06:27:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LRU Cache在Python中的实现">
+<meta name="twitter:description" content="LRU Cache在Python中的实现 LRU Cache - Least Recently Used Cache 最近最久未使用缓存 今天问了同事一个问题，LRU Cache系统如何实现，同事答使用时间戳。那么使用时间戳的话，他可能的想法是在Python里的字典中实现，这样通过判断时间戳的迟早来实现LRU。 首先缓存，比如对于一个这样的函数,task(arg1, arg2)，缓存主要是缓存其参">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">LRU Cache在Python中的实现</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">LRU Cache在Python中的实现</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-13T02:12:39.000Z" itemprop="datePublished" class="page-time">
+  2017-07-13 10:12:39
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#时间戳字典可行吗？"><span class="post-toc-number">1.</span> <span class="post-toc-text">时间戳字典可行吗？</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用list"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用list</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用链表"><span class="post-toc-number">3.</span> <span class="post-toc-text">使用链表</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用字典和链表相结合"><span class="post-toc-number">4.</span> <span class="post-toc-text">使用字典和链表相结合</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#functools-lru-cache"><span class="post-toc-number">5.</span> <span class="post-toc-text">functools.lru_cache</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#OrderedDict相关"><span class="post-toc-number">6.</span> <span class="post-toc-text">OrderedDict相关</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-LRUCache在Python中的实现"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">LRU Cache在Python中的实现</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-13 10:12:39 10:12:39" datetime="2017-07-13T02:12:39.000Z"  itemprop="datePublished">2017-07-13 10:12:39</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>LRU Cache在Python中的实现</p>
+<p><code>LRU Cache - Least Recently Used Cache</code> 最近最久未使用缓存</p>
+<p>今天问了同事一个问题，LRU Cache系统如何实现，同事答使用时间戳。那么使用时间戳的话，他可能的想法是在Python里的字典中实现，这样通过判断时间戳的迟早来实现LRU。</p>
+<p>首先缓存，比如对于一个这样的函数,<code>task(arg1, arg2)</code>，缓存主要是缓存其参数和返回值，那么就可以直接使用字典来实现，关键在于参数是可以哈希的，也就是说参数不应该是可变的，这样就可以将参数作为key，函数返回值作为value来存储到字典之中。</p>
+<p>那么对于LRU，LRU比较常用的在操作系统内存管理的页面置换中使用到了，就是最近使用的页面在内存中，否则就在硬盘里，为了提高页面的命中率，其英文为hits，没有命中则为misses。对于上面的这个函数来说就是要存储最近使用的参数和返回值这么一个对应关系。</p>
+<h1 id="时间戳字典可行吗？"><a href="#时间戳字典可行吗？" class="headerlink" title="时间戳字典可行吗？"></a>时间戳字典可行吗？</h1><p>对于同事提到的字典，其缓存模型应该是函数参数作为key，因为要通过key来判断是否命中，时间戳也作为key，因为要比较最近使用，比如缓存已经满了，要将最早使用的缓存清除出去，那么这时候就要比较哪个参数对应的时间是最早的。</p>
+<p>这里有一种<code>multi_key_dict</code>，也就是多个键对应一个值，假设时间戳不会冲突的话，使用时间戳和参数作为键，那么要取到最早的时间戳，也需要一个排序，因为键在字典中是无序的。且不说从这么多键中找出时间戳这种键，并且还有一个问题是如果参数也是时间戳呢<code>= = !</code></p>
+<h1 id="使用list"><a href="#使用list" class="headerlink" title="使用list"></a>使用list</h1><p>既然要取时间戳需要排序，那么不用时间戳，直接将对应的key也就是函数参数存储到一个Python列表中就行了，最近使用的在列表头，最早使用的在列表尾，然后用一个字典存储参数-返回值，这样就实现了一个LRU嘛。</p>
+<p>如果有参数命中(key在字典中)，那么就把这个参数从其原始位置放到列表头，如果满了就删除最后一个元素。这样看起来可以，但是涉及性能问题。从列表中间pop和从头insert都是性能瓶颈操作，时间复杂度在<code>O(n)</code>。</p>
+<h1 id="使用链表"><a href="#使用链表" class="headerlink" title="使用链表"></a>使用链表</h1><p>既然使用list在insert时候有性能问题，那么使用单链表呢，只有有头指针，我就可以在头部插入，此时时间复杂度只有<code>O(1)</code>。但是将参数从单链表尾部移除呢，还得从头遍历一遍到尾部，那那那就用双向循环链表好了，这样找尾部元素，就可以直接使用头指针向前得到了。</p>
+<p>看起来好像一切OK了，但是认真想想，如果命中一个参数，那么要将其从中间某个位置弄到最开头呢？双向循环链表还是得去遍历一遍链表去查找，平均的时间复杂度也要<code>O(n)</code></p>
+<h1 id="使用字典和链表相结合"><a href="#使用字典和链表相结合" class="headerlink" title="使用字典和链表相结合"></a>使用字典和链表相结合</h1><p>在取缓存的时候，通过字典直接从参数取到返回值，那么可不可以将链表和字典结合起来呢，使用key能不能直接获取到key在链表的位置呢？当然可以，key对应的value存储为这个key对应的链表节点不就可以了，同时这个链表节点还存储了返回值不就刚好可以将返回值取到了嘛。</p>
+<h1 id="functools-lru-cache"><a href="#functools-lru-cache" class="headerlink" title="functools.lru_cache"></a><code>functools.lru_cache</code></h1><p>Python中functools的<code>lru_cache</code>实现了LRU Cache，核心是一个双向循环链表再加一个字典。</p>
+<p><code>from functools import lru_cache</code>可以看到<code>lru_cache</code>的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">_CacheInfo = namedtuple(&quot;CacheInfo&quot;, [&quot;hits&quot;, &quot;misses&quot;, &quot;maxsize&quot;, &quot;currsize&quot;])</div><div class="line">def lru_cache(maxsize=128, typed=False):</div><div class="line">    &apos;&apos;&apos;最近最少使用的缓存装饰器</div><div class="line">    如果maxsize为None，则不使用LRU特性，并且缓存可以没有限制的增长</div><div class="line">    如果typed为True，不同类型的参数将会独立的缓存，比如f(3.0)和f(3)将被看作不同的调用，并且有不同的结果。</div><div class="line">    缓存函数的参数必须是可哈希的。</div><div class="line">    访问命名元组(hints, misses, maxsize, currsize)来查看缓存统计数据，使用f.cache_info()来得到。使用f.cache_clear()来清除缓存数据。使用f.__wrapped__来获取底层包装函数</div><div class="line">    &apos;&apos;&apos;</div><div class="line">    if maxsize is not None and not isinstance(maxsize, int):</div><div class="line">        raise TypeError(&apos;Expected maxsize to be an integer or None&apos;)</div><div class="line">    def decorating_function(user_function):</div><div class="line">        wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)</div><div class="line">        return update_wrapper(wrapper, user_function)</div><div class="line">    return decorating_function</div></pre></td></tr></table></figure>
+<p>首先这是一个带参数的装饰器，使用的时候应该<code>@lru_cache()</code>，这样会返回<code>decorating_function</code>，用来装饰用户的函数，其内部会返回将用户的包装后的函数，使用的是<code>_lru_cache_wrapper</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div></pre></td><td class="code"><pre><div class="line">def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):</div><div class="line">    # 所有lru缓存实例共享的常量</div><div class="line">    sentinel = object()          # 当缓存没有命中的时候返回的对象</div><div class="line">    make_key = _make_key         # 从函数参数来生成一个key的函数</div><div class="line">    PREV, NEXT, KEY, RESULT = 0, 1, 2, 3   # 每一个链表节点中存储的每个元素位置</div><div class="line">    cache = &#123;&#125;</div><div class="line">    hits = misses = 0</div><div class="line">    full = False</div><div class="line">    cache_get = cache.get  # 绑定查询键的函数</div><div class="line">    lock = RLock()  # 链表的更新可能不是线程安全的，对于一个函数，可能多线程调用</div><div class="line">    root = []   # 双向循环链表的头指针</div><div class="line">    root[:] = [root, root, None, None]  # 初始化双向循环链表</div><div class="line"></div><div class="line">    if maxsize == 0:</div><div class="line">        # 不使用缓存，每次调用没有命中次数都会加一</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            # 重新绑定自由变量misses</div><div class="line">            nonlocal misses</div><div class="line">            result = user_function(*args, **kwds)</div><div class="line">            misses += 1</div><div class="line">            return result</div><div class="line">    elif maxsize is None:</div><div class="line">        # 简单的缓存，没有次序，也没有大小限制，也就是直接使用字典进行缓存</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            nonlocal hits, misses</div><div class="line">            key = make_key(args, kwds, typed)</div><div class="line">            result = cache_get(key, sentinel)</div><div class="line">            if result is not sentinel:</div><div class="line">                hits += 1</div><div class="line">                return result</div><div class="line">            result = user_function(*args, **kwds)</div><div class="line">            cache[key] = result</div><div class="line">            misses += 1</div><div class="line">            return result</div><div class="line">    else:</div><div class="line">        # 这种情况就是有大小限制的lru_cache，我觉得应该加一个有限制的普通缓存系统</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            nonlocal root, hits, misses, full</div><div class="line">            key = make_key(args, kwds, typed)</div><div class="line">            with lock:</div><div class="line">                link = cache_get(key)</div><div class="line">                # 如果命中，将命中的链表节点放到头部，每个链表节点存储了PREV,NEXT,KEY,VALUE</div><div class="line">                # 所以先将当前节点的前后节点接在一起</div><div class="line">                if link is not None:</div><div class="line">                    # 从链表中取出这个节点</div><div class="line">                    link_prev, link_next, _key, result = link</div><div class="line">                    link_prev[NEXT] = link_next</div><div class="line">                    link_next[PREV] = link_prev</div><div class="line">                    # 将链表节点放到头部,root前面</div><div class="line">                    last = root[PREV]</div><div class="line">                    last[NEXT] = root[PREV] = link</div><div class="line">                    link[PREV] = last</div><div class="line">                    link[NEXT] = root]</div><div class="line">                    hits += 1</div><div class="line">                    return result</div><div class="line">                result = user_function(*args, **kwds)</div><div class="line">                # 没有命中的话，将其放入缓存，更新操作必须加锁</div><div class="line">                with lock:</div><div class="line">                    if key in cache:</div><div class="line">                        # 如果key已经在cache，说明有其它的线程已经将这个key放入缓存中了</div><div class="line">                        pass</div><div class="line">                    elif full:</div><div class="line">                        # 如果缓存已经满了，则取出最久没有使用的节点将其pop出去，也就是双向循环链表中root后面的指针。</div><div class="line">                        # 这段代码的具体过程是，将root指针作为新节点，root指针后面的节点作为root节点</div><div class="line">                        oldroot = root</div><div class="line">                        oldroot[KEY] = key</div><div class="line">                        oldroot[RESULT] = result</div><div class="line">                        # root的节点作为新节点，只需要将key，result换掉</div><div class="line"></div><div class="line">                        root = oldroot[NEXT]</div><div class="line">                        # 记录oldkey是为了在cache字典中删除</div><div class="line">                        oldkey = root[KEY]</div><div class="line">                        oldresult = root[RESULT]</div><div class="line">                        root[KEY] = root[RESULT] = None</div><div class="line">                        # 更新好root节点后删除字典中的key</div><div class="line"></div><div class="line">                        del cache[oldkey]</div><div class="line"></div><div class="line">                        cache[key] = oldroot</div><div class="line">                    else:</div><div class="line">                        # 如果缓存没有满，更新缓存</div><div class="line">                        last = root[PREV]</div><div class="line">                        # 新的链表节点在root和root前一个节点之间</div><div class="line">                        link = [last, root, key, result]</div><div class="line">                        last[NEXT] = root[PREV] = cache[key] = link</div><div class="line">                        full = (len(cache) &gt;= maxsize)</div><div class="line">                    misses += 1</div><div class="line">                return result</div><div class="line"></div><div class="line">        def cache_info():</div><div class="line">            &quot;&quot;&quot;Report cache statistics&quot;&quot;&quot;</div><div class="line">            with lock:</div><div class="line">                # 因为以下数据可能在更新，所以加锁获取共享资源</div><div class="line">                return _CacheInfo(hits, misses, maxsize, len(cache))</div><div class="line"></div><div class="line">        def cache_clear():</div><div class="line">            &quot;&quot;&quot;Clear the cache and cache statistics&quot;&quot;&quot;</div><div class="line">            nonlocal hits, misses, full</div><div class="line">            with lock:</div><div class="line">                cache.clear()</div><div class="line">                root[:] = [root, root, None, None]</div><div class="line">                hits = misses = 0</div><div class="line">                full = False</div><div class="line"></div><div class="line">        wrapper.cache_info = cache_info</div><div class="line">        wrapper.cache_clear = cache_clear</div><div class="line">        return wrapper</div></pre></td></tr></table></figure>
+<p>当缓存已经满了的时候，这种处理方式还是挺不错的，但是要是我来搞就是删除后面的节点，然后将新节点放到root前面。另外这个人是左撇子么，喜欢逆时针转啊。</p>
+<h1 id="OrderedDict相关"><a href="#OrderedDict相关" class="headerlink" title="OrderedDict相关"></a>OrderedDict相关</h1><p>另一个使用双向循环链表的例子是OrderedDict，链表保存了key添加到字典的顺序，但其实这个字典实际用的时候，是用的C语言实现的版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">try:</div><div class="line">    from _collections import OrderedDict</div><div class="line">except ImportError:</div><div class="line">    # Leave the pure Python version in place.</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<p>下面是OrderedDict的源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">class OrderedDict(dict):</div><div class="line">    &apos;&apos;&apos;记录插入顺序的字典</div><div class="line">    内部的self.__map字典记录了key到双向循环链表的节点，双向循环链表开始和结束都是一个sentinel元素。这个元素从来都不会被删除，它在self.__hardroot, 并且self.__hardroot在self.__root有一个弱引用代理</div><div class="line">    往前的连接是弱引用代理，为了防止循环引用</div><div class="line">    在self.__map中存储了硬连接到单个链表节点上，当key被删除后，这些硬连接就会消失</div><div class="line">    &apos;&apos;&apos;</div><div class="line">    def __init__(*args, **kwds):</div><div class="line">    &apos;&apos;&apos;Initialize an ordered dictionary.  The signature is the same as</div><div class="line">    regular dictionaries, but keyword arguments are not recommended because</div><div class="line">    their insertion order is arbitrary.</div><div class="line"></div><div class="line">    &apos;&apos;&apos;</div><div class="line">    if not args:</div><div class="line">        raise TypeError(&quot;descriptor &apos;__init__&apos; of &apos;OrderedDict&apos; object &quot;</div><div class="line">                        &quot;needs an argument&quot;)</div><div class="line">    self, *args = args</div><div class="line">    if len(args) &gt; 1:</div><div class="line">        raise TypeError(&apos;expected at most 1 arguments, got %d&apos; % len(args))</div><div class="line">    try:</div><div class="line">        self.__root</div><div class="line">    except AttributeError:</div><div class="line">        # 这里使用的是一个限定属性的类来作为链表节点</div><div class="line">        self.__hardroot = _Link()</div><div class="line">        self.__root = root = _proxy(self.__hardroot)</div><div class="line">        root.prev = root.next = root</div><div class="line">        self.__map = &#123;&#125;</div><div class="line">    self.__update(*args, **kwds)</div></pre></td></tr></table></figure>
+<p>这里<code>_Link()</code>是一个限定属性的类，代码如下；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class _Link(object):</div><div class="line">    __slots__ = &apos;prev&apos;, &apos;next&apos;, &apos;key&apos;, &apos;__weakref__&apos;</div></pre></td></tr></table></figure>
+<p><code>_proxy</code>是<code>from _weakref import proxy as _proxy</code> 对一个对象的弱引用。相对于通常的引用来说，如果一个对象有一个常规的引用，它是不会被垃圾收集器销毁的，但是如果一个对象只剩下一个弱引用，那么它可能被垃圾收集器收回。<a href="https://docs.python.org/3/library/weakref.html" target="_blank" rel="external">werkref</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def proxy(p_object, callback=None):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    创建一个代理对象，弱引用至object</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<p>继续来看OrderedDict:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">def __setitem__(self, key, value, dict_setitem=dict.__setitem__, proxy=_proxy, Link=_Link):</div><div class="line">    # 当设置一个新值时，首先查看是否已经在字典中了，如果在字典中，就不需要再加入到链表中了，保持之前的次序</div><div class="line">    # 如果没有，则加入到链表中，同样是将新节点放到root前面一个</div><div class="line">    if key not in self:</div><div class="line">        self.__map[key] = link = Link()</div><div class="line">        root = self.__root</div><div class="line">        last = root.prev</div><div class="line">        link.prev, link.next, link.key = last, root, key</div><div class="line">        last.next = link</div><div class="line">        # prev连接是一个proxy</div><div class="line">        root.prev = proxy(link)</div><div class="line">    dict_setitem(self, key, value)</div><div class="line"></div><div class="line">def __delitem__(self, key, dict_delitem=dict.__delitem__):</div><div class="line">    dict_delitem(self, key)</div><div class="line">    link = self.__map.pop(key)</div><div class="line">    link_prev = link.prev</div><div class="line">    link_next = link.next</div><div class="line">    link_prev.next = link_next</div><div class="line">    link_next.prev = link_prev</div><div class="line">    link.prev = None</div><div class="line">    link.next = None</div><div class="line"></div><div class="line">def __iter__(self):</div><div class="line">    root = self.__root</div><div class="line">    curr = root.next</div><div class="line">    while curr is not root:</div><div class="line">        yield curr.key</div><div class="line">        curr = curr.next</div><div class="line"></div><div class="line">def __reversed__(self):</div><div class="line">    root = self.__root</div><div class="line">    curr = root.prev</div><div class="line">    while curr is not root:</div><div class="line">        yield curr.key</div><div class="line">        curr = curr.prev</div><div class="line"></div><div class="line">def clear(self):</div><div class="line">    root = self.__root</div><div class="line">    root.prev = root.next = root</div><div class="line">    self.__map.clear()</div><div class="line">    dict.clear(self)</div></pre></td></tr></table></figure>
+<p>其它方法就不一一说明了，但是从中可以看出，涉及到元素顺序的操作，双向循环链表的应用还是很广泛的。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-01T06:27:06.000Z" itemprop="dateUpdated">2017-09-01 14:27:06 14:27:06</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/07/13/LRUCache在Python中的实现/" target="_blank" rel="external">http://skyrover.me/2017/07/13/LRUCache在Python中的实现/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/&title=《LRU Cache在Python中的实现》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/&title=《LRU Cache在Python中的实现》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LRU Cache在Python中的实现》 — SkyRover&url=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/01/翻译 - Easy in-place file rewriting/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">翻译 - Easy in-place file rewriting</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/25/贪心算法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">贪心算法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/&title=《LRU Cache在Python中的实现》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/&title=《LRU Cache在Python中的实现》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LRU Cache在Python中的实现》 — SkyRover&url=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/07/13/LRUCache在Python中的实现/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3aQW7DMAwEwPz/0ynQU4Eizi7lFLU8OvlgxxofGJLi4xGv5/f6ef1q/X4quef3/Y9PLAwMjMsykm2tbDd/auWTYWBg3IGRB9lkE8lWjt+V7w0DAwPj+J4kpctJx8EXAwMDI2fMgmyCx8DAwDhmJKEwfypJ9fLrk2txDAyMCzJmBwN/c/3x8w0MDIx/z3iWa9aMa8vjelcYGBhbM/KjxOTocaUxlyd8RYaLgYGxBWOlHdY21JKNth8UAwPjDoxPhNFZ2jf7zeLfAwMD47KMtoBMwnFy3JiUu8WRAwYGxtaMNrTlKVreblvhDSM0BgbGxRltSE0C4qxIrpEYGBibMpJW2qxx1obXlZIYAwNjb0Z+AJA36Ism/kK5G/1vYGBgbMTIf+4scB5Gk+EzDAyMvRnJA8MT0SSZizcdJYUYGBg3ZqwcWLaHDW3Lrwi4GBgYWzDOCoLtuEb+7JsqHAMDY1PGrJVfJG1lEpkPWwy7dxgYGJdl5KMS7aBY25hr3/XyfAMDA2MjxqyhttKYWx8Le1nEYmBg3IaxMuIwSxxXUlIMDIw7MI7DWRHyRmNebYWNgYFxT8asEb+SUOalaTHegYGBsTUjX+e2++txivK9GBgY+zFmQXZlbOLckQ4MDIz7MNrhsCSAzoJyW8piYGBgzJK8FjP7fBgYGBhnMdqQ3Q6ZYWBg3IeRF7H5ppPSNB/ReHMnBgbG1ozZwcAsjLYvzttwGBgYmzK+AJhVCj8TXwf3AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Docker安装和使用 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Docker">
+    <meta name="description" content="MacBook安装Docker brew install docker brew install docker-machine 下载安装virtual box，下载地址 初始化 Virtual Box 的 default 虚拟机 docker-machine create --driver virtualbox default 下载最新的boot2docker，下载地址。上一步会自动下载，但是可能">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker安装和使用">
+<meta property="og:url" content="http://skyrover.me/2017/04/25/docker安装和使用/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="MacBook安装Docker brew install docker brew install docker-machine 下载安装virtual box，下载地址 初始化 Virtual Box 的 default 虚拟机 docker-machine create --driver virtualbox default 下载最新的boot2docker，下载地址。上一步会自动下载，但是可能">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-01T06:17:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker安装和使用">
+<meta name="twitter:description" content="MacBook安装Docker brew install docker brew install docker-machine 下载安装virtual box，下载地址 初始化 Virtual Box 的 default 虚拟机 docker-machine create --driver virtualbox default 下载最新的boot2docker，下载地址。上一步会自动下载，但是可能">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Docker安装和使用</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Docker安装和使用</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-25T04:07:19.000Z" itemprop="datePublished" class="page-time">
+  2017-04-25 12:07:19
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MacBook安装Docker"><span class="post-toc-number">1.</span> <span class="post-toc-text">MacBook安装Docker</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用Docker"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用Docker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Dockerfile"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Dockerfile</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载镜像，启动容器"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">加载镜像，启动容器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#将修改了的container提交成新的image"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">将修改了的container提交成新的image</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#将容器内的文件复制到host主机上"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">将容器内的文件复制到host主机上</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载导出镜像"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">加载导出镜像</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#导入导出镜像"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">导入导出镜像</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#删除"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">删除</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行日志"><span class="post-toc-number">2.8.</span> <span class="post-toc-text">运行日志</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-docker安装和使用"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Docker安装和使用</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-04-25 12:07:19 12:07:19" datetime="2017-04-25T04:07:19.000Z"  itemprop="datePublished">2017-04-25 12:07:19</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="MacBook安装Docker"><a href="#MacBook安装Docker" class="headerlink" title="MacBook安装Docker"></a>MacBook安装Docker</h1><ol>
+<li><code>brew install docker</code></li>
+<li><code>brew install docker-machine</code></li>
+<li>下载安装<code>virtual box</code>，<a href="http://sw.bos.baidu.com/sw-search-sp/software/b727d97ca62/VirtualBox_mac_5.0.24.dmg" target="_blank" rel="external">下载地址</a></li>
+<li>初始化 Virtual Box 的 default 虚拟机 <code>docker-machine create --driver virtualbox default</code></li>
+<li>下载最新的boot2docker，<a href="https://github.com/boot2docker/boot2docker/releases" target="_blank" rel="external">下载地址</a>。上一步会自动下载，但是可能比较慢。</li>
+<li>将boot2docker.iso 放在<code>/Users/kevin/.docker/machine/cache</code>目录下，然后执行第四步的命令就会自动使用cache进行安装了。</li>
+<li>初始化环境变量：显示宿主机需要为 default 虚拟机设置的环境变量的指令 <code>docker-machine env default</code>，然后将在宿主机中设置相应的环境变量。<code>eval $(docker-machine env default)</code></li>
+</ol>
+<h1 id="使用Docker"><a href="#使用Docker" class="headerlink" title="使用Docker"></a>使用Docker</h1><p>docker内时区不对：<code>sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</code></p>
+<p>Docker可以支持把一个宿主机上的目录挂载到镜像里。通过<code>-v</code>参数，冒号前为宿主机目录，必须为绝对路径，冒号后为镜像内挂载的路径。</p>
+<p><code>docker run -it -v /home/dock/Downloads:/usr/Downloads ubuntu64 /bin/bash</code></p>
+<p>对于战斗力：<code>docker run -d --name=ability_t0_citic --net=host -p 5001:5001 -v /home/lindyang/ability/data:/opt/ability/data -it ability:170425</code></p>
+<p>打包<code>tar -czf small.tar.gz small</code> (目录名), 压缩并打包目录</p>
+<p>解压<code>tar -xzvf ***.tar.gz</code></p>
+<p>向docker内部传递文件：<code>cat posi_data_source.tar.gz | docker exec -i ability_citic bash -c &quot;cat &gt; /opt/ability/posi_data_source.tar.gz&quot;</code></p>
+<ul>
+<li>查看镜像： <code>docker images</code></li>
+<li>进入docker <code>docker run -it somebox bash</code></li>
+<li>查看docker运行状态：<code>docker ps -a</code></li>
+</ul>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>一个简单的dockerfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">FROM</div><div class="line"> ubuntu:14.04</div><div class="line">USER</div><div class="line"> root</div><div class="line">RUN</div><div class="line"> apt-get install-y</div><div class="line"> apache2</div><div class="line">EXPOSE</div><div class="line"> 80</div></pre></td></tr></table></figure>
+<ul>
+<li>FROM 基于哪个镜像</li>
+<li>RUN 安装软件使用</li>
+<li>MAINTAINER 镜像创建者</li>
+<li>CMD container启动时候执行的命令，dockerfile只能有一个cmd命令，多条就执行最后一条</li>
+<li>USER 使用哪个用户跑container</li>
+<li>EXPOSE container内部服务开启的端口，主机要用的时候要做端口映射，即-p参数</li>
+<li>ENV 用于设置环境变量</li>
+<li>ADD 将文件拷贝到container的文件系统对应的路径</li>
+<li>WORKDIR 切换目录</li>
+</ul>
+<p>一个dockerfile示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">FROM ubuntu:16.04</div><div class="line">MAINTAINER DongWeiming &lt;ciici123@gmail.com&gt;</div><div class="line">ENV DEBIAN_FRONTEND noninteractive</div><div class="line">RUN echo &apos;deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse&apos; &gt; /etc/apt/sources.list</div><div class="line">RUN apt-get update</div><div class="line">RUN apt-get install python curl git zsh sudo vim -yq</div><div class="line">RUN useradd -ms /bin/bash ubuntu</div><div class="line">RUN echo &quot;ubuntu ALL=(ALL) NOPASSWD: ALL&quot;  &gt;&gt; /etc/sudoers</div><div class="line">RUN echo &quot;ubuntu:ubuntu&quot; | chpasswd</div><div class="line">USER ubuntu</div><div class="line">workdir /home/ubuntu</div><div class="line">RUN git clone https://github.com/dongweiming/web_develop</div><div class="line">RUN cd /home/ubuntu/web_develop</div><div class="line">EXPOSE 9000 3141 22 5000</div></pre></td></tr></table></figure>
+<p>从dockerfile构建镜像：<code>docker build -t ability:170423 ./</code></p>
+<h2 id="加载镜像，启动容器"><a href="#加载镜像，启动容器" class="headerlink" title="加载镜像，启动容器"></a>加载镜像，启动容器</h2><p>运行参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-P 默认匹配docker容器的5000端口号到宿主机的49153 to 65535端口，相当于随机分配端口号，</div><div class="line">-p就是绑定特定端口号, 5001:5001指的是default虚拟机到容器的端口映射，相当于外部和容器都使用5001端口，在linux上，就是linux系统到容器的端口映射</div><div class="line">-d 以守护进行方式运行，后台</div><div class="line">-D 开启Debug模式</div></pre></td></tr></table></figure>
+<p>示例： <code>docker run -d --name=ability -p 5001:5001 --net=host -it ability:170324</code></p>
+<h2 id="将修改了的container提交成新的image"><a href="#将修改了的container提交成新的image" class="headerlink" title="将修改了的container提交成新的image"></a>将修改了的container提交成新的image</h2><p><code>docker commit container repository:tag</code>，然后就可以将新的image导出放在其他地方使用。commit命令仅是一个临时创建Imange的辅助命令。不过最好是应该修复image的问题之后，修改源码的问题，也就是应该写一个新的Dockerfile文件来维护此Image。</p>
+<h2 id="将容器内的文件复制到host主机上"><a href="#将容器内的文件复制到host主机上" class="headerlink" title="将容器内的文件复制到host主机上"></a>将容器内的文件复制到host主机上</h2><p>示例：<code>docker cp container:path hostpath</code></p>
+<h2 id="加载导出镜像"><a href="#加载导出镜像" class="headerlink" title="加载导出镜像"></a>加载导出镜像</h2><p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker save -o some.image some:latest</div><div class="line">docker load -i ./some.image</div></pre></td></tr></table></figure>
+<h2 id="导入导出镜像"><a href="#导入导出镜像" class="headerlink" title="导入导出镜像"></a>导入导出镜像</h2><p>如果要导出本地某个容器，可以使用 docker export 命令，导出容器快照到本地文件<code>docker export container &gt; ubuntu.tar</code></p>
+<p>可以使用 docker import 从容器快照文件中再导入为镜像<code>cat ubuntu.tar | sudo docker import - test/ubuntu:v1.0</code></p>
+<p>也可以通过指定 URL 或者某个目录来导入<code>docker import http://example.com/exampleimage.tgz example/imagerepo</code></p>
+<p>用户既可以使用 docker load 来导入镜像存储文件到本地镜像库，也可以使用 docker import 来导入一个容器快照到本地镜像库。这两者的区别在于容器快照文件将丢弃所有的历史记录和元数据信息（即仅保存容器当时的快照状态），而镜像存储文件将保存完整记录，体积也要大。此外，从容器快照文件导入时可以重新指定标签等元数据信息。</p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>删除指定容器：<code>docker rm container</code></p>
+<p>删除指定的镜像: <code>docker rmi image</code></p>
+<h2 id="运行日志"><a href="#运行日志" class="headerlink" title="运行日志"></a>运行日志</h2><p><code>docker logs --tail=200 container</code></p>
+<p>image中每一层image命令行的历史记录<code>docker history image</code></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-01T06:17:49.000Z" itemprop="dateUpdated">2017-09-01 14:17:49 14:17:49</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/04/25/docker安装和使用/" target="_blank" rel="external">http://skyrover.me/2017/04/25/docker安装和使用/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/25/docker安装和使用/&title=《Docker安装和使用》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/25/docker安装和使用/&title=《Docker安装和使用》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/25/docker安装和使用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Docker安装和使用》 — SkyRover&url=http://skyrover.me/2017/04/25/docker安装和使用/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/25/docker安装和使用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/07/理解Flask的Context/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">理解Flask的Context</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/22/信号在Flask中的使用/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">信号在Flask中的使用</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/04/25/docker安装和使用/&title=《Docker安装和使用》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/04/25/docker安装和使用/&title=《Docker安装和使用》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/04/25/docker安装和使用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Docker安装和使用》 — SkyRover&url=http://skyrover.me/2017/04/25/docker安装和使用/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/04/25/docker安装和使用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNklEQVR42u3aQW7DMAwF0dz/0i7QVYHW0nzKSSFqtCoCxdHzgiVFvl54Xd/r9yc/P7/bc7ef73lsyZAhY1vGNVx3e/h3OXIMGz9fhgwZJzDGQZYfkR+CM8g/ABkyZMgYJ3BpkCXhW4YMGTJWGONjkQBNvitDhgwZtSKWJ3zkGq6Wkj5Qi8uQIWNDRtoY+OTfb+xvyJAhYxPGFa60ZH3HGf44lQwZMlozeDFZO8p4J08W0U4ZMmQcwFi5aKvxSNsguHSTIUNGU8Z/hVqCIU1NGTJknMMYh9HaYAQPxOlYRpAUypAhowWDtAF4CUrC63rDUoYMGacxeFo2PhYJxGmAJs+ZpIYyZMhowaiVl3yci7ya9EVMbg1lyJDRjsGHKmqXaCutSj6KIUOGjN6Mp4a3+HDYyrXdUl0uQ4aMbRn8eosnhfwerJZEBqmhDBkyGjHSpO2pUYla+ToZtpAhQ8YBjFpSuNJOqK3gvcqQIaMFo9akrI1o8As4jpchQ0ZvRjr0wO/tVi7jeKoqQ4aMExj8x3jxmTYyH24MyJAh40hGOmwRRHrcOp38lgwZMlozyBhE+jhOqvEmT5YhQ0Y7Ru06nheu6UUeSTTjmREZMmRszqilaGm5y5G1YQ4ZMmScwOBBlujTQ6TJ5aSFKUOGjNYMfqDacFgtTAe1uAwZMmQsJ3C15JK3M2XIkCEjTdTS4vYVLhkyZJzJSItYPn5Re1nk12XIkHEOI20MEPZKAH12jEOGDBmbM74AG3HrQf9omNAAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

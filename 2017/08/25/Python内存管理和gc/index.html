@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Python内存管理和gc | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python">
+    <meta name="description" content="Python内存管理和gc 参考:  Python深入06 Python的内存管理 gc — Garbage Collector interface  最近开始大规模跑数据了，跑着跑着进程就被系统kill掉了，查其原因，原来是OOM(Out of Memory)了，为什么会占这么多的内存呢，我的程序需要计算数万个资金账号，然后每个资金账号可能计算数年，而且我是每天每天算的，所以基本每个资金账号都会">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python内存管理和gc">
+<meta property="og:url" content="http://skyrover.me/2017/08/25/Python内存管理和gc/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="Python内存管理和gc 参考:  Python深入06 Python的内存管理 gc — Garbage Collector interface  最近开始大规模跑数据了，跑着跑着进程就被系统kill掉了，查其原因，原来是OOM(Out of Memory)了，为什么会占这么多的内存呢，我的程序需要计算数万个资金账号，然后每个资金账号可能计算数年，而且我是每天每天算的，所以基本每个资金账号都会">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-01T06:41:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python内存管理和gc">
+<meta name="twitter:description" content="Python内存管理和gc 参考:  Python深入06 Python的内存管理 gc — Garbage Collector interface  最近开始大规模跑数据了，跑着跑着进程就被系统kill掉了，查其原因，原来是OOM(Out of Memory)了，为什么会占这么多的内存呢，我的程序需要计算数万个资金账号，然后每个资金账号可能计算数年，而且我是每天每天算的，所以基本每个资金账号都会">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Python内存管理和gc</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Python内存管理和gc</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-25T03:02:37.000Z" itemprop="datePublished" class="page-time">
+  2017-08-25 11:02:37
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#对象与引用"><span class="post-toc-number">1.</span> <span class="post-toc-text">对象与引用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#垃圾回收"><span class="post-toc-number">2.</span> <span class="post-toc-text">垃圾回收</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#分代回收"><span class="post-toc-number">3.</span> <span class="post-toc-text">分代回收</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#孤立的引用环"><span class="post-toc-number">4.</span> <span class="post-toc-text">孤立的引用环</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#gc"><span class="post-toc-number">5.</span> <span class="post-toc-text">gc</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-Python内存管理和gc"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Python内存管理和gc</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-25 11:02:37 11:02:37" datetime="2017-08-25T03:02:37.000Z"  itemprop="datePublished">2017-08-25 11:02:37</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>Python内存管理和gc</p>
+<p>参考:</p>
+<ul>
+<li><a href="http://www.cnblogs.com/vamei/p/3232088.html" target="_blank" rel="external">Python深入06 Python的内存管理</a></li>
+<li><a href="https://docs.python.org/2/library/gc.html" target="_blank" rel="external">gc — Garbage Collector interface</a></li>
+</ul>
+<p>最近开始大规模跑数据了，跑着跑着进程就被系统kill掉了，查其原因，原来是OOM(Out of Memory)了，为什么会占这么多的内存呢，我的程序需要计算数万个资金账号，然后每个资金账号可能计算数年，而且我是每天每天算的，所以基本每个资金账号都会循环个几百次，然后几万个资金账号，想想确是吓人。但是Python有垃圾回收机制啊，每个资金账号计算完成后，理应回收掉啊，也不应该出现这个超出内存的问题啊。看来得深入研究一下Python的内存管理机制了，心中隐隐约约的觉得Python不会立即进行垃圾回收，所以导致了内存超限。</p>
+<h1 id="对象与引用"><a href="#对象与引用" class="headerlink" title="对象与引用"></a>对象与引用</h1><p><code>a = 1</code>这样整数1是一个对象，a是一个引用，而Python对于这种整数和短小的字符，会缓存这些对象，以便重复使用，如果<code>b = 1</code>那么a和b是引用的同一个对象。</p>
+<p>Python里每个对象都存有指向该对象的引用总数，即引用计数，可以使用<code>sys</code>包的<code>getrefcount()</code>来查看某个对象的引用计数。</p>
+<p>对于容器对象，里面包含的是元素对象的引用。比如对于列表<code>[1, 2, 3]</code>，如果随便改一个元素，就会导致这个元素的引用和以前的不一样，所以列表也会发生变化。但是如果<code>[[1,2], 3]</code>，第一个元素是一个列表，而这个列表存的是第一个元素所代表的列表的引用，所以子列表里面的内容发生变化，原列表也会track到。</p>
+<p>两个对象之间可能互相引用，形成引用环。</p>
+<p>可以使用del关键字来删除某个引用，使得某个对象的引用减少，所以del不能使得释放内存，而只是减少一次引用。</p>
+<h1 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h1><p>Python会在适当的时候启动垃圾回收。如果Python某个对象的引用计数为0，则说明没有任何引用指向该对象，该对象就成为要被回收的垃圾了。当垃圾回收启动时，Python扫描到这个引用计数为0的对象，就将它所占据的内存清空。垃圾回收时，Python不能进行其它的任务。频繁的垃圾回收将大大降低Python的工作效率。如果内存中的对象不多，就没有必要总启动垃圾回收。所以，<strong>Python只会在特定条件下，自动启动垃圾回收。</strong> 当Python运行时，会记录其中分配对象(object allocation)和取消分配对象(object deallocation)的次数。当两者的差值高于某个阈值时，垃圾回收才会启动。</p>
+<p>我们也可以手动启动垃圾回收，即使用<code>gc.collect()</code>。</p>
+<p>说到这里，大概就知道自己的程序为什么内存占用这么高了：在开始一次垃圾回收之前，积攒的对象太慢，但是每个对象都会占用相当大的内存，所以基本上还没有来得及释放，就已经满了。比如分配对象和取消分配对象的次数需要5000次才开始回收，但是每个对象占用了2M，那么就是占用10G内存多，8个进程，80G？</p>
+<p>后来每个资金账号计算完成后，添加了一句<code>gc.collect()</code>，强制进行垃圾回收，然后再也没有出现过内存占用高的情况了。</p>
+<h1 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h1><p>基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。我们的程序往往会产生大量的对象，许多对象很快产生和消失，但也有一些对象长期被使用。出于信任和效率，对于这样一些“长寿”对象，我们相信它们的用处，所以减少在垃圾回收中扫描它们的频率。</p>
+<p>Python将所有的对象分为0，1，2三代。所有的新建对象都是0代对象。当某一代对象经历过垃圾回收，依然存活，那么它就被归入下一代对象。垃圾回收启动时，一定会扫描所有的0代对象。如果0代经过一定次数垃圾回收，那么就启动对0代和1代的扫描清理。当1代也经历了一定次数的垃圾回收后，那么会启动对0，1，2，即对所有对象进行扫描。</p>
+<h1 id="孤立的引用环"><a href="#孤立的引用环" class="headerlink" title="孤立的引用环"></a>孤立的引用环</h1><p>回收这样的引用环，Python复制每个对象的引用计数，可以记为<code>gc_ref</code>。假设，每个对象i，该计数为<code>gc_ref_i</code>。Python会遍历所有的对象i。对于每个对象i引用的对象j，将相应的<code>gc_ref_j</code>减1。</p>
+<p>在结束遍历后，<code>gc_ref</code>不为0的对象，和这些对象引用的对象，以及继续更下游引用的对象，需要被保留。而其它的对象则被垃圾回收。</p>
+<p>比如对于a和b相互引用，首先遍历到a, 然后<code>gc_ref_j</code>减一等于0，然后遍历b,<code>gc_ref_i</code>减一等于0，然后a和b引用都等于0，所以被回收。</p>
+<h1 id="gc"><a href="#gc" class="headerlink" title="gc"></a>gc</h1><p>这个模块提供了自定义垃圾收集器的接口。它提供了禁止收集器，调整收集频率，设置debugging选项。并且也提供访问收集器发现但是无法收集的不可达对象。自从收集器在Python中补充了引用计数，在你确保程序中不会产生引用循环的情况下你可以禁止收集器。可以通过<code>gc.disable()</code>来禁止自动收集。来debug一个内存泄漏的程序可以调用<code>gc.set_debug(gc.DEBUG_LEAK)</code>。注意到这一标志包含了<code>gc.DEBUG_SAVEALL</code>，导致垃圾收集对象会在<code>gc.garbage</code>中存储下来用于检查。</p>
+<p>下面介绍几个主要常用的方法</p>
+<ul>
+<li><code>gc.enable()</code></li>
+</ul>
+<p>开启自动垃圾收集，默认是开着的</p>
+<ul>
+<li><code>gc.disable()</code></li>
+</ul>
+<p>关闭自动垃圾收集</p>
+<ul>
+<li><code>gc.isenabled()</code></li>
+</ul>
+<p>返回自动垃圾收集是否打开</p>
+<ul>
+<li><code>gc.collect(generation=2)</code></li>
+</ul>
+<p>如果没有参数，进行全方位的收集，可选参数<code>generation</code>为整数，来指定取收集哪一代(0-2)。如果给定的代数无效，会引发<code>ValueError</code>，会返回找到的不可达的对象个数。</p>
+<ul>
+<li><code>gc.set_debug()</code></li>
+</ul>
+<p>设置垃圾收集的debugging标志。调试信息将会写入到<code>sys.stderr</code>，下面的调试标志可以组合起来用。</p>
+<ul>
+<li><code>gc.get_dubug()</code></li>
+</ul>
+<p>返回目前设置的调试标志</p>
+<ul>
+<li><code>gc.get_stats()</code></li>
+</ul>
+<p>返回三代每代的包含收集统计信息的字典列表。键的数目在将来可能会改变，但是当前每个字典会包含以下：</p>
+<p>collections 是这代被收集过的次数</p>
+<p>collected 是在这代总共收集的对象总数</p>
+<p>uncollectable 是这代中无法收集的对象总数</p>
+<ul>
+<li><code>gc.set_threshold(threshold0[, threshold1[, threshold2]])</code></li>
+</ul>
+<p>设置垃圾收集阈值，即收集频率。设置threshold0为0禁止垃圾收集</p>
+<p>GC视对象可以在多少次垃圾收集里存活将对象分成三代。新的对象会分配在第0代。如果一个对象在一次垃圾收集里还会存活，那么会将其移动到更老的一代。2是最老的代，在这里面的对象会保持在这一代。<strong>为了决定什么时候去运行垃圾收集，收集器会从上一次收集开始跟踪对象分配数和取消分配数。当两者之差超过了threshold0，就会开始收集。</strong> 最开始只有0代会被检查，如果0代检查的次数超过了threshold1，那么1代也开始检查，1代检查次数超过threshold2，那么2代开始检查。</p>
+<ul>
+<li><code>gc.garbage</code></li>
+</ul>
+<p>收集器发现的不可达的对象列表。如果<code>DEBUG_SAVEALL</code>被设置，那么就会将这些对象加入列表而不是释放它们。</p>
+<ul>
+<li><code>gc.DEBUG_LEAK</code></li>
+</ul>
+<p>调试内存泄漏程序，等于<code>DEBUG_COLLECTABLE | DEBUG_UNCOLLECTABLE | DEBUG_SAVEALL</code></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-01T06:41:54.000Z" itemprop="dateUpdated">2017-09-01 14:41:54 14:41:54</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/25/Python内存管理和gc/" target="_blank" rel="external">http://skyrover.me/2017/08/25/Python内存管理和gc/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/25/Python内存管理和gc/&title=《Python内存管理和gc》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/25/Python内存管理和gc/&title=《Python内存管理和gc》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/25/Python内存管理和gc/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python内存管理和gc》 — SkyRover&url=http://skyrover.me/2017/08/25/Python内存管理和gc/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/25/Python内存管理和gc/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/27/进程与线程/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">进程与线程</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/23/翻译 - How to close a SQLAlchemy session/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">翻译 - How to close a SQLAlchemy session</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/25/Python内存管理和gc/&title=《Python内存管理和gc》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/25/Python内存管理和gc/&title=《Python内存管理和gc》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/25/Python内存管理和gc/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python内存管理和gc》 — SkyRover&url=http://skyrover.me/2017/08/25/Python内存管理和gc/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/25/Python内存管理和gc/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACL0lEQVR42u3a207EMAxF0fn/ny4ST6BR233scKmz8zRiSpMVJBPbeb3wOD7H189n4/359986e//1MwuGDBkyHsuoLau/FDIXWZsMGTL2YZAgexY6rxdU+zlfmwwZMmTwCUhYJEdGGTJkyOgHXPTSRRskQ4YMGWkSSwIof/7PcnEZMmQ8kFFrDPzO5x/vb8iQIePfM47S4MU4/rbWemTIkDGaQa5B8NQ0fZIfCtG8MmTI2IBBivudS12rWgKnWy9DhoyhjLSYteqodw2Lg7sMGTJGMzoNxXRKnvTyVaH/GzJkyHg4I21YFtPLdrS8OYDKkCFjG0Z6YYJPQ8Ir36yb/oYMGTKGMtIwGtfzwpBaPBrKkCFjKCNNTXlxrVOeS1NiGTJk7MNIC16dZiQ/IAbtUhkyZIxmpKW02sRpaE5DsAwZMmYzahe5OqX8tNmJtlKGDBlbMoJSV+lg1wnoMmTI2IdRu/KVNinTQlvr7yBDhoxxDN4A4FdaSWGOl9J4uitDhozZjHR6flGsf7WCBGsZMmTsxkjDX9oM6KTBNwU7GTJkjGbw0JkeHEnjISWh52XIkDGIcYSDl9s4uNb4/PatDBkyRjNqx7I0WK9NbmXIkLEngwdZsqw07PIjY5CLy5AhYyijVt5K43otcY17sDJkyJDRuKLBj4/FFqYMGTK2Z/DwyhPXZRfLZMiQsQGjFi5JQOxcI+PFOxkyZMxmpI2BWrGMbxzfrFZ/Q4YMGc9gfAANeWqYLVLSlgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

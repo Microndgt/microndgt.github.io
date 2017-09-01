@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>LeetCode刷题(1) | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法">
+    <meta name="description" content="终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！ Longest Palindrome其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大">
+<meta name="keywords" content="Python,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode刷题(1)">
+<meta property="og:url" content="http://skyrover.me/2017/05/13/LeetCode刷题(1)/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！ Longest Palindrome其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-01T06:16:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode刷题(1)">
+<meta name="twitter:description" content="终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！ Longest Palindrome其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">LeetCode刷题(1)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">LeetCode刷题(1)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-13T14:46:32.000Z" itemprop="datePublished" class="page-time">
+  2017-05-13 22:46:32
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Longest-Palindrome"><span class="post-toc-number">1.</span> <span class="post-toc-text">Longest Palindrome</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Base-7"><span class="post-toc-number">2.</span> <span class="post-toc-text">Base 7</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Best-Time-to-Buy-and-Sell-Stock-II"><span class="post-toc-number">3.</span> <span class="post-toc-text">Best Time to Buy and Sell Stock II</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Relative-Ranks"><span class="post-toc-number">4.</span> <span class="post-toc-text">Relative Ranks</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Two-Sum-II-Input-array-is-sorted"><span class="post-toc-number">5.</span> <span class="post-toc-text">Two Sum II - Input array is sorted</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Minimum-Absolute-Difference-in-BST"><span class="post-toc-number">6.</span> <span class="post-toc-text">Minimum Absolute Difference in BST</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Binary-Tree-Tilt"><span class="post-toc-number">7.</span> <span class="post-toc-text">Binary Tree Tilt</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Hamming-Distance"><span class="post-toc-number">8.</span> <span class="post-toc-text">Hamming Distance</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Reverse-Words-in-a-String-III"><span class="post-toc-number">9.</span> <span class="post-toc-text">Reverse Words in a String III</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Number-Complement"><span class="post-toc-number">10.</span> <span class="post-toc-text">Number Complement</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Keyboard-Row"><span class="post-toc-number">11.</span> <span class="post-toc-text">Keyboard Row</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Fizz-Buzz"><span class="post-toc-number">12.</span> <span class="post-toc-text">Fizz Buzz</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Reverse-String"><span class="post-toc-number">13.</span> <span class="post-toc-text">Reverse String</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Array-Partition-I"><span class="post-toc-number">14.</span> <span class="post-toc-text">Array Partition I</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Reshape-the-Matrix"><span class="post-toc-number">15.</span> <span class="post-toc-text">Reshape the Matrix</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Numpy解法"><span class="post-toc-number">15.1.</span> <span class="post-toc-text">Numpy解法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sum函数扁平化"><span class="post-toc-number">15.2.</span> <span class="post-toc-text">sum函数扁平化</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Next-Greater-Element-I"><span class="post-toc-number">16.</span> <span class="post-toc-text">Next Greater Element I</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一个O-n-的算法"><span class="post-toc-number">16.1.</span> <span class="post-toc-text">一个O(n)的算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Max-Consecutive-Ones"><span class="post-toc-number">17.</span> <span class="post-toc-text">Max Consecutive Ones</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#统计的算法"><span class="post-toc-number">17.1.</span> <span class="post-toc-text">统计的算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Detect-Capital"><span class="post-toc-number">18.</span> <span class="post-toc-text">Detect Capital</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#istitle-所有单词是否首字母为大写，其他字母为小写"><span class="post-toc-number">18.1.</span> <span class="post-toc-text">istitle() 所有单词是否首字母为大写，其他字母为小写</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Add-Two-Numbers"><span class="post-toc-number">19.</span> <span class="post-toc-text">Add Two Numbers</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Find-All-Numbers-Disappeared-in-an-Array"><span class="post-toc-number">20.</span> <span class="post-toc-text">Find All Numbers Disappeared in an Array</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Distribute-Candies"><span class="post-toc-number">21.</span> <span class="post-toc-text">Distribute Candies</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Longest-Uncommon-Subsequence-I"><span class="post-toc-number">22.</span> <span class="post-toc-text">Longest Uncommon Subsequence I</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Construct-the-Rectangle"><span class="post-toc-number">23.</span> <span class="post-toc-text">Construct the Rectangle</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-LeetCode刷题(1)"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">LeetCode刷题(1)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-13 22:46:32 22:46:32" datetime="2017-05-13T14:46:32.000Z"  itemprop="datePublished">2017-05-13 22:46:32</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
+<h1 id="Longest-Palindrome"><a href="#Longest-Palindrome" class="headerlink" title="Longest Palindrome"></a><a href="https://leetcode.com/problems/longest-palindrome/#/description" target="_blank" rel="external">Longest Palindrome</a></h1><p>其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大长度了。<code>Runtime: 42 ms Your runtime beats 95.32 % of python submissions.</code> 棒！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def longestPalindrome(self, s):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type s: str</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        set_s = set(s)</div><div class="line">        length = 0</div><div class="line">        odd_times = 0</div><div class="line">        for i in set_s:</div><div class="line">            count = s.count(i)</div><div class="line">            if count % 2 == 0:</div><div class="line">                length += count</div><div class="line">            else:</div><div class="line">                odd_times += 1</div><div class="line">                length += count</div><div class="line">        if odd_times &gt; 1:</div><div class="line">            length -= (odd_times - 1)</div><div class="line">        return length</div></pre></td></tr></table></figure>
+<h1 id="Base-7"><a href="#Base-7" class="headerlink" title="Base 7"></a><a href="https://leetcode.com/problems/base-7/#/description" target="_blank" rel="external">Base 7</a></h1><p>我去，这道题不知道错了多少次，我也是醉了，简直是考察细心程度的，可惜自己总是考虑不全面。而且写的也不优雅，哎。大致思路就是短除法，跟一个数字求二进制一样的，取模，然后再除。将每次的余数放在列表前面，然后就是结果了，但是需要考虑负数情况，因为自己设定的while循环条件是<code>divide &gt;= 7</code>，所以。而且divide必须大于等于7，因为7是10。负数-1%7等于6, 所以应该%-7。<code>Runtime: 49 ms Your runtime beats 41.62 % of python submissions</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def convertToBase7(self, num):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type num: int</div><div class="line">        :rtype: str</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        anum = abs(num)</div><div class="line">        result = []</div><div class="line">        reserve = anum % 7</div><div class="line">        result.append(str(reserve))</div><div class="line">        divide = anum // 7</div><div class="line">        while abs(divide) &gt;= 7:</div><div class="line">            reserve = divide % 7</div><div class="line">            divide = divide / 7</div><div class="line">            result.insert(0, str(reserve))</div><div class="line">        if divide != 0:</div><div class="line">            result.insert(0, str(divide))</div><div class="line">        if num &lt; 0:</div><div class="line">            return &apos;-&apos; + &apos;&apos;.join(result)</div><div class="line">        return &apos;&apos;.join(result)</div></pre></td></tr></table></figure>
+<p>一个比较厉害的版本，其实算法本质和我的一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def convertToBase7(self, num):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type num: int</div><div class="line">        :rtype: str</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        repr = []</div><div class="line">        neg = False</div><div class="line">        if num is None:</div><div class="line">            return &apos;&apos;</div><div class="line">        if num == 0:</div><div class="line">            return &apos;0&apos;</div><div class="line">        if num &lt; 0:</div><div class="line">            neg=True</div><div class="line">            num = -num</div><div class="line">        while num:</div><div class="line">            repr.append(str(num%7))</div><div class="line">            num/=7</div><div class="line">        return &apos;-&apos;+&apos;&apos;.join(repr[::-1]) if neg else &apos;&apos;.join(repr[::-1])</div></pre></td></tr></table></figure>
+<h1 id="Best-Time-to-Buy-and-Sell-Stock-II"><a href="#Best-Time-to-Buy-and-Sell-Stock-II" class="headerlink" title="Best Time to Buy and Sell Stock II"></a><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/#/description" target="_blank" rel="external">Best Time to Buy and Sell Stock II</a></h1><p>这道题按照这样的思路想就很简单，不论什么情况，对于一段时间，最差也是最大价格和最小价格之差，那么更好的情况就是，在每一次价格增长的时候都买入了，这样获利是最大的。那么抽象过来就是，只要后一天价格比前一天价格高，就记一次收益，这样获利是最多的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxProfit(self, prices):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type prices: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        sum_value = 0</div><div class="line">        for i in range(len(prices)):</div><div class="line">            if i == 0:</div><div class="line">                continue</div><div class="line">            if prices[i] &gt; prices[i-1]:</div><div class="line">                sum_value += prices[i] - prices[i-1]</div><div class="line">        return sum_value</div></pre></td></tr></table></figure>
+<h1 id="Relative-Ranks"><a href="#Relative-Ranks" class="headerlink" title="Relative Ranks"></a><a href="https://leetcode.com/problems/relative-ranks/#/description" target="_blank" rel="external">Relative Ranks</a></h1><p>不想用遍历，明知其会很慢，但是没想到好方法。。。<code>Runtime: 522 ms Your runtime beats 17.27 % of python submissions.</code>主要是index方法要花挺多时间的，而且还在一个循环中，貌似n2算法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findRelativeRanks(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: List[str]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        ranks = [&apos;Gold Medal&apos;, &apos;Silver Medal&apos;, &apos;Bronze Medal&apos;]</div><div class="line">        sorted_nums = sorted(nums, reverse=True)</div><div class="line">        for i, num in enumerate(nums):</div><div class="line">            pos = sorted_nums.index(num) + 1</div><div class="line">            if pos &lt;= 3:</div><div class="line">                nums[i] = ranks[pos-1]</div><div class="line">            else:</div><div class="line">                nums[i] = str(pos)</div><div class="line">        return nums</div></pre></td></tr></table></figure>
+<p>嗯，用字典来存储每一个数字的排序后的位置，然后根据原来的顺序将其打印出来就好了。也就只能这样了。<code>Runtime: 122 ms Your runtime beats 51.66 % of python submissions</code> n的算法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findRelativeRanks(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: List[str]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        ranks = [&apos;Gold Medal&apos;, &apos;Silver Medal&apos;, &apos;Bronze Medal&apos;]</div><div class="line">        sorted_nums = sorted(nums, reverse=True)</div><div class="line">        d = &#123;&#125;</div><div class="line">        for i, num in enumerate(sorted_nums):</div><div class="line">            if i &lt;= 2:</div><div class="line">                d[num] = ranks[i]</div><div class="line">            else:</div><div class="line">                d[num] = str(i + 1)</div><div class="line">        result = []</div><div class="line">        for num in nums:</div><div class="line">            result.append(d[num])</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<h1 id="Two-Sum-II-Input-array-is-sorted"><a href="#Two-Sum-II-Input-array-is-sorted" class="headerlink" title="Two Sum II - Input array is sorted"></a><a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/#/description" target="_blank" rel="external">Two Sum II - Input array is sorted</a></h1><p>第一遍又超时了，而且遇到的坑不少。。错误提交了好几次。。这个算法应该是可以做出来的，但是一次遍历中又来了列表的insert和pop操作，这个就是一个n2的算法了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def twoSum(self, numbers, target):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type numbers: List[int]</div><div class="line">        :type target: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        import copy</div><div class="line">        cp_numbers = copy.deepcopy(numbers)</div><div class="line">        for index, number in enumerate(numbers, 1):</div><div class="line">            another = target - number</div><div class="line">            cp_numbers.pop(index-1)</div><div class="line">            if another in cp_numbers:</div><div class="line">                another_pos = cp_numbers.index(another) + 2</div><div class="line">                return [index, another_pos]</div><div class="line">            cp_numbers.insert(index-1, number)</div></pre></td></tr></table></figure>
+<p>精简了一下，还是超时，精简的办法也是让我慨叹自己之前的脑子馄饨啊！！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def twoSum(self, numbers, target):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type numbers: List[int]</div><div class="line">        :type target: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        for index, number in enumerate(numbers, 1):</div><div class="line">            another = target - number</div><div class="line">            if another in numbers[index:]:</div><div class="line">                another_pos = numbers[index:].index(another) + index + 1</div><div class="line">                return [index, another_pos]</div></pre></td></tr></table></figure>
+<p>观察超限的数字之后，发现是因为如果一个数字连续出现3次或者以上就不可能是答案了，如果一个数字出现两次，那么如果target不等于这两个数字之和，那么这两个数字就不可能是了。所以综上，加上一个不可能是答案的集合，如果检查一个数字已经不是答案了，下次如果再碰到，那么就排除。这样就减少了很多次的检查。答案也就通过了。<code>Runtime: 76 ms Your runtime beats 15.64 % of python submissions.</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def twoSum(self, numbers, target):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type numbers: List[int]</div><div class="line">        :type target: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        no_consider = set()</div><div class="line">        for index, number in enumerate(numbers, 1):</div><div class="line">            if number in no_consider:</div><div class="line">                continue</div><div class="line">            another = target - number</div><div class="line">            if another in numbers[index:]:</div><div class="line">                another_pos = numbers[index:].index(another) + index + 1</div><div class="line">                return [index, another_pos]</div><div class="line">            no_consider.add(number)</div></pre></td></tr></table></figure>
+<p>一个精巧的算法，利用双指针法，分别指向开始和结束处，如果值小了，那么左侧指针向右，如果值大了，那么右侧指针向左，也就相当于遍历了一次。复杂度是n。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def twoSum(self, numbers, target):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type numbers: List[int]</div><div class="line">        :type target: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        smaller, larger = 0, len(numbers) - 1</div><div class="line">        while smaller &lt; larger:</div><div class="line">            total = numbers[smaller] + numbers[larger]</div><div class="line">            if total == target:</div><div class="line">                return [smaller + 1, larger + 1]</div><div class="line">            elif total &lt; target:</div><div class="line">                smaller += 1</div><div class="line">            else:</div><div class="line">                larger -= 1</div></pre></td></tr></table></figure>
+<h1 id="Minimum-Absolute-Difference-in-BST"><a href="#Minimum-Absolute-Difference-in-BST" class="headerlink" title="Minimum Absolute Difference in BST"></a><a href="https://leetcode.com/problems/minimum-absolute-difference-in-bst/#/description" target="_blank" rel="external">Minimum Absolute Difference in BST</a></h1><p>刚开始没有用到BST这个信息，所以写出的算法直接超时。用的深度优先遍历，然后在遍历的时候维护一个列表，然后在遍历每一个节点的时候对这个列表的每个节点求差，然后求最小值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line">class Solution(object):</div><div class="line">    def getMinimumDifference(self, root):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        find_node = [root]</div><div class="line">        found_val = []</div><div class="line">        while find_node:</div><div class="line">            node = find_node.pop()</div><div class="line">            if not node:</div><div class="line">                break</div><div class="line">            if found_val:</div><div class="line">                if len(found_val) == 1:</div><div class="line">                    min_value = abs(node.val - found_val[0])</div><div class="line">                else:</div><div class="line">                    for val in found_val:</div><div class="line">                        min_value = min(min_value, abs(node.val - val))</div><div class="line">            found_val.append(node.val)</div><div class="line">            if node.left:</div><div class="line">                find_node.append(node.left)</div><div class="line">            if node.right:</div><div class="line">                find_node.append(node.right)</div><div class="line">        return min_value</div></pre></td></tr></table></figure>
+<p>BST的话，就是左侧的值小于中间的值，右侧的值大于中间的值，那么一次中序遍历就可以获取已经排序的序列值了，然后按顺序两两元素之差取最小值就是整体的最小值了。P.S.中序遍历先左侧再中间再右侧节点，先序遍历先中间再左侧再右侧，后序遍历先左侧再右侧再中间节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line">class Solution(object):</div><div class="line">    def transverse(self, node):</div><div class="line">        if not node:</div><div class="line">            return</div><div class="line">        self.transverse(node.left)</div><div class="line">        self.found_value.append(node.val)</div><div class="line">        self.transverse(node.right)     </div><div class="line">    def getMinimumDifference(self, root):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        self.found_value = []</div><div class="line">        self.transverse(root)</div><div class="line">        values_len = len(self.found_value)</div><div class="line">        print(self.found_value)</div><div class="line">        for index in range(values_len):</div><div class="line">            if index == values_len - 1:</div><div class="line">                break</div><div class="line">            if index == 0:</div><div class="line">                min_value = abs(self.found_value[index] - self.found_value[index+1])</div><div class="line">            else:</div><div class="line">                min_value = min(min_value, abs(self.found_value[index] - self.found_value[index+1]))</div><div class="line">        return min_value</div></pre></td></tr></table></figure>
+<p><code>Runtime: 152 ms Your runtime beats 13.58 % of python submissions.</code></p>
+<p>下面是一个79ms的算法，也是利用BST的特点。先找到最小值节点，然后维护一个栈，栈中元素从大到小，出栈从小的部分出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line">class Solution(object):</div><div class="line">    def getMinimumDifference(self, root):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if root == None: return 0</div><div class="line">        stack = []</div><div class="line">        cur = root</div><div class="line">        prev = None</div><div class="line">        ans = 0x7FFFFFFF</div><div class="line">        while stack or cur:</div><div class="line">            if cur:</div><div class="line">                stack.append(cur)</div><div class="line">                cur = cur.left</div><div class="line">            else:</div><div class="line">                node = stack.pop()</div><div class="line">                if prev:</div><div class="line">                    ans = min(ans, abs(prev.val - node.val))</div><div class="line">                prev = node</div><div class="line">                cur = node.right</div><div class="line">        return ans</div></pre></td></tr></table></figure>
+<p>第一个算法，在一个深度优先遍历中再遍历了一遍元素的值，算法就是n2的，而第二个算法，先进行一个深度优先遍历，然后再进行一个元素的遍历，那么就是n的。第三个算法，在进行遍历的时候，同时就将数据比较了，相当也是n，但是后者的常数级比第二个算法小，因此也比第二个算法快。</p>
+<h1 id="Binary-Tree-Tilt"><a href="#Binary-Tree-Tilt" class="headerlink" title="Binary Tree Tilt"></a><a href="https://leetcode.com/problems/binary-tree-tilt/" target="_blank" rel="external">Binary Tree Tilt</a></h1><p>Given a binary tree, return the tilt of the whole tree.</p>
+<p>The tilt of a tree node is defined as the absolute difference between the sum of all left subtree node values and the sum of all right subtree node values. Null node has tilt 0.</p>
+<p>The tilt of the whole tree is defined as the sum of all nodes’ tilt.</p>
+<p>对树的算法开始慢慢掌握了，good，但是第一次写的速度有点慢，<code>Runtime: 1142 ms. Your runtime beats 7.62 % of python submissions.</code>，思路就是首先对每一个节点进行遍历，然后对每一个节点求倾斜度，然后将所有的倾斜度加起来就是总的倾斜度。通过入口节点来确定计算是哪个节点的倾斜度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line">class Solution(object):</div><div class="line">    def transverse_sum(self, node, sum):</div><div class="line">        if node is None:</div><div class="line">            return sum</div><div class="line">        sum += node.val</div><div class="line">        sum = self.transverse_sum(node.left, sum)</div><div class="line">        sum = self.transverse_sum(node.right, sum)</div><div class="line">        return sum</div><div class="line">    def findTilt(self, root):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        node2tranverse = [root]</div><div class="line">        result = 0</div><div class="line">        while node2tranverse:</div><div class="line">            node = node2tranverse.pop()</div><div class="line">            if not node:</div><div class="line">                break</div><div class="line">            sum_a = 0</div><div class="line">            sum_b = 0</div><div class="line">            # 遍历所有节点，然后求其倾斜度</div><div class="line">            sum_a = self.transverse_sum(node.left, sum_a)</div><div class="line">            sum_b = self.transverse_sum(node.right, sum_b)</div><div class="line">            result += abs(sum_a - sum_b)</div><div class="line">            if node.left:</div><div class="line">                node2tranverse.append(node.left)</div><div class="line">            if node.right:</div><div class="line">                node2tranverse.append(node.right)            </div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p>然而我这个相当于先对每一个节点进行了深度优先遍历，求出了左右的和，而没有求出倾斜度。所以应该在求和的时候将倾斜度求出来。就减少了深度优先遍历这一层。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findTilt(self, root):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;        </div><div class="line">        def sumAndTile(node):</div><div class="line">            if node is None:</div><div class="line">                return 0, 0      </div><div class="line">            leftSum, leftTile = sumAndTile(node.left)</div><div class="line">            rightSum, rightTile = sumAndTile(node.right)  </div><div class="line">truetruetruetruetruetrue# 返回节点的值，将来算上一层的倾斜度</div><div class="line">            s = leftSum + node.val + rightSum</div><div class="line">truetruetruetruetruetrue# 当前节点的倾斜度加上其子节点的倾斜度，因为倾斜度是所有节点倾斜度之和。</div><div class="line">            t = abs(leftSum - rightSum) + leftTile + rightTile</div><div class="line">            return s, t</div><div class="line">        s, t = sumAndTile(root)</div><div class="line">        return t</div></pre></td></tr></table></figure>
+<h1 id="Hamming-Distance"><a href="#Hamming-Distance" class="headerlink" title="Hamming Distance"></a><a href="https://leetcode.com/problems/hamming-distance/#/description" target="_blank" rel="external">Hamming Distance</a></h1><p>The Hamming distance between two integers is the number of positions at which the corresponding bits are different.</p>
+<p>Given two integers x and y, calculate the Hamming distance.</p>
+<p>题目要求找出两个数字相应位，位置不同的个数，所以使用异或，异或就是相同的位结果是0，不同的位运算结果是1，将两个数字异或运算后，然后求1的个数就行了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def hammingDistance(self, x, y):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type x: int</div><div class="line">        :type y: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        result = list(bin(x ^ y)).count(&apos;1&apos;)</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p>这种方法<code>Your runtime beats 92.69% of python submissions. Runtime: 38 ms</code></p>
+<h1 id="Reverse-Words-in-a-String-III"><a href="#Reverse-Words-in-a-String-III" class="headerlink" title="Reverse Words in a String III"></a><a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/#/description" target="_blank" rel="external">Reverse Words in a String III</a></h1><p>Given a string, you need to reverse the order of characters in each word within a sentence while still preserving whitespace and initial word order.</p>
+<p>相当于翻转字符串每个单词，但是每个单词的顺序不变，比较容易</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def reverseWords(self, s):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type s: str</div><div class="line">        :rtype: str</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        s_list = s.split()</div><div class="line">        result = []</div><div class="line">        for word in s_list:</div><div class="line">            result.append(word[::-1])</div><div class="line">        return &apos; &apos;.join(result)</div></pre></td></tr></table></figure>
+<p><code>Runtime: 62 ms</code></p>
+<h1 id="Number-Complement"><a href="#Number-Complement" class="headerlink" title="Number Complement"></a><a href="https://leetcode.com/problems/number-complement/#/description" target="_blank" rel="external">Number Complement</a></h1><p>Given a positive integer, output its complement number. The complement strategy is to flip the bits of its binary representation.</p>
+<p>对于每一个数字，如果要将其每一位翻转，也就是求非，但是直接取非的话会将符号位取反，所以得将从左开始第一个不是0的位一直到最后一位取反。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findComplement(self, num):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type num: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        num_bin = bin(num).split(&apos;b&apos;)[1]</div><div class="line">        result = []</div><div class="line">        for bit in num_bin:</div><div class="line">            result.append(str(int(bit)^1))</div><div class="line">        return int(&apos;&apos;.join(result), base=2)</div></pre></td></tr></table></figure>
+<p><code>Runtime: 49 ms. Your runtime beats 36.27% of python submissions.</code></p>
+<p>另外一种简单的方法，将这个数字的二进制与这个数字所占二进制位的最大值，进行异或。比如5，那么和7进行异或，那么就得到2。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findComplement(self, num):</div><div class="line">        i = 1</div><div class="line">        while i &lt;= num:</div><div class="line">            i = i &lt;&lt; 1</div><div class="line">        return (i - 1) ^ num</div></pre></td></tr></table></figure>
+<p><code>Runtime: 39 ms. Your runtime beats 82.53% of python submissions.</code></p>
+<h1 id="Keyboard-Row"><a href="#Keyboard-Row" class="headerlink" title="Keyboard Row"></a><a href="https://leetcode.com/problems/keyboard-row/#/description" target="_blank" rel="external">Keyboard Row</a></h1><p>Given a List of words, return the words that can be typed using letters of alphabet on only one row’s of American keyboard like the image below.</p>
+<p>其实这个问题的关键在于如何进行判断，首先将一个单词分解成字母逐一进行判断，然后将判断结果再合并成一个单词的判断，这个好像就是一种分治法？自己写的算法中比较复杂，使用的集合进行判断，单词的集合和三行键盘的值进行交集，如果交集之后还是原来的单词集合，说明是这一行的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def __init__(self):</div><div class="line">        self.row_1 = set(&apos;qwertyuiop&apos;)</div><div class="line">        self.row_2 = set(&apos;asdfghjkl&apos;)</div><div class="line">        self.row_3 = set(&apos;zxcvbnm&apos;)</div><div class="line">    def find_word(self, word):</div><div class="line">        word = word.lower()</div><div class="line">        word_set = set(word)</div><div class="line">        if word_set.intersection(self.row_1) == word_set:</div><div class="line">            return True</div><div class="line">        elif word_set.intersection(self.row_2) == word_set:</div><div class="line">            return True</div><div class="line">        elif word_set.intersection(self.row_3) == word_set:</div><div class="line">            return True</div><div class="line">        else:</div><div class="line">            return False</div><div class="line">    def findWords(self, words):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type words: List[str]</div><div class="line">        :rtype: List[str]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        result = []</div><div class="line">        for word in words:</div><div class="line">            if self.find_word(word):</div><div class="line">                result.append(word)</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p><code>Runtime: 42 ms. Your runtime beats 59.98% of python submissions.</code></p>
+<p>然后看了下其他人的解法，的确使用正则表达式会是一种优雅的解法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">  def findWords(self, words):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type words: List[str]</div><div class="line">        :rtype: List[str]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">truetruetruetruereturn filter(re.compile(&apos;(?i)([qwertyuiop]*|[asdfghjkl]*|[zxcvbnm]*)$&apos;).match, words)</div></pre></td></tr></table></figure>
+<p>?i表示匹配不区分大小写，<code>*</code>表示匹配0次或者多次</p>
+<p><code>Runtime: 42 ms Your runtime beats 59.98% of python submissions.</code></p>
+<h1 id="Fizz-Buzz"><a href="#Fizz-Buzz" class="headerlink" title="Fizz Buzz"></a><a href="https://leetcode.com/problems/fizz-buzz/#/description" target="_blank" rel="external">Fizz Buzz</a></h1><p>Write a program that outputs the string representation of numbers from 1 to n.</p>
+<p>But for multiples of three it should output “Fizz” instead of the number and for the multiples of five output “Buzz”. For numbers which are multiples of both three and five output “FizzBuzz”.</p>
+<p>这个问题很简单，确保一点就是15是否能被该数整除的判断，应该在3和5之前</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def check_num(self, n):</div><div class="line">        if n % 15 == 0:</div><div class="line">            return &apos;FizzBuzz&apos;</div><div class="line">        elif n % 5 == 0:</div><div class="line">            return &apos;Buzz&apos;</div><div class="line">        elif n % 3 == 0:</div><div class="line">            return &apos;Fizz&apos;</div><div class="line">        else:</div><div class="line">            return str(n)</div><div class="line">    def fizzBuzz(self, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type n: int</div><div class="line">        :rtype: List[str]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        result = []</div><div class="line">        for i in range(1, n+1):</div><div class="line">            result.append(self.check_num(i))</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p><code>Runtime: 75 ms. Your runtime beats 88.97% of python submissions.</code></p>
+<p>看解答的时候发现一个很有意思的解答，这个相当于不用判断15了，15既能被3整除，也可以被5整除，那么将两者组合起来就可以了。不错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def fizzBuzz(self, n):</div><div class="line">    return [&apos;Fizz&apos; * (not i % 3) + &apos;Buzz&apos; * (not i % 5) or str(i) for i in range(1, n+1)]</div></pre></td></tr></table></figure>
+<p><code>Runtime: 79 ms. Your runtime beats 73.56% of python submissions.</code></p>
+<h1 id="Reverse-String"><a href="#Reverse-String" class="headerlink" title="Reverse String"></a><a href="https://leetcode.com/problems/reverse-string/#/description" target="_blank" rel="external">Reverse String</a></h1><p>Write a function that takes a string as input and returns the string reversed.</p>
+<p>这个问题相当简单，我面试Python经常会问的一个问题。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def reverseString(self, s):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type s: str</div><div class="line">        :rtype: str</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        return s[::-1]</div></pre></td></tr></table></figure>
+<p><code>Runtime: 45 ms. Your runtime beats 87.96% of python submissions.</code></p>
+<h1 id="Array-Partition-I"><a href="#Array-Partition-I" class="headerlink" title="Array Partition I"></a><a href="https://leetcode.com/problems/array-partition-i/#/description" target="_blank" rel="external">Array Partition I</a></h1><p>Given an array of 2n integers, your task is to group these integers into n pairs of integer, say (a1, b1), (a2, b2), …, (an, bn) which makes sum of min(ai, bi) for all i from 1 to n as large as possible.</p>
+<p>这道题乍一想以为是要先求出可能的排列组合，然后对这些组合进行判断，取最大的和。其实只需要将问题转换一下就可以快速求解，求每两个数的最小值，这些最小值求和最大，也就是说两两数进行组合的时候，都选可能的最大的最小数，那么就只能是按照顺序排列后，从第一个数开始，每隔一个数选取一个数作为组合的最小数，那么求和就是最大的和。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def arrayPairSum(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        return sum(sorted(nums)[::2])</div></pre></td></tr></table></figure>
+<p><code>Runtime: 118 ms. Your runtime beats 97.25 % of python submissions.</code></p>
+<h1 id="Reshape-the-Matrix"><a href="#Reshape-the-Matrix" class="headerlink" title="Reshape the Matrix"></a><a href="https://leetcode.com/problems/reshape-the-matrix/#/description" target="_blank" rel="external">Reshape the Matrix</a></h1><p>思路大致是这样的，先将输入矩阵一维化，接下来根据传入的行和列，给每一行的列表中添加对应列数字个元素即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def matrixReshape(self, nums, r, c):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[List[int]]</div><div class="line">        :type r: int</div><div class="line">        :type c: int</div><div class="line">        :rtype: List[List[int]]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">truetruetruetrue# 另外一种判断方法 len(sum(nums, [])) != r * c 666</div><div class="line">        rows = len(nums)</div><div class="line">        cols = len(nums[0])</div><div class="line">        if rows * cols != r * c:</div><div class="line">            return nums</div><div class="line">        flat_nums = []</div><div class="line">        for row in range(rows):</div><div class="line">            for col in range(cols):</div><div class="line">                flat_nums.append(nums[row][col])</div><div class="line">        results = []</div><div class="line">        for r_row in range(1, r+1):</div><div class="line">            results.append(flat_nums[(r_row - 1) * c:r_row * c])</div><div class="line">        return results</div></pre></td></tr></table></figure>
+<h2 id="Numpy解法"><a href="#Numpy解法" class="headerlink" title="Numpy解法"></a>Numpy解法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">class Solution(object):</div><div class="line">    def matrixReshape(self, nums, r, c):</div><div class="line">        try:</div><div class="line">            return np.reshape(nums, (r, c)).tolist()</div><div class="line">        except:</div><div class="line">            return nums</div></pre></td></tr></table></figure>
+<h2 id="sum函数扁平化"><a href="#sum函数扁平化" class="headerlink" title="sum函数扁平化"></a>sum函数扁平化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def matrixReshape(self, nums, r, c):</div><div class="line">    flat = sum(nums, [])</div><div class="line">    if len(flat) != r * c:</div><div class="line">        return nums</div><div class="line">    tuples = zip(*([iter(flat)] * c))</div><div class="line">    return map(list, tuples)</div></pre></td></tr></table></figure>
+<h1 id="Next-Greater-Element-I"><a href="#Next-Greater-Element-I" class="headerlink" title="Next Greater Element I"></a><a href="https://leetcode.com/problems/next-greater-element-i/#/description" target="_blank" rel="external">Next Greater Element I</a></h1><p>You are given two arrays (without duplicates) nums1 and nums2 where nums1’s elements are subset of nums2. Find all the next greater numbers for nums1’s elements in the corresponding places of nums2.</p>
+<p>The Next Greater Number of a number x in nums1 is the first greater number to its right in nums2. If it does not exist, output -1 for this number.</p>
+<p>这道题思路仍然是遍历，对于nums1的所有元素进行遍历，对于每一个元素找到在nums2中的位置，然后从这个位置起开始寻找比这个元素大的元素，找到则将找到的元素append到一个结果列表中，如果都没有找到，那么就把-1放到结果列表中。是个O(n2)的算法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def nextGreaterElement(self, findNums, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type findNums: List[int]</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        result = []</div><div class="line">        for num in findNums:</div><div class="line">            pos = nums.index(num)</div><div class="line">            for i in range(pos, len(nums)):</div><div class="line">                if nums[i] &gt; num:</div><div class="line">                    result.append(nums[i])</div><div class="line">                    break</div><div class="line">            else:</div><div class="line">                result.append(-1)</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p><code>Runtime: 128 ms. Your runtime beats 32.11 % of python submissions.</code></p>
+<h2 id="一个O-n-的算法"><a href="#一个O-n-的算法" class="headerlink" title="一个O(n)的算法"></a>一个O(n)的算法</h2><p>主要思想就是将第二个列表中的每个数字的后面紧接的最大的一个数字找出并存储下来。如果没有就是-1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def nextGreaterElement(findNums, nums):</div><div class="line">    d = &#123;&#125;</div><div class="line">    st = []</div><div class="line">    ans = []      </div><div class="line">    for x in nums:</div><div class="line">        while len(st) and st[-1] &lt; x:</div><div class="line">            d[st.pop()] = x</div><div class="line">        st.append(x)</div><div class="line">    for x in findNums:</div><div class="line">        ans.append(d.get(x, -1))  </div><div class="line">    return ans</div></pre></td></tr></table></figure>
+<h1 id="Max-Consecutive-Ones"><a href="#Max-Consecutive-Ones" class="headerlink" title="Max Consecutive Ones"></a><a href="https://leetcode.com/problems/max-consecutive-ones/#/description" target="_blank" rel="external">Max Consecutive Ones</a></h1><p>Given a binary array, find the maximum number of consecutive 1s in this array.</p>
+<p>最长的1的个数，我的思路是因为只有0和1，所以将其转化为字符串，然后按照0切分，这样就可以得到连续1组成在一起的集合，所以找到最长的1的组合，然后求其长度就可以了。但是时间太久哦。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findMaxConsecutiveOnes(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        return len(max(&apos;&apos;.join(list(map(str, nums))).split(&apos;0&apos;)))</div></pre></td></tr></table></figure>
+<p><code>Runtime: 165 ms Your runtime beats 9.23 % of python submissions.</code> 好惨</p>
+<h2 id="统计的算法"><a href="#统计的算法" class="headerlink" title="统计的算法"></a>统计的算法</h2><p>cnt来记录连续1的次数，然后ans记录最长的1的次数，不断更新ans即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findMaxConsecutiveOnes(self, nums):</div><div class="line">        cnt = 0</div><div class="line">        ans = 0</div><div class="line">        for num in nums:</div><div class="line">            if num == 1:</div><div class="line">                cnt += 1</div><div class="line">                ans = max(ans, cnt)</div><div class="line">            else:</div><div class="line">                cnt = 0</div><div class="line">        return ans</div></pre></td></tr></table></figure>
+<p><code>Runtime: 132 ms Your runtime beats 25.89 % of python submissions.</code></p>
+<h1 id="Detect-Capital"><a href="#Detect-Capital" class="headerlink" title="Detect Capital"></a><a href="https://leetcode.com/problems/detect-capital/#/description" target="_blank" rel="external">Detect Capital</a></h1><p>Given a word, you need to judge whether the usage of capitals in it is right or not.</p>
+<p>We define the usage of capitals in a word to be right when one of the following cases holds:</p>
+<p>All letters in this word are capitals, like “USA”.<br>All letters in this word are not capitals, like “leetcode”.<br>Only the first letter in this word is capital if it has more than one letter, like “Google”.<br>Otherwise, we define that this word doesn’t use capitals in a right way.</p>
+<p>这道题完全是判断嘛！要么是大写要么是小写，要么是title，哈哈哈</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def detectCapitalUse(self, word):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type word: str</div><div class="line">        :rtype: bool</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if len(word) &lt; 1:</div><div class="line">            return False</div><div class="line">        else:</div><div class="line">            if word.isupper():</div><div class="line">                return True</div><div class="line">            elif word.islower():</div><div class="line">                return True</div><div class="line">            elif word[0].isupper() and word[1:].islower():</div><div class="line">                return True</div><div class="line">            else:</div><div class="line">                return False</div></pre></td></tr></table></figure>
+<p><code>Runtime: 42 ms Your runtime beats 98.91 % of python submissions.</code></p>
+<h2 id="istitle-所有单词是否首字母为大写，其他字母为小写"><a href="#istitle-所有单词是否首字母为大写，其他字母为小写" class="headerlink" title="istitle() 所有单词是否首字母为大写，其他字母为小写"></a>istitle() 所有单词是否首字母为大写，其他字母为小写</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def detectCapitalUse(self, word):</div><div class="line">    return word.isupper() or word.islower() or word.istitle()</div></pre></td></tr></table></figure>
+<h1 id="Add-Two-Numbers"><a href="#Add-Two-Numbers" class="headerlink" title="Add Two Numbers"></a><a href="https://leetcode.com/problems/add-two-numbers/" target="_blank" rel="external">Add Two Numbers</a></h1><p>这道题主要是链表，有两种思路，一种是将链表全部遍历一遍将数字取出来，然后相加，将结果形成一个新的链表。另一种是，同时遍历两个链表，将每一位的数值相加，有进位则加到下一位上。这里有一个可以优化程序的地方，因为进位最多是1，所以就没必要使用取模算法了，直接判断和如果大于10的话，进位就是1。否则就是0。三种实现分别如下：</p>
+<ul>
+<li>实现1</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"># Definition for singly-linked list.</div><div class="line"># class ListNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.next = None</div><div class="line">class Solution(object):</div><div class="line">    def get_digits(self, l1):</div><div class="line">        l1_temp = l1</div><div class="line">        l1_digits = 0</div><div class="line">        count = 0</div><div class="line">        while l1_temp:</div><div class="line">            l1_digits += l1_temp.val * (10**count)</div><div class="line">            count += 1</div><div class="line">            l1_temp = l1_temp.next</div><div class="line">        return l1_digits       </div><div class="line">    def addTwoNumbers(self, l1, l2):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type l1: ListNode</div><div class="line">        :type l2: ListNode</div><div class="line">        :rtype: ListNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        l1_digits = self.get_digits(l1)</div><div class="line">        l2_digits = self.get_digits(l2)</div><div class="line">        sum_digits_list = [int(i) for i in str(l1_digits + l2_digits)]</div><div class="line">        last = sum_digits_list.pop()</div><div class="line">        l = ListNode(last)</div><div class="line">        l_now = l</div><div class="line">        while sum_digits_list:</div><div class="line">            last = sum_digits_list.pop()</div><div class="line">            l_temp = ListNode(last)</div><div class="line">            l_now.next = l_temp</div><div class="line">            l_now = l_temp</div><div class="line">        return l</div></pre></td></tr></table></figure>
+<ul>
+<li>实现2</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"># Definition for singly-linked list.</div><div class="line"># class ListNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.next = None</div><div class="line">class Solution(object):</div><div class="line">    def get_digits(self, l1):</div><div class="line">        l1_temp = l1</div><div class="line">        l1_digits = 0</div><div class="line">        count = 0</div><div class="line">        while l1_temp:</div><div class="line">            l1_digits += l1_temp.val * (10**count)</div><div class="line">            count += 1</div><div class="line">            l1_temp = l1_temp.next</div><div class="line">        return l1_digits  </div><div class="line">    def addTwoNumbers(self, l1, l2):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type l1: ListNode</div><div class="line">        :type l2: ListNode</div><div class="line">        :rtype: ListNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        decade = 0</div><div class="line">        root = n = ListNode(0)</div><div class="line">        while l1 or l2 or decade:</div><div class="line">            v1 = v2 = 0</div><div class="line">            if l1:</div><div class="line">                v1 = l1.val</div><div class="line">                l1 = l1.next</div><div class="line">            if l2:</div><div class="line">                v2 = l2.val</div><div class="line">                l2 = l2.next</div><div class="line">            decade, val = divmod(v1+v2+decade, 10)</div><div class="line">            n.next = ListNode(val)</div><div class="line">            n = n.next</div><div class="line">        return root.next</div></pre></td></tr></table></figure>
+<ul>
+<li>实现3</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"># Definition for singly-linked list.</div><div class="line"># class ListNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.next = None</div><div class="line">class Solution(object):</div><div class="line">    def get_digits(self, l1):</div><div class="line">        l1_temp = l1</div><div class="line">        l1_digits = 0</div><div class="line">        count = 0</div><div class="line">        while l1_temp:</div><div class="line">            l1_digits += l1_temp.val * (10**count)</div><div class="line">            count += 1</div><div class="line">            l1_temp = l1_temp.next</div><div class="line">        return l1_digits  </div><div class="line">    def addTwoNumbers(self, l1, l2):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type l1: ListNode</div><div class="line">        :type l2: ListNode</div><div class="line">        :rtype: ListNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        decade = 0</div><div class="line">        root = n = ListNode(0)</div><div class="line">        while l1 or l2 or decade:</div><div class="line">            v1 = v2 = 0</div><div class="line">            if l1:</div><div class="line">                v1 = l1.val</div><div class="line">                l1 = l1.next</div><div class="line">            if l2:</div><div class="line">                v2 = l2.val</div><div class="line">                l2 = l2.next</div><div class="line">            sum_v1_v2 = v1 + v2 + decade</div><div class="line">            if sum_v1_v2 &gt;= 10:</div><div class="line">                decade = 1</div><div class="line">                sum_v1_v2 -= 10</div><div class="line">            else:</div><div class="line">                decade = 0</div><div class="line">            n.next = ListNode(sum_v1_v2)</div><div class="line">            n = n.next</div><div class="line">        return root.next</div></pre></td></tr></table></figure>
+<h1 id="Find-All-Numbers-Disappeared-in-an-Array"><a href="#Find-All-Numbers-Disappeared-in-an-Array" class="headerlink" title="Find All Numbers Disappeared in an Array"></a><a href="https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/#/description" target="_blank" rel="external">Find All Numbers Disappeared in an Array</a></h1><p>Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.</p>
+<p>Find all the elements of [1, n] inclusive that do not appear in this array.</p>
+<p>Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.</p>
+<p>一个思路是将其和标准的序列集合求差，就知道其少了什么元素了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findDisappearedNumbers(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        return list(set(range(1,len(nums)+1)).difference(set(nums)))</div></pre></td></tr></table></figure>
+<p><code>Runtime: 309 ms Your runtime beats 75.18 % of python submissions.</code></p>
+<p>另外一种思路就是，因为这个列表包含从1到序列长度的元素，那么这些元素本身就可以作为下标使用，将每一个元素作为下标然后将元素值求相反数，然后最后结果就是，没有的元素对应的下标索引到的元素就是正数，然后求出这些正数的索引就是要求的值了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findDisappearedNumbers(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        for i in xrange(len(nums)):</div><div class="line">            index = abs(nums[i]) - 1</div><div class="line">            nums[index] = - abs(nums[index])</div><div class="line">        return [i + 1 for i in range(len(nums)) if nums[i] &gt; 0]</div></pre></td></tr></table></figure>
+<p><code>Runtime: 305 ms Your runtime beats 77.21 % of python submissions.</code></p>
+<h1 id="Distribute-Candies"><a href="#Distribute-Candies" class="headerlink" title="Distribute Candies"></a><a href="https://leetcode.com/problems/distribute-candies/#/description" target="_blank" rel="external">Distribute Candies</a></h1><p>相当简单的一道题，因为只有两个人参与分配，那么每个人最多就是能拿到所有种类的糖，这种情况是糖数的一半大于种类数。另外一种是糖数的一半小于种类数，那么就只能拿到糖数的一半种类的糖果。可是第一次由于自己的粗心做错了。。。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def distributeCandies(self, candies):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type candies: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        sister_got = set(candies)</div><div class="line">        if len(candies) / 2 &gt;= len(sister_got):</div><div class="line">            return len(sister_got)</div><div class="line">        else:</div><div class="line">            return len(candies) / 2</div></pre></td></tr></table></figure>
+<p><code>Runtime: 199 ms Your runtime beats 50.00 % of python submissions.</code>只有两个人做了这道题。。</p>
+<h1 id="Longest-Uncommon-Subsequence-I"><a href="#Longest-Uncommon-Subsequence-I" class="headerlink" title="Longest Uncommon Subsequence I"></a><a href="https://leetcode.com/problems/longest-uncommon-subsequence-i/#/description" target="_blank" rel="external">Longest Uncommon Subsequence I</a></h1><p>Given a group of two strings, you need to find the longest uncommon subsequence of this group of two strings. The longest uncommon subsequence is defined as the longest subsequence of one of these strings and this subsequence should not be any subsequence of the other strings.</p>
+<p>需要转换思路，而不是暴力猜解。下面是代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findLUSlength(self, a, b):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type a: str</div><div class="line">        :type b: str</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if a == b:</div><div class="line">            # 如果两个字符串相等，那么就没有最长子串</div><div class="line">            return -1</div><div class="line">        elif len(a) == len(b):</div><div class="line">            # 如果两个字符串不相等，但是长度相等，说明最长子串的长度就是这个长度</div><div class="line">            return len(a)</div><div class="line">        else:</div><div class="line">            # 如果两个字符串不相等，而且长度也不等，那么最长子串的长度就是最大的长度</div><div class="line">            return max(len(a), len(b))</div></pre></td></tr></table></figure>
+<p><code>Runtime: 45 ms your runtime beats 41.19 % of python submissions.</code></p>
+<p>在答案提交区看到了一个1089ms的答案，是这样的。其思路就是首先找到两个字符串的所有可能子串，然后按照多的那一个开始遍历(因为最长子串肯定在最长字符串里)，如果a存在这个子串，b不存在这个子串，那么就说明是一个独立子串，记录下来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def findLUSlength(self, a, b):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type a: str</div><div class="line">        :type b: str</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        a_substrings = [a[i:j] for i in range(len(a)) for j in range(i+1,len(a)+1)]</div><div class="line">        b_substrings = [b[i:j] for i in range(len(b)) for j in range(i+1,len(b)+1)]</div><div class="line">        longest = -1</div><div class="line">        if len(a_substrings) &gt; len(b_substrings):</div><div class="line">            for i in a_substrings:</div><div class="line">                if i not in b_substrings:</div><div class="line">                    longest = max(len(i),longest)</div><div class="line">        else:</div><div class="line">            for j in b_substrings:</div><div class="line">                if j not in a_substrings:</div><div class="line">                    longest = max(len(j),longest)         </div><div class="line">        return longest</div></pre></td></tr></table></figure>
+<h1 id="Construct-the-Rectangle"><a href="#Construct-the-Rectangle" class="headerlink" title="Construct the Rectangle"></a><a href="https://leetcode.com/problems/construct-the-rectangle/#/description" target="_blank" rel="external">Construct the Rectangle</a></h1><p>居然用的是Python2，怪不得超出Memory limit，不过这种算法算是遍历的优化版，肯定速度也不快，果然。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def constructRectangle(self, area):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type area: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        import math</div><div class="line">        L_start = int(math.ceil(math.sqrt(area)))</div><div class="line">        if L_start ** 2 == area:</div><div class="line">            return [L_start] * 2</div><div class="line">        for L in xrange(L_start, area+1):</div><div class="line">            if area % L:</div><div class="line">                continue</div><div class="line">            else:</div><div class="line">                return (L, area / L)</div></pre></td></tr></table></figure>
+<p><code>Runtime: 1358 ms Your runtime beats 12.47 % of python submissions.</code></p>
+<p>看了39ms的代码，感觉和我的差不多啊，为什么速度相差这么大。难道是Python语言本质的问题？我去我知道原因了，还是算法问题，因为我走错了方向，毕竟开方后的值离1比较近，而离area值并不近。。。所以需要长时间遍历。改了代码之后<code>Runtime: 55 ms</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def constructRectangle(self, area):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type area: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        import math</div><div class="line">        L_start = int(math.floor(math.sqrt(area)))</div><div class="line">        if L_start ** 2 == area:</div><div class="line">            return [L_start] * 2</div><div class="line">        for L in xrange(L_start, 0, -1):</div><div class="line">            if area % L:</div><div class="line">                continue</div><div class="line">            else:</div><div class="line">                return [int(area / L), L]</div></pre></td></tr></table></figure>
+<p>39ms版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def constructRectangle(self, area):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type area: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        import math</div><div class="line">        low = int(math.sqrt(area))</div><div class="line">        while low &gt; 0:</div><div class="line">            if area % low == 0:</div><div class="line">                return [int(area/low),int(low)]</div><div class="line">            low -= 1</div></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-01T06:16:05.000Z" itemprop="dateUpdated">2017-09-01 14:16:05 14:16:05</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/05/13/LeetCode刷题(1)/" target="_blank" rel="external">http://skyrover.me/2017/05/13/LeetCode刷题(1)/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&title=《LeetCode刷题(1)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&title=《LeetCode刷题(1)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/13/LeetCode刷题(1)/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LeetCode刷题(1)》 — SkyRover&url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/19/热血的少年/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">热血的少年，青涩的爱恋，死亡与梦之约</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/07/理解Flask的Context/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">理解Flask的Context</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&title=《LeetCode刷题(1)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&title=《LeetCode刷题(1)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/13/LeetCode刷题(1)/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LeetCode刷题(1)》 — SkyRover&url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHklEQVR42u3aS27DMAwFwNz/0uk2QGHnkVQWlsaronBsjRa0+Hm94ut9e93f+fn/5J7/z1x2YWBgPJaRLDFZXPUtV0u/f+8lFQMD4wDG1YvvH50H0+pv87VhYGBgXN1TfWUviGNgYGCsCrj3v6qmqRgYGBiTJDbBz5f181wcAwPjgYzJUn7990/6GxgYGI9ivItX8pxJ47O5KgwMjK0ZeYCblMYmJbzCxmFgYBzDyItlvataRCukrBgYGMcwqolrPmCRb03eIo2+GxgYGJsyqs3LPImtblze7MTAwDiBkRfUckx+uFwwioGBgbEpY9VYQ3ULcnwzC8fAwNiakSSQ1cCabNmo8YmBgbE1o3ewy4NscuCbj3FgYGCcw8gHJpKXTQY4qkVADAyMvRm9Av3k2FdtWy7uwWJgYDycMQ+aydbk5bZ8yAMDA+M0Ri8F7bUTekdGDAyM0xjzxHV+4KsG+nIqi4GBsQUjD7iTgdT7p1WDb9QSwMDA2IhRHSTttRWTpSTlti/fDQwMjAMY8/Gvaoq7bMswMDAOYMybAXnrsVeS+3KsxMDA2JTxLl552yAPsr0y3JcvBgYGxkaMVTE7Od7lSykPW2BgYBzAWBVk58MT1YCLgYFxGmNtU3NVwS5pi2JgYGAk91TbA9UDJQYGBsYkmayW6qpjFskbMTAwzmFUS/nN4a1iWzS/HwMDY2/GKHVsvSAPxBMqBgbGFow/0WnbGZfkp3oAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>环境以及部署问题汇总 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Linux">
+    <meta name="description" content="virtualenv创建virtualenv时候遇到这个问题： 12345678kevin@duguangtingdeMacBook-Pro:~ $ virtualenv myblog_env --python=python3Running virtualenv with interpreter /Users/kevin/anaconda/bin/python3Using base prefix">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="环境以及部署问题汇总">
+<meta property="og:url" content="http://skyrover.me/2017/03/10/环境以及部署问题汇总/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="virtualenv创建virtualenv时候遇到这个问题： 12345678kevin@duguangtingdeMacBook-Pro:~ $ virtualenv myblog_env --python=python3Running virtualenv with interpreter /Users/kevin/anaconda/bin/python3Using base prefix">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-01T04:58:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="环境以及部署问题汇总">
+<meta name="twitter:description" content="virtualenv创建virtualenv时候遇到这个问题： 12345678kevin@duguangtingdeMacBook-Pro:~ $ virtualenv myblog_env --python=python3Running virtualenv with interpreter /Users/kevin/anaconda/bin/python3Using base prefix">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">环境以及部署问题汇总</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">环境以及部署问题汇总</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-03-10T09:10:18.000Z" itemprop="datePublished" class="page-time">
+  2017-03-10 17:10:18
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#virtualenv"><span class="post-toc-number">1.</span> <span class="post-toc-text">virtualenv</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#flask-migrate数据库迁移"><span class="post-toc-number">2.</span> <span class="post-toc-text">flask-migrate数据库迁移</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决终端ssh时间久了卡掉的问题"><span class="post-toc-number">3.</span> <span class="post-toc-text">解决终端ssh时间久了卡掉的问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#创建virtualenv不包含全局Python的包"><span class="post-toc-number">4.</span> <span class="post-toc-text">创建virtualenv不包含全局Python的包</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#配置服务器环境"><span class="post-toc-number">5.</span> <span class="post-toc-text">配置服务器环境</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#配置nginx"><span class="post-toc-number">6.</span> <span class="post-toc-text">配置nginx</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#uwsgi配置"><span class="post-toc-number">7.</span> <span class="post-toc-text">uwsgi配置</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#supervisor"><span class="post-toc-number">8.</span> <span class="post-toc-text">supervisor</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#pip安装慢的情况"><span class="post-toc-number">9.</span> <span class="post-toc-text">pip安装慢的情况</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#load-csv"><span class="post-toc-number">10.</span> <span class="post-toc-text">load csv</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#存在的问题"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">存在的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原因"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">原因</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#解决"><span class="post-toc-number">10.3.</span> <span class="post-toc-text">解决</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#分割文件"><span class="post-toc-number">11.</span> <span class="post-toc-text">分割文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#修改字段"><span class="post-toc-number">12.</span> <span class="post-toc-text">修改字段</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#合并表"><span class="post-toc-number">13.</span> <span class="post-toc-text">合并表</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关键问题"><span class="post-toc-number">14.</span> <span class="post-toc-text">关键问题</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-环境以及部署问题汇总"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">环境以及部署问题汇总</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-03-10 17:10:18 17:10:18" datetime="2017-03-10T09:10:18.000Z"  itemprop="datePublished">2017-03-10 17:10:18</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="virtualenv"><a href="#virtualenv" class="headerlink" title="virtualenv"></a>virtualenv</h1><p>创建virtualenv时候遇到这个问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">kevin@duguangtingdeMacBook-Pro:~ $ virtualenv myblog_env --python=python3</div><div class="line">Running virtualenv with interpreter /Users/kevin/anaconda/bin/python3</div><div class="line">Using base prefix &apos;/Users/kevin/anaconda&apos;</div><div class="line">New python executable in /Users/kevin/myblog_env/bin/python3</div><div class="line">Not overwriting existing python script /Users/kevin/myblog_env/bin/python (you must use /Users/kevin/myblog_env/bin/python3)</div><div class="line">ERROR: The executable /Users/kevin/myblog_env/bin/python3 is not functioning</div><div class="line">ERROR: It thinks sys.prefix is &apos;/Users/kevin&apos; (should be &apos;/Users/kevin/myblog_env&apos;)</div><div class="line">ERROR: virtualenv is not compatible with this system or executable</div></pre></td></tr></table></figure>
+<p>这个问题的原因是没有用系统级的Python，建立virtualenv的时候指定<code>-p</code>参数：<code>virtualenv -p python3 myblog_env</code></p>
+<p>还是用PyCharm建立虚拟环境比较方便。。。</p>
+<h1 id="flask-migrate数据库迁移"><a href="#flask-migrate数据库迁移" class="headerlink" title="flask-migrate数据库迁移"></a>flask-migrate数据库迁移</h1><p>终于算是弄明白了数据库迁移是怎么做到的，使用<code>flask-migrate</code>先init形成迁移数据库吧，然后检测到数据模型有改变，这时候使用<code>python manage.py db migrate</code>形成迁移脚本，然后<code>python manage.py db upgrade</code>或者<code>python manage.py db downgrade</code></p>
+<p>另外有一点sqlite3貌似不支持删除列，所以要在migrations文件夹下修改env.py文件，加上<code>render_as_batch=True</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">def run_migrations_online():</div><div class="line">    &quot;&quot;&quot;Run migrations in &apos;online&apos; mode.</div><div class="line">    In this scenario we need to create an Engine</div><div class="line">    and associate a connection with the context.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    # this callback is used to prevent an auto-migration from being generated</div><div class="line">    # when there are no changes to the schema</div><div class="line">    # reference: http://alembic.readthedocs.org/en/latest/cookbook.html</div><div class="line">    def process_revision_directives(context, revision, directives):</div><div class="line">        if getattr(config.cmd_opts, &apos;autogenerate&apos;, False):</div><div class="line">            script = directives[0]</div><div class="line">            if script.upgrade_ops.is_empty():</div><div class="line">                directives[:] = []</div><div class="line">                logger.info(&apos;No changes in schema detected.&apos;)</div><div class="line">    engine = engine_from_config(config.get_section(config.config_ini_section),</div><div class="line">                                prefix=&apos;sqlalchemy.&apos;,</div><div class="line">                                poolclass=pool.NullPool)</div><div class="line">    connection = engine.connect()</div><div class="line">    context.configure(connection=connection,</div><div class="line">                      target_metadata=target_metadata,</div><div class="line">                      process_revision_directives=process_revision_directives,</div><div class="line">                      render_as_batch=True,# this is new feature</div><div class="line">                      **current_app.extensions[&apos;migrate&apos;].configure_args)</div><div class="line">    try:</div><div class="line">        with context.begin_transaction():</div><div class="line">            context.run_migrations()</div><div class="line">    finally:</div><div class="line">        connection.close()</div></pre></td></tr></table></figure>
+<h1 id="解决终端ssh时间久了卡掉的问题"><a href="#解决终端ssh时间久了卡掉的问题" class="headerlink" title="解决终端ssh时间久了卡掉的问题"></a>解决终端ssh时间久了卡掉的问题</h1><p>/etc/ssh/ssh_config加上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ServerAliveInterval 60</div><div class="line">ServerAliveCountMax 2</div></pre></td></tr></table></figure>
+<h1 id="创建virtualenv不包含全局Python的包"><a href="#创建virtualenv不包含全局Python的包" class="headerlink" title="创建virtualenv不包含全局Python的包"></a>创建virtualenv不包含全局Python的包</h1><p><code>virtualenv --no-site-packages -p python3 flask_env</code></p>
+<h1 id="配置服务器环境"><a href="#配置服务器环境" class="headerlink" title="配置服务器环境"></a>配置服务器环境</h1><p>Flask + uwsgi + nginx</p>
+<h1 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h1><p><code>vim /etc/nginx/sites-enabled/default</code>这个是加入自己的配置，然后nginx的配置其实已经写好了，并且会引入这个自定义的配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 120.25.229.101;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        include uwsgi_params;</div><div class="line">        uwsgi_pass 127.0.0.1:8001;</div><div class="line">        uwsgi_param UWSGI_PYHOME /user/bin;</div><div class="line">        uwsgi_param UWSGI_CHDIR /root/skyrover;</div><div class="line">        uwsgi_param UWSGI_SCRIPT manage:app;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>监听80端口，公网IP是这个，也可以使用域名。然后反向代理到uwsgi的127.0.0.1:8001上，uwsgi启动了这个app应用</p>
+<p><code>vim /etc/nginx/nginx.conf</code>这个是nginx的全局配置</p>
+<h1 id="uwsgi配置"><a href="#uwsgi配置" class="headerlink" title="uwsgi配置"></a>uwsgi配置</h1><p>使用<code>pip3 install uwsgi</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[uwsgi]</div><div class="line">socket = 127.0.0.1:8001</div><div class="line">chdir = /root/skyrover</div><div class="line">wsgi-file = manage.py</div><div class="line">callable = app</div><div class="line">processes = 4</div><div class="line">threads = 2</div><div class="line">stats = 127.0.0.1:9191</div></pre></td></tr></table></figure>
+<p>启动的话：<code>uwsgi config.ini</code></p>
+<h1 id="supervisor"><a href="#supervisor" class="headerlink" title="supervisor"></a>supervisor</h1><p>这个应用可以启动应用，并且可以自动重启，安装好，配置如下,<code>vim /etc/supervisor/conf.d/skyrover_supervisor.conf</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[program:skyrover]</div><div class="line">command=uwsgi /root/config.ini</div><div class="line">directory=/root/skyrover</div><div class="line">user=root</div><div class="line">autostart=true</div><div class="line">autorestart=true</div><div class="line">stdout_logfile=/root/uwsgi_supervisor.log</div></pre></td></tr></table></figure>
+<p>每次更新代码之后<code>service supervisor restart</code>, <code>service nginx restart</code>, <code>service uwsgi restart</code></p>
+<h1 id="pip安装慢的情况"><a href="#pip安装慢的情况" class="headerlink" title="pip安装慢的情况"></a>pip安装慢的情况</h1><p>添加<code>~/.pip/pip.conf</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">timeout = 6000</div><div class="line">index-url = http://pypi.douban.com/simple/</div><div class="line">[install]</div><div class="line">use-mirrors = true</div><div class="line">mirrors = http://pypi.douban.com/simple/</div><div class="line">trusted-host = pypi.douban.com</div></pre></td></tr></table></figure>
+<p>将本地的CSV文件插入到MySQL的方法以及遇到的问题~</p>
+<h1 id="load-csv"><a href="#load-csv" class="headerlink" title="load csv"></a>load csv</h1><p><code>LOAD DATA INFILE &#39;/data/output.csv&#39; INTO TABLE ability CHARACTER SET utf8 FIELDS TERMINATED BY &#39;,&#39;;</code></p>
+<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><ol>
+<li>使用<code>utf8</code>，而不是<code>utf-8</code></li>
+<li>插入的时候报错，<code>ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement</code></li>
+<li>在load csv的时候出现表中有主键，但是csv数据没有那一列，会报错，<code>doesn&#39;t contain data for all columns</code>,于是用Python将每一行的行数加在csv文件的第一列。</li>
+</ol>
+<p>这里要注意的是primary_key是从1开始，而不是0.</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>secure_file_priv设置了指定目录，需要在指定的目录下进行数据导出</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p><code>mysql&gt; show variables like &#39;%secure%&#39;;</code></p>
+<p>有一项是：<code>secure_file_priv         | /var/lib/mysql-files/ |</code></p>
+<p>在这个文件夹下进行文件的读取与上传。</p>
+<h1 id="分割文件"><a href="#分割文件" class="headerlink" title="分割文件"></a>分割文件</h1><p>在load的时候又出现了一个问题，这个文件夹所挂载的硬盘容量太小，文件copy不过来，于是采取了一种方法，将文件分割，命令:<code>split</code>,生成文件名为xaa,xab什么的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">＃ 以文件行数分割,每个文件行数为1000行</div><div class="line">split mylog -l 1000</div><div class="line"># 以每个文件20M分割</div><div class="line">split -b 20M logdata</div><div class="line"># 以每个文件50MB指定前缀分割</div><div class="line">split --bytes=50M logdata mydatafile</div></pre></td></tr></table></figure>
+<h1 id="修改字段"><a href="#修改字段" class="headerlink" title="修改字段"></a>修改字段</h1><p>load数据的时候遇到了这个问题，就是说out of range，于是修改为double(40,15)还是不行，后来发现此数据为2e+100,完全表示不下，于是使用字符串</p>
+<p><code>alter table ability modify column shape_rate varchar(50)</code></p>
+<h1 id="合并表"><a href="#合并表" class="headerlink" title="合并表"></a>合并表</h1><p>由于有两台计算机上的数据，id标号不是连续的，先后插入的时候就会出现主键重复，现在准备采用分两个表插入，然后进行合并的方式：</p>
+<p><code>insert into ability(fundId,ability_gain,ability_long,ability_medium,ability_risk,ability_short,ability_total,daily_profit,daily_profit_rate,date,fundbal,max_retracement,period_profit_rate,position_rate,shape_ratio,stk_maktval,ttimes_long,ttimes_medium,ttimes_short) select fundId,ability_gain,ability_long,ability_medium,ability_risk,ability_short,ability_total,daily_profit,daily_profit_rate,date,fundbal,max_retracement,period_profit_rate,position_rate,shape_ratio,stk_maktval,ttimes_long,ttimes_medium,ttimes_short from ability1;</code></p>
+<p>另外一种解决方法是将第二个文件的第一个字段按照之前插入的最后一条的数字，相应进行更改，使用awk命令：</p>
+<p><code>awk &#39;BEGIN{FS=&quot;,&quot;;OFS=&quot;,&quot;;ORS=&quot;\n&quot;;}{$1=NR+43146621;print $0}&#39; datatest.txt &gt; newdatatest.txt</code></p>
+<p>FS：输入字段分隔符</p>
+<p>RS：出入行分隔符</p>
+<p>OFS：输出字段分隔符</p>
+<p>ORS：表示输出行分隔符</p>
+<p>整合一下，自动化：</p>
+<p><code>lineNum=$(tail -1 /app/all_output_45/all_output.csv | awk -F &#39;,&#39; &#39;{print $1}&#39;)</code></p>
+<p><code>awk -v lineNum=&quot;$lineNum&quot; &#39;BEGIN{FS=&quot;,&quot;;OFS=&quot;,&quot;;ORS=&quot;\n&quot;;}{$1=NR+lineNum;print $0}&#39; all_output.csv &gt; new_all_output.csv</code></p>
+<p>所以要记录第一个文件的插入总条数，也就是插入后id值最后一个是什么</p>
+<p>xaa:</p>
+<p>xab:</p>
+<p>xac:</p>
+<h1 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h1><p>最后插入了很多数据后发现数据是21列，建的表是20列，晕，删除表，重新建表～</p>
+<p>又出现一个问题，之前按照文件大小将文件分割，插入数据库的时候发现，文件最后一行完整性被损坏了，所以一定要按照行来分割数据文件～</p>
+<p><code>split all_output.csv -l 46000000</code></p>
+<p>VIM所有行替换：</p>
+<p><code>:%s/fundid/fundId/gc</code></p>
+<p>远程连接MySQL的时候，报错：</p>
+<p>Can’t connect to MySQL server (10060)</p>
+<p>这时候解决办法如下：</p>
+<p>配置防火墙，开启3306端口，端口视情况而定</p>
+<p><code>vi /etc/sysconfig/iptables</code></p>
+<p><code>-A INPUT -m state –state NEW -m tcp -p tcp –dport 3306 -j ACCEPT（允许3306端口通过防火墙）</code></p>
+<p><code>/etc/init.d/iptables restart（重启防火墙使配置生效）</code></p>
+<p>检测方法，<code>telnet 10.234.0.45 32768</code>，如果进入界面，则说明链接成功，否则失败</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-01T04:58:03.000Z" itemprop="dateUpdated">2017-09-01 12:58:03 12:58:03</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/03/10/环境以及部署问题汇总/" target="_blank" rel="external">http://skyrover.me/2017/03/10/环境以及部署问题汇总/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/03/10/环境以及部署问题汇总/&title=《环境以及部署问题汇总》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/03/10/环境以及部署问题汇总/&title=《环境以及部署问题汇总》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/03/10/环境以及部署问题汇总/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《环境以及部署问题汇总》 — SkyRover&url=http://skyrover.me/2017/03/10/环境以及部署问题汇总/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/03/10/环境以及部署问题汇总/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/01/金融和R语言/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">金融和R语言</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/01/Using-Celery-With-Flask/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Using Celery With Flask</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/03/10/环境以及部署问题汇总/&title=《环境以及部署问题汇总》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/03/10/环境以及部署问题汇总/&title=《环境以及部署问题汇总》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/03/10/环境以及部署问题汇总/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《环境以及部署问题汇总》 — SkyRover&url=http://skyrover.me/2017/03/10/环境以及部署问题汇总/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/03/10/环境以及部署问题汇总/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aS27DMAwFwNz/0i7QVYE09iMZF400WgVBYnm0IPjR4xGv43s9f/75zeQ3x9N63LEwMDA+lnGcroRx/px834T38skYGBgbMHpBdhK+e4H75fcYGBgYwcZJgO6ljBgYGBjVgJsE32roxMDAwEgYSRGbhNfzAP2ufTEwMHZjTAYDd3/+o/kGBgbGP2Yc45WUsucF8PytMDAw1mbkaVyv+Dx/9fxookCMgYGxNKO3wSS5nDTaLo4eAwNjOUY1yctfrloMj56GgYGxJaNXauYpXfXgLpJXDAyMpRm9V+9tn2DODyJqt2FgYCzHmDTF8uZaL/U8D7IYGBj7MN7Wqys213rHh4GBsScjf3SeLFZTvSr74poFBgbGcoykfTa5cjEJvsmOLyexGBgYyzHyRlg1BE8SxzygY2Bg7MCovkT1mlf1+lc+vLxIEDEwMJZmVIvbPMnLf9M7SgwMjFUZ1VDYG0nOf39xEBgYGFsyqm39fDyZJ4KF6x0YGBibMartsHwl44Rq0YuBgbEnowrobV9o9Cf/wsDAWJqRX7mYXI8o3/4oXvLAwMBYlXFHYpcMDyZpaHmagYGB8eGMaoCbBOjqMyfpIwYGxnqMPMjmI8ZJIpi/wy+1OAYGxtKMSeCrbnxj/Y2BgYExzsTyqxhlMAYGBkbcLMtbaee7VEtiDAyMHRi9Jn71OPLUMw/NGBgYOzDmg4F3JZT5ULNXBmNgYHwg4wslVdsZ5vLOjwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

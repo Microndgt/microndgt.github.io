@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>翻译 -  concurrent.futures — Launching parallel tasks | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,并发,翻译">
+    <meta name="description" content="翻译自 concurrent.futures 运行并行任务 估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。 concurrent.futures为异步调用提供了高层次的接口。 异步运行可以通过线程来运行，使用ThreadPoolExecutor。或者是独立的进程，使用ProcessPoolExecutor。每种实现都是相同的接口，都是通过抽象类Executor来定义">
+<meta name="keywords" content="Python,并发,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="翻译 -  concurrent.futures — Launching parallel tasks">
+<meta property="og:url" content="http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="翻译自 concurrent.futures 运行并行任务 估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。 concurrent.futures为异步调用提供了高层次的接口。 异步运行可以通过线程来运行，使用ThreadPoolExecutor。或者是独立的进程，使用ProcessPoolExecutor。每种实现都是相同的接口，都是通过抽象类Executor来定义">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-01T06:50:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="翻译 -  concurrent.futures — Launching parallel tasks">
+<meta name="twitter:description" content="翻译自 concurrent.futures 运行并行任务 估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。 concurrent.futures为异步调用提供了高层次的接口。 异步运行可以通过线程来运行，使用ThreadPoolExecutor。或者是独立的进程，使用ProcessPoolExecutor。每种实现都是相同的接口，都是通过抽象类Executor来定义">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">翻译 -  concurrent.futures — Launching parallel tasks</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">翻译 -  concurrent.futures — Launching parallel tasks</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-30T01:46:35.000Z" itemprop="datePublished" class="page-time">
+  2017-08-30 09:46:35
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Executor-Objects"><span class="post-toc-number">1.</span> <span class="post-toc-text">Executor Objects</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#submit"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">submit</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#map"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">map</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#shutdown"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">shutdown</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ThreadPoolExecutor"><span class="post-toc-number">2.</span> <span class="post-toc-text">ThreadPoolExecutor</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ThreadPoolExecutor-1"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">ThreadPoolExecutor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ThreadPoolExecutor-Example"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">ThreadPoolExecutor Example</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#ProcessPoolExecutor"><span class="post-toc-number">3.</span> <span class="post-toc-text">ProcessPoolExecutor</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ProcessPoolExecutor-Example"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">ProcessPoolExecutor Example</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Future-Objects"><span class="post-toc-number">4.</span> <span class="post-toc-text">Future Objects</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cancel（）"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">cancel（）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cancelled"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">cancelled()</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#running"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">running()</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#done"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">done()</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#result-timeout-None"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">result(timeout=None)</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模块函数"><span class="post-toc-number">5.</span> <span class="post-toc-text">模块函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#concurrent-futures-wait"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">concurrent.futures.wait</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#concurrent-futures-as-completed"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">concurrent.futures.as_completed</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-翻译 -  concurrent.futures — Launching parallel tasks"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">翻译 -  concurrent.futures — Launching parallel tasks</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-30 09:46:35 09:46:35" datetime="2017-08-30T01:46:35.000Z"  itemprop="datePublished">2017-08-30 09:46:35</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>翻译自 <a href="https://docs.python.org/3/library/concurrent.futures.html" target="_blank" rel="external"><code>concurrent.futures</code> 运行并行任务</a></p>
+<p>估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。</p>
+<p><code>concurrent.futures</code>为异步调用提供了高层次的接口。</p>
+<p>异步运行可以通过线程来运行，使用<code>ThreadPoolExecutor</code>。或者是独立的进程，使用<code>ProcessPoolExecutor</code>。每种实现都是相同的接口，都是通过抽象类<code>Executor</code>来定义的。</p>
+<h1 id="Executor-Objects"><a href="#Executor-Objects" class="headerlink" title="Executor Objects"></a>Executor Objects</h1><p><code>Executor</code>是一个抽象类，提供了异步调用的方法。不应该直接使用而是通过具体的子类来调用，其中包含了以下方法。</p>
+<h2 id="submit"><a href="#submit" class="headerlink" title="submit"></a>submit</h2><p><code>submit(fn, *args, **kwargs)</code></p>
+<p>排定任务，然后会返回一个<code>Future</code>对象，代表了要执行的可调用对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">with ThreadPoolExecutor(max_workers=1) as executor:</div><div class="line">    future = executor.submit(pow, 323, 1235)</div><div class="line">    print(future.result())</div></pre></td></tr></table></figure>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p><code>map(func, *iterables, timeout=None, chunksize=1)</code></p>
+<p>和Python中的map很像，但是是异步调用的并且一些调用将会是并发执行的。返回的迭代器当在<code>timeout</code>秒后没有得到结果，那么将会引发<code>concurrent.futures.TimeoutError</code>异常。如果timeout没有指定或者是None的话，将不会限制等待时间。</p>
+<p>如果其中的一个调用引发了异常，那么当从迭代器中取数据的时候这个异常会引发。当使用<code>ProcessPoolExecutor</code>的时候，这个方法将会将迭代对象分成不同份提交给进程池来独立的运行。这些块的大小通过设置<code>chunksize</code>来指定。对于特别长的可迭代对象，给<code>chunksize</code>指定一个特别大的值可以有效的提高性能。使用<code>ThreadPoolExecutor</code>时候，<code>chunksize</code>是无效的。</p>
+<h2 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h2><p><code>shutdown(wait=True)</code></p>
+<p>当等待的任务结束后，给运行单元一个释放所有资源的信号。在shutdown之后调用<code>Executor.submit()</code>和<code>Executor.map()</code>将会引发一个<code>RuntimeError</code></p>
+<p>如果<code>wait</code>是True，这个方法会等待所有的任务结束后，然后与这个运行单元相关的资源都释放了才返回。如果<code>wait</code>是False，那么这个方法会立即返回，并且在所有等待任务结束后释放资源。如果忽略这个参数，整个Python程序将一直到所有等待任务结束后才会退出。</p>
+<p>你可以避免显式的取调用这个方法，如果你是用with语句的话，它会关闭这个执行器的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">import shutil</div><div class="line">with ThreadPoolExecutor(max_workers=4) as e:</div><div class="line">    e.submit(shutil.copy, &apos;src1.txt&apos;, &apos;dest1.txt&apos;)</div><div class="line">    e.submit(shutil.copy, &apos;src2.txt&apos;, &apos;dest2.txt&apos;)</div><div class="line">    e.submit(shutil.copy, &apos;src3.txt&apos;, &apos;dest3.txt&apos;)</div><div class="line">    e.submit(shutil.copy, &apos;src4.txt&apos;, &apos;dest4.txt&apos;)</div></pre></td></tr></table></figure>
+<h1 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h1><p><code>ThreadPoolExecutor</code>是<code>Executor</code>的一个子类，会使用一个线程池来异步执行调用。</p>
+<p>在从可调用对象生成的Future中等待另一个Future的结果的时候，会发生死锁。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import time</div><div class="line">def wait_on_b():</div><div class="line">    time.sleep(5)</div><div class="line">    print(b.result())  # b will never complete because it is waiting on a.</div><div class="line">    return 5</div><div class="line"></div><div class="line">def wait_on_a():</div><div class="line">    time.sleep(5)</div><div class="line">    print(a.result())  # a will never complete because it is waiting on b.</div><div class="line">    return 6</div><div class="line"></div><div class="line"></div><div class="line">executor = ThreadPoolExecutor(max_workers=2)</div><div class="line">a = executor.submit(wait_on_b)</div><div class="line">b = executor.submit(wait_on_a)</div></pre></td></tr></table></figure>
+<p>还有这个，因为只有一个线程来执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def wait_on_future():</div><div class="line">    f = executor.submit(pow, 5, 2)</div><div class="line">    print(f.result())</div><div class="line"></div><div class="line">executor = ThreadPoolExecutor(max_workers=1)</div><div class="line">executor.submit(wait_on_future)</div></pre></td></tr></table></figure>
+<h2 id="ThreadPoolExecutor-1"><a href="#ThreadPoolExecutor-1" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h2><p><code>ThreadPoolExecutor(max_workers=None, thread_name_prefix=”)</code></p>
+<p><code>Executor</code>子类使用最多<code>max_workers</code>个线程去异步调用。</p>
+<p>如果<code>max_workers</code>给定None或者没有给定，那么默认会执行当前机器核心数的5倍线程数，假定<code>ThreadPoolExecutor</code>会经常在<code>I/O</code>而不是CPU运算的时候，<code>max_workers</code>应该给定更高的值。</p>
+<p><code>thread_name_prefix</code>允许用户去控制线程，也比较容易debug</p>
+<h2 id="ThreadPoolExecutor-Example"><a href="#ThreadPoolExecutor-Example" class="headerlink" title="ThreadPoolExecutor Example"></a>ThreadPoolExecutor Example</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import concurrent.futures</div><div class="line">import urllib.request</div><div class="line"></div><div class="line">URLS = [&apos;http://www.foxnews.com/&apos;,</div><div class="line">        &apos;http://www.cnn.com/&apos;,</div><div class="line">        &apos;http://europe.wsj.com/&apos;,</div><div class="line">        &apos;http://www.bbc.co.uk/&apos;,</div><div class="line">        &apos;http://some-made-up-domain.com/&apos;]</div><div class="line"></div><div class="line"># Retrieve a single page and report the URL and contents</div><div class="line">def load_url(url, timeout):</div><div class="line">    with urllib.request.urlopen(url, timeout=timeout) as conn:</div><div class="line">        return conn.read()</div><div class="line"></div><div class="line"># We can use a with statement to ensure threads are cleaned up promptly</div><div class="line">with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:</div><div class="line">    # Start the load operations and mark each future with its URL</div><div class="line">    future_to_url = &#123;executor.submit(load_url, url, 60): url for url in URLS&#125;</div><div class="line">    for future in concurrent.futures.as_completed(future_to_url):</div><div class="line">        url = future_to_url[future]</div><div class="line">        try:</div><div class="line">            data = future.result()</div><div class="line">        except Exception as exc:</div><div class="line">            print(&apos;%r generated an exception: %s&apos; % (url, exc))</div><div class="line">        else:</div><div class="line">            print(&apos;%r page is %d bytes&apos; % (url, len(data)))</div></pre></td></tr></table></figure>
+<h1 id="ProcessPoolExecutor"><a href="#ProcessPoolExecutor" class="headerlink" title="ProcessPoolExecutor"></a>ProcessPoolExecutor</h1><p>这个类使用进程池的<code>Executor</code>子类，它使用了<code>multiprocessing</code>模块，这样就可以避开全局解释器锁，同时也意味这只有可序列化的对象可以被执行和返回。</p>
+<p><code>__main__</code>模块必须被子进程的worker导入，因此意味着<code>ProcessPoolExecutor</code>是不能在交互式解释器中运行的。</p>
+<p>在提交到<code>ProcessPoolExecutor</code>可调用对象中调用<code>Executor</code>或者<code>Future</code>方法会导致死锁。</p>
+<p><code>ProcessPoolExecutor(max_workers=None)</code></p>
+<p>它会使用最多<code>max_workers</code>个进程来异步执行任务。如果<code>max_workers</code>没有给定或者是None，将会启动当前机器核心数相同的进程。如果<code>max_workers</code>数目小于等于0，将会引发<code>ValueError</code></p>
+<p>如果worker进程中的一个意外终止了，<code>BrokenProcessPool</code>错误将会引发。在之前，行为是不确定的，大多数情况是死锁。</p>
+<h2 id="ProcessPoolExecutor-Example"><a href="#ProcessPoolExecutor-Example" class="headerlink" title="ProcessPoolExecutor Example"></a>ProcessPoolExecutor Example</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">import concurrent.futures</div><div class="line">import math</div><div class="line"></div><div class="line">PRIMES = [</div><div class="line">    112272535095293,</div><div class="line">    112582705942171,</div><div class="line">    112272535095293,</div><div class="line">    115280095190773,</div><div class="line">    115797848077099,</div><div class="line">    1099726899285419]</div><div class="line"></div><div class="line">def is_prime(n):</div><div class="line">    if n % 2 == 0:</div><div class="line">        return False</div><div class="line"></div><div class="line">    sqrt_n = int(math.floor(math.sqrt(n)))</div><div class="line">    for i in range(3, sqrt_n + 1, 2):</div><div class="line">        if n % i == 0:</div><div class="line">            return False</div><div class="line">    return True</div><div class="line"></div><div class="line">def main():</div><div class="line">    with concurrent.futures.ProcessPoolExecutor() as executor:</div><div class="line">        for number, prime in zip(PRIMES, executor.map(is_prime, PRIMES)):</div><div class="line">            print(&apos;%d is prime: %s&apos; % (number, prime))</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<h1 id="Future-Objects"><a href="#Future-Objects" class="headerlink" title="Future Objects"></a>Future Objects</h1><p>Future类压缩了异步调用的执行。通过<code>Executor.submit()</code>来创建一个Future实例，不应该直接实例化，下面是其中的方法</p>
+<h2 id="cancel（）"><a href="#cancel（）" class="headerlink" title="cancel（）"></a>cancel（）</h2><p>尝试取消调用，如果调用已经被执行，那么是无法取消的，这个方法就会返回False。否则将会被取消，返回True</p>
+<h2 id="cancelled"><a href="#cancelled" class="headerlink" title="cancelled()"></a>cancelled()</h2><p>如果成功取消则返回True</p>
+<h2 id="running"><a href="#running" class="headerlink" title="running()"></a>running()</h2><p>如果正在运行，并且不能取消，则返回True</p>
+<h2 id="done"><a href="#done" class="headerlink" title="done()"></a>done()</h2><p>如果被成功取消或者完成运行后返回True</p>
+<h2 id="result-timeout-None"><a href="#result-timeout-None" class="headerlink" title="result(timeout=None)"></a>result(timeout=None)</h2><p>返回调用的结果。如果调用没有完成，那么将会等待timeout秒。如果在timeout秒还没有完成，将会引发<code>concurrent.futures.TimeoutError</code>。如果没有设置或者是None，将不会有等待时间</p>
+<p>如果future在完成前取消，<code>cancelledError</code>将会引发。</p>
+<p>如果调用引发异常，这里会引发同样的异常。</p>
+<ul>
+<li><code>exception(timeout=None)</code></li>
+<li><code>add_done_callback(fn)</code></li>
+<li><code>set_result(result)</code></li>
+<li><code>set_exception(exception)</code></li>
+</ul>
+<h1 id="模块函数"><a href="#模块函数" class="headerlink" title="模块函数"></a>模块函数</h1><h2 id="concurrent-futures-wait"><a href="#concurrent-futures-wait" class="headerlink" title="concurrent.futures.wait"></a><code>concurrent.futures.wait</code></h2><p><code>wait(fs, timeout=None, return_when=ALL_COMPLETED)</code></p>
+<p>等待通过fs给定的Future实例完成运行，返回两个值，第一个值是在wait函数完成调用时，完成的Future。第二个是没有完成的</p>
+<p><code>return_when</code>表示了函数应该在什么时候返回，有以下几个参数</p>
+<ul>
+<li><code>FIRST_COMPLETED</code></li>
+<li><code>FIRST_EXCEPTION</code></li>
+<li><code>ALL_COMPLETED</code></li>
+</ul>
+<h2 id="concurrent-futures-as-completed"><a href="#concurrent-futures-as-completed" class="headerlink" title="concurrent.futures.as_completed"></a><code>concurrent.futures.as_completed</code></h2><p><code>as_completed(fs, timeout=None)</code></p>
+<p>返回一个通过fs给定的Future实例的迭代器，可能是不同的<code>Executor</code>实例创建的，这个迭代器当它们完成的时候产生future。fs给定的任何future如果重复的话，只会返回一次。如果在<code>as_completed</code>之前返回的会最先产生。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-01T06:50:01.000Z" itemprop="dateUpdated">2017-09-01 14:50:01 14:50:01</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/" target="_blank" rel="external">http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/&title=《翻译 -  concurrent.futures — Launching parallel tasks》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/&title=《翻译 -  concurrent.futures — Launching parallel tasks》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 -  concurrent.futures — Launching parallel tasks》 — SkyRover&url=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/31/C1000k/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">C1000k</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/27/进程与线程/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">进程与线程</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'true';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/&title=《翻译 -  concurrent.futures — Launching parallel tasks》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/&title=《翻译 -  concurrent.futures — Launching parallel tasks》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 -  concurrent.futures — Launching parallel tasks》 — SkyRover&url=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADLklEQVR42u3ay46jQAwF0P7/n6al2Y4g1zYtBXNqFZEE6lQWjh8/P/E6/q3e5/9/ffbu/P43L2xsbOyHsI/LdbbdhHS2rbMryfV8D2cWbGxs7K3sJEic3uLyEJN3k4BX/e4HIzY2NvYr2XlY6oHzI8bGxsbGnrCPYF0HtgmgV2DCxsbGfgO7+nc/T04SxnUZqxoOb66lYWNjY389e964/Z7Xf9jfxsbGxv5K9lFck0L/5MrNCmxsbOxF7Grhvnc933SS6lRTi0IGho2Njf1YdlI2yhux+XaTMtOk+IWNjY39Bva9xf15opKHybw5/SFiY2NjY69g563cPAmZlIryxKN5uNjY2NiL2NWi0tFaebiaDNzkqRQ2Njb2JnZvIGY+1NhrRYzSD2xsbOzV7HxAZ5IeVNOSpP3QKzZhY2Njb2L3UoK8lJOnItffysNYL43BxsbG3sG+tw0wCTDX+PwHiI4MGxsbewU7L9xXi1PVeNFLJ3ojQdjY2Nib2NWRmiRJSELLXbDmyA42Njb2Cva9Izi9lCBvSCQ7j44GGxsbexG7OfJSHKaZH0ev1PXBgo2Njb2OnRd6euM7+bPu+mE+3BkbGxt7Kbt3ozydyIdpqgWm8uAONjY29mp2r8yUH0GSF0zaz1FXBBsbG3sFO2+RVgs3veRk/tzoELGxsbHXsasP6LWEe63iZppxrcPGxsZexC4MuLTerQaneQGrXFTCxsbGXsHulfirjF5joBr2klQHGxsbexN7UuLvPb56QHkbuBA+sbGxsRexJwnG9ePvGq+ZtI2j/AYbGxv74ezqIE7vyHr3qR5u3pbAxsbG3s3OYYUSfPGAqu1bbGxs7Dezq3/iq6GlMEAzHuvMmw3Y2NjYm9hHceUBJv9ub4in2kIuZGDY2NjYj2LPo1+1SZyX/nuHNT9EbGxs7Ceyq0Er2UTeNs6HdXrFow9ZFzY2NvYidrUMNOHlcTVvReeFMGxsbOw3s+9qBldDUfVwo2CGjY2N/WJ2Ek6qaUayk16ydFsAw8bGxv56dq9BmycJeVqSF616DQxsbGzsfexeozd/8LxVnDcDqqUxbGxs7IezfwGypJunFn8m+AAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
