@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-01T06:50:53.000Z</updated>
+  <updated>2017-09-01T13:36:10.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一些思考</title>
+    <link href="http://skyrover.me/2017/09/01/%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/"/>
+    <id>http://skyrover.me/2017/09/01/一些思考/</id>
+    <published>2017-09-01T12:42:46.000Z</published>
+    <updated>2017-09-01T13:36:10.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>以下均只是就事情本身的自己的一些思考，不针对谁。</p>
+<p>我认为要想成为一个管理者，首先需要在群众中建立威信，大家服你，你就成，否则很难进行下去。成为一个好的管理者，只说大话却什么也没有做这是不行的，陈胜吴广也知道要假以迷信来建立威信，这才有后面的振臂一呼，王侯将相宁有种乎。试想，陈胜吴广突然在人群面前振臂一呼，其结果是什么不言而喻。冰与火之歌中，Snow为了北境舍生忘死，这才成为了<code>King of the North</code>。</p>
+<p>在创业的小团队里，总共也就这么几个人，一个搞技术的突然跳出来要管理这些其他的搞技术的，却不在技术上想着务实，而是搞形式主义就有点过分。今天开会，首先说的是这周老板来了大家有什么感想，这种说出来不觉得不合适吗？大家都是成年人，看到什么想到什么该做什么，不需要别人提醒吧，最主要的是我们技术开会需要讨论这个？下来的主题是，想要尽快结束目前的项目，想做其他新的项目。嗯，这个是大家的一致愿望，说了一句废话。要结束一个项目不是一拍脑袋说就草草了事，而是有什么问题解决什么问题，不是说你想尽快结束就尽快结束，为什么拖了这么久，总结一下，<strong>业务不熟，技术不精，需求混乱</strong>，这就是最主要的原因。那我们为什么不来讨论下怎么改进，总结经验呢？开会后面说的事，是日志和错误系统，这个是挺重要的，但是不是当下要做的事情，当务之急是完成需求，稳定代码，减少bug，这些事情都没有做好，搞那些东西不是因小失大吗？让人觉得完全是一拍脑袋就来，拍完就走的那种。另外还说了一点，我们做这些事不需要给老板报备，自己搞，于是就有人说了，给发多少钱做多少工作，为什么还要牺牲自己的时间来做这些事情，这不是工作时间应当做的事情吗？居然还解释说，你就应当做比你工资更多的工作，这样老板才会给你涨工资，这是什么想法？为资本家开脱，还是贬低自己的价值，抑或就是工作狂。本身创业公司做的事情就多，发的钱就少，还要额外的再去多做不明不白的事情，那老板怎么给你涨工资[手动斜眼]？况且都快一年了，没有涨过工资的说。拿多少钱，干多少活，别跟我谈理想，戒了。</p>
+<p>所以呀，我觉得还是踏踏实实的带领大家 <strong>成长，减少bug，做好项目，提高效率，形成良性循环</strong> 才是正解，多做务实的事情，开会讨论重点而不是虾扯蛋。哎，我觉得我是没有这个心劲了，再说主要是我自己本身就菜，没什么服人的干货，所以我还是吐个槽之后默默的去学习好了。</p>
+<p>公司呢，现在也是流于形式，搞的积分制度，写工作周报加分，投票加分，完全对于工作效率没有任何帮助好吗？我不知道别人是怎么想的，至少我觉得对于我来说没有帮助，反而增加我的反感情绪，我看别人的周报也不过就是两三行草草了事，毫无意义。那怎么可以提高效率，我觉得是不断的激励制度，比如多完成工作，给多发多少钱，表现好的涨工资，我觉得可以带动一大波效率。我以前就是这么认为的，我努力工作，就会涨工资，甚至在北京出差受伤在病床上我还坚持为了项目而努力，后来发现没什么卵用，累的还是我，虽然事情依然会遵从本心追求完美，但是就没那个心劲去让整个公司变得更好了。</p>
+<p>咳，吐槽这么多，还不如去看两页书呢。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;以下均只是就事情本身的自己的一些思考，不针对谁。&lt;/p&gt;
+&lt;p&gt;我认为要想成为一个管理者，首先需要在群众中建立威信，大家服你，你就成，否则很难进行下去。成为一个好的管理者，只说大话却什么也没有做这是不行的，陈胜吴广也知道要假以迷信来建立威信，这才有后面的振臂一呼，王侯将相宁
+    
+    </summary>
+    
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
+    
+    
+      <category term="虾扯蛋" scheme="http://skyrover.me/tags/%E8%99%BE%E6%89%AF%E8%9B%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>C1000k</title>
@@ -63,7 +92,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>
@@ -146,7 +175,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -287,7 +316,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
@@ -381,7 +410,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -423,7 +452,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -486,7 +515,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -555,7 +584,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -602,7 +631,7 @@
     
     </summary>
     
-      <category term="人生" scheme="http://skyrover.me/categories/Life/"/>
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
     
     
       <category term="青海" scheme="http://skyrover.me/tags/%E9%9D%92%E6%B5%B7/"/>
@@ -647,7 +676,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -746,7 +775,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -795,7 +824,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -893,7 +922,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -942,7 +971,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1002,14 +1031,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
-      <category term="gevent" scheme="http://skyrover.me/tags/gevent/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="gevent" scheme="http://skyrover.me/tags/gevent/"/>
     
   </entry>
   
@@ -1064,7 +1093,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1095,7 +1124,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1154,7 +1183,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1193,7 +1222,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1248,7 +1277,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1304,7 +1333,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1405,7 +1434,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1548,7 +1577,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1562,7 +1591,7 @@
     <link href="http://skyrover.me/2017/05/20/LeetCode%E5%88%B7%E9%A2%98(2)/"/>
     <id>http://skyrover.me/2017/05/20/LeetCode刷题(2)/</id>
     <published>2017-05-20T02:51:01.000Z</published>
-    <updated>2017-09-01T06:22:13.000Z</updated>
+    <updated>2017-09-01T12:42:38.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Maximum-Subarray"><a href="#Maximum-Subarray" class="headerlink" title="Maximum Subarray"></a><a href="https://leetcode.com/problems/maximum-subarray/#/description" target="_blank" rel="external">Maximum Subarray</a></h1><p>想出解决办法不难，但是要全面，最关键的是不能超时。。。在我的分析之下，要想达到最大的和，首先起始和终点的值都是正数才行，所以我用到了第一个条件，遍历直到起始值是正值开始下一轮遍历。然后到正值的时候结束记录一次和。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if len(nums) == 0:</div><div class="line">            return 0</div><div class="line">        elif len(nums) == 1:</div><div class="line">            return nums[0]</div><div class="line">        sum_dict = &#123;&#125;</div><div class="line">        for index, num in enumerate(nums):</div><div class="line">            if num &gt; 0:</div><div class="line">                num_sum = 0</div><div class="line">                ori_index = index</div><div class="line">                for stop_index, stop_num in enumerate(nums[index:], 0):</div><div class="line">                    if stop_num &gt; 0:</div><div class="line">                        num_sum = num_sum + stop_num</div><div class="line">                        sum_dict[(ori_index, ori_index+stop_index)] = num_sum</div><div class="line">                    else:</div><div class="line">                        num_sum = num_sum + stop_num</div><div class="line">                        continue</div><div class="line">            else:</div><div class="line">                continue</div><div class="line">        if not sum_dict:</div><div class="line">            # 说明没有找到正数，而且序列长度大于1，那么就找到最小的负数即可</div><div class="line">            return sorted(nums)[-1]</div><div class="line">        return sorted(sum_dict.items(), key=lambda x: x[1])[-1][1]</div></pre></td></tr></table></figure>
@@ -1643,12 +1672,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
     
   </entry>
   
@@ -1683,7 +1714,7 @@
     
     </summary>
     
-      <category term="人生" scheme="http://skyrover.me/categories/Life/"/>
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
     
     
       <category term="虾扯蛋" scheme="http://skyrover.me/tags/%E8%99%BE%E6%89%AF%E8%9B%8B/"/>
@@ -1695,7 +1726,7 @@
     <link href="http://skyrover.me/2017/05/13/LeetCode%E5%88%B7%E9%A2%98(1)/"/>
     <id>http://skyrover.me/2017/05/13/LeetCode刷题(1)/</id>
     <published>2017-05-13T14:46:32.000Z</published>
-    <updated>2017-09-01T06:16:05.000Z</updated>
+    <updated>2017-09-01T12:42:39.000Z</updated>
     
     <content type="html"><![CDATA[<p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
 <h1 id="Longest-Palindrome"><a href="#Longest-Palindrome" class="headerlink" title="Longest Palindrome"></a><a href="https://leetcode.com/problems/longest-palindrome/#/description" target="_blank" rel="external">Longest Palindrome</a></h1><p>其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大长度了。<code>Runtime: 42 ms Your runtime beats 95.32 % of python submissions.</code> 棒！</p>
@@ -1845,12 +1876,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
     
   </entry>
   
@@ -1985,7 +2018,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2062,7 +2095,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Docker" scheme="http://skyrover.me/tags/Docker/"/>
@@ -2123,7 +2156,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2191,7 +2224,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2228,7 +2261,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2336,7 +2369,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2427,7 +2460,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2563,7 +2596,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2645,7 +2678,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="R" scheme="http://skyrover.me/tags/R/"/>
@@ -2737,7 +2770,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>
@@ -2824,7 +2857,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2873,7 +2906,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
@@ -2919,7 +2952,7 @@
     
     </summary>
     
-      <category term="人生" scheme="http://skyrover.me/categories/Life/"/>
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
     
     
       <category term="TED" scheme="http://skyrover.me/tags/TED/"/>
@@ -3054,7 +3087,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -3136,7 +3169,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>
