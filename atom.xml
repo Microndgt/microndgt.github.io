@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-03T07:22:24.000Z</updated>
+  <updated>2017-09-03T09:33:21.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -16,11 +16,43 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>LeetCode刷题(3)</title>
+    <link href="http://skyrover.me/2017/09/03/LeetCode%E5%88%B7%E9%A2%98(3)/"/>
+    <id>http://skyrover.me/2017/09/03/LeetCode刷题(3)/</id>
+    <published>2017-09-03T09:33:01.000Z</published>
+    <updated>2017-09-03T09:33:21.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Combination-Sum-III"><a href="#Combination-Sum-III" class="headerlink" title="Combination Sum III"></a><a href="https://leetcode.com/problems/combination-sum-iii/discuss/" target="_blank" rel="external">Combination Sum III</a></h1><p>想了半天，最后使用了递归形式的回溯法来解决，其实本质还是一种遍历吧，每一个元素位上去找可能成立的元素，后一个元素位上的元素肯定比前一个大，然后有一些限制条件，就可以得出来结果。回溯法从这里看来就是一种dfs，找到最后一个元素上。然后再回到上一层元素去找。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def combinationSum3(self, k, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type k: int</div><div class="line">        :type n: int</div><div class="line">        :rtype: List[List[int]]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def backtrack(result, ans, start, k, target):</div><div class="line">            if target == 0 and k == 0:</div><div class="line">                # 当结果和最终的定位都是0，说明是一个结果</div><div class="line">                result.append(list(ans))</div><div class="line">                return</div><div class="line">            # 在这里进行遍历可能的组合</div><div class="line">            for i in range(start, target+1):</div><div class="line">                if i &gt; 10 - k:</div><div class="line">                    break</div><div class="line">                ans.append(i)</div><div class="line">                # 查看下一个元素是否可以完成任务,如果可以则会将ans添加到结果集，</div><div class="line">                backtrack(result, ans, i+1, k-1, target-i)</div><div class="line">                ans.pop()</div><div class="line">        result = []</div><div class="line">        ans = []</div><div class="line">        backtrack(result, ans, 1, k, n)</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p>Runtime: 39 ms Your runtime beats 42.64 % of python submissions.</p>
+<h1 id="Magical-String"><a href="#Magical-String" class="headerlink" title="Magical String"></a><a href="https://leetcode.com/problems/magical-string/description/" target="_blank" rel="external">Magical String</a></h1><p>这道题主要是要发现规律，根据规律行事，通过观察可以得出这个字符串从第三位开始生成，比如1221121，第三位是2，所以后面生成2个1，现在结果是12211, 然后第四位是1，所以后面加一个2（要和目前最后一位的值不一样，所以是2），现在结果是122112，第五位是1，所以后面加一个1，结果是1221121，哈哈，这样直到规律，就开始编码吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def magicalString(self, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type n: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        start = &quot;122&quot;</div><div class="line">        if n == 0:</div><div class="line">            return 0</div><div class="line">        elif n &lt;= 3:</div><div class="line">            return start.count(&apos;1&apos;)</div><div class="line">        else:</div><div class="line">            # 在这里生成</div><div class="line">            res = start</div><div class="line">            pos = 2</div><div class="line">            while len(res) &lt;= n:</div><div class="line">                if res[pos] == &quot;2&quot;:</div><div class="line">                    res += &apos;1&apos; * 2 if res[-1] == &apos;2&apos; else &apos;2&apos; * 2</div><div class="line">                elif res[pos] == &apos;1&apos;:</div><div class="line">                    res += &apos;2&apos; if res[-1] == &apos;1&apos; else &apos;1&apos;</div><div class="line">                pos += 1</div><div class="line">            return res[:n].count(&apos;1&apos;)</div></pre></td></tr></table></figure>
+<p>结果也是相当高效的，Runtime: 145 ms Your runtime beats 94.27 % of python submissions.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Combination-Sum-III&quot;&gt;&lt;a href=&quot;#Combination-Sum-III&quot; class=&quot;headerlink&quot; title=&quot;Combination Sum III&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://leetcode.com
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
     <title>进程间通信</title>
     <link href="http://skyrover.me/2017/09/03/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"/>
     <id>http://skyrover.me/2017/09/03/进程间通信/</id>
-    <published>2017-09-03T02:39:03.000Z</published>
-    <updated>2017-09-03T07:22:24.000Z</updated>
+    <published>2017-09-03T07:23:03.000Z</published>
+    <updated>2017-09-03T07:23:51.000Z</updated>
     
     <content type="html"><![CDATA[<p>IPC(Inter Process Communication)</p>
 <p>同样的问题和解决办法也适用于线程。</p>
