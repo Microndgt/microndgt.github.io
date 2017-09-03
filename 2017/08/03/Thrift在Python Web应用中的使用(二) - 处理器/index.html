@@ -347,23 +347,31 @@
     
 
 
+
+
+
+
+
+
+
+
+
 <section class="comments" id="comments">
-    <div id="disqus_thread"></div>
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
     <script>
-    var disqus_shortname = 'true';
-    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
     </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </section>
-
-
-
-
-
-
-
-
-
 
 
 
