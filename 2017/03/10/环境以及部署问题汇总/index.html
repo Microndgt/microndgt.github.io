@@ -199,6 +199,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
+            
             <h1 id="virtualenv"><a href="#virtualenv" class="headerlink" title="virtualenv"></a>virtualenv</h1><p>创建virtualenv时候遇到这个问题：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">kevin@duguangtingdeMacBook-Pro:~ $ virtualenv myblog_env --python=python3</div><div class="line">Running virtualenv with interpreter /Users/kevin/anaconda/bin/python3</div><div class="line">Using base prefix &apos;/Users/kevin/anaconda&apos;</div><div class="line">New python executable in /Users/kevin/myblog_env/bin/python3</div><div class="line">Not overwriting existing python script /Users/kevin/myblog_env/bin/python (you must use /Users/kevin/myblog_env/bin/python3)</div><div class="line">ERROR: The executable /Users/kevin/myblog_env/bin/python3 is not functioning</div><div class="line">ERROR: It thinks sys.prefix is &apos;/Users/kevin&apos; (should be &apos;/Users/kevin/myblog_env&apos;)</div><div class="line">ERROR: virtualenv is not compatible with this system or executable</div></pre></td></tr></table></figure>
 <p>这个问题的原因是没有用系统级的Python，建立virtualenv的时候指定<code>-p</code>参数：<code>virtualenv -p python3 myblog_env</code></p>

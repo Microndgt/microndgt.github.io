@@ -199,6 +199,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
+            
             <p>今天用<code>nslookup</code>命令解析查看了<code>www.baidu.com</code>的IP地址，却意外发现百度的<code>CNAME</code>居然是<code>www.a.shifen.com</code></p>
 <h1 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">nslookup www.baidu.com</div><div class="line">&gt;&gt;&gt;</div><div class="line">Server:		119.29.29.29</div><div class="line">Address:	119.29.29.29#53</div><div class="line"></div><div class="line">Non-authoritative answer:</div><div class="line">www.baidu.com	canonical name = www.a.shifen.com.</div><div class="line">Name:	www.a.shifen.com</div><div class="line">Address: 220.181.111.188</div><div class="line">Name:	www.a.shifen.com</div><div class="line">Address: 220.181.112.244</div></pre></td></tr></table></figure>
 <p>接下来看看一个详细的baidu的dns解析过程</p>

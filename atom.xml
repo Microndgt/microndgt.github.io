@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-03T09:33:21.000Z</updated>
+  <updated>2017-09-04T01:05:55.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Bye Bye Bye</title>
+    <link href="http://skyrover.me/2017/09/04/Bye%20Bye%20Bye/"/>
+    <id>http://skyrover.me/2017/09/04/Bye Bye Bye/</id>
+    <published>2017-09-04T00:53:46.000Z</published>
+    <updated>2017-09-04T01:05:55.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>无意间发现很好听的歌，单曲循环中。。。</p>
+<blockquote>
+<p>When I see you<br>looking back at me<br>watching these eyes still<br>through your fingers<br>and your eyes<br>have told a thousand lights<br>but I cant tell this time<br>what you really mean it<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>I can sing another broken song<br>trying to hold on to your picture<br>out of face<br>you hide behind your face<br>it’s more than I can take<br>I know you run deeper<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>you left me handing on the light<br>why you stealing all my time<br>you take a piss me<br>you’ve been driving too slow<br>so I gotta let you go<br>before you break me em~ yeah~<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>Bye Bye</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/byebyebye.jpeg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;无意间发现很好听的歌，单曲循环中。。。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When I see you&lt;br&gt;looking back at me&lt;br&gt;watching these eyes still&lt;br&gt;through your fingers&lt;br&gt;and 
+    
+    </summary>
+    
+      <category term="Music" scheme="http://skyrover.me/categories/Music/"/>
+    
+    
+      <category term="Song" scheme="http://skyrover.me/tags/Song/"/>
+    
+  </entry>
   
   <entry>
     <title>LeetCode刷题(3)</title>
