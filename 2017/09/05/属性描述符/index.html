@@ -20,18 +20,18 @@
     
     
     <meta name="keywords" content="Python">
-    <meta name="description" content="描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __set__和__delete__方法。使用描述符的Python功能还有">
+    <meta name="description" content="From 流畅的Python 人民邮电出版社 20章属性描述符  描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __s">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="属性描述符">
 <meta property="og:url" content="http://skyrover.me/2017/09/05/属性描述符/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __set__和__delete__方法。使用描述符的Python功能还有">
+<meta property="og:description" content="From 流畅的Python 人民邮电出版社 20章属性描述符  描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __s">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-05T13:40:30.000Z">
+<meta property="og:updated_time" content="2017-09-09T06:44:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="属性描述符">
-<meta name="twitter:description" content="描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __set__和__delete__方法。使用描述符的Python功能还有">
+<meta name="twitter:description" content="From 流畅的Python 人民邮电出版社 20章属性描述符  描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __s">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
@@ -200,7 +200,10 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             
-            <p>描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的<code>__get__</code>和<code>__set__</code>方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。</p>
+            <blockquote>
+<p>From <strong>流畅的Python 人民邮电出版社 20章属性描述符</strong></p>
+</blockquote>
+<p>描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的<code>__get__</code>和<code>__set__</code>方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。</p>
 <p>描述符是实现了特定协议的类，这个协议包括<code>__get__</code>, <code>__set__</code>和<code>__delete__</code>方法。使用描述符的Python功能还有方法以及classmethod和staticmethod装饰器。</p>
 <h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>描述符的用法是，创建一个描述符实例，作为另外一个类的类属性，这样就会托管该类实例的同名属性，所以实例的属性和使用描述符的类属性是分离的。描述符属性通过将属性存储到相应实例的字典中来区分不同实例。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Quantity:</div><div class="line"></div><div class="line">    def __init__(self, storage_name):</div><div class="line">       self.storage_name = storage_name</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[self.storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        return instance.__dict__[self.storage_name]</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    weight = Quantity(&apos;weight&apos;)</div><div class="line"></div><div class="line">    def __init__(self, weight):</div><div class="line">        self.weight = weight</div></pre></td></tr></table></figure>
@@ -244,7 +247,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-09-05T13:40:30.000Z" itemprop="dateUpdated">2017-09-05 21:40:30 21:40:30</time>
+    最后更新时间：<time datetime="2017-09-09T06:44:01.000Z" itemprop="dateUpdated">2017-09-09 14:44:01 14:44:01</time>
 </span><br>
 
 
@@ -325,7 +328,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/09/09/类元编程/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">类元编程</h4>
+      </a>
+    </div>
   
   
     <div class="waves-block waves-effect next">
