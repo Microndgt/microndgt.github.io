@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-09T06:43:36.000Z</updated>
+  <updated>2017-09-12T01:00:06.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,67 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>翻译 - subprocess — Subprocess management</title>
+    <link href="http://skyrover.me/2017/09/12/subprocess%E7%AE%A1%E7%90%86/"/>
+    <id>http://skyrover.me/2017/09/12/subprocess管理/</id>
+    <published>2017-09-12T01:00:35.000Z</published>
+    <updated>2017-09-12T01:00:06.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如<code>os.system</code>和<code>os.spawn*</code></p>
+<h1 id="使用subprocess模块"><a href="#使用subprocess模块" class="headerlink" title="使用subprocess模块"></a>使用subprocess模块</h1><h2 id="run函数"><a href="#run函数" class="headerlink" title="run函数"></a>run函数</h2><p>推荐的调用子进程的方式是使用<code>run()</code>函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的<code>Popen</code>接口。</p>
+<p><code>subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, shell=False, timeout=None, check=False)</code></p>
+<p>args是你要运行的命令，然后等待命令运行结束，然后返回一个<code>CompletedProcess</code>实例</p>
+<p>上面显示的参数是最常使用的，在下面的<code>Frequently Used Arguments</code>有详细介绍。它默认不会捕获stdout或者stderr，为了捕获这些信息，给stdout或者stderr参数传递<code>PIPE</code>。</p>
+<p>timeout参数会被传递给<code>Popen.communicate()</code>，如果到了timeout，子进程会被kill掉，在子进程被杀死之后会重新引发<code>TimeoutExpired</code>异常</p>
+<p>输入参数会被传递给<code>Popen.communicate()</code>，然后会被作为子进程的输入。如果要使用这个参数，传递的必须是一个二进制序列，或者当<code>universal_newlines=True</code>的时候可以传递一个字符串。当使用这个参数的时候，内部的Popen对象会自动的加入<code>stdin=PIPE</code>创建对象，同时stdin参数将不会被使用。</p>
+<p>如果check参数为True，如果子进程以非0状态码退出的话，一个<code>CalledProcessError</code>异常将会被引发。异常会保持参数，退出码，stdout以及stderr，如果能捕获的话。</p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;])  # doesn&apos;t capture output</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;], returncode=0)</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run(&quot;exit 1&quot;, shell=True, check=True)</div><div class="line">Traceback (most recent call last):</div><div class="line">  ...</div><div class="line">subprocess.CalledProcessError: Command &apos;exit 1&apos; returned non-zero exit status 1</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;, &quot;/dev/null&quot;], stdout=subprocess.PIPE)</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;, &apos;/dev/null&apos;], returncode=0,</div><div class="line">stdout=b&apos;crw-rw-rw- 1 root root 1, 3 Jan 23 16:23 /dev/null\n&apos;)</div></pre></td></tr></table></figure>
+<p>基本上最简单的用法就是<code>check=True</code>，然后<code>stdout=PIPE</code>直接调用run函数就好了</p>
+<h2 id="CompletedProcess"><a href="#CompletedProcess" class="headerlink" title="CompletedProcess"></a>CompletedProcess</h2><p>从run函数的返回值，表示一个进程已经结束</p>
+<ul>
+<li>args: 用来启动进程的参数，会是一个列表或者字符串</li>
+<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
+<li>stdout: 从子进程中捕获stdout，二进制序列，如果run函数加上<code>universal_newlines=True</code>调用就是一个字符串，如果什么都没捕获的话就是一个None</li>
+<li>stderr: 跟上面一样</li>
+<li><code>check_returncode()</code>: 如果returncode不是0，则引发一个<code>CalledProcessError</code></li>
+</ul>
+<h2 id="DEVNULL"><a href="#DEVNULL" class="headerlink" title="DEVNULL"></a>DEVNULL</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示<code>os.devnull</code>文件将会被使用</p>
+<h2 id="PIPE"><a href="#PIPE" class="headerlink" title="PIPE"></a>PIPE</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示标准流的管道应该被打开。</p>
+<h2 id="STDOUT"><a href="#STDOUT" class="headerlink" title="STDOUT"></a>STDOUT</h2><p>用在Popen的stderr参数，用来指示标准错误应该和标准输出一同处理</p>
+<h2 id="CalledProcessError"><a href="#CalledProcessError" class="headerlink" title="CalledProcessError"></a>CalledProcessError</h2><ul>
+<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
+<li>cmd: 用来启动进程的命令</li>
+<li>output: 如果被run或者<code>check_output</code>捕获就是子进程的输出，否则是None</li>
+<li>stdout:</li>
+<li>stderr</li>
+</ul>
+<h2 id="Frequently-Used-Arguments"><a href="#Frequently-Used-Arguments" class="headerlink" title="Frequently Used Arguments"></a>Frequently Used Arguments</h2><p>为了支持更广泛的使用，Popen构造器和一些有用的函数，接受大量的可选参数。对于大部分典型使用来说，这些参数中的大部分都可以使用其默认值。经常需要使用的参数是这些：</p>
+<ul>
+<li><code>args</code> 每一次调用都需要这个参数，应该是一个字符串或者是程序的参数序列。通常建议传递参数序列，因为这样可以允许模块更好的处理转义和参数引用，比如在文件名中允许空格。<strong>如果传递了单个的字符串，shell参数应该为True或者是程序调用的时候不需要额外参数</strong></li>
+<li><code>stdin, stdout, stderr</code> 分别指定了程序的标准输入，标准输出和标准错误的文件处理器。有效的值是<code>PIPE</code>，<code>DEVNULL</code>，一个存在的文件描述符，一个存在的文件对象和None。<code>PIPE</code>指定了一个连接到子进程的管道应该被创建。<code>DEVNULL</code>指定了这个特殊的文件<code>os.devnull</code>会被使用。默认值None说明没有重定向发生。子进程的文件处理器会继承父进程的。另外，<code>stderr</code>将会是<code>STDOUT</code>，表明子进程的stderr数据会和stdout一块捕获。</li>
+<li><code>universal_newlines</code> 如果为False，stdin, stdout, stderr将会以二进制流的方式打开，并且没有行结束符。如果为True，将会以文本模式打开，并且使用<code>locale.getpreferredencoding(False)</code>返回的编码方式。对于stdin，<code>\n</code>将会被转换成默认的行分隔符<code>os.linesep</code>。对于stderr和stdout，所有的行结束都会被转换成<code>\n</code>。</li>
+<li><code>shell</code> 如果为True，指定的命令将会通过shell来执行，在你主要用Python来做控制，但是又想有shell的便利性的时候很有用，比如shell管道，文件名通配符，环境变量扩展，<code>~</code>用户家目录的扩展。然而，Python自己也实现了很多shell特性的东西，比如<code>glob</code>, <code>fnmatch</code>, <code>os.walk()</code>, <code>os.path.expandvars()</code>, <code>os.path.expanduser()</code>和<code>shutil</code></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如&lt;code&gt;os.system&lt;/code&gt;和&lt;code&gt;os.spawn*&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&quot;使用subp
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
   
   <entry>
     <title>类元编程</title>
@@ -1029,7 +1090,7 @@
     <link href="http://skyrover.me/2017/08/13/Celery%20%E8%B8%A9%E5%9D%91%E8%AE%B0/"/>
     <id>http://skyrover.me/2017/08/13/Celery 踩坑记/</id>
     <published>2017-08-13T08:47:05.000Z</published>
-    <updated>2017-09-01T06:37:01.000Z</updated>
+    <updated>2017-09-11T03:16:23.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。</p>
 <h1 id="使用RabbitMQ而不是Redis做Broker"><a href="#使用RabbitMQ而不是Redis做Broker" class="headerlink" title="使用RabbitMQ而不是Redis做Broker"></a>使用RabbitMQ而不是Redis做Broker</h1><p>这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。</p>
@@ -1088,12 +1149,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 调用后返回的还是AsyncResult</div><div class="line">c3 = (group(add.s(i, i) for i in xrange(10)) | xsum.s())</div><div class="line"></div><div class="line"># group在后面</div><div class="line">new_user_workflow = (create_user.s() | group(import_contacts.s(), send_welcome_email.s()))</div><div class="line">new_user_workflow.delay(username=&apos;artv&apos;, first=&apos;Art&apos;, last=&apos;Vandelay&apos;, email=&apos;art@vandelay.com&apos;)</div></pre></td></tr></table></figure>
 <p><em>如何在先调用group，然后调用普通任务的情况下，获得GroupResult，这个还没有好的方法。</em></p>
 <p><code>group([(group(add.s(i, i) for i in xrange(10)) | xsum.s())])</code>这个呢？</p>
-<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>，目前这种操作有点问题，可能不能将task完全的停掉。这里再考虑更有效的方法吧。</p>
-<p>P.S. 可能需要以下的参数配置</p>
+<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>。</p>
+<p>P.S.</p>
+<ul>
+<li>可能需要以下的参数配置</li>
+</ul>
 <p><code>task_sent</code> event 当一个任务消息被发布并且<code>CELERY_TASK_SEND_SENT_EVENT</code>配置有效的时候的时候发送这个event</p>
 <p><code>CELERY_TASK_SEND_SENT_EVENT</code> 如果启用，<code>task_sent</code> event 将会发送给每一个task，这样在task被worker运行之前tasks可以被追踪到</p>
 <p><code>CELERY_SEND_EVENTS</code> # 发送task相关的event，这样task就可以被比如flower之类的进行控制了</p>
-<p>目前可以停止，但是不完全。</p>
+<ul>
+<li>terminated</li>
+</ul>
+<p>这里Celery使用的是SIGTERM，所以会关闭进程相关的程序，也就是等待进程释放自己的资源，然后再停止，如果程序再等待I/O，可能就不会立马作出反应。也就是说，SIGTERM多半是会被阻塞的，忽略的。</p>
+<p>如果使用SIGKILL，就会强制杀死进程，所以可能导致孤儿进程的产生。</p>
 <h2 id="chord"><a href="#chord" class="headerlink" title="chord"></a>chord</h2><p>chord可以使得你完成group所有的task之后来调用一个回调函数，这个方法经常会在易并行(embarrassingly parallel)的场景使用，关于这个embarrassingly…<a href="https://english.stackexchange.com/questions/83677/what-is-embarrassing-about-an-embarrassingly-parallel-problem" target="_blank" rel="external">What is “embarrassing” about an embarrassingly parallel problem?</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from celery import chord</div><div class="line"># 这样会导致前面的十个任务并行处理，并且将结果组成一个list，传递给后面的xsum</div><div class="line"># 当然后面的也可以不用前面的结果，使用si()就行了</div><div class="line">res = chord((add.s(i, i) for i in xrange(10)), xsum.s())()</div></pre></td></tr></table></figure>
 <p>下面这个是我自己写的一个并发处理，并且还能拿到状态用于后续的控制和状态读取的例子</p>

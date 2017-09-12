@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。 使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。 另外，使用RabbitMQ的时候，实例化">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-01T06:37:01.000Z">
+<meta property="og:updated_time" content="2017-09-11T03:16:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Celery 踩坑记">
 <meta name="twitter:description" content="最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。 使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。 另外，使用RabbitMQ的时候，实例化">
@@ -257,12 +257,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 调用后返回的还是AsyncResult</div><div class="line">c3 = (group(add.s(i, i) for i in xrange(10)) | xsum.s())</div><div class="line"></div><div class="line"># group在后面</div><div class="line">new_user_workflow = (create_user.s() | group(import_contacts.s(), send_welcome_email.s()))</div><div class="line">new_user_workflow.delay(username=&apos;artv&apos;, first=&apos;Art&apos;, last=&apos;Vandelay&apos;, email=&apos;art@vandelay.com&apos;)</div></pre></td></tr></table></figure>
 <p><em>如何在先调用group，然后调用普通任务的情况下，获得GroupResult，这个还没有好的方法。</em></p>
 <p><code>group([(group(add.s(i, i) for i in xrange(10)) | xsum.s())])</code>这个呢？</p>
-<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>，目前这种操作有点问题，可能不能将task完全的停掉。这里再考虑更有效的方法吧。</p>
-<p>P.S. 可能需要以下的参数配置</p>
+<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>。</p>
+<p>P.S.</p>
+<ul>
+<li>可能需要以下的参数配置</li>
+</ul>
 <p><code>task_sent</code> event 当一个任务消息被发布并且<code>CELERY_TASK_SEND_SENT_EVENT</code>配置有效的时候的时候发送这个event</p>
 <p><code>CELERY_TASK_SEND_SENT_EVENT</code> 如果启用，<code>task_sent</code> event 将会发送给每一个task，这样在task被worker运行之前tasks可以被追踪到</p>
 <p><code>CELERY_SEND_EVENTS</code> # 发送task相关的event，这样task就可以被比如flower之类的进行控制了</p>
-<p>目前可以停止，但是不完全。</p>
+<ul>
+<li>terminated</li>
+</ul>
+<p>这里Celery使用的是SIGTERM，所以会关闭进程相关的程序，也就是等待进程释放自己的资源，然后再停止，如果程序再等待I/O，可能就不会立马作出反应。也就是说，SIGTERM多半是会被阻塞的，忽略的。</p>
+<p>如果使用SIGKILL，就会强制杀死进程，所以可能导致孤儿进程的产生。</p>
 <h2 id="chord"><a href="#chord" class="headerlink" title="chord"></a>chord</h2><p>chord可以使得你完成group所有的task之后来调用一个回调函数，这个方法经常会在易并行(embarrassingly parallel)的场景使用，关于这个embarrassingly…<a href="https://english.stackexchange.com/questions/83677/what-is-embarrassing-about-an-embarrassingly-parallel-problem" target="_blank" rel="external">What is “embarrassing” about an embarrassingly parallel problem?</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from celery import chord</div><div class="line"># 这样会导致前面的十个任务并行处理，并且将结果组成一个list，传递给后面的xsum</div><div class="line"># 当然后面的也可以不用前面的结果，使用si()就行了</div><div class="line">res = chord((add.s(i, i) for i in xrange(10)), xsum.s())()</div></pre></td></tr></table></figure>
 <p>下面这个是我自己写的一个并发处理，并且还能拿到状态用于后续的控制和状态读取的例子</p>
@@ -277,7 +284,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-09-01T06:37:01.000Z" itemprop="dateUpdated">2017-09-01 14:37:01 14:37:01</time>
+    最后更新时间：<time datetime="2017-09-11T03:16:23.000Z" itemprop="dateUpdated">2017-09-11 11:16:23 11:16:23</time>
 </span><br>
 
 
