@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-12T01:00:06.000Z</updated>
+  <updated>2017-09-14T08:21:25.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,81 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>进程的调度</title>
+    <link href="http://skyrover.me/2017/09/14/%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6/"/>
+    <id>http://skyrover.me/2017/09/14/进程的调度/</id>
+    <published>2017-09-14T08:23:03.000Z</published>
+    <updated>2017-09-14T08:21:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。</p>
+<h1 id="调度"><a href="#调度" class="headerlink" title="调度"></a>调度</h1><h2 id="进程的切换"><a href="#进程的切换" class="headerlink" title="进程的切换"></a>进程的切换</h2><p>首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存中动态重新装入两次（进入内核一次，离开内核一次），所以每秒钟切换进程过多，会耗费大量CPU时间。</p>
+<h2 id="进程类型"><a href="#进程类型" class="headerlink" title="进程类型"></a>进程类型</h2><ul>
+<li>计算密集型进程：具有较长时间的CPU集中使用和较小额度的I/O等待</li>
+<li>I/O密集型：较短时间的CPU集中使用和频繁的I/O等待，如果运行I/O密集型进程，那么就应该让它尽快得到机会，以便发出磁盘请求并且保持磁盘忙碌</li>
+</ul>
+<h2 id="调度时机"><a href="#调度时机" class="headerlink" title="调度时机"></a>调度时机</h2><ul>
+<li>创建一个新进程后，选择运行父进程还是子进程</li>
+<li>进程退出时候</li>
+<li>进程阻塞在I/O和信号量上或者其他阻塞时候</li>
+<li>一个I/O中断发生的时候</li>
+</ul>
+<h2 id="调度算法分类"><a href="#调度算法分类" class="headerlink" title="调度算法分类"></a>调度算法分类</h2><p>根据如何处理时钟中断，有两种调度算法，非抢占式调度算法和抢占式算法</p>
+<p>根据环境不同，有批处理，交互式，实时环境</p>
+<h2 id="调度算法的评价"><a href="#调度算法的评价" class="headerlink" title="调度算法的评价"></a>调度算法的评价</h2><ul>
+<li>吞吐量，每小时完成的作业数量。</li>
+<li>周转时间，从一个批处理作业提交到作业完成的统计平均时间</li>
+<li>CPU利用率</li>
+<li>最小响应时间，在交互式系统</li>
+</ul>
+<h1 id="批处理系统中的调度"><a href="#批处理系统中的调度" class="headerlink" title="批处理系统中的调度"></a>批处理系统中的调度</h1><h2 id="先来先服务"><a href="#先来先服务" class="headerlink" title="先来先服务"></a>先来先服务</h2><p>按照请求CPU的顺序使用CPU，当正在运行的进程被阻塞的时候，队列的第一个进程就接着运行，在阻塞的进程变成就绪的时候，加入到队列的尾部。</p>
+<h2 id="最短作业优先"><a href="#最短作业优先" class="headerlink" title="最短作业优先"></a>最短作业优先</h2><p>适用于运行时间可以预知的非抢占式批处理调度算法</p>
+<h2 id="最短剩余时间优先"><a href="#最短剩余时间优先" class="headerlink" title="最短剩余时间优先"></a>最短剩余时间优先</h2><p>最短作业优先的抢占式版本是最短剩余时间优先，在到来一个进程时候，新进程比当前运行进程需要更少的时间，当前进程就被挂起，而运行新的进程。</p>
+<h1 id="交互式系统中的调度"><a href="#交互式系统中的调度" class="headerlink" title="交互式系统中的调度"></a>交互式系统中的调度</h1><h2 id="轮转调度"><a href="#轮转调度" class="headerlink" title="轮转调度"></a>轮转调度</h2><p>每个进程被分配一个时间段，称为时间片，允许进程在该时间段中运行。时间片的长度应该合适，因为从一个进程切换到另一个进程是需要一定时间进行管理事务处理的，保存和装入寄存器值以及内存映像，更新各种表格和列表，清除和重新调入内存高速缓存。也就是CPU在进程切换的时间在整个时间片的比例越少越好，但是太少这样会导致在需要切换的时候太慢。所以时间片设置为20ms-50ms是一个合理的折中。</p>
+<h2 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h2><p>提高I/O密集型进程的优先级，因为其多数时间是等待I/O结束，这样阻塞后可以开始另一个进程了。可以将一组进程按照优先级分成若干类，在各类之间采用优先级调度，在各类进程内部采用轮转调度。这种低优先级的进程可能会产生饥饿现象。</p>
+<h2 id="多级队列"><a href="#多级队列" class="headerlink" title="多级队列"></a>多级队列</h2><p>设立优先级类，属于最高优先级类的进程运行一个时间片，属于次高优先级的进程运行2个时间片，再次一级运行4个时间片。当一个进程用完分配的时间片后，被移到下一类。</p>
+<h2 id="最短进程优先"><a href="#最短进程优先" class="headerlink" title="最短进程优先"></a>最短进程优先</h2><p>核心在于如何从当前可运行进程中找出最短的那一个进程。可以根据过去的行为进行预测，并执行估计某个终端上运行时间最短的那一个，<code>aT0 + (1-a)T1</code></p>
+<h2 id="保证调度"><a href="#保证调度" class="headerlink" title="保证调度"></a>保证调度</h2><p>向用户作出明确的性能保证，然后去实现它，对于每个进程平分CPU时间，这样系统跟踪每个进程创建以来使用了多少CPU时间，然后计算各个进程应该获得的时间。然后算法转向比率最低的进程，直到该进程比率超过它的最接近竞争者为止。</p>
+<h2 id="彩票调度"><a href="#彩票调度" class="headerlink" title="彩票调度"></a>彩票调度</h2><p>向进程中提供各种系统资源的彩票，一旦需要一项调度决策，就可以随机抽出一张彩票。</p>
+<h2 id="公平分享调度"><a href="#公平分享调度" class="headerlink" title="公平分享调度"></a>公平分享调度</h2><p>每个用户分配CPU时间的一部分，而调度程序以一种强制的方式选择进程，这样每个用户都会得到应有的份额。</p>
+<h1 id="实时系统中的调度"><a href="#实时系统中的调度" class="headerlink" title="实时系统中的调度"></a>实时系统中的调度</h1><ul>
+<li>硬实时: 必须满足绝对的截止时间</li>
+<li>软实时: 可以偶尔错失截止时间</li>
+</ul>
+<h1 id="策略和机制"><a href="#策略和机制" class="headerlink" title="策略和机制"></a>策略和机制</h1><p>在主进程能掌握子进程的信息的时候，可以根据此进行调度和选择，将调度机制和调度策略分离，调度算法以某种形式参数化，参数可以由用户进程填写。比如内核使用优先级调度算法，提供一条可供进程设置的优先级的系统调用，这样父进程就可以控制子进程的细节。</p>
+<h1 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h1><p>如果线程都是用户级线程，那么内核就是和以前一样，只调度进程，内部的话，因为不存在时钟中断，所以这个线程可以按照意愿运行。</p>
+<p>如果使用内核级线程，内核选择一个特定的线程运行，它不用考虑线程属于哪个进程，对被选择的线程赋予一个时间片，如果超过了时间片，则强制挂起该线程。</p>
+<p>用户级线程和内核级线程之间的差别在于性能，用户级线程切换需要少量的机器指令，而内核级线程切换需要完整的上下文切换，修改内存映像，使高速缓存失效。在使用内核级线程时候，一旦线程阻塞在I/O上不需要像用户级线程将整个进程挂起。</p>
+<h1 id="经典的IPC问题"><a href="#经典的IPC问题" class="headerlink" title="经典的IPC问题"></a>经典的IPC问题</h1><h2 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h2><p>```</p>
+<p>#define N 5</p>
+<p>#define LEFT (i+N-1)%N</p>
+<p>#define RIGHT (i+1)%N</p>
+<p>#define THINKING 0</p>
+<p>#define HUNGRY 1</p>
+<p>#define EATING 2<br>typedef int semaphore;<br>int state[N];<br>semaphore mutex = 1;<br>semaphore s[N];  // 相当于哲学家拿的筷子数，2个的时候吃饭，1个的时候正常，0个时候阻塞</p>
+<p>void philosopher(int i){<br>  while (TRUE){<br>  }<br>}</p>
+<p>// 叉子是临界资源，所以需要加锁获取</p>
+<p>void take_forks(int i){<br>  down(&amp;mutex);<br>  state[i] = HUNGRY;<br>  test(i);   // 尝试获得两把叉子，并且为EATING<br>  up(&amp;mutex);  //离开临界区<br>  down(&amp;s[i]);  //如果得不到叉子则阻塞，如果已经获得两把叉子，那么接下来状态就是1个叉子<br>}</p>
+<p>void put_forks(i){<br>  //释放临界资源，但是放筷子动作是在take_forks已经执行的<br>  down(&amp;mutex);<br>  state[i] = THINKING;  // 就餐完毕<br>  test(LEFT);  // 检查左边邻居可以吃吗<br>  test(RIGHT); // 检查右边邻居可以吃吗<br>  up(&amp;mutex);<br>}</p>
+<p>void test(i){<br>  if (state[i] == HUNGRY &amp;&amp; state[LEFT] != EATING &amp;&amp; state[RIGHT] != EATING){<br>    state[i] = EATING;<br>    up(&amp;s[i]);<br>  }<br>}</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。&lt;/p&gt;
+&lt;h1 id=&quot;调度&quot;&gt;&lt;a href=&quot;#调度&quot; class=&quot;headerlink&quot; title=&quot;调度&quot;&gt;&lt;/a&gt;调度&lt;/h1&gt;&lt;h2 id=&quot;进程的切换&quot;&gt;&lt;a href=&quot;#进程
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>翻译 - subprocess — Subprocess management</title>

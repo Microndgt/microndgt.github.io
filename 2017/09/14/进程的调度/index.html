@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>进程的调度 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="并发,操作系统">
+    <meta name="description" content="内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。 调度进程的切换首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存中动态">
+<meta name="keywords" content="并发,操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程的调度">
+<meta property="og:url" content="http://skyrover.me/2017/09/14/进程的调度/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。 调度进程的切换首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存中动态">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-14T08:21:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程的调度">
+<meta name="twitter:description" content="内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。 调度进程的切换首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存中动态">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">进程的调度</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">进程的调度</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-14T08:23:03.000Z" itemprop="datePublished" class="page-time">
+  2017-09-14 16:23:03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#调度"><span class="post-toc-number">1.</span> <span class="post-toc-text">调度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程的切换"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">进程的切换</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进程类型"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">进程类型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调度时机"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">调度时机</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调度算法分类"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">调度算法分类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调度算法的评价"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">调度算法的评价</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#批处理系统中的调度"><span class="post-toc-number">2.</span> <span class="post-toc-text">批处理系统中的调度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#先来先服务"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">先来先服务</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最短作业优先"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">最短作业优先</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最短剩余时间优先"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">最短剩余时间优先</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#交互式系统中的调度"><span class="post-toc-number">3.</span> <span class="post-toc-text">交互式系统中的调度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#轮转调度"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">轮转调度</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#优先级调度"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">优先级调度</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多级队列"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">多级队列</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最短进程优先"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">最短进程优先</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#保证调度"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">保证调度</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#彩票调度"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">彩票调度</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#公平分享调度"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">公平分享调度</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实时系统中的调度"><span class="post-toc-number">4.</span> <span class="post-toc-text">实时系统中的调度</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#策略和机制"><span class="post-toc-number">5.</span> <span class="post-toc-text">策略和机制</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#线程调度"><span class="post-toc-number">6.</span> <span class="post-toc-text">线程调度</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#经典的IPC问题"><span class="post-toc-number">7.</span> <span class="post-toc-text">经典的IPC问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#哲学家就餐问题"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">哲学家就餐问题</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-进程的调度"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">进程的调度</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-14 16:23:03 16:23:03" datetime="2017-09-14T08:23:03.000Z"  itemprop="datePublished">2017-09-14 16:23:03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <p>内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。</p>
+<h1 id="调度"><a href="#调度" class="headerlink" title="调度"></a>调度</h1><h2 id="进程的切换"><a href="#进程的切换" class="headerlink" title="进程的切换"></a>进程的切换</h2><p>首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存中动态重新装入两次（进入内核一次，离开内核一次），所以每秒钟切换进程过多，会耗费大量CPU时间。</p>
+<h2 id="进程类型"><a href="#进程类型" class="headerlink" title="进程类型"></a>进程类型</h2><ul>
+<li>计算密集型进程：具有较长时间的CPU集中使用和较小额度的I/O等待</li>
+<li>I/O密集型：较短时间的CPU集中使用和频繁的I/O等待，如果运行I/O密集型进程，那么就应该让它尽快得到机会，以便发出磁盘请求并且保持磁盘忙碌</li>
+</ul>
+<h2 id="调度时机"><a href="#调度时机" class="headerlink" title="调度时机"></a>调度时机</h2><ul>
+<li>创建一个新进程后，选择运行父进程还是子进程</li>
+<li>进程退出时候</li>
+<li>进程阻塞在I/O和信号量上或者其他阻塞时候</li>
+<li>一个I/O中断发生的时候</li>
+</ul>
+<h2 id="调度算法分类"><a href="#调度算法分类" class="headerlink" title="调度算法分类"></a>调度算法分类</h2><p>根据如何处理时钟中断，有两种调度算法，非抢占式调度算法和抢占式算法</p>
+<p>根据环境不同，有批处理，交互式，实时环境</p>
+<h2 id="调度算法的评价"><a href="#调度算法的评价" class="headerlink" title="调度算法的评价"></a>调度算法的评价</h2><ul>
+<li>吞吐量，每小时完成的作业数量。</li>
+<li>周转时间，从一个批处理作业提交到作业完成的统计平均时间</li>
+<li>CPU利用率</li>
+<li>最小响应时间，在交互式系统</li>
+</ul>
+<h1 id="批处理系统中的调度"><a href="#批处理系统中的调度" class="headerlink" title="批处理系统中的调度"></a>批处理系统中的调度</h1><h2 id="先来先服务"><a href="#先来先服务" class="headerlink" title="先来先服务"></a>先来先服务</h2><p>按照请求CPU的顺序使用CPU，当正在运行的进程被阻塞的时候，队列的第一个进程就接着运行，在阻塞的进程变成就绪的时候，加入到队列的尾部。</p>
+<h2 id="最短作业优先"><a href="#最短作业优先" class="headerlink" title="最短作业优先"></a>最短作业优先</h2><p>适用于运行时间可以预知的非抢占式批处理调度算法</p>
+<h2 id="最短剩余时间优先"><a href="#最短剩余时间优先" class="headerlink" title="最短剩余时间优先"></a>最短剩余时间优先</h2><p>最短作业优先的抢占式版本是最短剩余时间优先，在到来一个进程时候，新进程比当前运行进程需要更少的时间，当前进程就被挂起，而运行新的进程。</p>
+<h1 id="交互式系统中的调度"><a href="#交互式系统中的调度" class="headerlink" title="交互式系统中的调度"></a>交互式系统中的调度</h1><h2 id="轮转调度"><a href="#轮转调度" class="headerlink" title="轮转调度"></a>轮转调度</h2><p>每个进程被分配一个时间段，称为时间片，允许进程在该时间段中运行。时间片的长度应该合适，因为从一个进程切换到另一个进程是需要一定时间进行管理事务处理的，保存和装入寄存器值以及内存映像，更新各种表格和列表，清除和重新调入内存高速缓存。也就是CPU在进程切换的时间在整个时间片的比例越少越好，但是太少这样会导致在需要切换的时候太慢。所以时间片设置为20ms-50ms是一个合理的折中。</p>
+<h2 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h2><p>提高I/O密集型进程的优先级，因为其多数时间是等待I/O结束，这样阻塞后可以开始另一个进程了。可以将一组进程按照优先级分成若干类，在各类之间采用优先级调度，在各类进程内部采用轮转调度。这种低优先级的进程可能会产生饥饿现象。</p>
+<h2 id="多级队列"><a href="#多级队列" class="headerlink" title="多级队列"></a>多级队列</h2><p>设立优先级类，属于最高优先级类的进程运行一个时间片，属于次高优先级的进程运行2个时间片，再次一级运行4个时间片。当一个进程用完分配的时间片后，被移到下一类。</p>
+<h2 id="最短进程优先"><a href="#最短进程优先" class="headerlink" title="最短进程优先"></a>最短进程优先</h2><p>核心在于如何从当前可运行进程中找出最短的那一个进程。可以根据过去的行为进行预测，并执行估计某个终端上运行时间最短的那一个，<code>aT0 + (1-a)T1</code></p>
+<h2 id="保证调度"><a href="#保证调度" class="headerlink" title="保证调度"></a>保证调度</h2><p>向用户作出明确的性能保证，然后去实现它，对于每个进程平分CPU时间，这样系统跟踪每个进程创建以来使用了多少CPU时间，然后计算各个进程应该获得的时间。然后算法转向比率最低的进程，直到该进程比率超过它的最接近竞争者为止。</p>
+<h2 id="彩票调度"><a href="#彩票调度" class="headerlink" title="彩票调度"></a>彩票调度</h2><p>向进程中提供各种系统资源的彩票，一旦需要一项调度决策，就可以随机抽出一张彩票。</p>
+<h2 id="公平分享调度"><a href="#公平分享调度" class="headerlink" title="公平分享调度"></a>公平分享调度</h2><p>每个用户分配CPU时间的一部分，而调度程序以一种强制的方式选择进程，这样每个用户都会得到应有的份额。</p>
+<h1 id="实时系统中的调度"><a href="#实时系统中的调度" class="headerlink" title="实时系统中的调度"></a>实时系统中的调度</h1><ul>
+<li>硬实时: 必须满足绝对的截止时间</li>
+<li>软实时: 可以偶尔错失截止时间</li>
+</ul>
+<h1 id="策略和机制"><a href="#策略和机制" class="headerlink" title="策略和机制"></a>策略和机制</h1><p>在主进程能掌握子进程的信息的时候，可以根据此进行调度和选择，将调度机制和调度策略分离，调度算法以某种形式参数化，参数可以由用户进程填写。比如内核使用优先级调度算法，提供一条可供进程设置的优先级的系统调用，这样父进程就可以控制子进程的细节。</p>
+<h1 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h1><p>如果线程都是用户级线程，那么内核就是和以前一样，只调度进程，内部的话，因为不存在时钟中断，所以这个线程可以按照意愿运行。</p>
+<p>如果使用内核级线程，内核选择一个特定的线程运行，它不用考虑线程属于哪个进程，对被选择的线程赋予一个时间片，如果超过了时间片，则强制挂起该线程。</p>
+<p>用户级线程和内核级线程之间的差别在于性能，用户级线程切换需要少量的机器指令，而内核级线程切换需要完整的上下文切换，修改内存映像，使高速缓存失效。在使用内核级线程时候，一旦线程阻塞在I/O上不需要像用户级线程将整个进程挂起。</p>
+<h1 id="经典的IPC问题"><a href="#经典的IPC问题" class="headerlink" title="经典的IPC问题"></a>经典的IPC问题</h1><h2 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h2><p>```</p>
+<p>#define N 5</p>
+<p>#define LEFT (i+N-1)%N</p>
+<p>#define RIGHT (i+1)%N</p>
+<p>#define THINKING 0</p>
+<p>#define HUNGRY 1</p>
+<p>#define EATING 2<br>typedef int semaphore;<br>int state[N];<br>semaphore mutex = 1;<br>semaphore s[N];  // 相当于哲学家拿的筷子数，2个的时候吃饭，1个的时候正常，0个时候阻塞</p>
+<p>void philosopher(int i){<br>  while (TRUE){<br>  }<br>}</p>
+<p>// 叉子是临界资源，所以需要加锁获取</p>
+<p>void take_forks(int i){<br>  down(&amp;mutex);<br>  state[i] = HUNGRY;<br>  test(i);   // 尝试获得两把叉子，并且为EATING<br>  up(&amp;mutex);  //离开临界区<br>  down(&amp;s[i]);  //如果得不到叉子则阻塞，如果已经获得两把叉子，那么接下来状态就是1个叉子<br>}</p>
+<p>void put_forks(i){<br>  //释放临界资源，但是放筷子动作是在take_forks已经执行的<br>  down(&amp;mutex);<br>  state[i] = THINKING;  // 就餐完毕<br>  test(LEFT);  // 检查左边邻居可以吃吗<br>  test(RIGHT); // 检查右边邻居可以吃吗<br>  up(&amp;mutex);<br>}</p>
+<p>void test(i){<br>  if (state[i] == HUNGRY &amp;&amp; state[LEFT] != EATING &amp;&amp; state[RIGHT] != EATING){<br>    state[i] = EATING;<br>    up(&amp;s[i]);<br>  }<br>}</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-14T08:21:25.000Z" itemprop="dateUpdated">2017-09-14 16:21:25 16:21:25</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/09/14/进程的调度/" target="_blank" rel="external">http://skyrover.me/2017/09/14/进程的调度/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/14/进程的调度/&title=《进程的调度》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/14/进程的调度/&title=《进程的调度》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/14/进程的调度/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《进程的调度》 — SkyRover&url=http://skyrover.me/2017/09/14/进程的调度/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/14/进程的调度/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/12/subprocess管理/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">翻译 - subprocess — Subprocess management</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/14/进程的调度/&title=《进程的调度》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/14/进程的调度/&title=《进程的调度》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/14/进程的调度/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《进程的调度》 — SkyRover&url=http://skyrover.me/2017/09/14/进程的调度/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/14/进程的调度/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3aS27jMBAFQN//0g4wqwCTkd9rysGYLK4EIaZYWTTYn8cjXs8/6/vz9/X331z/Kn9z88LAwPhYxvNy5R9Idsj/TfnZMDAwzmHkQfZfR185xPUO12fDwMDAyMPl9eGSPfMwjYGBgdEy8kS3xWNgYGC0SWx+6DawtjtjYGCcxpg1Bn7n+e39DQwMjP+e8SxXEl7zL87O8MN3MTAwtma0wxPtUZLwnbyPrpUYGBibMlYKXm3DYDauEbExMDAOYCSHy9/cMODVkjAwMA5g5MnqXcX664GzInHFwMA4gJFsNAuCs2GLtpn6IpXFwMDYgjEr/c+QSShvBzIwMDDOZMwSyzyVbdPdqPKPgYGxNSMZz7qruH/XUNqLRiYGBsZ2jOSSd1e7MQ+mbSDGwMDYm5EMWNz1nLzJE90X7QEMDIyNGG2BrL0IrierUUKLgYFxDGM2hLGS+rYDFtHMCAYGxqaMHNamnbMRivrKiIGBsTVjNipxVwsh36cut2FgYGzEaEPn+4YqZs0ADAyM0xh5Qa1tW7Zpc9LHiKqGGBgYWzBmIxT5xbHlzS6RGBgYezNWyvH5RXCWHhdXRgwMjK0Z+WrbnO2HZ22GR7swMDA+lpGnqesJ7SxMR4NoGBgYBzDaIJj/Ki/ktaEfAwMDI2kltgG0DcrFPhgYGBjLLcbZSEdxHgwMjAMY60X8vKyfHK4O9xgYGFszVoYh1stteUCfJb0YGBgfzvgCbEV6wJwv2pUAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

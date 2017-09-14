@@ -165,6 +165,53 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-进程的调度"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-09-14 16:23:03 16:23:03" datetime="2017-09-14T08:23:03.000Z"  itemprop="datePublished">2017-09-14 16:23:03</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/09/14/进程的调度/">进程的调度</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。
+调度进程的切换首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存...
+    
+
+        <a href="/2017/09/14/进程的调度/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-subprocess管理"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -595,53 +642,6 @@ concurrent.futures为异步调用提供了高层次的接口。
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-进程与线程"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-08-27 11:33:03 11:33:03" datetime="2017-08-27T03:33:03.000Z"  itemprop="datePublished">2017-08-27 11:33:03</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/08/27/进程与线程/">进程与线程</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        进程进程模型多道程序设计系统中，CPU由一个进程快速切换至另外一个进程。在一瞬间，CPU只能运行一个进程，在某一段时间，可能运行多个进程。
-一个进程就是一个正在执行程序的实例，包括程序计数器，寄存器和变量的当前值。每个进程由自己的逻辑程序计数器。实际上，只有一个物理程序计数器，在每个程序执行的时候，逻辑程序计数器被装入实际的程序计数器中。程序暂停执行的时候，物理程序计数器被保存在内存中该进程...
-    
-
-        <a href="/2017/08/27/进程与线程/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
 
 
     </div>
