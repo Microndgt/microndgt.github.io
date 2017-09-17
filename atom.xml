@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-17T05:46:34.000Z</updated>
+  <updated>2017-09-17T05:51:32.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Thrift在Python Web应用中的使用(三) - 套接字</title>
+    <title>thriftpy源码解析(三) - 套接字</title>
     <link href="http://skyrover.me/2017/09/17/thriftpy_3_socket/"/>
     <id>http://skyrover.me/2017/09/17/thriftpy_3_socket/</id>
     <published>2017-09-17T05:44:28.000Z</published>
-    <updated>2017-09-17T05:46:34.000Z</updated>
+    <updated>2017-09-17T05:51:32.000Z</updated>
     
     <content type="html"><![CDATA[<p>离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。</p>
 <p>上次提到默认使用的套接字是<code>TServerSocket</code>，是在<code>make_server</code>中创建的，可以使用<code>unix_socket</code>或者TCP的套接字，另外如果基于https，就可以使用<code>TSSLServerSocket</code>。其实套接字也算传输<code>transport</code>协议中的一个部分，所以可以看到源码有关socket的都在<code>Thriftpy/transport</code>里面，其中有<code>socket.py</code>和<code>sslsocket.py</code>，这里我们只介绍以下<code>socket.py</code></p>
@@ -76,6 +76,8 @@
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
   </entry>
   
@@ -1653,11 +1655,11 @@
   </entry>
   
   <entry>
-    <title>Thrift在Python Web应用中的使用(二) - 处理器</title>
-    <link href="http://skyrover.me/2017/08/03/Thrift%E5%9C%A8Python%20Web%E5%BA%94%E7%94%A8%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8(%E4%BA%8C)%20-%20%E5%A4%84%E7%90%86%E5%99%A8/"/>
-    <id>http://skyrover.me/2017/08/03/Thrift在Python Web应用中的使用(二) - 处理器/</id>
+    <title>thriftpy源码解析(二) - 处理器</title>
+    <link href="http://skyrover.me/2017/08/03/thriftpy_2_processor/"/>
+    <id>http://skyrover.me/2017/08/03/thriftpy_2_processor/</id>
     <published>2017-08-03T09:14:25.000Z</published>
-    <updated>2017-09-01T06:31:34.000Z</updated>
+    <updated>2017-09-17T05:50:52.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="从make-server入手"><a href="#从make-server入手" class="headerlink" title="从make_server入手"></a>从<code>make_server</code>入手</h1><p>首先来看看官方给的服务器demo</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">pingpong_thrift = thriftpy.load(&quot;pingpong.thrift&quot;, module_name=&quot;pingpong_thrift&quot;)</div><div class="line"></div><div class="line">from thriftpy.rpc import make_server</div><div class="line"></div><div class="line">class Dispatcher(object):</div><div class="line">    def ping(self):</div><div class="line">        return &quot;pong&quot;</div><div class="line"></div><div class="line">server = make_server(pingpong_thrift.PingPong, Dispatcher(), &apos;127.0.0.1&apos;, 6000)</div><div class="line">server.serve()</div></pre></td></tr></table></figure>
@@ -1710,6 +1712,8 @@
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
   </entry>
   
   <entry>
@@ -1746,11 +1750,11 @@
   </entry>
   
   <entry>
-    <title>Thrift在Python Web应用中的使用(一) - 综述</title>
-    <link href="http://skyrover.me/2017/08/02/Thrift%E5%9C%A8Python%20Web%E5%BA%94%E7%94%A8%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8(%E4%B8%80)%20-%20%E7%BB%BC%E8%BF%B0/"/>
-    <id>http://skyrover.me/2017/08/02/Thrift在Python Web应用中的使用(一) - 综述/</id>
+    <title>thriftpy源码解析(一) - 综述</title>
+    <link href="http://skyrover.me/2017/08/02/thriftpy_1_introduction/"/>
+    <id>http://skyrover.me/2017/08/02/thriftpy_1_introduction/</id>
     <published>2017-08-02T02:58:28.000Z</published>
-    <updated>2017-09-01T06:30:27.000Z</updated>
+    <updated>2017-09-17T05:51:16.000Z</updated>
     
     <content type="html"><![CDATA[<p>本文使用的工具是饿了么开发的<a href="https://github.com/eleme/thriftpy" target="_blank" rel="external">thriftpy</a>和<a href="https://github.com/eleme/gunicorn_thrift" target="_blank" rel="external">gunicorn_thrift</a></p>
 <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h2><p>首先thrift是啥呢？thrift是一个软件框架，用来进行可扩展且跨语言的服务的开发。它结合了功能强大的软件堆栈和代码生成引擎，以构建在 C++, Java, Go,Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, JavaScript, Node.js, Smalltalk, and OCaml 这些编程语言间无缝结合的、高效的服务。</p>
@@ -1799,6 +1803,8 @@
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
   </entry>
   
