@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>翻译 - Running Your Flask Application Over HTTPS | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="计算机网络,Python,Flask,翻译">
+    <meta name="description" content="翻译自: Running Your Flask Application Over HTTPS 当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。 人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，从5秒">
+<meta name="keywords" content="计算机网络,Python,Flask,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="翻译 - Running Your Flask Application Over HTTPS">
+<meta property="og:url" content="http://skyrover.me/2017/09/17/flask_https/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="翻译自: Running Your Flask Application Over HTTPS 当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。 人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，从5秒">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://skyrover.me/img/flask_https/flask-ssl-03.png">
+<meta property="og:updated_time" content="2017-09-17T01:36:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="翻译 - Running Your Flask Application Over HTTPS">
+<meta name="twitter:description" content="翻译自: Running Your Flask Application Over HTTPS 当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。 人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，从5秒">
+<meta name="twitter:image" content="http://skyrover.me/img/flask_https/flask-ssl-03.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">翻译 - Running Your Flask Application Over HTTPS</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">翻译 - Running Your Flask Application Over HTTPS</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-17T01:31:30.000Z" itemprop="datePublished" class="page-time">
+  2017-09-17 09:31:30
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#How-Does-HTTPS-Work"><span class="post-toc-number">1.</span> <span class="post-toc-text">How Does HTTPS Work?</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#The-Simplest-Way-To-Do-It"><span class="post-toc-number">2.</span> <span class="post-toc-text">The Simplest Way To Do It</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Self-Signed-Certificates"><span class="post-toc-number">3.</span> <span class="post-toc-text">Self-Signed Certificates</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Using-Production-Web-Servers"><span class="post-toc-number">4.</span> <span class="post-toc-text">Using Production Web Servers</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Using-“Real”-Certificates"><span class="post-toc-number">5.</span> <span class="post-toc-text">Using “Real” Certificates</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-flask_https"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">翻译 - Running Your Flask Application Over HTTPS</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-17 09:31:30 09:31:30" datetime="2017-09-17T01:31:30.000Z"  itemprop="datePublished">2017-09-17 09:31:30</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <p>翻译自: <a href="https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https" target="_blank" rel="external">Running Your Flask Application Over HTTPS</a></p>
+<p>当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。</p>
+<p>人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，从5秒钟就可以应用的方法，到一个非常健壮的解决方案，从而在<a href="https://www.ssllabs.com/ssltest/index.html" target="_blank" rel="external">SSL Server Test</a>上可以得到A+的分数</p>
+<h1 id="How-Does-HTTPS-Work"><a href="#How-Does-HTTPS-Work" class="headerlink" title="How Does HTTPS Work?"></a>How Does HTTPS Work?</h1><p>HTTP的加密和安全功能是通过Transport Layer Security(TLS 传输层安全协议) Protocol实现的。TLS定义了一种网络传输安全的标准方式。因为我不是一个安全专家，因此我不认为我能很好的给你解释TLS协议的详细内容，因此我只会给你一些我们对于配置一个安全和加密的Flask服务器中感兴趣的部分。</p>
+<p>当客户端创建一个到服务器的连接并且请求一个加密连接，服务器会使用其SSL(Secure Sockets Layer)证书进行响应。证书是作为服务器的身份证明，其包括了服务器名和域名。为了保证服务器提供的信息是正确的，证书是通过一个证书认证机构签名的。如果客户端知道并且信任(Certificate authority)CA的话，它就可以确认这个签名是从这个CA签发的，这样这个客户端就可以确定这个连接的服务器是合法的。</p>
+<p>在客户端验证证书之后，它为与服务器的通信创建了一个加密密钥。为了确保这个密钥被安全的送到服务器，它使用一个服务器证书上的公钥来加密。服务器拥有与证书上公钥对应的私钥，所以服务器是唯一能够解密的。这样从服务器接受到加密密钥之后，所有服务器和客户端之间的通信都是使用这个密钥加密的。</p>
+<p>从这个总结中，你大概可以知道实现一个TLS加密我们需要两个东西：服务器证书，包含一个公钥并且是CA签名的，还有一个与公钥对应的私钥。</p>
+<h1 id="The-Simplest-Way-To-Do-It"><a href="#The-Simplest-Way-To-Do-It" class="headerlink" title="The Simplest Way To Do It"></a>The Simplest Way To Do It</h1><p>Flask，更确切的说是Werkzeug，支持<code>on-the-fly</code>证书的使用，可以快速在HTTPS上服务应用并且不用处理证书。所有你需要做的是，在你的<code>app.run()</code>调用里添加<code>ssl_context=&#39;adhoc&#39;</code>。不幸的是，这个选项并不能通过Flask命令行接口使用。下面你可以看到官方文档上的一个hello world的Flask应用示例，添加了TLS加密。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=&apos;adhoc&apos;)</div></pre></td></tr></table></figure>
+<p>为了能够在Flask上使用ad hoc(点对点)证书，你需要在你的虚拟环境中安装一个额外的依赖:<code>pip install pyopenssl</code></p>
+<p>当你运行脚本的时候，你会注意到Flask正在运行一个<code>https://</code>服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python hello.py</div><div class="line"> * Running on https://127.0.0.1:5000/ (Press CTRL+C to quit)</div></pre></td></tr></table></figure>
+<p>很简单，是吧？问题是浏览器不喜欢这种类型的证书，因此它会在你可以访问网站之前显示一个很大的警告标志。一旦你允许浏览器连接之后，你将会得到一个加密的连接，就像你从一个服务器得到了有效证书一样，这样点对点的证书在快速测试中很方便，但是不会用于真实应用中。</p>
+<h1 id="Self-Signed-Certificates"><a href="#Self-Signed-Certificates" class="headerlink" title="Self-Signed Certificates"></a>Self-Signed Certificates</h1><p><code>self-signed</code>证书是签名通过私钥来生成的并且关联的证书。我上面提到了客户端需要知道并且信任CA签发的证书，因为正是信任关系才允许客户端去确认服务器证书。web浏览器和其他HTTP客户端会提前配置好一个已知的信任CAs列表，不过明显如果你使用一个<code>self-signed</code>证书，浏览器就不知道这个CA，因此验证也会失败。这也是我们之前使用的ad hoc证书时候发生的事情。如果浏览器不能验证服务器证书，它就会让你在存在问题的情况下运行和访问网站，但是它会确保你理解你正在有风险的访问。</p>
+<p>但是风险是什么？对于Flask服务器，你当然可以信任，并且是没有风险的。问题是用户如果连接了他们不知道的或者无法控制的服务器出现的。在那种情况，用户就不知道服务器是否是认证过的，因为任何人都可以为任何域名生成证书。</p>
+<p><code>self-signed</code>证书有时会比较有用，Flask的ad hoc证书就不是这样了，因为每次服务器运行的时候，通过pyOpenSSL就会生成一个不同的运行中证书。当你在使用一个<code>self-signed</code>证书的时候，在每次运行服务器的时候使用同样的证书是比较好的，因为你可以配置浏览器去信任它，这样就可以消除安全报警了。</p>
+<p>你可以很容易的从命令行中生成<code>self-signed</code>证书。所有你需要的是安装<code>openssl</code></p>
+<p><code>openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365</code></p>
+<p>命令生成了一个新的证书<code>cert.pem</code>以及对应的私钥在<code>key.pem</code>，有一个365天的有效周期。当你运行这个命令的时候，你将会被询问几个问题。下面是一个示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Generating a 4096 bit RSA private key</div><div class="line">......................++</div><div class="line">.............++</div><div class="line">writing new private key to &apos;key.pem&apos;</div><div class="line">-----</div><div class="line">You are about to be asked to enter information that will be incorporated</div><div class="line">into your certificate request.</div><div class="line">What you are about to enter is what is called a Distinguished Name or a DN.</div><div class="line">There are quite a few fields but you can leave some blank</div><div class="line">For some fields there will be a default value,</div><div class="line">If you enter &apos;.&apos;, the field will be left blank.</div><div class="line">-----</div><div class="line">Country Name (2 letter code) [AU]:US</div><div class="line">State or Province Name (full name) [Some-State]:Oregon</div><div class="line">Locality Name (eg, city) []:Portland</div><div class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:Miguel Grinberg Blog</div><div class="line">Organizational Unit Name (eg, section) []:</div><div class="line">Common Name (e.g. server FQDN or YOUR name) []:localhost</div><div class="line">Email Address []:</div></pre></td></tr></table></figure>
+<p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
+<p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/flask_https/flask-ssl-03.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
+<p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
+<p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
+<p>如果你使用nginx作为反向代理，你可以在nginx中配置证书，然后nginx就会终止加密连接，也就是说它会接受外部的加密连接，然后使用正常的非加密连接和你的应用通信。这是一个非常有用的配置，使得你的应用不需要处理证书和加密。在nginx进行如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443 ssl;</div><div class="line">    server_name example.com;</div><div class="line">    ssl_certificate /path/to/cert.pem;</div><div class="line">    ssl_certificate_key /path/to/key.pem;</div><div class="line">    # ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另外比较重要的是你需要考虑用户通过普通的HTTP连接的时候如何处理。最好的方式，在我看来，是给一个未加密请求一个基于HTTPS的相同url的重定向响应。对于Flask应用，你可以通过<code>Flask-SSLify</code>扩展来实现它。在nginx，你可以在另一个<code>server</code>块配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果用的是另外的web服务器，你可以参考文档找到类似的配置方法。</p>
+<h1 id="Using-“Real”-Certificates"><a href="#Using-“Real”-Certificates" class="headerlink" title="Using “Real” Certificates"></a>Using “Real” Certificates</h1><p>我们已经探索了关于<code>self-signed</code>证书所有的选项，但是在那些例子中，存在的限制是除非你告诉浏览器去信任这些证书，否则浏览器不会这么做。因此在生产环境中的网站的服务器证书最好是从那些浏览器自动信任的CAs获取。</p>
+<p>当你向一个CA请求证书的时候，CA会检查你是否有服务器和域名的控制权，但是至于检查怎么完成的是要取决于CA。如果服务器通过检查，CA会发行一个自己签名的网站证书然后给你去安装。证书通常的有效期是一年。大多数CA会收费，但是仍然有一些是免费的。最流行的免费CA是<code>Let&#39;s Encrypt</code></p>
+<p>从<code>Let&#39;s Encrypt</code>获取证书是非常容易的，整个的处理都是自动的。假设你使用的是Ubuntu服务器，你可以通过在你的服务器上安装<code>certbot</code>工具来开始</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install software-properties-common</div><div class="line">$ sudo add-apt-repository ppa:certbot/certbot</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install certbot</div></pre></td></tr></table></figure>
+<p>现在你就可以请求证书了。有几种核实网站的方法。<code>webroot</code>方法是最容易实现的。在这种方法下,<code>certbot</code>在你的web服务器的暴露出来的静态文件夹里添加一些文件，然后尝试通过HTTP使用你想来生成证书的域名来获取这些文件。如果测试成功，<code>certbot</code>就会知道服务器和域名是相对应的，然后它就会发行证书。请求证书的命令是这样的</p>
+<p><code>$ sudo certbot certonly --webroot -w /var/www/example -d example.com</code></p>
+<p>这个例子中，我们试图为<code>example.com</code>域名生成证书，使用了<code>/var/www/example</code>作为静态文件根目录。如果<code>certbot</code>可以核实域名，它就会写入证书文件<code>/etc/letsencrypt/live/example.com/fullchain.pem</code>和私钥文件<code>/etc/letsencrypt/live/example.com/privkey.pem</code>，有效期为90天。</p>
+<p>为了使用这些新获取的证书，你可以将在<code>self-signed</code>使用的文件替换掉，并且要使用上面提到的配置。当然你需要你的域名可以访问你的应用，这是唯一可以使浏览器接受并且作为有效证书的方法。</p>
+<p>如果你使用nginx作为反向代理，你可以充分使用它的映射功能，你可以在配置里创建并且给<code>certbot</code>一个私有目录，可以让它来写入核验文件。在下面的例子里，我扩展了HTTP server块来发送所有<code>Let&#39;s Encrypt</code>相关的请求到你指定的目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location ~ /.well-known &#123;</div><div class="line">        root /path/to/letsencrypt/verification/directory;</div><div class="line">    &#125;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>certbot</code>也可以用在你更新证书的时候，你只需要下面这个命令</p>
+<p><code>$ sudo certbot renew</code></p>
+<p>如果系统中有任何即将过期的证书，上面的命令就可以更新它们，会在同样的地址留下新的证书。你只需要重启服务器就可以使用它们。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-17T01:36:48.000Z" itemprop="dateUpdated">2017-09-17 09:36:48 09:36:48</time>
+</span><br>
+
+
+        
+        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/09/17/flask_https/" target="_blank" rel="external">http://skyrover.me/2017/09/17/flask_https/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flask/">Flask</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/17/flask_https/&title=《翻译 - Running Your Flask Application Over HTTPS》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/17/flask_https/&title=《翻译 - Running Your Flask Application Over HTTPS》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/17/flask_https/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 - Running Your Flask Application Over HTTPS》 — SkyRover&url=http://skyrover.me/2017/09/17/flask_https/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/17/flask_https/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/14/进程的调度/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">进程的调度</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/17/flask_https/&title=《翻译 - Running Your Flask Application Over HTTPS》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/17/flask_https/&title=《翻译 - Running Your Flask Application Over HTTPS》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/17/flask_https/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 - Running Your Flask Application Over HTTPS》 — SkyRover&url=http://skyrover.me/2017/09/17/flask_https/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/17/flask_https/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3aQW7DMAwEwPz/0ynQU4s09ZKUVBcYnYwYscYXgl7q8YjX83N9vX5dr3fzXxYvXFzcMff563rl5ujkVXMDLi7ueW5evN6hV/3rwoaLi3szbtIA9Z6Ji4v7f7nVBiUpZ7i4uHfmVkHJNvndLd9quLi4A24vMF17vT3fxcXFXTSVyMPQpInJ26a3u+Pi4h7hTkKN+d1kELssg8HFxY25eWAx2ax6/OKihOHi4h7hzrdM4ozJwPVbR4aLi7uZW31Qtd/ovdjF7ri4uJu5kwf1Qs98NPsDGhcX9wg3jzMSVl7aenRcXNwz3Or4szdcSV44Koi4uLh/xE3CzbwA5e1LtCMuLu5xbhJi7ihkuLi4d+ZW253q3eqrRpMfXFzcDdzqwaxeJNoLTQqBKS4u7lJu0o5UxyrNQ1fJkS9cXNyD3LUjkwRRLYu4uLjnufmqRqh5MFoYpeDi4m7mrjpQVR3EJuHL5PgXLi7unJsXr+qZr+pzoufj4uIe5FaLV3VMMo9icXFx78mNYs1W5FEY8eLi4t6eW2198gAFFxf3DtxeE1Mtc70opPmthouLO+D2vjjyX6pHsqJyhouLu4v7ATWKJQvwFpJVAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
