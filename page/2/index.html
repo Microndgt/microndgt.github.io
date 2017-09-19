@@ -165,6 +165,55 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-进程间通信"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-09-03 15:23:03 15:23:03" datetime="2017-09-03T07:23:03.000Z"  itemprop="datePublished">2017-09-03 15:23:03</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/09/03/进程间通信/">进程间通信</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        IPC(Inter Process Communication)
+同样的问题和解决办法也适用于线程。
+竞争条件也就是在协作进程中共享了一些公用存储区，但是这些存储区最后的结果取决于进程运行的精确时序，比如A先输出了，但是B也输出了，最后的正确结果是B输出的，所以这种称为竞争条件。也就是说这种需要依赖进程运行顺序的，是竞争的条件。
+临界区为了防止这种情况，必须有某种途径来阻止多个进程同时读写共...
+    
+
+        <a href="/2017/09/03/进程间通信/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-C1000k"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -607,60 +656,12 @@ pytest是一个非常棒的Python测试库，并且也是我最喜...
 
         </li>
     
-        <li class="post-list-item fade">
-            <article id="post-Celery 踩坑记"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-08-13 16:47:05 16:47:05" datetime="2017-08-13T08:47:05.000Z"  itemprop="datePublished">2017-08-13 16:47:05</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/08/13/Celery 踩坑记/">Celery 踩坑记</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。
-使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。
-另外，使用RabbitMQ的时候，...
-    
-
-        <a href="/2017/08/13/Celery 踩坑记/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Celery/">Celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
     </ul>
 
     
 <nav id="page-nav">
     <div class="inner">
-    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
     </div>
 </nav>
 

@@ -200,6 +200,7 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             
+            
             <p>C1000k 这里关注操作系统是否支持百万连接</p>
 <h2 id="全局最大打开文件数"><a href="#全局最大打开文件数" class="headerlink" title="全局最大打开文件数"></a>全局最大打开文件数</h2><p><code>cat /proc/sys/fs/file-nr</code>，为了修改这个数值, 用 root 权限修改 <code>/etc/sysctl.conf</code> 文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">fs.file-max = 1020000</div><div class="line">net.ipv4.ip_conntrack_max = 1020000</div><div class="line">net.ipv4.netfilter.ip_conntrack_max = 1020000</div></pre></td></tr></table></figure>

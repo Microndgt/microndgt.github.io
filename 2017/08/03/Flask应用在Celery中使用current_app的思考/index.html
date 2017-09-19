@@ -193,6 +193,7 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             
+            
             <p>写应用的时候遇到这样的一个问题，定义的celery task中无法使用<code>current_app</code>，并且有时候会出现pop wrong app context。</p>
 <p>这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的时候，根本就没有app这一系列东西，所以上下文栈就是空的，因此就不能使用app，以及<code>app.logger</code>了。</p>
 <p>知道这一点之后，就在celery的task调用的时候加上了<code>with app.app_context():</code>，但是有时候task执行出错的时候，或者运行完成的时候就会出现，<code>AssertionError(&#39;Popped wrong app context.  (&lt;flask.ctx.AppContext object at 0x7f4e1ed56d30&gt; instead of &lt;flask.ctx.AppContext object at 0x7f4e1f02c7f0&gt;)&#39;,)</code>，这个问题后来找到可能的原因是，多个celery worker执行的时候会创建多个app实例，并且对于一个进程的上下文栈进行了多次的上下文进栈，在发生错误的时候，就会导致出栈的上下文混乱。</p>

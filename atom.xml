@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-17T05:51:32.000Z</updated>
+  <updated>2017-09-19T00:58:18.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>风月无边</title>
+    <link href="http://skyrover.me/2017/09/19/%E9%A3%8E%E6%9C%88%E6%97%A0%E8%BE%B9/"/>
+    <id>http://skyrover.me/2017/09/19/风月无边/</id>
+    <published>2017-09-19T00:40:06.000Z</published>
+    <updated>2017-09-19T00:58:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>从小就喜欢宋词，风流婉转，令人心醉。<code>杨柳岸 晓风残月</code>多么美的意境。古风的歌曲也特别喜欢，最近听到一首风月无边，不错。</p>
+<p>另外记一首苏轼的<code>西江月</code></p>
+<blockquote>
+<p>照野弥弥浅浪，横空隐隐层霄。<br>障泥未解玉骢骄，我欲醉眠芳草。<br>可惜一溪风月，莫教踏碎琼瑶。<br>解鞍欹枕绿杨桥，杜宇一声春晓。</p>
+</blockquote>
+<p>完全把自然与自己融为一体了有没有，物我两忘啊</p>
+<p>风月无边这首歌中最喜欢的几句歌词</p>
+<blockquote>
+<p>痴心殿 我掌风月权<br>我不曾 江上夜停船<br>琵琶里 婉转潸然<br>也不曾 三千金甲破楼兰<br>更不曾 风雪策马入蓝关<br>我只合搅起那情潮乱<br>演离合断厮缠似苦实甜<br>我红尘踏遍 萧瑟染不到足尖<br>愿他年 化尽春泥见骨气犹艳<br>戏能弄人 人方知肠断<br>不入风月 风月怎无边<br>漫将清狂 身前身后作笑谈</p>
+</blockquote>
+<p>一缕轻愁，悲恨相续，魂飞千载寻伊尽，唤不醒，相思人憔悴，夜半静听万千泪..经流年，梦回曲水边，烟波碎，人已醉，红尘滚滚皆是泪，风逝一抹暗脆。倾尽了风华，寂寞了容颜。跌碎了谁的思念？一袭霓裳，抚起月亮的寒光，穿越过万水千山的屏障，只为短暂的缠绵。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;从小就喜欢宋词，风流婉转，令人心醉。&lt;code&gt;杨柳岸 晓风残月&lt;/code&gt;多么美的意境。古风的歌曲也特别喜欢，最近听到一首风月无边，不错。&lt;/p&gt;
+&lt;p&gt;另外记一首苏轼的&lt;code&gt;西江月&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;照野弥弥浅浪，横空隐隐层霄
+    
+    </summary>
+    
+      <category term="Music" scheme="http://skyrover.me/categories/Music/"/>
+    
+    
+      <category term="Song" scheme="http://skyrover.me/tags/Song/"/>
+    
+      <category term="宋词" scheme="http://skyrover.me/tags/%E5%AE%8B%E8%AF%8D/"/>
+    
+  </entry>
   
   <entry>
     <title>thriftpy源码解析(三) - 套接字</title>
