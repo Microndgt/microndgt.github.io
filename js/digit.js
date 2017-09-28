@@ -1,5 +1,5 @@
 window.onload=function(){
 	document.getElementById('site.tags.length').innerHTML='29'
-	document.getElementById('site.posts.length').innerHTML='52'
+	document.getElementById('site.posts.length').innerHTML='53'
 	document.getElementById('site.categories.length').innerHTML='3'
 }

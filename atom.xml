@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-21T07:58:20.000Z</updated>
+  <updated>2017-09-28T04:01:27.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>翻译 - heapq — Heap queue algorithm</title>
+    <link href="http://skyrover.me/2017/09/28/heapq/"/>
+    <id>http://skyrover.me/2017/09/28/heapq/</id>
+    <published>2017-09-28T04:01:46.000Z</published>
+    <updated>2017-09-28T04:01:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>翻译自<a href="https://docs.python.org/3/library/heapq.html" target="_blank" rel="external">heapq — Heap queue algorithm</a></p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>这个模块实现了堆队列算法，也被称为优先队列算法。</p>
+<p>堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有<code>heap[k] &lt;= heap[2*k+1]</code>和<code>heap[k] &lt;= heap[2*k+2]</code>，对于第n层树，其有<code>2^(n-1)</code>个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素将会被认为是无穷大的。堆中有意思的特性是最小的元素总是在树的根部，即heap[0]。</p>
+<p>下面的API有两点不同于教科书上的堆算法：</p>
+<ul>
+<li>我们的索引从0开始，这样使得父节点和其子节点的关系有所不同，但是这样在Python里更加合适，因为Python里就是索引从0开始。</li>
+<li>我们的pop方法会返回最小的元素，而不是最大的，也就是最小堆，最大堆通常在原地排序很有用</li>
+</ul>
+<p>这两个使得可以在普通的Python列表中获取堆中元素，heap[0]就是最小的元素，heap.sort()维护堆。</p>
+<p>为了创建一个堆，使用列表将其初始化为<code>[]</code>，或者你也可以通过<code>heapify()</code>将一个列表转换成堆。</p>
+<p>提供下面的方法</p>
+<ul>
+<li><code>heappush(heap, item)</code></li>
+<li><code>heappop(heap)</code></li>
+<li><code>heappushpop(heap, item)</code></li>
+</ul>
+<p>将item push到堆里，并且pop出最小的元素，比先执行heappush()然后执行heappop()更有效率</p>
+<ul>
+<li><code>heapify(x)</code></li>
+<li><code>heapreplace(heap, item)</code></li>
+</ul>
+<p>pop并且返回最小的元素，并且push一个新的元素，堆的大小不会改变。这个步骤比先执行heappop()然后执行heappush()更有效率，并且在使用一个固定大小的堆会比较合适。这个函数总会返回一个元素，并且以item替换。</p>
+<p>返回的元素可能比插入的元素要大，使用heappushpop将会返回一个比插入元素小或者等于的元素。</p>
+<ul>
+<li><code>merge(*iterables, key=None, reverse=False)</code></li>
+</ul>
+<p>将多个排序的输入转换成一个排序后的输出，返回一个排序后的迭代器。和<code>sorted(itertools.chain(*iterables))</code>类似，但是它会返回迭代对象，而不是将数据一次性放入内存。</p>
+<p>两个可选参数必须使用成关键字参数。</p>
+<p>key指定了如何进行排序，reverse如果是True就会反转。</p>
+<ul>
+<li><code>nlargest(n, iterable, key=None)</code></li>
+</ul>
+<p>返回一个迭代器的前n个大的元素列表，key如果提供，指定进行比较的函数。</p>
+<ul>
+<li><code>nsmallest(n, iterable, key=None)</code></li>
+</ul>
+<p>对于n比较小的时候比较高效。如果比较大，使用<code>sorted()</code>函数更加高效，当n等于1的时候，使用min和max更高效。如果要重复使用这几个函数，那么考虑将其转换成heap。</p>
+<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>堆排序可以通过向堆里push元素，然后每次pop出最小的元素来实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def heapsort(iterable):</div><div class="line">...     h = []</div><div class="line">...     for value in iterable:</div><div class="line">...         heappush(h, value)</div><div class="line">...     return [heappop(h) for i in range(len(h))]</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;翻译自&lt;a href=&quot;https://docs.python.org/3/library/heapq.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;heapq — Heap queue algorithm&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;介绍&quot;
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
   
   <entry>
     <title>最低共同祖先</title>
