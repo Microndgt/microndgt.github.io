@@ -165,6 +165,56 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-Python中的单例模式"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-10-02 10:07:35 10:07:35" datetime="2017-10-02T02:07:35.000Z"  itemprop="datePublished">2017-10-02 10:07:35</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/10/02/Python中的单例模式/">Python中的单例模式</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        单例模式其实在实际的程序开发中使用过，比如数据库连接池等，但是仍然需要抽象到一定高度来理解它。
+单例模式：保证一个类仅有一个实例，并提供一个访问他的全局访问点。目的就是令到单个进程中只存在一个类的实例，从而可以实现数据的共享，节省系统开销，防止io阻塞等等。方法就是让类自身保存他的唯一实例，这个类可以保证没有其他实例可以被创建。
+多线程时的单例模式：加锁-双重锁定
+
+饿汉式单例类：在类被加载...
+    
+
+        <a href="/2017/10/02/Python中的单例模式/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-Python程序性能分析"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -587,56 +637,6 @@ From 流畅的Python 人民邮电出版社 21章类元编程
     
 
         <a href="/2017/09/09/类元编程/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-属性描述符"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-05 21:40:46 21:40:46" datetime="2017-09-05T13:40:46.000Z"  itemprop="datePublished">2017-09-05 21:40:46</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/05/属性描述符/">属性描述符</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        
-From 流畅的Python 人民邮电出版社 20章属性描述符
-
-描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。
-描述符是实现了特定协议的类，这个协议包括__get__, ...
-    
-
-        <a href="/2017/09/05/属性描述符/" class="post-more waves-effect waves-button">
             阅读全文…
         </a>
     </div>
