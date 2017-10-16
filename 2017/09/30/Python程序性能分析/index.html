@@ -29,7 +29,7 @@
 <meta property="og:description" content="今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。 cProfile使用工具cProfile，在一个脚本中写好要测试的程序，然后在终端中运行python -m cProfile -s tottime calc_efficiency.py表示对单个函数的运行总时间进行统计，这样就会在终端上打印出来性能分析结果，比如这样： 123456789">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://skyrover.me/img/mkm_run.png">
-<meta property="og:updated_time" content="2017-09-30T04:14:06.000Z">
+<meta property="og:updated_time" content="2017-10-10T07:21:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python程序性能分析">
 <meta name="twitter:description" content="今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。 cProfile使用工具cProfile，在一个脚本中写好要测试的程序，然后在终端中运行python -m cProfile -s tottime calc_efficiency.py表示对单个函数的运行总时间进行统计，这样就会在终端上打印出来性能分析结果，比如这样： 123456789">
@@ -226,6 +226,7 @@
 </ul>
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
+<p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>

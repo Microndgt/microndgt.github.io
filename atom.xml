@@ -221,7 +221,7 @@
     <link href="http://skyrover.me/2017/09/30/Python%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/"/>
     <id>http://skyrover.me/2017/09/30/Python程序性能分析/</id>
     <published>2017-09-30T04:14:53.000Z</published>
-    <updated>2017-09-30T04:14:06.000Z</updated>
+    <updated>2017-10-10T07:21:42.000Z</updated>
     
     <content type="html"><![CDATA[<p>今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。</p>
 <h1 id="cProfile"><a href="#cProfile" class="headerlink" title="cProfile"></a>cProfile</h1><p>使用工具cProfile，在一个脚本中写好要测试的程序，然后在终端中运行<code>python -m cProfile -s tottime calc_efficiency.py</code>表示对单个函数的运行总时间进行统计，这样就会在终端上打印出来性能分析结果，比如这样：</p>
@@ -246,6 +246,7 @@
 </ul>
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
+<p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -1115,7 +1116,7 @@
     <link href="http://skyrover.me/2017/08/30/%E7%BF%BB%E8%AF%91%20-%20%20concurrent.futures%20%E2%80%94%20Launching%20parallel%20tasks/"/>
     <id>http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/</id>
     <published>2017-08-30T01:46:35.000Z</published>
-    <updated>2017-09-01T06:50:01.000Z</updated>
+    <updated>2017-10-16T06:50:05.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自 <a href="https://docs.python.org/3/library/concurrent.futures.html" target="_blank" rel="external"><code>concurrent.futures</code> 运行并行任务</a></p>
 <p>估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。</p>
@@ -1173,7 +1174,7 @@
 <li><code>ALL_COMPLETED</code></li>
 </ul>
 <h2 id="concurrent-futures-as-completed"><a href="#concurrent-futures-as-completed" class="headerlink" title="concurrent.futures.as_completed"></a><code>concurrent.futures.as_completed</code></h2><p><code>as_completed(fs, timeout=None)</code></p>
-<p>返回一个通过fs给定的Future实例的迭代器，可能是不同的<code>Executor</code>实例创建的，这个迭代器当它们完成的时候产生future。fs给定的任何future如果重复的话，只会返回一次。如果在<code>as_completed</code>之前返回的会最先产生。</p>
+<p>返回一个通过fs给定的Future实例的迭代器，可能是不同的<code>Executor</code>实例创建的，这个迭代器y有任务完成的时候产生future，因此这个必须迭代才能起到阻塞完成的效果。fs给定的任何future如果重复的话，只会返回一次。如果在<code>as_completed</code>之前返回的会最先产生。</p>
 ]]></content>
     
     <summary type="html">
