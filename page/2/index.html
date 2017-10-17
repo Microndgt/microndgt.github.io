@@ -165,6 +165,54 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-subprocess管理"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-09-12 09:00:35 09:00:35" datetime="2017-09-12T01:00:35.000Z"  itemprop="datePublished">2017-09-12 09:00:35</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/09/12/subprocess管理/">翻译 - subprocess — Subprocess management</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如os.system和os.spawn*
+使用subprocess模块run函数推荐的调用子进程的方式是使用run()函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的Popen接口。
+subprocess.run(args, *,...
+    
+
+        <a href="/2017/09/12/subprocess管理/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-类元编程"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -594,58 +642,6 @@ concurrent.futures为异步调用提供了高层次的接口。
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-Python内存管理和gc"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-08-25 11:02:37 11:02:37" datetime="2017-08-25T03:02:37.000Z"  itemprop="datePublished">2017-08-25 11:02:37</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/08/25/Python内存管理和gc/">Python内存管理和gc</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        Python内存管理和gc
-参考:
-
-Python深入06 Python的内存管理
-gc — Garbage Collector interface
-
-最近开始大规模跑数据了，跑着跑着进程就被系统kill掉了，查其原因，原来是OOM(Out of Memory)了，为什么会占这么多的内存呢，我的程序需要计算数万个资金账号，然后每个资金账号可能计算数年，而且我是每天每天算的，所以基本每个资金账...
-    
-
-        <a href="/2017/08/25/Python内存管理和gc/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
 
 
     </div>
