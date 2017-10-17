@@ -203,6 +203,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             
+            
             <p>今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。</p>
 <h1 id="cProfile"><a href="#cProfile" class="headerlink" title="cProfile"></a>cProfile</h1><p>使用工具cProfile，在一个脚本中写好要测试的程序，然后在终端中运行<code>python -m cProfile -s tottime calc_efficiency.py</code>表示对单个函数的运行总时间进行统计，这样就会在终端上打印出来性能分析结果，比如这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1723 function calls (1578 primitive calls) in 0.004 seconds</div><div class="line"></div><div class="line">Ordered by: internal time</div><div class="line"></div><div class="line">ncalls  tottime  percall  cumtime  percall filename:lineno(function)</div><div class="line">   4    0.000    0.000    0.000    0.000 _methods.py:86(_var)</div><div class="line">  13    0.000    0.000    0.000    0.000 calculators.py:18(nan2zero)</div><div class="line">   2    0.000    0.000    0.000    0.000 financial.py:25(_adjust_returns)</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;cumprod&apos; of &apos;numpy.ndarray&apos; objects&#125;</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;accumulate&apos; of &apos;numpy.ufunc&apos; objects&#125;</div></pre></td></tr></table></figure>
@@ -242,7 +243,7 @@
 <li>尽量不要使用deepcopy，很慢，详见这篇文章<a href="http://news.hiapk.com/internet/s5937a1ded022.html" target="_blank" rel="external">蜗牛般的 Python 深拷贝</a></li>
 <li>优化算法，不要在循环里面进行耗时操作</li>
 </ol>
-
+     
         </div>
 
         <blockquote class="post-copyright">

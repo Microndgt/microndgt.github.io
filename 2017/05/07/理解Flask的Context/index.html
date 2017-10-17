@@ -201,6 +201,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             
+            
             <p>Flask中的Context包括App Context和Request Context，从一个 Flask App 读入配置并启动开始，就进入了 App Context。当一个请求进入开始被处理时，就进入了 Request Context，在其中我们可以访问请求携带的信息。</p>
 <h1 id="Thread-Local"><a href="#Thread-Local" class="headerlink" title="Thread Local"></a>Thread Local</h1><p>从面向对象设计的角度看，对象是保存“状态”的地方。一个对象的状态都被保存在对象携带的一个特殊字典中，可以通过 vars 函数拿到它。</p>
 <p>Thread Local 则是一种特殊的对象，它的“状态”对线程隔离 —— 也就是说每个线程对一个 Thread Local 对象的修改都不会影响其他线程。本地线程希望不同的线程对于内容的修改只在线程内发挥作用，线程之前互不影响。实现的原理就是在<code>threading.current_thread().__dict__</code>里面添加一个包含对象ID的key，每一个线程保存不同的状态字典，所以每一个线程中的值都不一样。</p>
@@ -317,7 +318,7 @@
 <li><a href="http://docs.jinkan.org/docs/flask/reqcontext.html" target="_blank" rel="external">请求上下文 - Flask官方文档</a></li>
 <li>董伟明 Python Web开发实战</li>
 </ol>
-
+     
         </div>
 
         <blockquote class="post-copyright">

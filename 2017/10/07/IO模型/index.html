@@ -203,6 +203,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             
+            
             <p>最近对IO模型做了深入的学习，参考书籍的章节如下：</p>
 <blockquote>
 <p>Unix系统编程手册 上 2.5节，4，5章<br>Unix系统编程手册 下 63章<br>Unix环境高级编程 3，5，14章</p>
@@ -343,7 +344,7 @@
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>linux一般使用non-blocking IO提高IO并发度。当IO并发度很低时，non-blocking IO不一定比blocking IO更高效，因为后者完全由内核负责，而read/write这类系统调用已高度优化，效率显然高于一般得多个线程协作的non-blocking IO。</p>
 <p>但当IO并发度愈发提高时，blocking IO阻塞一个线程的弊端便显露出来：内核得不停地在线程间切换才能完成有效的工作，一个cpu core上可能只做了一点点事情，就马上又换成了另一个线程，cpu cache没得到充分利用，程序整体性能往往也会随之下降。</p>
 <p>而non-blocking IO一般由少量event dispatching线程和一些运行用户逻辑的worker线程组成，这些线程往往会被复用（换句话说调度工作转移到了用户态），event dispatching和worker可以同时在不同的核运行（流水线化），内核不用频繁的切换就能完成有效的工作。线程总量也不用很多，所以对thread-local的使用也比较充分。这时候non-blocking IO就往往比blocking IO快了。不过non-blocking IO也有自己的问题，它需要调用更多系统调用，比如<code>epoll_ctl</code>，由于epoll实现为一棵红黑树，<code>epoll_ctl</code>并不是一个很快的操作，特别在多核环境下，依赖<code>epoll_ctl</code>的实现往往会面临棘手的扩展性问题。non-blocking需要更大的缓冲，否则就会触发更多的事件而影响效率。non-blocking还得解决不少多线程问题，代码比blocking复杂很多。</p>
-
+     
         </div>
 
         <blockquote class="post-copyright">

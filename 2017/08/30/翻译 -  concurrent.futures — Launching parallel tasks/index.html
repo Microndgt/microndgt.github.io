@@ -201,6 +201,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             
+            
             <p>翻译自 <a href="https://docs.python.org/3/library/concurrent.futures.html" target="_blank" rel="external"><code>concurrent.futures</code> 运行并行任务</a></p>
 <p>估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。</p>
 <p><code>concurrent.futures</code>为异步调用提供了高层次的接口。</p>
@@ -258,7 +259,7 @@
 </ul>
 <h2 id="concurrent-futures-as-completed"><a href="#concurrent-futures-as-completed" class="headerlink" title="concurrent.futures.as_completed"></a><code>concurrent.futures.as_completed</code></h2><p><code>as_completed(fs, timeout=None)</code></p>
 <p>返回一个通过fs给定的Future实例的迭代器，可能是不同的<code>Executor</code>实例创建的，这个迭代器y有任务完成的时候产生future，因此这个必须迭代才能起到阻塞完成的效果。fs给定的任何future如果重复的话，只会返回一次。如果在<code>as_completed</code>之前返回的会最先产生。</p>
-
+     
         </div>
 
         <blockquote class="post-copyright">

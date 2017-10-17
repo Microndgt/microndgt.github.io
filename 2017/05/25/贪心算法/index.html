@@ -201,6 +201,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             
+            
             <p>贪心算法是一种短视的算法，所做的每个选择都是独立的，并且是在当时环境下所能采取的最佳决策。</p>
 <p>贪心算法由一系列选择组成，贪心体现在每一个基于当时信息所做的选择中，在不考虑整体或者将来的情况，做出最好的选择。但是必须确保每个选择的安全。主要在于如何确保这种安全性。贪心算法的问题解决方案都是逐步形成的，可以先分别取得一组方案片段，然后将其合并成最终的解决方案。</p>
 <p>总体来讲，过程如下：首先形成局部解决方案，然后检查分段式解决方案是否有效或者可行。</p>
@@ -232,7 +233,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">from heapq import heappop, heappush</div><div class="line">def prim(G, s):</div><div class="line">  P, Q = &#123;&#125;, [(0, None, s)]</div><div class="line">  while Q:</div><div class="line">    _, p, u = heappop(Q)</div><div class="line">    # 如果已经在遍历树中，跳过</div><div class="line">    if u in P: continue</div><div class="line">    P[u] = p</div><div class="line">    # 将u节点连接的所有边加入队列</div><div class="line">    for v, w in G[u].items():</div><div class="line">      heappush(Q, (w, u, v))</div><div class="line">  return P</div></pre></td></tr></table></figure>
 <p>多次添加节点的时候，每次移除的时候肯定是权值最低的那一个。并且在遍历树中不会重复添加节点。</p>
 <p>贪心算法在逐步构建某解决方案的过程中，坚持每一步都选择添加当下最合适的元素，而不去管之前或者之后会发生什么情况。</p>
-
+     
         </div>
 
         <blockquote class="post-copyright">

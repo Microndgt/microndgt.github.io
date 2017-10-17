@@ -194,6 +194,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             
+            
             <p>写的aiossdb库，需要对协程进行测试，但是pytest会默认将定义的函数就当成普通函数来测试，当然可以在一个测试函数里面定义要测试的部分，但是比较麻烦吧，每次都得写loop之类。这篇文章介绍了一种使用pytest对协程进行测试的优雅方法。</p>
 <p>翻译自：<a href="https://stefan.sofa-rockers.org/2015/04/22/testing-coroutines/" target="_blank" rel="external">Testing (asyncio) coroutines with pytest</a></p>
 <p>pytest是一个非常棒的Python测试库，并且也是我最喜欢的Python库之一。它使得写测试很简单，并且它在测试失败的时候的报告能力也非常棒。</p>
@@ -214,7 +215,7 @@
 <p>这一个插件应该在pytest 2.4或者更新中运行。</p>
 <p>看起来pytest dev正在试着清理并且重构pytest的插件系统。也许，将来的版本将会包含和我们的插件相同的函数。如果pytest支持即时可用的(out-of-the-box)协程测试方法那将会非常棒，因为协程正在在不同的框架中变得非常广泛。</p>
 <p>另外：<a href="https://github.com/pytest-dev/pytest-asyncio" target="_blank" rel="external">pytest-asyncio</a>正是pytest support for asyncio，可以拿来用！</p>
-
+     
         </div>
 
         <blockquote class="post-copyright">

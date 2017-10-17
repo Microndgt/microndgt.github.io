@@ -201,6 +201,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             
+            
             <h1 id="从make-server入手"><a href="#从make-server入手" class="headerlink" title="从make_server入手"></a>从<code>make_server</code>入手</h1><p>首先来看看官方给的服务器demo</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">pingpong_thrift = thriftpy.load(&quot;pingpong.thrift&quot;, module_name=&quot;pingpong_thrift&quot;)</div><div class="line"></div><div class="line">from thriftpy.rpc import make_server</div><div class="line"></div><div class="line">class Dispatcher(object):</div><div class="line">    def ping(self):</div><div class="line">        return &quot;pong&quot;</div><div class="line"></div><div class="line">server = make_server(pingpong_thrift.PingPong, Dispatcher(), &apos;127.0.0.1&apos;, 6000)</div><div class="line">server.serve()</div></pre></td></tr></table></figure>
 <p>首先载入thrift文件没话说，下来是创建服务器，它是直接用里面的一个函数<code>make_server</code> ，这个函数会接收thrift导入协议中定义的服务和处理这个服务的处理对象，以及host和port作为参数，然后调用<code>serve()</code>方法，来创建一个服务器。</p>
@@ -237,7 +238,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class TProcessorFactory(object):</div><div class="line"></div><div class="line">    def __init__(self, processor_class, *args, **kwargs):</div><div class="line">        self.args = args</div><div class="line">        self.kwargs = kwargs</div><div class="line"></div><div class="line">        self.processor_class = processor_class</div><div class="line"></div><div class="line">    def get_processor(self):</div><div class="line">        return self.processor_class(*self.args, **self.kwargs)</div></pre></td></tr></table></figure>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这一节对常用的<code>Processor</code>做了一个介绍，当然深入的实现细节没有讲到，毕竟太复杂，现在的目标只是做个介绍罢了。</p>
 <h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节我们将了解下<code>TServerSocket</code></p>
-
+     
         </div>
 
         <blockquote class="post-copyright">

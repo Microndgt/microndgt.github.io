@@ -201,6 +201,7 @@
         <div class="post-content" id="post-content" itemprop="postContent">
             
             
+            
             <p>离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。</p>
 <p>上次提到默认使用的套接字是<code>TServerSocket</code>，是在<code>make_server</code>中创建的，可以使用<code>unix_socket</code>或者TCP的套接字，另外如果基于https，就可以使用<code>TSSLServerSocket</code>。其实套接字也算传输<code>transport</code>协议中的一个部分，所以可以看到源码有关socket的都在<code>Thriftpy/transport</code>里面，其中有<code>socket.py</code>和<code>sslsocket.py</code>，这里我们只介绍以下<code>socket.py</code></p>
 <p><code>socket.py</code>中只有两个类，一个是<code>TSocket</code>，一个是<code>TServerSocket</code>，前者是在客户端方面使用的，<code>TServerSocket</code>是在服务器端使用的</p>
@@ -240,7 +241,7 @@
 <p>上面程序里用到了<code>linger = struct.pack(&#39;ii&#39;, 0, 0)</code>，也就是将两个0分别转换成int(有符号)的字节序列(bytes)</p>
 <p><a href="https://docs.python.org/3/library/struct.html#format-characters" target="_blank" rel="external">这里有一些转换的格式</a></p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>关于Thriftpy中使用的套接字就介绍到这里了，下一节将是Thriftpy中使用的协议，比如常用的<code>TJSONProtocol</code></p>
-
+     
         </div>
 
         <blockquote class="post-copyright">
