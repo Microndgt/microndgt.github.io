@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>最低共同祖先 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法,LeetCode">
+    <meta name="description" content="听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。 先就做这两道题吧，总体感觉很容易，基本上提交一次就accepted了，哎，突然想去面试下，说不定还可以去小米= =! 其实我觉得寻找最低公共祖先，你得摸清情况，比如在BS">
+<meta name="keywords" content="Python,算法,LeetCode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最低共同祖先">
+<meta property="og:url" content="http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。 先就做这两道题吧，总体感觉很容易，基本上提交一次就accepted了，哎，突然想去面试下，说不定还可以去小米= =! 其实我觉得寻找最低公共祖先，你得摸清情况，比如在BS">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-21T07:58:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="最低共同祖先">
+<meta name="twitter:description" content="听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。 先就做这两道题吧，总体感觉很容易，基本上提交一次就accepted了，哎，突然想去面试下，说不定还可以去小米= =! 其实我觉得寻找最低公共祖先，你得摸清情况，比如在BS">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">最低共同祖先</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">最低共同祖先</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-21T07:58:32.000Z" itemprop="datePublished" class="page-time">
+  2017-09-21 15:58:32
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#BST"><span class="post-toc-number">1.</span> <span class="post-toc-text">BST</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Binary-Tree"><span class="post-toc-number">2.</span> <span class="post-toc-text">Binary Tree</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-lowest_common_ancestor_of_a_tree"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">最低共同祖先</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-21 15:58:32 15:58:32" datetime="2017-09-21T07:58:32.000Z"  itemprop="datePublished">2017-09-21 15:58:32</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。</p>
+<p>先就做这两道题吧，总体感觉很容易，基本上提交一次就accepted了，哎，突然想去面试下，说不定还可以去小米= =!</p>
+<p>其实我觉得寻找最低公共祖先，你得摸清情况，比如在BST中，有这么几种情况，当要搜寻的节点比p,q值都大，说明共同祖先应该在这个节点左侧，反之则在右侧，然后如果在这两个值中间，那就说明这个节点就是最低公共祖先了。</p>
+<p>如果是普通的二叉树，递归的进行查找，首先来看查看的这个节点如果是p或者q，则返回，然后去这个节点左侧找，直到为None或者找到p，接下来去这个节点的右侧找，直到找到None或者找到p，如果一个找到p，一个找到q，则说明这个节点就是最低公共祖先。如果有一个是None，说明一个p在q上面，或者q在p上面。</p>
+<p>总之吧，就是递归地处理这些情况，考虑清楚就好了。</p>
+<h1 id="BST"><a href="#BST" class="headerlink" title="BST"></a>BST</h1><p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/" target="_blank" rel="external">原题链接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line"></div><div class="line">class Solution(object):</div><div class="line">    def lowestCommonAncestor(self, root, p, q):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :type p: TreeNode</div><div class="line">        :type q: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if not root:</div><div class="line">            return</div><div class="line">        if p == q:</div><div class="line">            return p</div><div class="line">        a, b = sorted([p.val, q.val])</div><div class="line">        def find_ancestor(node):</div><div class="line">            if not node:</div><div class="line">                return</div><div class="line">            elif node.val &gt; a and node.val &gt; b:</div><div class="line">                return find_ancestor(node.left)</div><div class="line">            elif node.val &lt; a and node.val &lt; b:</div><div class="line">                return find_ancestor(node.right)</div><div class="line">            else:</div><div class="line">                return node</div><div class="line">        res = find_ancestor(root)</div><div class="line">        return res</div></pre></td></tr></table></figure>
+<h1 id="Binary-Tree"><a href="#Binary-Tree" class="headerlink" title="Binary Tree"></a>Binary Tree</h1><p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/" target="_blank" rel="external">原题链接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line"></div><div class="line">class Solution(object):</div><div class="line">    def lowestCommonAncestor(self, root, p, q):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :type p: TreeNode</div><div class="line">        :type q: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def find_ancestor(node):</div><div class="line">            if not node:</div><div class="line">                return</div><div class="line">            if node == p or node == q:</div><div class="line">                return node</div><div class="line">            l = find_ancestor(node.left)</div><div class="line">            r = find_ancestor(node.right)</div><div class="line">            if l and r:</div><div class="line">                return node</div><div class="line">            return l or r</div><div class="line">        return find_ancestor(root)</div></pre></td></tr></table></figure>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/09/21/lowest_common_ancestor_of_a_tree/" target="_blank" rel="external">http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/&title=《最低共同祖先》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/&title=《最低共同祖先》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《最低共同祖先》 — SkyRover&url=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/09/28/heapq/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">翻译 - heapq — Heap queue algorithm</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/19/风月无边/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">风月无边</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/&title=《最低共同祖先》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/&title=《最低共同祖先》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《最低共同祖先》 — SkyRover&url=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3aQW7DMAwEwPz/0+21QGFnl5ISH8anwnVsjQOIDMnXKz5+/hzJ+av/3l95f/7qmg0HHh4e3sLS/x/311wtIjlzdef7deZrxsPDwzvNm23KOawNHslLiQIMHh4e3mN47eNn23pCxcPDw3s+L1lQe+UsxcfDw8P7Lq+9XRIS8uCRh4eDtRY8PDy8mJd3kZ7z95H+Hh4eHt5yV71thuWF2tl2X68WDw8P7wAv33DbNlVbRGiDUzEchoeHh/dxXluqSJpYK6WEOvnGw8PD28qbLbpNgu8391ljLDmPh4eHd443G29KHpm8xNndksEsPDw8vBO85AO7hgCSM3sLE3h4eHjneCvLzbf++2CQb/TDVhweHh7eAd5KqEhS8KSUkKTOX4iEeHh4eFuDwWvrkYSEoiGHh4eHd4yXJ8RteTcvZCTl3bawi4eHh/dJ3iyZTtLolUJw3TDDw8PDO8yLxpjiX/qzdlo+WFCUa/Hw8PC28matrDZ1ThYxK3kMO3t4eHh4y7zk0mTRbZMseWI7mPXmO8TDw8Nb5s0a9u2nZmNY+dDVm9EBPDw8vAO89qbrZYs2DORDXXh4eHif4c2KsLOi8PpoVxFO8PDw8A7w2qMdn5qVcWer2nA3PDw8vBFvtk3PGv95eJi9XDw8PLxzvF1LzBmzwYKiDHHiG8DDw8Pb9eE4tMyGEvKU/TKo4OHh4R3mLeXjZercpu/D8gQeHh7eVt5Peaw0rmbvvn3Fl/09PDw8vE28lUS5TbuTwYKEt/768PDw8NZ5s2Q3L9euB4MkMBTFCDw8PLxNvFlqOwMnr2NzrQUPDw/vYbz7TyWp8KzoED0FDw8P7zG8JCTkCXQ7pJX8DMDDw8M7zWubXsmtZ+y2ZIyHh4f3eV798/5YQba9ZluvDw8PDy/l/QI8wgMnvtsALQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。 使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。 另外，使用RabbitMQ的时候，实例化">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-01T06:37:01.000Z">
+<meta property="og:updated_time" content="2017-09-11T03:16:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Celery 踩坑记">
 <meta name="twitter:description" content="最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。 使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。 另外，使用RabbitMQ的时候，实例化">
@@ -37,6 +37,7 @@
     
     <link rel="shortcut icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -55,7 +56,7 @@
     <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
       <div class="brand">
         <a href="/about" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/avatar.jpg">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
         </a>
         <hgroup class="introduce">
           <h5 class="nickname">Kevin Du</h5>
@@ -69,6 +70,7 @@
             <li class="waves-block waves-effect">
               <a href="/"  >
                 <i class="icon icon-lg icon-home"></i>
+
                 主页
               </a>
             </li>
@@ -76,6 +78,7 @@
             <li class="waves-block waves-effect">
               <a href="/archives"  >
                 <i class="icon icon-lg icon-archives"></i>
+
                 文章
               </a>
             </li>
@@ -83,6 +86,7 @@
             <li class="waves-block waves-effect">
               <a href="/tags"  >
                 <i class="icon icon-lg icon-tags"></i>
+
                 标签
               </a>
             </li>
@@ -90,6 +94,7 @@
             <li class="waves-block waves-effect">
               <a href="/categories"  >
                 <i class="icon icon-lg icon-list"></i>
+
                 分类
               </a>
             </li>
@@ -97,6 +102,7 @@
             <li class="waves-block waves-effect">
               <a href="/about"  >
                 <i class="icon icon-lg icon-star"></i>
+
                 关于我
               </a>
             </li>
@@ -104,6 +110,7 @@
             <li class="waves-block waves-effect">
               <a href="https://github.com/Microndgt" target="_blank" >
                 <i class="icon icon-lg icon-github"></i>
+
                 Github
               </a>
             </li>
@@ -149,7 +156,8 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
 
             
         </h5>
@@ -170,6 +178,7 @@
         </nav>
     </aside>
     
+
 <article id="post-Celery 踩坑记"
   class="post-article article-type-post fade" itemprop="blogPost">
 
@@ -179,8 +188,7 @@
             <time class="post-time" title="2017-08-13 16:47:05 16:47:05" datetime="2017-08-13T08:47:05.000Z"  itemprop="datePublished">2017-08-13 16:47:05</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Programming/">编程</a></li></ul>
-
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
 
 
             
@@ -191,6 +199,9 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
             <p>最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。</p>
 <h1 id="使用RabbitMQ而不是Redis做Broker"><a href="#使用RabbitMQ而不是Redis做Broker" class="headerlink" title="使用RabbitMQ而不是Redis做Broker"></a>使用RabbitMQ而不是Redis做Broker</h1><p>这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。</p>
 <p>另外，使用RabbitMQ的时候，实例化celery的时候，Broker应该使用pyamqp: <code>celery = Celery(app.__name__, broker=&#39;pyamqp://{}:{}@{}:{}/{}&#39;.format(RM_USER, RM_PWD, RM_HOST, RM_PORT, RM_VHOST))</code></p>
@@ -248,12 +259,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 调用后返回的还是AsyncResult</div><div class="line">c3 = (group(add.s(i, i) for i in xrange(10)) | xsum.s())</div><div class="line"></div><div class="line"># group在后面</div><div class="line">new_user_workflow = (create_user.s() | group(import_contacts.s(), send_welcome_email.s()))</div><div class="line">new_user_workflow.delay(username=&apos;artv&apos;, first=&apos;Art&apos;, last=&apos;Vandelay&apos;, email=&apos;art@vandelay.com&apos;)</div></pre></td></tr></table></figure>
 <p><em>如何在先调用group，然后调用普通任务的情况下，获得GroupResult，这个还没有好的方法。</em></p>
 <p><code>group([(group(add.s(i, i) for i in xrange(10)) | xsum.s())])</code>这个呢？</p>
-<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>，目前这种操作有点问题，可能不能将task完全的停掉。这里再考虑更有效的方法吧。</p>
-<p>P.S. 可能需要以下的参数配置</p>
+<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>。</p>
+<p>P.S.</p>
+<ul>
+<li>可能需要以下的参数配置</li>
+</ul>
 <p><code>task_sent</code> event 当一个任务消息被发布并且<code>CELERY_TASK_SEND_SENT_EVENT</code>配置有效的时候的时候发送这个event</p>
 <p><code>CELERY_TASK_SEND_SENT_EVENT</code> 如果启用，<code>task_sent</code> event 将会发送给每一个task，这样在task被worker运行之前tasks可以被追踪到</p>
 <p><code>CELERY_SEND_EVENTS</code> # 发送task相关的event，这样task就可以被比如flower之类的进行控制了</p>
-<p>目前可以停止，但是不完全。</p>
+<ul>
+<li>terminated</li>
+</ul>
+<p>这里Celery使用的是SIGTERM，所以会关闭进程相关的程序，也就是等待进程释放自己的资源，然后再停止，如果程序再等待I/O，可能就不会立马作出反应。也就是说，SIGTERM多半是会被阻塞的，忽略的。</p>
+<p>如果使用SIGKILL，就会强制杀死进程，所以可能导致孤儿进程的产生。</p>
 <h2 id="chord"><a href="#chord" class="headerlink" title="chord"></a>chord</h2><p>chord可以使得你完成group所有的task之后来调用一个回调函数，这个方法经常会在易并行(embarrassingly parallel)的场景使用，关于这个embarrassingly…<a href="https://english.stackexchange.com/questions/83677/what-is-embarrassing-about-an-embarrassingly-parallel-problem" target="_blank" rel="external">What is “embarrassing” about an embarrassingly parallel problem?</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from celery import chord</div><div class="line"># 这样会导致前面的十个任务并行处理，并且将结果组成一个list，传递给后面的xsum</div><div class="line"># 当然后面的也可以不用前面的结果，使用si()就行了</div><div class="line">res = chord((add.s(i, i) for i in xrange(10)), xsum.s())()</div></pre></td></tr></table></figure>
 <p>下面这个是我自己写的一个并发处理，并且还能拿到状态用于后续的控制和状态读取的例子</p>
@@ -261,19 +279,15 @@
 <p>实现的机理是：有一个循环任务不断的(间隔1秒)去检测group任务是否完成，当完成的时候调用signature回调。但是在Redis和 Memcached: 它们实现了一个计数器，在每个并行的任务完成后给计数器增加，直到计数器的数字等于并行任务的数目时候调用回调函数。</p>
 <p>另外：chord不能在redis 2.2版本以前正常工作，最好升级到2.2以上。</p>
 <p>尽可能的不要用chord因为它是一个同步操作，但是如果并行任务后面的同步操作是必须的，那么chord很有用，只有header里面的所有task任务被执行完成后并且返回，回调函数才可以被调用。header里面的每一步都是并行处理的，在不同的节点。然后header里面每个任务的返回值会传给回调函数，然后执行。返回的task id是回调函数的，所以可以等待最终的返回值。</p>
-<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><h2 id="starmap"><a href="#starmap" class="headerlink" title="starmap"></a>starmap</h2><h2 id="chunks"><a href="#chunks" class="headerlink" title="chunks"></a>chunks</h2><h1 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h1><h2 id="AsyncResult"><a href="#AsyncResult" class="headerlink" title="AsyncResult"></a>AsyncResult</h2><h2 id="GroupResult"><a href="#GroupResult" class="headerlink" title="GroupResult"></a>GroupResult</h2><h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><h2 id="starmap"><a href="#starmap" class="headerlink" title="starmap"></a>starmap</h2><h2 id="chunks"><a href="#chunks" class="headerlink" title="chunks"></a>chunks</h2><h1 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h1><h2 id="AsyncResult"><a href="#AsyncResult" class="headerlink" title="AsyncResult"></a>AsyncResult</h2><h2 id="GroupResult"><a href="#GroupResult" class="headerlink" title="GroupResult"></a>GroupResult</h2><h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1>     
         </div>
 
         <blockquote class="post-copyright">
     <div class="content">
         
-<span class="post-time">
-    最后更新时间：<time datetime="2017-09-01T06:37:01.000Z" itemprop="dateUpdated">2017-09-01 14:37:01 14:37:01</time>
-</span><br>
-
 
         
-        版权所有。转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/13/Celery 踩坑记/" target="_blank" rel="external">http://skyrover.me/2017/08/13/Celery 踩坑记/</a>
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/13/Celery 踩坑记/" target="_blank" rel="external">http://skyrover.me/2017/08/13/Celery 踩坑记/</a>
         
     </div>
     <footer>
@@ -294,6 +308,7 @@
         <div class="post-footer">
             
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Celery/">Celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
 
 
             
@@ -357,7 +372,6 @@
       </a>
     </div>
   
-
   
     <div class="waves-block waves-effect next">
       <a href="/2017/08/09/contextlib 详解/" id="post-next" class="post-nav-link">
@@ -373,23 +387,31 @@
     
 
 
+
+
+
+
+
+
+
+
+
 <section class="comments" id="comments">
-    <div id="disqus_thread"></div>
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
     <script>
-    var disqus_shortname = 'true';
-    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
     </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </section>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -443,7 +465,7 @@
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             
-            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+            <span>欢迎订阅</span>
         </p>
     </div>
     <div class="bottom">

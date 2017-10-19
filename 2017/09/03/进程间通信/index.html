@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>进程间通信 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="并发,操作系统">
+    <meta name="description" content="IPC(Inter Process Communication) 同样的问题和解决办法也适用于线程。 竞争条件也就是在协作进程中共享了一些公用存储区，但是这些存储区最后的结果取决于进程运行的精确时序，比如A先输出了，但是B也输出了，最后的正确结果是B输出的，所以这种称为竞争条件。也就是说这种需要依赖进程运行顺序的，是竞争的条件。 临界区为了防止这种情况，必须有某种途径来阻止多个进程同时读写共享的数">
+<meta name="keywords" content="并发,操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程间通信">
+<meta property="og:url" content="http://skyrover.me/2017/09/03/进程间通信/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="IPC(Inter Process Communication) 同样的问题和解决办法也适用于线程。 竞争条件也就是在协作进程中共享了一些公用存储区，但是这些存储区最后的结果取决于进程运行的精确时序，比如A先输出了，但是B也输出了，最后的正确结果是B输出的，所以这种称为竞争条件。也就是说这种需要依赖进程运行顺序的，是竞争的条件。 临界区为了防止这种情况，必须有某种途径来阻止多个进程同时读写共享的数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-03T07:23:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程间通信">
+<meta name="twitter:description" content="IPC(Inter Process Communication) 同样的问题和解决办法也适用于线程。 竞争条件也就是在协作进程中共享了一些公用存储区，但是这些存储区最后的结果取决于进程运行的精确时序，比如A先输出了，但是B也输出了，最后的正确结果是B输出的，所以这种称为竞争条件。也就是说这种需要依赖进程运行顺序的，是竞争的条件。 临界区为了防止这种情况，必须有某种途径来阻止多个进程同时读写共享的数">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">进程间通信</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">进程间通信</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-03T07:23:03.000Z" itemprop="datePublished" class="page-time">
+  2017-09-03 15:23:03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#竞争条件"><span class="post-toc-number">1.</span> <span class="post-toc-text">竞争条件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#临界区"><span class="post-toc-number">2.</span> <span class="post-toc-text">临界区</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#忙等待的互斥"><span class="post-toc-number">3.</span> <span class="post-toc-text">忙等待的互斥</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#屏蔽中断"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">屏蔽中断</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#锁变量"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">锁变量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#严格轮换法"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">严格轮换法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Peterson解法"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">Peterson解法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TSL指令"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">TSL指令</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#睡眠与唤醒"><span class="post-toc-number">4.</span> <span class="post-toc-text">睡眠与唤醒</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#信号量-Semaphore"><span class="post-toc-number">5.</span> <span class="post-toc-text">信号量 Semaphore</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#互斥量-mutex"><span class="post-toc-number">6.</span> <span class="post-toc-text">互斥量 mutex</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Pthread中的互斥"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">Pthread中的互斥</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#管程-monitor"><span class="post-toc-number">7.</span> <span class="post-toc-text">管程 monitor</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#消息传递-message-passing"><span class="post-toc-number">8.</span> <span class="post-toc-text">消息传递 message passing</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#消息传递系统的设计要点"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">消息传递系统的设计要点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#消息传递解决生产者-消费者问题"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">消息传递解决生产者-消费者问题</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#屏障"><span class="post-toc-number">9.</span> <span class="post-toc-text">屏障</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">10.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-进程间通信"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">进程间通信</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-03 15:23:03 15:23:03" datetime="2017-09-03T07:23:03.000Z"  itemprop="datePublished">2017-09-03 15:23:03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>IPC(Inter Process Communication)</p>
+<p>同样的问题和解决办法也适用于线程。</p>
+<h1 id="竞争条件"><a href="#竞争条件" class="headerlink" title="竞争条件"></a>竞争条件</h1><p>也就是在协作进程中共享了一些公用存储区，但是这些存储区最后的结果取决于进程运行的精确时序，比如A先输出了，但是B也输出了，最后的正确结果是B输出的，所以这种称为竞争条件。也就是说这种需要依赖进程运行顺序的，是竞争的条件。</p>
+<h1 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h1><p>为了防止这种情况，必须有某种途径来阻止多个进程同时读写共享的数据，需要进行互斥，即以某种手段确保当一个进程在使用一个共享变量或者文件的时候，其他进程不能做同样的操作。为实现互斥而选择适当的原语是任何操作系统的主要设计内容之一。</p>
+<p>把 <strong>对共享内存进行访问的程序片段称为临界区域或者临界区</strong>，经过调度，<strong>使得两个进程不能同时处于临界区中</strong>，就能避免竞争条件，这样就不会依赖于进程运行的顺序。</p>
+<h1 id="忙等待的互斥"><a href="#忙等待的互斥" class="headerlink" title="忙等待的互斥"></a>忙等待的互斥</h1><h2 id="屏蔽中断"><a href="#屏蔽中断" class="headerlink" title="屏蔽中断"></a>屏蔽中断</h2><p>单处理器系统中，使每个进程在刚刚进入临界区后立即屏蔽所有中断，并在就要离开之前再打开中断，屏蔽中断后，时钟中断也被屏蔽，这样CPU就不会被切换到其他进程。这样一个进程屏蔽中断后，就可以检查和修改共享内存，而不必担心其他进程介入。</p>
+<p>但是在多处理器中就不好弄了，因为只能对执行disable指令的那个CPU有效，而且如果屏蔽之后不再打开中断，那么系统就有可能终止。</p>
+<h2 id="锁变量"><a href="#锁变量" class="headerlink" title="锁变量"></a>锁变量</h2><p>设置一个共享锁变量，但是这种还是有可能在设置锁的时候，另一个进程被调度执行。然后同时就有可能有两个进程进入临界区中。</p>
+<h2 id="严格轮换法"><a href="#严格轮换法" class="headerlink" title="严格轮换法"></a>严格轮换法</h2><p>类似于下面代码描述的情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># 进程0 等待turn==0才开始运行</div><div class="line">while (TRUE)&#123;</div><div class="line">  while (turn != 0)&#123;</div><div class="line">    critical_region();</div><div class="line">    turn = 1;</div><div class="line">    noncritical_region();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"># 进程1 等待turn==1才开始运行</div><div class="line">while (TRUE)&#123;</div><div class="line">  while (turn != 1)&#123;</div><div class="line">    critical_region();</div><div class="line">    turn = 0;</div><div class="line">    noncritical_region();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>开始运行时候，turn为0，进程0开始运行，运行完临界区后，turn为1，进程1开始运行临界区。如果进程0运行完后，turn=1，但是进程1还没有完成上一轮非临界区的执行，这时候turn就为0，进程0就只能阻塞等待了。所以进程0被一个临界区之外的进程阻塞。</p>
+<p>这个等待被称为忙等待，用于忙等待的锁，称为自旋锁。</p>
+<h2 id="Peterson解法"><a href="#Peterson解法" class="headerlink" title="Peterson解法"></a>Peterson解法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#define FALSE 0</div><div class="line">#define TRUE 1</div><div class="line">#define N 2</div><div class="line"></div><div class="line">int turn;  /* turn作为全局变量指示现在应该谁进入临界区 */</div><div class="line">int interested[N];</div><div class="line"></div><div class="line">void enter_region(int process)&#123;</div><div class="line">  int other;</div><div class="line"></div><div class="line">  other = 1 - process;</div><div class="line">  interested[process] = TRUE;</div><div class="line">  turn = process;</div><div class="line">  while (turn == process &amp;&amp; interested[other] == TRUE);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void leave_region(int process)&#123;</div><div class="line">  interested[process] = False;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从代码可以看出来假设只有一个进程进入，那么情况很简单，立马返回就开始执行了。如果进程0进入了，但是没有离开，那么进程1要进入，必须等待<code>interested[other]</code>为False才可以进入。如果几乎是两个一起进入的，那么后面进入的将会将turn值重写，这样前面的就直接进入了临界区(因为<code>turn!=process</code>)，后面的进程要等待到<code>interested[other]</code>为False，也就是进程0从临界区出来。</p>
+<p>关键在于这个条件判断，<code>interested[other]</code>主要用来在一个已经进入了临界区的进程，要进行等待。<code>turn==process</code>的话主要是用在两个几乎是同时进入，用来第一个进程打破循环先进入临界区的。</p>
+<h2 id="TSL指令"><a href="#TSL指令" class="headerlink" title="TSL指令"></a>TSL指令</h2><p><code>TSL RX, LOCK</code>测试并且加锁(Test and Set Lock)，将一个内存字lock读到寄存器RX中，然后在该内存地址上存一个非0值。读字和写字的操作是不可分割的，在该指令结束之前其他处理器均不允许访问该内存字。执行TSL指令的CPU将锁住内存总线，禁止其他CPU在本指令结束之前访问内存。</p>
+<p>用一个共享变量lock来协调对共享内存的访问，lock为0的时候，任何进程都可以使用TSL指令将其设置为1，并读写共享内存，操作结束之后，进程用一个普通的move指令将lock值重新设置为0.</p>
+<h1 id="睡眠与唤醒"><a href="#睡眠与唤醒" class="headerlink" title="睡眠与唤醒"></a>睡眠与唤醒</h1><p>之前的这些解决办法都是忙等待，本质上都是：当一个进程想进入临界区时候，先检查是否允许进入，若不允许，则该进程将原地等待，直到允许为止。</p>
+<p>sleep和wakeup会在无法进入临界区的时候阻塞而不是忙等待，会引起调用进程阻塞的系统调用，直到另一个进程将其唤醒。</p>
+<h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量 Semaphore"></a>信号量 Semaphore</h1><p>即PV操作，信号量也就是该资源的有效数目，对信号量进行down操作，首先检查信号量的值是否大于0，如果大于0，则将其值减一然后继续。如果为0，那么进程将会睡眠。up操作将对信号量的值增加1，也就是释放操作，如果有一个或者多个进程在这个信号量上睡眠，那么up之后，信号量的值依然为0，但是有一个进程被唤醒了。</p>
+<p>down和up操作都是原子的，down中检查数值，修改变量值以及可能发生的睡眠操作都是一个单一的原子操作，up的值增1和唤醒一个进程也是，这种原子性对于解决同步问题和避免竞争条件是绝对必要的。</p>
+<p>通常是将up和down作为系统调用实现，操作系统需要在执行下面操作的时候屏蔽所有中断，测试信号量，更新信号量以及在需要时候使得某个进程睡眠。如果使用多个CPU，则每个信号量由一个锁变量来进行抱回，通过TSL来确保同一个时刻只有一个CPU在对信号量进行操作。</p>
+<p>一个生产者和消费者的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">#define N 100</div><div class="line">typedef int semaphore;</div><div class="line">semaphore mutex = 1;</div><div class="line">semaphore empty = N;</div><div class="line">semaphore full = 0;</div><div class="line"></div><div class="line">void producer(void)&#123;</div><div class="line">  int item;</div><div class="line">  while (TRUE)&#123;</div><div class="line">    item = produce_item();</div><div class="line">    down(&amp;empty);</div><div class="line">    down(&amp;mutex); /* 进入临界区 */</div><div class="line">    insert_item(item);</div><div class="line">    up(&amp;mutex); /* 离开临界区 */</div><div class="line">    up(&amp;full);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void consumer(void)&#123;</div><div class="line">  int item;</div><div class="line">  while (TRUE)&#123;</div><div class="line">    down(&amp;full);</div><div class="line">    down(&amp;mutex);</div><div class="line">    item = remove_item();</div><div class="line">    up(&amp;mutex);</div><div class="line">    up(&amp;empty);</div><div class="line">    consume_item(item);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样信号量就实现了临界区互斥操作，而消费者等待生产者放入item，这又是一种同步操作。同步是多个进程在执行次序上的协调，相互等待消息，而互斥是对临界资源的使用。所以信号量full和empty用来保证某种事件的顺序发生或者不发生，保证了缓冲区满的时候生产者停止运行，缓冲区空的时候消费者停止运行。</p>
+<h1 id="互斥量-mutex"><a href="#互斥量-mutex" class="headerlink" title="互斥量 mutex"></a>互斥量 mutex</h1><p>互斥量是信号量的一个简化版本，仅仅适用于管理共享资源或者一小段代码，有两个状态，解锁和加锁，当一个线程或者进程需要访问临界区的时候，调用<code>mutex_lock</code>，如果该互斥量当前是解锁的，调用成功，则线程或者进程可以进入该临界区。如果已经加锁，那么线程将会被阻塞，直到在临界区的线程完成并且调用<code>mutex_unlock</code>，如果有多个线程阻塞，那么随机选择一个。</p>
+<p>和<code>enter_region</code>的区别在于，<code>enter_region</code>在阻塞的时候会一直运行，测试锁，忙等待，而这个线程也不会得到锁，因为不会切换给其他线程运行来释放锁。但是<code>mutex_lock</code>在没有获得锁的时候会<code>thread_yield</code>，所以没有忙等待，在该线程下一次运行的时候，再一次对锁进行测试。</p>
+<p>这个方法和之前提到的加锁区别在于互斥量使用了TSL，保证了原子性。</p>
+<p>但是有一个问题是，对于用户级线程，可以共用一个互斥量，因为所有的线程都在一个公共地址空间中操作。但是对于进程来说，就必须访问一些共享内存。两种方案，第一有些共享数据结构，比如信号量是可以放在内核中的，并且只能通过系统调用来访问。第二种，是进程和其他进程共享部分地址空间，或者共享文件。</p>
+<h2 id="Pthread中的互斥"><a href="#Pthread中的互斥" class="headerlink" title="Pthread中的互斥"></a>Pthread中的互斥</h2><ul>
+<li><code>pthread_mutex_init</code></li>
+<li><code>pthread_mutex_destroy</code></li>
+<li><code>pthread_mutex_lock</code></li>
+<li><code>pthread_mutex_try_lock</code></li>
+<li><code>pthread_mutex_unlock</code></li>
+</ul>
+<p>另外一种同步机制：条件变量，其允许线程由于一些未达到的条件而阻塞。</p>
+<ul>
+<li><code>pthread_cond_init</code></li>
+<li><code>pthread_cond_destroy</code></li>
+<li><code>pthread_cond_wait</code></li>
+<li><code>pthread_cond_signal</code> 向另一个线程发信号来唤醒它</li>
+<li><code>pthread_cond_broadcast</code> 向多个线程发信号来让他们全部唤醒</li>
+</ul>
+<p>被阻塞的线程经常是在等待发信号的线程去做某些工作，释放某些资源或者是进行其他一些活动，只有完成后阻塞的线程才可以继续运行。</p>
+<p>条件变量与互斥量一起使用，让一个线程锁住一个互斥量，然后当它不能获得期待的结果时候等待一个条件变量。最后另一个线程会向它发送信号，然后继续执行。<code>pthread_cond_wait</code>原子性调用并且解锁它持有的互斥量，所以互斥量是参数之一。</p>
+<p>一起使用的原因是因为有临界区需要进行互斥操作，如果没有临界区就可以直接使用条件变量来进行资源的同步。比如<code>aiossdb</code>中需要获取可用连接时候等待其他协程释放连接，然后通知等待的条件变量。</p>
+<p>一个使用信号量的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;pthread.h&gt;</div><div class="line">#define MAX 10000000</div><div class="line">pthread_mutex_init the_mutex;</div><div class="line">pthread_cond_init condc, condp;</div><div class="line">int buffer = 0;</div><div class="line"></div><div class="line">void *producer(void *ptr)&#123;</div><div class="line">  int i;</div><div class="line">  for(i=1;i&lt;=MAX;i++)&#123;</div><div class="line">    pthread_mutex_lock(&amp;the_mutex); /* 互斥使用缓冲区，在条件变量wait时候会解锁 */</div><div class="line">    while(buffer != 0) pthread_cond_wait(&amp;condp, &amp;the_mutex);</div><div class="line">    buffer = i;</div><div class="line">    pthread_cond_signal(&amp;condc);</div><div class="line">    pthread_mutex_unlock(&amp;the_mutex); /* 释放缓冲区 */</div><div class="line"></div><div class="line">  &#125;</div><div class="line">  pthread_exit(0);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void *consumer(void *ptr)&#123;</div><div class="line">  int i;</div><div class="line">  for (i=1;i&lt;=MAX;i++)&#123;</div><div class="line">    pthread_mutex_lock(&amp;the_mutex);</div><div class="line">    while(buffer == 0) pthread_cond_wait(&amp;condc,&amp;the_mutex);</div><div class="line">    buffer = 0;</div><div class="line">    pthread_cond_signal(&amp;condp);</div><div class="line">    pthread_mutex_unlock(&amp;the_mutex);</div><div class="line">  &#125;</div><div class="line">  pthread_exit(0);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(int argc, char **argv)&#123;</div><div class="line">  pthread_t pro, con;</div><div class="line">  pthread_mutex_init(&amp;the_mutex, 0);</div><div class="line">  pthread_cond_init(&amp;condc, 0);</div><div class="line">  pthread_cond_init(&amp;condp, 0);</div><div class="line">  pthread_create(&amp;con, 0, consumer, 0);</div><div class="line">  pthread_create(&amp;pro, 0, producer, 0);</div><div class="line">  pthread_join(pro, 0);</div><div class="line">  pthread_join(con, 0);</div><div class="line">  pthread_cond_destroy(&amp;condc);</div><div class="line">  pthread_cond_destroy(&amp;condp);</div><div class="line">  pthread_mutex_destroy(&amp;the_mutex);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="管程-monitor"><a href="#管程-monitor" class="headerlink" title="管程 monitor"></a>管程 monitor</h1><p>一个管程是一个由过程，变量以及数据结构等组成的一个集合，进程可以在任何需要的时候调用管程中的过程，但是不能在管程之外声明的过程中直接访问管程内的数据结构。任意时刻管程中只能由一个活跃进程，这样管程就可以实现互斥，也就是实现了一个集合，比如Java中的<code>synchronized</code>，Java会保证一旦某个线程执行该方法，就不允许其他线程执行该对象中的任何<code>synchronized</code>方法。</p>
+<p> 一个管程过程发现其无法继续运行的时候，会在某个条件变量上执行wait操作，会导致调用进程自身阻塞，并且将一个等待管程过程的进程调入管程，比如缓冲区满。消费者消费之后，可以唤醒正在睡眠的生产者进程，可以给正在等待的条件变量执行signal完成，一般会在最后执行signal，这样，执行后该进程就会退出管程。</p>
+<p> 对管程过程的自动互斥保证了进程完成wait操作不会被打断，也就是在wait完成之前切换进程，在wait执行完成把生产者标志为不可运行之前，就不会允许消费者进入管程。</p>
+<p> 新的问题是分布式系统中，每个CPU由自己的私有内存，这样目前使用的原语没有提供机器间的信息交换方法。</p>
+<h1 id="消息传递-message-passing"><a href="#消息传递-message-passing" class="headerlink" title="消息传递 message passing"></a>消息传递 message passing</h1><p>进程间通信的方式，使用这两条原语<code>send</code>和<code>receive</code>，如果没有消息可用，接收者可能被阻塞，直到一条消息到达。</p>
+<h2 id="消息传递系统的设计要点"><a href="#消息传递系统的设计要点" class="headerlink" title="消息传递系统的设计要点"></a>消息传递系统的设计要点</h2><ul>
+<li>发送，确认。</li>
+<li>原始消息嵌入序号</li>
+<li>身份认证</li>
+</ul>
+<h2 id="消息传递解决生产者-消费者问题"><a href="#消息传递解决生产者-消费者问题" class="headerlink" title="消息传递解决生产者-消费者问题"></a>消息传递解决生产者-消费者问题</h2><p>首先消费者向生产者发送空消息，生产者拿走空消息，然后生产填充消息，然后发送给消费者。消费者拿走消息，消费并且向生产者发送空消息。</p>
+<p>对消息进行编址的两种方式：</p>
+<ul>
+<li>为每个进程分配一个唯一地址，让消息按照进程地址编址</li>
+<li>使用信箱，对一定数量的消息进行缓冲，如果进程向满的信箱发送消息，将会被挂起，直到由空消息，类似于消息队列</li>
+</ul>
+<p>通常在并行程序设计系统中使用消息传递。下面是一个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#define N 100</div><div class="line"></div><div class="line">void producer(void)&#123;</div><div class="line">  int item;</div><div class="line">  message m;</div><div class="line">  while(TRUE)&#123;</div><div class="line">    item = produce_item();</div><div class="line">    receive(consumer, &amp;m); /* 等待消费者发送空缓冲区 */</div><div class="line">    build_message(&amp;m, item);</div><div class="line">    send(consumer, &amp;m);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void consumer(void)&#123;</div><div class="line">  int item, i;</div><div class="line">  message m;</div><div class="line">  for (i=0;i&lt;N;i++) send(producer, &amp;m);</div><div class="line">  while(TRUE)&#123;</div><div class="line">    receive(producer, &amp;m);</div><div class="line">    item = extrace_item(&amp;m);</div><div class="line">    send(producer, &amp;m);</div><div class="line">    consume_item(item);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="屏障"><a href="#屏障" class="headerlink" title="屏障"></a>屏障</h1><p>对于划分了多个阶段的进程组来说，必须所有进程都完成了这一阶段的工作，才可以进入下一个阶段。使得每一个进程在完成当前迭代工作后执行一个barrier操作。具体实现，有可能是一个计数器，也可能是一个不断的轮询。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>进程通信，第一，进程如何将信息传递给另外一个，第二确保进程之间在临界区不会冲突，即互斥，第三个是进程之间的同步问题（顺序问题）。</p>
+<p>第一个，管道，共享存储区，共享文件，共享数据结构（信号量），消息传递（消息队列）。其中线程本身就是共享一个地址空间（同一个进程的线程）</p>
+<p>第二个，互斥，忙等待，信号量，互斥量，管程等</p>
+<p>第三个，信号量实现同步</p>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/09/03/进程间通信/" target="_blank" rel="external">http://skyrover.me/2017/09/03/进程间通信/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/03/进程间通信/&title=《进程间通信》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/03/进程间通信/&title=《进程间通信》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/03/进程间通信/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《进程间通信》 — SkyRover&url=http://skyrover.me/2017/09/03/进程间通信/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/03/进程间通信/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/09/03/LeetCode刷题(3)/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">LeetCode刷题(3)</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/31/C1000k/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">C1000k</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/03/进程间通信/&title=《进程间通信》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/03/进程间通信/&title=《进程间通信》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/03/进程间通信/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《进程间通信》 — SkyRover&url=http://skyrover.me/2017/09/03/进程间通信/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/03/进程间通信/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMUlEQVR42u3aS27jQAxFUe1/0wqQUYDYlcvHcgAVb40aim3paMDm77rwub/P7ys/r7/7zPrz6yubjwwZMh7LuJdnfQPyXfIi3r0O/vsyZMiYwFgH2RscEkb55/mzyZAhQwZJ+7IrWbopQ4YMGeSWWUq3rjo5VYYMGZMZJIHLikwSWKtppQwZMqYxqoOB//z3B+cbMmTIeAjjLh6SUPI7ZkH2xVPJkCHjaAYvSjsbDqgEje54VSeiMmTIeDiDPBzBV3+n80JfBFwZMmQcx6h+IWv0Z6G5QJIhQ8bRDJKcVQvOrHmXraDJkCFjDqPaoM+K22rrrboCIkOGjAmMbCTA18V2LY29/asMGTIOZZCb8cKysxbWGqPKkCFjAGPXo3fK2mzYKUOGjAmMbMFrjedDyuqv/fHSZciQcShjXaDyZhwn9UviwraIDBkyjmDwFa4sESTBtH9FhgwZZzP2lq/8pfRXLthUU4YMGecweAmafYs8UCtllCFDxtEM3nzvPDpv/WdBWYYMGWczOk15Mm7kRWwrEMuQIWMkgy9M9NNK8prQfEOGDBmHMjqJIE8or00H/QcgQ4aM4xh38WQrYmTAwAcSMmTImMboBLtqAseTPz5Y3RCzZciQ8RAGb3vxtYl+S64ajmXIkDGB0Q+C1UFmVu6Gk1gZMmSMYXRSvSwob9sZkSFDxkgGTyur4Tucb8iQIWMAo9PEr7b1O10yGTJkzGRUg132uFm5y9twMmTIOJTxBbzIhJo0wpCcAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

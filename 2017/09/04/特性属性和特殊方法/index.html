@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>特性，属性和特殊方法 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python">
+    <meta name="description" content="From 流畅的Python 人民邮电出版社 19章动态属性和特性  特性数据的属性和处理数据的方法统称为属性，其实方法只是可调用的属性。然后还有特性：property(fget=None, fset=None, fdel=None, doc=None) 经典的使用方法12345678910111213141516171819class LineItem:    def __init__(sel">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特性，属性和特殊方法">
+<meta property="og:url" content="http://skyrover.me/2017/09/04/特性属性和特殊方法/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="From 流畅的Python 人民邮电出版社 19章动态属性和特性  特性数据的属性和处理数据的方法统称为属性，其实方法只是可调用的属性。然后还有特性：property(fget=None, fset=None, fdel=None, doc=None) 经典的使用方法12345678910111213141516171819class LineItem:    def __init__(sel">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-09T06:44:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="特性，属性和特殊方法">
+<meta name="twitter:description" content="From 流畅的Python 人民邮电出版社 19章动态属性和特性  特性数据的属性和处理数据的方法统称为属性，其实方法只是可调用的属性。然后还有特性：property(fget=None, fset=None, fdel=None, doc=None) 经典的使用方法12345678910111213141516171819class LineItem:    def __init__(sel">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">特性，属性和特殊方法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">特性，属性和特殊方法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-04T10:21:46.000Z" itemprop="datePublished" class="page-time">
+  2017-09-04 18:21:46
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#特性"><span class="post-toc-number">1.</span> <span class="post-toc-text">特性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#经典的使用方法"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">经典的使用方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#新式使用方法"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">新式使用方法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#特性工厂函数"><span class="post-toc-number">2.</span> <span class="post-toc-text">特性工厂函数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#处理属性的重要属性和函数"><span class="post-toc-number">3.</span> <span class="post-toc-text">处理属性的重要属性和函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#处理属性的内置函数"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">处理属性的内置函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#处理属性的特殊方法"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">处理属性的特殊方法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#查询特殊方法"><span class="post-toc-number">4.</span> <span class="post-toc-text">查询特殊方法</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-特性属性和特殊方法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">特性，属性和特殊方法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-04 18:21:46 18:21:46" datetime="2017-09-04T10:21:46.000Z"  itemprop="datePublished">2017-09-04 18:21:46</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <blockquote>
+<p>From <strong>流畅的Python 人民邮电出版社 19章动态属性和特性</strong></p>
+</blockquote>
+<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>数据的属性和处理数据的方法统称为属性，其实方法只是可调用的属性。然后还有特性：<code>property(fget=None, fset=None, fdel=None, doc=None)</code></p>
+<h2 id="经典的使用方法"><a href="#经典的使用方法" class="headerlink" title="经典的使用方法"></a>经典的使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class LineItem:</div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">    def get_weight(self):</div><div class="line">        return self.__weight</div><div class="line"></div><div class="line">    def set_weight(self, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            self.__weight = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">    # 构建property对象，然后赋值给公开的类属性 self.weight</div><div class="line">    weight = property(get_weight, set_weight)</div></pre></td></tr></table></figure>
+<h2 id="新式使用方法"><a href="#新式使用方法" class="headerlink" title="新式使用方法"></a>新式使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class LineItem:</div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">    @property</div><div class="line">    def weight(self):</div><div class="line">        return self.__weight</div><div class="line"></div><div class="line">    @weight.setter</div><div class="line">    def weight(self, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            self.__weight = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div></pre></td></tr></table></figure>
+<p>特性都是类属性，但是特性管理的是实例属性的存取。特性是一种描述符，所以肯定是类属性，管理的是实例属性。</p>
+<p>实例属性会遮盖类的数据属性，但是实例属性不会遮盖类特性，就是即使存在同样的实例属性名和特性属性名，再访问，也只会访问特性，而不会访问实例属性。如果删除这个类的特性，再去访问，就会是实例属性了。这种特性是覆盖型描述符：<code>obj.attr</code>会首先从<code>obj.__class__</code>开始，当类中没有名为attr的特性时候，Python才会在obj实例中寻找。</p>
+<p>特性的doc是在<code>@property</code>装饰的函数上的，经典的特性是doc参数<code>property(fget=None, fset=None, fdel=None, doc=None)</code></p>
+<h1 id="特性工厂函数"><a href="#特性工厂函数" class="headerlink" title="特性工厂函数"></a>特性工厂函数</h1><p>赋值语句的右边先计算</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">def quantity(storage_name):</div><div class="line">    # 获取属性的方法</div><div class="line">    def qty_getter(instance):</div><div class="line">        # 跳过特性，直接访问实例属性</div><div class="line">        return instance.__dict__[storage_name]</div><div class="line">    # 设置属性的方法</div><div class="line">    def qty_setter(instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">    # 返回一个特性，这样类中的一个属性就变成了特性</div><div class="line">    return property(qty_getter, qty_setter)</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    # weight类属性，现在是一个特性</div><div class="line">    weight = quantity(&apos;weight&apos;)</div><div class="line">    price = quantity(&apos;price&apos;)</div><div class="line"></div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line">    def subtotal(self):</div><div class="line">        # 特性会覆盖实例属性</div><div class="line">        return self.weight * self.price</div></pre></td></tr></table></figure>
+<p>特性会覆盖实例属性，所以可以直接存取<code>__dict__</code>属性来跳过特性的处理逻辑</p>
+<h1 id="处理属性的重要属性和函数"><a href="#处理属性的重要属性和函数" class="headerlink" title="处理属性的重要属性和函数"></a>处理属性的重要属性和函数</h1><ul>
+<li><code>__class__</code> 对象所属类的引用,<code>obj.__class__</code>和<code>type(obj)</code>，以及特殊方法只在对象的类中寻找，而不在实例中寻找</li>
+<li><code>__dict__</code> 存储对象或者类的可写属性，有<code>__dict__</code>的对象，可以随意设置新属性</li>
+<li><code>__slots__</code>限制实例能有哪些属性，定义了类中所有的实例属性，让解释器在元组中存储实例属性，而不用字典，节约内存！</li>
+</ul>
+<h2 id="处理属性的内置函数"><a href="#处理属性的内置函数" class="headerlink" title="处理属性的内置函数"></a>处理属性的内置函数</h2><ul>
+<li><code>dir(obj)</code> 列出对象的大多数属性，可以在有<code>__dict__</code>和没有<code>__dict__</code>属性的对象上使用</li>
+<li><code>getattr(object, name)</code> 从object对象中获取name字符串对应的属性</li>
+<li><code>hasattr(object, name)</code> 如果object中存在指定的属性，则返回True</li>
+<li><code>setattr(object, name, value)</code> 把object对象指定属性的值设为value</li>
+<li><code>vars([object])</code> 返回object对象的<code>__dict__</code>属性，如果没有参数，返回表示本地作用域的字典，如果没有<code>__dict__</code>属性，返回TypeError</li>
+</ul>
+<h2 id="处理属性的特殊方法"><a href="#处理属性的特殊方法" class="headerlink" title="处理属性的特殊方法"></a>处理属性的特殊方法</h2><p>直接访问实例的<code>__dict__</code>属性，就不会触发这些特殊方法</p>
+<ul>
+<li><code>__setattr__(self, name, value)</code></li>
+</ul>
+<p>尝试设置指定的属性时候总会调用这个方法。这种方式被成为代替正常机制（也就是在实例字典种存储值）。name是属性名字，值就是要设置的值。</p>
+<p>如果<code>__setattr__()</code>尝试给实例属性赋值，它应该调用基类方法，比如<code>object.__setattr__(self, name, value)</code>，object已经实现了这个方法</p>
+<ul>
+<li><code>__delattr__(self, name)</code></li>
+</ul>
+<p>删除属性会调用这个，如果<code>del obj.name</code>对象是有意义的才会去实现这个方法</p>
+<ul>
+<li><code>__dir__(self)</code></li>
+</ul>
+<p>在对象上调用dir函数时候被调用，返回一个列表。dir()转换并且返回一个排序的列表</p>
+<ul>
+<li><code>__getattribute__(self, name)</code></li>
+</ul>
+<p>无条件调用来实现类中实例的属性获取。如果类中同时定义了<code>__getattr__</code>，后者将会在<code>__getattribute__</code>显示调用的时候或者引发了一个<code>AttributeError</code>时候被调用。</p>
+<p>这个方法应该返回一个计算后的属性值或者引发一个<code>AttributeError</code>异常。为了防止在这个方法中无限循环，它的实现应该总是调用基类方法来获取它需要的任何属性，比如<code>object.__getattribute__(self, name)</code></p>
+<p>这个方法还是可能被忽略的，当查询一些特殊方法的时候。因为它们会被语法或者内置函数隐式调用。比如<code>__len__</code>方法(len函数)</p>
+<ul>
+<li><code>__getattr__(self, name)</code></li>
+</ul>
+<p>在获取指定的属性失败时候调用，在obj, Class和超类查找之后调用。</p>
+<p>如果正常机制可以找到属性的话，就不会调用这个方法。这个方法和<code>setattr</code>是不对称的。一方面是效率原因，另一方面因为要不然的话<code>__getattr__</code>就没法去获取实例的其他属性了。</p>
+<h1 id="查询特殊方法"><a href="#查询特殊方法" class="headerlink" title="查询特殊方法"></a>查询特殊方法</h1><p>对于自定义类，特殊方法的隐式调用只有在定义在object的类中才会保证正确，而不是在对象的实例字典中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class C:</div><div class="line">...     pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; c = C()</div><div class="line">&gt;&gt;&gt; c.__len__ = lambda: 5</div><div class="line">&gt;&gt;&gt; len(c)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">TypeError: object of type &apos;C&apos; has no len()</div></pre></td></tr></table></figure>
+<p>这种行为后面的基本原理在于几个特殊方法，比如被所有对象都实现的<code>__hash__()</code>和<code>__repr__()</code>，包括type对象。如果这些方法的隐式查询使用传统的查询过程，那么在type对象上调用这些方法的时候就会失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; 1 .__hash__() == hash(1)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; int.__hash__() == hash(int)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">TypeError: descriptor &apos;__hash__&apos; of &apos;int&apos; object needs an argument</div></pre></td></tr></table></figure>
+<p>使用这种不正确的调用未绑定方法的方式有时被称为<code>metaclass confusion</code>，并在查询特殊方法的时候忽略实例来避免这种情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; type(1).__hash__(1) == hash(1)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; type(int).__hash__(int) == hash(int)</div><div class="line">True</div></pre></td></tr></table></figure>
+<p>除了绕过任何实例属性，隐式的特殊方法查询一般也会忽略<code>__getattribute__()</code>方法即使对象是元类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Meta(type):</div><div class="line">...     def __getattribute__(*args):</div><div class="line">...         print(&quot;Metaclass getattribute invoked&quot;)</div><div class="line">...         return type.__getattribute__(*args)</div><div class="line">...</div><div class="line">&gt;&gt;&gt; class C(object, metaclass=Meta):</div><div class="line">...     def __len__(self):</div><div class="line">...         return 10</div><div class="line">...     def __getattribute__(*args):</div><div class="line">...         print(&quot;Class getattribute invoked&quot;)</div><div class="line">...         return object.__getattribute__(*args)</div><div class="line">...</div><div class="line">&gt;&gt;&gt; c = C()</div><div class="line">&gt;&gt;&gt; c.__len__()                 # Explicit lookup via instance</div><div class="line">Class getattribute invoked</div><div class="line">10</div><div class="line">&gt;&gt;&gt; type(c).__len__(c)          # Explicit lookup via type</div><div class="line">Metaclass getattribute invoked</div><div class="line">10</div><div class="line">&gt;&gt;&gt; len(c)                      # Implicit lookup</div><div class="line">10</div></pre></td></tr></table></figure>
+<p>绕过<code>__getattribute__()</code>机制在解释器中提供了意义重大的速度提升，当然在处理一些特殊方法上失去了灵活性(为了能够被解释器一致的调用，特殊方法必须在类中设置)</p>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/09/04/特性属性和特殊方法/" target="_blank" rel="external">http://skyrover.me/2017/09/04/特性属性和特殊方法/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/04/特性属性和特殊方法/&title=《特性，属性和特殊方法》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/04/特性属性和特殊方法/&title=《特性，属性和特殊方法》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/04/特性属性和特殊方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《特性，属性和特殊方法》 — SkyRover&url=http://skyrover.me/2017/09/04/特性属性和特殊方法/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/04/特性属性和特殊方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/09/05/属性描述符/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">属性描述符</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/04/Bye Bye Bye/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Bye Bye Bye</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/04/特性属性和特殊方法/&title=《特性，属性和特殊方法》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/04/特性属性和特殊方法/&title=《特性，属性和特殊方法》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/04/特性属性和特殊方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《特性，属性和特殊方法》 — SkyRover&url=http://skyrover.me/2017/09/04/特性属性和特殊方法/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/04/特性属性和特殊方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aMY7DMAwF0dz/0t42jZz5pBOsqFEVBIal54KgSL5eeF1v6/2f1e/VWj2z2uXhJUOGjG0Z6cbpm++P3v8oMmTIOIdBDpEenUdFEtY/7CJDhgwZt8/wcMyTSxkyZMjoMJ5N7Pj1WIYMGTLIZvcFOJ4skvTxi3dxGTJkbMioFc5+8/sr/Q0ZMmRsxbjCRUpmnStu8VQyZMgYzeAB7qnWJr/upsMfMmTImMrgwbRG7RfRyHCGDBkyTmDwkMeTRf6Z+HGXn1KGDBmjGRxWw5NE8D688haCDBkypjJ48tcJo+kzBLbMcGXIkDGakRbIam8g9b9WC1OGDBnHMGoNgLTclhb7lu+UIUPGaAYJo7UyHEklO2U+1ImVIUPGIEZ6lFozMh0aa/U6ZMiQMY5BkjMe+EhY7DQy47alDBkyNmek4ZIX9Ds1MZ5QypAhQ0an6M9haStiOWwhQ4aMoYz+hZOnfZ0WAmqaypAh40hGp8SfXo/TApwMGTJkdAIff1s65PFhLxkyZBzGSIctSDGu/7HQmIUMGTJGM9Lj8i150tkZzpAhQ8ZUxhWuWpJXS/iCfWXIkDGawVd6FN625GW1NEDLkCFjEqMWZNOEj6eDvF0qQ4aM0xid8hkPx8UjkvKcDBkyZIDyfRq+ecPglfpkyJBxPCNtLvJ/0kGNh2dGZMiQ8e8ZaYjslNj4RfqxRqYMGTI2Z9SujrUmQeczda6+MmTI2JbxBygm+gg8KAYpAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

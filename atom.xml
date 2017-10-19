@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-09-01T06:50:53.000Z</updated>
+  <updated>2017-10-19T04:35:48.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,1349 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL面试题集锦</title>
+    <link href="http://skyrover.me/2017/10/19/mysql_interview_1/"/>
+    <id>http://skyrover.me/2017/10/19/mysql_interview_1/</id>
+    <published>2017-10-19T04:30:35.000Z</published>
+    <updated>2017-10-19T04:35:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>翻译自：</p>
+<ul>
+<li><a href="https://www.tecmint.com/10-mysql-database-interview-questions-for-beginners-and-intermediates/" target="_blank" rel="external">10 MySQL Database Interview Questions for Beginners and Intermediates</a></li>
+</ul>
+<ol>
+<li><p>如何定义SQL？</p>
+<p> SQL代表的是结构化查询语言(Structured Query Language)。SQL是一门专门在关系型数据库管理系统中管理数据的编程语言。</p>
+</li>
+<li><p>什么是RDBMS？解释其特性？</p>
+<p> Relational Database Management System(RDBMS)是在关系数据库模型中最广泛使用的数据库管理系统。</p>
+<p> RDBMS的特性：</p>
+<ul>
+<li>在表中存储数据</li>
+<li>表中含有行和列</li>
+<li>可以通过SQL创建和检索表</li>
+</ul>
+</li>
+<li><p>什么是数据挖掘？</p>
+<p> 数据挖掘是计算机科学的子分类，其目的是从数据集中提取信息，并且将其转换成人类友好的结构在以后使用。</p>
+</li>
+<li><p>什么是ERD？</p>
+<p> ERD代表实体关系模型(Entity Relationship Diagram)，其中图形代表了表，它们之间是它们的关系。</p>
+</li>
+<li><p>Primary Key主键和Unique Key有什么区别？</p>
+<p> Primary和Unique都是实现了列值的唯一性。主键为列创建了聚集索引，而Unique key创建了非聚集索引。并且主键不允许NULL值，而Unique key允许NULL值。</p>
+</li>
+<li><p>如何在数据库中存储图片文件。使用了哪种对象类型？</p>
+<p> 在数据库存储图片不是个好主意。为了在数据库中存储图片，Blob对象类型是被推荐的。BLOB是一个二进制大对象，可以容纳可变数量的数据。而TEXT列被视为非二进制字符串(字符字符串)。</p>
+</li>
+<li><p>什么是数据仓库？</p>
+<p> 数据仓库一般是指企业数据仓库，是一个集中数据仓库，使用不同数据源来创建的。</p>
+</li>
+<li><p>数据库中的索引是什么，索引有哪几种类型？</p>
+<p> 索引是在数据库进行数据快速索引的快速引用。有两种不同的索引类型：</p>
+<ul>
+<li>聚集索引<ul>
+<li>在一个表中只有一个</li>
+<li>查询的时候比非聚集索引要快，因为数据是按照索引顺序存储</li>
+</ul>
+</li>
+<li><p>非聚集索引</p>
+<ul>
+<li>可以在一个表中使用多次</li>
+<li>比聚集索引可以更快的插入和更新</li>
+</ul>
+<p>聚集索引，该索引中键值的逻辑顺序决定了表中相应行的物理顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引）。聚集索引对于那些经常要搜索范围值的列特别有效。使用聚集索引找到包含第一个值的行后，便可以确保包含后续索引值的行在物理相邻。如果对从表中检索的数据进行排序时经常要用到某一列，则可以将该表在该列上聚集（物理排序），避免每次查询该列时都进行排序，从而节省成本。当索引值唯一时，使用聚集索引查找特定的行也很有效率。例如，使用唯一雇员 ID 列<code>emp_id</code>查找特定雇员的最快速的方法，是在<code>emp_id</code>列上创建聚集索引或<code>PRIMARY KEY</code>约束。</p>
+<p>非聚集索引，该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。索引是通过二叉树的数据结构来描述的，我们可以这么理解聚集索引：索引的叶节点就是数据节点。而非聚簇索引的叶节点仍然是索引节点，只不过有一个指针指向对应的数据块。因为聚集索引的数据的逻辑顺序和物理顺序是一致的，而非聚集索引的逻辑顺序和数据的物理顺序不同，所以最后的叶节点是一个指向对应数据块的。</p>
+<p>一个列子就是字典中按拼音查询和按部首查询。也就是说部首的目录纯粹是目录，正文纯粹是正文的排序方式是非聚集索引，两个不相关联，因此一个表中可以有多个非聚合索引。每个表只有一个聚集索引，因为一个数据集只有一种物理存放顺序。</p>
+<p>那么何时使用聚集索引，何时使用非聚集索引呢</p>
+</li>
+<li><p>返回某范围内的数据：应该使用聚集索引，而不应该使用非聚集索引，因为非聚集索引即使逻辑顺序对了，但是物理顺序仍然不对，所以没用。</p>
+</li>
+<li><p>频繁更新的列：不应该使用聚集索引，而应该使用非聚集索引，因为如果使用聚集索引，就会导致物理结构的变化，不好。</p>
+<p>所以聚集索引一般可以加快查询的速度，但是更新就不行了</p>
+</li>
+</ul>
+</li>
+<li><p>在MySQL中有多少可能的Triggers?</p>
+<ul>
+<li>Before Insert</li>
+<li>After Insert</li>
+<li>Before Update</li>
+<li>After Update</li>
+<li>Before Delete</li>
+<li><p>After Delete</p>
+<p>一个示例,<code>CREATE TRIGGER ins_sum BEFORE INSERT ON account FOR EACH ROW SET @SUM=@SUM+NEW.amount;</code></p>
+</li>
+</ul>
+</li>
+<li><p>什么是堆表(Heap table)?</p>
+<p>存在内存中的表叫做Heap tables。这些表是内存表，这些内存表没有像BLOB或者TEXT的数据类型。他们可以使用索引使得它们更快，索引是针对少量特定字段的值拿出来进行排序存储，并记录在表中的位置, 而因为索引是有序的, 所以就会很容易通过索引查询到具体的记录位置, 然后再根据记录位置直接从表中读取该记录。数据存储没有任何的顺序，插入数据也没顺序。由于数据没有任何顺序，查询数据会非常慢，但是写入操作会比较快。还有就是上面介绍的表Index-Organized table，直接就是索引表，表中数据本身就是有序的, 这样查询表的时候就可以快速的找到符合条件的记录位置。</p>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;翻译自：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.tecmint.com/10-mysql-database-interview-questions-for-beginners-and-intermediates/&quot; target=&quot;_blank
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>最是人间留不住</title>
+    <link href="http://skyrover.me/2017/10/17/music_1/"/>
+    <id>http://skyrover.me/2017/10/17/music_1/</id>
+    <published>2017-10-17T14:53:46.000Z</published>
+    <updated>2017-10-17T14:48:06.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>再推荐一首歌，最近单曲循环中。。有意境，有感觉，有情怀</p>
+<blockquote>
+<p>帘卷细雨，付一阕别离<br>楼上依稀和旧曲<br>是你当时，弦上生《金缕》<br>牵我今时几思忆 </p>
+<p>竹伞微倾，遮半面涟漪<br>怕听取，他年词笔<br>可知别后，五弦疏云泥<br>江郎才已为谁尽 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>只往事还如，青丝缠梳<br>无端把韶光负 </p>
+<p>三千红尘路，寥寥九州土<br>长安于我意何如？<br>无关青云路，无关诗书<br>无你处，无江湖 </p>
+<p>仲夏正半，你留书落款<br>写「别矣，吾乡长安」<br>流音未挽，只湿我罗衫<br>经年憔悴总相关 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>只往事还如，青丝缠梳<br>无端把韶光负 </p>
+<p>三千红尘路，寥寥九州土<br>长安于我意何如?<br>无关青云路，无关诗书<br>无你处，无江湖 </p>
+<p>梦也阑珊，梦也清寒<br>载你归程，偿我悲欢 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>三千红尘路，长安故土<br>最忆处，最难诉<br>无关青云路，无关诗书<br>无你处，无江湖</p>
+</blockquote>
+<p>嗯，长夜总会过去。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;再推荐一首歌，最近单曲循环中。。有意境，有感觉，有情怀&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;帘卷细雨，付一阕别离&lt;br&gt;楼上依稀和旧曲&lt;br&gt;是你当时，弦上生《金缕》&lt;br&gt;牵我今时几思忆 &lt;/p&gt;
+&lt;p&gt;竹伞微倾，遮半面涟漪&lt;br&gt;怕听取，他年词笔&lt;br&gt;可知别后，五
+    
+    </summary>
+    
+      <category term="Music" scheme="http://skyrover.me/categories/Music/"/>
+    
+    
+      <category term="Song" scheme="http://skyrover.me/tags/Song/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>跨域资源共享</title>
+    <link href="http://skyrover.me/2017/10/17/cross_origin_resources_sharing/"/>
+    <id>http://skyrover.me/2017/10/17/cross_origin_resources_sharing/</id>
+    <published>2017-10-17T08:12:35.000Z</published>
+    <updated>2017-10-17T08:13:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="同源政策"><a href="#同源政策" class="headerlink" title="同源政策"></a>同源政策</h1><p>浏览器安全的基石是”<a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">同源政策</a>“</p>
+<p>在计算机科学中，同源政策是web应用安全模型中非常重要的概念，一个web浏览器允许第一个web页面的程序可以获取在第二个页面的数据，当且仅当两个web页面是同源的。源被定义为URI scheme，域名和端口号。这个政策阻止了一个页面的恶意程序通过页面的Document Object模型去另外一个web页面获取敏感数据的权限。</p>
+<p>这个机制对广大的基于HTTP cookies的现代web应用意义重大，cookies维护了认证的用户sessions，而服务器是基于HTTP cookie信息来传递敏感信息或者完成状态改变的行为。不相关的站点之间的严格分离必须在客户端方来维护，来阻止数据的机密性或者完整性下降。</p>
+<p>通俗的讲，A网页设置的 Cookie，B网页不能打开，除非这两个网页”同源”。</p>
+<p>所谓”同源”指的是”三个相同”:</p>
+<ul>
+<li>协议相同</li>
+<li>域名相同</li>
+<li>端口相同</li>
+</ul>
+<p>比如<code>http://www.example.com/dir/page.html</code>和<code>http://example.com/dir/other.html</code>就不同源，因为域名不同，而和<code>http://www.example.com/dir2/other.html</code>同源，因为协议相同，域名相同，端口也相同。</p>
+<p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据。</p>
+<p>目前，如果非同源，共有三种行为受到限制：</p>
+<ul>
+<li>Cookie、LocalStorage 和 IndexDB 无法读取。</li>
+<li>DOM 无法获得。</li>
+<li>AJAX 请求不能发送。</li>
+</ul>
+<p>其中Cookie，iframe，LocalStorage等当不同源的时候的解决办法不涉及后端，因此暂时不做介绍。</p>
+<p>同源政策规定，AJAX请求只能发给同源的网址，否则就报错。除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制。</p>
+<ul>
+<li>JSONP</li>
+<li>WebSocket</li>
+<li>CORS</li>
+</ul>
+<p>其中WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。</p>
+<p>WebSocket的请求头中有一个Origin字段，表示该请求的请求源（origin），即发自哪个域名。正是因为有了Origin这个字段，所以WebSocket才没有实行同源政策。因为服务器可以根据这个字段，判断是否许可本次通信。如果该域名在白名单内，服务器就会做出如下回应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 101 Switching Protocols</div><div class="line">Upgrade: websocket</div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=</div><div class="line">Sec-WebSocket-Protocol: chat</div></pre></td></tr></table></figure>
+<h1 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h1><p>CORS是跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</p>
+<p>CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能。整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
+<p>实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。</p>
+<p>其中浏览器将CORS请求分成两类：简单请求（simple request）和非简单请求（not-so-simple request）。</p>
+<h2 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h2><ol>
+<li>请求方法是以下三种方法之一：<ul>
+<li>HEAD</li>
+<li>GET</li>
+<li>POST</li>
+</ul>
+</li>
+<li>HTTP的头信息不超出以下几种字段：<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+<li>Last-Event-ID</li>
+<li>Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain</li>
+</ul>
+</li>
+</ol>
+<p>对于简单请求，浏览器直接发出CORS请求。具体来说，浏览器发现这次跨源AJAX请求是简单请求，就在头信息之中自动增加一个Origin字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GET /cors HTTP/1.1</div><div class="line">Origin: http://api.bob.com</div><div class="line">Host: api.alice.com</div><div class="line">Accept-Language: en-US</div><div class="line">Connection: keep-alive</div><div class="line">User-Agent: Mozilla/5.0...</div></pre></td></tr></table></figure>
+<p>Origin字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。</p>
+<p>如果Origin指定的源，不在许可范围内，服务器会返回一个正常的HTTP回应。浏览器发现，这个回应的头信息没有包含<code>Access-Control-Allow-Origin</code>字段，就知道出错了，从而抛出一个错误，被XMLHttpRequest的onerror回调函数捕获。注意，这种错误无法通过状态码识别，因为HTTP回应的状态码有可能是200。</p>
+<p>如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Access-Control-Allow-Origin: http://api.bob.com</div><div class="line">Access-Control-Allow-Credentials: true</div><div class="line">Access-Control-Expose-Headers: FooBar Content-Type: text/html; charset=utf-8</div></pre></td></tr></table></figure>
+<ul>
+<li>Access-Control-Allow-Origin: 它的值要么是请求时Origin字段的值，要么是一个<code>*</code>，表示接受任意域名的请求。</li>
+<li>Access-Control-Allow-Credentials: 它的值是一个布尔值，表示是否允许发送Cookie。如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。</li>
+<li>Access-Control-Expose-Headers: CORS请求时，XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定。</li>
+</ul>
+<p>其中，如果有Cookie，则Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。</p>
+<h2 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h2><p>除了简单请求之外的都是非简单请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。</p>
+<ul>
+<li>预检请求</li>
+</ul>
+<p>非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为”预检”请求（preflight）。浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">OPTIONS /cors HTTP/1.1</div><div class="line">Origin: http://api.bob.com</div><div class="line">Access-Control-Request-Method: PUT</div><div class="line">Access-Control-Request-Headers: X-Custom-Header</div><div class="line">Host: api.alice.com</div><div class="line">Accept-Language: en-US</div><div class="line">Connection: keep-alive</div><div class="line">User-Agent: Mozilla/5.0...</div></pre></td></tr></table></figure>
+<p>“预检”请求用的请求方法是OPTIONS，表示这个请求是用来询问的。头信息里面，关键字段是Origin，表示请求来自哪个源。</p>
+<ul>
+<li>Access-Control-Request-Method: 列出浏览器的CORS请求会用到哪些HTTP方法</li>
+<li><p>Access-Control-Request-Headers: 指定浏览器CORS请求会额外发送的头信息字段</p>
+</li>
+<li><p>预检请求回应</p>
+</li>
+</ul>
+<p>服务器收到”预检”请求以后，检查了Origin、Access-Control-Request-Method和Access-Control-Request-Headers字段以后，确认允许跨源请求，就可以做出回应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 200 OK</div><div class="line">Date: Mon, 01 Dec 2008 01:15:39 GMT</div><div class="line">Server: Apache/2.0.61 (Unix)</div><div class="line">Access-Control-Allow-Origin: http://api.bob.com</div><div class="line">Access-Control-Allow-Methods: GET, POST, PUT</div><div class="line">Access-Control-Allow-Headers: X-Custom-Header</div><div class="line">Content-Type: text/html; charset=utf-8</div><div class="line">Content-Encoding: gzip</div><div class="line">Content-Length: 0</div><div class="line">Keep-Alive: timeout=2, max=100</div><div class="line">Connection: Keep-Alive</div><div class="line">Content-Type: text/plain</div></pre></td></tr></table></figure>
+<ul>
+<li>Access-Control-Allow-Origin: 表示<a href="http://api.bob.com可以请求数据。该字段也可以设为星号，表示同意任意跨源请求。" target="_blank" rel="external">http://api.bob.com可以请求数据。该字段也可以设为星号，表示同意任意跨源请求。</a></li>
+<li>Access-Control-Allow-Methods: 表明服务器支持的所有跨域请求的方法</li>
+<li>Access-Control-Allow-Headers: 表明服务器支持的所有头信息字段，不限于浏览器在”预检”中请求的字段。</li>
+<li>Access-Control-Max-Age: 用来指定本次预检请求的有效期</li>
+</ul>
+<p>如果浏览器否定了”预检”请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被XMLHttpRequest对象的onerror回调函数捕获。</p>
+<h1 id="flask-cors"><a href="#flask-cors" class="headerlink" title="flask-cors"></a><code>flask-cors</code></h1><p>搞懂了原理，下来看这个库就非常容易了。</p>
+<p>这个库提供了一个Flask扩展，其默认在所有路由上开启了CORS支持，支持所有源和方法。它参数化了所有单独的CORS头。这个包同时包含了一个装饰器。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>这是推荐的开启CORS的方式，默认的配置将在大部分情况下工作正常。</p>
+<p><code>class flask_cors.CORS(app=None, **kwargs)</code></p>
+<p>为这个应用初始化跨域资源共享。参数和<code>cross_origin()</code>是一致的，多了一个资源参数。资源参数定义了一系列的去匹配的资源路径的正则表达式，其他的可选参数将在这些路径(路由)上起作用。可选参数和<code>cross_origin()</code>是一致的。</p>
+<p>CORS的设置是以下列顺序决定的：</p>
+<ol>
+<li>资源层级的设置（当传递进去一个字典）</li>
+<li>关键字参数设置</li>
+<li>应用级别的配置参数(比如. <code>CORS_*</code>)</li>
+<li>默认参数</li>
+</ol>
+<p>因为有可能多个正则表达式会匹配到一个资源路径上，所以正则表达式首先会通过长度来排序，最长到最短，试图匹配一个最特定的正则表达式。这样做的好处是，首先匹配特定的资源，然后使用通配符匹配其他的资源。</p>
+<ul>
+<li><code>resources(dict, iterable or string)</code></li>
+</ul>
+<p>一系列正则表达式和应用于给定的资源路径的可选的CORS选项</p>
+<p>如果是字典的话，key是正则表达式，值是和这个方法一样的关键字参数。</p>
+<p>如果是列表的话，就是一系列的正则表达式。会应用app层级的配置。</p>
+<p>如果是字符串的话，就是一个正则表达式。会应用app层级的参数。</p>
+<p>默认会匹配所有的并且应用app层级的配置。</p>
+<ul>
+<li><code>origins(list, string or regex)</code></li>
+</ul>
+<p>源，或者是一个列表的允许源。可能是正则表达式，大小写敏感的字符串，或者是一个星号。</p>
+<ul>
+<li><code>methods(list or string)</code></li>
+</ul>
+<p>默认是 [GET, HEAD, POST, OPTIONS, PUT, PATCH, DELETE]</p>
+<ul>
+<li><code>expose_headers (list or string)</code></li>
+<li><code>allow_headers (list, string or regex)</code></li>
+<li><code>supports_credentials (bool)</code> </li>
+</ul>
+<p>允许用户发起认证的请求，即允许cookie。如果是true，将会在回应中加入<code>Access-Control-Allow-Credentials</code>头。不可以与<code>*</code>域一起使用。</p>
+<ul>
+<li><code>max_age (timedelta, integer, string or None)</code></li>
+<li><code>send_wildcard (bool)</code></li>
+</ul>
+<p>如果为True，并且源参数是<code>*</code>，那么一个通配符<code>Access-Control-Allow-Origin</code>头将会被发送，而不是请求的源头。</p>
+<ul>
+<li><code>vary_header (bool)</code></li>
+</ul>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p><code>flask_cors.cross_origin(*args, **kwargs)</code></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><ul>
+<li>CORS</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask, session</div><div class="line">from flask_cors import CORS</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line">CORS(app, supports_credentials=True)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def helloWorld():</div><div class="line">  return &quot;Hello, %s&quot; % session[&apos;username&apos;]</div></pre></td></tr></table></figure>
+<ul>
+<li><code>cross_origin()</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@app.route(&quot;/&quot;, methods=[&apos;GET&apos;])</div><div class="line">@cross_origin()</div><div class="line">def helloWorld():</div><div class="line">    return &apos;&apos;&apos;&lt;h1&gt;Hello CORS!&lt;/h1&gt; Read about my spec at the</div><div class="line">&lt;a href=&quot;http://www.w3.org/TR/cors/&quot;&gt;W3&lt;/a&gt; Or, checkout my documentation</div><div class="line">on &lt;a href=&quot;https://github.com/corydolphin/flask-cors&quot;&gt;Github&lt;/a&gt;&apos;&apos;&apos;</div></pre></td></tr></table></figure>
+<p>参考：</p>
+<ol>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">浏览器同源政策及其规避方法</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">Wiki - Same-origin policy</a></li>
+<li><a href="https://www.w3.org/TR/cors" target="_blank" rel="external">Cross-Origin Resource Sharing</a></li>
+<li><a href="http://flask-cors.corydolphin.com/en/latest/api.html" target="_blank" rel="external">flask-cors API doc</a></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;同源政策&quot;&gt;&lt;a href=&quot;#同源政策&quot; class=&quot;headerlink&quot; title=&quot;同源政策&quot;&gt;&lt;/a&gt;同源政策&lt;/h1&gt;&lt;p&gt;浏览器安全的基石是”&lt;a href=&quot;https://en.wikipedia.org/wiki/Same-origin_p
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IO模型</title>
+    <link href="http://skyrover.me/2017/10/07/IO%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://skyrover.me/2017/10/07/IO模型/</id>
+    <published>2017-10-07T03:11:11.000Z</published>
+    <updated>2017-10-07T10:21:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近对IO模型做了深入的学习，参考书籍的章节如下：</p>
+<blockquote>
+<p>Unix系统编程手册 上 2.5节，4，5章<br>Unix系统编程手册 下 63章<br>Unix环境高级编程 3，5，14章</p>
+</blockquote>
+<p>首先最基本的是文件IO模型，在这里引出了文件描述符的概念，常用的文件IO函数以及相关的操作文件描述符的函数，比较重要的就是<code>fcntl</code>。基本的文件IO模型都是阻塞型的并且是不带缓冲的，后面就介绍了标准IO模型，即带缓冲的IO模型，也就是在内核进行系统调用再封装了一层缓冲区，并且引入了流的概念。在后面引入了非阻塞型IO模型，以及IO多路复用，比如select，poll，epoll，最后介绍了异步IO模型。</p>
+<h1 id="文件IO模型"><a href="#文件IO模型" class="headerlink" title="文件IO模型"></a>文件IO模型</h1><p>基本的文件IO函数是不带缓冲的IO，即每个read和write都调用内核中的一个系统调用，即直接在内核中运行。</p>
+<p>常用的文件IO函数有<code>open()</code>, <code>close()</code>, <code>lseek()</code>, <code>read()</code>, <code>write()</code></p>
+<h2 id="read系统调用"><a href="#read系统调用" class="headerlink" title="read系统调用"></a>read系统调用</h2><p><code>ssize_t read(int fd, void *buf, size_t nbytes)</code></p>
+<p>如果read成功，则返回读到的字节数，如果已经到达文件的尾端，则返回0。这里的buf是应用程序自己的buffer，实际对文件进行写操作的时候，都会写到内核的缓冲存储器中，然后延迟写。基本上这里的buf和缓冲不是一个概念，这里只是规定了从哪里读或者从哪里写，本质上就是一块存放数据的内存区域。写的时候还是直接对内核的缓冲区进行操作，但是标准IO模型就是在系统调用的上层多了一个缓冲区，所以不带缓冲的IO是对文件描述符进行操作，而带缓冲的标准IO是针对流的。</p>
+<p>系统调用不会分配内存缓冲区用以返回信息给调用者，必须预先分配大小合适的缓冲区并且将缓冲区指针传递给系统调用。比如<code>char buf[BUF_SIZE];</code></p>
+<h2 id="write系统调用"><a href="#write系统调用" class="headerlink" title="write系统调用"></a>write系统调用</h2><p><code>ssize_t write(int fd, const void *buf, size_t nbytes)</code></p>
+<p>其返回值通常与参数nbytes的值相同，否则表示出错。出错的一个常见原因就是磁盘已经写满，或者超过了一个给定进程的文件长度限制。</p>
+<h2 id="IO预读与延迟写"><a href="#IO预读与延迟写" class="headerlink" title="IO预读与延迟写"></a>IO预读与延迟写</h2><p>预读：当检测到正进行顺序读取时候，系统就试图读入比应用所要求的更多数据，并且假想应用会很快读取这些数据。</p>
+<p>延迟写：内核中设有缓冲区高速缓存或者页高速缓存，大多数磁盘IO都通过缓冲区进行，向文件中写入数据的时候，内核通常先将数据复制到缓冲区中，然后排入队列，晚些时候再写入磁盘。当内核需要重用缓冲区来存放其他磁盘块数据时候，就会将所有延迟写的数据写入磁盘。</p>
+<ul>
+<li><code>sync</code>: 将所有修改过的块缓冲区排入写队列，然后就返回，并不等待实际写磁盘操作结束。</li>
+<li><code>fsync</code>: 支队由文件描述符fd指定的一个文件起作用，并且等待写磁盘操作结束后才返回</li>
+<li><code>fdatasync</code>: 和fsync一样，但是只影响文件的数据部分，但是fsync还会影响文件的属性。</li>
+</ul>
+<h2 id="内核中IO的数据结构"><a href="#内核中IO的数据结构" class="headerlink" title="内核中IO的数据结构"></a>内核中IO的数据结构</h2><p>内核使用3种数据结构来表示打开文件。</p>
+<p>首先进程表中每个进程表项表示一个进程，其中每个进程表项里面包含了一张打开文件描述符表，这个文件描述符表记录了所有打开的文件描述符。</p>
+<p>文件描述符表中每一项包含了文件描述符标志和指向文件表项的指针。</p>
+<p>文件表项是存在于内核中的文件表中的，内核为所有打开的文件维护了一个文件表。每个文件表项包含了 <strong>文件状态标志(读，写，同步，非阻塞等)</strong>，<strong>当前文件偏移量</strong>，<strong>指向该文件v节点表项的指针</strong>。</p>
+<p>每个打开文件都有一个v节点结构，v节点包含了 <strong>文件类型</strong> 以及对此文件进行 <strong>各种操作函数的指针</strong>。v节点还包含了该文件的i节点，即索引节点。这些信息是打开文件时候从磁盘上读入内存的，所以文件的所有信息都是随时可用的。比如i节点包含了文件所有者，文件长度，指向文件实际数据块在磁盘上所在位置的指针。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/WechatIMG44.jpeg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>如果两个进程同时打开了一个文件，那么这两个进程分别有不同的文件表项，但是对一个给定的文件只有一个v节点表项，之所以每个进程获得自己的文件表项，因为这可以使得每个进程都有它自己的对该文件的偏移量。那么lseek这样的函数，修改的是文件表项中的文件偏移量。但是对于写入，修改的是i节点中的当前文件长度信息。</p>
+<p>可能有多个文件描述符项指向同一个文件表项，比如dup函数(复制一个文件描述符)，fork之后父进程，子进程各自的每一个打开文件描述符共享同一个文件表项。</p>
+<p>文件描述符标志，当前只定义了一个文件描述符标志<code>FD_CLOEXEC</code>，设置则表示当程序执行exec函数的时候，fd将被系统自动关闭。设置文件描述符标志只会影响一个文件描述符。</p>
+<p>文件状态标志，比如<code>O_RDONLY</code>表示只读打开。可以使用<code>fcntl</code>进行设置，应用于指向该给定文件表项的任何进程中的所有描述符。</p>
+<h2 id="复制一个文件描述符"><a href="#复制一个文件描述符" class="headerlink" title="复制一个文件描述符"></a>复制一个文件描述符</h2><p><code>int dup(int fd)</code></p>
+<p>由dup返回的新文件描述符是当前可用文件描述符的最小值。</p>
+<p><code>int dup2(int fd, int fd2)</code></p>
+<p>fd2参数是指定新描述符的值，如果fd2已经打开，则先将其关闭。如果fd等于fd2，那么直接返回fd2，不会关闭。</p>
+<p>返回的新文件描述符与参数fd共享同一个文件表项，所以共享同一个文件状态标志与偏移量。但是每一个文件描述符都由其特有的文件描述符标志，新描述符的执行时关闭<code>FD_CLOEXEC</code>会被dup函数清除。</p>
+<h2 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h2><p><code>int fcntl(int fd, int cmd, ...)</code></p>
+<p>其中fcntl有以下5中功能：</p>
+<ol>
+<li>复制一个已有的描述符，使用cmd为<code>F_DUPFD</code>或者<code>F_DUPFD_CLOSEXEC</code>，前者返回的文件描述符值是大于或者等于第三个参数的最小的值，与fd共享一套文件表项，但是其<code>FD_CLOEXEC</code>会被清除。后者可以设置<code>FD_CLOEXEC</code>的值，然后返回一个文件描述符值。</li>
+<li>获取/设置文件描述符标志，使用cmd为<code>F_GETFD</code>或者<code>F_SETFD</code>，也就是<code>FD_CLOEXEC</code></li>
+<li>获取/设置文件状态标志，使用cmd为<code>F_GETFL</code>或者<code>F_SETFL</code>，比如<code>O_RDONLY</code>之类的参数，但是设置的范围要比获取范围要小</li>
+<li>获取/设置异步IO所有权，使用cmd为<code>F_GETOWN</code>或者<code>F_SETOWN</code>，前者获取当前接收SIGIO和SIGURG信号的进程ID或者进程组ID，后者设置接收SIGIO和SIGURG信号的进程ID或者进程组ID</li>
+<li>获取/设置记录锁，使用cmd为<code>F_GETLK</code>, <code>F_SETLK</code>或者<code>F_SETLKW</code></li>
+</ol>
+<p>所以在使用fcntl，只要知道打开文件的描述符，就可以修改描述符的属性。</p>
+<h1 id="标准IO"><a href="#标准IO" class="headerlink" title="标准IO"></a>标准IO</h1><p>标准IO处理了很多细节，比如缓冲区分配，以优化的块长度执行IO等。</p>
+<h2 id="流和FILE对象"><a href="#流和FILE对象" class="headerlink" title="流和FILE对象"></a>流和FILE对象</h2><p>前面的IO函数是围绕文件描述符的，打开一个文件返回一个文件描述符，然后该文件描述符就用于后面的IO操作。但是标准IO里面，都是围绕流的，使用标准IO库打开或者创建一个文件，就会使得一个流与一个文件相关联。</p>
+<p>打开一个流的时候，标准IO函数fopen返回一个指向FILE对象的指针，该对象是一个结构，包含了标准IO库为管理该流需要的所有信息，包括用于实际IO的文件描述符，指向用于该流缓冲区的指针，缓冲区的长度，当前在缓冲区的字符数以及出错标志等。为了引用一个流，需要将FILE指针作为参数传递给每个标准IO函数。</p>
+<h2 id="缓冲"><a href="#缓冲" class="headerlink" title="缓冲"></a>缓冲</h2><p>提供缓冲的目的是减少read和write系统调用的次数，毕竟在内核中进行系统调用是一个比较耗费资源的事情，必须切换上下文等等。它也对每个IO流自动的进行缓冲管理。分为以下缓冲类型：</p>
+<p>输入和输出的缓冲区是在一起</p>
+<ul>
+<li>全缓冲：在填满标准IO缓冲区后才进行实际的IO操作，磁盘上的文件使用的是全缓冲。</li>
+<li>行缓冲：当输入和输出中遇到换行符的时候，进行IO操作。当流涉及一个终端的时候，使用的是行缓冲。但是只要填满了缓冲区，那么也会进行IO操作。如果要输入数据(从内核)，那么会先冲洗所有行缓冲输出流。</li>
+<li>不带缓冲：标准错误流stdeer通常是不带缓冲的，这样可以使得出错信息可以尽快显示出来。</li>
+</ul>
+<p><code>int fflush(FILE *fp);</code></p>
+<p>此函数使得该流所有未写的数据都被传送至内核，如果fp是NULL，则此函数会导致所有输出被清洗。</p>
+<h1 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h1><h2 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h2><p>非阻塞IO可以使我们发出open，read和write这样的IO操作，并且使得这些操作不会永远阻塞，如果这种操作不能完成，则调用立即出错返回，表示该操作如继续将会被阻塞。</p>
+<p>有两种方法指定一个描述符为非阻塞IO</p>
+<ol>
+<li>调用open获得描述符的时候，指定<code>O_NONBLOCK</code>标志</li>
+<li>对于已经打开的描述符，使用<code>fcntl</code>，由该函数打开<code>O_NONBLOCK</code>文件状态标志</li>
+</ol>
+<p>出错对应的标志为<code>EAGAIN</code>，使用这种非阻塞IO进行IO操作，一种方式就是轮询，每次去调用，如果报错则继续询问，直到可以进行IO，所以就有可能进行了很多次系统调用(read, write等)，只有少数真正的输出了数据。</p>
+<p>这种方式非常消耗以及浪费CPU时间，因此一般会用到基于非阻塞描述符的IO多路复用，也就是对一大堆描述符进行轮询的方式。</p>
+<p>当然可以使用阻塞型描述符+多线程的方式来进行，但是线程同步的开销有时会增加复杂性，当然如果每个描述符之间没有什么关系，是可以使用多线程的模式的，这样还简化了程序设计。</p>
+<p>IO多路复用，先构造一张感兴趣的描述符列表，然后调用一个函数，直到这些描述符中的一个已经准备好进行IO时候，函数才返回。函数返回的时候，进程会被告知哪些描述符已经准备好可以进行IO。</p>
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p><code>int select(int maxfdp1, fd_set *restrict readfds, fd_set *restrict writefds, fd_set *restrict exceptfds, struct timeval *restrict tvptr)</code></p>
+<ul>
+<li>maxfdp1 指定最大文件描述符编号加1，最大容量限制由常量<code>FD_SETSIZE</code>决定，Linux上，该值是1024</li>
+<li>readfds 用来检测输入是否就绪的文件描述符集合</li>
+<li>writefds 用来检测输出是否就绪的文件描述符集合</li>
+<li>exceptfds 用来检测异常情况是否就绪的文件描述符集合</li>
+<li><p>tvptr 愿意等待的时间长度，NULL为永远等待</p>
+</li>
+<li><p>返回值-1表示出错，比如在没有描述符准备好的时候返回，这样不会修改描述符集合。</p>
+</li>
+<li>返回值0表示没有描述符准备好但是超时了。所有描述符集合都会置为0.</li>
+<li>返回正值表示已经准备好的描述符数目。内核会修改相应的描述符集合，就绪的描述符仍旧为1，未就绪的是0.</li>
+</ul>
+<p>每次select调用的时候，都需要初始化，将要检查的描述符集合都置为1，传给内核，然后内核检查从0-maxfdp1+1的描述符集合，看是否在readfds，writefds和exceptfds中，是否完成了这些事件，如果完成，则将相应的位置为1，否则为0，直到所有的检查完。检查完之后，将所有描述符集合又传回去，应用程序再检查一遍传回来的描述符集合，已经为1的进行IO操作。然后循环这一过程直到结束。</p>
+<p>使用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">int main()</div><div class="line">    &#123;</div><div class="line">        int sock;</div><div class="line">        FILE* fp;</div><div class="line">        struct fd_set fds;</div><div class="line">        struct timeval timeout = &#123;3, 0&#125;; // select 等待 3 秒，3 秒轮询， 要非阻塞就置 0</div><div class="line">        char buffer[256] = &#123;0&#125;;             // 256 字节的接收缓冲区</div><div class="line">        /* 假设已经建立 UDP 连接，具体过程不写，简单，当然 TCP 也同理，主机 IP 和 port 都已经给定，要写的文件已经打开 */</div><div class="line">        sock = socket(...);</div><div class="line">        bind(...);</div><div class="line">        fp = fopen(...); */</div><div class="line">        while(1)</div><div class="line">        &#123;</div><div class="line">            FD_ZERO(&amp;fds);        // 每次循环都要清空，否则不能检测描述符变化</div><div class="line">            FD_SET(sock, &amp;fds); // 添加套接字描述符</div><div class="line">            FD_SET(fp, &amp;fds);     // 添加文件描述符</div><div class="line">            maxfdp = sock&gt;fp ? sock+1 : fp+1;  //描述符最大值加1</div><div class="line">            switch(select(maxfdp, &amp;fds, &amp;fds, NULL, &amp;timeout)) // select 使用</div><div class="line">            &#123;</div><div class="line">                case SOCKET_ERROR: exit(-1); break; //select 错误，退出程序</div><div class="line">                case 0: break; //再次轮询</div><div class="line">                default:</div><div class="line">                    if(FD_ISSET(sock, &amp;fds)) // 测试sock是否可读，即是否网络上有数据</div><div class="line">                    &#123;</div><div class="line">                        recvfrom(sock, buffer, 256, .... ); //接受网络数据</div><div class="line">                        if(FD_ISSET(fp, &amp;fds)) //测试文件是否可写</div><div class="line">                        fwrite(fp, buffer...); //写入文件</div><div class="line">                        // buffer清空；</div><div class="line">                    &#125; //end if break</div><div class="line">            &#125; //end switch</div><div class="line">        &#125; //end while</div><div class="line">    &#125; //end main</div></pre></td></tr></table></figure>
+<h2 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h2><p><code>int poll(struct pollfd fdarray[], nfds_t nfds, int timeout)</code></p>
+<p>poll是构造了一个pollfd的数组，每个数组元素可以指定一个描述符编号以及对描述符感兴趣的条件。pollfd结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">struct pollfd&#123;</div><div class="line">  int fd;</div><div class="line">  short events;</div><div class="line">  short revents;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中events是描述符感兴趣的事件，revents是内核设置的，每个描述符实际发生了什么事件。</p>
+<p>nfds是fdarray数组中的元素数目。</p>
+<p>所以同样，poll系统调用也需要将感兴趣的描述符集合传给内核，然后内核检查后修改revents后传回来，然后应用程序去检查。和select不同的是，select每次调用前都需要初始化，并且在检查上select必须检查0-maxfdp1+1的描述符集合，而poll只需要检查感兴趣的描述符集合就行了。</p>
+<p>在有大量的描述符集合中，select和poll的效率就变得非常低了，所以出现了在Linux上特有的epoll。</p>
+<p>libevent库提供了检查文件描述符I/O事件的抽象，移植到了多个Unix系统中，其底层机制可以任意一种I/O技术，select(), poll(), 信号驱动I/O或者epoll</p>
+<h2 id="边缘触发和水平触发"><a href="#边缘触发和水平触发" class="headerlink" title="边缘触发和水平触发"></a>边缘触发和水平触发</h2><ul>
+<li>水平触发通知: 文件描述符上可以非阻塞地执行I/O系统调用，则就绪时候发送通知</li>
+<li>边缘触发通知：文件描述符自从上次状态检查以来有了新的I/O活动，则触发通知</li>
+</ul>
+<p>select，poll支持水平触发，信号驱动IO支持边缘触发，epoll两者都支持。</p>
+<p>水平触发模式允许在任意时刻重复检查I/O状态，没有必要在就绪后尽可能多的执行IO，因为可以随时检查状态。</p>
+<p>但是边缘触发是当I/O事件发生的时候才会收到通知，在另一个I/O事件到来之前是不会收到任何新的通知，而且文件描述符收到I/O事件通知的时候，通常并不知道要处理多少I/O。所以</p>
+<ol>
+<li>在文件描述符接受到I/O事件通知的时候，应该尽可能多的执行I/O，要不然等待下一个I/O事件到来都不知道什么时候了。这样却又会导致其他文件描述符处于饥饿状态。</li>
+<li>如果程序用循环对文件描述符执行尽可能多的I/O，那么每个被检查的文件描述符都应该被设置为非阻塞模式，在得到I/O事件通知后重复执行I/O操作，直到相应的系统调用失败。</li>
+</ol>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>event poll的缩写，也可以检查多个文件描述符上的I/O就绪状态。epoll的核心数据结构为epoll实例，它和一个打开的文件描述符相关联，这个文件描述符是内核数据结构的句柄，实现了两个目的。</p>
+<ul>
+<li>记录了进程中声明过的感兴趣的文件描述符列表</li>
+<li>维护了处于I/O就绪态的文件描述符列表</li>
+</ul>
+<p>epoll API主要有以下三个系统调用：<code>epoll_create()</code>，<code>epoll_ctl()</code>和<code>epoll_wait()</code></p>
+<ul>
+<li><code>int epoll_create(int size);</code></li>
+</ul>
+<p>创建一个新epoll，对应的兴趣列表为空，size是想要epoll检查的文件描述符的个数。返回值就是创建好的epoll实例的文件描述符。如果这个文件描述符不在需要的时候，使用close()关闭。多个文件描述符可能引用到相同的epoll实例，比如调用了fork()函数或者dup函数，就会导致不同的文件描述符指向同一个文件表项，因此引用到相同的epoll实例。</p>
+<ul>
+<li><code>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *ev);</code></li>
+</ul>
+<p>修改epoll的兴趣列表:</p>
+<ul>
+<li>epfd 是epoll实例</li>
+<li>op 用来指定要执行的操作，有<code>EPOLL_CTL_ADD</code>, <code>EPOLL_CTL_MOD</code>和<code>EPOLL_CTL_DEL</code></li>
+<li>fd 表示要修改兴趣列表中哪一个文件描述符的设定，也可以是一个epoll实例，这样就形成了一种层次关系</li>
+<li>ev 是指向结构体<code>epoll_event</code>的指针，其中结构体包含了events和data，events是一个位掩码，指定了为待检查的描述符fd上所感兴趣的事件集合。data是一个联合体，当描述符fd成为就绪态的时候，联合体成员可用来指定传回给调用进程的信息。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">int epfd;</div><div class="line">struct epoll_event ev;</div><div class="line"></div><div class="line">epfd = epoll_create(5);</div><div class="line">if (epfd == -1)</div><div class="line">    errExit(&quot;epoll_create&quot;);</div><div class="line">ev.data.fd = fd;</div><div class="line">ev.events = EPOLLIN;</div><div class="line">if (epoll_ctl(epfd, EPOLL_CTL_ADD, fd, ev) == -1)</div><div class="line">    errExit(&quot;epoll_ctl&quot;)</div></pre></td></tr></table></figure>
+<ul>
+<li><code>int epoll_wait(int epfd, struct epoll_event *evlist, int maxevents, int timeout)</code></li>
+</ul>
+<p>系统调用<code>epoll_wait()</code>返回epoll实例中处于就绪态的文件描述符信息，单个<code>epoll_wait()</code>调用能返回多个就绪态文件描述符的信息。返回就绪的文件描述符的个数，0表示超时，-1表示错误</p>
+<p>evlist指向的结构体数组中返回的是有关就绪态文件描述符的信息。所包含的元素个数为maxevents。evlist中，每个元素返回的都是单个就绪态文件描述符的信息。events字段返回了在该描述符上发生的事件掩码。Data字段返回的是在描述符使用<code>epoll_ctl()</code>注册感兴趣事件时候在ev.data中指定的值。data字段是唯一可以获知同这个事件相关的文件描述符的途径。</p>
+<p>多线程程序中，可以在一个线程中使用<code>epoll_ctl()</code>将文件描述符添加到另一个线程中由<code>epoll_wait()</code>所监视的epoll实例的兴趣列表中去。这些对兴趣列表的修改将立刻得到处理，而<code>epoll_wait()</code>调用将返回有关新添加文件描述符的就绪信息。</p>
+<p>通过<code>epoll_ctl</code>指定了需要监视的文件描述符时候，内核会在与打开的文件描述上下文相关联的列表中记录该描述符。之后每当执行I/O操作使得文件描述符成为就绪态时候，内核就在epoll描述符的就绪列表中添加一个元素。单个打开的文件描述上下文的一次I/O事件可能导致与之相关的多个文件描述符成为就绪态。这样<code>epoll_wait()</code>调用从就绪列表中简单的取出这些元素。epoll在内核空间创建了一个数据结构，该数据结构会将待监视的文件描述符都记录下来。</p>
+<p>因此epoll的性能在大规模的文件描述符检查情况下，效率远高于select和poll，常见的能高效使用epoll的应用场景就是需要同时处理许多客户端的服务器，需要监视大量的文件描述符，但大部分处于空闲状态，只有少数文件描述符处于就绪状态。</p>
+<h1 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h1><p>发起IO操作后不阻塞，用户得递一个回调函数待IO结束后被调用。进程请求内核执行一次I/O操作，内核启动该操作之后立即将控制权还给调用进程，稍后当I/O操作完成或者有错误发生的时候，该进程会得到通知。一般是使用信号来实现的。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>linux一般使用non-blocking IO提高IO并发度。当IO并发度很低时，non-blocking IO不一定比blocking IO更高效，因为后者完全由内核负责，而read/write这类系统调用已高度优化，效率显然高于一般得多个线程协作的non-blocking IO。</p>
+<p>但当IO并发度愈发提高时，blocking IO阻塞一个线程的弊端便显露出来：内核得不停地在线程间切换才能完成有效的工作，一个cpu core上可能只做了一点点事情，就马上又换成了另一个线程，cpu cache没得到充分利用，程序整体性能往往也会随之下降。</p>
+<p>而non-blocking IO一般由少量event dispatching线程和一些运行用户逻辑的worker线程组成，这些线程往往会被复用（换句话说调度工作转移到了用户态），event dispatching和worker可以同时在不同的核运行（流水线化），内核不用频繁的切换就能完成有效的工作。线程总量也不用很多，所以对thread-local的使用也比较充分。这时候non-blocking IO就往往比blocking IO快了。不过non-blocking IO也有自己的问题，它需要调用更多系统调用，比如<code>epoll_ctl</code>，由于epoll实现为一棵红黑树，<code>epoll_ctl</code>并不是一个很快的操作，特别在多核环境下，依赖<code>epoll_ctl</code>的实现往往会面临棘手的扩展性问题。non-blocking需要更大的缓冲，否则就会触发更多的事件而影响效率。non-blocking还得解决不少多线程问题，代码比blocking复杂很多。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近对IO模型做了深入的学习，参考书籍的章节如下：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Unix系统编程手册 上 2.5节，4，5章&lt;br&gt;Unix系统编程手册 下 63章&lt;br&gt;Unix环境高级编程 3，5，14章&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;首先最基本
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python中的单例模式</title>
+    <link href="http://skyrover.me/2017/10/02/Python%E4%B8%AD%E7%9A%84%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://skyrover.me/2017/10/02/Python中的单例模式/</id>
+    <published>2017-10-02T02:07:35.000Z</published>
+    <updated>2017-10-02T02:29:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>单例模式其实在实际的程序开发中使用过，比如数据库连接池等，但是仍然需要抽象到一定高度来理解它。</p>
+<p>单例模式：保证一个类仅有一个实例，并提供一个访问他的全局访问点。目的就是令到单个进程中只存在一个类的实例，从而可以实现数据的共享，节省系统开销，防止io阻塞等等。方法就是让类自身保存他的唯一实例，这个类可以保证没有其他实例可以被创建。</p>
+<p>多线程时的单例模式：加锁-双重锁定</p>
+<ul>
+<li>饿汉式单例类：在类被加载时就将自己实例化（静态初始化）。其优点是躲避了多线程访问的安全性问题，缺点是提前占用系统资源。</li>
+<li>懒汉式单例类：在第一次被引用时，才将自己实例化。避免开始时占用系统资源，但是有多线程访问安全性问题。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">#encoding=utf-8</div><div class="line">#单例模式</div><div class="line">def print_info(info):</div><div class="line">    print(info)</div><div class="line"></div><div class="line">import threading</div><div class="line">#单例类</div><div class="line">class Singleton:</div><div class="line">    instance = None</div><div class="line">    mutex = threading.Lock()</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        pass</div><div class="line"></div><div class="line">    @staticmethod</div><div class="line">    def get_instance():</div><div class="line">        if Singleton.instance is None:</div><div class="line">            Singleton.mutex.acquire()</div><div class="line">            if Singleton.instance is None:</div><div class="line">                print_info(&apos;初始化实例&apos;)</div><div class="line">                Singleton.instance = Singleton()</div><div class="line">            else:</div><div class="line">                print_info(&apos;单例已经实例化&apos;)</div><div class="line">            Singleton.mutex.release()</div><div class="line">        else:</div><div class="line">            print_info(&apos;单例已经实例化&apos;)</div><div class="line"></div><div class="line">        return Singleton.instance</div><div class="line"></div><div class="line">def clientUI():</div><div class="line">    Singleton.get_instance()</div><div class="line">    Singleton.get_instance()</div><div class="line">    Singleton.get_instance()</div><div class="line"></div><div class="line">if __name__==&apos;__main__&apos;:</div><div class="line">    clientUI();</div></pre></td></tr></table></figure>
+<p>也可以使用<code>__new__</code>来实现单例模式，但是如果需要做到线程安全就必须加锁。<code>__new__</code>必须返回一个类的实例，所以可以在对象创建之前或者之后修改类。如果它返回的不是<code>cls</code>的实例，那么<code>__init__</code>方法是不会调用的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class Singleton(object):</div><div class="line">    __instance=None</div><div class="line">    def__init__(self):</div><div class="line">        pass</div><div class="line">    def__new__(cls, *args, **kwd):</div><div class="line">        if Singleton.__instance is None:</div><div class="line">            Singleton.__instance = object.__new__(cls,*args,**kwd)</div><div class="line">        return Singleton.__instance</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;单例模式其实在实际的程序开发中使用过，比如数据库连接池等，但是仍然需要抽象到一定高度来理解它。&lt;/p&gt;
+&lt;p&gt;单例模式：保证一个类仅有一个实例，并提供一个访问他的全局访问点。目的就是令到单个进程中只存在一个类的实例，从而可以实现数据的共享，节省系统开销，防止io阻塞等等。方
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="设计模式" scheme="http://skyrover.me/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python程序性能分析</title>
+    <link href="http://skyrover.me/2017/09/30/Python%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/"/>
+    <id>http://skyrover.me/2017/09/30/Python程序性能分析/</id>
+    <published>2017-09-30T04:14:53.000Z</published>
+    <updated>2017-10-10T07:21:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。</p>
+<h1 id="cProfile"><a href="#cProfile" class="headerlink" title="cProfile"></a>cProfile</h1><p>使用工具cProfile，在一个脚本中写好要测试的程序，然后在终端中运行<code>python -m cProfile -s tottime calc_efficiency.py</code>表示对单个函数的运行总时间进行统计，这样就会在终端上打印出来性能分析结果，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1723 function calls (1578 primitive calls) in 0.004 seconds</div><div class="line"></div><div class="line">Ordered by: internal time</div><div class="line"></div><div class="line">ncalls  tottime  percall  cumtime  percall filename:lineno(function)</div><div class="line">   4    0.000    0.000    0.000    0.000 _methods.py:86(_var)</div><div class="line">  13    0.000    0.000    0.000    0.000 calculators.py:18(nan2zero)</div><div class="line">   2    0.000    0.000    0.000    0.000 financial.py:25(_adjust_returns)</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;cumprod&apos; of &apos;numpy.ndarray&apos; objects&#125;</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;accumulate&apos; of &apos;numpy.ufunc&apos; objects&#125;</div></pre></td></tr></table></figure>
+<p>表示1723个函数调用被监控，其中1578是原生调用，即不涉及递归调用，总共执行时间是0.004秒，结果列表是按照函数内部调用时间来排序，即不包括他自己调用的其他函数的时间。</p>
+<ul>
+<li>ncalls 表示调用次数，如果是4/3 表示4次总调用次数，3表示原生调用次数</li>
+<li>tottime 表示函数内部调用时间</li>
+<li>percall 是tottime/ncalls</li>
+<li>cumtime 累计时间，包含了自己内部调用函数的时间</li>
+<li>最后一列，文件名，行号，函数名</li>
+</ul>
+<p>cProfile除了可以在终端上使用，还有编程接口<code>cProfile.run(&#39;re.compile(&quot;foo|bar&quot;)&#39;)</code></p>
+<p>具体cProfile的使用方法请戳<a href="https://docs.python.org/3.6/library/profile.html" target="_blank" rel="external">这里</a></p>
+<p>另外官方给出的使用pstats模块的Stats类来读取和操作stats文件，Analysis of the profiler data is done using the Stats class.</p>
+<p>一个使用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import cProfile</div><div class="line">import pstats</div><div class="line">from ability import WholeAbility</div><div class="line">import time</div><div class="line"></div><div class="line">profile = cProfile.Profile()</div><div class="line">profile.enable()</div><div class="line">t0 = time.time()</div><div class="line">fundId = &quot;test&quot;</div><div class="line">start = &quot;20151021&quot;</div><div class="line">end = &quot;20151023&quot;</div><div class="line">wa = WholeAbility(fundId, start, end, assets, flows, stocks)</div><div class="line">ability_data, positions, trades = wa.calc_ability()</div><div class="line">summary_data = wa.summary()</div><div class="line">print(&quot;using &#123;&#125;&quot;.format(time.time()-t0))</div><div class="line">profile.disable()</div><div class="line">profile.print_stats(sort=&apos;tottime&apos;)</div><div class="line">sortby = &quot;tottime&quot;</div><div class="line">ps = pstats.Stats(profile).sort_stats(sortby)</div><div class="line">ps.dump_stats(&quot;./eff.txt&quot;)</div></pre></td></tr></table></figure>
+<p>使用<code>dump_stats</code>可以把当前性能分析结果写入文件，这个结果可以在后面进行可视化分析。</p>
+<h1 id="gprof2dot-分析结果可视化"><a href="#gprof2dot-分析结果可视化" class="headerlink" title="gprof2dot 分析结果可视化"></a>gprof2dot 分析结果可视化</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>Mac: <code>brew install graphviz</code></li>
+<li>Ubuntu: <code>apt-get install python graphviz</code></li>
+</ul>
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
+<p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/mkm_run.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>其中每个node的信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------------------------------+</div><div class="line">|        function name         |</div><div class="line">| total time % ( self time % ) |</div><div class="line">|         total calls          |</div><div class="line">+------------------------------+</div></pre></td></tr></table></figure>
+<p>每个edge的信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">total time %</div><div class="line">   calls</div><div class="line">parent --------------------&gt; children</div></pre></td></tr></table></figure>
+<h1 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h1><ol>
+<li>尽量不要使用deepcopy，很慢，详见这篇文章<a href="http://news.hiapk.com/internet/s5937a1ded022.html" target="_blank" rel="external">蜗牛般的 Python 深拷贝</a></li>
+<li>优化算法，不要在循环里面进行耗时操作</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。&lt;/p&gt;
+&lt;h1 id=&quot;cProfile&quot;&gt;&lt;a href=&quot;#cProfile&quot; class=&quot;headerlink&quot; title=&quot;cProfile&quot;&gt;&lt;/a
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>翻译 - heapq — Heap queue algorithm</title>
+    <link href="http://skyrover.me/2017/09/28/heapq/"/>
+    <id>http://skyrover.me/2017/09/28/heapq/</id>
+    <published>2017-09-28T04:01:46.000Z</published>
+    <updated>2017-09-28T04:01:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>翻译自<a href="https://docs.python.org/3/library/heapq.html" target="_blank" rel="external">heapq — Heap queue algorithm</a></p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>这个模块实现了堆队列算法，也被称为优先队列算法。</p>
+<p>堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有<code>heap[k] &lt;= heap[2*k+1]</code>和<code>heap[k] &lt;= heap[2*k+2]</code>，对于第n层树，其有<code>2^(n-1)</code>个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素将会被认为是无穷大的。堆中有意思的特性是最小的元素总是在树的根部，即heap[0]。</p>
+<p>下面的API有两点不同于教科书上的堆算法：</p>
+<ul>
+<li>我们的索引从0开始，这样使得父节点和其子节点的关系有所不同，但是这样在Python里更加合适，因为Python里就是索引从0开始。</li>
+<li>我们的pop方法会返回最小的元素，而不是最大的，也就是最小堆，最大堆通常在原地排序很有用</li>
+</ul>
+<p>这两个使得可以在普通的Python列表中获取堆中元素，heap[0]就是最小的元素，heap.sort()维护堆。</p>
+<p>为了创建一个堆，使用列表将其初始化为<code>[]</code>，或者你也可以通过<code>heapify()</code>将一个列表转换成堆。</p>
+<p>提供下面的方法</p>
+<ul>
+<li><code>heappush(heap, item)</code></li>
+<li><code>heappop(heap)</code></li>
+<li><code>heappushpop(heap, item)</code></li>
+</ul>
+<p>将item push到堆里，并且pop出最小的元素，比先执行heappush()然后执行heappop()更有效率</p>
+<ul>
+<li><code>heapify(x)</code></li>
+<li><code>heapreplace(heap, item)</code></li>
+</ul>
+<p>pop并且返回最小的元素，并且push一个新的元素，堆的大小不会改变。这个步骤比先执行heappop()然后执行heappush()更有效率，并且在使用一个固定大小的堆会比较合适。这个函数总会返回一个元素，并且以item替换。</p>
+<p>返回的元素可能比插入的元素要大，使用heappushpop将会返回一个比插入元素小或者等于的元素。</p>
+<ul>
+<li><code>merge(*iterables, key=None, reverse=False)</code></li>
+</ul>
+<p>将多个排序的输入转换成一个排序后的输出，返回一个排序后的迭代器。和<code>sorted(itertools.chain(*iterables))</code>类似，但是它会返回迭代对象，而不是将数据一次性放入内存。</p>
+<p>两个可选参数必须使用成关键字参数。</p>
+<p>key指定了如何进行排序，reverse如果是True就会反转。</p>
+<ul>
+<li><code>nlargest(n, iterable, key=None)</code></li>
+</ul>
+<p>返回一个迭代器的前n个大的元素列表，key如果提供，指定进行比较的函数。</p>
+<ul>
+<li><code>nsmallest(n, iterable, key=None)</code></li>
+</ul>
+<p>对于n比较小的时候比较高效。如果比较大，使用<code>sorted()</code>函数更加高效，当n等于1的时候，使用min和max更高效。如果要重复使用这几个函数，那么考虑将其转换成heap。</p>
+<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>堆排序可以通过向堆里push元素，然后每次pop出最小的元素来实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def heapsort(iterable):</div><div class="line">...     h = []</div><div class="line">...     for value in iterable:</div><div class="line">...         heappush(h, value)</div><div class="line">...     return [heappop(h) for i in range(len(h))]</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;翻译自&lt;a href=&quot;https://docs.python.org/3/library/heapq.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;heapq — Heap queue algorithm&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;介绍&quot;
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>最低共同祖先</title>
+    <link href="http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/"/>
+    <id>http://skyrover.me/2017/09/21/lowest_common_ancestor_of_a_tree/</id>
+    <published>2017-09-21T07:58:32.000Z</published>
+    <updated>2017-09-21T07:58:20.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。</p>
+<p>先就做这两道题吧，总体感觉很容易，基本上提交一次就accepted了，哎，突然想去面试下，说不定还可以去小米= =!</p>
+<p>其实我觉得寻找最低公共祖先，你得摸清情况，比如在BST中，有这么几种情况，当要搜寻的节点比p,q值都大，说明共同祖先应该在这个节点左侧，反之则在右侧，然后如果在这两个值中间，那就说明这个节点就是最低公共祖先了。</p>
+<p>如果是普通的二叉树，递归的进行查找，首先来看查看的这个节点如果是p或者q，则返回，然后去这个节点左侧找，直到为None或者找到p，接下来去这个节点的右侧找，直到找到None或者找到p，如果一个找到p，一个找到q，则说明这个节点就是最低公共祖先。如果有一个是None，说明一个p在q上面，或者q在p上面。</p>
+<p>总之吧，就是递归地处理这些情况，考虑清楚就好了。</p>
+<h1 id="BST"><a href="#BST" class="headerlink" title="BST"></a>BST</h1><p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/" target="_blank" rel="external">原题链接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line"></div><div class="line">class Solution(object):</div><div class="line">    def lowestCommonAncestor(self, root, p, q):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :type p: TreeNode</div><div class="line">        :type q: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if not root:</div><div class="line">            return</div><div class="line">        if p == q:</div><div class="line">            return p</div><div class="line">        a, b = sorted([p.val, q.val])</div><div class="line">        def find_ancestor(node):</div><div class="line">            if not node:</div><div class="line">                return</div><div class="line">            elif node.val &gt; a and node.val &gt; b:</div><div class="line">                return find_ancestor(node.left)</div><div class="line">            elif node.val &lt; a and node.val &lt; b:</div><div class="line">                return find_ancestor(node.right)</div><div class="line">            else:</div><div class="line">                return node</div><div class="line">        res = find_ancestor(root)</div><div class="line">        return res</div></pre></td></tr></table></figure>
+<h1 id="Binary-Tree"><a href="#Binary-Tree" class="headerlink" title="Binary Tree"></a>Binary Tree</h1><p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/" target="_blank" rel="external">原题链接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line"></div><div class="line">class Solution(object):</div><div class="line">    def lowestCommonAncestor(self, root, p, q):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :type p: TreeNode</div><div class="line">        :type q: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def find_ancestor(node):</div><div class="line">            if not node:</div><div class="line">                return</div><div class="line">            if node == p or node == q:</div><div class="line">                return node</div><div class="line">            l = find_ancestor(node.left)</div><div class="line">            r = find_ancestor(node.right)</div><div class="line">            if l and r:</div><div class="line">                return node</div><div class="line">            return l or r</div><div class="line">        return find_ancestor(root)</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。&lt;/p&gt;
+&lt;p&gt;先就做这两道题吧，总体感觉很容
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>风月无边</title>
+    <link href="http://skyrover.me/2017/09/19/%E9%A3%8E%E6%9C%88%E6%97%A0%E8%BE%B9/"/>
+    <id>http://skyrover.me/2017/09/19/风月无边/</id>
+    <published>2017-09-19T00:40:06.000Z</published>
+    <updated>2017-09-19T00:58:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>从小就喜欢宋词，风流婉转，令人心醉。<code>杨柳岸 晓风残月</code>多么美的意境。古风的歌曲也特别喜欢，最近听到一首风月无边，不错。</p>
+<p>另外记一首苏轼的<code>西江月</code></p>
+<blockquote>
+<p>照野弥弥浅浪，横空隐隐层霄。<br>障泥未解玉骢骄，我欲醉眠芳草。<br>可惜一溪风月，莫教踏碎琼瑶。<br>解鞍欹枕绿杨桥，杜宇一声春晓。</p>
+</blockquote>
+<p>完全把自然与自己融为一体了有没有，物我两忘啊</p>
+<p>风月无边这首歌中最喜欢的几句歌词</p>
+<blockquote>
+<p>痴心殿 我掌风月权<br>我不曾 江上夜停船<br>琵琶里 婉转潸然<br>也不曾 三千金甲破楼兰<br>更不曾 风雪策马入蓝关<br>我只合搅起那情潮乱<br>演离合断厮缠似苦实甜<br>我红尘踏遍 萧瑟染不到足尖<br>愿他年 化尽春泥见骨气犹艳<br>戏能弄人 人方知肠断<br>不入风月 风月怎无边<br>漫将清狂 身前身后作笑谈</p>
+</blockquote>
+<p>一缕轻愁，悲恨相续，魂飞千载寻伊尽，唤不醒，相思人憔悴，夜半静听万千泪..经流年，梦回曲水边，烟波碎，人已醉，红尘滚滚皆是泪，风逝一抹暗脆。倾尽了风华，寂寞了容颜。跌碎了谁的思念？一袭霓裳，抚起月亮的寒光，穿越过万水千山的屏障，只为短暂的缠绵。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;从小就喜欢宋词，风流婉转，令人心醉。&lt;code&gt;杨柳岸 晓风残月&lt;/code&gt;多么美的意境。古风的歌曲也特别喜欢，最近听到一首风月无边，不错。&lt;/p&gt;
+&lt;p&gt;另外记一首苏轼的&lt;code&gt;西江月&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;照野弥弥浅浪，横空隐隐层霄
+    
+    </summary>
+    
+      <category term="Music" scheme="http://skyrover.me/categories/Music/"/>
+    
+    
+      <category term="Song" scheme="http://skyrover.me/tags/Song/"/>
+    
+      <category term="宋词" scheme="http://skyrover.me/tags/%E5%AE%8B%E8%AF%8D/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>thriftpy源码解析(三) - 套接字</title>
+    <link href="http://skyrover.me/2017/09/17/thriftpy_3_socket/"/>
+    <id>http://skyrover.me/2017/09/17/thriftpy_3_socket/</id>
+    <published>2017-09-17T05:44:28.000Z</published>
+    <updated>2017-09-17T05:51:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。</p>
+<p>上次提到默认使用的套接字是<code>TServerSocket</code>，是在<code>make_server</code>中创建的，可以使用<code>unix_socket</code>或者TCP的套接字，另外如果基于https，就可以使用<code>TSSLServerSocket</code>。其实套接字也算传输<code>transport</code>协议中的一个部分，所以可以看到源码有关socket的都在<code>Thriftpy/transport</code>里面，其中有<code>socket.py</code>和<code>sslsocket.py</code>，这里我们只介绍以下<code>socket.py</code></p>
+<p><code>socket.py</code>中只有两个类，一个是<code>TSocket</code>，一个是<code>TServerSocket</code>，前者是在客户端方面使用的，<code>TServerSocket</code>是在服务器端使用的</p>
+<p>客户端和服务器端对应，它使用<code>make_client</code>来创建一个客户端，其内部使用了<code>TSocket</code>，<code>TSSLSocket</code>。</p>
+<h1 id="TServerSocket"><a href="#TServerSocket" class="headerlink" title="TServerSocket"></a>TServerSocket</h1><p>我们先来看服务器端的Socket实现。Socket编程在服务器部分大致流程就是：</p>
+<ul>
+<li>创建</li>
+<li>绑定，监听</li>
+<li>接受</li>
+<li>读取和回应</li>
+<li>关闭</li>
+</ul>
+<p>基本上<code>TServerSocket</code>类中就是这么些方法:</p>
+<h2 id="创建和初始化"><a href="#创建和初始化" class="headerlink" title="创建和初始化"></a>创建和初始化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">class TServerSocket(object):</div><div class="line">    &quot;&quot;&quot;Socket implementation for server side.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, host=None, port=None, unix_socket=None,</div><div class="line">                 socket_family=socket.AF_INET, client_timeout=3000,</div><div class="line">                 backlog=128):</div><div class="line">        if unix_socket:</div><div class="line">            self.unix_socket = unix_socket</div><div class="line">            self.host = None</div><div class="line">            self.port = None</div><div class="line">        else:</div><div class="line">            self.unix_socket = None</div><div class="line">            self.host = host</div><div class="line">            self.port = port</div><div class="line"></div><div class="line">        self.socket_family = socket_family</div><div class="line">        self.client_timeout = client_timeout / 1000 if client_timeout else None</div><div class="line">        self.backlog = backlog</div><div class="line"></div><div class="line">    def _init_sock(self):</div><div class="line">        if self.unix_socket:</div><div class="line">            # try remove the sock file it already exists</div><div class="line">            _sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)</div><div class="line">            try:</div><div class="line">                _sock.connect(self.unix_socket)</div><div class="line">            except (socket.error, OSError) as err:</div><div class="line">                if err.args[0] == errno.ECONNREFUSED:</div><div class="line">                    os.unlink(self.unix_socket)</div><div class="line">        else:</div><div class="line">            _sock = socket.socket(self.socket_family, socket.SOCK_STREAM)</div><div class="line">        # 这里设置了端口重用，在套接字级别上设置选项</div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)</div><div class="line">        if hasattr(socket, &quot;SO_REUSEPORT&quot;):</div><div class="line">            _sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)</div><div class="line">        _sock.settimeout(None)</div><div class="line">        self.sock = _sock</div></pre></td></tr></table></figure>
+<h2 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def listen(self):</div><div class="line">    self._init_sock()</div><div class="line"></div><div class="line">    addr = self.unix_socket or (self.host, self.port)</div><div class="line">    self.sock.bind(addr)</div><div class="line">    self.sock.listen(self.backlog)</div></pre></td></tr></table></figure>
+<h2 id="接受"><a href="#接受" class="headerlink" title="接受"></a>接受</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def accept(self):</div><div class="line">    client, _ = self.sock.accept()</div><div class="line">    if self.client_timeout:</div><div class="line">        client.settimeout(self.client_timeout)</div><div class="line">    return TSocket(sock=client)</div></pre></td></tr></table></figure>
+<h2 id="读取和回应"><a href="#读取和回应" class="headerlink" title="读取和回应"></a>读取和回应</h2><p><code>TServerSocket</code>没有定义这几个方法，因为是Thriftpy支持不同的协议，因此实现由不同的协议来实现不同的读取和解析方法。</p>
+<h2 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def close(self):</div><div class="line">    if not self.sock:</div><div class="line">        return</div><div class="line"></div><div class="line">    try:</div><div class="line">        self.sock.shutdown(socket.SHUT_RDWR)</div><div class="line">        self.sock.close()</div><div class="line">    except (socket.error, OSError):</div><div class="line">        pass</div></pre></td></tr></table></figure>
+<h1 id="TSocket"><a href="#TSocket" class="headerlink" title="TSocket"></a>TSocket</h1><p><code>TSocket</code>即客户端的套接字，遵循以下流程:</p>
+<ul>
+<li>创建</li>
+<li>连接</li>
+<li>发送</li>
+<li>读取</li>
+<li>关闭</li>
+</ul>
+<p>代码依旧很简单，这里就全部贴上来了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div></pre></td><td class="code"><pre><div class="line">class TSocket(object):</div><div class="line">    &quot;&quot;&quot;Socket implementation for client side.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, host=None, port=None, unix_socket=None,</div><div class="line">                 sock=None, socket_family=socket.AF_INET,</div><div class="line">                 socket_timeout=3000, connect_timeout=None):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        @param sock(socket) 使用一个打开的套接字直接初始化</div><div class="line">        @param socket_family(str) socket.AF_INET or socket.AF_INET6.</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if sock:</div><div class="line">            self.sock = sock</div><div class="line">        elif unix_socket:</div><div class="line">            self.unix_socket = unix_socket</div><div class="line">            self.host = None</div><div class="line">            self.port = None</div><div class="line">            self.sock = None</div><div class="line">        else:</div><div class="line">            self.unix_socket = None</div><div class="line">            self.host = host</div><div class="line">            self.port = port</div><div class="line">            self.sock = None</div><div class="line"></div><div class="line">        self.socket_family = socket_family</div><div class="line">        self.socket_timeout = socket_timeout / 1000 if socket_timeout else None</div><div class="line">        self.connect_timeout = connect_timeout / 1000 if connect_timeout \</div><div class="line">            else self.socket_timeout</div><div class="line"></div><div class="line">    def _init_sock(self):</div><div class="line">        if self.unix_socket:</div><div class="line">            _sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)</div><div class="line">        else:</div><div class="line">            _sock = socket.socket(self.socket_family, socket.SOCK_STREAM)</div><div class="line">            _sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)</div><div class="line"></div><div class="line">        # socket options</div><div class="line">        linger = struct.pack(&apos;ii&apos;, 0, 0)</div><div class="line">        # close或 shutdown将等到所有套接字里排队的消息成功发送或到达延迟时间后才会返回。</div><div class="line">        # 该选项的参数（option_value)是一个linger结构</div><div class="line">        # struct linger &#123;  </div><div class="line">        #      int   l_onoff;      </div><div class="line">        #      int   l_linger;     </div><div class="line">        #  &#125;;  </div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, linger)</div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)</div><div class="line"></div><div class="line">        self.sock = _sock</div><div class="line"></div><div class="line">    def set_handle(self, sock):</div><div class="line">        self.sock = sock</div><div class="line"></div><div class="line">    def set_timeout(self, ms):</div><div class="line">        &quot;&quot;&quot;Backward compat api, will bind the timeout to both connect_timeout</div><div class="line">        and socket_timeout.</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        self.socket_timeout = ms / 1000 if (ms and ms &gt; 0) else None</div><div class="line">        self.connect_timeout = self.socket_timeout</div><div class="line"></div><div class="line">        if self.sock is not None:</div><div class="line">            self.sock.settimeout(self.socket_timeout)</div><div class="line"></div><div class="line">    def is_open(self):</div><div class="line">        return bool(self.sock)</div><div class="line"></div><div class="line">    def open(self):</div><div class="line">        self._init_sock()</div><div class="line"></div><div class="line">        addr = self.unix_socket or (self.host, self.port)</div><div class="line"></div><div class="line">        try:</div><div class="line">            if self.connect_timeout:</div><div class="line">                self.sock.settimeout(self.connect_timeout)</div><div class="line"></div><div class="line">            self.sock.connect(addr)</div><div class="line"></div><div class="line">            if self.socket_timeout:</div><div class="line">                self.sock.settimeout(self.socket_timeout)</div><div class="line"></div><div class="line">        except (socket.error, OSError):</div><div class="line">            raise TTransportException(</div><div class="line">                type=TTransportException.NOT_OPEN,</div><div class="line">                message=&quot;Could not connect to %s&quot; % str(addr))</div><div class="line"></div><div class="line">    def read(self, sz):</div><div class="line">        try:</div><div class="line">            buff = self.sock.recv(sz)</div><div class="line">        except socket.error as e:</div><div class="line">            if (e.args[0] == errno.ECONNRESET and</div><div class="line">                    (sys.platform == &apos;darwin&apos; or</div><div class="line">                     sys.platform.startswith(&apos;freebsd&apos;))):</div><div class="line">                # freebsd and Mach don&apos;t follow POSIX semantic of recv</div><div class="line">                # and fail with ECONNRESET if peer performed shutdown.</div><div class="line">                # See corresponding comment and code in TSocket::read()</div><div class="line">                # in lib/cpp/src/transport/TSocket.cpp.</div><div class="line">                self.close()</div><div class="line">                # Trigger the check to raise the END_OF_FILE exception below.</div><div class="line">                buff = &apos;&apos;</div><div class="line">            else:</div><div class="line">                raise</div><div class="line"></div><div class="line">        if len(buff) == 0:</div><div class="line">            raise TTransportException(type=TTransportException.END_OF_FILE,</div><div class="line">                                      message=&apos;TSocket read 0 bytes&apos;)</div><div class="line">        return buff</div><div class="line"></div><div class="line">    def write(self, buff):</div><div class="line">        self.sock.sendall(buff)</div><div class="line"></div><div class="line">    def flush(self):</div><div class="line">        pass</div><div class="line"></div><div class="line">    def close(self):</div><div class="line">        if not self.sock:</div><div class="line">            return</div><div class="line"></div><div class="line">        try:</div><div class="line">            self.sock.shutdown(socket.SHUT_RDWR)</div><div class="line">            self.sock.close()</div><div class="line">            self.sock = None</div><div class="line">        except (socket.error, OSError):</div><div class="line">            pass</div></pre></td></tr></table></figure>
+<h1 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h1><p>这里补充一个知识点，就是Python操作字节流的库struct。</p>
+<p>Python没有专门处理字节的数据类型。但由于b’str’可以表示字节，所以，字节数组＝二进制str。但是对于其他的二进制数据比如整数值，浮点数等就比较麻烦了，因此Python提供了一个struct模块来解决bytes和其他二进制数据类型的转换。</p>
+<p>struct的pack函数把任意数据类型变成bytes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import struct</div><div class="line">&gt;&gt;&gt; struct.pack(&apos;&gt;I&apos;, 10240099)</div><div class="line">b&apos;\x00\x9c@c&apos;</div></pre></td></tr></table></figure>
+<p>pack的第一个参数是处理指令，<code>&#39;&gt;I&#39;</code>的意思是：&gt;表示字节顺序是big-endian，也就是网络序，I表示4字节无符号整数。后面的参数个数要和处理指令一致。</p>
+<p>unpack把bytes变成相应的数据类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; struct.unpack(&apos;&gt;IH&apos;, b&apos;\xf0\xf0\xf0\xf0\x80\x80&apos;)</div><div class="line">(4042322160, 32896)</div></pre></td></tr></table></figure>
+<p>根据<code>&gt;IH</code>的说明，后面的bytes依次变为I：4字节无符号整数和H：2字节无符号整数。</p>
+<p>上面程序里用到了<code>linger = struct.pack(&#39;ii&#39;, 0, 0)</code>，也就是将两个0分别转换成int(有符号)的字节序列(bytes)</p>
+<p><a href="https://docs.python.org/3/library/struct.html#format-characters" target="_blank" rel="external">这里有一些转换的格式</a></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>关于Thriftpy中使用的套接字就介绍到这里了，下一节将是Thriftpy中使用的协议，比如常用的<code>TJSONProtocol</code></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。&lt;/p&gt;
+&lt;p&gt;上次提到默认使用的套接字是&lt;code&gt;TServerSocket&lt;/code&gt;，是在&lt;code&gt;make_server&lt;/code&gt;中创建的，可
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>翻译 - Running Your Flask Application Over HTTPS</title>
+    <link href="http://skyrover.me/2017/09/17/flask_https/"/>
+    <id>http://skyrover.me/2017/09/17/flask_https/</id>
+    <published>2017-09-17T01:31:30.000Z</published>
+    <updated>2017-09-17T01:36:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https" target="_blank" rel="external">Running Your Flask Application Over HTTPS</a></p>
+<p>当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。</p>
+<p>人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，从5秒钟就可以应用的方法，到一个非常健壮的解决方案，从而在<a href="https://www.ssllabs.com/ssltest/index.html" target="_blank" rel="external">SSL Server Test</a>上可以得到A+的分数</p>
+<h1 id="How-Does-HTTPS-Work"><a href="#How-Does-HTTPS-Work" class="headerlink" title="How Does HTTPS Work?"></a>How Does HTTPS Work?</h1><p>HTTP的加密和安全功能是通过Transport Layer Security(TLS 传输层安全协议) Protocol实现的。TLS定义了一种网络传输安全的标准方式。因为我不是一个安全专家，因此我不认为我能很好的给你解释TLS协议的详细内容，因此我只会给你一些我们对于配置一个安全和加密的Flask服务器中感兴趣的部分。</p>
+<p>当客户端创建一个到服务器的连接并且请求一个加密连接，服务器会使用其SSL(Secure Sockets Layer)证书进行响应。证书是作为服务器的身份证明，其包括了服务器名和域名。为了保证服务器提供的信息是正确的，证书是通过一个证书认证机构签名的。如果客户端知道并且信任(Certificate authority)CA的话，它就可以确认这个签名是从这个CA签发的，这样这个客户端就可以确定这个连接的服务器是合法的。</p>
+<p>在客户端验证证书之后，它为与服务器的通信创建了一个加密密钥。为了确保这个密钥被安全的送到服务器，它使用一个服务器证书上的公钥来加密。服务器拥有与证书上公钥对应的私钥，所以服务器是唯一能够解密的。这样从服务器接受到加密密钥之后，所有服务器和客户端之间的通信都是使用这个密钥加密的。</p>
+<p>从这个总结中，你大概可以知道实现一个TLS加密我们需要两个东西：服务器证书，包含一个公钥并且是CA签名的，还有一个与公钥对应的私钥。</p>
+<h1 id="The-Simplest-Way-To-Do-It"><a href="#The-Simplest-Way-To-Do-It" class="headerlink" title="The Simplest Way To Do It"></a>The Simplest Way To Do It</h1><p>Flask，更确切的说是Werkzeug，支持<code>on-the-fly</code>证书的使用，可以快速在HTTPS上服务应用并且不用处理证书。所有你需要做的是，在你的<code>app.run()</code>调用里添加<code>ssl_context=&#39;adhoc&#39;</code>。不幸的是，这个选项并不能通过Flask命令行接口使用。下面你可以看到官方文档上的一个hello world的Flask应用示例，添加了TLS加密。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=&apos;adhoc&apos;)</div></pre></td></tr></table></figure>
+<p>为了能够在Flask上使用ad hoc(点对点)证书，你需要在你的虚拟环境中安装一个额外的依赖:<code>pip install pyopenssl</code></p>
+<p>当你运行脚本的时候，你会注意到Flask正在运行一个<code>https://</code>服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python hello.py</div><div class="line"> * Running on https://127.0.0.1:5000/ (Press CTRL+C to quit)</div></pre></td></tr></table></figure>
+<p>很简单，是吧？问题是浏览器不喜欢这种类型的证书，因此它会在你可以访问网站之前显示一个很大的警告标志。一旦你允许浏览器连接之后，你将会得到一个加密的连接，就像你从一个服务器得到了有效证书一样，这样点对点的证书在快速测试中很方便，但是不会用于真实应用中。</p>
+<h1 id="Self-Signed-Certificates"><a href="#Self-Signed-Certificates" class="headerlink" title="Self-Signed Certificates"></a>Self-Signed Certificates</h1><p><code>self-signed</code>证书是签名通过私钥来生成的并且关联的证书。我上面提到了客户端需要知道并且信任CA签发的证书，因为正是信任关系才允许客户端去确认服务器证书。web浏览器和其他HTTP客户端会提前配置好一个已知的信任CAs列表，不过明显如果你使用一个<code>self-signed</code>证书，浏览器就不知道这个CA，因此验证也会失败。这也是我们之前使用的ad hoc证书时候发生的事情。如果浏览器不能验证服务器证书，它就会让你在存在问题的情况下运行和访问网站，但是它会确保你理解你正在有风险的访问。</p>
+<p>但是风险是什么？对于Flask服务器，你当然可以信任，并且是没有风险的。问题是用户如果连接了他们不知道的或者无法控制的服务器出现的。在那种情况，用户就不知道服务器是否是认证过的，因为任何人都可以为任何域名生成证书。</p>
+<p><code>self-signed</code>证书有时会比较有用，Flask的ad hoc证书就不是这样了，因为每次服务器运行的时候，通过pyOpenSSL就会生成一个不同的运行中证书。当你在使用一个<code>self-signed</code>证书的时候，在每次运行服务器的时候使用同样的证书是比较好的，因为你可以配置浏览器去信任它，这样就可以消除安全报警了。</p>
+<p>你可以很容易的从命令行中生成<code>self-signed</code>证书。所有你需要的是安装<code>openssl</code></p>
+<p><code>openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365</code></p>
+<p>命令生成了一个新的证书<code>cert.pem</code>以及对应的私钥在<code>key.pem</code>，有一个365天的有效周期。当你运行这个命令的时候，你将会被询问几个问题。下面是一个示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Generating a 4096 bit RSA private key</div><div class="line">......................++</div><div class="line">.............++</div><div class="line">writing new private key to &apos;key.pem&apos;</div><div class="line">-----</div><div class="line">You are about to be asked to enter information that will be incorporated</div><div class="line">into your certificate request.</div><div class="line">What you are about to enter is what is called a Distinguished Name or a DN.</div><div class="line">There are quite a few fields but you can leave some blank</div><div class="line">For some fields there will be a default value,</div><div class="line">If you enter &apos;.&apos;, the field will be left blank.</div><div class="line">-----</div><div class="line">Country Name (2 letter code) [AU]:US</div><div class="line">State or Province Name (full name) [Some-State]:Oregon</div><div class="line">Locality Name (eg, city) []:Portland</div><div class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:Miguel Grinberg Blog</div><div class="line">Organizational Unit Name (eg, section) []:</div><div class="line">Common Name (e.g. server FQDN or YOUR name) []:localhost</div><div class="line">Email Address []:</div></pre></td></tr></table></figure>
+<p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
+<p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/flask_https/flask-ssl-03.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
+<p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
+<p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
+<p>如果你使用nginx作为反向代理，你可以在nginx中配置证书，然后nginx就会终止加密连接，也就是说它会接受外部的加密连接，然后使用正常的非加密连接和你的应用通信。这是一个非常有用的配置，使得你的应用不需要处理证书和加密。在nginx进行如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443 ssl;</div><div class="line">    server_name example.com;</div><div class="line">    ssl_certificate /path/to/cert.pem;</div><div class="line">    ssl_certificate_key /path/to/key.pem;</div><div class="line">    # ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另外比较重要的是你需要考虑用户通过普通的HTTP连接的时候如何处理。最好的方式，在我看来，是给一个未加密请求一个基于HTTPS的相同url的重定向响应。对于Flask应用，你可以通过<code>Flask-SSLify</code>扩展来实现它。在nginx，你可以在另一个<code>server</code>块配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果用的是另外的web服务器，你可以参考文档找到类似的配置方法。</p>
+<h1 id="Using-“Real”-Certificates"><a href="#Using-“Real”-Certificates" class="headerlink" title="Using “Real” Certificates"></a>Using “Real” Certificates</h1><p>我们已经探索了关于<code>self-signed</code>证书所有的选项，但是在那些例子中，存在的限制是除非你告诉浏览器去信任这些证书，否则浏览器不会这么做。因此在生产环境中的网站的服务器证书最好是从那些浏览器自动信任的CAs获取。</p>
+<p>当你向一个CA请求证书的时候，CA会检查你是否有服务器和域名的控制权，但是至于检查怎么完成的是要取决于CA。如果服务器通过检查，CA会发行一个自己签名的网站证书然后给你去安装。证书通常的有效期是一年。大多数CA会收费，但是仍然有一些是免费的。最流行的免费CA是<code>Let&#39;s Encrypt</code></p>
+<p>从<code>Let&#39;s Encrypt</code>获取证书是非常容易的，整个的处理都是自动的。假设你使用的是Ubuntu服务器，你可以通过在你的服务器上安装<code>certbot</code>工具来开始</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install software-properties-common</div><div class="line">$ sudo add-apt-repository ppa:certbot/certbot</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install certbot</div></pre></td></tr></table></figure>
+<p>现在你就可以请求证书了。有几种核实网站的方法。<code>webroot</code>方法是最容易实现的。在这种方法下,<code>certbot</code>在你的web服务器的暴露出来的静态文件夹里添加一些文件，然后尝试通过HTTP使用你想来生成证书的域名来获取这些文件。如果测试成功，<code>certbot</code>就会知道服务器和域名是相对应的，然后它就会发行证书。请求证书的命令是这样的</p>
+<p><code>$ sudo certbot certonly --webroot -w /var/www/example -d example.com</code></p>
+<p>这个例子中，我们试图为<code>example.com</code>域名生成证书，使用了<code>/var/www/example</code>作为静态文件根目录。如果<code>certbot</code>可以核实域名，它就会写入证书文件<code>/etc/letsencrypt/live/example.com/fullchain.pem</code>和私钥文件<code>/etc/letsencrypt/live/example.com/privkey.pem</code>，有效期为90天。</p>
+<p>为了使用这些新获取的证书，你可以将在<code>self-signed</code>使用的文件替换掉，并且要使用上面提到的配置。当然你需要你的域名可以访问你的应用，这是唯一可以使浏览器接受并且作为有效证书的方法。</p>
+<p>如果你使用nginx作为反向代理，你可以充分使用它的映射功能，你可以在配置里创建并且给<code>certbot</code>一个私有目录，可以让它来写入核验文件。在下面的例子里，我扩展了HTTP server块来发送所有<code>Let&#39;s Encrypt</code>相关的请求到你指定的目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location ~ /.well-known &#123;</div><div class="line">        root /path/to/letsencrypt/verification/directory;</div><div class="line">    &#125;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>certbot</code>也可以用在你更新证书的时候，你只需要下面这个命令</p>
+<p><code>$ sudo certbot renew</code></p>
+<p>如果系统中有任何即将过期的证书，上面的命令就可以更新它们，会在同样的地址留下新的证书。你只需要重启服务器就可以使用它们。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;翻译自: &lt;a href=&quot;https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Running Your
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>进程的调度</title>
+    <link href="http://skyrover.me/2017/09/14/%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6/"/>
+    <id>http://skyrover.me/2017/09/14/进程的调度/</id>
+    <published>2017-09-14T08:23:03.000Z</published>
+    <updated>2017-09-14T08:23:16.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。</p>
+<h1 id="调度"><a href="#调度" class="headerlink" title="调度"></a>调度</h1><h2 id="进程的切换"><a href="#进程的切换" class="headerlink" title="进程的切换"></a>进程的切换</h2><p>首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存中动态重新装入两次（进入内核一次，离开内核一次），所以每秒钟切换进程过多，会耗费大量CPU时间。</p>
+<h2 id="进程类型"><a href="#进程类型" class="headerlink" title="进程类型"></a>进程类型</h2><ul>
+<li>计算密集型进程：具有较长时间的CPU集中使用和较小额度的I/O等待</li>
+<li>I/O密集型：较短时间的CPU集中使用和频繁的I/O等待，如果运行I/O密集型进程，那么就应该让它尽快得到机会，以便发出磁盘请求并且保持磁盘忙碌</li>
+</ul>
+<h2 id="调度时机"><a href="#调度时机" class="headerlink" title="调度时机"></a>调度时机</h2><ul>
+<li>创建一个新进程后，选择运行父进程还是子进程</li>
+<li>进程退出时候</li>
+<li>进程阻塞在I/O和信号量上或者其他阻塞时候</li>
+<li>一个I/O中断发生的时候</li>
+</ul>
+<h2 id="调度算法分类"><a href="#调度算法分类" class="headerlink" title="调度算法分类"></a>调度算法分类</h2><p>根据如何处理时钟中断，有两种调度算法，非抢占式调度算法和抢占式算法</p>
+<p>根据环境不同，有批处理，交互式，实时环境</p>
+<h2 id="调度算法的评价"><a href="#调度算法的评价" class="headerlink" title="调度算法的评价"></a>调度算法的评价</h2><ul>
+<li>吞吐量，每小时完成的作业数量。</li>
+<li>周转时间，从一个批处理作业提交到作业完成的统计平均时间</li>
+<li>CPU利用率</li>
+<li>最小响应时间，在交互式系统</li>
+</ul>
+<h1 id="批处理系统中的调度"><a href="#批处理系统中的调度" class="headerlink" title="批处理系统中的调度"></a>批处理系统中的调度</h1><h2 id="先来先服务"><a href="#先来先服务" class="headerlink" title="先来先服务"></a>先来先服务</h2><p>按照请求CPU的顺序使用CPU，当正在运行的进程被阻塞的时候，队列的第一个进程就接着运行，在阻塞的进程变成就绪的时候，加入到队列的尾部。</p>
+<h2 id="最短作业优先"><a href="#最短作业优先" class="headerlink" title="最短作业优先"></a>最短作业优先</h2><p>适用于运行时间可以预知的非抢占式批处理调度算法</p>
+<h2 id="最短剩余时间优先"><a href="#最短剩余时间优先" class="headerlink" title="最短剩余时间优先"></a>最短剩余时间优先</h2><p>最短作业优先的抢占式版本是最短剩余时间优先，在到来一个进程时候，新进程比当前运行进程需要更少的时间，当前进程就被挂起，而运行新的进程。</p>
+<h1 id="交互式系统中的调度"><a href="#交互式系统中的调度" class="headerlink" title="交互式系统中的调度"></a>交互式系统中的调度</h1><h2 id="轮转调度"><a href="#轮转调度" class="headerlink" title="轮转调度"></a>轮转调度</h2><p>每个进程被分配一个时间段，称为时间片，允许进程在该时间段中运行。时间片的长度应该合适，因为从一个进程切换到另一个进程是需要一定时间进行管理事务处理的，保存和装入寄存器值以及内存映像，更新各种表格和列表，清除和重新调入内存高速缓存。也就是CPU在进程切换的时间在整个时间片的比例越少越好，但是太少这样会导致在需要切换的时候太慢。所以时间片设置为20ms-50ms是一个合理的折中。</p>
+<h2 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h2><p>提高I/O密集型进程的优先级，因为其多数时间是等待I/O结束，这样阻塞后可以开始另一个进程了。可以将一组进程按照优先级分成若干类，在各类之间采用优先级调度，在各类进程内部采用轮转调度。这种低优先级的进程可能会产生饥饿现象。</p>
+<h2 id="多级队列"><a href="#多级队列" class="headerlink" title="多级队列"></a>多级队列</h2><p>设立优先级类，属于最高优先级类的进程运行一个时间片，属于次高优先级的进程运行2个时间片，再次一级运行4个时间片。当一个进程用完分配的时间片后，被移到下一类。</p>
+<h2 id="最短进程优先"><a href="#最短进程优先" class="headerlink" title="最短进程优先"></a>最短进程优先</h2><p>核心在于如何从当前可运行进程中找出最短的那一个进程。可以根据过去的行为进行预测，并执行估计某个终端上运行时间最短的那一个，<code>aT0 + (1-a)T1</code></p>
+<h2 id="保证调度"><a href="#保证调度" class="headerlink" title="保证调度"></a>保证调度</h2><p>向用户作出明确的性能保证，然后去实现它，对于每个进程平分CPU时间，这样系统跟踪每个进程创建以来使用了多少CPU时间，然后计算各个进程应该获得的时间。然后算法转向比率最低的进程，直到该进程比率超过它的最接近竞争者为止。</p>
+<h2 id="彩票调度"><a href="#彩票调度" class="headerlink" title="彩票调度"></a>彩票调度</h2><p>向进程中提供各种系统资源的彩票，一旦需要一项调度决策，就可以随机抽出一张彩票。</p>
+<h2 id="公平分享调度"><a href="#公平分享调度" class="headerlink" title="公平分享调度"></a>公平分享调度</h2><p>每个用户分配CPU时间的一部分，而调度程序以一种强制的方式选择进程，这样每个用户都会得到应有的份额。</p>
+<h1 id="实时系统中的调度"><a href="#实时系统中的调度" class="headerlink" title="实时系统中的调度"></a>实时系统中的调度</h1><ul>
+<li>硬实时: 必须满足绝对的截止时间</li>
+<li>软实时: 可以偶尔错失截止时间</li>
+</ul>
+<h1 id="策略和机制"><a href="#策略和机制" class="headerlink" title="策略和机制"></a>策略和机制</h1><p>在主进程能掌握子进程的信息的时候，可以根据此进行调度和选择，将调度机制和调度策略分离，调度算法以某种形式参数化，参数可以由用户进程填写。比如内核使用优先级调度算法，提供一条可供进程设置的优先级的系统调用，这样父进程就可以控制子进程的细节。</p>
+<h1 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h1><p>如果线程都是用户级线程，那么内核就是和以前一样，只调度进程，内部的话，因为不存在时钟中断，所以这个线程可以按照意愿运行。</p>
+<p>如果使用内核级线程，内核选择一个特定的线程运行，它不用考虑线程属于哪个进程，对被选择的线程赋予一个时间片，如果超过了时间片，则强制挂起该线程。</p>
+<p>用户级线程和内核级线程之间的差别在于性能，用户级线程切换需要少量的机器指令，而内核级线程切换需要完整的上下文切换，修改内存映像，使高速缓存失效。在使用内核级线程时候，一旦线程阻塞在I/O上不需要像用户级线程将整个进程挂起。</p>
+<h1 id="经典的IPC问题"><a href="#经典的IPC问题" class="headerlink" title="经典的IPC问题"></a>经典的IPC问题</h1><h2 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">#define N 5</div><div class="line">#define LEFT (i+N-1)%N</div><div class="line">#define RIGHT (i+1)%N</div><div class="line">#define THINKING 0</div><div class="line">#define HUNGRY 1</div><div class="line">#define EATING 2</div><div class="line">typedef int semaphore;</div><div class="line">int state[N];</div><div class="line">semaphore mutex = 1;</div><div class="line">semaphore s[N];  // 相当于哲学家拿的筷子数，2个的时候吃饭，1个的时候正常，0个时候阻塞</div><div class="line"></div><div class="line">void philosopher(int i)&#123;</div><div class="line">  while (TRUE)&#123;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 叉子是临界资源，所以需要加锁获取</div><div class="line"></div><div class="line">void take_forks(int i)&#123;</div><div class="line">  down(&amp;mutex);</div><div class="line">  state[i] = HUNGRY;</div><div class="line">  test(i);   // 尝试获得两把叉子，并且为EATING</div><div class="line">  up(&amp;mutex);  //离开临界区</div><div class="line">  down(&amp;s[i]);  //如果得不到叉子则阻塞，如果已经获得两把叉子，那么接下来状态就是1个叉子</div><div class="line">&#125;</div><div class="line"></div><div class="line">void put_forks(i)&#123;</div><div class="line">  //释放临界资源，但是放筷子动作是在take_forks已经执行的</div><div class="line">  down(&amp;mutex);</div><div class="line">  state[i] = THINKING;  // 就餐完毕</div><div class="line">  test(LEFT);  // 检查左边邻居可以吃吗</div><div class="line">  test(RIGHT); // 检查右边邻居可以吃吗</div><div class="line">  up(&amp;mutex);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void test(i)&#123;</div><div class="line">  if (state[i] == HUNGRY &amp;&amp; state[LEFT] != EATING &amp;&amp; state[RIGHT] != EATING)&#123;</div><div class="line">    state[i] = EATING;</div><div class="line">    up(&amp;s[i]);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。&lt;/p&gt;
+&lt;h1 id=&quot;调度&quot;&gt;&lt;a href=&quot;#调度&quot; class=&quot;headerlink&quot; title=&quot;调度&quot;&gt;&lt;/a&gt;调度&lt;/h1&gt;&lt;h2 id=&quot;进程的切换&quot;&gt;&lt;a href=&quot;#进程
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>翻译 - subprocess — Subprocess management</title>
+    <link href="http://skyrover.me/2017/09/12/subprocess%E7%AE%A1%E7%90%86/"/>
+    <id>http://skyrover.me/2017/09/12/subprocess管理/</id>
+    <published>2017-09-12T01:00:35.000Z</published>
+    <updated>2017-09-12T01:00:06.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如<code>os.system</code>和<code>os.spawn*</code></p>
+<h1 id="使用subprocess模块"><a href="#使用subprocess模块" class="headerlink" title="使用subprocess模块"></a>使用subprocess模块</h1><h2 id="run函数"><a href="#run函数" class="headerlink" title="run函数"></a>run函数</h2><p>推荐的调用子进程的方式是使用<code>run()</code>函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的<code>Popen</code>接口。</p>
+<p><code>subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, shell=False, timeout=None, check=False)</code></p>
+<p>args是你要运行的命令，然后等待命令运行结束，然后返回一个<code>CompletedProcess</code>实例</p>
+<p>上面显示的参数是最常使用的，在下面的<code>Frequently Used Arguments</code>有详细介绍。它默认不会捕获stdout或者stderr，为了捕获这些信息，给stdout或者stderr参数传递<code>PIPE</code>。</p>
+<p>timeout参数会被传递给<code>Popen.communicate()</code>，如果到了timeout，子进程会被kill掉，在子进程被杀死之后会重新引发<code>TimeoutExpired</code>异常</p>
+<p>输入参数会被传递给<code>Popen.communicate()</code>，然后会被作为子进程的输入。如果要使用这个参数，传递的必须是一个二进制序列，或者当<code>universal_newlines=True</code>的时候可以传递一个字符串。当使用这个参数的时候，内部的Popen对象会自动的加入<code>stdin=PIPE</code>创建对象，同时stdin参数将不会被使用。</p>
+<p>如果check参数为True，如果子进程以非0状态码退出的话，一个<code>CalledProcessError</code>异常将会被引发。异常会保持参数，退出码，stdout以及stderr，如果能捕获的话。</p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;])  # doesn&apos;t capture output</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;], returncode=0)</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run(&quot;exit 1&quot;, shell=True, check=True)</div><div class="line">Traceback (most recent call last):</div><div class="line">  ...</div><div class="line">subprocess.CalledProcessError: Command &apos;exit 1&apos; returned non-zero exit status 1</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;, &quot;/dev/null&quot;], stdout=subprocess.PIPE)</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;, &apos;/dev/null&apos;], returncode=0,</div><div class="line">stdout=b&apos;crw-rw-rw- 1 root root 1, 3 Jan 23 16:23 /dev/null\n&apos;)</div></pre></td></tr></table></figure>
+<p>基本上最简单的用法就是<code>check=True</code>，然后<code>stdout=PIPE</code>直接调用run函数就好了</p>
+<h2 id="CompletedProcess"><a href="#CompletedProcess" class="headerlink" title="CompletedProcess"></a>CompletedProcess</h2><p>从run函数的返回值，表示一个进程已经结束</p>
+<ul>
+<li>args: 用来启动进程的参数，会是一个列表或者字符串</li>
+<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
+<li>stdout: 从子进程中捕获stdout，二进制序列，如果run函数加上<code>universal_newlines=True</code>调用就是一个字符串，如果什么都没捕获的话就是一个None</li>
+<li>stderr: 跟上面一样</li>
+<li><code>check_returncode()</code>: 如果returncode不是0，则引发一个<code>CalledProcessError</code></li>
+</ul>
+<h2 id="DEVNULL"><a href="#DEVNULL" class="headerlink" title="DEVNULL"></a>DEVNULL</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示<code>os.devnull</code>文件将会被使用</p>
+<h2 id="PIPE"><a href="#PIPE" class="headerlink" title="PIPE"></a>PIPE</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示标准流的管道应该被打开。</p>
+<h2 id="STDOUT"><a href="#STDOUT" class="headerlink" title="STDOUT"></a>STDOUT</h2><p>用在Popen的stderr参数，用来指示标准错误应该和标准输出一同处理</p>
+<h2 id="CalledProcessError"><a href="#CalledProcessError" class="headerlink" title="CalledProcessError"></a>CalledProcessError</h2><ul>
+<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
+<li>cmd: 用来启动进程的命令</li>
+<li>output: 如果被run或者<code>check_output</code>捕获就是子进程的输出，否则是None</li>
+<li>stdout:</li>
+<li>stderr</li>
+</ul>
+<h2 id="Frequently-Used-Arguments"><a href="#Frequently-Used-Arguments" class="headerlink" title="Frequently Used Arguments"></a>Frequently Used Arguments</h2><p>为了支持更广泛的使用，Popen构造器和一些有用的函数，接受大量的可选参数。对于大部分典型使用来说，这些参数中的大部分都可以使用其默认值。经常需要使用的参数是这些：</p>
+<ul>
+<li><code>args</code> 每一次调用都需要这个参数，应该是一个字符串或者是程序的参数序列。通常建议传递参数序列，因为这样可以允许模块更好的处理转义和参数引用，比如在文件名中允许空格。<strong>如果传递了单个的字符串，shell参数应该为True或者是程序调用的时候不需要额外参数</strong></li>
+<li><code>stdin, stdout, stderr</code> 分别指定了程序的标准输入，标准输出和标准错误的文件处理器。有效的值是<code>PIPE</code>，<code>DEVNULL</code>，一个存在的文件描述符，一个存在的文件对象和None。<code>PIPE</code>指定了一个连接到子进程的管道应该被创建。<code>DEVNULL</code>指定了这个特殊的文件<code>os.devnull</code>会被使用。默认值None说明没有重定向发生。子进程的文件处理器会继承父进程的。另外，<code>stderr</code>将会是<code>STDOUT</code>，表明子进程的stderr数据会和stdout一块捕获。</li>
+<li><code>universal_newlines</code> 如果为False，stdin, stdout, stderr将会以二进制流的方式打开，并且没有行结束符。如果为True，将会以文本模式打开，并且使用<code>locale.getpreferredencoding(False)</code>返回的编码方式。对于stdin，<code>\n</code>将会被转换成默认的行分隔符<code>os.linesep</code>。对于stderr和stdout，所有的行结束都会被转换成<code>\n</code>。</li>
+<li><code>shell</code> 如果为True，指定的命令将会通过shell来执行，在你主要用Python来做控制，但是又想有shell的便利性的时候很有用，比如shell管道，文件名通配符，环境变量扩展，<code>~</code>用户家目录的扩展。然而，Python自己也实现了很多shell特性的东西，比如<code>glob</code>, <code>fnmatch</code>, <code>os.walk()</code>, <code>os.path.expandvars()</code>, <code>os.path.expanduser()</code>和<code>shutil</code></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如&lt;code&gt;os.system&lt;/code&gt;和&lt;code&gt;os.spawn*&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&quot;使用subp
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>类元编程</title>
+    <link href="http://skyrover.me/2017/09/09/%E7%B1%BB%E5%85%83%E7%BC%96%E7%A8%8B/"/>
+    <id>http://skyrover.me/2017/09/09/类元编程/</id>
+    <published>2017-09-09T06:42:46.000Z</published>
+    <updated>2017-09-09T06:43:36.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>From <strong>流畅的Python 人民邮电出版社 21章类元编程</strong></p>
+</blockquote>
+<p>类元编程是指在运行时创建或者定制类，可以在任何时候用函数新建类，而无需使用class关键字。</p>
+<h1 id="类工厂函数"><a href="#类工厂函数" class="headerlink" title="类工厂函数"></a>类工厂函数</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">def record_factory(cls_name, field_names):</div><div class="line">    try:</div><div class="line">        field_names = field_names.replace(&apos;,&apos;, &apos; &apos;).split()</div><div class="line">    except AttributeError:</div><div class="line">        pass</div><div class="line">    field_names = tuple(field_names)</div><div class="line"></div><div class="line">    def __init__(self, *args, **kwargs):</div><div class="line">        attrs = dict(zip(self.__slots__, args))</div><div class="line">        attrs.update(kwargs)</div><div class="line">        for name, value in attrs.items():</div><div class="line">            setattr(self, name, value)</div><div class="line"></div><div class="line">    def __iter__(self):</div><div class="line">        for name in self.__slots__:</div><div class="line">            yield getattr(self, name)</div><div class="line"></div><div class="line">    def __repr__(self):</div><div class="line">        values = &apos;, &apos;.join(&apos;&#123;&#125;=&#123;!r&#125;&apos;.format(*i) for i in zip(self.__slots__, self))</div><div class="line">        return &apos;&#123;&#125;(&#123;&#125;)&apos;.format(self.__class__.__name__, values)</div><div class="line"></div><div class="line">    # __slots__限制该class能添加的属性，只有在__slots__出现的才会在实例中出现和使用</div><div class="line">    # 而且__slots__定义后，实例不会有__dict__属性，slots出现的属性都会以元组形式存储</div><div class="line">    cls_attrs = dict(__slots__ = field_names, __init__ = __init__, __iter__ = __iter__, __repr__ = __repr__)</div><div class="line"></div><div class="line">    # 构建新类，然后返回，参数是类名，继承的类，和属性名和值的字典</div><div class="line">    return type(cls_name, (object, ), cls_attrs)</div></pre></td></tr></table></figure>
+<p>type是一个类，也是一个函数，当成函数的话，调用<code>type(my_object)</code>返回对象所属的类，作用和<code>my_object.__class__</code>相同。当成类的话，传入所需要的参数，会返回创建出来的新的类。</p>
+<h1 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h1><p>使用类装饰器或者元类可以改变类的一些属性和定义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">@entity</div><div class="line">class LineItem:</div><div class="line">    description = NonBlank()</div><div class="line">    weight = Quantity()</div><div class="line"></div><div class="line">    def __init__(self, description, weight):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">def entity(cls):</div><div class="line">    # 对类属性进行的处理</div><div class="line">    for key, attr in cls.__dict__.items():</div><div class="line">        if isinstance(attr, Validated):</div><div class="line">            # 获取到这个属性的类名，其实就是描述符的类名</div><div class="line">            # 属性是描述符实例，要修改其storage_name</div><div class="line">            # key就是当前在该类中的属性名</div><div class="line">            type_name = type(attr).__name__</div><div class="line">            attr.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(type_name, key)</div><div class="line">    return cls</div></pre></td></tr></table></figure>
+<p>类装饰器可以做到创建类的时候定制类，但是它只对直接依附的类有效。</p>
+<h1 id="导入时和运行时的比较"><a href="#导入时和运行时的比较" class="headerlink" title="导入时和运行时的比较"></a>导入时和运行时的比较</h1><p>导入的时候，解释器会从上到下一次性解析完py模块的源码，然后生成用于执行的字节码。如果本地的<code>__pycache__</code>文件夹有最新的pyc文件，解释器就会直接使用这里的字节码。</p>
+<p>编译是导入时的活动，但是导入时候有些语句还可能执行某些用户代码，比如import，会运行导入模块中的全部顶层代码。</p>
+<p>顶层代码：解释器会执行顶层的def语句，解释器会编译函数的定义体，但是不会执行函数的定义体，就是导入时候定义顶层函数，运行时候才会执行函数定义体</p>
+<p>类，导入的时候会执行每个类的定义体，定义类的属性和方法，并且构建类对象，类的定义体是顶层代码，在导入时候运行。</p>
+<p>对于装饰器，在导入的时候，也会执行其装饰器里面的顶层代码，因为它装饰了其他函数，就相当于运行了里面的顶层代码。</p>
+<p>在运行一段程序时候，先执行导入，导入执行的代码，在运行时候就不会运行，因为已经绑定，直接使用。并且类装饰器不会对子类产生影响，除非子类调用了super()</p>
+<h1 id="元类"><a href="#元类" class="headerlink" title="元类"></a>元类</h1><p>元类是制造类的工厂。在Python中，类是对象，类是type类的实例，type是大多数内置的类和用户定义的类的元类。另外type是自身的实例。</p>
+<p>object是type的实例，type是object的子类，定义其中一个之前另一个必须存在。因为type是元类，所以其他类是它的实例。而其他类继承object，所以是object的子类。</p>
+<p>比如ABCMeta是一个元类，而<code>collections.Iterable</code>所属的类是<code>abc.ABCMeta</code>，Iterable是抽象类，是ABCMeta的实例，元类的实例。所有类都直接或者间接是type的实例，只有元类同时也是type的子类，继承自type，所以ABCMeta的父类是type。</p>
+<p>所有类都是type的实例，元类还是type的子类，所以元类是制造类的工厂。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class MetaAleph(type):</div><div class="line">    # 这个类是type类的子类，因此它也是元类</div><div class="line">    # cls要初始化的类对象，类名，基类，属性字典</div><div class="line">    def __init__(cls, name, bases, dic):</div><div class="line">        # self是创建的类的实例</div><div class="line">        def inner_2(self):</div><div class="line">            print(&quot;inner&quot;)</div><div class="line">        cls.method_z = inner_2</div><div class="line"></div><div class="line">class ClassFive(metaclass=MetaAleph):</div><div class="line">    def __init__(self):</div><div class="line">        print(&quot;class five init&quot;)</div><div class="line">    def method_z(self):</div><div class="line">        print(&quot;class five method_z&quot;)</div><div class="line"></div><div class="line"># 都会调用MetaAleph的init方法</div><div class="line">class ClassSix(ClassFive):</div><div class="line">    def method_z(self):</div><div class="line">        print(&apos;class six method_z&apos;)</div></pre></td></tr></table></figure>
+<p>如果要进一步定制类，在元类中实现<code>__new__</code>方法</p>
+<h1 id="描述符的元类"><a href="#描述符的元类" class="headerlink" title="描述符的元类"></a>描述符的元类</h1><p>上面类装饰器实现的内容，也可以使用元类来实现，也就是LineItem这个类实例化的时候就会执行元类的init方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"># Entity是一个元类的实例</div><div class="line">class LineItem(Entity):</div><div class="line">    description = NonBlank()</div><div class="line">    weight = Quantity()</div><div class="line"></div><div class="line">    def __init__(self, description, weight):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line"># 定义一个元类，然后创建一个元类的实例</div><div class="line">class EntityMeta(type):</div><div class="line">    def __init__(cls, name, bases, attr_dict):</div><div class="line">        super().__init__(name, bases, attr_dict)</div><div class="line">        for key, attr in attr_dict.items():</div><div class="line">            if isinstance(attr, Validated):</div><div class="line">                type_name = type(attr).__name__</div><div class="line">                attr.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(type_name, key)</div><div class="line"></div><div class="line"># 定义元类的实例</div><div class="line">class Entity(metaclass=EntityMeta):</div></pre></td></tr></table></figure>
+<h1 id="元类的特殊方法-prepare"><a href="#元类的特殊方法-prepare" class="headerlink" title="元类的特殊方法__prepare__"></a>元类的特殊方法<code>__prepare__</code></h1><p><code>__prepare__</code>特殊方法只在元类中有用，必须声明为类方法，在调用元类的<code>__new__</code>方法之前会先调用<code>__prepare__</code>方法，使用类定义体中的属性创建映射。元类构建新类时候，<code>__prepare__</code>方法返回的映射会传给<code>__new__</code>方法最后一个参数，然后传给<code>__init__</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"># 定义一个元类，然后创建一个元类的实例</div><div class="line">class EntityMeta(type):</div><div class="line">    @classmethod</div><div class="line">    # 第一个参数是元类，要构建的类的名称和基类组成的元组</div><div class="line">    def __prepare__(cls, name, bases):</div><div class="line">        return collections.OrderedDict()</div><div class="line"></div><div class="line">    def __init__(cls, name, bases, attr_dict):</div><div class="line">        super().__init__(name, bases, attr_dict)</div><div class="line">        cls._field_names = []</div><div class="line">        for key, attr in attr_dict.items():</div><div class="line">            if isinstance(attr, Validated):</div><div class="line">                type_name = type(attr).__name__</div><div class="line">                attr.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(type_name, key)</div><div class="line">                cls._field_names.append(key)</div><div class="line"></div><div class="line"># 定义元类的实例</div><div class="line">class Entity(metaclass=EntityMeta):</div><div class="line">    @classmethod</div><div class="line">    def field_names(cls):</div><div class="line">        for name in cls._field_names:</div><div class="line">            yield name</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;From &lt;strong&gt;流畅的Python 人民邮电出版社 21章类元编程&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;类元编程是指在运行时创建或者定制类，可以在任何时候用函数新建类，而无需使用class关键字。&lt;/p&gt;
+&lt;h1 
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>属性描述符</title>
+    <link href="http://skyrover.me/2017/09/05/%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6/"/>
+    <id>http://skyrover.me/2017/09/05/属性描述符/</id>
+    <published>2017-09-05T13:40:46.000Z</published>
+    <updated>2017-09-09T06:44:01.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>From <strong>流畅的Python 人民邮电出版社 20章属性描述符</strong></p>
+</blockquote>
+<p>描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的<code>__get__</code>和<code>__set__</code>方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。</p>
+<p>描述符是实现了特定协议的类，这个协议包括<code>__get__</code>, <code>__set__</code>和<code>__delete__</code>方法。使用描述符的Python功能还有方法以及classmethod和staticmethod装饰器。</p>
+<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>描述符的用法是，创建一个描述符实例，作为另外一个类的类属性，这样就会托管该类实例的同名属性，所以实例的属性和使用描述符的类属性是分离的。描述符属性通过将属性存储到相应实例的字典中来区分不同实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Quantity:</div><div class="line"></div><div class="line">    def __init__(self, storage_name):</div><div class="line">       self.storage_name = storage_name</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[self.storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        return instance.__dict__[self.storage_name]</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    weight = Quantity(&apos;weight&apos;)</div><div class="line"></div><div class="line">    def __init__(self, weight):</div><div class="line">        self.weight = weight</div></pre></td></tr></table></figure>
+<p>这里设置实例的属性的时候，会将设置代理到描述符的<code>__set__</code>，这样就将其设置到了实例的属性字典里，<code>__set__</code>中self是描述符实例，而instance是托管类的实例，应该将属性放在实例中，这样可以区分不同实例的同名属性。对于<code>__get__</code>方法，owner是instance对应的托管类，必须通过实例字典的方式拿出属性，这样才不会无限循环。</p>
+<p>如果通过类来访问托管属性，instance就是None，然后就会产生<code>AttributeError</code>异常，所以可以进行判断，让<code>__get__</code>方法返回描述符实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def __get__(self, instance, owner):</div><div class="line">    if instance is None:</div><div class="line">        # self是描述符实例</div><div class="line">        return self</div><div class="line">    else:</div><div class="line">        return instance.__dict__[self.storage_name]</div></pre></td></tr></table></figure>
+<h1 id="利用继承扩展描述符"><a href="#利用继承扩展描述符" class="headerlink" title="利用继承扩展描述符"></a>利用继承扩展描述符</h1><p>通常描述符会作为一个工具来控制很多类的属性管理，而且基于面向对象的设计，可以利用继承来重用代码创建新的描述符。比如下面的描述符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class AutoStorage:</div><div class="line">    __counter = 0</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        cls = self.__class__</div><div class="line">        prefix = cls.__name__</div><div class="line">        index = cls.__counter</div><div class="line">        self.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(prefix, index)</div><div class="line">        cls.__counter += 1</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        if instance is None:</div><div class="line">            return self</div><div class="line">        else:</div><div class="line">            return getattr(instance, self.storage_name)</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        setattr(instance, self.storage_name, value)</div></pre></td></tr></table></figure>
+<p>这个描述符实现了属性的存取，并且可以实现多个属性的托管而不用传递任何参数，因为内部已经做好名称处理了，所以也可以直接使用getattr以及setattr来对属性进行存取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class Validated(abc.ABC, AutoStorage):</div><div class="line">    def __set__(self, instance, value):</div><div class="line">        value = self.validate(instance, value)</div><div class="line">        # super的使用方法</div><div class="line">        super().__set__(instance, value)</div><div class="line"></div><div class="line">    @abc.abstractmethod</div><div class="line">    def validate(self, instance, value):</div><div class="line"></div><div class="line">class Quantity(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        if value &lt;= 0:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">        return value</div><div class="line"></div><div class="line">class NonBlank(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        value = value.strip()</div><div class="line">        if len(value) == 0:</div><div class="line">            raise ValueError(&apos;value cannot be empty or blank&apos;)</div><div class="line">        return value</div></pre></td></tr></table></figure>
+<p>通过继承基础的AutoStorage，Validated会在set的时候进行检查，具体怎么检查，委托给validate的子类实现，这样就形成了代码复用，然后制造一堆描述符。</p>
+<h1 id="覆盖型描述符和非覆盖型描述符"><a href="#覆盖型描述符和非覆盖型描述符" class="headerlink" title="覆盖型描述符和非覆盖型描述符"></a>覆盖型描述符和非覆盖型描述符</h1><p>实现<code>__set__</code>方法的描述符是覆盖型描述符，因为这样会覆盖对实例属性的赋值操作。比如特性如果没有提供设值的函数，那么就会引发<code>AttributeError</code>。</p>
+<p>如果只实现了<code>__set__</code>，写操作是由描述符处理，如果通过实例读取描述符会返回描述符对象本身。但是如果设置了实例的同名实例属性(通过<code>__dict__</code>实现)的话，再读取的话，就会直接从实例中返回<code>__dict__</code>的属性值。而写仍然会被描述符覆盖。</p>
+<p>没有实现<code>__set__</code>的描述符是非覆盖型描述符，如果设置了同名实例属性，那么描述符会被覆盖。类中的方法就是非覆盖型描述符实现的，如果重新设置就会被覆盖。</p>
+<p>对类属性赋值都能覆盖描述符。如果想控制类属性的操作，要把描述符依附在类的类上，即依附在元类上。</p>
+<h1 id="方法是描述符"><a href="#方法是描述符" class="headerlink" title="方法是描述符"></a>方法是描述符</h1><p>用户在类中定义的函数都有<code>__get__</code>方法，所以依附在类上，就是描述符，而且是非覆盖型描述符，可以被实例属性重新覆盖。</p>
+<p>比如<code>obj.test</code>就是绑定方法，即函数的<code>__get__</code>方法会返回绑定方法对象，相当于<code>functools.partial</code>将obj绑定给了函数第一个参数，就是self。</p>
+<p>但是<code>Test.test</code>就是一个函数，即函数的<code>__get__</code>方法会返回自身的引用。</p>
+<p><code>Test.test.__get__(obj)</code>就是一个绑定方法对象，而<code>Test.test.__get__(None, Test)</code>就是一个函数对象，返回函数自身的引用。</p>
+<p>绑定方法对象有一个<code>__call__</code>方法，来处理真正的调用过程，会调用<code>__func__</code>属性引用的原始函数，把函数的第一个参数设为绑定方法的<code>__self__</code>属性，这就是self的隐式绑定。所以函数会变成绑定方法。</p>
+<h1 id="描述符的使用"><a href="#描述符的使用" class="headerlink" title="描述符的使用"></a>描述符的使用</h1><ul>
+<li>只读描述符必须有<code>__set__</code>方法</li>
+</ul>
+<p>这样才可以控制属性的赋值，要不然实例的同名属性会覆盖描述符。在<code>__set__</code>方法只需要跑出<code>AttributeError</code>异常就可以了。</p>
+<ul>
+<li>验证的描述符可以只实现<code>__set__</code>方法</li>
+</ul>
+<p>这是一种覆盖型描述符，在set的时候检查属性值，设置在实例的<code>__dict__</code>，然后get的时候，就会从实例中拿值，比较快。因为设置了实例属性，就会将get给覆盖掉，而set不会被覆盖。</p>
+<ul>
+<li>只实现<code>__get__</code>可以实现缓存</li>
+</ul>
+<p>在第一次的时候调用<code>__get__</code>进行计算，然后给实例<code>__dict__</code>设置同名的值，此后实例同名属性就会将描述符给覆盖了，所以就不用计算了。</p>
+<ul>
+<li>非特殊方法可以被实例属性覆盖</li>
+</ul>
+<p>因为解释器会在类中寻找特殊方法，所以就不会受到描述符的影响，也不会因为实例中设置了相同的方法而影响。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;From &lt;strong&gt;流畅的Python 人民邮电出版社 20章属性描述符&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>特性，属性和特殊方法</title>
+    <link href="http://skyrover.me/2017/09/04/%E7%89%B9%E6%80%A7%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E6%AE%8A%E6%96%B9%E6%B3%95/"/>
+    <id>http://skyrover.me/2017/09/04/特性属性和特殊方法/</id>
+    <published>2017-09-04T10:21:46.000Z</published>
+    <updated>2017-09-09T06:44:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>From <strong>流畅的Python 人民邮电出版社 19章动态属性和特性</strong></p>
+</blockquote>
+<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>数据的属性和处理数据的方法统称为属性，其实方法只是可调用的属性。然后还有特性：<code>property(fget=None, fset=None, fdel=None, doc=None)</code></p>
+<h2 id="经典的使用方法"><a href="#经典的使用方法" class="headerlink" title="经典的使用方法"></a>经典的使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class LineItem:</div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">    def get_weight(self):</div><div class="line">        return self.__weight</div><div class="line"></div><div class="line">    def set_weight(self, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            self.__weight = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">    # 构建property对象，然后赋值给公开的类属性 self.weight</div><div class="line">    weight = property(get_weight, set_weight)</div></pre></td></tr></table></figure>
+<h2 id="新式使用方法"><a href="#新式使用方法" class="headerlink" title="新式使用方法"></a>新式使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class LineItem:</div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">    @property</div><div class="line">    def weight(self):</div><div class="line">        return self.__weight</div><div class="line"></div><div class="line">    @weight.setter</div><div class="line">    def weight(self, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            self.__weight = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div></pre></td></tr></table></figure>
+<p>特性都是类属性，但是特性管理的是实例属性的存取。特性是一种描述符，所以肯定是类属性，管理的是实例属性。</p>
+<p>实例属性会遮盖类的数据属性，但是实例属性不会遮盖类特性，就是即使存在同样的实例属性名和特性属性名，再访问，也只会访问特性，而不会访问实例属性。如果删除这个类的特性，再去访问，就会是实例属性了。这种特性是覆盖型描述符：<code>obj.attr</code>会首先从<code>obj.__class__</code>开始，当类中没有名为attr的特性时候，Python才会在obj实例中寻找。</p>
+<p>特性的doc是在<code>@property</code>装饰的函数上的，经典的特性是doc参数<code>property(fget=None, fset=None, fdel=None, doc=None)</code></p>
+<h1 id="特性工厂函数"><a href="#特性工厂函数" class="headerlink" title="特性工厂函数"></a>特性工厂函数</h1><p>赋值语句的右边先计算</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">def quantity(storage_name):</div><div class="line">    # 获取属性的方法</div><div class="line">    def qty_getter(instance):</div><div class="line">        # 跳过特性，直接访问实例属性</div><div class="line">        return instance.__dict__[storage_name]</div><div class="line">    # 设置属性的方法</div><div class="line">    def qty_setter(instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">    # 返回一个特性，这样类中的一个属性就变成了特性</div><div class="line">    return property(qty_getter, qty_setter)</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    # weight类属性，现在是一个特性</div><div class="line">    weight = quantity(&apos;weight&apos;)</div><div class="line">    price = quantity(&apos;price&apos;)</div><div class="line"></div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line">    def subtotal(self):</div><div class="line">        # 特性会覆盖实例属性</div><div class="line">        return self.weight * self.price</div></pre></td></tr></table></figure>
+<p>特性会覆盖实例属性，所以可以直接存取<code>__dict__</code>属性来跳过特性的处理逻辑</p>
+<h1 id="处理属性的重要属性和函数"><a href="#处理属性的重要属性和函数" class="headerlink" title="处理属性的重要属性和函数"></a>处理属性的重要属性和函数</h1><ul>
+<li><code>__class__</code> 对象所属类的引用,<code>obj.__class__</code>和<code>type(obj)</code>，以及特殊方法只在对象的类中寻找，而不在实例中寻找</li>
+<li><code>__dict__</code> 存储对象或者类的可写属性，有<code>__dict__</code>的对象，可以随意设置新属性</li>
+<li><code>__slots__</code>限制实例能有哪些属性，定义了类中所有的实例属性，让解释器在元组中存储实例属性，而不用字典，节约内存！</li>
+</ul>
+<h2 id="处理属性的内置函数"><a href="#处理属性的内置函数" class="headerlink" title="处理属性的内置函数"></a>处理属性的内置函数</h2><ul>
+<li><code>dir(obj)</code> 列出对象的大多数属性，可以在有<code>__dict__</code>和没有<code>__dict__</code>属性的对象上使用</li>
+<li><code>getattr(object, name)</code> 从object对象中获取name字符串对应的属性</li>
+<li><code>hasattr(object, name)</code> 如果object中存在指定的属性，则返回True</li>
+<li><code>setattr(object, name, value)</code> 把object对象指定属性的值设为value</li>
+<li><code>vars([object])</code> 返回object对象的<code>__dict__</code>属性，如果没有参数，返回表示本地作用域的字典，如果没有<code>__dict__</code>属性，返回TypeError</li>
+</ul>
+<h2 id="处理属性的特殊方法"><a href="#处理属性的特殊方法" class="headerlink" title="处理属性的特殊方法"></a>处理属性的特殊方法</h2><p>直接访问实例的<code>__dict__</code>属性，就不会触发这些特殊方法</p>
+<ul>
+<li><code>__setattr__(self, name, value)</code></li>
+</ul>
+<p>尝试设置指定的属性时候总会调用这个方法。这种方式被成为代替正常机制（也就是在实例字典种存储值）。name是属性名字，值就是要设置的值。</p>
+<p>如果<code>__setattr__()</code>尝试给实例属性赋值，它应该调用基类方法，比如<code>object.__setattr__(self, name, value)</code>，object已经实现了这个方法</p>
+<ul>
+<li><code>__delattr__(self, name)</code></li>
+</ul>
+<p>删除属性会调用这个，如果<code>del obj.name</code>对象是有意义的才会去实现这个方法</p>
+<ul>
+<li><code>__dir__(self)</code></li>
+</ul>
+<p>在对象上调用dir函数时候被调用，返回一个列表。dir()转换并且返回一个排序的列表</p>
+<ul>
+<li><code>__getattribute__(self, name)</code></li>
+</ul>
+<p>无条件调用来实现类中实例的属性获取。如果类中同时定义了<code>__getattr__</code>，后者将会在<code>__getattribute__</code>显示调用的时候或者引发了一个<code>AttributeError</code>时候被调用。</p>
+<p>这个方法应该返回一个计算后的属性值或者引发一个<code>AttributeError</code>异常。为了防止在这个方法中无限循环，它的实现应该总是调用基类方法来获取它需要的任何属性，比如<code>object.__getattribute__(self, name)</code></p>
+<p>这个方法还是可能被忽略的，当查询一些特殊方法的时候。因为它们会被语法或者内置函数隐式调用。比如<code>__len__</code>方法(len函数)</p>
+<ul>
+<li><code>__getattr__(self, name)</code></li>
+</ul>
+<p>在获取指定的属性失败时候调用，在obj, Class和超类查找之后调用。</p>
+<p>如果正常机制可以找到属性的话，就不会调用这个方法。这个方法和<code>setattr</code>是不对称的。一方面是效率原因，另一方面因为要不然的话<code>__getattr__</code>就没法去获取实例的其他属性了。</p>
+<h1 id="查询特殊方法"><a href="#查询特殊方法" class="headerlink" title="查询特殊方法"></a>查询特殊方法</h1><p>对于自定义类，特殊方法的隐式调用只有在定义在object的类中才会保证正确，而不是在对象的实例字典中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class C:</div><div class="line">...     pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; c = C()</div><div class="line">&gt;&gt;&gt; c.__len__ = lambda: 5</div><div class="line">&gt;&gt;&gt; len(c)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">TypeError: object of type &apos;C&apos; has no len()</div></pre></td></tr></table></figure>
+<p>这种行为后面的基本原理在于几个特殊方法，比如被所有对象都实现的<code>__hash__()</code>和<code>__repr__()</code>，包括type对象。如果这些方法的隐式查询使用传统的查询过程，那么在type对象上调用这些方法的时候就会失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; 1 .__hash__() == hash(1)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; int.__hash__() == hash(int)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">TypeError: descriptor &apos;__hash__&apos; of &apos;int&apos; object needs an argument</div></pre></td></tr></table></figure>
+<p>使用这种不正确的调用未绑定方法的方式有时被称为<code>metaclass confusion</code>，并在查询特殊方法的时候忽略实例来避免这种情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; type(1).__hash__(1) == hash(1)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; type(int).__hash__(int) == hash(int)</div><div class="line">True</div></pre></td></tr></table></figure>
+<p>除了绕过任何实例属性，隐式的特殊方法查询一般也会忽略<code>__getattribute__()</code>方法即使对象是元类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Meta(type):</div><div class="line">...     def __getattribute__(*args):</div><div class="line">...         print(&quot;Metaclass getattribute invoked&quot;)</div><div class="line">...         return type.__getattribute__(*args)</div><div class="line">...</div><div class="line">&gt;&gt;&gt; class C(object, metaclass=Meta):</div><div class="line">...     def __len__(self):</div><div class="line">...         return 10</div><div class="line">...     def __getattribute__(*args):</div><div class="line">...         print(&quot;Class getattribute invoked&quot;)</div><div class="line">...         return object.__getattribute__(*args)</div><div class="line">...</div><div class="line">&gt;&gt;&gt; c = C()</div><div class="line">&gt;&gt;&gt; c.__len__()                 # Explicit lookup via instance</div><div class="line">Class getattribute invoked</div><div class="line">10</div><div class="line">&gt;&gt;&gt; type(c).__len__(c)          # Explicit lookup via type</div><div class="line">Metaclass getattribute invoked</div><div class="line">10</div><div class="line">&gt;&gt;&gt; len(c)                      # Implicit lookup</div><div class="line">10</div></pre></td></tr></table></figure>
+<p>绕过<code>__getattribute__()</code>机制在解释器中提供了意义重大的速度提升，当然在处理一些特殊方法上失去了灵活性(为了能够被解释器一致的调用，特殊方法必须在类中设置)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;From &lt;strong&gt;流畅的Python 人民邮电出版社 19章动态属性和特性&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;特性&quot;&gt;&lt;a href=&quot;#特性&quot; class=&quot;headerlink&quot; title=&quot;特性&quot;
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Bye Bye Bye</title>
+    <link href="http://skyrover.me/2017/09/04/Bye%20Bye%20Bye/"/>
+    <id>http://skyrover.me/2017/09/04/Bye Bye Bye/</id>
+    <published>2017-09-04T00:53:46.000Z</published>
+    <updated>2017-09-04T01:05:55.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>无意间发现很好听的歌，单曲循环中。。。</p>
+<blockquote>
+<p>When I see you<br>looking back at me<br>watching these eyes still<br>through your fingers<br>and your eyes<br>have told a thousand lights<br>but I cant tell this time<br>what you really mean it<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>I can sing another broken song<br>trying to hold on to your picture<br>out of face<br>you hide behind your face<br>it’s more than I can take<br>I know you run deeper<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>you left me handing on the light<br>why you stealing all my time<br>you take a piss me<br>you’ve been driving too slow<br>so I gotta let you go<br>before you break me em~ yeah~<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>Bye Bye</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/byebyebye.jpeg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;无意间发现很好听的歌，单曲循环中。。。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When I see you&lt;br&gt;looking back at me&lt;br&gt;watching these eyes still&lt;br&gt;through your fingers&lt;br&gt;and 
+    
+    </summary>
+    
+      <category term="Music" scheme="http://skyrover.me/categories/Music/"/>
+    
+    
+      <category term="Song" scheme="http://skyrover.me/tags/Song/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LeetCode刷题(3)</title>
+    <link href="http://skyrover.me/2017/09/03/LeetCode%E5%88%B7%E9%A2%98(3)/"/>
+    <id>http://skyrover.me/2017/09/03/LeetCode刷题(3)/</id>
+    <published>2017-09-03T09:33:01.000Z</published>
+    <updated>2017-09-03T09:33:21.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Combination-Sum-III"><a href="#Combination-Sum-III" class="headerlink" title="Combination Sum III"></a><a href="https://leetcode.com/problems/combination-sum-iii/discuss/" target="_blank" rel="external">Combination Sum III</a></h1><p>想了半天，最后使用了递归形式的回溯法来解决，其实本质还是一种遍历吧，每一个元素位上去找可能成立的元素，后一个元素位上的元素肯定比前一个大，然后有一些限制条件，就可以得出来结果。回溯法从这里看来就是一种dfs，找到最后一个元素上。然后再回到上一层元素去找。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def combinationSum3(self, k, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type k: int</div><div class="line">        :type n: int</div><div class="line">        :rtype: List[List[int]]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def backtrack(result, ans, start, k, target):</div><div class="line">            if target == 0 and k == 0:</div><div class="line">                # 当结果和最终的定位都是0，说明是一个结果</div><div class="line">                result.append(list(ans))</div><div class="line">                return</div><div class="line">            # 在这里进行遍历可能的组合</div><div class="line">            for i in range(start, target+1):</div><div class="line">                if i &gt; 10 - k:</div><div class="line">                    break</div><div class="line">                ans.append(i)</div><div class="line">                # 查看下一个元素是否可以完成任务,如果可以则会将ans添加到结果集，</div><div class="line">                backtrack(result, ans, i+1, k-1, target-i)</div><div class="line">                ans.pop()</div><div class="line">        result = []</div><div class="line">        ans = []</div><div class="line">        backtrack(result, ans, 1, k, n)</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p>Runtime: 39 ms Your runtime beats 42.64 % of python submissions.</p>
+<h1 id="Magical-String"><a href="#Magical-String" class="headerlink" title="Magical String"></a><a href="https://leetcode.com/problems/magical-string/description/" target="_blank" rel="external">Magical String</a></h1><p>这道题主要是要发现规律，根据规律行事，通过观察可以得出这个字符串从第三位开始生成，比如1221121，第三位是2，所以后面生成2个1，现在结果是12211, 然后第四位是1，所以后面加一个2（要和目前最后一位的值不一样，所以是2），现在结果是122112，第五位是1，所以后面加一个1，结果是1221121，哈哈，这样直到规律，就开始编码吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def magicalString(self, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type n: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        start = &quot;122&quot;</div><div class="line">        if n == 0:</div><div class="line">            return 0</div><div class="line">        elif n &lt;= 3:</div><div class="line">            return start.count(&apos;1&apos;)</div><div class="line">        else:</div><div class="line">            # 在这里生成</div><div class="line">            res = start</div><div class="line">            pos = 2</div><div class="line">            while len(res) &lt;= n:</div><div class="line">                if res[pos] == &quot;2&quot;:</div><div class="line">                    res += &apos;1&apos; * 2 if res[-1] == &apos;2&apos; else &apos;2&apos; * 2</div><div class="line">                elif res[pos] == &apos;1&apos;:</div><div class="line">                    res += &apos;2&apos; if res[-1] == &apos;1&apos; else &apos;1&apos;</div><div class="line">                pos += 1</div><div class="line">            return res[:n].count(&apos;1&apos;)</div></pre></td></tr></table></figure>
+<p>结果也是相当高效的，Runtime: 145 ms Your runtime beats 94.27 % of python submissions.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Combination-Sum-III&quot;&gt;&lt;a href=&quot;#Combination-Sum-III&quot; class=&quot;headerlink&quot; title=&quot;Combination Sum III&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://leetcode.com
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>进程间通信</title>
+    <link href="http://skyrover.me/2017/09/03/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"/>
+    <id>http://skyrover.me/2017/09/03/进程间通信/</id>
+    <published>2017-09-03T07:23:03.000Z</published>
+    <updated>2017-09-03T07:23:51.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>IPC(Inter Process Communication)</p>
+<p>同样的问题和解决办法也适用于线程。</p>
+<h1 id="竞争条件"><a href="#竞争条件" class="headerlink" title="竞争条件"></a>竞争条件</h1><p>也就是在协作进程中共享了一些公用存储区，但是这些存储区最后的结果取决于进程运行的精确时序，比如A先输出了，但是B也输出了，最后的正确结果是B输出的，所以这种称为竞争条件。也就是说这种需要依赖进程运行顺序的，是竞争的条件。</p>
+<h1 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h1><p>为了防止这种情况，必须有某种途径来阻止多个进程同时读写共享的数据，需要进行互斥，即以某种手段确保当一个进程在使用一个共享变量或者文件的时候，其他进程不能做同样的操作。为实现互斥而选择适当的原语是任何操作系统的主要设计内容之一。</p>
+<p>把 <strong>对共享内存进行访问的程序片段称为临界区域或者临界区</strong>，经过调度，<strong>使得两个进程不能同时处于临界区中</strong>，就能避免竞争条件，这样就不会依赖于进程运行的顺序。</p>
+<h1 id="忙等待的互斥"><a href="#忙等待的互斥" class="headerlink" title="忙等待的互斥"></a>忙等待的互斥</h1><h2 id="屏蔽中断"><a href="#屏蔽中断" class="headerlink" title="屏蔽中断"></a>屏蔽中断</h2><p>单处理器系统中，使每个进程在刚刚进入临界区后立即屏蔽所有中断，并在就要离开之前再打开中断，屏蔽中断后，时钟中断也被屏蔽，这样CPU就不会被切换到其他进程。这样一个进程屏蔽中断后，就可以检查和修改共享内存，而不必担心其他进程介入。</p>
+<p>但是在多处理器中就不好弄了，因为只能对执行disable指令的那个CPU有效，而且如果屏蔽之后不再打开中断，那么系统就有可能终止。</p>
+<h2 id="锁变量"><a href="#锁变量" class="headerlink" title="锁变量"></a>锁变量</h2><p>设置一个共享锁变量，但是这种还是有可能在设置锁的时候，另一个进程被调度执行。然后同时就有可能有两个进程进入临界区中。</p>
+<h2 id="严格轮换法"><a href="#严格轮换法" class="headerlink" title="严格轮换法"></a>严格轮换法</h2><p>类似于下面代码描述的情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># 进程0 等待turn==0才开始运行</div><div class="line">while (TRUE)&#123;</div><div class="line">  while (turn != 0)&#123;</div><div class="line">    critical_region();</div><div class="line">    turn = 1;</div><div class="line">    noncritical_region();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"># 进程1 等待turn==1才开始运行</div><div class="line">while (TRUE)&#123;</div><div class="line">  while (turn != 1)&#123;</div><div class="line">    critical_region();</div><div class="line">    turn = 0;</div><div class="line">    noncritical_region();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>开始运行时候，turn为0，进程0开始运行，运行完临界区后，turn为1，进程1开始运行临界区。如果进程0运行完后，turn=1，但是进程1还没有完成上一轮非临界区的执行，这时候turn就为0，进程0就只能阻塞等待了。所以进程0被一个临界区之外的进程阻塞。</p>
+<p>这个等待被称为忙等待，用于忙等待的锁，称为自旋锁。</p>
+<h2 id="Peterson解法"><a href="#Peterson解法" class="headerlink" title="Peterson解法"></a>Peterson解法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#define FALSE 0</div><div class="line">#define TRUE 1</div><div class="line">#define N 2</div><div class="line"></div><div class="line">int turn;  /* turn作为全局变量指示现在应该谁进入临界区 */</div><div class="line">int interested[N];</div><div class="line"></div><div class="line">void enter_region(int process)&#123;</div><div class="line">  int other;</div><div class="line"></div><div class="line">  other = 1 - process;</div><div class="line">  interested[process] = TRUE;</div><div class="line">  turn = process;</div><div class="line">  while (turn == process &amp;&amp; interested[other] == TRUE);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void leave_region(int process)&#123;</div><div class="line">  interested[process] = False;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从代码可以看出来假设只有一个进程进入，那么情况很简单，立马返回就开始执行了。如果进程0进入了，但是没有离开，那么进程1要进入，必须等待<code>interested[other]</code>为False才可以进入。如果几乎是两个一起进入的，那么后面进入的将会将turn值重写，这样前面的就直接进入了临界区(因为<code>turn!=process</code>)，后面的进程要等待到<code>interested[other]</code>为False，也就是进程0从临界区出来。</p>
+<p>关键在于这个条件判断，<code>interested[other]</code>主要用来在一个已经进入了临界区的进程，要进行等待。<code>turn==process</code>的话主要是用在两个几乎是同时进入，用来第一个进程打破循环先进入临界区的。</p>
+<h2 id="TSL指令"><a href="#TSL指令" class="headerlink" title="TSL指令"></a>TSL指令</h2><p><code>TSL RX, LOCK</code>测试并且加锁(Test and Set Lock)，将一个内存字lock读到寄存器RX中，然后在该内存地址上存一个非0值。读字和写字的操作是不可分割的，在该指令结束之前其他处理器均不允许访问该内存字。执行TSL指令的CPU将锁住内存总线，禁止其他CPU在本指令结束之前访问内存。</p>
+<p>用一个共享变量lock来协调对共享内存的访问，lock为0的时候，任何进程都可以使用TSL指令将其设置为1，并读写共享内存，操作结束之后，进程用一个普通的move指令将lock值重新设置为0.</p>
+<h1 id="睡眠与唤醒"><a href="#睡眠与唤醒" class="headerlink" title="睡眠与唤醒"></a>睡眠与唤醒</h1><p>之前的这些解决办法都是忙等待，本质上都是：当一个进程想进入临界区时候，先检查是否允许进入，若不允许，则该进程将原地等待，直到允许为止。</p>
+<p>sleep和wakeup会在无法进入临界区的时候阻塞而不是忙等待，会引起调用进程阻塞的系统调用，直到另一个进程将其唤醒。</p>
+<h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量 Semaphore"></a>信号量 Semaphore</h1><p>即PV操作，信号量也就是该资源的有效数目，对信号量进行down操作，首先检查信号量的值是否大于0，如果大于0，则将其值减一然后继续。如果为0，那么进程将会睡眠。up操作将对信号量的值增加1，也就是释放操作，如果有一个或者多个进程在这个信号量上睡眠，那么up之后，信号量的值依然为0，但是有一个进程被唤醒了。</p>
+<p>down和up操作都是原子的，down中检查数值，修改变量值以及可能发生的睡眠操作都是一个单一的原子操作，up的值增1和唤醒一个进程也是，这种原子性对于解决同步问题和避免竞争条件是绝对必要的。</p>
+<p>通常是将up和down作为系统调用实现，操作系统需要在执行下面操作的时候屏蔽所有中断，测试信号量，更新信号量以及在需要时候使得某个进程睡眠。如果使用多个CPU，则每个信号量由一个锁变量来进行抱回，通过TSL来确保同一个时刻只有一个CPU在对信号量进行操作。</p>
+<p>一个生产者和消费者的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">#define N 100</div><div class="line">typedef int semaphore;</div><div class="line">semaphore mutex = 1;</div><div class="line">semaphore empty = N;</div><div class="line">semaphore full = 0;</div><div class="line"></div><div class="line">void producer(void)&#123;</div><div class="line">  int item;</div><div class="line">  while (TRUE)&#123;</div><div class="line">    item = produce_item();</div><div class="line">    down(&amp;empty);</div><div class="line">    down(&amp;mutex); /* 进入临界区 */</div><div class="line">    insert_item(item);</div><div class="line">    up(&amp;mutex); /* 离开临界区 */</div><div class="line">    up(&amp;full);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void consumer(void)&#123;</div><div class="line">  int item;</div><div class="line">  while (TRUE)&#123;</div><div class="line">    down(&amp;full);</div><div class="line">    down(&amp;mutex);</div><div class="line">    item = remove_item();</div><div class="line">    up(&amp;mutex);</div><div class="line">    up(&amp;empty);</div><div class="line">    consume_item(item);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样信号量就实现了临界区互斥操作，而消费者等待生产者放入item，这又是一种同步操作。同步是多个进程在执行次序上的协调，相互等待消息，而互斥是对临界资源的使用。所以信号量full和empty用来保证某种事件的顺序发生或者不发生，保证了缓冲区满的时候生产者停止运行，缓冲区空的时候消费者停止运行。</p>
+<h1 id="互斥量-mutex"><a href="#互斥量-mutex" class="headerlink" title="互斥量 mutex"></a>互斥量 mutex</h1><p>互斥量是信号量的一个简化版本，仅仅适用于管理共享资源或者一小段代码，有两个状态，解锁和加锁，当一个线程或者进程需要访问临界区的时候，调用<code>mutex_lock</code>，如果该互斥量当前是解锁的，调用成功，则线程或者进程可以进入该临界区。如果已经加锁，那么线程将会被阻塞，直到在临界区的线程完成并且调用<code>mutex_unlock</code>，如果有多个线程阻塞，那么随机选择一个。</p>
+<p>和<code>enter_region</code>的区别在于，<code>enter_region</code>在阻塞的时候会一直运行，测试锁，忙等待，而这个线程也不会得到锁，因为不会切换给其他线程运行来释放锁。但是<code>mutex_lock</code>在没有获得锁的时候会<code>thread_yield</code>，所以没有忙等待，在该线程下一次运行的时候，再一次对锁进行测试。</p>
+<p>这个方法和之前提到的加锁区别在于互斥量使用了TSL，保证了原子性。</p>
+<p>但是有一个问题是，对于用户级线程，可以共用一个互斥量，因为所有的线程都在一个公共地址空间中操作。但是对于进程来说，就必须访问一些共享内存。两种方案，第一有些共享数据结构，比如信号量是可以放在内核中的，并且只能通过系统调用来访问。第二种，是进程和其他进程共享部分地址空间，或者共享文件。</p>
+<h2 id="Pthread中的互斥"><a href="#Pthread中的互斥" class="headerlink" title="Pthread中的互斥"></a>Pthread中的互斥</h2><ul>
+<li><code>pthread_mutex_init</code></li>
+<li><code>pthread_mutex_destroy</code></li>
+<li><code>pthread_mutex_lock</code></li>
+<li><code>pthread_mutex_try_lock</code></li>
+<li><code>pthread_mutex_unlock</code></li>
+</ul>
+<p>另外一种同步机制：条件变量，其允许线程由于一些未达到的条件而阻塞。</p>
+<ul>
+<li><code>pthread_cond_init</code></li>
+<li><code>pthread_cond_destroy</code></li>
+<li><code>pthread_cond_wait</code></li>
+<li><code>pthread_cond_signal</code> 向另一个线程发信号来唤醒它</li>
+<li><code>pthread_cond_broadcast</code> 向多个线程发信号来让他们全部唤醒</li>
+</ul>
+<p>被阻塞的线程经常是在等待发信号的线程去做某些工作，释放某些资源或者是进行其他一些活动，只有完成后阻塞的线程才可以继续运行。</p>
+<p>条件变量与互斥量一起使用，让一个线程锁住一个互斥量，然后当它不能获得期待的结果时候等待一个条件变量。最后另一个线程会向它发送信号，然后继续执行。<code>pthread_cond_wait</code>原子性调用并且解锁它持有的互斥量，所以互斥量是参数之一。</p>
+<p>一起使用的原因是因为有临界区需要进行互斥操作，如果没有临界区就可以直接使用条件变量来进行资源的同步。比如<code>aiossdb</code>中需要获取可用连接时候等待其他协程释放连接，然后通知等待的条件变量。</p>
+<p>一个使用信号量的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;pthread.h&gt;</div><div class="line">#define MAX 10000000</div><div class="line">pthread_mutex_init the_mutex;</div><div class="line">pthread_cond_init condc, condp;</div><div class="line">int buffer = 0;</div><div class="line"></div><div class="line">void *producer(void *ptr)&#123;</div><div class="line">  int i;</div><div class="line">  for(i=1;i&lt;=MAX;i++)&#123;</div><div class="line">    pthread_mutex_lock(&amp;the_mutex); /* 互斥使用缓冲区，在条件变量wait时候会解锁 */</div><div class="line">    while(buffer != 0) pthread_cond_wait(&amp;condp, &amp;the_mutex);</div><div class="line">    buffer = i;</div><div class="line">    pthread_cond_signal(&amp;condc);</div><div class="line">    pthread_mutex_unlock(&amp;the_mutex); /* 释放缓冲区 */</div><div class="line"></div><div class="line">  &#125;</div><div class="line">  pthread_exit(0);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void *consumer(void *ptr)&#123;</div><div class="line">  int i;</div><div class="line">  for (i=1;i&lt;=MAX;i++)&#123;</div><div class="line">    pthread_mutex_lock(&amp;the_mutex);</div><div class="line">    while(buffer == 0) pthread_cond_wait(&amp;condc,&amp;the_mutex);</div><div class="line">    buffer = 0;</div><div class="line">    pthread_cond_signal(&amp;condp);</div><div class="line">    pthread_mutex_unlock(&amp;the_mutex);</div><div class="line">  &#125;</div><div class="line">  pthread_exit(0);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(int argc, char **argv)&#123;</div><div class="line">  pthread_t pro, con;</div><div class="line">  pthread_mutex_init(&amp;the_mutex, 0);</div><div class="line">  pthread_cond_init(&amp;condc, 0);</div><div class="line">  pthread_cond_init(&amp;condp, 0);</div><div class="line">  pthread_create(&amp;con, 0, consumer, 0);</div><div class="line">  pthread_create(&amp;pro, 0, producer, 0);</div><div class="line">  pthread_join(pro, 0);</div><div class="line">  pthread_join(con, 0);</div><div class="line">  pthread_cond_destroy(&amp;condc);</div><div class="line">  pthread_cond_destroy(&amp;condp);</div><div class="line">  pthread_mutex_destroy(&amp;the_mutex);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="管程-monitor"><a href="#管程-monitor" class="headerlink" title="管程 monitor"></a>管程 monitor</h1><p>一个管程是一个由过程，变量以及数据结构等组成的一个集合，进程可以在任何需要的时候调用管程中的过程，但是不能在管程之外声明的过程中直接访问管程内的数据结构。任意时刻管程中只能由一个活跃进程，这样管程就可以实现互斥，也就是实现了一个集合，比如Java中的<code>synchronized</code>，Java会保证一旦某个线程执行该方法，就不允许其他线程执行该对象中的任何<code>synchronized</code>方法。</p>
+<p> 一个管程过程发现其无法继续运行的时候，会在某个条件变量上执行wait操作，会导致调用进程自身阻塞，并且将一个等待管程过程的进程调入管程，比如缓冲区满。消费者消费之后，可以唤醒正在睡眠的生产者进程，可以给正在等待的条件变量执行signal完成，一般会在最后执行signal，这样，执行后该进程就会退出管程。</p>
+<p> 对管程过程的自动互斥保证了进程完成wait操作不会被打断，也就是在wait完成之前切换进程，在wait执行完成把生产者标志为不可运行之前，就不会允许消费者进入管程。</p>
+<p> 新的问题是分布式系统中，每个CPU由自己的私有内存，这样目前使用的原语没有提供机器间的信息交换方法。</p>
+<h1 id="消息传递-message-passing"><a href="#消息传递-message-passing" class="headerlink" title="消息传递 message passing"></a>消息传递 message passing</h1><p>进程间通信的方式，使用这两条原语<code>send</code>和<code>receive</code>，如果没有消息可用，接收者可能被阻塞，直到一条消息到达。</p>
+<h2 id="消息传递系统的设计要点"><a href="#消息传递系统的设计要点" class="headerlink" title="消息传递系统的设计要点"></a>消息传递系统的设计要点</h2><ul>
+<li>发送，确认。</li>
+<li>原始消息嵌入序号</li>
+<li>身份认证</li>
+</ul>
+<h2 id="消息传递解决生产者-消费者问题"><a href="#消息传递解决生产者-消费者问题" class="headerlink" title="消息传递解决生产者-消费者问题"></a>消息传递解决生产者-消费者问题</h2><p>首先消费者向生产者发送空消息，生产者拿走空消息，然后生产填充消息，然后发送给消费者。消费者拿走消息，消费并且向生产者发送空消息。</p>
+<p>对消息进行编址的两种方式：</p>
+<ul>
+<li>为每个进程分配一个唯一地址，让消息按照进程地址编址</li>
+<li>使用信箱，对一定数量的消息进行缓冲，如果进程向满的信箱发送消息，将会被挂起，直到由空消息，类似于消息队列</li>
+</ul>
+<p>通常在并行程序设计系统中使用消息传递。下面是一个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#define N 100</div><div class="line"></div><div class="line">void producer(void)&#123;</div><div class="line">  int item;</div><div class="line">  message m;</div><div class="line">  while(TRUE)&#123;</div><div class="line">    item = produce_item();</div><div class="line">    receive(consumer, &amp;m); /* 等待消费者发送空缓冲区 */</div><div class="line">    build_message(&amp;m, item);</div><div class="line">    send(consumer, &amp;m);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void consumer(void)&#123;</div><div class="line">  int item, i;</div><div class="line">  message m;</div><div class="line">  for (i=0;i&lt;N;i++) send(producer, &amp;m);</div><div class="line">  while(TRUE)&#123;</div><div class="line">    receive(producer, &amp;m);</div><div class="line">    item = extrace_item(&amp;m);</div><div class="line">    send(producer, &amp;m);</div><div class="line">    consume_item(item);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="屏障"><a href="#屏障" class="headerlink" title="屏障"></a>屏障</h1><p>对于划分了多个阶段的进程组来说，必须所有进程都完成了这一阶段的工作，才可以进入下一个阶段。使得每一个进程在完成当前迭代工作后执行一个barrier操作。具体实现，有可能是一个计数器，也可能是一个不断的轮询。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>进程通信，第一，进程如何将信息传递给另外一个，第二确保进程之间在临界区不会冲突，即互斥，第三个是进程之间的同步问题（顺序问题）。</p>
+<p>第一个，管道，共享存储区，共享文件，共享数据结构（信号量），消息传递（消息队列）。其中线程本身就是共享一个地址空间（同一个进程的线程）</p>
+<p>第二个，互斥，忙等待，信号量，互斥量，管程等</p>
+<p>第三个，信号量实现同步</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;IPC(Inter Process Communication)&lt;/p&gt;
+&lt;p&gt;同样的问题和解决办法也适用于线程。&lt;/p&gt;
+&lt;h1 id=&quot;竞争条件&quot;&gt;&lt;a href=&quot;#竞争条件&quot; class=&quot;headerlink&quot; title=&quot;竞争条件&quot;&gt;&lt;/a&gt;竞争条件&lt;/h1&gt;
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>C1000k</title>
@@ -63,7 +1406,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>
@@ -79,7 +1422,7 @@
     <link href="http://skyrover.me/2017/08/30/%E7%BF%BB%E8%AF%91%20-%20%20concurrent.futures%20%E2%80%94%20Launching%20parallel%20tasks/"/>
     <id>http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/</id>
     <published>2017-08-30T01:46:35.000Z</published>
-    <updated>2017-09-01T06:50:01.000Z</updated>
+    <updated>2017-10-16T06:50:05.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自 <a href="https://docs.python.org/3/library/concurrent.futures.html" target="_blank" rel="external"><code>concurrent.futures</code> 运行并行任务</a></p>
 <p>估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。</p>
@@ -137,7 +1480,7 @@
 <li><code>ALL_COMPLETED</code></li>
 </ul>
 <h2 id="concurrent-futures-as-completed"><a href="#concurrent-futures-as-completed" class="headerlink" title="concurrent.futures.as_completed"></a><code>concurrent.futures.as_completed</code></h2><p><code>as_completed(fs, timeout=None)</code></p>
-<p>返回一个通过fs给定的Future实例的迭代器，可能是不同的<code>Executor</code>实例创建的，这个迭代器当它们完成的时候产生future。fs给定的任何future如果重复的话，只会返回一次。如果在<code>as_completed</code>之前返回的会最先产生。</p>
+<p>返回一个通过fs给定的Future实例的迭代器，可能是不同的<code>Executor</code>实例创建的，这个迭代器y有任务完成的时候产生future，因此这个必须迭代才能起到阻塞完成的效果。fs给定的任何future如果重复的话，只会返回一次。如果在<code>as_completed</code>之前返回的会最先产生。</p>
 ]]></content>
     
     <summary type="html">
@@ -146,7 +1489,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -287,7 +1630,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
@@ -381,7 +1724,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -423,7 +1766,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -486,7 +1829,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -555,7 +1898,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -602,7 +1945,7 @@
     
     </summary>
     
-      <category term="人生" scheme="http://skyrover.me/categories/Life/"/>
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
     
     
       <category term="青海" scheme="http://skyrover.me/tags/%E9%9D%92%E6%B5%B7/"/>
@@ -647,7 +1990,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -665,7 +2008,7 @@
     <link href="http://skyrover.me/2017/08/13/Celery%20%E8%B8%A9%E5%9D%91%E8%AE%B0/"/>
     <id>http://skyrover.me/2017/08/13/Celery 踩坑记/</id>
     <published>2017-08-13T08:47:05.000Z</published>
-    <updated>2017-09-01T06:37:01.000Z</updated>
+    <updated>2017-09-11T03:16:23.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。</p>
 <h1 id="使用RabbitMQ而不是Redis做Broker"><a href="#使用RabbitMQ而不是Redis做Broker" class="headerlink" title="使用RabbitMQ而不是Redis做Broker"></a>使用RabbitMQ而不是Redis做Broker</h1><p>这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。</p>
@@ -724,12 +2067,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 调用后返回的还是AsyncResult</div><div class="line">c3 = (group(add.s(i, i) for i in xrange(10)) | xsum.s())</div><div class="line"></div><div class="line"># group在后面</div><div class="line">new_user_workflow = (create_user.s() | group(import_contacts.s(), send_welcome_email.s()))</div><div class="line">new_user_workflow.delay(username=&apos;artv&apos;, first=&apos;Art&apos;, last=&apos;Vandelay&apos;, email=&apos;art@vandelay.com&apos;)</div></pre></td></tr></table></figure>
 <p><em>如何在先调用group，然后调用普通任务的情况下，获得GroupResult，这个还没有好的方法。</em></p>
 <p><code>group([(group(add.s(i, i) for i in xrange(10)) | xsum.s())])</code>这个呢？</p>
-<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>，目前这种操作有点问题，可能不能将task完全的停掉。这里再考虑更有效的方法吧。</p>
-<p>P.S. 可能需要以下的参数配置</p>
+<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>。</p>
+<p>P.S.</p>
+<ul>
+<li>可能需要以下的参数配置</li>
+</ul>
 <p><code>task_sent</code> event 当一个任务消息被发布并且<code>CELERY_TASK_SEND_SENT_EVENT</code>配置有效的时候的时候发送这个event</p>
 <p><code>CELERY_TASK_SEND_SENT_EVENT</code> 如果启用，<code>task_sent</code> event 将会发送给每一个task，这样在task被worker运行之前tasks可以被追踪到</p>
 <p><code>CELERY_SEND_EVENTS</code> # 发送task相关的event，这样task就可以被比如flower之类的进行控制了</p>
-<p>目前可以停止，但是不完全。</p>
+<ul>
+<li>terminated</li>
+</ul>
+<p>这里Celery使用的是SIGTERM，所以会关闭进程相关的程序，也就是等待进程释放自己的资源，然后再停止，如果程序再等待I/O，可能就不会立马作出反应。也就是说，SIGTERM多半是会被阻塞的，忽略的。</p>
+<p>如果使用SIGKILL，就会强制杀死进程，所以可能导致孤儿进程的产生。</p>
 <h2 id="chord"><a href="#chord" class="headerlink" title="chord"></a>chord</h2><p>chord可以使得你完成group所有的task之后来调用一个回调函数，这个方法经常会在易并行(embarrassingly parallel)的场景使用，关于这个embarrassingly…<a href="https://english.stackexchange.com/questions/83677/what-is-embarrassing-about-an-embarrassingly-parallel-problem" target="_blank" rel="external">What is “embarrassing” about an embarrassingly parallel problem?</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from celery import chord</div><div class="line"># 这样会导致前面的十个任务并行处理，并且将结果组成一个list，传递给后面的xsum</div><div class="line"># 当然后面的也可以不用前面的结果，使用si()就行了</div><div class="line">res = chord((add.s(i, i) for i in xrange(10)), xsum.s())()</div></pre></td></tr></table></figure>
 <p>下面这个是我自己写的一个并发处理，并且还能拿到状态用于后续的控制和状态读取的例子</p>
@@ -746,7 +2096,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -795,7 +2145,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -893,7 +2243,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -942,7 +2292,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1002,7 +2352,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1014,11 +2364,11 @@
   </entry>
   
   <entry>
-    <title>Thrift在Python Web应用中的使用(二) - 处理器</title>
-    <link href="http://skyrover.me/2017/08/03/Thrift%E5%9C%A8Python%20Web%E5%BA%94%E7%94%A8%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8(%E4%BA%8C)%20-%20%E5%A4%84%E7%90%86%E5%99%A8/"/>
-    <id>http://skyrover.me/2017/08/03/Thrift在Python Web应用中的使用(二) - 处理器/</id>
+    <title>thriftpy源码解析(二) - 处理器</title>
+    <link href="http://skyrover.me/2017/08/03/thriftpy_2_processor/"/>
+    <id>http://skyrover.me/2017/08/03/thriftpy_2_processor/</id>
     <published>2017-08-03T09:14:25.000Z</published>
-    <updated>2017-09-01T06:31:34.000Z</updated>
+    <updated>2017-09-17T05:50:52.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="从make-server入手"><a href="#从make-server入手" class="headerlink" title="从make_server入手"></a>从<code>make_server</code>入手</h1><p>首先来看看官方给的服务器demo</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">pingpong_thrift = thriftpy.load(&quot;pingpong.thrift&quot;, module_name=&quot;pingpong_thrift&quot;)</div><div class="line"></div><div class="line">from thriftpy.rpc import make_server</div><div class="line"></div><div class="line">class Dispatcher(object):</div><div class="line">    def ping(self):</div><div class="line">        return &quot;pong&quot;</div><div class="line"></div><div class="line">server = make_server(pingpong_thrift.PingPong, Dispatcher(), &apos;127.0.0.1&apos;, 6000)</div><div class="line">server.serve()</div></pre></td></tr></table></figure>
@@ -1064,12 +2414,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
   </entry>
   
@@ -1095,7 +2447,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1107,11 +2459,11 @@
   </entry>
   
   <entry>
-    <title>Thrift在Python Web应用中的使用(一) - 综述</title>
-    <link href="http://skyrover.me/2017/08/02/Thrift%E5%9C%A8Python%20Web%E5%BA%94%E7%94%A8%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8(%E4%B8%80)%20-%20%E7%BB%BC%E8%BF%B0/"/>
-    <id>http://skyrover.me/2017/08/02/Thrift在Python Web应用中的使用(一) - 综述/</id>
+    <title>thriftpy源码解析(一) - 综述</title>
+    <link href="http://skyrover.me/2017/08/02/thriftpy_1_introduction/"/>
+    <id>http://skyrover.me/2017/08/02/thriftpy_1_introduction/</id>
     <published>2017-08-02T02:58:28.000Z</published>
-    <updated>2017-09-01T06:30:27.000Z</updated>
+    <updated>2017-09-17T05:51:16.000Z</updated>
     
     <content type="html"><![CDATA[<p>本文使用的工具是饿了么开发的<a href="https://github.com/eleme/thriftpy" target="_blank" rel="external">thriftpy</a>和<a href="https://github.com/eleme/gunicorn_thrift" target="_blank" rel="external">gunicorn_thrift</a></p>
 <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h2><p>首先thrift是啥呢？thrift是一个软件框架，用来进行可扩展且跨语言的服务的开发。它结合了功能强大的软件堆栈和代码生成引擎，以构建在 C++, Java, Go,Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, JavaScript, Node.js, Smalltalk, and OCaml 这些编程语言间无缝结合的、高效的服务。</p>
@@ -1154,12 +2506,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
   </entry>
   
@@ -1193,7 +2547,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1248,7 +2602,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1304,7 +2658,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1405,7 +2759,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1548,7 +2902,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -1562,7 +2916,7 @@
     <link href="http://skyrover.me/2017/05/20/LeetCode%E5%88%B7%E9%A2%98(2)/"/>
     <id>http://skyrover.me/2017/05/20/LeetCode刷题(2)/</id>
     <published>2017-05-20T02:51:01.000Z</published>
-    <updated>2017-09-01T06:22:13.000Z</updated>
+    <updated>2017-09-01T12:42:38.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Maximum-Subarray"><a href="#Maximum-Subarray" class="headerlink" title="Maximum Subarray"></a><a href="https://leetcode.com/problems/maximum-subarray/#/description" target="_blank" rel="external">Maximum Subarray</a></h1><p>想出解决办法不难，但是要全面，最关键的是不能超时。。。在我的分析之下，要想达到最大的和，首先起始和终点的值都是正数才行，所以我用到了第一个条件，遍历直到起始值是正值开始下一轮遍历。然后到正值的时候结束记录一次和。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if len(nums) == 0:</div><div class="line">            return 0</div><div class="line">        elif len(nums) == 1:</div><div class="line">            return nums[0]</div><div class="line">        sum_dict = &#123;&#125;</div><div class="line">        for index, num in enumerate(nums):</div><div class="line">            if num &gt; 0:</div><div class="line">                num_sum = 0</div><div class="line">                ori_index = index</div><div class="line">                for stop_index, stop_num in enumerate(nums[index:], 0):</div><div class="line">                    if stop_num &gt; 0:</div><div class="line">                        num_sum = num_sum + stop_num</div><div class="line">                        sum_dict[(ori_index, ori_index+stop_index)] = num_sum</div><div class="line">                    else:</div><div class="line">                        num_sum = num_sum + stop_num</div><div class="line">                        continue</div><div class="line">            else:</div><div class="line">                continue</div><div class="line">        if not sum_dict:</div><div class="line">            # 说明没有找到正数，而且序列长度大于1，那么就找到最小的负数即可</div><div class="line">            return sorted(nums)[-1]</div><div class="line">        return sorted(sum_dict.items(), key=lambda x: x[1])[-1][1]</div></pre></td></tr></table></figure>
@@ -1643,12 +2997,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
     
   </entry>
   
@@ -1683,7 +3039,7 @@
     
     </summary>
     
-      <category term="人生" scheme="http://skyrover.me/categories/Life/"/>
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
     
     
       <category term="虾扯蛋" scheme="http://skyrover.me/tags/%E8%99%BE%E6%89%AF%E8%9B%8B/"/>
@@ -1695,7 +3051,7 @@
     <link href="http://skyrover.me/2017/05/13/LeetCode%E5%88%B7%E9%A2%98(1)/"/>
     <id>http://skyrover.me/2017/05/13/LeetCode刷题(1)/</id>
     <published>2017-05-13T14:46:32.000Z</published>
-    <updated>2017-09-01T06:16:05.000Z</updated>
+    <updated>2017-09-01T12:42:39.000Z</updated>
     
     <content type="html"><![CDATA[<p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
 <h1 id="Longest-Palindrome"><a href="#Longest-Palindrome" class="headerlink" title="Longest Palindrome"></a><a href="https://leetcode.com/problems/longest-palindrome/#/description" target="_blank" rel="external">Longest Palindrome</a></h1><p>其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大长度了。<code>Runtime: 42 ms Your runtime beats 95.32 % of python submissions.</code> 棒！</p>
@@ -1845,12 +3201,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
     
   </entry>
   
@@ -1985,7 +3343,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2062,7 +3420,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Docker" scheme="http://skyrover.me/tags/Docker/"/>
@@ -2123,7 +3481,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2191,7 +3549,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2228,7 +3586,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2336,7 +3694,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2427,7 +3785,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2563,7 +3921,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2645,7 +4003,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="R" scheme="http://skyrover.me/tags/R/"/>
@@ -2737,7 +4095,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>
@@ -2824,7 +4182,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -2873,7 +4231,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
@@ -2919,7 +4277,7 @@
     
     </summary>
     
-      <category term="人生" scheme="http://skyrover.me/categories/Life/"/>
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
     
     
       <category term="TED" scheme="http://skyrover.me/tags/TED/"/>
@@ -3054,7 +4412,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
@@ -3136,7 +4494,7 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/Programming/"/>
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>

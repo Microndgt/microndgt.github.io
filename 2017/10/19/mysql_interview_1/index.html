@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>MySQL面试题集锦 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="翻译,MySQL">
+    <meta name="description" content="翻译自：  10 MySQL Database Interview Questions for Beginners and Intermediates   如何定义SQL？  SQL代表的是结构化查询语言(Structured Query Language)。SQL是一门专门在关系型数据库管理系统中管理数据的编程语言。  什么是RDBMS？解释其特性？  Relational Database M">
+<meta name="keywords" content="翻译,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL面试题集锦">
+<meta property="og:url" content="http://skyrover.me/2017/10/19/mysql_interview_1/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="翻译自：  10 MySQL Database Interview Questions for Beginners and Intermediates   如何定义SQL？  SQL代表的是结构化查询语言(Structured Query Language)。SQL是一门专门在关系型数据库管理系统中管理数据的编程语言。  什么是RDBMS？解释其特性？  Relational Database M">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-10-19T04:35:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL面试题集锦">
+<meta name="twitter:description" content="翻译自：  10 MySQL Database Interview Questions for Beginners and Intermediates   如何定义SQL？  SQL代表的是结构化查询语言(Structured Query Language)。SQL是一门专门在关系型数据库管理系统中管理数据的编程语言。  什么是RDBMS？解释其特性？  Relational Database M">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">MySQL面试题集锦</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">MySQL面试题集锦</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-10-19T04:30:35.000Z" itemprop="datePublished" class="page-time">
+  2017-10-19 12:30:35
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-mysql_interview_1"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">MySQL面试题集锦</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-10-19 12:30:35 12:30:35" datetime="2017-10-19T04:30:35.000Z"  itemprop="datePublished">2017-10-19 12:30:35</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>翻译自：</p>
+<ul>
+<li><a href="https://www.tecmint.com/10-mysql-database-interview-questions-for-beginners-and-intermediates/" target="_blank" rel="external">10 MySQL Database Interview Questions for Beginners and Intermediates</a></li>
+</ul>
+<ol>
+<li><p>如何定义SQL？</p>
+<p> SQL代表的是结构化查询语言(Structured Query Language)。SQL是一门专门在关系型数据库管理系统中管理数据的编程语言。</p>
+</li>
+<li><p>什么是RDBMS？解释其特性？</p>
+<p> Relational Database Management System(RDBMS)是在关系数据库模型中最广泛使用的数据库管理系统。</p>
+<p> RDBMS的特性：</p>
+<ul>
+<li>在表中存储数据</li>
+<li>表中含有行和列</li>
+<li>可以通过SQL创建和检索表</li>
+</ul>
+</li>
+<li><p>什么是数据挖掘？</p>
+<p> 数据挖掘是计算机科学的子分类，其目的是从数据集中提取信息，并且将其转换成人类友好的结构在以后使用。</p>
+</li>
+<li><p>什么是ERD？</p>
+<p> ERD代表实体关系模型(Entity Relationship Diagram)，其中图形代表了表，它们之间是它们的关系。</p>
+</li>
+<li><p>Primary Key主键和Unique Key有什么区别？</p>
+<p> Primary和Unique都是实现了列值的唯一性。主键为列创建了聚集索引，而Unique key创建了非聚集索引。并且主键不允许NULL值，而Unique key允许NULL值。</p>
+</li>
+<li><p>如何在数据库中存储图片文件。使用了哪种对象类型？</p>
+<p> 在数据库存储图片不是个好主意。为了在数据库中存储图片，Blob对象类型是被推荐的。BLOB是一个二进制大对象，可以容纳可变数量的数据。而TEXT列被视为非二进制字符串(字符字符串)。</p>
+</li>
+<li><p>什么是数据仓库？</p>
+<p> 数据仓库一般是指企业数据仓库，是一个集中数据仓库，使用不同数据源来创建的。</p>
+</li>
+<li><p>数据库中的索引是什么，索引有哪几种类型？</p>
+<p> 索引是在数据库进行数据快速索引的快速引用。有两种不同的索引类型：</p>
+<ul>
+<li>聚集索引<ul>
+<li>在一个表中只有一个</li>
+<li>查询的时候比非聚集索引要快，因为数据是按照索引顺序存储</li>
+</ul>
+</li>
+<li><p>非聚集索引</p>
+<ul>
+<li>可以在一个表中使用多次</li>
+<li>比聚集索引可以更快的插入和更新</li>
+</ul>
+<p>聚集索引，该索引中键值的逻辑顺序决定了表中相应行的物理顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引）。聚集索引对于那些经常要搜索范围值的列特别有效。使用聚集索引找到包含第一个值的行后，便可以确保包含后续索引值的行在物理相邻。如果对从表中检索的数据进行排序时经常要用到某一列，则可以将该表在该列上聚集（物理排序），避免每次查询该列时都进行排序，从而节省成本。当索引值唯一时，使用聚集索引查找特定的行也很有效率。例如，使用唯一雇员 ID 列<code>emp_id</code>查找特定雇员的最快速的方法，是在<code>emp_id</code>列上创建聚集索引或<code>PRIMARY KEY</code>约束。</p>
+<p>非聚集索引，该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。索引是通过二叉树的数据结构来描述的，我们可以这么理解聚集索引：索引的叶节点就是数据节点。而非聚簇索引的叶节点仍然是索引节点，只不过有一个指针指向对应的数据块。因为聚集索引的数据的逻辑顺序和物理顺序是一致的，而非聚集索引的逻辑顺序和数据的物理顺序不同，所以最后的叶节点是一个指向对应数据块的。</p>
+<p>一个列子就是字典中按拼音查询和按部首查询。也就是说部首的目录纯粹是目录，正文纯粹是正文的排序方式是非聚集索引，两个不相关联，因此一个表中可以有多个非聚合索引。每个表只有一个聚集索引，因为一个数据集只有一种物理存放顺序。</p>
+<p>那么何时使用聚集索引，何时使用非聚集索引呢</p>
+</li>
+<li><p>返回某范围内的数据：应该使用聚集索引，而不应该使用非聚集索引，因为非聚集索引即使逻辑顺序对了，但是物理顺序仍然不对，所以没用。</p>
+</li>
+<li><p>频繁更新的列：不应该使用聚集索引，而应该使用非聚集索引，因为如果使用聚集索引，就会导致物理结构的变化，不好。</p>
+<p>所以聚集索引一般可以加快查询的速度，但是更新就不行了</p>
+</li>
+</ul>
+</li>
+<li><p>在MySQL中有多少可能的Triggers?</p>
+<ul>
+<li>Before Insert</li>
+<li>After Insert</li>
+<li>Before Update</li>
+<li>After Update</li>
+<li>Before Delete</li>
+<li><p>After Delete</p>
+<p>一个示例,<code>CREATE TRIGGER ins_sum BEFORE INSERT ON account FOR EACH ROW SET @SUM=@SUM+NEW.amount;</code></p>
+</li>
+</ul>
+</li>
+<li><p>什么是堆表(Heap table)?</p>
+<p>存在内存中的表叫做Heap tables。这些表是内存表，这些内存表没有像BLOB或者TEXT的数据类型。他们可以使用索引使得它们更快，索引是针对少量特定字段的值拿出来进行排序存储，并记录在表中的位置, 而因为索引是有序的, 所以就会很容易通过索引查询到具体的记录位置, 然后再根据记录位置直接从表中读取该记录。数据存储没有任何的顺序，插入数据也没顺序。由于数据没有任何顺序，查询数据会非常慢，但是写入操作会比较快。还有就是上面介绍的表Index-Organized table，直接就是索引表，表中数据本身就是有序的, 这样查询表的时候就可以快速的找到符合条件的记录位置。</p>
+</li>
+</ol>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/10/19/mysql_interview_1/" target="_blank" rel="external">http://skyrover.me/2017/10/19/mysql_interview_1/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/10/19/mysql_interview_1/&title=《MySQL面试题集锦》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/10/19/mysql_interview_1/&title=《MySQL面试题集锦》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/10/19/mysql_interview_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MySQL面试题集锦》 — SkyRover&url=http://skyrover.me/2017/10/19/mysql_interview_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/10/19/mysql_interview_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/10/17/music_1/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">最是人间留不住</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/10/19/mysql_interview_1/&title=《MySQL面试题集锦》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/10/19/mysql_interview_1/&title=《MySQL面试题集锦》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/10/19/mysql_interview_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MySQL面试题集锦》 — SkyRover&url=http://skyrover.me/2017/10/19/mysql_interview_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/10/19/mysql_interview_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJElEQVR42u3aQXLjMAwEwPz/095rLpJmQKdqRbZOLkex0DqgAAI/P/H1Ca6rO39/n3z+/c2XLwwMjNcyZsFd3dk+JYc9PBEDA+MAxtWD83uS/7pn3/MeYsbAwMC4DbdNmkk6xsDAwFhh3Id135T+RwkXAwPjhYy8yZydgyVhtc0zBgbGOYyVUP7685/MNzAwMF7F+JRXnijbdPlZuDAwMPZm5AnuW8XZypHcw4ABAwNjU0Z7sNUm36Q1TYYNDzAMDIwDGHmgeTpOXkQ7Qrj8ZQwMjGMYSXs5G2e2g8m6AMXAwDiA8a3U2abRdvHiMkIMDIytGW3ualvQ9igtYdenehgYGFswZoHOAmoHlsVLx8DAOIDRDhrzxDorAfMkjoGBcQIjLxPbsWW997FwhoaBgXEO47tHbPkCx6w9xsDAOIcxa1/bh+Uj0nrZAgMDY2vGStKcrVO0qT95OgYGxmmMtrBbL/hWBqJRJ42BgfFyRnug31adSej5/RgYGBj5P8/KwWT9Ijngq5ctMDAwNmK0SbAt45Lfz1vfos7FwMDYlNH+0KzUWzmew8DAOIfxKa98OWNlIaOmYmBgbM2YJbh2PaItBPP7axgGBsZrGbNWc+WQrn1lGBgYGG3ia1NnOxZNkMUfMDAwjmTM1i9aQPs9BgYGRl7w5e3uw7ziNpLL+QYGBsbWjDy4lVZ21r4u7YxgYGBswWhbx9maxSy9Ji8IAwNja8Y/Ft76CLKATL4AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

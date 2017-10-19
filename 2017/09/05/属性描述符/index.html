@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>属性描述符 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python">
+    <meta name="description" content="From 流畅的Python 人民邮电出版社 20章属性描述符  描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __s">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="属性描述符">
+<meta property="og:url" content="http://skyrover.me/2017/09/05/属性描述符/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="From 流畅的Python 人民邮电出版社 20章属性描述符  描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __s">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-09T06:44:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="属性描述符">
+<meta name="twitter:description" content="From 流畅的Python 人民邮电出版社 20章属性描述符  描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。 描述符是实现了特定协议的类，这个协议包括__get__, __s">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">属性描述符</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">属性描述符</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-05T13:40:46.000Z" itemprop="datePublished" class="page-time">
+  2017-09-05 21:40:46
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基本用法"><span class="post-toc-number">1.</span> <span class="post-toc-text">基本用法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#利用继承扩展描述符"><span class="post-toc-number">2.</span> <span class="post-toc-text">利用继承扩展描述符</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#覆盖型描述符和非覆盖型描述符"><span class="post-toc-number">3.</span> <span class="post-toc-text">覆盖型描述符和非覆盖型描述符</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#方法是描述符"><span class="post-toc-number">4.</span> <span class="post-toc-text">方法是描述符</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#描述符的使用"><span class="post-toc-number">5.</span> <span class="post-toc-text">描述符的使用</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-属性描述符"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">属性描述符</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-05 21:40:46 21:40:46" datetime="2017-09-05T13:40:46.000Z"  itemprop="datePublished">2017-09-05 21:40:46</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <blockquote>
+<p>From <strong>流畅的Python 人民邮电出版社 20章属性描述符</strong></p>
+</blockquote>
+<p>描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的<code>__get__</code>和<code>__set__</code>方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。</p>
+<p>描述符是实现了特定协议的类，这个协议包括<code>__get__</code>, <code>__set__</code>和<code>__delete__</code>方法。使用描述符的Python功能还有方法以及classmethod和staticmethod装饰器。</p>
+<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>描述符的用法是，创建一个描述符实例，作为另外一个类的类属性，这样就会托管该类实例的同名属性，所以实例的属性和使用描述符的类属性是分离的。描述符属性通过将属性存储到相应实例的字典中来区分不同实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Quantity:</div><div class="line"></div><div class="line">    def __init__(self, storage_name):</div><div class="line">       self.storage_name = storage_name</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[self.storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        return instance.__dict__[self.storage_name]</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    weight = Quantity(&apos;weight&apos;)</div><div class="line"></div><div class="line">    def __init__(self, weight):</div><div class="line">        self.weight = weight</div></pre></td></tr></table></figure>
+<p>这里设置实例的属性的时候，会将设置代理到描述符的<code>__set__</code>，这样就将其设置到了实例的属性字典里，<code>__set__</code>中self是描述符实例，而instance是托管类的实例，应该将属性放在实例中，这样可以区分不同实例的同名属性。对于<code>__get__</code>方法，owner是instance对应的托管类，必须通过实例字典的方式拿出属性，这样才不会无限循环。</p>
+<p>如果通过类来访问托管属性，instance就是None，然后就会产生<code>AttributeError</code>异常，所以可以进行判断，让<code>__get__</code>方法返回描述符实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def __get__(self, instance, owner):</div><div class="line">    if instance is None:</div><div class="line">        # self是描述符实例</div><div class="line">        return self</div><div class="line">    else:</div><div class="line">        return instance.__dict__[self.storage_name]</div></pre></td></tr></table></figure>
+<h1 id="利用继承扩展描述符"><a href="#利用继承扩展描述符" class="headerlink" title="利用继承扩展描述符"></a>利用继承扩展描述符</h1><p>通常描述符会作为一个工具来控制很多类的属性管理，而且基于面向对象的设计，可以利用继承来重用代码创建新的描述符。比如下面的描述符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class AutoStorage:</div><div class="line">    __counter = 0</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        cls = self.__class__</div><div class="line">        prefix = cls.__name__</div><div class="line">        index = cls.__counter</div><div class="line">        self.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(prefix, index)</div><div class="line">        cls.__counter += 1</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        if instance is None:</div><div class="line">            return self</div><div class="line">        else:</div><div class="line">            return getattr(instance, self.storage_name)</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        setattr(instance, self.storage_name, value)</div></pre></td></tr></table></figure>
+<p>这个描述符实现了属性的存取，并且可以实现多个属性的托管而不用传递任何参数，因为内部已经做好名称处理了，所以也可以直接使用getattr以及setattr来对属性进行存取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class Validated(abc.ABC, AutoStorage):</div><div class="line">    def __set__(self, instance, value):</div><div class="line">        value = self.validate(instance, value)</div><div class="line">        # super的使用方法</div><div class="line">        super().__set__(instance, value)</div><div class="line"></div><div class="line">    @abc.abstractmethod</div><div class="line">    def validate(self, instance, value):</div><div class="line"></div><div class="line">class Quantity(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        if value &lt;= 0:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">        return value</div><div class="line"></div><div class="line">class NonBlank(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        value = value.strip()</div><div class="line">        if len(value) == 0:</div><div class="line">            raise ValueError(&apos;value cannot be empty or blank&apos;)</div><div class="line">        return value</div></pre></td></tr></table></figure>
+<p>通过继承基础的AutoStorage，Validated会在set的时候进行检查，具体怎么检查，委托给validate的子类实现，这样就形成了代码复用，然后制造一堆描述符。</p>
+<h1 id="覆盖型描述符和非覆盖型描述符"><a href="#覆盖型描述符和非覆盖型描述符" class="headerlink" title="覆盖型描述符和非覆盖型描述符"></a>覆盖型描述符和非覆盖型描述符</h1><p>实现<code>__set__</code>方法的描述符是覆盖型描述符，因为这样会覆盖对实例属性的赋值操作。比如特性如果没有提供设值的函数，那么就会引发<code>AttributeError</code>。</p>
+<p>如果只实现了<code>__set__</code>，写操作是由描述符处理，如果通过实例读取描述符会返回描述符对象本身。但是如果设置了实例的同名实例属性(通过<code>__dict__</code>实现)的话，再读取的话，就会直接从实例中返回<code>__dict__</code>的属性值。而写仍然会被描述符覆盖。</p>
+<p>没有实现<code>__set__</code>的描述符是非覆盖型描述符，如果设置了同名实例属性，那么描述符会被覆盖。类中的方法就是非覆盖型描述符实现的，如果重新设置就会被覆盖。</p>
+<p>对类属性赋值都能覆盖描述符。如果想控制类属性的操作，要把描述符依附在类的类上，即依附在元类上。</p>
+<h1 id="方法是描述符"><a href="#方法是描述符" class="headerlink" title="方法是描述符"></a>方法是描述符</h1><p>用户在类中定义的函数都有<code>__get__</code>方法，所以依附在类上，就是描述符，而且是非覆盖型描述符，可以被实例属性重新覆盖。</p>
+<p>比如<code>obj.test</code>就是绑定方法，即函数的<code>__get__</code>方法会返回绑定方法对象，相当于<code>functools.partial</code>将obj绑定给了函数第一个参数，就是self。</p>
+<p>但是<code>Test.test</code>就是一个函数，即函数的<code>__get__</code>方法会返回自身的引用。</p>
+<p><code>Test.test.__get__(obj)</code>就是一个绑定方法对象，而<code>Test.test.__get__(None, Test)</code>就是一个函数对象，返回函数自身的引用。</p>
+<p>绑定方法对象有一个<code>__call__</code>方法，来处理真正的调用过程，会调用<code>__func__</code>属性引用的原始函数，把函数的第一个参数设为绑定方法的<code>__self__</code>属性，这就是self的隐式绑定。所以函数会变成绑定方法。</p>
+<h1 id="描述符的使用"><a href="#描述符的使用" class="headerlink" title="描述符的使用"></a>描述符的使用</h1><ul>
+<li>只读描述符必须有<code>__set__</code>方法</li>
+</ul>
+<p>这样才可以控制属性的赋值，要不然实例的同名属性会覆盖描述符。在<code>__set__</code>方法只需要跑出<code>AttributeError</code>异常就可以了。</p>
+<ul>
+<li>验证的描述符可以只实现<code>__set__</code>方法</li>
+</ul>
+<p>这是一种覆盖型描述符，在set的时候检查属性值，设置在实例的<code>__dict__</code>，然后get的时候，就会从实例中拿值，比较快。因为设置了实例属性，就会将get给覆盖掉，而set不会被覆盖。</p>
+<ul>
+<li>只实现<code>__get__</code>可以实现缓存</li>
+</ul>
+<p>在第一次的时候调用<code>__get__</code>进行计算，然后给实例<code>__dict__</code>设置同名的值，此后实例同名属性就会将描述符给覆盖了，所以就不用计算了。</p>
+<ul>
+<li>非特殊方法可以被实例属性覆盖</li>
+</ul>
+<p>因为解释器会在类中寻找特殊方法，所以就不会受到描述符的影响，也不会因为实例中设置了相同的方法而影响。</p>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/09/05/属性描述符/" target="_blank" rel="external">http://skyrover.me/2017/09/05/属性描述符/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/05/属性描述符/&title=《属性描述符》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/05/属性描述符/&title=《属性描述符》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/05/属性描述符/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《属性描述符》 — SkyRover&url=http://skyrover.me/2017/09/05/属性描述符/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/05/属性描述符/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/09/09/类元编程/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">类元编程</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/04/特性属性和特殊方法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">特性，属性和特殊方法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/05/属性描述符/&title=《属性描述符》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/05/属性描述符/&title=《属性描述符》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/05/属性描述符/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《属性描述符》 — SkyRover&url=http://skyrover.me/2017/09/05/属性描述符/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/05/属性描述符/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3awY7DIAxF0f7/T3ekbivIfXY6UvBlNWozhMPCxTavFx7vz/j+5Hus/uv7GfLJzUOGDBmPZby3Y/VMh7Tfpv17l1QZMmQMYJCpSXCsLWLPID8AMmTIkFF7hi93v1kyZMiQkS6xFmr3WWdn+2TIkDGHQZJY8jwJmoT3w1xchgwZD2SkjYH//PuH/Q0ZMmQ8hPEOBz8mkjemzdHlqmTIkHE0Y59wdpJb3rDkbc6LjZMhQ8ahjPQiV3qMS5PP4obKkCFjGIOHSH79olM4QyQZMmQMYJA0tdbU5MW7Fl6GDBlHMzqTprX69LLFfosvUlkZMmQcx6iFOR58a0u5YUNlyJBxBCNNRNNGY5oAp0U6GTJkzGF0Svm10lva1LzYCBkyZBzNuO2+Bh784EjapTJkyJjA6ARczuaf8EQXXQuTIUPGoQx+UKtdv+gU5pZBX4YMGWMYtcJ9WowjtyPiQp4MGTIGMEgpny+93xDdb+Uy/5YhQ8ahjLvCH1lo573FqqEMGTKOYNRajzz81S5VpCU5GTJkTGPwI11wAQI/g34ZVo0BGTJkHMogRzQSOskMabOzVsKTIUPGeYxOOsrLc/uktFZokyFDxhwGH7W0lr+YzNACyJAh4+EM3mLk3/LtSGdbImXIkDGAkQbB/gEubXaigCtDhozxDJ52pqW6TotUhgwZMu66hMHTVD6/DBkypjH6RXxe1u9f0ZAhQ8Y0Rq0xUJuodgWtk/TKkCHj4Yw/5nvWLLSoFXsAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

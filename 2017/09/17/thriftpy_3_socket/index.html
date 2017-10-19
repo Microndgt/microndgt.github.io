@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>thriftpy源码解析(三) - 套接字 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,Thrift,源码">
+    <meta name="description" content="离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。 上次提到默认使用的套接字是TServerSocket，是在make_server中创建的，可以使用unix_socket或者TCP的套接字，另外如果基于https，就可以使用TSSLServerSocket。其实套接字也算传输transport协议中的一个部分，所以可以看到源码有关s">
+<meta name="keywords" content="Python,Thrift,源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="thriftpy源码解析(三) - 套接字">
+<meta property="og:url" content="http://skyrover.me/2017/09/17/thriftpy_3_socket/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。 上次提到默认使用的套接字是TServerSocket，是在make_server中创建的，可以使用unix_socket或者TCP的套接字，另外如果基于https，就可以使用TSSLServerSocket。其实套接字也算传输transport协议中的一个部分，所以可以看到源码有关s">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-17T05:51:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="thriftpy源码解析(三) - 套接字">
+<meta name="twitter:description" content="离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。 上次提到默认使用的套接字是TServerSocket，是在make_server中创建的，可以使用unix_socket或者TCP的套接字，另外如果基于https，就可以使用TSSLServerSocket。其实套接字也算传输transport协议中的一个部分，所以可以看到源码有关s">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">thriftpy源码解析(三) - 套接字</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">thriftpy源码解析(三) - 套接字</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-17T05:44:28.000Z" itemprop="datePublished" class="page-time">
+  2017-09-17 13:44:28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#TServerSocket"><span class="post-toc-number">1.</span> <span class="post-toc-text">TServerSocket</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建和初始化"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">创建和初始化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#监听"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">监听</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#接受"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">接受</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#读取和回应"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">读取和回应</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#关闭"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">关闭</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#TSocket"><span class="post-toc-number">2.</span> <span class="post-toc-text">TSocket</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#struct"><span class="post-toc-number">3.</span> <span class="post-toc-text">struct</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小结"><span class="post-toc-number">4.</span> <span class="post-toc-text">小结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-thriftpy_3_socket"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">thriftpy源码解析(三) - 套接字</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-17 13:44:28 13:44:28" datetime="2017-09-17T05:44:28.000Z"  itemprop="datePublished">2017-09-17 13:44:28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。</p>
+<p>上次提到默认使用的套接字是<code>TServerSocket</code>，是在<code>make_server</code>中创建的，可以使用<code>unix_socket</code>或者TCP的套接字，另外如果基于https，就可以使用<code>TSSLServerSocket</code>。其实套接字也算传输<code>transport</code>协议中的一个部分，所以可以看到源码有关socket的都在<code>Thriftpy/transport</code>里面，其中有<code>socket.py</code>和<code>sslsocket.py</code>，这里我们只介绍以下<code>socket.py</code></p>
+<p><code>socket.py</code>中只有两个类，一个是<code>TSocket</code>，一个是<code>TServerSocket</code>，前者是在客户端方面使用的，<code>TServerSocket</code>是在服务器端使用的</p>
+<p>客户端和服务器端对应，它使用<code>make_client</code>来创建一个客户端，其内部使用了<code>TSocket</code>，<code>TSSLSocket</code>。</p>
+<h1 id="TServerSocket"><a href="#TServerSocket" class="headerlink" title="TServerSocket"></a>TServerSocket</h1><p>我们先来看服务器端的Socket实现。Socket编程在服务器部分大致流程就是：</p>
+<ul>
+<li>创建</li>
+<li>绑定，监听</li>
+<li>接受</li>
+<li>读取和回应</li>
+<li>关闭</li>
+</ul>
+<p>基本上<code>TServerSocket</code>类中就是这么些方法:</p>
+<h2 id="创建和初始化"><a href="#创建和初始化" class="headerlink" title="创建和初始化"></a>创建和初始化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">class TServerSocket(object):</div><div class="line">    &quot;&quot;&quot;Socket implementation for server side.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, host=None, port=None, unix_socket=None,</div><div class="line">                 socket_family=socket.AF_INET, client_timeout=3000,</div><div class="line">                 backlog=128):</div><div class="line">        if unix_socket:</div><div class="line">            self.unix_socket = unix_socket</div><div class="line">            self.host = None</div><div class="line">            self.port = None</div><div class="line">        else:</div><div class="line">            self.unix_socket = None</div><div class="line">            self.host = host</div><div class="line">            self.port = port</div><div class="line"></div><div class="line">        self.socket_family = socket_family</div><div class="line">        self.client_timeout = client_timeout / 1000 if client_timeout else None</div><div class="line">        self.backlog = backlog</div><div class="line"></div><div class="line">    def _init_sock(self):</div><div class="line">        if self.unix_socket:</div><div class="line">            # try remove the sock file it already exists</div><div class="line">            _sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)</div><div class="line">            try:</div><div class="line">                _sock.connect(self.unix_socket)</div><div class="line">            except (socket.error, OSError) as err:</div><div class="line">                if err.args[0] == errno.ECONNREFUSED:</div><div class="line">                    os.unlink(self.unix_socket)</div><div class="line">        else:</div><div class="line">            _sock = socket.socket(self.socket_family, socket.SOCK_STREAM)</div><div class="line">        # 这里设置了端口重用，在套接字级别上设置选项</div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)</div><div class="line">        if hasattr(socket, &quot;SO_REUSEPORT&quot;):</div><div class="line">            _sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)</div><div class="line">        _sock.settimeout(None)</div><div class="line">        self.sock = _sock</div></pre></td></tr></table></figure>
+<h2 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def listen(self):</div><div class="line">    self._init_sock()</div><div class="line"></div><div class="line">    addr = self.unix_socket or (self.host, self.port)</div><div class="line">    self.sock.bind(addr)</div><div class="line">    self.sock.listen(self.backlog)</div></pre></td></tr></table></figure>
+<h2 id="接受"><a href="#接受" class="headerlink" title="接受"></a>接受</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def accept(self):</div><div class="line">    client, _ = self.sock.accept()</div><div class="line">    if self.client_timeout:</div><div class="line">        client.settimeout(self.client_timeout)</div><div class="line">    return TSocket(sock=client)</div></pre></td></tr></table></figure>
+<h2 id="读取和回应"><a href="#读取和回应" class="headerlink" title="读取和回应"></a>读取和回应</h2><p><code>TServerSocket</code>没有定义这几个方法，因为是Thriftpy支持不同的协议，因此实现由不同的协议来实现不同的读取和解析方法。</p>
+<h2 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def close(self):</div><div class="line">    if not self.sock:</div><div class="line">        return</div><div class="line"></div><div class="line">    try:</div><div class="line">        self.sock.shutdown(socket.SHUT_RDWR)</div><div class="line">        self.sock.close()</div><div class="line">    except (socket.error, OSError):</div><div class="line">        pass</div></pre></td></tr></table></figure>
+<h1 id="TSocket"><a href="#TSocket" class="headerlink" title="TSocket"></a>TSocket</h1><p><code>TSocket</code>即客户端的套接字，遵循以下流程:</p>
+<ul>
+<li>创建</li>
+<li>连接</li>
+<li>发送</li>
+<li>读取</li>
+<li>关闭</li>
+</ul>
+<p>代码依旧很简单，这里就全部贴上来了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div></pre></td><td class="code"><pre><div class="line">class TSocket(object):</div><div class="line">    &quot;&quot;&quot;Socket implementation for client side.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, host=None, port=None, unix_socket=None,</div><div class="line">                 sock=None, socket_family=socket.AF_INET,</div><div class="line">                 socket_timeout=3000, connect_timeout=None):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        @param sock(socket) 使用一个打开的套接字直接初始化</div><div class="line">        @param socket_family(str) socket.AF_INET or socket.AF_INET6.</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if sock:</div><div class="line">            self.sock = sock</div><div class="line">        elif unix_socket:</div><div class="line">            self.unix_socket = unix_socket</div><div class="line">            self.host = None</div><div class="line">            self.port = None</div><div class="line">            self.sock = None</div><div class="line">        else:</div><div class="line">            self.unix_socket = None</div><div class="line">            self.host = host</div><div class="line">            self.port = port</div><div class="line">            self.sock = None</div><div class="line"></div><div class="line">        self.socket_family = socket_family</div><div class="line">        self.socket_timeout = socket_timeout / 1000 if socket_timeout else None</div><div class="line">        self.connect_timeout = connect_timeout / 1000 if connect_timeout \</div><div class="line">            else self.socket_timeout</div><div class="line"></div><div class="line">    def _init_sock(self):</div><div class="line">        if self.unix_socket:</div><div class="line">            _sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)</div><div class="line">        else:</div><div class="line">            _sock = socket.socket(self.socket_family, socket.SOCK_STREAM)</div><div class="line">            _sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)</div><div class="line"></div><div class="line">        # socket options</div><div class="line">        linger = struct.pack(&apos;ii&apos;, 0, 0)</div><div class="line">        # close或 shutdown将等到所有套接字里排队的消息成功发送或到达延迟时间后才会返回。</div><div class="line">        # 该选项的参数（option_value)是一个linger结构</div><div class="line">        # struct linger &#123;  </div><div class="line">        #      int   l_onoff;      </div><div class="line">        #      int   l_linger;     </div><div class="line">        #  &#125;;  </div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, linger)</div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)</div><div class="line"></div><div class="line">        self.sock = _sock</div><div class="line"></div><div class="line">    def set_handle(self, sock):</div><div class="line">        self.sock = sock</div><div class="line"></div><div class="line">    def set_timeout(self, ms):</div><div class="line">        &quot;&quot;&quot;Backward compat api, will bind the timeout to both connect_timeout</div><div class="line">        and socket_timeout.</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        self.socket_timeout = ms / 1000 if (ms and ms &gt; 0) else None</div><div class="line">        self.connect_timeout = self.socket_timeout</div><div class="line"></div><div class="line">        if self.sock is not None:</div><div class="line">            self.sock.settimeout(self.socket_timeout)</div><div class="line"></div><div class="line">    def is_open(self):</div><div class="line">        return bool(self.sock)</div><div class="line"></div><div class="line">    def open(self):</div><div class="line">        self._init_sock()</div><div class="line"></div><div class="line">        addr = self.unix_socket or (self.host, self.port)</div><div class="line"></div><div class="line">        try:</div><div class="line">            if self.connect_timeout:</div><div class="line">                self.sock.settimeout(self.connect_timeout)</div><div class="line"></div><div class="line">            self.sock.connect(addr)</div><div class="line"></div><div class="line">            if self.socket_timeout:</div><div class="line">                self.sock.settimeout(self.socket_timeout)</div><div class="line"></div><div class="line">        except (socket.error, OSError):</div><div class="line">            raise TTransportException(</div><div class="line">                type=TTransportException.NOT_OPEN,</div><div class="line">                message=&quot;Could not connect to %s&quot; % str(addr))</div><div class="line"></div><div class="line">    def read(self, sz):</div><div class="line">        try:</div><div class="line">            buff = self.sock.recv(sz)</div><div class="line">        except socket.error as e:</div><div class="line">            if (e.args[0] == errno.ECONNRESET and</div><div class="line">                    (sys.platform == &apos;darwin&apos; or</div><div class="line">                     sys.platform.startswith(&apos;freebsd&apos;))):</div><div class="line">                # freebsd and Mach don&apos;t follow POSIX semantic of recv</div><div class="line">                # and fail with ECONNRESET if peer performed shutdown.</div><div class="line">                # See corresponding comment and code in TSocket::read()</div><div class="line">                # in lib/cpp/src/transport/TSocket.cpp.</div><div class="line">                self.close()</div><div class="line">                # Trigger the check to raise the END_OF_FILE exception below.</div><div class="line">                buff = &apos;&apos;</div><div class="line">            else:</div><div class="line">                raise</div><div class="line"></div><div class="line">        if len(buff) == 0:</div><div class="line">            raise TTransportException(type=TTransportException.END_OF_FILE,</div><div class="line">                                      message=&apos;TSocket read 0 bytes&apos;)</div><div class="line">        return buff</div><div class="line"></div><div class="line">    def write(self, buff):</div><div class="line">        self.sock.sendall(buff)</div><div class="line"></div><div class="line">    def flush(self):</div><div class="line">        pass</div><div class="line"></div><div class="line">    def close(self):</div><div class="line">        if not self.sock:</div><div class="line">            return</div><div class="line"></div><div class="line">        try:</div><div class="line">            self.sock.shutdown(socket.SHUT_RDWR)</div><div class="line">            self.sock.close()</div><div class="line">            self.sock = None</div><div class="line">        except (socket.error, OSError):</div><div class="line">            pass</div></pre></td></tr></table></figure>
+<h1 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h1><p>这里补充一个知识点，就是Python操作字节流的库struct。</p>
+<p>Python没有专门处理字节的数据类型。但由于b’str’可以表示字节，所以，字节数组＝二进制str。但是对于其他的二进制数据比如整数值，浮点数等就比较麻烦了，因此Python提供了一个struct模块来解决bytes和其他二进制数据类型的转换。</p>
+<p>struct的pack函数把任意数据类型变成bytes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import struct</div><div class="line">&gt;&gt;&gt; struct.pack(&apos;&gt;I&apos;, 10240099)</div><div class="line">b&apos;\x00\x9c@c&apos;</div></pre></td></tr></table></figure>
+<p>pack的第一个参数是处理指令，<code>&#39;&gt;I&#39;</code>的意思是：&gt;表示字节顺序是big-endian，也就是网络序，I表示4字节无符号整数。后面的参数个数要和处理指令一致。</p>
+<p>unpack把bytes变成相应的数据类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; struct.unpack(&apos;&gt;IH&apos;, b&apos;\xf0\xf0\xf0\xf0\x80\x80&apos;)</div><div class="line">(4042322160, 32896)</div></pre></td></tr></table></figure>
+<p>根据<code>&gt;IH</code>的说明，后面的bytes依次变为I：4字节无符号整数和H：2字节无符号整数。</p>
+<p>上面程序里用到了<code>linger = struct.pack(&#39;ii&#39;, 0, 0)</code>，也就是将两个0分别转换成int(有符号)的字节序列(bytes)</p>
+<p><a href="https://docs.python.org/3/library/struct.html#format-characters" target="_blank" rel="external">这里有一些转换的格式</a></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>关于Thriftpy中使用的套接字就介绍到这里了，下一节将是Thriftpy中使用的协议，比如常用的<code>TJSONProtocol</code></p>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/09/17/thriftpy_3_socket/" target="_blank" rel="external">http://skyrover.me/2017/09/17/thriftpy_3_socket/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thrift/">Thrift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码/">源码</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/17/thriftpy_3_socket/&title=《thriftpy源码解析(三) - 套接字》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/17/thriftpy_3_socket/&title=《thriftpy源码解析(三) - 套接字》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/17/thriftpy_3_socket/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《thriftpy源码解析(三) - 套接字》 — SkyRover&url=http://skyrover.me/2017/09/17/thriftpy_3_socket/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/17/thriftpy_3_socket/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/09/19/风月无边/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">风月无边</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/17/flask_https/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">翻译 - Running Your Flask Application Over HTTPS</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/17/thriftpy_3_socket/&title=《thriftpy源码解析(三) - 套接字》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/17/thriftpy_3_socket/&title=《thriftpy源码解析(三) - 套接字》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/17/thriftpy_3_socket/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《thriftpy源码解析(三) - 套接字》 — SkyRover&url=http://skyrover.me/2017/09/17/thriftpy_3_socket/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/17/thriftpy_3_socket/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aS27EMAwEUd//0s42wCR2NakgEFVeDfyTnhccieR14eP+OL6fT+98vufzncsOGTJkbMu4Hw9yDxmYv4GPK0OGjNMYvw3Mf5OgmV4lc5MhQ4YMPl0yufTTyJAhQ0afQZ4iZ/454MqQIWMTRrqxTPNgnaC8eC8uQ4aMDRmdqfz17z+pb8iQIWMrxh0ezykzUs4k4TKelQwZMkYzeIDjC8dO4K4VRGXIkHEy4zmw1pok0iQaD+4yZMiYygisICySt/Wf/eGqDBkyDmDUWiLScNkJuC93ypAh4wAGf5iEUd5swcP6yxtkyJAxmpGm2NIWinRgXlpoFThlyJCxIYMHyn6orRUpiwtEGTJkjGCQZNba8iR/KihhypAh4wBGp3krnTT/TDx5J0OGjHMYtUC5NsgW038yZMgYzUgH6KfSOIwUPl9SbzJkyBjKSBsvSKKNx0Z+FY0iQ4aMEYzONrUGTkuk6LwMGTJGM3iSq7ZATJsnePuXDBkyTmOQm0gjRbqJTSf98plkyJBxAIOEtjQFRoqjvNiJ1rkyZMgYzahtINMFXAeDWi5kyJAxjnGHR61tooYnS8mLxHUZMmRszkj7rFJMp4EjfbMMGTJmM/pbTV4w4FvWuCwqQ4aMAxi1ZR9fYnaKCii4y5AhQwa+J92UkjdfqU+GDBnHM9LAmhYMeKPGsv8NGTJkbMKoTWttEr9WyJQhQ8YJjNbWsTSh4iT6hUwZMmTsx/gC7RcD8QVQ3DwAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
