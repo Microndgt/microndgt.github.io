@@ -13,25 +13,27 @@
     
     
     
-    <title>翻译 - heapq — Heap queue algorithm | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <title>大明王朝 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="翻译,Python,算法">
-    <meta name="description" content="翻译自heapq — Heap queue algorithm 介绍这个模块实现了堆队列算法，也被称为优先队列算法。 堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有heap[k] &amp;lt;= heap[2*k+1]和heap[k] &amp;lt;= heap[2*k+2]，对于第n层树，其有2^(n-1)个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素">
-<meta name="keywords" content="翻译,Python,算法">
+    <meta name="keywords" content="明朝">
+    <meta name="description" content="最近在看当代明月的明朝那些事儿，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了历史通俗演义(前汉和后汉)，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看历史通俗演义(唐)，最近看明朝那些">
+<meta name="keywords" content="明朝">
 <meta property="og:type" content="article">
-<meta property="og:title" content="翻译 - heapq — Heap queue algorithm">
-<meta property="og:url" content="http://skyrover.me/2017/09/28/heapq/index.html">
+<meta property="og:title" content="大明王朝">
+<meta property="og:url" content="http://skyrover.me/2017/10/21/ming_dynasty/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="翻译自heapq — Heap queue algorithm 介绍这个模块实现了堆队列算法，也被称为优先队列算法。 堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有heap[k] &amp;lt;= heap[2*k+1]和heap[k] &amp;lt;= heap[2*k+2]，对于第n层树，其有2^(n-1)个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素">
+<meta property="og:description" content="最近在看当代明月的明朝那些事儿，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了历史通俗演义(前汉和后汉)，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看历史通俗演义(唐)，最近看明朝那些">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-28T06:36:37.000Z">
+<meta property="og:image" content="http://skyrover.me/img/history/ming_history.png">
+<meta property="og:updated_time" content="2017-10-21T06:10:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="翻译 - heapq — Heap queue algorithm">
-<meta name="twitter:description" content="翻译自heapq — Heap queue algorithm 介绍这个模块实现了堆队列算法，也被称为优先队列算法。 堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有heap[k] &amp;lt;= heap[2*k+1]和heap[k] &amp;lt;= heap[2*k+2]，对于第n层树，其有2^(n-1)个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素">
+<meta name="twitter:title" content="大明王朝">
+<meta name="twitter:description" content="最近在看当代明月的明朝那些事儿，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了历史通俗演义(前汉和后汉)，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看历史通俗演义(唐)，最近看明朝那些">
+<meta name="twitter:image" content="http://skyrover.me/img/history/ming_history.png">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
@@ -126,7 +128,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">翻译 - heapq — Heap queue algorithm</div>
+        <div class="flex-col header-title ellipsis">大明王朝</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -148,15 +150,15 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">翻译 - heapq — Heap queue algorithm</h1>
+        <h1 class="title">大明王朝</h1>
         <h5 class="subtitle">
             
-                <time datetime="2017-09-28T04:01:46.000Z" itemprop="datePublished" class="page-time">
-  2017-09-28 12:01:46
+                <time datetime="2017-10-21T06:13:56.000Z" itemprop="datePublished" class="page-time">
+  2017-10-21 14:13:56
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/历史/">历史</a></li></ul>
 
 
             
@@ -174,21 +176,21 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#介绍"><span class="post-toc-number">1.</span> <span class="post-toc-text">介绍</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基本用法"><span class="post-toc-number">2.</span> <span class="post-toc-text">基本用法</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#朱元璋-明太祖"><span class="post-toc-number">1.</span> <span class="post-toc-text">朱元璋(明太祖)</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#朱允炆-明惠宗"><span class="post-toc-number">2.</span> <span class="post-toc-text">朱允炆(明惠宗)</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#朱棣-明成祖"><span class="post-toc-number">3.</span> <span class="post-toc-text">朱棣(明成祖)</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#朱高炽-明仁宗"><span class="post-toc-number">4.</span> <span class="post-toc-text">朱高炽(明仁宗)</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#朱瞻基-明宣宗"><span class="post-toc-number">5.</span> <span class="post-toc-text">朱瞻基(明宣宗)</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#朱祁镇-明英宗"><span class="post-toc-number">6.</span> <span class="post-toc-text">朱祁镇(明英宗)</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#朱祁钰-明代宗"><span class="post-toc-number">7.</span> <span class="post-toc-text">朱祁钰(明代宗)</span></a></li></ol>
         </nav>
     </aside>
     
 
-<article id="post-heapq"
+<article id="post-ming_dynasty"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">翻译 - heapq — Heap queue algorithm</h1>
+        <h1 class="post-card-title">大明王朝</h1>
         <div class="post-meta">
-            <time class="post-time" title="2017-09-28 12:01:46 12:01:46" datetime="2017-09-28T04:01:46.000Z"  itemprop="datePublished">2017-09-28 12:01:46</time>
+            <time class="post-time" title="2017-10-21 14:13:56 14:13:56" datetime="2017-10-21T06:13:56.000Z"  itemprop="datePublished">2017-10-21 14:13:56</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/历史/">历史</a></li></ul>
 
 
             
@@ -202,45 +204,46 @@
             
             
             
-            <p>翻译自<a href="https://docs.python.org/3/library/heapq.html" target="_blank" rel="external">heapq — Heap queue algorithm</a></p>
-<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>这个模块实现了堆队列算法，也被称为优先队列算法。</p>
-<p>堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有<code>heap[k] &lt;= heap[2*k+1]</code>和<code>heap[k] &lt;= heap[2*k+2]</code>，对于第n层树，其有<code>2^(n-1)</code>个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素将会被认为是无穷大的。堆中有意思的特性是最小的元素总是在树的根部，即heap[0]。</p>
-<p>下面的API有两点不同于教科书上的堆算法：</p>
-<ul>
-<li>我们的索引从0开始，这样使得父节点和其子节点的关系有所不同，但是这样在Python里更加合适，因为Python里就是索引从0开始。</li>
-<li>我们的pop方法会返回最小的元素，而不是最大的，也就是最小堆，最大堆通常在原地排序很有用</li>
+            <p>最近在看当代明月的<em>明朝那些事儿</em>，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了<em>历史通俗演义(前汉和后汉)</em>，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看<em>历史通俗演义(唐)</em>，最近看<em>明朝那些事</em>。读史你能感受到人之间的复杂，但是读着读着就能体会出来一个人的心理和历史规律，正所谓，<strong>鉴于往事，有资于治道</strong>，读史使人明智之意。</p>
+<p>从小学习的时候就喜欢形成一个框架，这样知识是被索引的，按照一条主线，将知识塞到框架的不同地方，记忆的会更牢固。其实更多的含义是自己能够一览全局。所以此处将明朝所读之处，按照皇帝的顺序塞进历史事件总结于此。不时根据自己的认识和理解进行更新。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/history/ming_history.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>下面是基于这个明朝历史架构记录的大事件，也就是塞到框架里面的一个个组成部分。</p>
+<h1 id="朱元璋-明太祖"><a href="#朱元璋-明太祖" class="headerlink" title="朱元璋(明太祖)"></a>朱元璋(明太祖)</h1><ul>
+<li>与陈友琼鄱阳湖水战</li>
+<li>1368年建立大明</li>
+<li>徐达，常遇春等将北伐，攻破大都后继而深入漠北，大破北元</li>
+<li>胡惟庸案，蓝玉案，锦衣卫</li>
 </ul>
-<p>这两个使得可以在普通的Python列表中获取堆中元素，heap[0]就是最小的元素，heap.sort()维护堆。</p>
-<p>为了创建一个堆，使用列表将其初始化为<code>[]</code>，或者你也可以通过<code>heapify()</code>将一个列表转换成堆。</p>
-<p>提供下面的方法</p>
-<ul>
-<li><code>heappush(heap, item)</code></li>
-<li><code>heappop(heap)</code></li>
-<li><code>heappushpop(heap, item)</code></li>
+<h1 id="朱允炆-明惠宗"><a href="#朱允炆-明惠宗" class="headerlink" title="朱允炆(明惠宗)"></a>朱允炆(明惠宗)</h1><ul>
+<li>靖难之役</li>
 </ul>
-<p>将item push到堆里，并且pop出最小的元素，比先执行heappush()然后执行heappop()更有效率</p>
-<ul>
-<li><code>heapify(x)</code></li>
-<li><code>heapreplace(heap, item)</code></li>
+<h1 id="朱棣-明成祖"><a href="#朱棣-明成祖" class="headerlink" title="朱棣(明成祖)"></a>朱棣(明成祖)</h1><ul>
+<li>靖难之役</li>
+<li>迁都北京</li>
+<li>收复安南，攻打鞑靼和瓦剌</li>
+<li>郑和下西洋</li>
+<li>永乐大典</li>
+<li>东厂</li>
 </ul>
-<p>pop并且返回最小的元素，并且push一个新的元素，堆的大小不会改变。这个步骤比先执行heappop()然后执行heappush()更有效率，并且在使用一个固定大小的堆会比较合适。这个函数总会返回一个元素，并且以item替换。</p>
-<p>返回的元素可能比插入的元素要大，使用heappushpop将会返回一个比插入元素小或者等于的元素。</p>
-<ul>
-<li><code>merge(*iterables, key=None, reverse=False)</code></li>
+<h1 id="朱高炽-明仁宗"><a href="#朱高炽-明仁宗" class="headerlink" title="朱高炽(明仁宗)"></a>朱高炽(明仁宗)</h1><ul>
+<li>三杨(杨士奇，杨荣，杨溥(<code>pǔ</code>))</li>
 </ul>
-<p>将多个排序的输入转换成一个排序后的输出，返回一个排序后的迭代器。和<code>sorted(itertools.chain(*iterables))</code>类似，但是它会返回迭代对象，而不是将数据一次性放入内存。</p>
-<p>两个可选参数必须使用成关键字参数。</p>
-<p>key指定了如何进行排序，reverse如果是True就会反转。</p>
-<ul>
-<li><code>nlargest(n, iterable, key=None)</code></li>
+<h1 id="朱瞻基-明宣宗"><a href="#朱瞻基-明宣宗" class="headerlink" title="朱瞻基(明宣宗)"></a>朱瞻基(明宣宗)</h1><ul>
+<li>平叛朱高煦</li>
+<li>设立内书堂教宦官读书</li>
 </ul>
-<p>返回一个迭代器的前n个大的元素列表，key如果提供，指定进行比较的函数。</p>
-<ul>
-<li><code>nsmallest(n, iterable, key=None)</code></li>
+<h1 id="朱祁镇-明英宗"><a href="#朱祁镇-明英宗" class="headerlink" title="朱祁镇(明英宗)"></a>朱祁镇(明英宗)</h1><ul>
+<li>土木堡之变</li>
 </ul>
-<p>对于n比较小的时候比较高效。如果比较大，使用<code>sorted()</code>函数更加高效，当n等于1的时候，使用min和max更高效。如果要重复使用这几个函数，那么考虑将其转换成heap。</p>
-<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>堆排序可以通过向堆里push元素，然后每次pop出最小的元素来实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def heapsort(iterable):</div><div class="line">...     h = []</div><div class="line">...     for value in iterable:</div><div class="line">...         heappush(h, value)</div><div class="line">...     return [heappop(h) for i in range(len(h))]</div></pre></td></tr></table></figure>
+<h1 id="朱祁钰-明代宗"><a href="#朱祁钰-明代宗" class="headerlink" title="朱祁钰(明代宗)"></a>朱祁钰(明代宗)</h1><ul>
+<li>于谦北京保卫战</li>
+</ul>
      
         </div>
 
@@ -249,7 +252,7 @@
         
 
         
-        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/09/28/heapq/" target="_blank" rel="external">http://skyrover.me/2017/09/28/heapq/</a>
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/10/21/ming_dynasty/" target="_blank" rel="external">http://skyrover.me/2017/10/21/ming_dynasty/</a>
         
     </div>
     <footer>
@@ -269,7 +272,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/明朝/">明朝</a></li></ul>
 
 
 
@@ -280,7 +283,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/28/heapq/&title=《翻译 - heapq — Heap queue algorithm》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/10/21/ming_dynasty/&title=《大明王朝》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -290,22 +293,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/28/heapq/&title=《翻译 - heapq — Heap queue algorithm》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/10/21/ming_dynasty/&title=《大明王朝》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/28/heapq/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/10/21/ming_dynasty/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 - heapq — Heap queue algorithm》 — SkyRover&url=http://skyrover.me/2017/09/28/heapq/&via=http://skyrover.me" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大明王朝》 — SkyRover&url=http://skyrover.me/2017/10/21/ming_dynasty/&via=http://skyrover.me" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/28/heapq/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/10/21/ming_dynasty/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -325,20 +328,13 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2017/09/30/Python程序性能分析/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">Python程序性能分析</h4>
-      </a>
-    </div>
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
   
   
     <div class="waves-block waves-effect next">
-      <a href="/2017/09/21/lowest_common_ancestor_of_a_tree/" id="post-next" class="post-nav-link">
+      <a href="/2017/10/19/mysql_interview_1/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">最低共同祖先</h4>
+        <h4 class="title">MySQL面试题集锦</h4>
       </a>
     </div>
   
@@ -451,7 +447,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/09/28/heapq/&title=《翻译 - heapq — Heap queue algorithm》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/10/21/ming_dynasty/&title=《大明王朝》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -461,22 +457,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/09/28/heapq/&title=《翻译 - heapq — Heap queue algorithm》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/10/21/ming_dynasty/&title=《大明王朝》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/09/28/heapq/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/10/21/ming_dynasty/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 - heapq — Heap queue algorithm》 — SkyRover&url=http://skyrover.me/2017/09/28/heapq/&via=http://skyrover.me" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大明王朝》 — SkyRover&url=http://skyrover.me/2017/10/21/ming_dynasty/&via=http://skyrover.me" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/09/28/heapq/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/10/21/ming_dynasty/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -487,7 +483,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxklEQVR42u3ay27CQBAEQP//TztSTkjEpmf2gSPVnlAAu5xDa7eH44jX+buu/v767vvrq89cXXPCwsXFHeaet+seseIBrj6Di4u7n3sfXnMD6/5qH2y4uLgP495/K4cm18fFxf0v3DyY8m/h4uI+mZscfvI46x2QJp/VcHFxB7jVwnTF64X9Li4ubpF7Flc+Vsm3NYW74+LibuHmlUdvM5QXK/k/BRcXdyc3v3Gv8uiNaaOzGi4u7lRuMjrNH2zdwPWPHRkuLu5ibjX55v7oKi9VcXFxn8DtDUiqxWthfIuLi/slbnXU2vwJRYuOi4u7nztypKmWqr0QxMXF3c+tjlVGapRqgfJhi4OLi7uMWy4pxrcs8aAFFxd3PzfZ1uSxlT9AckdcXNz93GoZmgdfHoVJOOLi4u7kVgeivZHJyEgGFxf3W9wjXsmWpVevFIIMFxd3CzdfSTAl4ZiHWuFmuLi4k7gjETZemOYlS/lhcHFxh7m9A0+VMi3gcHFxN3IL9UQcW+NHoMt+FxcX9zHcucOSfOzaDDJcXNzt3F5RkoQjLi7uc7i9S/c2Q9UqpFmL4OLiDnCrhWl+mOkdhHo/+MDFxZ3E/QE3gmzDBZZZBAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3ay26DMBBA0fz/T1Opq0qpzZ0HbRiuV6hJwYfFZB5+vfA6vtfP6/e1+v77f63uv/9Ow5IhQ8ZtGcd27Rn7Ta8+3W+dvLJf7ilDhowHMEiQJZveb5fcmb8CGTJkyCAP4JurX8uQIUNGJeDyu/FSVoYMGTJyRWxXVy9XMLfV4jJkyLghIzcY+Pt08JL5hgwZMj6ecRQWTw35fZI7kSFDxmgGOQZBSk3SnouOAXhBK0OGjCcwyINJccuTy66m3klFLkOGjBGM3OCQHwLjbbWGICtDhoyhjGho42PI3F9KaaIMGTJGM3JjRbJFfs0DcXIeK0OGjNsyeGFJGvr7B5PYmIPJkCHjOYx6W40H39yQYImXIUPGaEYlvYu2+3kYTT5XhgwZoxnRoxLk02iiGR2CntTiMmTIGMTgYZE/km8oGpSXIViGDBmPYZBitVKIRqk8iMuQIWM2o/cgF08o+cAgENZlyJDxAEauNZ87qNE1JJAhQ8bTGLkt9papfORwMsKUIUPGaEZXgdp1mCzwEmXIkPEARi4p7DoWRgL3yfdlyJAxmsEb8dHmGn8p0VFBoC6XIUPGzRlHcFXeViVBPAnZMmTIGM3gqx40+cGOepIqQ4aMeQwSZFFeGWzrRwvXQC0uQ4aMoYyuJC88egwG/SVMhgwZMnDg45jcOHO5BxkyZMgoHJ64oiQupYYyZMi4LYMEOALrOhYWbv3LkCFjNOOKoMybbh/92yJDhoz/Z3wBziJLqSTsZBIAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
