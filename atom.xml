@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-10-21T06:10:48.000Z</updated>
+  <updated>2017-10-21T07:59:42.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,82 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python的decorator模块</title>
+    <link href="http://skyrover.me/2017/10/21/python_decorator/"/>
+    <id>http://skyrover.me/2017/10/21/python_decorator/</id>
+    <published>2017-10-21T07:59:35.000Z</published>
+    <updated>2017-10-21T07:59:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在httpbin源代码中遇到这么一个路由：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/gzip&apos;)</div><div class="line">@filters.gzip</div><div class="line">def view_gzip_encoded_content():</div><div class="line">    &quot;&quot;&quot;Returns GZip-Encoded Data.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    return jsonify(get_dict(</div><div class="line">        &apos;origin&apos;, &apos;headers&apos;, method=request.method, gzipped=True))</div></pre></td></tr></table></figure>
+<p>其中gzip是这么实现的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">@decorator</div><div class="line">def gzip(f, *args, **kwargs):</div><div class="line">    &quot;&quot;&quot;GZip Flask Response Decorator.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    data = f(*args, **kwargs)</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        content = data.data</div><div class="line">    else:</div><div class="line">        content = data</div><div class="line"></div><div class="line">    gzip_buffer = BytesIO()</div><div class="line">    gzip_file = gzip2.GzipFile(</div><div class="line">        mode=&apos;wb&apos;,</div><div class="line">        compresslevel=4,</div><div class="line">        fileobj=gzip_buffer</div><div class="line">    )</div><div class="line">    gzip_file.write(content)</div><div class="line">    gzip_file.close()</div><div class="line"></div><div class="line">    gzip_data = gzip_buffer.getvalue()</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        data.data = gzip_data</div><div class="line">        data.headers[&apos;Content-Encoding&apos;] = &apos;gzip&apos;</div><div class="line">        data.headers[&apos;Content-Length&apos;] = str(len(data.data))</div><div class="line"></div><div class="line">        return data</div><div class="line"></div><div class="line">    return gzip_data</div></pre></td></tr></table></figure>
+<p>从这个函数来看，gzip函数做的工作就是将路由函数执行一遍，取的结果后，将回应压缩，然后再返回发送响应。然后gzip函数是作为装饰器使用的。那么上面那个decorator装饰器做了什么工作呢，可以看出gzip目前的功能和普通的装饰器函数中内层函数功能基本上是一致的，所以调用这个<code>view_gzip_encoded_content</code>这个视图函数就相当于调用gzip函数。</p>
+<p>那么decorator到底做了什么呢，怎么做的呢？在这里详细拆解一番。</p>
+<p>以下内容部分翻译自<a href="http://decorator.readthedocs.io/en/stable/tests.documentation.html" target="_blank" rel="external">decorator document</a></p>
+<p>文档上说，如果你想以在Python版本中以一致性的方式保存被装饰函数的签名，这是你最好的选择。</p>
+<h1 id="装饰器的用处"><a href="#装饰器的用处" class="headerlink" title="装饰器的用处"></a>装饰器的用处</h1><p>Python中的装饰器是一个为什么语法糖很重要的有趣的例子。装饰器做到了以下的事情：</p>
+<ul>
+<li>装饰器减少了样板代码</li>
+<li>装饰器帮助分离关注点(模块化开发就起到了分离关注点的作用)</li>
+<li>装饰器增强了可读性和可维护性</li>
+<li>装饰器很明显</li>
+</ul>
+<p>但是经典的装饰器实现需要嵌套函数，但是我们知道扁平是比嵌套要好得多。</p>
+<p>所以<code>decorator</code>模块的目标是简化装饰器的使用，当然对于所有的技术，都有可能被滥用，你不应该在解决任何问题的时候都试图使用装饰器，虽然你可以这么做。</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>一般来说，任何可以被以一个参数调用的Python对象都可以被用作装饰器。然而，这种定义太大以至于没太多用。将装饰器这个一般的类分成两种子类会更加方便：</p>
+<ul>
+<li><p>保留签名的装饰器</p>
+<p>  接受一个函数作为参数的可调用对象会返回一个函数作为输出，并且有相同的签名</p>
+</li>
+<li><p>改变签名的装饰器</p>
+<p>  装饰器会改变给它们输入的函数的签名，或者装饰器会返回一个非调用对象</p>
+</li>
+</ul>
+<p>签名改变的装饰器有它们自己的用处：比如，内置的<code>staticmethod</code>和<code>classmethod</code>就是这种，它们接受函数然后返回描述符对象，既不是函数，也不是可调用对象。</p>
+<p>当然，保留签名的装饰器更加普遍，更加容易去实现。特别的，它们可以组合在一起，但是其他装饰器一般不可以。</p>
+<p>直接写一个保留签名的装饰器并不是那么显而易见，比如想定义一个合适的装饰器，接受有任意签名的函数作为输入。一个简单的例子将会澄清这个问题。</p>
+<h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>一个装饰器通常的使用例子是将一个函数进行缓存。一个<code>memorize</code>装饰器通过将函数的返回结果存储在字典中起到缓存的作用。</p>
+<p>这里有很多<code>memorize</code>的实现例子，但是它们都不保留签名。在最近的Python版本中你可以找到一个复杂的<code>lru_cache</code>装饰器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def memoize_uw(func):</div><div class="line">    func.cache = &#123;&#125;</div><div class="line"></div><div class="line">    def memoize(*args, **kw):</div><div class="line">        if kw:  # frozenset is used to ensure hashability</div><div class="line">            key = args, frozenset(kw.items())</div><div class="line">        else:</div><div class="line">            key = args</div><div class="line">        if key not in func.cache:</div><div class="line">            func.cache[key] = func(*args, **kw)</div><div class="line">        return func.cache[key]</div><div class="line">    return functools.update_wrapper(memoize, func)</div></pre></td></tr></table></figure>
+<p>这里使用了<code>functools.update_wrapper</code>，这样你就不用从原来函数复制<code>__name__</code>, <code>__doc__</code>, <code>__module__</code>和<code>__dict__</code>等属性了，等同于调用<code>functools.wraps(func)</code>装饰器</p>
+<p>这是一个使用例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@memoize_uw</div><div class="line">def f1(x):</div><div class="line">    &quot;Simulate some long computation&quot;</div><div class="line">    time.sleep(1)</div><div class="line">    return x</div></pre></td></tr></table></figure>
+<p>但是这个不是一个保留签名的装饰器，因为<code>memoize_uw</code>返回了一个和原始函数签名不同的函数。原先的函数只有一个参数x，但是装饰后的函数可以获得任意个参数和关键字参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from decorator import getargspec  # akin to inspect.getargspec</div><div class="line">&gt;&gt;&gt; print(getargspec(f1))</div><div class="line">ArgSpec(args=[], varargs=&apos;args&apos;, varkw=&apos;kw&apos;, defaults=None)</div></pre></td></tr></table></figure>
+<p>这就意味着内省工具，比如<code>pydoc</code>会提供关于f1签名的错误信息-除非你是用Python3.5。这样会非常不好，<code>pydoc</code>说你可以接收一般的签名<code>*args, **kw</code>，但是这样调用就会出错。因为它真的只接收一个参数。</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>解决方式就是提供一个一般的生成器工厂，其隐藏了生成一个保留签名的装饰器的复杂性。<code>decorator</code>函数在<code>decorator</code>模块就是这样一个工厂函数<code>from decorator import decorate</code></p>
+<p><code>decorator</code>接受两个参数</p>
+<ul>
+<li>一个函数描述了装饰器的功能的调用者</li>
+<li>被装饰的函数</li>
+</ul>
+<p>调用者必须有<code>(f, *args, **kw)</code>这样的签名，而且它必须使用<code>args</code>和<code>kw</code>来调用原始函数<code>f</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def _memoize(func, *args, **kw):</div><div class="line">    if kw:  # frozenset is used to ensure hashability</div><div class="line">        key = args, frozenset(kw.items())</div><div class="line">    else:</div><div class="line">        key = args</div><div class="line">    cache = func.cache  # attribute added by memoize</div><div class="line">    if key not in cache:</div><div class="line">        cache[key] = func(*args, **kw)</div><div class="line">    return cache[key]</div></pre></td></tr></table></figure>
+<p>这样你就可以像下面这样定义你的装饰器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def memoize(f):</div><div class="line">    f.cache = &#123;&#125;</div><div class="line">    return decorate(f, _memoize)</div></pre></td></tr></table></figure>
+<p>和嵌套函数的方式不同的地方在于decorator模块强制让你将内层函数放在了上一层。而且，你也必须明确的传递你想装饰的函数，没有闭包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; @memoize</div><div class="line">... def heavy_computation():</div><div class="line">...     time.sleep(2)</div><div class="line">...     return &quot;done&quot;</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the first time it will take 2 seconds</div><div class="line">done</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the second time it will be instantaneous</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>这样函数的签名是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; print(getargspec(heavy_computation))</div><div class="line">ArgSpec(args=[], varargs=None, varkw=None, defaults=None)</div></pre></td></tr></table></figure>
+<p>所以一开始那个例子，就是这样的，先由<code>decorator</code>装饰了gzip，那么<code>def decorator(caller, _func=None)</code>中的caller就是gzip，在<code>decorator</code>中最后返回了<code>FunctionMaker.create</code>创建的一个对象，这个就是<code>gzip</code>的真正面目(在这个过程中，就处理了签名以及装饰器等问题)，然后再由<code>gzip</code>去装饰视图函数，那么视图函数执行后的结果就会在gzip中处理，然后返回。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在httpbin源代码中遇到这么一个路由：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>大明王朝</title>
@@ -74,6 +150,40 @@
     
     
       <category term="明朝" scheme="http://skyrover.me/tags/%E6%98%8E%E6%9C%9D/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>httpbin中的奇技淫巧</title>
+    <link href="http://skyrover.me/2017/10/20/httpbin%E4%B8%AD%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/"/>
+    <id>http://skyrover.me/2017/10/20/httpbin中的奇技淫巧/</id>
+    <published>2017-10-20T03:31:18.000Z</published>
+    <updated>2017-10-21T06:45:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
+<p>它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">d = MultiDict([(&apos;a&apos;, &apos;b&apos;), (&apos;a&apos;, &apos;c&apos;)])</div><div class="line">d.getlist(&apos;a&apos;)</div><div class="line"># [&apos;b&apos;, &apos;c&apos;]</div><div class="line">&apos;a&apos; in d</div><div class="line"># True</div><div class="line">d[&apos;a&apos;]</div><div class="line"># &apos;b&apos;</div></pre></td></tr></table></figure>
+<p>KeyError也是BadRequest的子类，因此当被捕获的时候会渲染<code>400 BAD REQUEST</code>。</p>
+<p>所以说白了，就是一个key对应了一个list，然后一般返回的只是key和list[0]，然后实现了一系列的方法。</p>
+<h1 id="CaseInsensitiveDict"><a href="#CaseInsensitiveDict" class="headerlink" title="CaseInsensitiveDict"></a><code>CaseInsensitiveDict</code></h1><p>比如<code>headers[&#39;content-encoding&#39;]</code>将会被返回<code>headers[&#39;Content-Encoding&#39;]</code>的值。实现也很简单，就是读取的时候将键都转换成小写就行了。源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class CaseInsensitiveDict(dict):</div><div class="line">    def _lower_keys(self):</div><div class="line">        # 将字典的key都转换成小写</div><div class="line">        return [k.lower() for k in self.keys()]</div><div class="line"></div><div class="line">    def __contains__(self, key):</div><div class="line">        # 判断某个key(转换成小写)是否存在于字典中(key都转换成小写)</div><div class="line">        return key.lower() in self._lower_keys()</div><div class="line"></div><div class="line">    def __getitem__(self, key):</div><div class="line">        # 这里有个问题就是key如果是None，这里就会报错，所以应该</div><div class="line">        # if key is None:</div><div class="line">        #     return</div><div class="line"></div><div class="line">        if key in self:</div><div class="line">            # 先找到目标key在keys中的位置，然后取出来一个元组，第二个值就是value</div><div class="line">            return list(self.items())[self._lower_keys().index(key.lower())][1]</div></pre></td></tr></table></figure>
+<p>这里涉及到一个知识点，就是Python字典中的<code>keys()</code>, <code>values()</code>和<code>items()</code>方法返回的是view对象。它基于字典的实体提供了动态的view，意味着当字典改变的时候，view会表现这个改变。</p>
+<p>字典views会被迭代并且生成它们各自的数据，并且支持成员测试。</p>
+<p>keys和values会被以任意的顺序迭代，但是这个顺序不是随机的，而是基于不同的Python实现而不同，并且基于字典的插入和删除历史。如果keys，values和items views迭代过程中没有改变字典的话，它们之间的顺序将是一致的。因此可以使用<code>pair = zip(d.values(), d.keys())</code>，另外一种创建相同的列表的方法是<code>pair = [(v, k) for (k, v) in d.items()]</code></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;MultiDict&quot;&gt;&lt;a href=&quot;#MultiDict&quot; class=&quot;headerlink&quot; title=&quot;MultiDict&quot;&gt;&lt;/a&gt;&lt;code&gt;MultiDict&lt;/code&gt;&lt;/h1&gt;&lt;p&gt;&lt;code&gt;MultiDict&lt;/code&gt;是字典的一个子
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
   </entry>
   

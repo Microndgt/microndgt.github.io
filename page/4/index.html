@@ -165,6 +165,102 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-翻译 - Testing (asyncio) coroutines with pytest"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-08-16 10:14:27 10:14:27" datetime="2017-08-16T02:14:27.000Z"  itemprop="datePublished">2017-08-16 10:14:27</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/">翻译 - Testing (asyncio) coroutines with pytest</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        写的aiossdb库，需要对协程进行测试，但是pytest会默认将定义的函数就当成普通函数来测试，当然可以在一个测试函数里面定义要测试的部分，但是比较麻烦吧，每次都得写loop之类。这篇文章介绍了一种使用pytest对协程进行测试的优雅方法。
+翻译自：Testing (asyncio) coroutines with pytest
+pytest是一个非常棒的Python测试库，并且也是我最喜...
+    
+
+        <a href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytest/">pytest</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/协程/">协程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Celery 踩坑记"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017-08-13 16:47:05 16:47:05" datetime="2017-08-13T08:47:05.000Z"  itemprop="datePublished">2017-08-13 16:47:05</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/08/13/Celery 踩坑记/">Celery 踩坑记</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。
+使用RabbitMQ而不是Redis做Broker这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。
+另外，使用RabbitMQ的时候，...
+    
+
+        <a href="/2017/08/13/Celery 踩坑记/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Celery/">Celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-contextlib 详解"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -560,109 +656,12 @@ web应用，需要较长时间完成的任务，就可以作为任务交给celer
 
         </li>
     
-        <li class="post-list-item fade">
-            <article id="post-LRUCache在Python中的实现"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-07-13 10:12:39 10:12:39" datetime="2017-07-13T02:12:39.000Z"  itemprop="datePublished">2017-07-13 10:12:39</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/07/13/LRUCache在Python中的实现/">LRU Cache在Python中的实现</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        LRU Cache在Python中的实现
-LRU Cache - Least Recently Used Cache 最近最久未使用缓存
-今天问了同事一个问题，LRU Cache系统如何实现，同事答使用时间戳。那么使用时间戳的话，他可能的想法是在Python里的字典中实现，这样通过判断时间戳的迟早来实现LRU。
-首先缓存，比如对于一个这样的函数,task(arg1, arg2)，缓存主要是缓...
-    
-
-        <a href="/2017/07/13/LRUCache在Python中的实现/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-贪心算法"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-05-25 18:38:55 18:38:55" datetime="2017-05-25T10:38:55.000Z"  itemprop="datePublished">2017-05-25 18:38:55</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/05/25/贪心算法/">贪心算法</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        贪心算法是一种短视的算法，所做的每个选择都是独立的，并且是在当时环境下所能采取的最佳决策。
-贪心算法由一系列选择组成，贪心体现在每一个基于当时信息所做的选择中，在不考虑整体或者将来的情况，做出最好的选择。但是必须确保每个选择的安全。主要在于如何确保这种安全性。贪心算法的问题解决方案都是逐步形成的，可以先分别取得一组方案片段，然后将其合并成最终的解决方案。
-总体来讲，过程如下：首先形成局部解决...
-    
-
-        <a href="/2017/05/25/贪心算法/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
     </ul>
 
     
 <nav id="page-nav">
     <div class="inner">
-    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
     </div>
 </nav>
 
