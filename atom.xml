@@ -158,9 +158,10 @@
     <link href="http://skyrover.me/2017/10/20/httpbin%E4%B8%AD%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/"/>
     <id>http://skyrover.me/2017/10/20/httpbin中的奇技淫巧/</id>
     <published>2017-10-20T03:31:18.000Z</published>
-    <updated>2017-10-21T06:45:59.000Z</updated>
+    <updated>2017-10-24T06:34:38.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
+    <content type="html"><![CDATA[<p>kennethreitz大神写的，<a href="https://github.com/kennethreitz/httpbin" target="_blank" rel="external">项目地址</a></p>
+<h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
 <p>它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">d = MultiDict([(&apos;a&apos;, &apos;b&apos;), (&apos;a&apos;, &apos;c&apos;)])</div><div class="line">d.getlist(&apos;a&apos;)</div><div class="line"># [&apos;b&apos;, &apos;c&apos;]</div><div class="line">&apos;a&apos; in d</div><div class="line"># True</div><div class="line">d[&apos;a&apos;]</div><div class="line"># &apos;b&apos;</div></pre></td></tr></table></figure>
 <p>KeyError也是BadRequest的子类，因此当被捕获的时候会渲染<code>400 BAD REQUEST</code>。</p>
@@ -174,7 +175,8 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;MultiDict&quot;&gt;&lt;a href=&quot;#MultiDict&quot; class=&quot;headerlink&quot; title=&quot;MultiDict&quot;&gt;&lt;/a&gt;&lt;code&gt;MultiDict&lt;/code&gt;&lt;/h1&gt;&lt;p&gt;&lt;code&gt;MultiDict&lt;/code&gt;是字典的一个子
+      &lt;p&gt;kennethreitz大神写的，&lt;a href=&quot;https://github.com/kennethreitz/httpbin&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;项目地址&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;MultiDict&quot;&gt;&lt;a href
     
     </summary>
     

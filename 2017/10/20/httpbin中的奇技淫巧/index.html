@@ -20,18 +20,18 @@
     
     
     <meta name="keywords" content="Python,Flask">
-    <meta name="description" content="MultiDictMultiDict是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。 它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。 1234567d">
+    <meta name="description" content="kennethreitz大神写的，项目地址 MultiDictMultiDict是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。 它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使">
 <meta name="keywords" content="Python,Flask">
 <meta property="og:type" content="article">
 <meta property="og:title" content="httpbin中的奇技淫巧">
 <meta property="og:url" content="http://skyrover.me/2017/10/20/httpbin中的奇技淫巧/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="MultiDictMultiDict是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。 它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。 1234567d">
+<meta property="og:description" content="kennethreitz大神写的，项目地址 MultiDictMultiDict是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。 它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-10-21T06:45:59.000Z">
+<meta property="og:updated_time" content="2017-10-24T06:34:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="httpbin中的奇技淫巧">
-<meta name="twitter:description" content="MultiDictMultiDict是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。 它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。 1234567d">
+<meta name="twitter:description" content="kennethreitz大神写的，项目地址 MultiDictMultiDict是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。 它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
@@ -202,7 +202,8 @@
             
             
             
-            <h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
+            <p>kennethreitz大神写的，<a href="https://github.com/kennethreitz/httpbin" target="_blank" rel="external">项目地址</a></p>
+<h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
 <p>它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">d = MultiDict([(&apos;a&apos;, &apos;b&apos;), (&apos;a&apos;, &apos;c&apos;)])</div><div class="line">d.getlist(&apos;a&apos;)</div><div class="line"># [&apos;b&apos;, &apos;c&apos;]</div><div class="line">&apos;a&apos; in d</div><div class="line"># True</div><div class="line">d[&apos;a&apos;]</div><div class="line"># &apos;b&apos;</div></pre></td></tr></table></figure>
 <p>KeyError也是BadRequest的子类，因此当被捕获的时候会渲染<code>400 BAD REQUEST</code>。</p>
