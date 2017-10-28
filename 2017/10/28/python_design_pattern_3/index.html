@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>用Python实现设计模式 - 行为型 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,设计模式">
+    <meta name="description" content="责任链模式责任链模式用于让多个对象来处理单个请求时，或者用于预先不知道应该由哪个对象来处理某个特定请求时候：  一开始将请求发送给链中的第一个对象 对象决定是否处理该请求 对象将请求转发给下一个对象 重复该过程，直到到达链尾  java的servlet过滤器是在一个HTTP请求到达目标处理程序之前的一些代码片段。有一个过滤器链，其中每个过滤器执行一个不同动作(用户身份验证，日志等)，并且将请求转发">
+<meta name="keywords" content="Python,设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Python实现设计模式 - 行为型">
+<meta property="og:url" content="http://skyrover.me/2017/10/28/python_design_pattern_3/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="责任链模式责任链模式用于让多个对象来处理单个请求时，或者用于预先不知道应该由哪个对象来处理某个特定请求时候：  一开始将请求发送给链中的第一个对象 对象决定是否处理该请求 对象将请求转发给下一个对象 重复该过程，直到到达链尾  java的servlet过滤器是在一个HTTP请求到达目标处理程序之前的一些代码片段。有一个过滤器链，其中每个过滤器执行一个不同动作(用户身份验证，日志等)，并且将请求转发">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-10-28T04:13:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Python实现设计模式 - 行为型">
+<meta name="twitter:description" content="责任链模式责任链模式用于让多个对象来处理单个请求时，或者用于预先不知道应该由哪个对象来处理某个特定请求时候：  一开始将请求发送给链中的第一个对象 对象决定是否处理该请求 对象将请求转发给下一个对象 重复该过程，直到到达链尾  java的servlet过滤器是在一个HTTP请求到达目标处理程序之前的一些代码片段。有一个过滤器链，其中每个过滤器执行一个不同动作(用户身份验证，日志等)，并且将请求转发">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">用Python实现设计模式 - 行为型</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">用Python实现设计模式 - 行为型</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-10-28T04:13:18.000Z" itemprop="datePublished" class="page-time">
+  2017-10-28 12:13:18
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#责任链模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">责任链模式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#命令模式"><span class="post-toc-number">2.</span> <span class="post-toc-text">命令模式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#观察者模式"><span class="post-toc-number">3.</span> <span class="post-toc-text">观察者模式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#状态模式"><span class="post-toc-number">4.</span> <span class="post-toc-text">状态模式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#策略模式"><span class="post-toc-number">5.</span> <span class="post-toc-text">策略模式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模板模式"><span class="post-toc-number">6.</span> <span class="post-toc-text">模板模式</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-python_design_pattern_3"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">用Python实现设计模式 - 行为型</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-10-28 12:13:18 12:13:18" datetime="2017-10-28T04:13:18.000Z"  itemprop="datePublished">2017-10-28 12:13:18</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <h1 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h1><p>责任链模式用于让多个对象来处理单个请求时，或者用于预先不知道应该由哪个对象来处理某个特定请求时候：</p>
+<ul>
+<li>一开始将请求发送给链中的第一个对象</li>
+<li>对象决定是否处理该请求</li>
+<li>对象将请求转发给下一个对象</li>
+<li>重复该过程，直到到达链尾</li>
+</ul>
+<p>java的servlet过滤器是在一个HTTP请求到达目标处理程序之前的一些代码片段。有一个过滤器链，其中每个过滤器执行一个不同动作(用户身份验证，日志等)，并且将请求转发给下一个过滤器直到链结束。如果发生错误就跳出处理流程。</p>
+<p>这一模式的价值在于解耦，客户端与所有处理程序之间不再是多对多的关系，客户端只需要知道如何与链的起始节点进行通信。松耦合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">class Event:</div><div class="line">    def __init__(self, name):</div><div class="line">        self.name = name</div><div class="line"></div><div class="line">    def __str__(self):</div><div class="line">        return self.name</div><div class="line"></div><div class="line"></div><div class="line">class Widget:</div><div class="line"></div><div class="line">    &quot;&quot;&quot;Docstring for Widget. &quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, parent=None):</div><div class="line">        self.parent = parent</div><div class="line"></div><div class="line">    def handle(self, event):</div><div class="line">        handler = &apos;handle_&#123;&#125;&apos;.format(event)</div><div class="line">        if hasattr(self, handler):</div><div class="line">            method = getattr(self, handler)</div><div class="line">            method(event)</div><div class="line">        elif self.parent:</div><div class="line">            self.parent.handle(event)</div><div class="line">        elif hasattr(self, &apos;handle_default&apos;):</div><div class="line">            self.handle_default(event)</div><div class="line"></div><div class="line"></div><div class="line">class MainWindow(Widget):</div><div class="line">    def handle_close(self, event):</div><div class="line">        print(&apos;MainWindow: &#123;&#125;&apos;.format(event))</div><div class="line"></div><div class="line">    def handle_default(self, event):</div><div class="line">        print(&apos;MainWindow: Default &#123;&#125;&apos;.format(event))</div><div class="line"></div><div class="line"></div><div class="line">class SendDialog(Widget):</div><div class="line">    def handle_paint(self, event):</div><div class="line">        print(&apos;SendDialog: &#123;&#125;&apos;.format(event))</div><div class="line"></div><div class="line"></div><div class="line">class MsgText(Widget):</div><div class="line">    def handle_down(self, event):</div><div class="line">        print(&apos;MsgText: &#123;&#125;&apos;.format(event))</div><div class="line"></div><div class="line"></div><div class="line">def main():</div><div class="line">    mw = MainWindow()</div><div class="line">    sd = SendDialog(mw)    # parent是mw</div><div class="line">    msg = MsgText(sd)</div><div class="line"></div><div class="line">    for e in (&apos;down&apos;, &apos;paint&apos;, &apos;unhandled&apos;, &apos;close&apos;):</div><div class="line">        evt = Event(e)</div><div class="line">        print(&apos;\nSending event -&#123;&#125;- to MainWindow&apos;.format(evt))</div><div class="line">        mw.handle(evt)</div><div class="line">        print(&apos;Sending event -&#123;&#125;- to SendDialog&apos;.format(evt))</div><div class="line">        sd.handle(evt)</div><div class="line">        print(&apos;Sending event -&#123;&#125;- to MsgText&apos;.format(evt))</div><div class="line">        msg.handle(evt)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<h1 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h1><p>命令设计模式使得将一个操作(撤销，重做，复制，粘贴)封装成一个对象。意味着创建一个类，包含实现这个操作所需要的所有逻辑和方法。这样调用命令的对象与知道如何执行命令的对象解耦。撤销操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">import os</div><div class="line"></div><div class="line">class RenameFile:</div><div class="line"></div><div class="line">    def __init__(self, path_src, path_dest):</div><div class="line">        &quot;&quot;&quot; 在init里保存一些必要信息，比如undo需要的老的和新的文件名 &quot;&quot;&quot;</div><div class="line">        self.src, self.dest = path_src, path_dest</div><div class="line"></div><div class="line">    def execute(self, verbose=False):</div><div class="line">        if verbose:</div><div class="line">            print(&quot;[renaming &apos;&#123;&#125;&apos; to &apos;&#123;&#125;&apos;]&quot;.format(self.src, self.dest))</div><div class="line">        os.rename(self.src, self.dest)</div><div class="line"></div><div class="line">    def undo(self, verbose=False):</div><div class="line">        if verbose:</div><div class="line">            print(&quot;[renaming &apos;&#123;&#125;&apos; back to &apos;&#123;&#125;&apos;]&quot;.format(self.dest, self.src))</div><div class="line">        os.rename(self.dest, self.src)</div><div class="line"></div><div class="line"></div><div class="line">def delete_file(path, verbose=False):</div><div class="line">    if verbose:</div><div class="line">        print(&quot;deleting file &apos;&#123;&#125;&quot;.format(path))</div><div class="line">    os.remove(path)</div><div class="line"></div><div class="line"></div><div class="line">class CreateFile:</div><div class="line">    def __init__(self, path, txt=&apos;hello world\n&apos;):</div><div class="line">        self.path, self.txt = path, txt</div><div class="line"></div><div class="line">    def execute(self, verbose=False):</div><div class="line">        if verbose:</div><div class="line">            print(&quot;[creating file &apos;&#123;&#125;&apos;]&quot;.format(self.path))</div><div class="line">        with open(self.path, mode=&apos;w&apos;, encoding=&apos;utf-8&apos;) as out_file:</div><div class="line">            out_file.write(self.txt)</div><div class="line"></div><div class="line">    def undo(self):</div><div class="line">        delete_file(self.path)</div><div class="line"></div><div class="line"></div><div class="line">class ReadFile:</div><div class="line">    def __init__(self, path):</div><div class="line">        self.path = path</div><div class="line"></div><div class="line">    def execute(self, verbose=False):</div><div class="line">        if verbose:</div><div class="line">            print(&quot;[reading file &apos;&#123;&#125;&apos;]&quot;.format(self.path))</div><div class="line">        with open(self.path, mode=&apos;r&apos;, encoding=&apos;utf-8&apos;) as in_file:</div><div class="line">            print(in_file.read(), end=&apos;&apos;)</div><div class="line"></div><div class="line"></div><div class="line">def main():</div><div class="line">    orig_name, new_name = &apos;file1&apos;, &apos;file2&apos;</div><div class="line">    commands = []</div><div class="line">    for cmd in CreateFile(orig_name), ReadFile(orig_name), RenameFile(orig_name, new_name):</div><div class="line">        commands.append(cmd)</div><div class="line">    [c.execute() for c in commands]</div><div class="line"></div><div class="line">    answer = input(&apos;reverse the executed commands? [y/n] &apos;)</div><div class="line">    if answer not in &apos;yY&apos;:</div><div class="line">        print(&quot;the result is &#123;&#125;&quot;.format(new_name))</div><div class="line">        exit()</div><div class="line">    for c in reversed(commands):</div><div class="line">        try:</div><div class="line">            c.undo()   # 执行undo</div><div class="line">        except AttributeError:</div><div class="line">            pass</div><div class="line"></div><div class="line">main()</div></pre></td></tr></table></figure>
+<p>使用命令模式可以将一个操作封装成一个对象，这样：</p>
+<ul>
+<li>可以在任何时候执行一个命令，而并不一定是命令创建时候</li>
+<li>执行一个命令的客户端代码并不需要知道命令的任何实现细节</li>
+<li>可以对命令进行分组，并按照一定顺序执行</li>
+</ul>
+<p>有助于实现事务，可以将多个命令组合成事务，这样一个失败了，所有操作都回滚撤销，这样就是一个事务。</p>
+<h1 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h1><p>观察者模式描述单个对象(发布者)与一个或者多个对象(订阅者)之间的发布-订阅关系。MVC中，发布者是模型，订阅者时视图。信息聚合订阅RSS也是。也是一种关注点分离的思想，降低发布者与订阅者之间的耦合度。</p>
+<p>RabbitMQ可以为应用添加异步消息支持，这样就可以在Python应用者实现发布-订阅模式，也就是观察者设计模式。</p>
+<p>事件驱动系统是另一个可以使用观察者模式的例子，监听者监听特定事件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">class Publisher:</div><div class="line">    def __init__(self):</div><div class="line">        self.observers = []</div><div class="line"></div><div class="line">    def add(self, observer):</div><div class="line">        if observer not in self.observers:</div><div class="line">            self.observers.append(observer)</div><div class="line">        else:</div><div class="line">            print(&apos;Failed to add : &#123;&#125;&apos;).format(observer)</div><div class="line"></div><div class="line">    def remove(self, observer):</div><div class="line">        try:</div><div class="line">            self.observers.remove(observer)</div><div class="line">        except ValueError:</div><div class="line">            print(&apos;Failed to remove : &#123;&#125;&apos;).format(observer)</div><div class="line"></div><div class="line">    def notify(self):</div><div class="line">        [o.notify_by(self) for o in self.observers]</div><div class="line"></div><div class="line"></div><div class="line">class DefaultFormatter(Publisher):</div><div class="line">    def __init__(self, name):</div><div class="line">        super().__init__()</div><div class="line">        self.name = name</div><div class="line">        self._data = 0</div><div class="line"></div><div class="line">    def __str__(self):</div><div class="line">        return &quot;&#123;&#125;: &apos;&#123;&#125;&apos; has data = &#123;&#125;&quot;.format(</div><div class="line">            type(self).__name__, self.name, self._data)</div><div class="line"></div><div class="line">    @property</div><div class="line">    def data(self):</div><div class="line">        return self._data</div><div class="line"></div><div class="line">    @data.setter</div><div class="line">    def data(self, new_value):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        设置data的时候就是发布数据，然后会通知所有订阅者</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        try:</div><div class="line">            self._data = int(new_value)</div><div class="line">        except ValueError as e:</div><div class="line">            print(&apos;Error: &#123;&#125;&apos;.format(e))</div><div class="line">        else:</div><div class="line">            self.notify()    # data 在被合法赋值以后会执行notify</div><div class="line"></div><div class="line"></div><div class="line">class HexFormatter:</div><div class="line">    &quot;&quot;&quot; 订阅者 &quot;&quot;&quot;</div><div class="line">    def notify_by(self, publisher):</div><div class="line">        print(&quot;&#123;&#125;: &apos;&#123;&#125;&apos; has now hex data = &#123;&#125;&quot;.format(</div><div class="line">            type(self).__name__, publisher.name, hex(publisher.data)))</div><div class="line"></div><div class="line"></div><div class="line">class BinaryFormatter:</div><div class="line">    &quot;&quot;&quot; 订阅者 &quot;&quot;&quot;</div><div class="line">    def notify_by(self, publisher):</div><div class="line">        print(&quot;&#123;&#125;: &apos;&#123;&#125;&apos; has now bin data = &#123;&#125;&quot;.format(</div><div class="line">            type(self).__name__, publisher.name, bin(publisher.data)))</div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    df = DefaultFormatter(&apos;test1&apos;)</div><div class="line">    print(df)</div><div class="line">    print()</div><div class="line">    hf = HexFormatter()</div><div class="line">    df.add(hf)</div><div class="line">    df.data = 3</div><div class="line">    print(df)</div><div class="line"></div><div class="line">    print()</div><div class="line">    bf = BinaryFormatter()</div><div class="line">    df.add(bf)</div><div class="line">    df.data = 21</div><div class="line">    print(df)</div></pre></td></tr></table></figure>
+<h1 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h1><p>面向对象编程着力于在对象交互时候改变它们的状态。有限状态机是一个有用的状态转换建模工具。状态模式就是应用到一个特定软件工程问题的状态机。</p>
+<p>事件驱动系统也是一个例子，在一个事件驱动系统中，从一个状态转换到另一个状态会触发一个事件。状态设计模式解决的是一定上下文中无限数量状态的完全封装，从而实现更好的可维护性和灵活性。</p>
+<p><code>state_machine</code>库在建立状态机方面非常好用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line"># 先装下pip3 install state_machine</div><div class="line">from state_machine import (</div><div class="line">    acts_as_state_machine, State, Event, before, after, InvalidStateTransition</div><div class="line">)</div><div class="line"></div><div class="line"></div><div class="line">@acts_as_state_machine</div><div class="line">class Process:</div><div class="line">    # 先来定义状态机的状态 states</div><div class="line">    created = State(initial=True)    # 初始状态</div><div class="line">    waiting = State()</div><div class="line">    running = State()</div><div class="line">    terminated = State()</div><div class="line">    blocked = State()</div><div class="line">    swapped_out_waiting = State()</div><div class="line">    swapped_out_blocked = State()</div><div class="line"></div><div class="line">    # 再定义状态机的转移 transitions</div><div class="line">    wait = Event(from_states=(created, running, blocked,</div><div class="line">                            swapped_out_waiting), to_state=waiting)</div><div class="line">    run = Event(from_states=waiting, to_state=running)</div><div class="line">    terminate = Event(from_states=running, to_state=terminated)</div><div class="line">    block = Event(from_states=(running, swapped_out_blocked),</div><div class="line">                to_state=blocked)</div><div class="line">    swap_wait = Event(from_states=waiting, to_state=swapped_out_waiting)</div><div class="line">    swap_block = Event(from_states=blocked, to_state=swapped_out_blocked)</div><div class="line"></div><div class="line">    def __init__(self, name):</div><div class="line">        self.name = name</div><div class="line"></div><div class="line">    # The state_machine module provides us with the @before and @after</div><div class="line">    # decorators that can be used to execute actions before or after a</div><div class="line">    # transition occurs, respectfully.</div><div class="line">    @after(&apos;wait&apos;)</div><div class="line">    def wait_info(self):</div><div class="line">        print(&apos;&#123;&#125; entered waiting mode&apos;.format(self.name))</div><div class="line"></div><div class="line">    @after(&apos;run&apos;)</div><div class="line">    def run_info(self):</div><div class="line">        print(&apos;&#123;&#125; is running&apos;.format(self.name))</div><div class="line"></div><div class="line">    @before(&apos;terminate&apos;)</div><div class="line">    def terminate_info(self):</div><div class="line">        print(&apos;&#123;&#125; terminated&apos;.format(self.name))</div><div class="line"></div><div class="line">    @after(&apos;block&apos;)</div><div class="line">    def block_info(self):</div><div class="line">        print(&apos;&#123;&#125; is blocked&apos;.format(self.name))</div><div class="line"></div><div class="line">    @after(&apos;swap_wait&apos;)</div><div class="line">    def swap_wait_info(self):</div><div class="line">        print(&apos;&#123;&#125; is swapped out and waiting&apos;.format(self.name))</div><div class="line"></div><div class="line">    @after(&apos;swap_block&apos;)</div><div class="line">    def swap_block_info(self):</div><div class="line">        print(&apos;&#123;&#125; is swapped out and blocked&apos;.format(self.name))</div><div class="line"></div><div class="line"></div><div class="line">def transition(process, event, event_name):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Args:</div><div class="line">        process (Process obj):</div><div class="line">        event (Event obj): wait, run, terminate...</div><div class="line">        event_name (str): name of event</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    try:</div><div class="line">        event()</div><div class="line">    except InvalidStateTransition:</div><div class="line">        print(&apos;Error: transition of &#123;&#125; from &#123;&#125; to &#123;&#125; failed&apos;.format(</div><div class="line">            process.name, process.current_state, event_name))</div><div class="line"></div><div class="line"></div><div class="line">def state_info(process):</div><div class="line">    &quot;&quot;&quot; 当前状态机的状态 &quot;&quot;&quot;</div><div class="line">    print(&apos;state of &#123;&#125;: &#123;&#125;&apos;.format(process.name, process.current_state))</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    RUNNING = &apos;running&apos;</div><div class="line">    WAITING = &apos;waiting&apos;</div><div class="line">    BLOCKED = &apos;blocked&apos;</div><div class="line">    TERMINATED = &apos;terminated&apos;</div><div class="line">    p1, p2 = Process(&apos;process1&apos;), Process(&apos;process2&apos;)</div><div class="line">    [state_info(p) for p in (p1, p2)]</div><div class="line"></div><div class="line">    print()</div><div class="line">    transition(p1, p1.wait, WAITING)</div><div class="line">    transition(p2, p2.terminate, TERMINATED)</div><div class="line">    [state_info(p) for p in (p1, p2)]</div><div class="line">    print()</div><div class="line">    transition(p1, p1.run, RUNNING)</div><div class="line">    transition(p2, p2.wait, WAITING)</div><div class="line">    [state_info(p) for p in (p1, p2)]</div><div class="line">    print()</div><div class="line">    transition(p2, p2.run, RUNNING)</div><div class="line">    [state_info(p) for p in (p1, p2)]</div><div class="line">    print()</div><div class="line">    [transition(p, p.block, BLOCKED) for p in (p1, p2)]</div><div class="line">    [state_info(p) for p in (p1, p2)]</div><div class="line">    print()</div><div class="line">    [transition(p, p.terminate, TERMINATED) for p in (p1, p2)]</div><div class="line">    [state_info(p) for p in (p1, p2)]</div></pre></td></tr></table></figure>
+<p>状态模式是一个或者多个有限状态机的实现，状态机有两个部分，状态和转换。</p>
+<h1 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h1><p>策略模式鼓励使用多种算法来解决一个问题，运行的时候透明的切换算法。Python中的<code>sorted()</code>和<code>list.sort()</code>时策略模式的例子，都接受key，这个参数本质上是实现了一个排序策略的函数的名称，让客户端决定如何对一个数据结构中的元素进行排序。策略模式的另一个应用是创建不同的样式表现，为了实现可移植性或者动态地改变数据的表现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def f1(seq):</div><div class="line">    pass</div><div class="line"></div><div class="line">def f2(seq):</div><div class="line">    pass</div><div class="line"></div><div class="line">def f(seq):</div><div class="line">    if len(seq) &gt;= threshold_value:    # 大于某个阈值</div><div class="line">        f1(seq)    # 在数量较多时候具有良好的效率</div><div class="line">    else:</div><div class="line">        f2(seq)</div></pre></td></tr></table></figure>
+<h1 id="模板模式"><a href="#模板模式" class="headerlink" title="模板模式"></a>模板模式</h1><p>模版设计模式关注的时消除代码冗余，无需改变算法结构就能重新定义一个算法的某些部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">from cowpy import cow</div><div class="line"></div><div class="line"></div><div class="line">def dots_style(msg):</div><div class="line">    msg = msg.capitalize()</div><div class="line">    msg = &apos;.&apos; * 10 + msg + &apos;.&apos; * 10</div><div class="line">    return msg</div><div class="line"></div><div class="line"></div><div class="line">def admire_style(msg):</div><div class="line">    msg = msg.upper()</div><div class="line">    return &apos;!&apos;.join(msg)</div><div class="line"></div><div class="line"></div><div class="line">def cow_style(msg):</div><div class="line">    msg = cow.milk_random_cow(msg)</div><div class="line">    return msg</div><div class="line"></div><div class="line"></div><div class="line">def generate_banner(msg, style=dots_style):</div><div class="line">    print(&apos;-- start of banner --&apos;)</div><div class="line">    print(style(msg))</div><div class="line">    print(&apos;-- end of banner --\n\n&apos;)</div><div class="line"></div><div class="line"></div><div class="line">def main():</div><div class="line">    msg = &apos;happy coding&apos;</div><div class="line">    [generate_banner(msg, style) for style in (dots_style, admire_style,</div><div class="line">                                            cow_style)]</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<p>子类重写模版类的现有方法</p>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/10/28/python_design_pattern_3/" target="_blank" rel="external">http://skyrover.me/2017/10/28/python_design_pattern_3/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/10/28/python_design_pattern_3/&title=《用Python实现设计模式 - 行为型》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/10/28/python_design_pattern_3/&title=《用Python实现设计模式 - 行为型》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/10/28/python_design_pattern_3/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《用Python实现设计模式 - 行为型》 — SkyRover&url=http://skyrover.me/2017/10/28/python_design_pattern_3/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/10/28/python_design_pattern_3/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/10/27/python_design_pattern_2/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">用Python实现设计模式 - 结构型</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/10/28/python_design_pattern_3/&title=《用Python实现设计模式 - 行为型》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/10/28/python_design_pattern_3/&title=《用Python实现设计模式 - 行为型》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/10/28/python_design_pattern_3/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《用Python实现设计模式 - 行为型》 — SkyRover&url=http://skyrover.me/2017/10/28/python_design_pattern_3/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/10/28/python_design_pattern_3/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACI0lEQVR42u3ay47CMAwFUP7/pxlpViMxLdd2QWpyskIVJJwuLD/yeMTr+bten/xdR8+PvnP0+fWsyxYGBsZtGdWDz498Butoh95LwcDA2IdxHmSTUDh/Befh+M1/xsDAwDj9TvLX86QQAwMDYx5wkyKzGnaTEhcDAwPjqoLzfM8e4+JaHAMD44aM6mDgm58/ON/AwMC4CeNZXHnimDTUekH2n/0xMDCWZpyXl/nxvVQyOT1vwGFgYKzKyBtnvbHlvIkW4TEwMJZm5K2x6tbVVlqvnMbAwNiBcVVpmrB7A4OoMYeBgbE0oxdA50/yOFm4rIaBgbEoY/63qoljNQGNSBgYGEszek38vMWWF6LVl3g4wsTAwFiOUU3mPtFWS8568xwDA2NpRn7ZYtJ0q14C6+2JgYGxA6N62Su6cTYoYqshGAMDY23Gd24sVBPEapKKgYGxAyNvqM0LzuSllEMtBgbGooxeWz/Jx+bt/kISiYGBsTSjmpzNk7lrB5kYGBg7MKrH99pkk8Zcs2TFwMBYjpGnaNGmASMP5dGLwMDAWJox6c/lVzQmIT6/tIGBgbEq41lc+XggD8r5lY7D/TEwMJZmTFr/k2FAXqwmySsGBsYOjPnVh8n7m++MgYGxD+MT/fZqo603bMDAwMCYl6bz30aJKQYGBkZrDHnVNY6Ih4GBsQEjCZSFkrI4DJgPDDAwMNZm9AYDk7Kz2p67DIOBgXE/xg+2FmC+vZ65TwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
