@@ -20,18 +20,18 @@
     
     
     <meta name="keywords" content="Docker">
-    <meta name="description" content="MacBook安装Docker brew install docker brew install docker-machine 下载安装virtual box，下载地址 初始化 Virtual Box 的 default 虚拟机 docker-machine create --driver virtualbox default 下载最新的boot2docker，下载地址。上一步会自动下载，但是可能">
+    <meta name="description" content="Ubuntu安装Docker sudo apt-get install docker sudo apt-get install docker.io 将当前用户加入到docker用户组中  sudo gpasswd -a ${User} docker 重新登陆shell，就可以使用docker了    MacBook安装Docker brew install docker brew install">
 <meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker安装和使用">
 <meta property="og:url" content="http://skyrover.me/2017/04/25/docker安装和使用/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="MacBook安装Docker brew install docker brew install docker-machine 下载安装virtual box，下载地址 初始化 Virtual Box 的 default 虚拟机 docker-machine create --driver virtualbox default 下载最新的boot2docker，下载地址。上一步会自动下载，但是可能">
+<meta property="og:description" content="Ubuntu安装Docker sudo apt-get install docker sudo apt-get install docker.io 将当前用户加入到docker用户组中  sudo gpasswd -a ${User} docker 重新登陆shell，就可以使用docker了    MacBook安装Docker brew install docker brew install">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-01T06:17:49.000Z">
+<meta property="og:updated_time" content="2017-10-29T08:28:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker安装和使用">
-<meta name="twitter:description" content="MacBook安装Docker brew install docker brew install docker-machine 下载安装virtual box，下载地址 初始化 Virtual Box 的 default 虚拟机 docker-machine create --driver virtualbox default 下载最新的boot2docker，下载地址。上一步会自动下载，但是可能">
+<meta name="twitter:description" content="Ubuntu安装Docker sudo apt-get install docker sudo apt-get install docker.io 将当前用户加入到docker用户组中  sudo gpasswd -a ${User} docker 重新登陆shell，就可以使用docker了    MacBook安装Docker brew install docker brew install">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
@@ -174,7 +174,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MacBook安装Docker"><span class="post-toc-number">1.</span> <span class="post-toc-text">MacBook安装Docker</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用Docker"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用Docker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Dockerfile"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Dockerfile</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载镜像，启动容器"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">加载镜像，启动容器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#将修改了的container提交成新的image"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">将修改了的container提交成新的image</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#将容器内的文件复制到host主机上"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">将容器内的文件复制到host主机上</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载导出镜像"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">加载导出镜像</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#导入导出镜像"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">导入导出镜像</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#删除"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">删除</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行日志"><span class="post-toc-number">2.8.</span> <span class="post-toc-text">运行日志</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Ubuntu安装Docker"><span class="post-toc-number">1.</span> <span class="post-toc-text">Ubuntu安装Docker</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MacBook安装Docker"><span class="post-toc-number">2.</span> <span class="post-toc-text">MacBook安装Docker</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用Docker"><span class="post-toc-number">3.</span> <span class="post-toc-text">使用Docker</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Dockerfile"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Dockerfile</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载镜像，启动容器"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">加载镜像，启动容器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#将修改了的container提交成新的image"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">将修改了的container提交成新的image</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#将容器内的文件复制到host主机上"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">将容器内的文件复制到host主机上</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#加载导出镜像"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">加载导出镜像</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#导入导出镜像"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">导入导出镜像</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#删除"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">删除</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行日志"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">运行日志</span></a></li></ol></li></ol>
         </nav>
     </aside>
     
@@ -202,7 +202,17 @@
             
             
             
-            <h1 id="MacBook安装Docker"><a href="#MacBook安装Docker" class="headerlink" title="MacBook安装Docker"></a>MacBook安装Docker</h1><ol>
+            <h1 id="Ubuntu安装Docker"><a href="#Ubuntu安装Docker" class="headerlink" title="Ubuntu安装Docker"></a>Ubuntu安装Docker</h1><ol>
+<li><code>sudo apt-get install docker</code></li>
+<li><code>sudo apt-get install docker.io</code></li>
+<li><p>将当前用户加入到docker用户组中</p>
+<ul>
+<li><code>sudo gpasswd -a ${User} docker</code></li>
+<li>重新登陆shell，就可以使用docker了</li>
+</ul>
+</li>
+</ol>
+<h1 id="MacBook安装Docker"><a href="#MacBook安装Docker" class="headerlink" title="MacBook安装Docker"></a>MacBook安装Docker</h1><ol>
 <li><code>brew install docker</code></li>
 <li><code>brew install docker-machine</code></li>
 <li>下载安装<code>virtual box</code>，<a href="http://sw.bos.baidu.com/sw-search-sp/software/b727d97ca62/VirtualBox_mac_5.0.24.dmg" target="_blank" rel="external">下载地址</a></li>

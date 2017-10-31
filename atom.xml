@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-10-28T15:14:14.000Z</updated>
+  <updated>2017-10-31T10:18:28.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,92 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>翻译 - Implementing User Comments with SQLAlchemy</title>
+    <link href="http://skyrover.me/2017/10/28/user_comments_sqlalchemy/"/>
+    <id>http://skyrover.me/2017/10/28/user_comments_sqlalchemy/</id>
+    <published>2017-10-28T15:26:35.000Z</published>
+    <updated>2017-10-31T10:18:28.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>首先SQLAlchemy读音是<code>/ˈsiːkwəl/ /ˈælkəmi/</code>，alchemy的意思是<code>炼金术，改变事物的魔力</code></p>
+<p>一个在你的web应用中保持用户参与的基本方式是让他们可以写评论。现在有一些第三方服务提供了这些评论功能。Disqus和Facebook是可以在你的站点中提供评论最受欢迎的服务。</p>
+<p>但是如果你不想使用外部服务呢。在这篇文章中，我将向你展示我是如何使用Python来实现评论服务的，通过使用SQLAlchemy ORM(Object Relational Mapping对象关系映射)和其支持的任何数据库引擎。我会以最简单的开始，随后会讨论一些支持多层回复的高级实现。</p>
+<h1 id="评论服务的问题"><a href="#评论服务的问题" class="headerlink" title="评论服务的问题"></a>评论服务的问题</h1><p>虽然将评论服务转交给外部服务是吸引人的，但是还有很多为什么你不会这样做的原因。这些服务嵌入到你的页面上的用户接口通常不是太灵活，因此可能在你的页面上看起来不舒服。可能虽然已经有了你自己站点的账户，但是还需要在第三方服务上注册账户才能使用评论功能。</p>
+<p>还有一个比较重要的考虑是许多开发者注意到这些评论是不会被自己拥有的，但是一个潜在需求是希望将这些数据导出，你会决定不使用这个服务而使用其他服务吗？或者更糟糕的是这些提供商自己破产了怎么办？</p>
+<p>另外还有安全层面上的问题。你可能不会信任你的用户的信息放在这些经常被黑客攻击的大公司里。就在几天前，Disqus声明其经历了数据泄漏。</p>
+<h1 id="基本的评论平台"><a href="#基本的评论平台" class="headerlink" title="基本的评论平台"></a>基本的评论平台</h1><p>下面这个是最简单的方式实现评论(看别人的代码有助于纠正自己的一些不好做法= =)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from datetime import datetime</div><div class="line"></div><div class="line">class Comment(db.Model):</div><div class="line">    id = db.Column(db.Integer, primary_key=True)</div><div class="line">    text = db.Column(db.String(140))</div><div class="line">    author = db.Column(db.String(32))</div><div class="line">    timestamp = db.Column(db.DateTime(), default=datetime.utcnow, index=True)</div></pre></td></tr></table></figure>
+<p>这样你就可以保持一个评论列表。为了添加一个评论，你可以简单的创建一个<code>Comment</code>实例，然后将其写入到数据库中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">comment = Comment(text=&apos;Hello, world!&apos;, author=&apos;alice&apos;)</div><div class="line">db.session.add(comment)</div><div class="line">db.session.commit()</div></pre></td></tr></table></figure>
+<p>我不用关系<code>timestamp</code>字段，因为我在模型定义中已经给其赋了默认值当前的<code>utc</code>时间。这样我可以按照时间顺序对评论进行排序了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># oldest comments first</div><div class="line">for comment in Comment.query.order_by(Comment.timestamp.asc()):</div><div class="line">    print(&apos;&#123;&#125;: &#123;&#125;&apos;.format(comment.author, comment.text))</div><div class="line"></div><div class="line"># newest comments first</div><div class="line">for comment in Comment.query.order_by(Comment.timestamp.desc()):</div><div class="line">    print(&apos;&#123;&#125;: &#123;&#125;&apos;.format(comment.author, comment.text))</div></pre></td></tr></table></figure>
+<p>为了和你的应用整合，你需要改变author字段，使得它成为一个User模型的外键。如果你在多个页面接收评论，你也需要添加一个额外的字段，将评论链接到所属的页面上，然后你可以根绝页面地址将评论取出来。</p>
+<h1 id="实现评论的回复"><a href="#实现评论的回复" class="headerlink" title="实现评论的回复"></a>实现评论的回复</h1><p>在大多数的应用中，需要对某个评论进行回复，然后以分层的方式展示所有的关联评论。不过这种在关系型数据库中不容易实现。</p>
+<p>有两种比较有名的实现处理了在关系型中展示树结构的问题，但是两者都有限制。</p>
+<h2 id="Adjacency-Lists"><a href="#Adjacency-Lists" class="headerlink" title="Adjacency Lists"></a>Adjacency Lists</h2><p>其主要想法是在Comment模型中添加一列来追踪每个评论的父评论。如果每个评论都有指向父评论的关系，这样你就可以取出所有的树结构了。当parent为None的时候就是顶层评论。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class Comment(db.Model):</div><div class="line">    id = db.Column(db.Integer, primary_key=True)</div><div class="line">    text = db.Column(db.String(140))</div><div class="line">    author = db.Column(db.String(32))</div><div class="line">    timestamp = db.Column(db.DateTime(), default=datetime.utcnow, index=True)</div><div class="line">    # 父节点的ID，插入的时候第一级的评论该字段是None</div><div class="line">    # 一个外键，对应的是Comment.id</div><div class="line">    parent_id = db.Column(db.Integer, db.ForeignKey(&apos;comment.id&apos;))</div><div class="line"></div><div class="line">    # 链接外键的关系，使用字段名为parent，一对多关系</div><div class="line">    # 反向关系，这样就可以使用这个反向关系获取外键对应的评论数据</div><div class="line">    replies = db.relationship(</div><div class="line">        &apos;Comment&apos;, backref=db.backref(&apos;parent&apos;, remote_side=[id]),</div><div class="line">        lazy=&apos;dynamic&apos;)</div></pre></td></tr></table></figure>
+<p>这里我添加的是一个自引用的一对多关系模型。因为每个评论现在都有<code>parent_id</code>外键，因此我可以很容易的找到给定一个评论的直接回复，只用找到所有parent是这条评论的所有评论就可以了。</p>
+<p>比如，我想展示下面的评论：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">alice: hello1</div><div class="line">  bob: reply11</div><div class="line">    susan: reply111</div><div class="line">  susan: reply12</div><div class="line">bob: hello2</div><div class="line">  alice: reply21</div></pre></td></tr></table></figure>
+<p>添加上述结构的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">c1 = Comment(text=&apos;hello1&apos;, author=&apos;alice&apos;)</div><div class="line">c2 = Comment(text=&apos;hello2&apos;, author=&apos;bob&apos;)</div><div class="line">c11 = Comment(text=&apos;reply11&apos;, author=&apos;bob&apos;, parent=c1)</div><div class="line">c12 = Comment(text=&apos;reply12&apos;, author=&apos;susan&apos;, parent=c1)</div><div class="line">c111 = Comment(text=&apos;reply111&apos;, author=&apos;susan&apos;, parent=c11)</div><div class="line">c21 = Comment(text=&apos;reply21&apos;, author=&apos;alice&apos;, parent=c2)</div><div class="line">db.session.add_all([c1, c2, c11, c12, c111, c21])</div><div class="line">db.session.commit()</div></pre></td></tr></table></figure>
+<p>到目前为止，一切都很简单。但是当你想以适合表现的方式获取数据的时候就有问题了。想以正确的评论顺序获取数据基本上是不可能的。唯一一种方式是通过递归查询。下面的代码通过递归查询来打印出了评论的合适顺序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def display_comment(comment, level=0):</div><div class="line">    print(&apos;&#123;&#125;&#123;&#125;: &#123;&#125;&apos;.format(&apos;  &apos; * level, comment.author, comment.text))</div><div class="line">    # 取出来单个评论对应的所有回复</div><div class="line">    for reply in comment.replies:</div><div class="line">        display_comment(reply, level + 1)</div><div class="line"></div><div class="line">for comment in Comment.query.filter_by(parent=None).order_by(Comment.timestamp.asc()):</div><div class="line">    display_comment(comment)</div></pre></td></tr></table></figure>
+<p>下面的for循环取出来了所有顶层的评论，然后通过<code>display_comment()</code>递归的去获取它们的子评论。</p>
+<p>那么这样做就是非常低效的。如果一个评论底下有上百层子评论，你就要进行上百次额外的数据库查询。如果你想给你的评论分页，你唯一能做的是将顶层的评论分页，而不能将评论线作为整体进行分页。</p>
+<p>尽管这个方法很优雅，但是在实际中一般不采用这种方法。</p>
+<h1 id="Nested-Sets"><a href="#Nested-Sets" class="headerlink" title="Nested Sets"></a>Nested Sets</h1><p>第二种技术叫做嵌套集合。这个方法比较复杂，它给数据库添加了两列，一列叫<code>left</code>一列是<code>right</code>，第三个可选的列叫做<code>level</code>。所有的列都存储数字，用来描述树的遍历顺序。当你沿着树向下走的时候，给left字段赋予连续的数字，向上走给right字段赋予连续的值。这个方法的结果是，没有回复的评论的left和right将有连续的数字。level列存储了每个评论有的父节点的层数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">alice: hello1        left:  1  right:  8  level: 0</div><div class="line">  bob: reply11       left:  2  right:  5  level: 1</div><div class="line">    susan: reply111  left:  3  right:  4  level: 2</div><div class="line">  susan: reply12     left:  6  right:  7  level: 1</div><div class="line">bob: hello2          left:  9  right: 12  level: 0</div><div class="line">  alice: reply21     left: 10  right: 11  level: 1</div></pre></td></tr></table></figure>
+<p>在这种结构下，如果你想获取一个评论下的回复，只需要查找所有的评论中left比这个父节点的left大，right比父节点的right小的记录。然后如果你按照left排序，你将会得到正确的评论顺序，并且你可以使用level来确定如果在web页面上正确的渲染。这种方法相对于<code>adjacency lists</code>来说是，你可以在一次查询中获取正确的顺序，甚至可以使用分页获取子集。</p>
+<p>你也许会觉得这是一个解决问题很好的方法，但是你有没有想过这个算法是如何给每个评论赋值的？这就是这个方法的问题所在。每次一个新的评论添加进来后，整个评论表几乎都要进行更新left和right值。使用<code>adjacency lists</code>的时候，插入是很容易的，但是查询非常低效。当使用嵌套集合的时候是相反的，插入是很低效的，但是查询很高效。</p>
+<h1 id="跳出来想"><a href="#跳出来想" class="headerlink" title="跳出来想"></a>跳出来想</h1><p>这里有一个新的方法，添加了一个text类型的列，我将其命名为<code>path</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Comment(db.Model):</div><div class="line">    id = db.Column(db.Integer, primary_key=True)</div><div class="line">    text = db.Column(db.String(140))</div><div class="line">    author = db.Column(db.String(32))</div><div class="line">    timestamp = db.Column(db.DateTime(), default=datetime.utcnow, index=True)</div><div class="line">    path = db.Column(db.Text, index=True)</div></pre></td></tr></table></figure>
+<p>每个评论在其被插入的时候都会被赋值一个独一无二的增长的值，类似于自增长的<code>id</code>。因此第一个评论得到1，第二个评论得到2，以此类推。最上层的评论的path值就是这个计数器的值。但是对于回复，path将会被设置为父节点的path后面加上计数器的值。使用上面的评论例子，下面是对于它们随机插入的时候，path被赋的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">alice: hello1        path: &apos;1&apos;</div><div class="line">bob: reply11         path: &apos;1.2&apos;</div><div class="line">bob: hello2          path: &apos;3&apos;</div><div class="line">susan: reply12       path: &apos;1.4&apos;</div><div class="line">susan: reply111      path: &apos;1.2.5&apos;</div><div class="line">alice: reply21       path: &apos;3.6&apos;</div></pre></td></tr></table></figure>
+<p>这种方法插入的时候要直到父节点是哪个。</p>
+<p>为了澄清，我在每个path中间都插入了句点，但是在实际实现中是不必要的。如果我现在按照path排序来查询这个表，我会得到正确的评论顺序。并且可以通过path中有多少个数字组成就直到其是第几个层级。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">alice: hello1        path: &apos;1&apos;    &lt;-- top-level</div><div class="line">bob: reply11         path: &apos;1.2&apos;    &lt;-- second-level</div><div class="line">susan: reply111      path: &apos;1.2.5&apos;    &lt;-- third-level</div><div class="line">susan: reply12       path: &apos;1.4&apos;    &lt;-- second-level</div><div class="line">bob: hello2          path: &apos;3&apos;    &lt;-- top-level</div><div class="line">alice: reply21       path: &apos;3.6&apos;    &lt;-- second-level</div></pre></td></tr></table></figure>
+<p>插入的时候也很容易，只需要生成一个独一无二并且是自增长的数字给新的评论，比如我可以使用database的id列。我还需要直到这个评论的父节点，这样我就可以使用它的path字段，然后生成孩子评论的path字段了。</p>
+<p>查询也很容易。通过在path列加入索引，我可以非常高效的以正确的顺序得到评论，只需要对path排序。并且我还可以对评论列表分页。</p>
+<p>那么看起来很棒吧，有什么限制呢？你认为这个系统可以支持多少个评论呢。以这种方式的评论系统，你不能拥有超过10条评论(或者说是9，因为你没有从0开始)。通过path排序，因为是字符串而不是数字比较，所以会出现问题，比如10和2比较，其实2应该在前面，但是字符串比较并不是这样。所以比较的时候位数必须一样。</p>
+<p>那么如果给path的每个组件分配2位呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">alice: hello1        path: &apos;01&apos;</div><div class="line">bob: reply11         path: &apos;01.02&apos;</div><div class="line">susan: reply111      path: &apos;01.02.05&apos;</div><div class="line">susan: reply12       path: &apos;01.04&apos;</div><div class="line">bob: hello2          path: &apos;03&apos;</div><div class="line">alice: reply21       path: &apos;03.06&apos;</div></pre></td></tr></table></figure>
+<p>这样就可以添加99条评论了。当你发现会到达极限的时候，可以线下维护评论，重新使用更多的位数来生成paths。</p>
+<p>另外，可以和上述的<code>adjacency list</code>结合起来，可以以一种简单和高效的方式来获取给定评论的父节点。我封装了插入逻辑为<code>save()</code>方法，这样我就可以非常容易的调用了。并且<code>level()</code>方法返回任何评论的层级。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">class Comment(db.Model):</div><div class="line">    _N = 6</div><div class="line"></div><div class="line">    id = db.Column(db.Integer, primary_key=True)</div><div class="line">    text = db.Column(db.String(140))</div><div class="line">    author = db.Column(db.String(32))</div><div class="line">    timestamp = db.Column(db.DateTime(), default=datetime.utcnow, index=True)</div><div class="line">    path = db.Column(db.Text, index=True)</div><div class="line">    parent_id = db.Column(db.Integer, db.ForeignKey(&apos;comment.id&apos;))</div><div class="line">    replies = db.relationship(</div><div class="line">        &apos;Comment&apos;, backref=db.backref(&apos;parent&apos;, remote_side=[id]),</div><div class="line">        lazy=&apos;dynamic&apos;)</div><div class="line"></div><div class="line">    def save(self):</div><div class="line">        db.session.add(self)</div><div class="line">        db.session.commit()</div><div class="line">        # 需要存储两次，因为第一次要获取id</div><div class="line">        # 如果其他实现计数器，可能导致竞争条件</div><div class="line">        prefix = self.parent.path + &apos;.&apos; if self.parent else &apos;&apos;</div><div class="line">        self.path = prefix + &apos;&#123;:0&#123;&#125;d&#125;&apos;.format(self.id, self._N)</div><div class="line">        db.session.commit()</div><div class="line"></div><div class="line">    def level(self):</div><div class="line">        # 原文中是这样，但是感觉计算不准确，应该是</div><div class="line">        # return len(self.path.split(&apos;.&apos;)) - 1</div><div class="line">        return len(self.path) // self._N - 1</div></pre></td></tr></table></figure>
+<p>下面是一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">c1 = Comment(text=&apos;hello1&apos;, author=&apos;alice&apos;)</div><div class="line">c2 = Comment(text=&apos;hello2&apos;, author=&apos;bob&apos;)</div><div class="line">c11 = Comment(text=&apos;reply11&apos;, author=&apos;bob&apos;, parent=c1)</div><div class="line">c12 = Comment(text=&apos;reply12&apos;, author=&apos;susan&apos;, parent=c1)</div><div class="line">c111 = Comment(text=&apos;reply111&apos;, author=&apos;susan&apos;, parent=c11)</div><div class="line">c21 = Comment(text=&apos;reply21&apos;, author=&apos;alice&apos;, parent=c2)</div><div class="line">for comment in [c1, c2, c11, c12, c111, c21]:</div><div class="line">    comment.save()</div></pre></td></tr></table></figure>
+<p>下面就可以在终端以正确的缩进打印了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for comment in Comment.query.order_by(Comment.path):</div><div class="line">    print(&apos;&#123;&#125;&#123;&#125;: &#123;&#125;&apos;.format(&apos;  &apos; * comment.level(), comment.author, comment.text))</div></pre></td></tr></table></figure>
+<h1 id="可能的改进"><a href="#可能的改进" class="headerlink" title="可能的改进"></a>可能的改进</h1><p>如果有多个页面，就需要在Comment模型中加入一个字段表示哪个页面的，比如在博客应用中，需要加入一个外键指向post的id。id需要复制到所有的评论中，包括回复，当然你可以在插入的时候将父评论的post id复制到子节点中。查询如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for comment in Comment.query.filter_by(post_id=post.id).order_by(Comment.path.asc()):</div><div class="line">    print(&apos;&#123;&#125;&#123;&#125;: &#123;&#125;&apos;.format(&apos;  &apos; * comment.level(), comment.author, comment.text))</div></pre></td></tr></table></figure>
+<p>还有的就是需要根据不同的方式排序父评论，需要再加一个列。比如你想以父评论的时间来排序，你就可以添加一个<code>thread_timestamp</code>列，可以给所有对应的回复加上父节点的时间。<code>save()</code>方法可以将父评论的时间传递给子评论，这样你就可以按照这个时间排序了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for comment in Comment.query.order_by(Comment.thread_timestamp.desc(), Comment.path.asc()):</div><div class="line">    print(&apos;&#123;&#125;&#123;&#125;: &#123;&#125;&apos;.format(&apos;  &apos; * comment.level(), comment.author, comment.text))</div></pre></td></tr></table></figure>
+<p>如果要按照点赞数来排序，可以增加一个<code>thread_votes</code>列，与上面同理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for comment in Comment.query.order_by(Comment.votes.desc(), Comment.path.asc()):</div><div class="line">    print(&apos;&#123;&#125;&#123;&#125;: &#123;&#125;&apos;.format(&apos;  &apos; * comment.level(), comment.author, comment.text))</div></pre></td></tr></table></figure>
+<p>但是改变点赞数的时候就比较麻烦，要给所有的回复更新点赞数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Comment(db.Model):</div><div class="line">    def change_vote(vote):</div><div class="line">        for comment in Comment.query.filter(Comment.path.like(self.path + &apos;%&apos;)):</div><div class="line">            self.thread_vote = vote</div><div class="line">            db.session.add(self)</div><div class="line">        db.session.commit()</div></pre></td></tr></table></figure>
+<p>当然也可以直接使用update调用，而不是ORM。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;首先SQLAlchemy读音是&lt;code&gt;/ˈsiːkwəl/ /ˈælkəmi/&lt;/code&gt;，alchemy的意思是&lt;code&gt;炼金术，改变事物的魔力&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;一个在你的web应用中保持用户参与的基本方式是让他们可以写评论。现在有一些第三方服务提供了
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+    
+      <category term="SQLAlchemy" scheme="http://skyrover.me/tags/SQLAlchemy/"/>
+    
+  </entry>
   
   <entry>
     <title>类元编程</title>
@@ -444,7 +530,7 @@
     <link href="http://skyrover.me/2017/10/19/mysql_interview_1/"/>
     <id>http://skyrover.me/2017/10/19/mysql_interview_1/</id>
     <published>2017-10-19T04:30:35.000Z</published>
-    <updated>2017-10-19T09:12:47.000Z</updated>
+    <updated>2017-10-28T15:25:59.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自：</p>
 <ul>
@@ -580,6 +666,8 @@
       <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
+    
+      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
     
   </entry>
   
@@ -3779,9 +3867,19 @@
     <link href="http://skyrover.me/2017/04/25/docker%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
     <id>http://skyrover.me/2017/04/25/docker安装和使用/</id>
     <published>2017-04-25T04:07:19.000Z</published>
-    <updated>2017-09-01T06:17:49.000Z</updated>
+    <updated>2017-10-29T08:28:33.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="MacBook安装Docker"><a href="#MacBook安装Docker" class="headerlink" title="MacBook安装Docker"></a>MacBook安装Docker</h1><ol>
+    <content type="html"><![CDATA[<h1 id="Ubuntu安装Docker"><a href="#Ubuntu安装Docker" class="headerlink" title="Ubuntu安装Docker"></a>Ubuntu安装Docker</h1><ol>
+<li><code>sudo apt-get install docker</code></li>
+<li><code>sudo apt-get install docker.io</code></li>
+<li><p>将当前用户加入到docker用户组中</p>
+<ul>
+<li><code>sudo gpasswd -a ${User} docker</code></li>
+<li>重新登陆shell，就可以使用docker了</li>
+</ul>
+</li>
+</ol>
+<h1 id="MacBook安装Docker"><a href="#MacBook安装Docker" class="headerlink" title="MacBook安装Docker"></a>MacBook安装Docker</h1><ol>
 <li><code>brew install docker</code></li>
 <li><code>brew install docker-machine</code></li>
 <li>下载安装<code>virtual box</code>，<a href="http://sw.bos.baidu.com/sw-search-sp/software/b727d97ca62/VirtualBox_mac_5.0.24.dmg" target="_blank" rel="external">下载地址</a></li>
@@ -3837,8 +3935,8 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;MacBook安装Docker&quot;&gt;&lt;a href=&quot;#MacBook安装Docker&quot; class=&quot;headerlink&quot; title=&quot;MacBook安装Docker&quot;&gt;&lt;/a&gt;MacBook安装Docker&lt;/h1&gt;&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;brew i
+      &lt;h1 id=&quot;Ubuntu安装Docker&quot;&gt;&lt;a href=&quot;#Ubuntu安装Docker&quot; class=&quot;headerlink&quot; title=&quot;Ubuntu安装Docker&quot;&gt;&lt;/a&gt;Ubuntu安装Docker&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;sudo apt-g
     
     </summary>
     
