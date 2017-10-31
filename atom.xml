@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-10-31T10:18:28.000Z</updated>
+  <updated>2017-10-31T10:19:37.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -17,12 +17,13 @@
   
   <entry>
     <title>翻译 - Implementing User Comments with SQLAlchemy</title>
-    <link href="http://skyrover.me/2017/10/28/user_comments_sqlalchemy/"/>
-    <id>http://skyrover.me/2017/10/28/user_comments_sqlalchemy/</id>
-    <published>2017-10-28T15:26:35.000Z</published>
-    <updated>2017-10-31T10:18:28.000Z</updated>
+    <link href="http://skyrover.me/2017/10/31/user_comments_sqlalchemy/"/>
+    <id>http://skyrover.me/2017/10/31/user_comments_sqlalchemy/</id>
+    <published>2017-10-31T10:26:35.000Z</published>
+    <updated>2017-10-31T10:19:37.000Z</updated>
     
-    <content type="html"><![CDATA[<p>首先SQLAlchemy读音是<code>/ˈsiːkwəl/ /ˈælkəmi/</code>，alchemy的意思是<code>炼金术，改变事物的魔力</code></p>
+    <content type="html"><![CDATA[<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/implementing-user-comments-with-sqlalchemy#" target="_blank" rel="external">Implementing User Comments with SQLAlchemy</a></p>
+<p>首先SQLAlchemy读音是<code>/ˈsiːkwəl/ /ˈælkəmi/</code>，alchemy的意思是<code>炼金术，改变事物的魔力</code></p>
 <p>一个在你的web应用中保持用户参与的基本方式是让他们可以写评论。现在有一些第三方服务提供了这些评论功能。Disqus和Facebook是可以在你的站点中提供评论最受欢迎的服务。</p>
 <p>但是如果你不想使用外部服务呢。在这篇文章中，我将向你展示我是如何使用Python来实现评论服务的，通过使用SQLAlchemy ORM(Object Relational Mapping对象关系映射)和其支持的任何数据库引擎。我会以最简单的开始，随后会讨论一些支持多层回复的高级实现。</p>
 <h1 id="评论服务的问题"><a href="#评论服务的问题" class="headerlink" title="评论服务的问题"></a>评论服务的问题</h1><p>虽然将评论服务转交给外部服务是吸引人的，但是还有很多为什么你不会这样做的原因。这些服务嵌入到你的页面上的用户接口通常不是太灵活，因此可能在你的页面上看起来不舒服。可能虽然已经有了你自己站点的账户，但是还需要在第三方服务上注册账户才能使用评论功能。</p>
@@ -85,8 +86,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;首先SQLAlchemy读音是&lt;code&gt;/ˈsiːkwəl/ /ˈælkəmi/&lt;/code&gt;，alchemy的意思是&lt;code&gt;炼金术，改变事物的魔力&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;一个在你的web应用中保持用户参与的基本方式是让他们可以写评论。现在有一些第三方服务提供了
+      &lt;p&gt;翻译自: &lt;a href=&quot;https://blog.miguelgrinberg.com/post/implementing-user-comments-with-sqlalchemy#&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Implementi
     
     </summary>
     
