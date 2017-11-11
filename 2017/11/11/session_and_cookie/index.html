@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>session和数据存储 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Web">
+    <meta name="description" content="简介web中一个重要部分就是如何做好用户的整个浏览过程的控制，因为HTTP是无状态的，因此确定哪些连接与用户有关，经典的解决方案是cookie和session。cookie是客户端机制，将用户数据保存在客户端，而session机制是服务器端机制，服务器使用类似于散列表的结构来保存信息。每一个访客都有一个唯一的标志符，即sessionID。要么经过url传递，要么保存在客户端的cookies里。也可">
+<meta name="keywords" content="Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="session和数据存储">
+<meta property="og:url" content="http://skyrover.me/2017/11/11/session_and_cookie/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="简介web中一个重要部分就是如何做好用户的整个浏览过程的控制，因为HTTP是无状态的，因此确定哪些连接与用户有关，经典的解决方案是cookie和session。cookie是客户端机制，将用户数据保存在客户端，而session机制是服务器端机制，服务器使用类似于散列表的结构来保存信息。每一个访客都有一个唯一的标志符，即sessionID。要么经过url传递，要么保存在客户端的cookies里。也可">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-11-11T11:48:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="session和数据存储">
+<meta name="twitter:description" content="简介web中一个重要部分就是如何做好用户的整个浏览过程的控制，因为HTTP是无状态的，因此确定哪些连接与用户有关，经典的解决方案是cookie和session。cookie是客户端机制，将用户数据保存在客户端，而session机制是服务器端机制，服务器使用类似于散列表的结构来保存信息。每一个访客都有一个唯一的标志符，即sessionID。要么经过url传递，要么保存在客户端的cookies里。也可">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">session和数据存储</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">session和数据存储</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-11T11:51:14.000Z" itemprop="datePublished" class="page-time">
+  2017-11-11 19:51:14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cookie"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">cookie</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#session"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">session</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用session"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用session</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">创建</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预防session劫持"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">预防session劫持</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-session_and_cookie"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">session和数据存储</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-11 19:51:14 19:51:14" datetime="2017-11-11T11:51:14.000Z"  itemprop="datePublished">2017-11-11 19:51:14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>web中一个重要部分就是如何做好用户的整个浏览过程的控制，因为HTTP是无状态的，因此确定哪些连接与用户有关，经典的解决方案是cookie和session。cookie是客户端机制，将用户数据保存在客户端，而session机制是服务器端机制，服务器使用类似于散列表的结构来保存信息。每一个访客都有一个唯一的标志符，即sessionID。要么经过url传递，要么保存在客户端的cookies里。也可以将session保存在数据库里。</p>
+<p>由于HTTP的无状态性，一次登陆后的请求并不能知道以前已经登陆过了，但是也不能每次请求都携带登陆账号和密码，所以需要采用cookie和session机制，来在服务器或者客户端保存一些类似的可以代表身份的信息。</p>
+<p>cookie，在本地计算机保存一些用户操作的历史信息(比如登陆信息)，用户再次访问时候浏览器通过HTTP协议将本地cookie内容发送给服务器，从而完成验证或者上一步操作。</p>
+<p>session，是服务器上保存用户操作的历史信息，服务器使用sessionID来标识session。sessionID由服务器产生，随机而且唯一。但是仍然需要将发送请求的客户端和session对应，因此可以借助cookie机制来获取客户端的标识(sessionID)，也可以通过get方式将id发送给服务器。</p>
+<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p>用户每次访问站点的时候，web应用程序都可以读取cookie包含的信息。cookie是有时间限制的，有两种，会话cookie和持久cookie。</p>
+<h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>session指用来在客户端和服务器端之间保持状态的解决方案。也可以指这种方案的存储结构。</p>
+<p>首先程序需要为某个客户端请求创建一个session时候，服务器首先检查这个客户端的请求里是否包含了一个sessionID，如果有，则说明已经创建过session，服务器就按照sessionID将session检索出来使用，如果检索不到，就创建一个。如果没有也创建一个。这个sessionID会在本次响应中返回给客户端保存。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>session通过cookie，在客户端保存sessionID。而降用户其他会话消息保存在服务端的session对象中。cookie需要将所有信息保存在客户端。但是cookie可能有安全隐患，比如cookie中的用户名密码被破译，或者cookie被其他应用获取。</p>
+<h1 id="使用session"><a href="#使用session" class="headerlink" title="使用session"></a>使用session</h1><h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><p>服务器为每个会话维护一份信息数据，客户端和服务器依靠一个全局唯一标识来访问数据。</p>
+<ul>
+<li>生成一个sessionID</li>
+<li>开辟数据存储空间，一般是内存中创建数据结构，但是为了持久化，也可以在数据库中</li>
+<li>将sessionID发送给客户端。</li>
+</ul>
+<p>发送给客户端有两种方式：</p>
+<ul>
+<li><code>Set-cookie</code>就可以将session的标识发送给客户端</li>
+<li>url重写，这种方式在客户端禁用cookie的时候有用。</li>
+</ul>
+<h2 id="预防session劫持"><a href="#预防session劫持" class="headerlink" title="预防session劫持"></a>预防session劫持</h2><p>客户端和服务器通过sessionID来维护会话，但是这个标识符很容易被劫持并被攻击。</p>
+<p>解决方案：</p>
+<ul>
+<li>sessionID只允许cookie设置，而不能通过url重写方式，同时设置cookie的httponly为true，这个属性设置是否可以通过客户端脚本访问这个cookie，防止被XSS劫持。</li>
+<li>在每个请求中加入token，即每次收到请求都会验证这个token，保证用户请求是唯一的。</li>
+</ul>
+<p>另外一种方案是，间隔生成新的sessionID。</p>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/11/11/session_and_cookie/" target="_blank" rel="external">http://skyrover.me/2017/11/11/session_and_cookie/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/">Web</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/11/session_and_cookie/&title=《session和数据存储》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/11/session_and_cookie/&title=《session和数据存储》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/11/session_and_cookie/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《session和数据存储》 — SkyRover&url=http://skyrover.me/2017/11/11/session_and_cookie/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/11/session_and_cookie/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/11/05/python_cookbook_1/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">笔记 - 元编程</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/11/session_and_cookie/&title=《session和数据存储》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/11/session_and_cookie/&title=《session和数据存储》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/11/session_and_cookie/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《session和数据存储》 — SkyRover&url=http://skyrover.me/2017/11/11/session_and_cookie/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/11/session_and_cookie/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3awW7rMAwEwP7/T6fAO7WH2LuiW7xKo5OROLamBQiK5MdHvF7/1tfrr59c3//uV++eef3k0cLAwPizjNflut7W2rfJnynfGwYGxjmM/NFJeG1DbXLnzRsxMDAw3oS5fHOTlBEDAwOjDbjXR83rz99tOk9JMTAwTmYkj2uLbnllLHnLY2dxDAyMP8hYawz8zvWP9zcwMDD+e8ZrsJKWQBs0F3eCgYGxNWOe5M3Lc/MmAQYGxgmMdsRhbbRiraiX7xkDA2NXRru5vEA2L67VQRYDA+NIRt5inMPaNBEDA+McxtoI11PXbQkv+p9gYGBsx0jC6NoBtQ3l7SDaTX8DAwNjI0behmwnHNbCd3tsxsDAOI2R/GDSKmhLae1IBwYGxq6MdsCibUO2x9e1aVUMDIwTGGvp3VpCudbmvHk+BgbGkYwkpE5enCSFeeqJgYGxN+N6lCE/1rbBNEkK628xMDAOYCSkZ++vS/95fwMDA2M7xuTFk2AdldLasyoGBsamjCSAToYkJklkUc7DwMA4gLEWHH+itZns8KZ2iIGBsR0jb0C2o2Bt0jkZ+MDAwNiV8SrXHJOX6q6bo98+wcDA2JqRr7YxMBm8aIM1BgbGCYw8yOYBMS/9PxZwMTAwDmC0QbZNzvLUcO0IjYGBgZE0NduA27Yzb9gYGBgY5fjXJJTn78LAwDiN0TYD8q20oXMt9cTAwNib8VRjIC+QrWGKNBEDA2MfxieO8RkGDjLpowAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
