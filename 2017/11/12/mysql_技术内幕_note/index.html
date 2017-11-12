@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>笔记 - MySQL技术内幕(一) | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="MySQL,Database,读书笔记">
+    <meta name="description" content="MySQL服务器的SQL模式影响的行为包括在数据录入阶段如何处理非法数据，如何引用各种标识符等。 查询一个数据库的会话级或者全局级的SQL模式的当前值： 12select @@SESSION.sql_mode;select @@global.sql_mode; 在我本机上输出是(两者一致)： 123| @@SESSION.sql_mode | ONLY_FULL_GROUP_BY,STRICT_T">
+<meta name="keywords" content="MySQL,Database,读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记 - MySQL技术内幕(一)">
+<meta property="og:url" content="http://skyrover.me/2017/11/12/mysql_技术内幕_note/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="MySQL服务器的SQL模式影响的行为包括在数据录入阶段如何处理非法数据，如何引用各种标识符等。 查询一个数据库的会话级或者全局级的SQL模式的当前值： 12select @@SESSION.sql_mode;select @@global.sql_mode; 在我本机上输出是(两者一致)： 123| @@SESSION.sql_mode | ONLY_FULL_GROUP_BY,STRICT_T">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-11-12T09:13:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="笔记 - MySQL技术内幕(一)">
+<meta name="twitter:description" content="MySQL服务器的SQL模式影响的行为包括在数据录入阶段如何处理非法数据，如何引用各种标识符等。 查询一个数据库的会话级或者全局级的SQL模式的当前值： 12select @@SESSION.sql_mode;select @@global.sql_mode; 在我本机上输出是(两者一致)： 123| @@SESSION.sql_mode | ONLY_FULL_GROUP_BY,STRICT_T">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">笔记 - MySQL技术内幕(一)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">笔记 - MySQL技术内幕(一)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-12T09:22:14.000Z" itemprop="datePublished" class="page-time">
+  2017-11-12 17:22:14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MySQL服务器的SQL模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">MySQL服务器的SQL模式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#SQL语句中的字母大小问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">SQL语句中的字母大小问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据库选定，创建，删除和变更"><span class="post-toc-number">3.</span> <span class="post-toc-text">数据库选定，创建，删除和变更</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据表的创建，删除，索引和变更"><span class="post-toc-number">4.</span> <span class="post-toc-text">数据表的创建，删除，索引和变更</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MyISAM存储引擎"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">MyISAM存储引擎</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MEMORY存储引擎"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">MEMORY存储引擎</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#InnoDB的存储引擎"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">InnoDB的存储引擎</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#存储引擎的可移植性"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">存储引擎的可移植性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建数据表"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">创建数据表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#删除数据表"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">删除数据表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建索引"><span class="post-toc-number">4.7.</span> <span class="post-toc-text">创建索引</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">5.</span> <span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-mysql_技术内幕_note"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">笔记 - MySQL技术内幕(一)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-12 17:22:14 17:22:14" datetime="2017-11-12T09:22:14.000Z"  itemprop="datePublished">2017-11-12 17:22:14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <h1 id="MySQL服务器的SQL模式"><a href="#MySQL服务器的SQL模式" class="headerlink" title="MySQL服务器的SQL模式"></a>MySQL服务器的SQL模式</h1><p>影响的行为包括在数据录入阶段如何处理非法数据，如何引用各种标识符等。</p>
+<p>查询一个数据库的会话级或者全局级的SQL模式的当前值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">select @@SESSION.sql_mode;</div><div class="line">select @@global.sql_mode;</div></pre></td></tr></table></figure>
+<p>在我本机上输出是(两者一致)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">| @@SESSION.sql_mode </div><div class="line">| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |</div><div class="line">1 row in set (0.00 sec)</div></pre></td></tr></table></figure>
+<h1 id="SQL语句中的字母大小问题"><a href="#SQL语句中的字母大小问题" class="headerlink" title="SQL语句中的字母大小问题"></a>SQL语句中的字母大小问题</h1><ul>
+<li>SQL关键字和函数名不区分字母的大小写。</li>
+<li>数据库，数据表和视图的名字在Windows和MAC中不区分大小写，但是在Unix系统是区分大小写的。</li>
+<li>存储函数，存储过程和事件的名字不区分字母大小写。触发器的名字区分大小写。</li>
+<li>数据列和索引的名字不区分大小写。</li>
+</ul>
+<p>统一使用小写字母，这样InnoDB数据表也有好处，其引擎内部是把数据库和数据表的名字作为小写字母存储的。</p>
+<p>而且查询的时候最好使用一致的大小写组合来引用它。这样具有更高的可读性。</p>
+<h1 id="数据库选定，创建，删除和变更"><a href="#数据库选定，创建，删除和变更" class="headerlink" title="数据库选定，创建，删除和变更"></a>数据库选定，创建，删除和变更</h1><ul>
+<li><code>USE db_name;</code></li>
+<li><p><code>CREATE DATABASE db_name</code></p>
+<p>  创建数据库的时候，MySQL服务器会在数据目录里创建一个与该数据库同名的子目录，这个新目录称为数据库子目录。服务器还会在数据库目录里创建一个db.opt文件来保存数据库的属性，比如字符集和排序方式等属性。</p>
+<p>  <code>CREATE DATABASE [IF NOT EXISTS] db_name [CHARACTER SET charset] [COLLATE collation]</code></p>
+<p>  后面一个是设置数据库的默认字符集，一个是排序方式。比如<code>CREATE DATABASE mydb CHARACTER SET utf8 COLLATE utf8_icelandic_ci;</code></p>
+</li>
+<li><p><code>SHOW CREATE DATABASE mydb\G</code> 查看现有的数据库的定义。<code>\G</code>每列打印单独的行，后面不需要再加分号。</p>
+</li>
+<li><p><code>DROP DATABASE db_name;</code></p>
+<p>  一个数据库就是MySQL数据目录里的一个子目录，这个子目录用于存放数据表视图和触发器等。如果该语句失效，则需要手动删除该数据库子目录里的遗留文件和子目录本身，然后再发出该语句。</p>
+</li>
+<li><p><code>ALTER DATABASE [db_name] [CHARACTER SET charset] [COLLATE collation];</code></p>
+<p>  改变数据库的全局特性，也就是默认字符集和排序规则。这里SCHEMA是DATABASE的同义词。</p>
+</li>
+</ul>
+<h1 id="数据表的创建，删除，索引和变更"><a href="#数据表的创建，删除，索引和变更" class="headerlink" title="数据表的创建，删除，索引和变更"></a>数据表的创建，删除，索引和变更</h1><p>MySQL为管理不同类型的数据表而支持几种不同的存储引擎(数据表处理器)。由同一个存储引擎所实现的数据表具有一些共同的属性或者特征。</p>
+<table>
+<thead>
+<tr>
+<th>引擎</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARCHIVE</td>
+<td style="text-align:center">数据存档，不能修改</td>
+</tr>
+<tr>
+<td>CSV</td>
+<td style="text-align:center">存储CSV</td>
+</tr>
+<tr>
+<td>InnoDB</td>
+<td style="text-align:center">具备外键支持功能的事务处理引擎</td>
+</tr>
+<tr>
+<td>MyISAM</td>
+<td style="text-align:center">默认的存储引擎</td>
+</tr>
+<tr>
+<td>MEMORY</td>
+<td style="text-align:center">内存里的数据表</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>SHOW ENGINES</code>查出服务器都知道哪些存储引擎。</p>
+<p>  <code>Transactions</code>表明存储引擎是否支持事务，<code>XA</code>表明存储引擎是否支持分布式事务处理，<code>Savepoints</code>是否支持部分事务回滚。</p>
+<p>  另外一种方式是<code>SELECT ENGINE FROM INFORMATION_SCHEMA.ENGINES;</code>也可以查出所有的存储引擎。</p>
+</li>
+</ul>
+<p>每创建一个数据表，MySQL就会创建一个硬盘文件来保存该数据表的格式(定义)，<code>.frm</code>，存储在相应database名的目录下。然后不同的存储引擎会为特定数据表创建几个特定的文件。</p>
+<table>
+<thead>
+<tr>
+<th>引擎</th>
+<th style="text-align:center">文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MyISAM</td>
+<td style="text-align:center">.MYD(数据), .MYI(索引)</td>
+</tr>
+<tr>
+<td>InnoDB</td>
+<td style="text-align:center">.ibd(数据和索引)</td>
+</tr>
+<tr>
+<td>CSV</td>
+<td style="text-align:center">.CSV(数据), .CSM(元数据)</td>
+</tr>
+<tr>
+<td>ARCHIVE</td>
+<td style="text-align:center">.ARZ(数据), .ARM(元数据)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="MyISAM存储引擎"><a href="#MyISAM存储引擎" class="headerlink" title="MyISAM存储引擎"></a>MyISAM存储引擎</h2><ul>
+<li><p>提供了索引压缩功能</p>
+<p>  MyISAM使用前缀压缩来减少索引的大小，从而让更多的索引可以放入内存中，默认只压缩字符串，但通过参数配置也可以对整数做压缩，myisam压缩每个索引块的方法是，先完全保存索引块中的第一个值，然后将其他值和第一个值进行比较得到相同前缀的字节数（长度）和剩余的不同后缀部分（即把相同部分去掉），把这部分存储起来即可（相同前缀长度和不同后缀部分字符串）。如：索引块中的第一个值是perform，第二个是performance，那么第二个值的前缀压缩后存储的是类似7,ance，这样的形式，myisam对行指针也采用类似的前缀压缩方式。</p>
+<p>  　　压缩块使用更少的空间，代价是某些操作可能更慢，因为每个值的压缩前缀都依赖于前面的值，所以myisam查找时无法在索引块使用二分查找而只能从头开始扫描，正序的扫描速度还不错，但如果是倒序扫描，如：order by desc就不是很好了，所有在块中查找某一行的操作平均都需要扫描半个索引块。</p>
+<p>  测试表明，对于CPU密集型应用，因为扫描需要随机查找，压缩索引使得myisam在索引查找上要慢好几倍，压缩索引的倒序扫描就更慢了，压缩索引需要在CPU内存资源与磁盘之间做权衡，压缩索引可能只需要十分之一大小的磁盘，如果是IO密集型应用，对于某些查询带来的好处会比成本多很多。即压缩索引适合IO密集型应用，不太适合CPU密集型应用。</p>
+<p>  可以在create table语句中指定pack_keys参数来控制myisam表的索引压缩方式：</p>
+<p>  <code>PACK_KEYS [=] {0 | 1 | DEFAULT}</code></p>
+<p>  0：　　表示关闭索引压缩</p>
+<p>  1：　　表示开启数字和字符串压缩</p>
+<p>  default：表示只压缩超长字符串char和varchar列</p>
+<p>  如果建表时不指定这个选项，那么默认只压缩字符串，不压缩数字</p>
+</li>
+<li><p>为<code>AUTO_INCREMENT</code>数据列提供了更多的功能</p>
+</li>
+<li>有一个标志来说明数据表是否需要进行修复</li>
+<li>支持全文检索，需要通过FULLTEXT索引实现</li>
+<li>支持空间数据类型和SPATIAL索引</li>
+</ul>
+<h2 id="MEMORY存储引擎"><a href="#MEMORY存储引擎" class="headerlink" title="MEMORY存储引擎"></a>MEMORY存储引擎</h2><ul>
+<li>散列索引，因此不太适合排序，范围比较</li>
+<li>数据行使用的长度固定不变的格式</li>
+<li>可以加入BTREE索引来加快范围比较的速度</li>
+</ul>
+<h2 id="InnoDB的存储引擎"><a href="#InnoDB的存储引擎" class="headerlink" title="InnoDB的存储引擎"></a>InnoDB的存储引擎</h2><ul>
+<li>支持提交和回滚操作</li>
+<li>系统崩溃，自动恢复</li>
+<li>外键和引用完整性支持，递归式删除和更新</li>
+<li>数据行级别的锁定</li>
+<li>数据表集中存储在一个共享的表空间里，也可以为每一个数据表分别创建一个表空间。这时，数据表在它的数据库子目录里有一个对应的ibd文件。</li>
+</ul>
+<h2 id="存储引擎的可移植性"><a href="#存储引擎的可移植性" class="headerlink" title="存储引擎的可移植性"></a>存储引擎的可移植性</h2><ul>
+<li>使用mysqldump工具备份，然后在另一台服务器上载入备份</li>
+<li>二进制可移植性</li>
+</ul>
+<p>MyISAM和InnoDB数据表存储格式和机器无关，具备二进制可移植性。但是有一个前提条件，被移植的数据表不含有任何浮点数据列，或者两台机器使用的浮点数存储格式是一样的。另外对于InnoDB数据库和数据表的名字应该是小写字母。</p>
+<p>MAC中的mysql数据在: <code>/usr/local/mysql/data/</code>，下面每一个文件夹都是一个数据库，再往里就是每个数据库的数据表文件了，InnoDB就有frm和ibd文件</p>
+<h2 id="创建数据表"><a href="#创建数据表" class="headerlink" title="创建数据表"></a>创建数据表</h2><p>创建数据表需要给出数据表名字和数据列，其中包含各个数据列的定义，也可以指定如何创建索引。另一种方法是先创建一个不带索引的数据表，然后再加上索引，这种方式在查询之前填充大量数据的时候比较好，比每次插入数据都要刷新索引要好。</p>
+<ol>
+<li><p>数据表选项</p>
+<p> <code>CREATE TABLE mytbl (...) ENGINE=InnoDB;</code>创建一个使用InnoDB引擎的数据表。</p>
+<p> <code>SHOW CREATE TABLE t \G</code>查询数据表使用的什么引擎。</p>
+<p> <code>SHOW TABLE STATUS</code>查询该数据库中所有数据表的状态。</p>
+<p> <code>ALTER TABLE mytbl ENGINE=InnoDB;</code>改变某一个数据表选项。</p>
+<ul>
+<li><code>AUTO_INCREMENT=n</code>为数据表设定一个起始编号值</li>
+<li><code>[DEFAULT] CHARACTER SET=charset</code>为数据表指定一个默认字符集，(<code>CHARACTER SET==CHARSET</code>)，如果字符串数据列没有明确表示它使用哪个字符集，那么就会使用这个选项指定的字符集。</li>
+</ul>
+</li>
+<li><p><code>CREATE TABLE IF NOT EXIST</code>创建原本没有的数据表。<code>DROP TABLE IF EXIST</code></p>
+</li>
+<li><code>CREATE TEMPORARY TABLE tab_name</code>将创建一个临时数据表，在与服务器断开时候自动消失。<code>DROP TEMPORARY TABLE</code></li>
+<li><p>从其他数据表或者查询结果创建数据表</p>
+<ul>
+<li><code>CREATE TABLE ... LIKE</code>会将原始表结构全部复制过来，包括索引，但是内容是空的。后面可以<code>INSERT INTO new_tbl_name SELECT * FROM tbl_name</code></li>
+<li><code>CREATE TABLE ... SELECT</code>从任意一条select语句的查询结果创建新的数据表。但是不会复制数据列属性和索引。</li>
+</ul>
+</li>
+<li><p>使用MERGE数据表</p>
+<p> MERGE存储引擎把一组MyISAM表当成一个逻辑单元来对待，可以对它们同时进行查询。这组表必须有完全一样的结构。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE log_CCYY</div><div class="line">&#123;</div><div class="line">    dt DATETIME NOT NULL,</div><div class="line">    info VARCHAR(100) NOT NULL,</div><div class="line">    INDEX (dt)</div><div class="line">&#125; ENGINE = MyISAM;</div><div class="line"></div><div class="line">CREATE TABLE log_merge</div><div class="line">&#123;</div><div class="line">    dt DATETIME NOT NULL,</div><div class="line">    info VARCHAR(100) NOT NULL,</div><div class="line">    INDEX (dt)</div><div class="line">&#125; ENGINE = MERGE UNION = &#123;log_2004, log_2005&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="删除数据表"><a href="#删除数据表" class="headerlink" title="删除数据表"></a>删除数据表</h2><ul>
+<li><code>DROP TABLE tbl_name;</code></li>
+<li>也可以删除多个表：<code>DROP TABLE tbl_name1, tbl_name2;</code></li>
+<li><code>DROP TABLE IF EXISTS tbl_name;</code></li>
+<li><code>DROP TEMPORARY TABLE tbl_name;</code></li>
+</ul>
+<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li>MySQL技术内幕 第四版 (Paul Dubois)</li>
+<li><a href="https://www.cnblogs.com/xiaoboluo768/p/5166939.html" target="_blank" rel="external">myisam压缩（前缀压缩）索引
+</a></li>
+</ol>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/11/12/mysql_技术内幕_note/" target="_blank" rel="external">http://skyrover.me/2017/11/12/mysql_技术内幕_note/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Database/">Database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/12/mysql_技术内幕_note/&title=《笔记 - MySQL技术内幕(一)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/12/mysql_技术内幕_note/&title=《笔记 - MySQL技术内幕(一)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/12/mysql_技术内幕_note/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《笔记 - MySQL技术内幕(一)》 — SkyRover&url=http://skyrover.me/2017/11/12/mysql_技术内幕_note/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/12/mysql_技术内幕_note/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/11/11/session_and_cookie/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">session和数据存储</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/12/mysql_技术内幕_note/&title=《笔记 - MySQL技术内幕(一)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/12/mysql_技术内幕_note/&title=《笔记 - MySQL技术内幕(一)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/12/mysql_技术内幕_note/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《笔记 - MySQL技术内幕(一)》 — SkyRover&url=http://skyrover.me/2017/11/12/mysql_技术内幕_note/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/12/mysql_技术内幕_note/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIElEQVR42u3aS27DMAwFwNz/0inQbRrlUVQKmB6tCjtRPF6w4ufxiNfzd+VX3t19vf56991nDiwMDIzLMp7LtX7EZ3El7Hx/DAyMuzHWQXYdQJNXsH649SeTfwAYGBgYyQ9Ug2yyMwYGBsapgJunvvnOGBgYGHtJbCeMdhLmw7k4BgbGBRnVxsB//v3F/gYGBsZFGM+t1S/l74Xjt3tiYGCMZuTpaH/8Io+T1SYBBgbGbEYnHc2La2dbAn/siYGBMZqxV47Pi27Jt3JYK9vGwMAYyjiV1n4v6cXAwLgPIwmI1et5JX8NKxxSMTAwhjKSIYbkuNYZnuikuB/6GxgYGCMYe1vnx8pOI6GKxMDAuA+j2hKoBuJ1ME1C84eWAAYGxlBGtX2YbL3HqybAmy1MDAyMCzKqgbLabqyOdGyOX2BgYNyAkTcRv1Fc66fEGBgYsxl5wtlpdlanP3IqBgbG3Rh5G2CvqVkOoNXxDgwMjKGM/g9Uv9VpVX4ot2FgYIxmVMth/TZAcgDNGwYYGBj3YeRJbB4ik5fVH+zAwMCYzTi1UVKAywe/MDAwMPKiWDLemhTmkqHVzVEPDAyM0YxTiW7eQujsjIGBcWdGf9jr1EhZHnAfeXTHwMAYxNhLPvMdqkMV5SEPDAwMjK1yWOf4mAdoDAwMjOpjVe/mrQIMDAyMaiJaLZ91Et3oBWFgYIxm7DUG8uJdTtor8GFgYIxm/ACfO5NhqPPqjQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
