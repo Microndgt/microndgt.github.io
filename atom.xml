@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-11-12T09:13:50.000Z</updated>
+  <updated>2017-11-12T13:17:29.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -19,8 +19,8 @@
     <title>笔记 - MySQL技术内幕(一)</title>
     <link href="http://skyrover.me/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_note/"/>
     <id>http://skyrover.me/2017/11/12/mysql_技术内幕_note/</id>
-    <published>2017-11-12T09:22:14.000Z</published>
-    <updated>2017-11-12T09:13:50.000Z</updated>
+    <published>2017-11-12T13:22:14.000Z</published>
+    <updated>2017-11-12T13:17:29.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="MySQL服务器的SQL模式"><a href="#MySQL服务器的SQL模式" class="headerlink" title="MySQL服务器的SQL模式"></a>MySQL服务器的SQL模式</h1><p>影响的行为包括在数据录入阶段如何处理非法数据，如何引用各种标识符等。</p>
 <p>查询一个数据库的会话级或者全局级的SQL模式的当前值：</p>
@@ -183,7 +183,61 @@
 <li><code>DROP TABLE IF EXISTS tbl_name;</code></li>
 <li><code>DROP TEMPORARY TABLE tbl_name;</code></li>
 </ul>
-<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><p>索引是加快对数据表内容的访问速度的手段，特别是多个数据表的关联查询中。</p>
+<ul>
+<li>可以为单个数据列进行索引，也可以根据多个数据列构建复合索引</li>
+<li>索引可以包含独一无二的值，也可以包含重复的值</li>
+<li>可以为一个数据表建立多个索引</li>
+<li>可以为数据列的一个前缀创建索引，这样使得索引更小并且加快访问速度。</li>
+</ul>
+<p>只有MyISAM支持FULLTEXT或者SAPTIAL索引。当然可以对数据表进行转换以支持相应的索引。<code>ALTER TABLE tbl_name ENGINE=InnoDB;</code></p>
+<ul>
+<li>唯一索引，单列则数据不能重复，多列则组合不能重复</li>
+<li>普通索引，允许索引值重复</li>
+<li>FULLTEXT索引，全文检索，MyISAM数据表</li>
+<li>SPATIAL索引，MyISAM数据表和空间数据类型</li>
+<li>HASH索引，MEMORY数据表的默认索引，可以改用BTREE索引代替这个索引。</li>
+</ul>
+<p><code>ALTER TABLE tbl_name ADD INDEX index_name (index_columns);</code></p>
+<p>其中<code>index_name</code>是可选的，是索引的名字。<code>index_columns</code>是想加索引的一个或者多个数据列。还有其他索引是<code>UNIQUE</code>, <code>PRIMARY KEY</code>, <code>FULLTEXT</code>, <code>SPATIAL</code>。另外，如果是<code>PRIMARY KEY</code>和<code>SPATIAL</code>索引，必须是<code>NOT NULL</code>属性。</p>
+<p>每个数据表只能有一个<code>PRIMARY KEY</code>，因为<code>PRIMARY KEY</code>的索引名字总是PRIMARY，而同一个数据表不能有两个同名索引。</p>
+<p><code>PRIMARY KEY</code>不能有NULL值，而UNIQUE可以，因为索引的多个NULL值被认为代表多个不同的东西。</p>
+<p>可以使用<code>CREATE INDEX</code>添加索引：<code>CREATE INDEX index_name ON tbl_name (index_columns);</code>，这里<code>index_name</code>是必须给定的。</p>
+<p>在CREATE表的时候可以为它创建索引，索引名字是可选的。可以在每一列定义后面进行，也可以在建表语句后面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE tbl_name(</div><div class="line">    i INT NOT NULL PRIMARY KEY,</div><div class="line">    j CHAR(10) NOT NULL UNIQUE,</div><div class="line">    ... column definitions...</div><div class="line">    INDEX index_name (index_columns),</div><div class="line">    UNIQUE index_name (index_columns),</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>MEMORY表默认是HASH索引，可以加上<code>USING BTREE</code>来建立BTREE索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE tbl_name(</div><div class="line">    id INT NOT NULL,</div><div class="line">    name CHAR(100),</div><div class="line">    ... column definitions...</div><div class="line">    INDEX USING BTREE (id)</div><div class="line">) ENGINE = MEMORY;</div></pre></td></tr></table></figure>
+<p>使用前缀索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE tbl_name(</div><div class="line">    name CHAR(30) NOT NULL,</div><div class="line">    INDEX (name(10))</div><div class="line">);</div></pre></td></tr></table></figure>
+<h2 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h2><ul>
+<li><code>DROP INDEX index_name on tbl_name;</code>，必须指定<code>index_name</code></li>
+<li>删除<code>PRIMARY KEY</code>: <code>index_name</code>是PRIMARY，而且两边加上反引号。因为一个数据表只有一个PRIMARY KEY，而且名字总是PRIMARY</li>
+<li><code>ALTER TABLE tbl_name DROP INDEX index_name;</code></li>
+<li><code>ALTER TABLE tbl_name DROP PRIMARY KEY;</code></li>
+<li><code>SHOW CREATE TABLE</code>或者<code>SHOW INDEX FROM tbl_name</code>显示索引。</li>
+</ul>
+<h2 id="改变数据表的结构"><a href="#改变数据表的结构" class="headerlink" title="改变数据表的结构"></a>改变数据表的结构</h2><p><code>ALTER TABLE tbl_name action...</code></p>
+<ol>
+<li><p>改变数据列的数据类型</p>
+<ul>
+<li><code>ALTER TABLE mytbl MODIFY i MEDIUMINT UNSIGNED;</code></li>
+<li><code>ALTER TABLE mytbl CHANGE i i MEDIUMINT UNSIGNED;</code>，CHANGE可以改变i数据列的名字，因此需要输入两遍，因此可以修改数据列的名字(保持原有定义不变)</li>
+<li><code>ALTER TABLE t MODIFY c CHAR(20) CHARSET utf8;</code></li>
+</ul>
+</li>
+<li><p>数据表改用另一种存储引擎</p>
+<p> <code>ALTER TABLE tbl_name ENGINE = engine_name</code></p>
+</li>
+<li><p>重新命名一个数据表</p>
+<ul>
+<li><code>ALTER TABLE tbl_name RENAME TO new_tbl_name;</code></li>
+<li><code>RENAME TABLE old_name TO new_name;</code></li>
+<li><code>RENAME TABLE old_name1 TO new_name, old_name2 TO new_name2;</code></li>
+<li><code>RENAME TABLE db.t TO test.t;</code></li>
+</ul>
+</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li>MySQL技术内幕 第四版 (Paul Dubois)</li>
 <li><a href="https://www.cnblogs.com/xiaoboluo768/p/5166939.html" target="_blank" rel="external">myisam压缩（前缀压缩）索引
 </a></li>
