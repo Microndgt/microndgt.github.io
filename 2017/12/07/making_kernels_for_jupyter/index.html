@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>翻译 - Making kernels for Jupyter | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="翻译,Python,Jupyter">
+    <meta name="description" content="翻译自: Making kernels for Jupyter Making kernels for Jupyter一个内核是运行和解析用户代码的程序。IPython包含了一个运行和解析Python代码的内核，而且人们已经写了多种语言的内核。 当Jupyter开始一个内核的时候，它会传递它一个连接文件。它指定了如何与前端开始通信。 关于写一个内核有两个选项：  你可以重用IPython内核机制来处">
+<meta name="keywords" content="翻译,Python,Jupyter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="翻译 - Making kernels for Jupyter">
+<meta property="og:url" content="http://skyrover.me/2017/12/07/making_kernels_for_jupyter/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="翻译自: Making kernels for Jupyter Making kernels for Jupyter一个内核是运行和解析用户代码的程序。IPython包含了一个运行和解析Python代码的内核，而且人们已经写了多种语言的内核。 当Jupyter开始一个内核的时候，它会传递它一个连接文件。它指定了如何与前端开始通信。 关于写一个内核有两个选项：  你可以重用IPython内核机制来处">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-07T07:02:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="翻译 - Making kernels for Jupyter">
+<meta name="twitter:description" content="翻译自: Making kernels for Jupyter Making kernels for Jupyter一个内核是运行和解析用户代码的程序。IPython包含了一个运行和解析Python代码的内核，而且人们已经写了多种语言的内核。 当Jupyter开始一个内核的时候，它会传递它一个连接文件。它指定了如何与前端开始通信。 关于写一个内核有两个选项：  你可以重用IPython内核机制来处">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">翻译 - Making kernels for Jupyter</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">翻译 - Making kernels for Jupyter</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-12-07T07:01:35.000Z" itemprop="datePublished" class="page-time">
+  2017-12-07 15:01:35
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Making-kernels-for-Jupyter"><span class="post-toc-number">1.</span> <span class="post-toc-text">Making kernels for Jupyter</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Connection-files"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Connection files</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Handling-messages"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Handling messages</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Kernel-specs"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Kernel specs</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Making-simple-Python-wrapper-kernels"><span class="post-toc-number">2.</span> <span class="post-toc-text">Making simple Python wrapper kernels</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Required-steps"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Required steps</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Example"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Example</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-making_kernels_for_jupyter"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">翻译 - Making kernels for Jupyter</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-12-07 15:01:35 15:01:35" datetime="2017-12-07T07:01:35.000Z"  itemprop="datePublished">2017-12-07 15:01:35</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>翻译自: <a href="http://jupyter-client.readthedocs.io/en/latest/kernels.html" target="_blank" rel="external">Making kernels for Jupyter</a></p>
+<h1 id="Making-kernels-for-Jupyter"><a href="#Making-kernels-for-Jupyter" class="headerlink" title="Making kernels for Jupyter"></a>Making kernels for Jupyter</h1><p>一个内核是运行和解析用户代码的程序。IPython包含了一个运行和解析Python代码的内核，而且人们已经写了多种语言的内核。</p>
+<p>当Jupyter开始一个内核的时候，它会传递它一个连接文件。它指定了如何与前端开始通信。</p>
+<p>关于写一个内核有两个选项：</p>
+<ul>
+<li>你可以重用IPython内核机制来处理通信，只需要描述如何运行你的代码就行了。如果你的目标语言可以被Python驱动的话，这种方式就比较简单。请查看<a href="http://jupyter-client.readthedocs.io/en/latest/wrapperkernels.html" target="_blank" rel="external">Making simple Python wrapper kernels</a>以获得详细细节。</li>
+<li>你可以使用目标语言了实现这个内核。开始这个工作会很多，但是后面如果有人开始用你的内核，就会有人来贡献代码。</li>
+</ul>
+<h2 id="Connection-files"><a href="#Connection-files" class="headerlink" title="Connection files"></a>Connection files</h2><p>当内核开始的时候将会传入一个连接文件的路径(查看Kernel Specs 如何为你的内核指定命令行参数)。这个文件，只对当前用户可用，会包含类似下面的一个JSON字典。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;control_port&quot;: 50160,</div><div class="line">  &quot;shell_port&quot;: 57503,</div><div class="line">  &quot;transport&quot;: &quot;tcp&quot;,</div><div class="line">  &quot;signature_scheme&quot;: &quot;hmac-sha256&quot;,</div><div class="line">  &quot;stdin_port&quot;: 52597,</div><div class="line">  &quot;hb_port&quot;: 42540,</div><div class="line">  &quot;ip&quot;: &quot;127.0.0.1&quot;,</div><div class="line">  &quot;iopub_port&quot;: 40885,</div><div class="line">  &quot;key&quot;: &quot;a0436f6c-1916-498b-8eb9-e81ab9368e84&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>transport</code>, <code>ip</code>和制定了内核应该使用ZeroMQ绑定的五个<code>_port</code>。比如shell套接字的地址应该是：<code>tcp://127.0.0.1:57503</code></p>
+<p>在每个内核开始的时候会指定随意的端口。<code>signature_scheme</code>和<code>key</code>用来加密信息，因此系统的其他用户不能发送代码来运行内核。</p>
+<h2 id="Handling-messages"><a href="#Handling-messages" class="headerlink" title="Handling messages"></a>Handling messages</h2><p>在读取连接文件后和绑定必须的套接字之后，内核应该进入一个事件循环，监听hb(heartbeat)，control和shell套接字。</p>
+<p>Heartbeat消息应该在同样的套接字上立即返回，前端使用这个消息来检查内核是否在线。</p>
+<p>control和shell套接字的消息应该被解析，而且它们的签名应该是有效的。</p>
+<p>内核会在iopub套接字上发送消息以展示输出，在stdin套接字上提示用户来输入。</p>
+<h2 id="Kernel-specs"><a href="#Kernel-specs" class="headerlink" title="Kernel specs"></a>Kernel specs</h2><p>通过创建一个目录来让IPython识别一个内核，名字就是内核的标识符。目录可能在不同的位置</p>
+<ul>
+<li><p>System:</p>
+<ul>
+<li><code>/usr/share/jupyter/kernels</code></li>
+<li><code>/usr/local/share/jupyter/kernels</code></li>
+</ul>
+</li>
+<li><p>Env:</p>
+<ul>
+<li><code>{sys.prefix}/share/jupyter/kernels</code></li>
+</ul>
+</li>
+<li><p>User:</p>
+<ul>
+<li><code>~/.local/share/jupyter/kernels</code> (Linux)</li>
+<li><code>~/Library/Jupyter/kernels</code> (Mac)</li>
+</ul>
+</li>
+</ul>
+<p>用户位置的优先级高于系统级别的，忽略名字的大小写。因此不论系统是否大小写敏感，都可以以同样的烦噶事来获取内核。因为内核名字会在URL出现，因此内核名字需要是一个简单的，只使用ASCII字母，数字和简单的分隔符<code>-</code>, <code>.</code>, <code>_</code></p>
+<p>如果设置了<code>JUPYTER_PATH</code>环境变量的话，也会搜索其他位置。</p>
+<p>在内核文件夹下，现在会使用三种类型的文件。<code>kernel.json</code>, <code>kernel.js</code>和log图片文件。目前，没有使用其他文件，但是将来可能会改变。</p>
+<p>最重要的文件是<code>kernel.json</code>，应该是一个json序列化的字典包含以下字段</p>
+<ul>
+<li><code>argv</code>: 用来启动内核的命令行参数列表。<code>{connection_file}</code>将会被实际的连接文件的路径替换。</li>
+<li><code>display_name</code>: 在UI上展示的内核名字。不像在API中使用的内核名字，这里的名字可以包含任意字符。</li>
+<li><code>language</code>: 内核的语言名字。当载入notebook的时候，如果没有找到匹配的内核，那么匹配相应语言的内核将会被启动。这样允许一个写了任何Python或者julia内核的notebook可以与用户的Python或者julia内核合适的联系起来，即使它们没有在与用户内核同样的名字下。</li>
+<li><code>interrupt_mode</code>：可能是signal或者message指定了客户端如何在这个内核中停止单元运行。是通过发送一个信号呢，还是发送一个<code>interrupt_request</code>消息在control channel。如果没有指定，将默认使用signal模式。</li>
+<li><code>env</code>：为内核设置的环境变量。在内核启动前，会添加到当前的环境变量里。</li>
+<li><code>metadata</code>：关于这个内核的其他相关属性。帮助客户端选择内核。</li>
+</ul>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"> &quot;argv&quot;: [&quot;python3&quot;, &quot;-m&quot;, &quot;IPython.kernel&quot;,</div><div class="line">          &quot;-f&quot;, &quot;&#123;connection_file&#125;&quot;],</div><div class="line"> &quot;display_name&quot;: &quot;Python 3&quot;,</div><div class="line"> &quot;language&quot;: &quot;python&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>查看有多少可用内核:<code>jupyter kernelspec list</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Available kernels:</div><div class="line">  python3    /Users/kevin/anaconda/lib/python3.5/site-packages/ipykernel/resources</div><div class="line">  ir         /Users/kevin/Library/Jupyter/kernels/ir</div></pre></td></tr></table></figure>
+<h1 id="Making-simple-Python-wrapper-kernels"><a href="#Making-simple-Python-wrapper-kernels" class="headerlink" title="Making simple Python wrapper kernels"></a>Making simple Python wrapper kernels</h1><p>你可以重用IPython的内核机制来非常容易的创建新内核。这对于Python绑定的语言来说非常有用。或者可以用pexpect来控制REPL的语言，比如bash</p>
+<h2 id="Required-steps"><a href="#Required-steps" class="headerlink" title="Required steps"></a>Required steps</h2><p>子类化<code>ipykernel.kernelbase.Kernel</code>，然后实现下面的方法和属性</p>
+<ul>
+<li><p><code>class MyKernel</code></p>
+<ul>
+<li><code>implementation</code></li>
+<li><code>implementation_version</code></li>
+<li><p><code>banner</code></p>
+<p>  Kernel info会返回的信息。<code>Implementation</code>指的是内核而不是语言，比如IPython而不是Python。<code>banner</code>是在控制UI上显示第一个提示符之前的东西。这些都是字符串</p>
+</li>
+<li><p><code>language_info</code></p>
+<p>  Kernel info会返回的信息字典。应该包含<code>mimetype</code>键，值是目标语言的mimetype，比如<code>text/x-python</code>。name键是实现的语言比如<code>python</code>，<code>file_extension</code>比如<code>.py</code>，而且也可能根据不同语言包含<code>codemirror_mode</code>和<code>pygments_lexer</code></p>
+</li>
+<li><p><code>do_execute(code, silent, store_history=True, user_expressions=None, allow_stdin=False)</code></p>
+<p>  执行用户代码</p>
+<ul>
+<li>code：要执行的代码</li>
+<li>silent：是否展示输出</li>
+<li><code>store_history</code>: 是否在历史里记录代码，并且增加执行次数。</li>
+<li><code>user_expressions</code>：在代码被执行后对这些表达式求值</li>
+<li><p><code>allow_stdin</code>：前端是否提供输入请求</p>
+<p>你的方法应该返回一个字典，包含在<code>Execution results</code>规定的字典。为了展现输出，它可以使用<code>send_response()</code>来发送消息。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>为了启动你的内核，在模块后面加上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    from ipykernel.kernelapp import IPKernelApp</div><div class="line">    IPKernelApp.launch_instance(kernel_class=MyKernel)</div></pre></td></tr></table></figure>
+<p>现在创建一个JSON的内核说明文件，然后通过<code>jupyter kernelspec install &lt;/path/to/kernel&gt;</code>。将你的内核模块放在Python可以导入的地方，一般是当前目录(做测试)。最后，你可以使用<code>jupyter console --kernel &lt;mykernelname&gt;</code>来运行你的内核。</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><code>echokernel.py</code>会简单的将输入输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">from ipykernel.kernelbase import Kernel</div><div class="line"></div><div class="line">class EchoKernel(Kernel):</div><div class="line">    implementation = &apos;Echo&apos;</div><div class="line">    implementation_version = &apos;1.0&apos;</div><div class="line">    language = &apos;no-op&apos;</div><div class="line">    language_version = &apos;0.1&apos;</div><div class="line">    language_info = &#123;</div><div class="line">        &apos;name&apos;: &apos;Any text&apos;,</div><div class="line">        &apos;mimetype&apos;: &apos;text/plain&apos;,</div><div class="line">        &apos;file_extension&apos;: &apos;.txt&apos;,</div><div class="line">    &#125;</div><div class="line">    banner = &quot;Echo kernel - as useful as a parrot&quot;</div><div class="line"></div><div class="line">    def do_execute(self, code, silent, store_history=True, user_expressions=None,</div><div class="line">                   allow_stdin=False):</div><div class="line">        if not silent:</div><div class="line">            stream_content = &#123;&apos;name&apos;: &apos;stdout&apos;, &apos;text&apos;: code&#125;</div><div class="line">            self.send_response(self.iopub_socket, &apos;stream&apos;, stream_content)</div><div class="line"></div><div class="line">        return &#123;&apos;status&apos;: &apos;ok&apos;,</div><div class="line">                # The base class increments the execution count</div><div class="line">                &apos;execution_count&apos;: self.execution_count,</div><div class="line">                &apos;payload&apos;: [],</div><div class="line">                &apos;user_expressions&apos;: &#123;&#125;,</div><div class="line">               &#125;</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    from ipykernel.kernelapp import IPKernelApp</div><div class="line">    IPKernelApp.launch_instance(kernel_class=EchoKernel)</div></pre></td></tr></table></figure>
+<p>下面是内核说明文件<code>kernel.json</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;argv&quot;:[&quot;python&quot;,&quot;-m&quot;,&quot;echokernel&quot;, &quot;-f&quot;, &quot;&#123;connection_file&#125;&quot;],</div><div class="line"> &quot;display_name&quot;:&quot;Echo&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/12/07/making_kernels_for_jupyter/" target="_blank" rel="external">http://skyrover.me/2017/12/07/making_kernels_for_jupyter/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jupyter/">Jupyter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/&title=《翻译 - Making kernels for Jupyter》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/&title=《翻译 - Making kernels for Jupyter》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 - Making kernels for Jupyter》 — SkyRover&url=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/12/07/messaging_in_jupyter/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">翻译 - Messaging in Jupyter</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/&title=《翻译 - Making kernels for Jupyter》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/&title=《翻译 - Making kernels for Jupyter》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《翻译 - Making kernels for Jupyter》 — SkyRover&url=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/12/07/making_kernels_for_jupyter/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNUlEQVR42u3ay67CMAxFUf7/p4PECKk0Pcd2UePsjK6uoHgxMPHj9ZLP+Jzjf77/P07O8Qnz1xw/q+zAgAFjWcaYnrMg5lSFPY9Ejw0GDBj7MJSw3FR49q55QO5XBgMGDBhuMlWug+5lEQYMGDAyCTd/BXzE7wYMGDAWYShFrHLVy5SmSiIuqMVhwICxIMMdDPzz7xvnGzBgwFiEMcxTdSl0E+tFVDBgwGjNmAcUy2yxcjTWpJP2QWDAgLE4Q1nMUi5qbtmpN9GkdA8DBozWDHepQml4uRfKTDkNAwaMHRh6MlVSoT5UiA0STuOBAQNGa4bboM8kU+WCGCt6YcCA0ZuhF7H6KoabNAuWw2DAgNGa4RaWsRGCuy/hDjthwICxD+OOhS09sebZMGDA2IHhDhTdclRvxgUTOgwYMJoy9I/XYbHXpC6jMGDAaM3IrDu4K1z5MrWYBAMGjMUZsQGAnkxjz3GTNQwYMHowlPJSLyZ1gBKDvkAGAwaM3gwlXPfRmXI0tsYBAwaM3gy9Ta+vbbkNu/yiBgwYMHZg6IPMqmUv9xp68QQYMGC0ZriATKpVeLEmIAwYMHozhnncW9k8uMyi2I/fDRgwYDRlxJplsQ+IrYLlx6UwYMDowVCSbCYhukk5+F4YMGBswKhNsu5XUzAEhQEDBoxQwnWvjDq+rGsIAwaM1gy9+aUPSt3UXzzChAEDxuMZeprTV8Qyi19uDDBgwOjNyBeQmSad0lArw8CAAWM9xhuQFWqYuAPaSgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

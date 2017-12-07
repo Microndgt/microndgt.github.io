@@ -29,7 +29,7 @@
 <meta property="og:description" content="翻译自：Messaging in Jupyter 这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。 介绍基本的设计可以用下图来解释：">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://skyrover.me/img/messaging_in_jupyter.png">
-<meta property="og:updated_time" content="2017-12-07T01:52:17.000Z">
+<meta property="og:updated_time" content="2017-12-07T03:06:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="翻译 - Messaging in Jupyter">
 <meta name="twitter:description" content="翻译自：Messaging in Jupyter 这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。 介绍基本的设计可以用下图来解释：">
@@ -268,7 +268,7 @@
 <h2 id="Payloads-DEPRECATED"><a href="#Payloads-DEPRECATED" class="headerlink" title="Payloads (DEPRECATED)"></a>Payloads (DEPRECATED)</h2><p>payloads是一种从内核来触发前端动作。目前的payloads：</p>
 <ul>
 <li><p>page: 以分页的形式展现数据</p>
-<p>  分页输出用来内省，或者其他不被认为是输出的显示信息。分页载荷一般被在单独的面板中展示，可以在代码旁边看到，而且不包括在notebook文档里。</p>
+<p>  分页输出用来解析，或者其他不被认为是输出的显示信息。分页载荷一般被在单独的面板中展示，可以在代码旁边看到，而且不包括在notebook文档里。</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;page&quot;,</div><div class="line"># 必须包括text/plain.</div><div class="line">&quot;data&quot;: mimebundle,</div><div class="line">&quot;start&quot;: int,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 <li><p><code>set_next_input</code>: 创建一个新的输出</p>
@@ -286,7 +286,7 @@
 </ul>
 <h2 id="Introspection"><a href="#Introspection" class="headerlink" title="Introspection"></a>Introspection</h2><p>代码可以被检查用来给用户展示有用的信息。由内核决定哪些信息应该被展示，而且还有它的格式</p>
 <p>信息类型：<code>inspect_request</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # 内省被请求的代码上下文</div><div class="line">    &apos;code&apos; : str,</div><div class="line"></div><div class="line">    &apos;cursor_pos&apos; : int,</div><div class="line"></div><div class="line">    &apos;detail_level&apos; : 0 or 1,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # 解析被请求的代码上下文</div><div class="line">    &apos;code&apos; : str,</div><div class="line"></div><div class="line">    &apos;cursor_pos&apos; : int,</div><div class="line"></div><div class="line">    &apos;detail_level&apos; : 0 or 1,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="Connect"><a href="#Connect" class="headerlink" title="Connect"></a>Connect</h2><p>当一个客户端连接一个内核的request/reply套接字时候，它可以发起一个连接请求来获取内核的基本信息，比如其他ZeroMQ监听的端口。这样允许客户端仅仅需要知道一个连接到kernel的端口(sehll channel)就行了。其他的内核监听的channels都应该包含了响应中。如果有被忽略的端口，表明这个channel没有运行。</p>
 <p>消息类型：<code>connect_request</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">content = &#123;&#125;</div></pre></td></tr></table></figure>
@@ -388,7 +388,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/12/07/making_kernels_for_jupyter/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">翻译 - Making kernels for Jupyter</h4>
+      </a>
+    </div>
   
   
     <div class="waves-block waves-effect next">
