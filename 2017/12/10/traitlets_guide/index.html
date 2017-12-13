@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Traitlets Guide | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="翻译,Python,Traitlets">
+    <meta name="description" content="翻译自: Traitlets Guide Using Traitlets总而言之，traitlets可以让用户定义一个类有以下功能：  可以进行类型检查的属性和动态计算默认值 当属性被改变Traits会发起一个改变事件 Traitlets可以进行验证，并且允许在赋值的时候使用新的属性值。允许用户基于其他属性值自定义属性验证逻辑。  Default values, and checking type">
+<meta name="keywords" content="翻译,Python,Traitlets">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Traitlets Guide">
+<meta property="og:url" content="http://skyrover.me/2017/12/10/traitlets_guide/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="翻译自: Traitlets Guide Using Traitlets总而言之，traitlets可以让用户定义一个类有以下功能：  可以进行类型检查的属性和动态计算默认值 当属性被改变Traits会发起一个改变事件 Traitlets可以进行验证，并且允许在赋值的时候使用新的属性值。允许用户基于其他属性值自定义属性验证逻辑。  Default values, and checking type">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-10T13:58:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Traitlets Guide">
+<meta name="twitter:description" content="翻译自: Traitlets Guide Using Traitlets总而言之，traitlets可以让用户定义一个类有以下功能：  可以进行类型检查的属性和动态计算默认值 当属性被改变Traits会发起一个改变事件 Traitlets可以进行验证，并且允许在赋值的时候使用新的属性值。允许用户基于其他属性值自定义属性验证逻辑。  Default values, and checking type">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Traitlets Guide</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Traitlets Guide</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-12-10T13:59:33.000Z" itemprop="datePublished" class="page-time">
+  2017-12-10 21:59:33
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Using-Traitlets"><span class="post-toc-number">1.</span> <span class="post-toc-text">Using Traitlets</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Default-values-and-checking-type-and-value"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Default values, and checking type and value</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#observe"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">observe</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Validation"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Validation</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#后记"><span class="post-toc-number">2.</span> <span class="post-toc-text">后记</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-traitlets_guide"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Traitlets Guide</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-12-10 21:59:33 21:59:33" datetime="2017-12-10T13:59:33.000Z"  itemprop="datePublished">2017-12-10 21:59:33</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>翻译自: <a href="http://traitlets.readthedocs.io/en/stable/using_traitlets.html" target="_blank" rel="external">Traitlets Guide</a></p>
+<h1 id="Using-Traitlets"><a href="#Using-Traitlets" class="headerlink" title="Using Traitlets"></a>Using Traitlets</h1><p>总而言之，traitlets可以让用户定义一个类有以下功能：</p>
+<ol>
+<li>可以进行类型检查的属性和动态计算默认值</li>
+<li>当属性被改变Traits会发起一个改变事件</li>
+<li>Traitlets可以进行验证，并且允许在赋值的时候使用新的属性值。允许用户基于其他属性值自定义属性验证逻辑。</li>
+</ol>
+<h2 id="Default-values-and-checking-type-and-value"><a href="#Default-values-and-checking-type-and-value" class="headerlink" title="Default values, and checking type and value"></a>Default values, and checking type and value</h2><p>最基本的功能，traitlets提供了类型检查，以及在<code>traitlets.HasTraits</code>子类上动态生成默认的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import getpass</div><div class="line"></div><div class="line">class Identity(HasTraits):</div><div class="line">    username = Unicode()</div><div class="line"></div><div class="line">    # 生成默认值</div><div class="line">    @default(&apos;username&apos;)</div><div class="line">    def _default_username(self):</div><div class="line">        return getpass.getuser()</div><div class="line"></div><div class="line"># 类型检查</div><div class="line">class Foo(HasTraits):</div><div class="line">    bar = Int()</div><div class="line"></div><div class="line">foo = Foo(bar=&apos;3&apos;)  # raises a TraitError</div></pre></td></tr></table></figure>
+<p>其中这里有一个<a href="https://docs.python.org/3/library/getpass.html" target="_blank" rel="external">getpass</a>模块，其提供了可移植的密码输入。主要提供了两个函数<code>getpass</code>和<code>getuser</code></p>
+<ul>
+<li><p><code>getpass(prompt=&#39;Password: &#39;, stream=None)</code></p>
+<p>  提示用户没有回显的输入密码。Unix上，提示符被写入到文件对象流中，如果需要会使用替换的错误处理。流默认会输入到控制终端<code>/dev/tty</code>，如果不可用会到<code>sys.stderr</code></p>
+</li>
+<li><p><code>getuser()</code></p>
+<p>  返回用户的登录名，诸如<code>LOGNAME, USER, LNAME, USERNAME</code>的环境变量。</p>
+</li>
+</ul>
+<h2 id="observe"><a href="#observe" class="headerlink" title="observe"></a>observe</h2><p>Traitlets实现了观察者模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class Foo(HasTraits):</div><div class="line">    bar = Int()</div><div class="line">    baz = Unicode()</div><div class="line"></div><div class="line">foo = Foo()</div><div class="line"></div><div class="line">def func(change):</div><div class="line">    print(change[&apos;old&apos;])</div><div class="line">    print(change[&apos;new&apos;])</div><div class="line"></div><div class="line"># 需要观察的变量是bar，用func来处理观察改变事件</div><div class="line">foo.observe(func, names=[&apos;bar&apos;])</div><div class="line">foo.bar = 1  # prints &apos;0\n 1&apos;</div><div class="line">foo.baz = &apos;abc&apos;  # prints nothing</div></pre></td></tr></table></figure>
+<p>如果观察者是类的方法，那么可以使用装饰器语法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Foo(HasTraits):</div><div class="line">    bar = Int()</div><div class="line">    baz = Unicode()</div><div class="line"></div><div class="line">    # 观察变量bar</div><div class="line">    @observe(&apos;bar&apos;)</div><div class="line">    def _observe_bar(self, change):</div><div class="line">        print(change[&apos;old&apos;])</div><div class="line">        print(change[&apos;new&apos;])</div></pre></td></tr></table></figure>
+<h2 id="Validation"><a href="#Validation" class="headerlink" title="Validation"></a>Validation</h2><p>在trait类中自定义验证逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">from traitlets import HasTraits, TraitError, Int, Bool, validate</div><div class="line"></div><div class="line">class Parity(HasTraits):</div><div class="line">    value = Int()</div><div class="line">    parity = Int()</div><div class="line"></div><div class="line">    @validate(&apos;value&apos;)</div><div class="line">    def _valid_value(self, proposal):</div><div class="line">        # 期望的值</div><div class="line">        if proposal[&apos;value&apos;] % 2 != self.parity:</div><div class="line">            raise TraitError(&apos;value and parity should be consistent&apos;)</div><div class="line">        return proposal[&apos;value&apos;]</div><div class="line"></div><div class="line">    @validate(&apos;parity&apos;)</div><div class="line">    def _valid_parity(self, proposal):</div><div class="line">        parity = proposal[&apos;value&apos;]</div><div class="line">        if parity not in [0, 1]:</div><div class="line">            raise TraitError(&apos;parity should be 0 or 1&apos;)</div><div class="line">        if self.value % 2 != parity:</div><div class="line">            raise TraitError(&apos;value and parity should be consistent&apos;)</div><div class="line">        return proposal[&apos;value&apos;]</div><div class="line"></div><div class="line">parity_check = Parity(value=2)</div><div class="line">with parity_check.hold_trait_notifications():</div><div class="line">    parity_check.value = 1</div><div class="line">    parity_check.parity = 1</div></pre></td></tr></table></figure>
+<p>当<code>hold_trait_notifications</code>上下文管理器被释放的时候，如果有验证错误发生，那么改变就会恢复到最初的状态。</p>
+<p>最后，trait类型可以有除了trait改变之外其他的事件。在一个类中如果有值的改变那么就可以触发通知。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>关于Traitlets就先总结于此，若有更深入的再补充。</p>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/12/10/traitlets_guide/" target="_blank" rel="external">http://skyrover.me/2017/12/10/traitlets_guide/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Traitlets/">Traitlets</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/12/10/traitlets_guide/&title=《Traitlets Guide》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/12/10/traitlets_guide/&title=《Traitlets Guide》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/12/10/traitlets_guide/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Traitlets Guide》 — SkyRover&url=http://skyrover.me/2017/12/10/traitlets_guide/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/12/10/traitlets_guide/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/12/13/2017_summary/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">二零一七二三事</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/12/07/making_kernels_for_jupyter/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">翻译 - Making kernels for Jupyter</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/12/10/traitlets_guide/&title=《Traitlets Guide》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/12/10/traitlets_guide/&title=《Traitlets Guide》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/12/10/traitlets_guide/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Traitlets Guide》 — SkyRover&url=http://skyrover.me/2017/12/10/traitlets_guide/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/12/10/traitlets_guide/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIUlEQVR42u3aO27kMBAFQN//0mNgo01G8x5btiGyGBkamVIpaPSHX1/xev1bkyuv/1Z+5eaFgYHxWMbrciUPyHe4Rl7j3+2MgYFxDuM6yH7YIgi7+Qe6xr+9joGBgRGH2jZZfLcbBgYGxoRxV4Bugy8GBgZGW4LOy9c/q8UxMDAeyGgHA7/59w/ONzAwMB7CeJWrLWLzdHD0VhgYGFszrl9lLR2cDw/aD4GBgYGRtPvzplvyv4tNNwwMjGMYay+UPD4PzXnzDgMD4wRG/pjJ8CAPynkaioGBcRqjfZW1oJmXo20BjIGBsTdjUojmL9emku2oAAMD4wRGm/blQXltDJBgoq4hBgbGFoy1ow/z0rQdbX5ISTEwMLZmtGut7Fw7Frb2KwYGxq6M/Na8QE12zp9VHLbAwMDYjrFY9cZ3Tn4tPhMGBsYBjLbpNj+WkRe9xUgAAwPjGEaexk0OXkwGD2/PjGBgYGzKmDTI8nC8NuzME1MMDIy9GXkRe9exiTwdLNpzGBgYhzHyRlt7FGPtEEY0KsDAwNiakZejP30srP0Eb/fHwMDYjjFv6+fJX/5p2p0xMDD2ZrR99UkPLyl3F4tYDAyMAxjtMYsE0N6ZF6tRRY6BgbEpow2CbVI4b9V9+KAYGBgYQRC8d9iwmBpiYGBgxID88W09fUNqiIGB8VhGW8S2QbZN9ZIBAwYGxjmMyWAgb7RNDlVMil4MDIyHM74B49X1G0rCZrQAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
