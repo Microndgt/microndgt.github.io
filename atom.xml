@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-12-13T11:48:43.000Z</updated>
+  <updated>2017-12-15T15:19:48.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,83 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>快捷键大全 - Mac</title>
+    <link href="http://skyrover.me/2017/12/15/shortcut/"/>
+    <id>http://skyrover.me/2017/12/15/shortcut/</id>
+    <published>2017-12-15T15:57:57.000Z</published>
+    <updated>2017-12-15T15:19:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>仅列出自己觉得有用并且常用的快捷键</p>
+<h1 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h1><h2 id="基本控制"><a href="#基本控制" class="headerlink" title="基本控制"></a>基本控制</h2><ul>
+<li><code>shift + command + p</code> 打开命令面板</li>
+<li><code>command + p</code> 快速打开</li>
+<li><code>shift + command + n</code> 新建窗口</li>
+<li><code>command + w</code> 关闭窗口</li>
+<li><code>shift + command + c</code> 打开外部shell</li>
+</ul>
+<h2 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h2><ul>
+<li><code>alt + 上/下</code> 移动一行</li>
+<li><code>shift + alt + 上/下</code> 复制一行</li>
+<li><code>shift + command + k</code> 删除当前行</li>
+<li><code>command + enter</code> 下一行插入</li>
+<li><code>shift + command + enter</code> 上一行插入</li>
+<li><code>command + [/]</code> 缩进，反缩进</li>
+<li><code>command + 上/下</code> 文档首，尾</li>
+<li><code>command + 左/右</code> 行首，尾</li>
+<li><code>command + /</code> 行注释</li>
+<li><code>shift + command + a</code> 块注释</li>
+<li><code>command + I</code> 选择当前行</li>
+</ul>
+<h2 id="多选"><a href="#多选" class="headerlink" title="多选"></a>多选</h2><ul>
+<li><code>alt + click</code> 插入光标</li>
+<li><code>alt + command + 上/下</code> 在上面或者下面增加光标</li>
+</ul>
+<h2 id="搜索替换"><a href="#搜索替换" class="headerlink" title="搜索替换"></a>搜索替换</h2><ul>
+<li><code>alt + command + f</code> 替换</li>
+<li><code>command + g</code> 下一个</li>
+<li><code>shift + command + g</code> 上一个</li>
+<li><code>alt + enter</code> 选择所有查找项</li>
+</ul>
+<h2 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h2><ul>
+<li><code>control + g</code> 跳到第几行</li>
+<li><code>control + -</code> 后退</li>
+<li><code>shift + control + -</code> 前进</li>
+</ul>
+<h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><ul>
+<li><code>command + \</code> 切分窗口</li>
+<li><code>ctrl + tab</code> 文件窗口切换</li>
+<li><code>alt + command + 左/右</code> 切换文件窗口</li>
+<li><code>command + 2/1/3</code> 开始或者切换第二个(同样)文件窗口</li>
+</ul>
+<h2 id="显示"><a href="#显示" class="headerlink" title="显示"></a>显示</h2><ul>
+<li><code>control + command + F</code> 全屏</li>
+<li><code>command + b</code> 显示或者不显示侧边栏</li>
+<li><code>shift + command + e</code> 显示资源管理器</li>
+<li><code>shift + command + x</code> 显示扩展</li>
+<li><code>shift + command + d</code> 显示调试</li>
+<li><code>ctrl + shift + g</code> 显示git</li>
+<li><code>shift + command + U</code> 显示输出</li>
+<li><code>shift + command + f</code> 显示搜索</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;仅列出自己觉得有用并且常用的快捷键&lt;/p&gt;
+&lt;h1 id=&quot;VSCode&quot;&gt;&lt;a href=&quot;#VSCode&quot; class=&quot;headerlink&quot; title=&quot;VSCode&quot;&gt;&lt;/a&gt;VSCode&lt;/h1&gt;&lt;h2 id=&quot;基本控制&quot;&gt;&lt;a href=&quot;#基本控制&quot; cl
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Mac" scheme="http://skyrover.me/tags/Mac/"/>
+    
+      <category term="VSCode" scheme="http://skyrover.me/tags/VSCode/"/>
+    
+  </entry>
   
   <entry>
     <title>二零一七二三事</title>
