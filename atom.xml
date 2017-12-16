@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2017-12-16T07:02:47.000Z</updated>
+  <updated>2017-12-16T16:56:03.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -16,11 +16,196 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>git使用总结</title>
+    <link href="http://skyrover.me/2017/12/17/git_usage_summary/"/>
+    <id>http://skyrover.me/2017/12/17/git_usage_summary/</id>
+    <published>2017-12-16T16:55:35.000Z</published>
+    <updated>2017-12-16T16:56:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>Git会将变化的文件作快照后，记录在微型的文件系统中，保存一个指向这次快照的索引。在保存到git之前，所有数据都要进行内容的校验和(checksum)计算。使用SHA-1算法计算数据的校验和。</p>
+<h2 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h2><ul>
+<li>已提交 commited</li>
+<li>已修改 modified</li>
+<li>已暂存 staged</li>
+</ul>
+<p>文件流转的三个工作区域</p>
+<ul>
+<li>工作目录</li>
+<li>暂存区域</li>
+<li>本地仓库</li>
+</ul>
+<p>git工作流程</p>
+<ul>
+<li>在工作目录中修改某些文件</li>
+<li>对修改后的文件进行快照，保存到暂存区域</li>
+<li>提交更新，将保存在暂存区域的文件快照永久转储到git目录中 </li>
+</ul>
+<p><img src="/img/git_1.png" alt=""></p>
+<p>几个状态:</p>
+<ul>
+<li>未跟踪</li>
+<li><p>已跟踪</p>
+<ul>
+<li>未修改</li>
+<li>已修改</li>
+<li>暂存区</li>
+</ul>
+</li>
+</ul>
+<h2 id="添加git-completed"><a href="#添加git-completed" class="headerlink" title="添加git-completed"></a>添加git-completed</h2><ul>
+<li><code>brew install bash-completion</code></li>
+<li><p>添加以下内容到<code>~/.bash_profile</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if [ -f $(brew --prefix)/etc/bash_completion ]; then</div><div class="line">  . $(brew --prefix)/etc/bash_completion</div><div class="line">fi</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>cd
+/usr/local/opt/bash-completion/etc/bash_completion.d</code></p>
+</li>
+<li><code>curl -L -O https://raw.github.com/git/git/master/contrib/completion/git-completion.bash</code></li>
+<li><code>brew unlink bash-completion</code></li>
+<li><code>brew link bash-completion</code></li>
+<li>重启bash</li>
+</ul>
+<h1 id="跟踪新文件"><a href="#跟踪新文件" class="headerlink" title="跟踪新文件"></a>跟踪新文件</h1><p><code>git add</code>将文件转换成已暂存状态，或者跟踪给定目录的文件。</p>
+<p>一开始就设置好 <code>.gitignore</code>文件的习惯，以免将来误提交这类无用的文件。</p>
+<ul>
+<li>匹配模式最后跟反斜杠（/）说明要忽略的是目录。</li>
+<li>要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。</li>
+</ul>
+<h1 id="查看已暂存和未暂存的更新"><a href="#查看已暂存和未暂存的更新" class="headerlink" title="查看已暂存和未暂存的更新"></a>查看已暂存和未暂存的更新</h1><p><code>git diff</code>会使用文件补丁的格式显示具体添加和删除的行。</p>
+<p>此命令比较的是工作目录中当前文件和暂存区域快照之间的差异，也就是修改之后还没有暂存起来的变化内容。</p>
+<p>若要看已经暂存起来的文件和上次提交时的快照之间的差异，可以用 <code>git diff --cached</code>或者<code>git diff --staged</code>命令。</p>
+<h1 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h1><p>每一次运行提交操作，都是对你项目作一次快照，以后可以回到这个状态，或者进行比较。</p>
+<p><code>git commit -a</code>会自动把所有已经跟踪过的文件暂存起来一并提交。</p>
+<h1 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h1><p><code>git rm</code>可以从暂存区域移除文件，并且连带从工作目录中删除指定的文件，这样以后就不会出现在未跟踪文件清单中了。如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项<code>-f</code></p>
+<p>如果只想从git仓库删除，暂存区域删除，但是还希望在工作目录中，<code>git rm --cached readme.txt</code>，随后在<code>.gitignore</code>文件中补上</p>
+<h1 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h1><p>Git 并不跟踪文件移动操作。所以需要<code>git mv file_from file_to</code></p>
+<h1 id="提交历史"><a href="#提交历史" class="headerlink" title="提交历史 "></a>提交历史 </h1><ul>
+<li><code>git log</code></li>
+<li><code>git log -p -2</code>展开显示最近两次提交的内容差异</li>
+<li><code>git log --stat</code>仅显示简要的增改行数统计</li>
+</ul>
+<h1 id="撤销操作"><a href="#撤销操作" class="headerlink" title="撤销操作"></a>撤销操作</h1><p><code>git commit --amend</code>重新提交</p>
+<ul>
+<li><p>取消已经暂存的文件</p>
+<p>  <code>git reset HEAD benchmarks.rb</code></p>
+</li>
+<li><p>取消对文件的修改</p>
+<p>  <code>git checkout -- benchmarks.rb</code></p>
+</li>
+</ul>
+<h2 id="一些别名"><a href="#一些别名" class="headerlink" title="一些别名"></a>一些别名</h2><ul>
+<li><code>git config --global alias.unstage &#39;reset HEAD --&#39;</code> 这样就可以<code>git unstage readme.md</code></li>
+<li><code>git config --global alias.last &#39;log -1 HEAD&#39;</code>这样就可以使用<code>git last</code>来查看最后一次提交的内容了</li>
+<li><code>git config --global alias.unmodify &#39;checkout --&#39;</code> 这样就可以使用<code>git unmodify readme.md</code>来返回文件的修改内容了</li>
+</ul>
+<h1 id="远程库"><a href="#远程库" class="headerlink" title="远程库"></a>远程库</h1><h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><ul>
+<li><code>git remote</code> 查看远程仓库名字，比如origin</li>
+<li><code>git remote -v</code> 显示对应的克隆地址</li>
+<li><code>git remote add [shortname] [url]</code> 添加一个远程仓库</li>
+<li><code>git remote show [remote-name]</code> 查看某个远程仓库的详细信息</li>
+<li><code>git remote set-url origin [GIT URL]</code> 修改当前远程库的源地址</li>
+<li><code>git remote rename origin origin2</code> 重命名一个远程仓库</li>
+<li><code>git remote rm origin</code> 删除一个远程仓库</li>
+</ul>
+<h2 id="从远程仓库抓取数据"><a href="#从远程仓库抓取数据" class="headerlink" title="从远程仓库抓取数据"></a>从远程仓库抓取数据</h2><p><code>git fetch origin</code> 从远程仓库拉取本地仓库还没有的数据，包括所有分支，但是这个命令只是将数据拉到本地仓库，但是不会自动合并到当前工作分支。但是<code>git pull</code>就会将数据拿下来，然后将远端分支自动合并到本地仓库当前分支。</p>
+<h2 id="推送数据"><a href="#推送数据" class="headerlink" title="推送数据"></a>推送数据</h2><p><code>git push [remote-name] [branch-name]</code> 比如 <code>git push origin master</code>，选择要推送的远程仓库和分支名字，遇到冲突，必须先将更新抓取到本地，合并之后才可以再推送。</p>
+<h1 id="将单个文件回退到历史版本"><a href="#将单个文件回退到历史版本" class="headerlink" title="将单个文件回退到历史版本"></a>将单个文件回退到历史版本</h1><ul>
+<li><code>git reset a4e215234aa4927c85693dca7b68e9976948a35e book.pdf</code> 第三个为要回退的版本commit id</li>
+<li><code>git commit -m &quot;revert book.pdf&quot;</code> 提交</li>
+<li><code>git checkout book.pdf</code> 更新到工作目录</li>
+<li><code>git push</code></li>
+</ul>
+<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><p>一次提交会产生三种对象，一种是文件快照内容的blob对象，一种是记录目录树内容和对应文件blob对象索引的tree对象，以及包含tree对象和其他提交元数据的commit对象。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>再次提交之后，这次的commit对象就会包含上次提交对象的指针。</p>
+<p>分支，本质上是指向commit对象的可变指针。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_3.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p><code>git branch testing</code>或者<code>git checkout -b testing</code>会创建分支并且切换到这个分支。</p>
+<p>另外git还有一个HEAD指针，它指向正在工作的本地分支的指针，也就是当前分支的别名。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_4.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>经历一段时间的开发之后，就会是这个样子</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_5.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p><code>git merge hotfix</code>将hotfix的分支合并到当前分支来。Fast forward的意思是可以直接顺着合并的分支走下去，也就是要合并的分支的直接祖先就是当前提交对象。</p>
+<p><code>git branch -d hotfix</code> 删除分支</p>
+<h2 id="分支的合并"><a href="#分支的合并" class="headerlink" title="分支的合并"></a>分支的合并</h2><p>如果要合并的分支的直接祖先不是当前提交对象，那么就会用两个分支的末端和它们的共同祖先来做三方合并计算。git会自动识别最佳同源合并点。然后对合并结果做新的快照，然后创建一个提交对象，这个提交对象有两个祖先。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_6.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>如果有冲突，手工解决冲突，并且将相关文件暂存，并且创建提交对象，然后完成合并。</p>
+<h2 id="分支的管理"><a href="#分支的管理" class="headerlink" title="分支的管理"></a>分支的管理</h2><ul>
+<li><code>git branch</code> 列出分支</li>
+<li><code>git branch -v</code> 查看分支最后一个提交对象的信息</li>
+<li><code>git branch --merged</code> 查看那些分支已经被并入当前分支，也就是那些分支是当前分支的上游</li>
+<li><code>git branch --no-merged</code> 查看尚未合并的工作</li>
+</ul>
+<p>从远程分支checkout出来的本地分支，为跟踪分支，跟踪分支是一种和某个远程分支有直接联系的本地分支。然后直接git push就可以push到对应分支，git pull会获取对应的远程分支的数据。</p>
+<p>克隆的时候，会自动创建一个master的分支跟踪<code>origin/master</code></p>
+<p>但是可能会有其他的一些不一样的地方，比如<code>git fetch origin</code>之后会得到一个新的远程分支<code>origin/serverfix</code>，但是你没有本地的serverfix分支，所以可以</p>
+<ul>
+<li><code>git merge origin/serverfix</code></li>
+<li><code>git checkout -b serverfix origin/serverfix</code></li>
+<li><code>git checkout --track origin/serverfix</code></li>
+</ul>
+<p>然后推送的时候可以指定本地分支和远程分支：<code>git push origin master:master</code></p>
+<h2 id="分支的衍合"><a href="#分支的衍合" class="headerlink" title="分支的衍合"></a>分支的衍合</h2><p>也就是在一个分支的提交内容在当前分支再进行一遍，这样的好处是分支历史是一条直线。<code>git rebase experiment</code></p>
+<h1 id="储藏-stashing"><a href="#储藏-stashing" class="headerlink" title="储藏(stashing)"></a>储藏(stashing)</h1><p>可以获取你工作目录的中间状态，修改过的被追踪文件和暂存的变更，保存到未完结变更的堆栈中。</p>
+<p><code>git stash</code> 就可以储藏变更。<code>git stash list</code>查看现有的储藏。应用储藏<code>git stash apply stash@{2}</code>，如果直接<code>git stash apply</code>就会使用最近的储藏。即使使用了最近的储藏，这个储藏也不会消失，仍然会保存着。删除的话使用<code>git stash drop stash@{0}</code>，可以使用<code>git stash pop</code>应用储藏，并且从堆栈中拿走。</p>
+<p>而且对文件的变更会被重新应用，被暂存的文件没有重新被暂存。如果想要重新应用被暂存的变更，<code>git stash apply --index</code></p>
+<p>其中WIP是Work in Process。</p>
+<h2 id="取消储藏"><a href="#取消储藏" class="headerlink" title="取消储藏"></a>取消储藏</h2><p>应用储藏之后有修改，但是又要取消储藏的修改。也就是弃用储藏的修改。</p>
+<p><code>git stash show -p stash@{0} | git apply -R</code></p>
+<p>也可以加一个别名<code>git config --global alias.stash-unapply &#39;git stash show -p | git apply -R&#39;</code></p>
+<p>然后可以再<code>git stash apply</code>再恢复储藏</p>
+<h1 id="重写历史"><a href="#重写历史" class="headerlink" title="重写历史"></a>重写历史</h1><h2 id="改变最近一次提交"><a href="#改变最近一次提交" class="headerlink" title="改变最近一次提交"></a>改变最近一次提交</h2><p><code>git commit --amend</code>修改最近一次的提交说明，并且如果有文件在暂存区的时候，就会将其提交，作为新提交的快照。但是如果push上去了，就不要改上次的提交了。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Git基础&quot;&gt;&lt;a href=&quot;#Git基础&quot; class=&quot;headerlink&quot; title=&quot;Git基础&quot;&gt;&lt;/a&gt;Git基础&lt;/h1&gt;&lt;p&gt;Git会将变化的文件作快照后，记录在微型的文件系统中，保存一个指向这次快照的索引。在保存到git之前，所有数据都要进
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="git" scheme="http://skyrover.me/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
     <title>快捷键大全 - Mac</title>
     <link href="http://skyrover.me/2017/12/15/shortcut/"/>
     <id>http://skyrover.me/2017/12/15/shortcut/</id>
     <published>2017-12-15T15:57:57.000Z</published>
-    <updated>2017-12-16T07:02:47.000Z</updated>
+    <updated>2017-12-16T16:59:12.000Z</updated>
     
     <content type="html"><![CDATA[<p>仅列出自己觉得有用并且常用的快捷键</p>
 <h1 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h1><h2 id="基本控制"><a href="#基本控制" class="headerlink" title="基本控制"></a>基本控制</h2><ul>
@@ -91,7 +276,7 @@
 <li><code>shift + command + d</code> 显示调试</li>
 <li><code>ctrl + shift + g</code> 显示git</li>
 <li><code>shift + command + U</code> 显示输出 再次按就消失</li>
-<li><code>shift + command + f</code> 显示搜索</li>
+<li><code>shift + command + f</code> 显示全局搜索</li>
 <li><code>control + ·</code> 打开集成终端 再次按就消失</li>
 </ul>
 <h1 id="VSCode的Python配置"><a href="#VSCode的Python配置" class="headerlink" title="VSCode的Python配置"></a>VSCode的Python配置</h1><p>配合conda来进行环境的管理，比如一个项目cat, 可以<code>conda create -n cat python=3.6</code>创建虚拟环境，然后<code>shift+command+p</code>，输入<code>python: select interpreter</code>来选择刚才配置的虚拟环境，这样就会在项目下面生成一个<code>.vscode</code>，不过这个需要加入<code>.gitignore</code>。</p>
