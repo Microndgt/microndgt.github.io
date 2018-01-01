@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>笔记 - SQL学习指南 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="MySQL,Database,读书笔记,SQL学习指南">
+    <meta name="description" content="这段时间将SQL学习指南这本书翻完了，买这本书的时候是2016年9月21日，时隔一年多啊，终于读完了。不过觉得也正常的，以当时的水平以及工作内容，似乎就算当时看完，也是看的稀里糊涂吧。现在看完，可能不是说学习新知识，毕竟这本书的确是比较入门的书，而更多的是系统性的掌握SQL，以及对相关方面体会更加深刻吧。下面就记录下看这本书得到的一些体会和有意思的东西。 日期时间数据在数据库中存储时间数据，究竟存">
+<meta name="keywords" content="MySQL,Database,读书笔记,SQL学习指南">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记 - SQL学习指南">
+<meta property="og:url" content="http://skyrover.me/2018/01/01/learning_sql_note_1/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="这段时间将SQL学习指南这本书翻完了，买这本书的时候是2016年9月21日，时隔一年多啊，终于读完了。不过觉得也正常的，以当时的水平以及工作内容，似乎就算当时看完，也是看的稀里糊涂吧。现在看完，可能不是说学习新知识，毕竟这本书的确是比较入门的书，而更多的是系统性的掌握SQL，以及对相关方面体会更加深刻吧。下面就记录下看这本书得到的一些体会和有意思的东西。 日期时间数据在数据库中存储时间数据，究竟存">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-01T04:11:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="笔记 - SQL学习指南">
+<meta name="twitter:description" content="这段时间将SQL学习指南这本书翻完了，买这本书的时候是2016年9月21日，时隔一年多啊，终于读完了。不过觉得也正常的，以当时的水平以及工作内容，似乎就算当时看完，也是看的稀里糊涂吧。现在看完，可能不是说学习新知识，毕竟这本书的确是比较入门的书，而更多的是系统性的掌握SQL，以及对相关方面体会更加深刻吧。下面就记录下看这本书得到的一些体会和有意思的东西。 日期时间数据在数据库中存储时间数据，究竟存">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">笔记 - SQL学习指南</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">笔记 - SQL学习指南</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-01-01T04:11:14.000Z" itemprop="datePublished" class="page-time">
+  2018-01-01 12:11:14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#日期时间数据"><span class="post-toc-number">1.</span> <span class="post-toc-text">日期时间数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#各类型的意义"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">各类型的意义</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#int"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">int</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#datetime"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">datetime</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#timestamp"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">timestamp</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#分组和聚集"><span class="post-toc-number">2.</span> <span class="post-toc-text">分组和聚集</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#聚集函数"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">聚集函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#隐式分组和显式分组"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">隐式分组和显式分组</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-learning_sql_note_1"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">笔记 - SQL学习指南</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-01-01 12:11:14 12:11:14" datetime="2018-01-01T04:11:14.000Z"  itemprop="datePublished">2018-01-01 12:11:14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>这段时间将SQL学习指南这本书翻完了，买这本书的时候是2016年9月21日，时隔一年多啊，终于读完了。不过觉得也正常的，以当时的水平以及工作内容，似乎就算当时看完，也是看的稀里糊涂吧。现在看完，可能不是说学习新知识，毕竟这本书的确是比较入门的书，而更多的是系统性的掌握SQL，以及对相关方面体会更加深刻吧。下面就记录下看这本书得到的一些体会和有意思的东西。</p>
+<h1 id="日期时间数据"><a href="#日期时间数据" class="headerlink" title="日期时间数据"></a>日期时间数据</h1><p>在数据库中存储时间数据，究竟存储哪种格式比较好呢。MySQL中有<code>date</code>, <code>datetime</code>, <code>timestamp</code>, <code>year</code>, <code>time</code>这几种类型，同时也还可以以字符串，数字的格式进行存储，那么究竟该如何选择呢。以前我是直接都用字符串，现在看来就有点太low了。这里就对这方面的东西做一个总结。</p>
+<h2 id="各类型的意义"><a href="#各类型的意义" class="headerlink" title="各类型的意义"></a>各类型的意义</h2><ul>
+<li><code>date</code>: 存储日期，不包含分秒等时间数据，可以用来存储生日之类日期数据</li>
+<li><code>datetime</code>: 包含日期和时间</li>
+<li><code>timestamp</code>: 包含日期和时间数据，MySQL可以在向表中增加或者修改数据行时候自动为timestamp列产生当前的日期时间</li>
+<li><code>year</code>: 只需要年份数据的列</li>
+<li><code>time</code>: 某项任务消耗的时间可以用这个类型，一般是两个datetime，记录开始和结束时间，这样可以算出来。</li>
+</ul>
+<p>对于只存储日期或者时间或者年份的数据，一般来说没什么问题，这里主要探讨的对象是日期和时间数据一起存储。那么可以选择的就是<code>datetime</code>, <code>timestamp</code>或者<code>int</code>，字符串。</p>
+<p>字符串是首先要排除的，因为第一个占用空间大，第二个检索慢，效率是最低的，在这几个选择中是最不应该采用的。</p>
+<h2 id="int"><a href="#int" class="headerlink" title="int"></a>int</h2><ol>
+<li>占用4个字节</li>
+<li>建立索引之后，查询速度快</li>
+<li>条件范围搜索可以使用使用between</li>
+<li>不能使用mysql提供的时间函数</li>
+<li>适合需要进行大量时间范围查询的数据表</li>
+</ol>
+<p>缺陷是，不包含时区信息。</p>
+<h2 id="datetime"><a href="#datetime" class="headerlink" title="datetime"></a>datetime</h2><ol>
+<li>占用8个字节</li>
+<li>允许为空值，可以自定义值，系统不会自动修改其值。</li>
+<li>实际格式储存，以存储时候的格式存储，取出来也是存储的格式</li>
+<li>与时区无关</li>
+<li>不可以设定默认值，所以在不允许为空值的情况下，必须手动指定datetime字段的值才可以成功插入数据。</li>
+<li>可以在指定datetime字段的值的时候使用now()变量来自动插入系统的当前时间。</li>
+</ol>
+<p>结论：datetime类型适合用来记录数据的原始的创建时间，因为无论你怎么更改记录中其他字段的值，datetime字段的值都不会改变，除非你手动更改它。查询出来都是UTC时间，查询时候可以根据需要进行改变处理。</p>
+<h2 id="timestamp"><a href="#timestamp" class="headerlink" title="timestamp"></a>timestamp</h2><ol>
+<li>占用4个字节</li>
+<li>允许为空值，但是不可以自定义值，所以为空值时没有任何意义。</li>
+<li>TIMESTAMP值不能早于1970或晚于2037。这说明一个日期，例如’1968-01-01’，虽然对于DATETIME或DATE值是有效的，但对于TIMESTAMP值却无效，如果分配给这样一个对象将被转换为0。</li>
+<li>值以UTC格式保存</li>
+<li>时区转化，存储时对当前的时区进行转换，检索时再转换回当前的时区。</li>
+<li>默认值为CURRENT_TIMESTAMP()，其实也就是当前的系统时间。</li>
+<li>数据库会自动修改其值，所以在插入记录时不需要指定timestamp字段的名称和timestamp字段的值，你只需要在设计表的时候添加一个timestamp字段即可，插入后该字段的值会自动变为当前系统时间。</li>
+<li>以后任何时间修改表中的记录时，对应记录的timestamp值会自动被更新为当前的系统时间。</li>
+</ol>
+<p>结论：timestamp类型适合用来记录数据的最后修改时间，因为只要你更改了记录中其他字段的值，timestamp字段的值都会被自动更新。<strong><em>它把客户端插入的时间从当前时区转化为UTC（世界标准时间）进行存储。查询时，将其又转化为客户端当前时区进行返回。</em></strong></p>
+<p>一般项目上用timestamp，因为包含时区信息。<code>show variables like &#39;%time_zone%&#39;;</code>查看时区信息，<code>set time_zone=&#39;+1:00&#39;;</code>修改时区信息。因此不论存储的时候时区是怎么设置的，MySQL中存储的都是UTC，因此只要改变时区设置，就可以得到正确的时间。</p>
+<p>注: 在PostgreSQL中，对应有<code>timestamp</code>和<code>timestamptz</code>两种类型，前者是不带时区信息的，也就是即使修改服务器的时区信息，该类型字段查出的值都是一样的。而后者会根据时区设置不同，查出来的值不同，类似于MySQL的timestamp`，不同的是，在存储的时候可以指定时区，postgresql会进行转换成UTC时间进行存储。</p>
+<h1 id="分组和聚集"><a href="#分组和聚集" class="headerlink" title="分组和聚集"></a>分组和聚集</h1><p>使用<code>group by</code>对数据进行分组，比如<code>SELECT open_emp_id FROM account GROUP BY open_emp_id;</code>，并且可以使用聚集函数对分组进行统计，<code>SELECT open_emp_id, COUNT(*) how_many FROM account GROUP BY open_emp_id;</code></p>
+<p>对于过滤条件，如果是对于分组数据进行过滤，那么不能用WHERE，因为WHERE先于GROUP BY执行，所以执行WHERE的时候还没有创建好分组，因此需要使用HAVING，<code>SELECT open_emp_id, COUNT(*) how_many FROM account GROUP BY open_emp_id HAVING COUNT(*) &gt; 4;</code></p>
+<h2 id="聚集函数"><a href="#聚集函数" class="headerlink" title="聚集函数"></a>聚集函数</h2><ul>
+<li><code>MAX()</code></li>
+<li><code>MIN()</code></li>
+<li><code>SUM()</code></li>
+<li><code>AVG()</code></li>
+<li><code>COUNT()</code></li>
+</ul>
+<h2 id="隐式分组和显式分组"><a href="#隐式分组和显式分组" class="headerlink" title="隐式分组和显式分组"></a>隐式分组和显式分组</h2><p>查询返回的每个值都是由聚集函数产生的，这样可以不用group by子句，因为是对所有行进行的，是一个隐式分组。比如<code>SELECT COUNT(*), MAX(user_id) FROM users</code>。但是如果除了聚集函数产生的列之外，还想获取额外的列，就需要显式分组，明确的表达按照哪些列进行分组。比如<code>SELECT user_id, COUNT(*) FROM users group by user_id</code></p>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/01/01/learning_sql_note_1/" target="_blank" rel="external">http://skyrover.me/2018/01/01/learning_sql_note_1/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Database/">Database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL学习指南/">SQL学习指南</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/01/01/learning_sql_note_1/&title=《笔记 - SQL学习指南》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/01/01/learning_sql_note_1/&title=《笔记 - SQL学习指南》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/01/01/learning_sql_note_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《笔记 - SQL学习指南》 — SkyRover&url=http://skyrover.me/2018/01/01/learning_sql_note_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/01/01/learning_sql_note_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/12/17/git_usage_summary/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">git使用总结</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/01/01/learning_sql_note_1/&title=《笔记 - SQL学习指南》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/01/01/learning_sql_note_1/&title=《笔记 - SQL学习指南》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/01/01/learning_sql_note_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《笔记 - SQL学习指南》 — SkyRover&url=http://skyrover.me/2018/01/01/learning_sql_note_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/01/01/learning_sql_note_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACL0lEQVR42u3aQW7DMAxEUd//0i7QVYDCzh9SCWrxaxW0hq2nBaERdRx4nL/j9ffrX66e+ft8+sziIUOGjMcyztuRMgiSLBOfmwwZMuYw+KvJEqTl+2qByNxkyJAh477IkrJISvk9TIYMGTJqBTctrGnhliFDhoxaiOUf40dy/JllWVyGDBkPZNQaA9/5/fH+hgwZMv49oxM++yWStBbQfGTIkLE1gxyldQInaVv2mwQyZMiYxkgnx8sxCbrpBvGy4MqQIWM7Rlp2+WF9/3JYK9DKkCFjC0bnWiopxPxbnZItQ4aMvRk8A3bKaCcMxyVYhgwZ2zF4sEyvn9aib/ErMmTIGMCoBdd0Ep2JBp1YGTJkDGPUNohpMOYxGHU2ZMiQsSnj+MAgR28kMKPoK0OGjK0Z5NX8qtaq0syP3oJTQxkyZDyW0bmj0Y+sfAv4phUhQ4aMAQx+wYKU3dbGDi+oDBkypjHSgksiKDrQD7ekKIvLkCFjOwa/hpVu72qBlkdiGTJkzGSkR13p1HkzIG2dypAhYxqDH8fz5gEvyhz2pnkpQ4aM7Ri1CxB8SxfHUXyNQ4YMGRMYZzhq2zhyMNdaIBkyZGzN4GPV9a/0IkUapGXIkLEro9ZErMXaWvsTLaUMGTIGMNYWWf7fNL5evl+GDBkywOTup1hriMYtARkyZIxn1FoF6QKllzlkyJAxh0FCbO0DnWUKzgVlyJCxNaPTGFjV2uQbzdoVDRkyZDyW8QP479sZokDAFAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
