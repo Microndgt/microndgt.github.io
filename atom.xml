@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-01-03T07:06:51.000Z</updated>
+  <updated>2018-01-06T12:35:29.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,84 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LeetCode刷题 - Database篇</title>
+    <link href="http://skyrover.me/2018/01/06/leetcode_database_1/"/>
+    <id>http://skyrover.me/2018/01/06/leetcode_database_1/</id>
+    <published>2018-01-06T10:46:32.000Z</published>
+    <updated>2018-01-06T12:35:29.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
+<h1 id="Second-Highest-Salary"><a href="#Second-Highest-Salary" class="headerlink" title="Second Highest Salary"></a><a href="https://leetcode.com/problems/second-highest-salary/description/" target="_blank" rel="external">Second Highest Salary</a></h1><p>这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT (</div><div class="line">    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFFSET 1</div><div class="line">) AS SecondHighestSalary;</div></pre></td></tr></table></figure>
+<p>这里加DISTINCT的原因是，如果有两条300是最大的，然后有一条200，那么第二大的是200.</p>
+<h1 id="Combine-Two-Tables"><a href="#Combine-Two-Tables" class="headerlink" title="Combine Two Tables"></a><a href="https://leetcode.com/problems/combine-two-tables/description/" target="_blank" rel="external">Combine Two Tables</a></h1><p>就是简单的左联结。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT FirstName, LastName, City, State from Person LEFT JOIN Address ON Person.PersonId = Address.PersonId;</div></pre></td></tr></table></figure>
+<h1 id="Big-Countries"><a href="#Big-Countries" class="headerlink" title="Big Countries"></a><a href="https://leetcode.com/problems/big-countries/description/" target="_blank" rel="external">Big Countries</a></h1><p>简单的筛选</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT name, population, area FROM World WHERE area &gt; 3000000 OR population &gt; 25000000;</div></pre></td></tr></table></figure>
+<h1 id="Swap-Salary"><a href="#Swap-Salary" class="headerlink" title="Swap Salary"></a><a href="https://leetcode.com/problems/swap-salary/description/" target="_blank" rel="external">Swap Salary</a></h1><p>这里用到了条件逻辑，通过case表达式使用条件逻辑来决定如何执行SQL语句。有两种写法，一种是查找型case表达式，一种是简单型case表达式，分别如下</p>
+<ul>
+<li>查找型case表达式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UPDATE salary SET sex = </div><div class="line">    CASE</div><div class="line">        WHEN sex = &apos;f&apos; THEN &apos;m&apos;</div><div class="line">        ELSE &apos;f&apos;</div><div class="line">    END</div></pre></td></tr></table></figure>
+<ul>
+<li>简单型case表达式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UPDATE salary SET sex = </div><div class="line">    CASE sex</div><div class="line">        WHEN &apos;f&apos; THEN &apos;m&apos;</div><div class="line">        ELSE &apos;f&apos;</div><div class="line">    END</div></pre></td></tr></table></figure>
+<h1 id="Not-Boring-Movies"><a href="#Not-Boring-Movies" class="headerlink" title="Not Boring Movies"></a><a href="https://leetcode.com/problems/not-boring-movies/description/" target="_blank" rel="external">Not Boring Movies</a></h1><p>继续考察了筛选条件的使用</p>
+<ul>
+<li>取模：<code>%</code>或者<code>mod</code>函数</li>
+<li>字符串匹配: <code>%</code>匹配任意多字符，<code>_</code>匹配一个字符</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM cinema WHERE (SELECT id % 2) = 1 AND description NOT LIKE &apos;%boring%&apos; ORDER BY rating DESC;</div><div class="line">SELECT * FROM cinema WHERE id % 2 = 1 AND description NOT LIKE &apos;%boring%&apos; ORDER BY rating DESC;</div><div class="line">SELECT * FROM cinema WHERE mod(id, 2) = 1 AND description NOT LIKE &apos;%boring%&apos; ORDER BY rating DESC;</div></pre></td></tr></table></figure>
+<h1 id="Duplicate-Emails"><a href="#Duplicate-Emails" class="headerlink" title="Duplicate Emails"></a><a href="https://leetcode.com/problems/duplicate-emails/description/" target="_blank" rel="external">Duplicate Emails</a></h1><p>分组和聚合，可以按照EMAIL分组，这样相同的就是一组，然后count大于1的就是在数据库中有重复的记录。刚开始我的思路是自联结，但是最后还是需要GROUP BY，而且这样查询很low</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT p.Email FROM Person p JOIN Person po ON p.Email = po.Email AND p.id != po.id GROUP BY p.Email;</div></pre></td></tr></table></figure>
+<p>比较好的方法，要注意筛选条件有聚合函数的时候，需要使用HAVING子句而不是WHERE</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT Email FROM Person GROUP BY Email HAVING COUNT(*) &gt; 1;</div></pre></td></tr></table></figure>
+<h1 id="Employees-Earning-More-Than-Their-Managers"><a href="#Employees-Earning-More-Than-Their-Managers" class="headerlink" title="Employees Earning More Than Their Managers"></a><a href="https://leetcode.com/problems/employees-earning-more-than-their-managers/description/" target="_blank" rel="external">Employees Earning More Than Their Managers</a></h1><p>子查询，注意表名的区分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT e.Name AS Employee FROM Employee e WHERE e.Salary &gt; (SELECT me.Salary FROM Employee me WHERE me.Id = e.ManagerId);</div></pre></td></tr></table></figure>
+<p>或者使用自联结</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SELECT</div><div class="line">     a.NAME AS Employee</div><div class="line">FROM Employee AS a JOIN Employee AS b</div><div class="line">     ON a.ManagerId = b.Id</div><div class="line">     AND a.Salary &gt; b.Salary;</div></pre></td></tr></table></figure>
+<h1 id="Customers-Who-Never-Order"><a href="#Customers-Who-Never-Order" class="headerlink" title="Customers Who Never Order"></a><a href="https://leetcode.com/problems/customers-who-never-order/description/" target="_blank" rel="external">Customers Who Never Order</a></h1><p>查找两个关联的表，在一个表中没有，这种一般都是外联结。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT Name AS Customers FROM Customers LEFT JOIN Orders ON Customers.Id = Orders.CustomerId WHERE Orders.CustomerId is NULL;</div></pre></td></tr></table></figure>
+<p>或者可以使用子查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SELECT Customers.Name as &apos;Customers&apos;</div><div class="line">FROM Customers</div><div class="line">WHERE Customers.id not in</div><div class="line">(</div><div class="line">    SELECT CustomerId FROM Orders</div><div class="line">);</div></pre></td></tr></table></figure>
+<h1 id="Rising-Temperature"><a href="#Rising-Temperature" class="headerlink" title="Rising Temperature"></a><a href="https://leetcode.com/problems/rising-temperature/description/" target="_blank" rel="external">Rising Temperature</a></h1><p>日期相加函数<code>DATE_ADD(CURRENT_DATE(), INTERVAL 5 DAY)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT Id FROM Weather w WHERE w.Temperature &gt; (SELECT w1.Temperature FROM Weather w1 WHERE w1.Date = DATE_ADD(w.Date, INTERVAL -1 DAY));</div></pre></td></tr></table></figure>
+<h1 id="Classes-More-Than-5-Students"><a href="#Classes-More-Than-5-Students" class="headerlink" title="Classes More Than 5 Students"></a><a href="https://leetcode.com/problems/classes-more-than-5-students/description/" target="_blank" rel="external">Classes More Than 5 Students</a></h1><p>看到这种题就是分组聚合，不过这题有毒，居然student列可以重复。。那么可以指定对分组的不同值计数，指定DISTINCT参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT class FROM courses GROUP BY class HAVING COUNT(DISTINCT student) &gt;= 5;</div></pre></td></tr></table></figure>
+<h1 id="Delete-Duplicate-Emails"><a href="#Delete-Duplicate-Emails" class="headerlink" title="Delete Duplicate Emails"></a><a href="https://leetcode.com/problems/delete-duplicate-emails/description/" target="_blank" rel="external">Delete Duplicate Emails</a></h1><p>删除的SQL语句是 <code>DELETE FROM</code> 或者指定 <code>DELETE * FROM</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DELETE p FROM Person p JOIN Person p1 ON p.Email = p1.Email AND p.Id &gt; p1.Id;</div></pre></td></tr></table></figure>
+<h1 id="Exchange-Seats"><a href="#Exchange-Seats" class="headerlink" title="Exchange Seats"></a><a href="https://leetcode.com/problems/exchange-seats/description/" target="_blank" rel="external">Exchange Seats</a></h1><p>CASE表达式，判断逻辑，聚合函数，仔细点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">SELECT </div><div class="line">    CASE</div><div class="line">        WHEN id % 2 = 1 AND id != counts THEN id + 1</div><div class="line">        WHEN id % 2 = 1 AND id = counts THEN id</div><div class="line">        ELSE id - 1</div><div class="line">    END id, student</div><div class="line">FROM</div><div class="line">    seat, (SELECT COUNT(*) AS counts FROM seat) AS seat_counts</div><div class="line">ORDER BY id;</div></pre></td></tr></table></figure>
+<h1 id="Rank-Scores"><a href="#Rank-Scores" class="headerlink" title="Rank Scores"></a><a href="https://leetcode.com/problems/rank-scores/description/" target="_blank" rel="external">Rank Scores</a></h1><p>这道题想了许久，其实就是找到比当前行分数大的行数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT s2.Score, (</div><div class="line">    SELECT COUNT(DISTINCT s1.Score) + 1 </div><div class="line">    FROM Scores s1 </div><div class="line">    WHERE s1.Score &gt; s2.Score</div><div class="line">) AS Rank </div><div class="line">FROM Scores s2 </div><div class="line">ORDER BY s2.Score DESC;</div></pre></td></tr></table></figure>
+<h1 id="Consecutive-Numbers"><a href="#Consecutive-Numbers" class="headerlink" title="Consecutive Numbers"></a><a href="https://leetcode.com/problems/consecutive-numbers/description/" target="_blank" rel="external">Consecutive Numbers</a></h1><p>暴力解决方案</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SELECT </div><div class="line">    DISTINCT l1.Num AS ConsecutiveNums </div><div class="line">FROM Logs l1 JOIN Logs l2 JOIN Logs l3</div><div class="line">    ON l1.Num = l2.Num AND l2.Num = l3.Num AND l1.Id = l2.Id - 1 AND l2.Id = l3.Id - 1;</div></pre></td></tr></table></figure>
+<h1 id="Department-Highest-Salary"><a href="#Department-Highest-Salary" class="headerlink" title="Department Highest Salary"></a><a href="https://leetcode.com/problems/department-highest-salary/description/" target="_blank" rel="external">Department Highest Salary</a></h1><p>联结，子查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SELECT</div><div class="line">    d.Name AS Department, e.Name AS Employee, e.Salary AS Salary</div><div class="line">FROM (SELECT DepartmentId, MAX(Salary) AS Salary FROM Employee GROUP BY DepartmentId) n1 JOIN Employee e JOIN Department d</div><div class="line">    ON n1.DepartmentId = d.Id AND e.DepartmentId = d.Id AND n1.Salary = e.Salary;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。&lt;/p&gt;
+&lt;h1 id=&quot;Second-Highest-Salary&quot;&gt;&lt;a href=&quot;#Second-Highest-Salary&quot; class=&quot;header
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
+    
+      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+    
+  </entry>
   
   <entry>
     <title>终端中好看的git增强</title>

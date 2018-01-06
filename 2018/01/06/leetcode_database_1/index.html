@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>LeetCode刷题 - Database篇 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法,LeetCode,Database">
+    <meta name="description" content="无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。 Second Highest Salary这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下： 123SELECT (    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFF">
+<meta name="keywords" content="Python,算法,LeetCode,Database">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode刷题 - Database篇">
+<meta property="og:url" content="http://skyrover.me/2018/01/06/leetcode_database_1/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。 Second Highest Salary这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下： 123SELECT (    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFF">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-06T12:35:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode刷题 - Database篇">
+<meta name="twitter:description" content="无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。 Second Highest Salary这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下： 123SELECT (    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFF">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.13">
+    <link rel="stylesheet" href="/css/My.css?v=1.6.13">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">LeetCode刷题 - Database篇</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">LeetCode刷题 - Database篇</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-01-06T10:46:32.000Z" itemprop="datePublished" class="page-time">
+  2018-01-06 18:46:32
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Second-Highest-Salary"><span class="post-toc-number">1.</span> <span class="post-toc-text">Second Highest Salary</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Combine-Two-Tables"><span class="post-toc-number">2.</span> <span class="post-toc-text">Combine Two Tables</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Big-Countries"><span class="post-toc-number">3.</span> <span class="post-toc-text">Big Countries</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Swap-Salary"><span class="post-toc-number">4.</span> <span class="post-toc-text">Swap Salary</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Not-Boring-Movies"><span class="post-toc-number">5.</span> <span class="post-toc-text">Not Boring Movies</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Duplicate-Emails"><span class="post-toc-number">6.</span> <span class="post-toc-text">Duplicate Emails</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Employees-Earning-More-Than-Their-Managers"><span class="post-toc-number">7.</span> <span class="post-toc-text">Employees Earning More Than Their Managers</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Customers-Who-Never-Order"><span class="post-toc-number">8.</span> <span class="post-toc-text">Customers Who Never Order</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Rising-Temperature"><span class="post-toc-number">9.</span> <span class="post-toc-text">Rising Temperature</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Classes-More-Than-5-Students"><span class="post-toc-number">10.</span> <span class="post-toc-text">Classes More Than 5 Students</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Delete-Duplicate-Emails"><span class="post-toc-number">11.</span> <span class="post-toc-text">Delete Duplicate Emails</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Exchange-Seats"><span class="post-toc-number">12.</span> <span class="post-toc-text">Exchange Seats</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Rank-Scores"><span class="post-toc-number">13.</span> <span class="post-toc-text">Rank Scores</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Consecutive-Numbers"><span class="post-toc-number">14.</span> <span class="post-toc-text">Consecutive Numbers</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Department-Highest-Salary"><span class="post-toc-number">15.</span> <span class="post-toc-text">Department Highest Salary</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-leetcode_database_1"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">LeetCode刷题 - Database篇</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-01-06 18:46:32 18:46:32" datetime="2018-01-06T10:46:32.000Z"  itemprop="datePublished">2018-01-06 18:46:32</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
+<h1 id="Second-Highest-Salary"><a href="#Second-Highest-Salary" class="headerlink" title="Second Highest Salary"></a><a href="https://leetcode.com/problems/second-highest-salary/description/" target="_blank" rel="external">Second Highest Salary</a></h1><p>这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT (</div><div class="line">    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFFSET 1</div><div class="line">) AS SecondHighestSalary;</div></pre></td></tr></table></figure>
+<p>这里加DISTINCT的原因是，如果有两条300是最大的，然后有一条200，那么第二大的是200.</p>
+<h1 id="Combine-Two-Tables"><a href="#Combine-Two-Tables" class="headerlink" title="Combine Two Tables"></a><a href="https://leetcode.com/problems/combine-two-tables/description/" target="_blank" rel="external">Combine Two Tables</a></h1><p>就是简单的左联结。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT FirstName, LastName, City, State from Person LEFT JOIN Address ON Person.PersonId = Address.PersonId;</div></pre></td></tr></table></figure>
+<h1 id="Big-Countries"><a href="#Big-Countries" class="headerlink" title="Big Countries"></a><a href="https://leetcode.com/problems/big-countries/description/" target="_blank" rel="external">Big Countries</a></h1><p>简单的筛选</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT name, population, area FROM World WHERE area &gt; 3000000 OR population &gt; 25000000;</div></pre></td></tr></table></figure>
+<h1 id="Swap-Salary"><a href="#Swap-Salary" class="headerlink" title="Swap Salary"></a><a href="https://leetcode.com/problems/swap-salary/description/" target="_blank" rel="external">Swap Salary</a></h1><p>这里用到了条件逻辑，通过case表达式使用条件逻辑来决定如何执行SQL语句。有两种写法，一种是查找型case表达式，一种是简单型case表达式，分别如下</p>
+<ul>
+<li>查找型case表达式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UPDATE salary SET sex = </div><div class="line">    CASE</div><div class="line">        WHEN sex = &apos;f&apos; THEN &apos;m&apos;</div><div class="line">        ELSE &apos;f&apos;</div><div class="line">    END</div></pre></td></tr></table></figure>
+<ul>
+<li>简单型case表达式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UPDATE salary SET sex = </div><div class="line">    CASE sex</div><div class="line">        WHEN &apos;f&apos; THEN &apos;m&apos;</div><div class="line">        ELSE &apos;f&apos;</div><div class="line">    END</div></pre></td></tr></table></figure>
+<h1 id="Not-Boring-Movies"><a href="#Not-Boring-Movies" class="headerlink" title="Not Boring Movies"></a><a href="https://leetcode.com/problems/not-boring-movies/description/" target="_blank" rel="external">Not Boring Movies</a></h1><p>继续考察了筛选条件的使用</p>
+<ul>
+<li>取模：<code>%</code>或者<code>mod</code>函数</li>
+<li>字符串匹配: <code>%</code>匹配任意多字符，<code>_</code>匹配一个字符</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM cinema WHERE (SELECT id % 2) = 1 AND description NOT LIKE &apos;%boring%&apos; ORDER BY rating DESC;</div><div class="line">SELECT * FROM cinema WHERE id % 2 = 1 AND description NOT LIKE &apos;%boring%&apos; ORDER BY rating DESC;</div><div class="line">SELECT * FROM cinema WHERE mod(id, 2) = 1 AND description NOT LIKE &apos;%boring%&apos; ORDER BY rating DESC;</div></pre></td></tr></table></figure>
+<h1 id="Duplicate-Emails"><a href="#Duplicate-Emails" class="headerlink" title="Duplicate Emails"></a><a href="https://leetcode.com/problems/duplicate-emails/description/" target="_blank" rel="external">Duplicate Emails</a></h1><p>分组和聚合，可以按照EMAIL分组，这样相同的就是一组，然后count大于1的就是在数据库中有重复的记录。刚开始我的思路是自联结，但是最后还是需要GROUP BY，而且这样查询很low</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT p.Email FROM Person p JOIN Person po ON p.Email = po.Email AND p.id != po.id GROUP BY p.Email;</div></pre></td></tr></table></figure>
+<p>比较好的方法，要注意筛选条件有聚合函数的时候，需要使用HAVING子句而不是WHERE</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT Email FROM Person GROUP BY Email HAVING COUNT(*) &gt; 1;</div></pre></td></tr></table></figure>
+<h1 id="Employees-Earning-More-Than-Their-Managers"><a href="#Employees-Earning-More-Than-Their-Managers" class="headerlink" title="Employees Earning More Than Their Managers"></a><a href="https://leetcode.com/problems/employees-earning-more-than-their-managers/description/" target="_blank" rel="external">Employees Earning More Than Their Managers</a></h1><p>子查询，注意表名的区分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT e.Name AS Employee FROM Employee e WHERE e.Salary &gt; (SELECT me.Salary FROM Employee me WHERE me.Id = e.ManagerId);</div></pre></td></tr></table></figure>
+<p>或者使用自联结</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SELECT</div><div class="line">     a.NAME AS Employee</div><div class="line">FROM Employee AS a JOIN Employee AS b</div><div class="line">     ON a.ManagerId = b.Id</div><div class="line">     AND a.Salary &gt; b.Salary;</div></pre></td></tr></table></figure>
+<h1 id="Customers-Who-Never-Order"><a href="#Customers-Who-Never-Order" class="headerlink" title="Customers Who Never Order"></a><a href="https://leetcode.com/problems/customers-who-never-order/description/" target="_blank" rel="external">Customers Who Never Order</a></h1><p>查找两个关联的表，在一个表中没有，这种一般都是外联结。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT Name AS Customers FROM Customers LEFT JOIN Orders ON Customers.Id = Orders.CustomerId WHERE Orders.CustomerId is NULL;</div></pre></td></tr></table></figure>
+<p>或者可以使用子查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SELECT Customers.Name as &apos;Customers&apos;</div><div class="line">FROM Customers</div><div class="line">WHERE Customers.id not in</div><div class="line">(</div><div class="line">    SELECT CustomerId FROM Orders</div><div class="line">);</div></pre></td></tr></table></figure>
+<h1 id="Rising-Temperature"><a href="#Rising-Temperature" class="headerlink" title="Rising Temperature"></a><a href="https://leetcode.com/problems/rising-temperature/description/" target="_blank" rel="external">Rising Temperature</a></h1><p>日期相加函数<code>DATE_ADD(CURRENT_DATE(), INTERVAL 5 DAY)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT Id FROM Weather w WHERE w.Temperature &gt; (SELECT w1.Temperature FROM Weather w1 WHERE w1.Date = DATE_ADD(w.Date, INTERVAL -1 DAY));</div></pre></td></tr></table></figure>
+<h1 id="Classes-More-Than-5-Students"><a href="#Classes-More-Than-5-Students" class="headerlink" title="Classes More Than 5 Students"></a><a href="https://leetcode.com/problems/classes-more-than-5-students/description/" target="_blank" rel="external">Classes More Than 5 Students</a></h1><p>看到这种题就是分组聚合，不过这题有毒，居然student列可以重复。。那么可以指定对分组的不同值计数，指定DISTINCT参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT class FROM courses GROUP BY class HAVING COUNT(DISTINCT student) &gt;= 5;</div></pre></td></tr></table></figure>
+<h1 id="Delete-Duplicate-Emails"><a href="#Delete-Duplicate-Emails" class="headerlink" title="Delete Duplicate Emails"></a><a href="https://leetcode.com/problems/delete-duplicate-emails/description/" target="_blank" rel="external">Delete Duplicate Emails</a></h1><p>删除的SQL语句是 <code>DELETE FROM</code> 或者指定 <code>DELETE * FROM</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DELETE p FROM Person p JOIN Person p1 ON p.Email = p1.Email AND p.Id &gt; p1.Id;</div></pre></td></tr></table></figure>
+<h1 id="Exchange-Seats"><a href="#Exchange-Seats" class="headerlink" title="Exchange Seats"></a><a href="https://leetcode.com/problems/exchange-seats/description/" target="_blank" rel="external">Exchange Seats</a></h1><p>CASE表达式，判断逻辑，聚合函数，仔细点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">SELECT </div><div class="line">    CASE</div><div class="line">        WHEN id % 2 = 1 AND id != counts THEN id + 1</div><div class="line">        WHEN id % 2 = 1 AND id = counts THEN id</div><div class="line">        ELSE id - 1</div><div class="line">    END id, student</div><div class="line">FROM</div><div class="line">    seat, (SELECT COUNT(*) AS counts FROM seat) AS seat_counts</div><div class="line">ORDER BY id;</div></pre></td></tr></table></figure>
+<h1 id="Rank-Scores"><a href="#Rank-Scores" class="headerlink" title="Rank Scores"></a><a href="https://leetcode.com/problems/rank-scores/description/" target="_blank" rel="external">Rank Scores</a></h1><p>这道题想了许久，其实就是找到比当前行分数大的行数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT s2.Score, (</div><div class="line">    SELECT COUNT(DISTINCT s1.Score) + 1 </div><div class="line">    FROM Scores s1 </div><div class="line">    WHERE s1.Score &gt; s2.Score</div><div class="line">) AS Rank </div><div class="line">FROM Scores s2 </div><div class="line">ORDER BY s2.Score DESC;</div></pre></td></tr></table></figure>
+<h1 id="Consecutive-Numbers"><a href="#Consecutive-Numbers" class="headerlink" title="Consecutive Numbers"></a><a href="https://leetcode.com/problems/consecutive-numbers/description/" target="_blank" rel="external">Consecutive Numbers</a></h1><p>暴力解决方案</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SELECT </div><div class="line">    DISTINCT l1.Num AS ConsecutiveNums </div><div class="line">FROM Logs l1 JOIN Logs l2 JOIN Logs l3</div><div class="line">    ON l1.Num = l2.Num AND l2.Num = l3.Num AND l1.Id = l2.Id - 1 AND l2.Id = l3.Id - 1;</div></pre></td></tr></table></figure>
+<h1 id="Department-Highest-Salary"><a href="#Department-Highest-Salary" class="headerlink" title="Department Highest Salary"></a><a href="https://leetcode.com/problems/department-highest-salary/description/" target="_blank" rel="external">Department Highest Salary</a></h1><p>联结，子查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SELECT</div><div class="line">    d.Name AS Department, e.Name AS Employee, e.Salary AS Salary</div><div class="line">FROM (SELECT DepartmentId, MAX(Salary) AS Salary FROM Employee GROUP BY DepartmentId) n1 JOIN Employee e JOIN Department d</div><div class="line">    ON n1.DepartmentId = d.Id AND e.DepartmentId = d.Id AND n1.Salary = e.Salary;</div></pre></td></tr></table></figure>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/01/06/leetcode_database_1/" target="_blank" rel="external">http://skyrover.me/2018/01/06/leetcode_database_1/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Database/">Database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/01/06/leetcode_database_1/&title=《LeetCode刷题 - Database篇》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/01/06/leetcode_database_1/&title=《LeetCode刷题 - Database篇》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/01/06/leetcode_database_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LeetCode刷题 - Database篇》 — SkyRover&url=http://skyrover.me/2018/01/06/leetcode_database_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/01/06/leetcode_database_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/01/03/term_git_strong/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">终端中好看的git增强</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/01/06/leetcode_database_1/&title=《LeetCode刷题 - Database篇》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/01/06/leetcode_database_1/&title=《LeetCode刷题 - Database篇》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/01/06/leetcode_database_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LeetCode刷题 - Database篇》 — SkyRover&url=http://skyrover.me/2018/01/06/leetcode_database_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/01/06/leetcode_database_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3ay07kMBAFUP7/p0FiNSNIuLdsRtPOyapFW2kfLwrX4+0tft4/nz8/Xz3J+qv336/Z8GBgYLwsY7atnPd15f3W2yPDwMB4DiMJssn6PLzebzrfGwYGBsau4Hj/htmRYWBgYCQXu/bH2iQWAwMDo01i8yLa/d9na7bl4hgYGC/ImDUG/s3nX+9vYGBg/PeM9+VnJUS2ZbvLd2JgYBzNuL+i5SG4TVnzlmcRiDEwMA5ltIEy2VZ+TLOWwDe/iIGB8QBGe2mbNQ/a0Yri3wAGBsbRjLyJmKevLSAfI4uOGwMD4zhGGy4T9q7YmOCHUR8DA+OlGCuF+PuktA24s/B92RjAwMA4mrEyfrESNNvGAAYGxtMYSYFsVsSftQRWmhAYGBjnMXZtuh2SWEmAL6fbMDAwDmW0ZbXk27yRuTetxcDAOJuxkpSupKyz8I2BgfFMxqxl2KaduxqfGBgYT2PkL22HxtpW6Kwl8FcujoGBcSgjD7vJpvOktx3CKFqYGBgYhzKioav4wpcE61kJb2nAAgMD4yBGMXoVbLRNevMBi2EujoGB8bKMtrzVhsL1Y2qLehgYGCcxZgWylRGK9j1RsxMDA+Noxnq0btPR5Nu28IeBgfEERl7uz8cm2jZnG3DrCyIGBsYRjDb53NuwnLUffmhhYmBgYCyE7ATTNj4xMDAw1tuT620GDAwMjCRctulofkwbSv8YGBhHM9aHLWbJbR5Y62siBgbGOYwP2jZBz4G//v4AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.13"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.13" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
