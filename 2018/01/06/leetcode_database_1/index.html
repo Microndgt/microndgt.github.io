@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。 Second Highest Salary这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下： 123SELECT (    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFF">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-01-07T11:31:12.000Z">
+<meta property="og:updated_time" content="2018-01-07T11:32:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LeetCode刷题 - Database篇">
 <meta name="twitter:description" content="无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。 Second Highest Salary这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下： 123SELECT (    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFF">
@@ -266,7 +266,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT DISTINCT t1.* FROM stadium t1 JOIN stadium t2 JOIN stadium t3 </div><div class="line">    ON t1.people &gt;= 100 AND t2.people &gt;= 100 AND t3.people &gt;= 100</div><div class="line">WHERE (</div><div class="line">    t1.id = t2.id - 1 AND t2.id = t3.id - 1 OR</div><div class="line">    t1.id = t3.id - 1 AND t2.id = t1.id - 1 OR</div><div class="line">    t2.id = t3.id - 1 AND t3.id = t1.id - 1</div><div class="line">) ORDER BY id;</div></pre></td></tr></table></figure>
 <h1 id="Department-Top-Three-Salaries"><a href="#Department-Top-Three-Salaries" class="headerlink" title="Department Top Three Salaries"></a><a href="https://leetcode.com/problems/department-top-three-salaries/description/" target="_blank" rel="external">Department Top Three Salaries</a></h1><p>表联合，然后筛选出Employee表中，比当前筛选的记录的薪水大的记录不超过三条的，就是要找的记录。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">SELECT</div><div class="line">    d.Name AS &apos;Department&apos;, e1.Name AS &apos;Employee&apos;, e1.Salary</div><div class="line">FROM</div><div class="line">    Employee e1</div><div class="line">        JOIN</div><div class="line">    Department d ON e1.DepartmentId = d.Id</div><div class="line">WHERE</div><div class="line">    3 &gt; (SELECT</div><div class="line">            COUNT(DISTINCT e2.Salary)</div><div class="line">        FROM</div><div class="line">            Employee e2</div><div class="line">        WHERE</div><div class="line">            e2.Salary &gt; e1.Salary</div><div class="line">            AND e1.DepartmentId = e2.DepartmentId</div><div class="line">        );</div></pre></td></tr></table></figure>
-<h1 id="Trips-and-Users"><a href="#Trips-and-Users" class="headerlink" title="Trips and Users"></a><a href="">Trips and Users</a></h1><p>表的联合。主要在于如何计算比例，使用了条件逻辑。</p>
+<h1 id="Trips-and-Users"><a href="#Trips-and-Users" class="headerlink" title="Trips and Users"></a><a href="https://leetcode.com/problems/trips-and-users/" target="_blank" rel="external">Trips and Users</a></h1><p>表的联合。主要在于如何计算比例，使用了条件逻辑。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SELECT t.Request_at AS Day, ROUND(SUM(CASE WHEN t.Status like &apos;cancelled%&apos; THEN 1 ELSE 0 END) / COUNT(*), 2) AS &apos;Cancellation Rate&apos;</div><div class="line">FROM </div><div class="line">    Trips t JOIN Users u ON t.Client_Id = u.Users_Id </div><div class="line">WHERE </div><div class="line">    u.Banned != &apos;Yes&apos; AND t.Request_at BETWEEN &apos;2013-10-01&apos; AND &apos;2013-10-03&apos;</div><div class="line">GROUP BY t.Request_at;</div></pre></td></tr></table></figure>     
         </div>
 
@@ -351,7 +351,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/01/07/leetcode_algorithm_go_and_python_1/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">LeetCode刷题 - Algorithm篇</h4>
+      </a>
+    </div>
   
   
     <div class="waves-block waves-effect next">
