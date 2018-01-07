@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-01-06T12:35:29.000Z</updated>
+  <updated>2018-01-07T11:31:12.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://skyrover.me/2018/01/06/leetcode_database_1/"/>
     <id>http://skyrover.me/2018/01/06/leetcode_database_1/</id>
     <published>2018-01-06T10:46:32.000Z</published>
-    <updated>2018-01-06T12:35:29.000Z</updated>
+    <updated>2018-01-07T11:31:12.000Z</updated>
     
     <content type="html"><![CDATA[<p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
 <h1 id="Second-Highest-Salary"><a href="#Second-Highest-Salary" class="headerlink" title="Second Highest Salary"></a><a href="https://leetcode.com/problems/second-highest-salary/description/" target="_blank" rel="external">Second Highest Salary</a></h1><p>这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下：</p>
@@ -71,7 +71,23 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SELECT </div><div class="line">    DISTINCT l1.Num AS ConsecutiveNums </div><div class="line">FROM Logs l1 JOIN Logs l2 JOIN Logs l3</div><div class="line">    ON l1.Num = l2.Num AND l2.Num = l3.Num AND l1.Id = l2.Id - 1 AND l2.Id = l3.Id - 1;</div></pre></td></tr></table></figure>
 <h1 id="Department-Highest-Salary"><a href="#Department-Highest-Salary" class="headerlink" title="Department Highest Salary"></a><a href="https://leetcode.com/problems/department-highest-salary/description/" target="_blank" rel="external">Department Highest Salary</a></h1><p>联结，子查询</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SELECT</div><div class="line">    d.Name AS Department, e.Name AS Employee, e.Salary AS Salary</div><div class="line">FROM (SELECT DepartmentId, MAX(Salary) AS Salary FROM Employee GROUP BY DepartmentId) n1 JOIN Employee e JOIN Department d</div><div class="line">    ON n1.DepartmentId = d.Id AND e.DepartmentId = d.Id AND n1.Salary = e.Salary;</div></pre></td></tr></table></figure>
-]]></content>
+<h1 id="Nth-Highest-Salary"><a href="#Nth-Highest-Salary" class="headerlink" title="Nth Highest Salary"></a><a href="">Nth Highest Salary</a></h1><p>这道题有几个知识点</p>
+<ul>
+<li>创建自定义函数的语法</li>
+<li><code>DECLARE variable_name type</code> 声明一个变量</li>
+<li><code>SET variable_name=expression</code> 为变量设置值</li>
+<li><code>LIMIT 2, 1</code> 其中第一个参数指的是结果集的开始记录位置，第二个参数是结果集中包含的记录数，记录位置从0开始。</li>
+</ul>
+<p>所以该题的解法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT</div><div class="line">BEGIN</div><div class="line">  DECLARE M INT;</div><div class="line">  SET M=N-1;</div><div class="line">  RETURN (</div><div class="line">      # Write your MySQL query statement below.</div><div class="line">      SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT M, 1 </div><div class="line">  );</div><div class="line">END</div></pre></td></tr></table></figure>
+<h1 id="Human-Traffic-of-Stadium"><a href="#Human-Traffic-of-Stadium" class="headerlink" title="Human Traffic of Stadium"></a><a href="https://leetcode.com/problems/human-traffic-of-stadium/description/" target="_blank" rel="external">Human Traffic of Stadium</a></h1><p>这道题，首先要找到三个或者以上连续大于100的行，那么至少得找三行其人数大于100，至于4行，5行或者更多的行，那么可以通过这三行来组合，比如4行，1，2，3，4，那么1，2，3首先是可以找到的，那么下面会找到2，3，4。只要来一个选项，DISTINCT就可以输出,1,2,3,4。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">select distinct t1.*</div><div class="line">from stadium t1, stadium t2, stadium t3</div><div class="line">where t1.people &gt;= 100 and t2.people &gt;= 100 and t3.people &gt;= 100;</div></pre></td></tr></table></figure>
+<p>现在来考虑下可能的情况，在连续三行中，t1可能在的位置有三个，那么对这三个位置分别写入筛选条件，这样就可以将所有的可能的行都查询出来。因为SELECT的是<code>t1.*</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT DISTINCT t1.* FROM stadium t1 JOIN stadium t2 JOIN stadium t3 </div><div class="line">    ON t1.people &gt;= 100 AND t2.people &gt;= 100 AND t3.people &gt;= 100</div><div class="line">WHERE (</div><div class="line">    t1.id = t2.id - 1 AND t2.id = t3.id - 1 OR</div><div class="line">    t1.id = t3.id - 1 AND t2.id = t1.id - 1 OR</div><div class="line">    t2.id = t3.id - 1 AND t3.id = t1.id - 1</div><div class="line">) ORDER BY id;</div></pre></td></tr></table></figure>
+<h1 id="Department-Top-Three-Salaries"><a href="#Department-Top-Three-Salaries" class="headerlink" title="Department Top Three Salaries"></a><a href="https://leetcode.com/problems/department-top-three-salaries/description/" target="_blank" rel="external">Department Top Three Salaries</a></h1><p>表联合，然后筛选出Employee表中，比当前筛选的记录的薪水大的记录不超过三条的，就是要找的记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">SELECT</div><div class="line">    d.Name AS &apos;Department&apos;, e1.Name AS &apos;Employee&apos;, e1.Salary</div><div class="line">FROM</div><div class="line">    Employee e1</div><div class="line">        JOIN</div><div class="line">    Department d ON e1.DepartmentId = d.Id</div><div class="line">WHERE</div><div class="line">    3 &gt; (SELECT</div><div class="line">            COUNT(DISTINCT e2.Salary)</div><div class="line">        FROM</div><div class="line">            Employee e2</div><div class="line">        WHERE</div><div class="line">            e2.Salary &gt; e1.Salary</div><div class="line">            AND e1.DepartmentId = e2.DepartmentId</div><div class="line">        );</div></pre></td></tr></table></figure>
+<h1 id="Trips-and-Users"><a href="#Trips-and-Users" class="headerlink" title="Trips and Users"></a><a href="">Trips and Users</a></h1><p>表的联合。主要在于如何计算比例，使用了条件逻辑。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SELECT t.Request_at AS Day, ROUND(SUM(CASE WHEN t.Status like &apos;cancelled%&apos; THEN 1 ELSE 0 END) / COUNT(*), 2) AS &apos;Cancellation Rate&apos;</div><div class="line">FROM </div><div class="line">    Trips t JOIN Users u ON t.Client_Id = u.Users_Id </div><div class="line">WHERE </div><div class="line">    u.Banned != &apos;Yes&apos; AND t.Request_at BETWEEN &apos;2013-10-01&apos; AND &apos;2013-10-03&apos;</div><div class="line">GROUP BY t.Request_at;</div></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
