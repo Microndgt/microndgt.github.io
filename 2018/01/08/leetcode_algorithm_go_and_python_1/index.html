@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>LeetCode刷题 - Algorithm篇 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法,LeetCode,Go">
+    <meta name="description" content="开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！ 对Python能更熟点，Go是初学，若有写的不好的地方，请各位看官留言。 Hamming Distance看汉明距离的定义，就可以想到求两个数的异或，然后统计二进制中1的个数，就是汉明距离。 Python12345678class Solution:    d">
+<meta name="keywords" content="Python,算法,LeetCode,Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode刷题 - Algorithm篇">
+<meta property="og:url" content="http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！ 对Python能更熟点，Go是初学，若有写的不好的地方，请各位看官留言。 Hamming Distance看汉明距离的定义，就可以想到求两个数的异或，然后统计二进制中1的个数，就是汉明距离。 Python12345678class Solution:    d">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-08T13:50:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode刷题 - Algorithm篇">
+<meta name="twitter:description" content="开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！ 对Python能更熟点，Go是初学，若有写的不好的地方，请各位看官留言。 Hamming Distance看汉明距离的定义，就可以想到求两个数的异或，然后统计二进制中1的个数，就是汉明距离。 Python12345678class Solution:    d">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">LeetCode刷题 - Algorithm篇</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">LeetCode刷题 - Algorithm篇</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-01-08T13:46:32.000Z" itemprop="datePublished" class="page-time">
+  2018-01-08 21:46:32
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Hamming-Distance"><span class="post-toc-number">1.</span> <span class="post-toc-text">Hamming Distance</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Python</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Go"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Go</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Judge-Route-Circle"><span class="post-toc-number">2.</span> <span class="post-toc-text">Judge Route Circle</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python-1"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Python 1</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python-2"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Python 2</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Go-1"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Go</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Merge-Two-Binary-Trees"><span class="post-toc-number">3.</span> <span class="post-toc-text">Merge Two Binary Trees</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Python-1"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Python</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Go-2"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Go</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-leetcode_algorithm_go_and_python_1"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">LeetCode刷题 - Algorithm篇</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-01-08 21:46:32 21:46:32" datetime="2018-01-08T13:46:32.000Z"  itemprop="datePublished">2018-01-08 21:46:32</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！</p>
+<p>对Python能更熟点，Go是初学，若有写的不好的地方，请各位看官留言。</p>
+<h1 id="Hamming-Distance"><a href="#Hamming-Distance" class="headerlink" title="Hamming Distance"></a><a href="https://leetcode.com/problems/hamming-distance/description/" target="_blank" rel="external">Hamming Distance</a></h1><p>看汉明距离的定义，就可以想到求两个数的异或，然后统计二进制中1的个数，就是汉明距离。</p>
+<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class Solution:</div><div class="line">    def hammingDistance(self, x, y):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type x: int</div><div class="line">        :type y: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        return bin(x^y).count(&apos;1&apos;)</div></pre></td></tr></table></figure>
+<h2 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import &quot;fmt&quot;</div><div class="line">func hammingDistance(x int, y int) int &#123;</div><div class="line">    result := fmt.Sprintf(&quot;%b&quot;, x ^ y)</div><div class="line">    count := 0</div><div class="line">    for _, num := range result &#123;</div><div class="line">        if num == &apos;1&apos; &#123;</div><div class="line">            count += 1</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return count</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="Judge-Route-Circle"><a href="#Judge-Route-Circle" class="headerlink" title="Judge Route Circle"></a><a href="https://leetcode.com/problems/judge-route-circle/description/" target="_blank" rel="external">Judge Route Circle</a></h1><p>这道题一开始按照常规思路做了，就是定义一系列的坐标，然后按照字符进行迭代加减。其实有更简单的方法，就是统计LRUD的次数，这样就可以得出是不是能回到原点。</p>
+<h2 id="Python-1"><a href="#Python-1" class="headerlink" title="Python 1"></a>Python 1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Solution:</div><div class="line">    def judgeCircle(self, moves):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type moves: str</div><div class="line">        :rtype: bool</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        move_cord = &#123;</div><div class="line">            &quot;L&quot;: (-1, 0),</div><div class="line">            &quot;R&quot;: (1, 0),</div><div class="line">            &quot;U&quot;: (0, 1),</div><div class="line">            &quot;D&quot;: (0, -1)</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        pos = (0, 0)</div><div class="line">        for move in moves:</div><div class="line">            move_pos = move_cord.get(move, (0, 0))</div><div class="line">            pos = pos[0] + move_pos[0], pos[1] + move_pos[1]</div><div class="line">        </div><div class="line">        return pos[0] == 0 and pos[1] == 0</div></pre></td></tr></table></figure>
+<h2 id="Python-2"><a href="#Python-2" class="headerlink" title="Python 2"></a>Python 2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Solution:</div><div class="line">    def judgeCircle(self, moves):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type moves: str</div><div class="line">        :rtype: bool</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        return moves.count(&apos;R&apos;) == moves.count(&apos;L&apos;) and moves.count(&apos;U&apos;) == moves.count(&apos;D&apos;)</div></pre></td></tr></table></figure>
+<h2 id="Go-1"><a href="#Go-1" class="headerlink" title="Go"></a>Go</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import &quot;strings&quot;</div><div class="line">func judgeCircle(moves string) bool &#123;</div><div class="line">    return strings.Count(moves, &quot;L&quot;) == strings.Count(moves, &quot;R&quot;) &amp;&amp;</div><div class="line">            strings.Count(moves, &quot;U&quot;) == strings.Count(moves, &quot;D&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这道题也能反映出两个语言的速度差异，同样的算法，Python需要71ms，而Go只需要7ms。。。</p>
+<h1 id="Merge-Two-Binary-Trees"><a href="#Merge-Two-Binary-Trees" class="headerlink" title="Merge Two Binary Trees"></a><a href="https://leetcode.com/problems/merge-two-binary-trees/description/" target="_blank" rel="external">Merge Two Binary Trees</a></h1><p>反正遇到树就递归，没毛病。这道题一看，就是两两node之间merge，然后递归merge其left和right，需要注意的是None的检测。</p>
+<h2 id="Python-1"><a href="#Python-1" class="headerlink" title="Python"></a>Python</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Solution:</div><div class="line">    def mergeTrees(self, t1, t2):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type t1: TreeNode</div><div class="line">        :type t2: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if not t1 and not t2:</div><div class="line">            return</div><div class="line">        ans = TreeNode((t1.val if t1 else 0) + (t2.val if t2 else 0))</div><div class="line">        ans.left = self.mergeTrees(t1 and t1.left, t2 and t2.left)</div><div class="line">        ans.right = self.mergeTrees(t1 and t1.right, t2 and t2.right)</div><div class="line">        return ans</div></pre></td></tr></table></figure>
+<p>其实可以，分别判断，这样会更快点，因为后面就不需要判断t1,t2是不是None了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Solution:</div><div class="line">    def mergeTrees(self, t1, t2):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type t1: TreeNode</div><div class="line">        :type t2: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if not t1: return t2</div><div class="line">        if not t2: return t1</div><div class="line">        ans = TreeNode(t1.val + t2.val)</div><div class="line">        ans.left = self.mergeTrees(t1.left, t2.left)</div><div class="line">        ans.right = self.mergeTrees(t1.right, t2.right)</div><div class="line">        return ans</div></pre></td></tr></table></figure>
+<h2 id="Go-2"><a href="#Go-2" class="headerlink" title="Go"></a>Go</h2><p>分别来判断，保证了后面执行的t1和t2不可能是nil。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">func mergeTrees(t1 *TreeNode, t2 *TreeNode) *TreeNode &#123;</div><div class="line">    if t1 == nil &#123;</div><div class="line">        return t2</div><div class="line">    &#125;</div><div class="line">    if t2 == nil &#123;</div><div class="line">        return t1</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    node := TreeNode &#123;</div><div class="line">        Val: t1.Val + t2.Val,</div><div class="line">    &#125;</div><div class="line">    node.Left = mergeTrees(t1.Left, t2.Left)</div><div class="line">    node.Right = mergeTrees(t1.Right, t2.Right)</div><div class="line">    return &amp;node</div><div class="line">&#125;</div></pre></td></tr></table></figure>     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/01/08/leetcode_algorithm_go_and_python_1/" target="_blank" rel="external">http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/&title=《LeetCode刷题 - Algorithm篇》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/&title=《LeetCode刷题 - Algorithm篇》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LeetCode刷题 - Algorithm篇》 — SkyRover&url=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/01/07/go语言圣经_note_1/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Go语言圣经 - 读书笔记(1)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/&title=《LeetCode刷题 - Algorithm篇》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/&title=《LeetCode刷题 - Algorithm篇》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LeetCode刷题 - Algorithm篇》 — SkyRover&url=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/01/08/leetcode_algorithm_go_and_python_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACq0lEQVR42u3aQW4CMQwFUO5/abrpolU10287LlR6s0IDhLxBSqzvPB7x9fxyJZ/8+Tr/zPP2emxceHh4eIOpXw2Xv766c3//CpD81i+PAA8PD2+Nly/fvWU933LyO/dzxsPDw3tn3mSEHICHh4f3H3nV4rs8lVaJj4eHh/cqXjJcL0jNp7URZ+Dh4eFt8CZTfNXrlf4eHh4e3rirXl2sq8V3Urj35vn5XTw8PLwF3uTowOQwwfYhMDw8PLw9XhK5JhOaB76FfyM+fICHh4e3x0uK3bz8vZ/u5E71t/Dw8PD2ePniXl3Qq82qpPGWtNDw8PDwtnm9H04W8fy7CSmPjPHw8PC2eXm4UBj6bNLcqpPx8PDwNniTQU8Ftfk2kM8wypvx8PDwWrzqQaj5on/qmEIUSeDh4eEt8PLCtNm8L4bC1cd3/xoPDw9vj5cXuMlyXD2OMC++C0g8PDy8Ma93CKC6ZN9vCdV/o/D48PDw8BZ4+eLea/xXp1INPgp/Dx4eHt4hXi+c3Wvzl48CJCk1Hh4e3lFeviVUG1HV3n0vtI3u4OHh4R3l5U2p5N3ega3mgYBkc8LDw8Nb401aU3kM0Wtr9croywYYHh4e3pjXK4XzbaA3lXzbyB8iHh4e3l/yeoNWN4z8QVTv4OHh4W3w8ilWjxpUS+rDYQQeHh7eMi+PG+bF8eTYVjm2wMPDw1vmjSrxuMV1bOrVNhgeHh7emDcvhfMAtxr4Tkr/b/09PDw8vKO8ydA5uLroz8ORR28/wcPDw4t5eYGbl9TVjaF3UCCKRfDw8PDWeHm8m8eveZibtMGaFx4eHt4b8JKW/17brBw04+Hh4b0Bb+MAQT5yHjTj4eHhbfOqYUQeGSSfnITFKzEuHh4e3qEGWL7Q975V3WZOHdXCw8PDi3kfq5uNqj99SfkAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
