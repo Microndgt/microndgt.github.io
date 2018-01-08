@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-01-07T11:55:40.000Z</updated>
+  <updated>2018-01-08T00:00:26.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go语言圣经 - 读书笔记(1)</title>
+    <link href="http://skyrover.me/2018/01/07/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_1/"/>
+    <id>http://skyrover.me/2018/01/07/go语言圣经_note_1/</id>
+    <published>2018-01-07T13:57:46.000Z</published>
+    <updated>2018-01-08T00:00:26.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><ul>
+<li><code>go run</code>编译一个或者多个以<code>.go</code>结尾的源文件，链接库文件，并运行最终生成的可执行文件。</li>
+<li><code>go build</code>会编译程序，并且保存编译结果。会生成可执行的二进制文件。</li>
+<li>每个源文件都以一条package声明语句开始。表示该文件属于哪个包。</li>
+<li>main包定义了一个独立可执行的程序而不是一个库。main函数是程序执行时候的入口。</li>
+<li><code>gofmt</code>将代码格式化为标准格式。<code>go fmt</code>会对包，默认为当前目录的<code>.go</code>源文件应用<code>gofmt</code>命令。</li>
+<li><code>goimports</code>可以根据代码需要, 自动地添加或删除import声明。</li>
+</ul>
+<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
+<li>程序的命令行参数可从os包的Args变量获取，os.Args变量是一个字符串的切片</li>
+<li><code>os.Args[0]</code>, 是命令本身的名字</li>
+<li><code>s := &quot;&quot;</code> 短变量声明，只能用在函数内部，不能用于包变量。可以使用<code>var s string</code>, <code>var s = &quot;&quot;</code>, <code>var s string = &quot;&quot;</code></li>
+<li><code>strings</code>的<code>Join</code>函数: <code>strings.Join(os.Args[1:], &quot; &quot;)</code></li>
+</ul>
+<h2 id="查找重复的行"><a href="#查找重复的行" class="headerlink" title="查找重复的行"></a>查找重复的行</h2><ul>
+<li>map中的键，要能够用<code>==</code>运算符比较。map的迭代顺序不确定。</li>
+<li><code>%v</code> 变量的自然形式</li>
+<li><p>读取输入</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import &quot;bufio&quot;</div><div class="line">// func 下</div><div class="line">counts := make(map[string]int)</div><div class="line">input := bufio.NewScanner(os.Stdin)</div><div class="line">for input.Scan() &#123;</div><div class="line">    counts[input.Text()]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>函数参数为map的时候，map会以引用的拷贝来传递，被调用的函数对map的数据结构的修改，调用者函数的map也会相应变化。实际上传递的是目前map指针的拷贝，是另外一个指针，但是内部存储的值是指向同一块内存。</p>
+</li>
+<li><p>一行一行读取文件，以流模式读取输入</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">import &quot;os&quot;</div><div class="line">// func 下</div><div class="line">f, err := os.Open(filename)</div><div class="line">if err != nil &#123;</div><div class="line">    return</div><div class="line">&#125;</div><div class="line">input := bufio.NewScanner(f)</div><div class="line">for input.Scan() &#123;</div><div class="line">    counts[input.Text()]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取整个文件的数据</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import &quot;io/ioutil&quot;</div><div class="line">data, err := ioutil.ReadFile(filename)</div><div class="line">if err != nil &#123;</div><div class="line">    return</div><div class="line">&#125;</div><div class="line">// ReadFile返回字节切片，必须转换为String，才能用Split分割</div><div class="line">for _, line := range strings.Split(string(data), &quot;\n) &#123;</div><div class="line">    counts[line]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="GIF动画"><a href="#GIF动画" class="headerlink" title="GIF动画"></a>GIF动画</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;入门&quot;&gt;&lt;a href=&quot;#入门&quot; class=&quot;headerlink&quot; title=&quot;入门&quot;&gt;&lt;/a&gt;入门&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;go run&lt;/code&gt;编译一个或者多个以&lt;code&gt;.go&lt;/code&gt;结尾的源文件，链接库文件，并运行最终生成
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>LeetCode刷题 - Algorithm篇</title>
