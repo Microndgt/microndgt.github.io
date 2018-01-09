@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-01-08T15:24:15.000Z</updated>
+  <updated>2018-01-09T00:00:29.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>Go语言圣经 - 读书笔记(1)</title>
-    <link href="http://skyrover.me/2018/01/08/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_1/"/>
-    <id>http://skyrover.me/2018/01/08/go语言圣经_note_1/</id>
-    <published>2018-01-08T15:24:46.000Z</published>
-    <updated>2018-01-08T15:24:15.000Z</updated>
+    <link href="http://skyrover.me/2018/01/09/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_1/"/>
+    <id>http://skyrover.me/2018/01/09/go语言圣经_note_1/</id>
+    <published>2018-01-09T00:00:46.000Z</published>
+    <updated>2018-01-09T00:00:29.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><ul>
 <li><code>go run</code>编译一个或者多个以<code>.go</code>结尾的源文件，链接库文件，并运行最终生成的可执行文件。</li>
@@ -68,7 +68,24 @@
 <li>方法是和命名类型关联的一类函数。Go语言里比较特殊的是方法可以被关联到任意一种命名类型。</li>
 <li>源代码文件或者函数开头之前写注释，可以被godoc检测到。</li>
 </ul>
-<h1 id="程序结构"><a href="#程序结构" class="headerlink" title="程序结构"></a>程序结构</h1>]]></content>
+<h1 id="程序结构"><a href="#程序结构" class="headerlink" title="程序结构"></a>程序结构</h1><h2 id="命名，声明和变量"><a href="#命名，声明和变量" class="headerlink" title="命名，声明和变量"></a>命名，声明和变量</h2><ul>
+<li>驼峰式命名</li>
+<li><code>var</code>, <code>const</code>, <code>type</code>, <code>func</code>，type是类型</li>
+<li>包一级声明语句声明的名字可在整个包对应的每个源文件中访问。</li>
+<li><code>var 变量名字 类型 = 表达式</code>, <code>var i, j, k int</code></li>
+<li>接口或者引用类型变量对应的零值是nil。数组或者结构体聚合类型对应的零值是每个元素或者字段对应该类型的零值。</li>
+<li>指针对应的数据类型是<code>*int</code>，<code>*p</code>表示读取指针指向的变量的值。</li>
+<li>指针的零值是nil</li>
+<li>指针包含了变量地址，将指针作为参数调用函数，将来可以在函数中通过指针来更新变量的值。</li>
+<li><code>new(T)</code> 将创建一个T类型的匿名变量，初始化T类型的零值，然后返回变量地址，返回的指针类型为<code>*T</code></li>
+<li>从每个包级变量和每个当前运行函数的每一个局部变量开始，通过指针或者引用的访问路径遍历，是否可以找到该变量。</li>
+<li><p>在函数退出后，如果局部变量被全局变量引用了，那么该局部变量就是从函数中逃逸了，那么它将会被在堆中分配内存。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var global *int</div><div class="line"></div><div class="line">func f() &#123;</div><div class="line">    var x int</div><div class="line">    x = 1</div><div class="line">    global = &amp;x</div><div class="line">&#125;</div><div class="line"></div><div class="line">func g() &#123;</div><div class="line">    y := new(int)</div><div class="line">    *y = 1</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果将指向短生命周期对象的指针保存到具有长生命周期的对象中，特别是保存到全局变量时，会阻止对短生命周期对象的垃圾回收</p>
+</li>
+</ul>
+<h2 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h2>]]></content>
     
     <summary type="html">
     
