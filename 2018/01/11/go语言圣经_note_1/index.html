@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Go语言圣经 - 读书笔记(1) | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="读书笔记,Go">
+    <meta name="description" content="入门 go run编译一个或者多个以.go结尾的源文件，链接库文件，并运行最终生成的可执行文件。 go build会编译程序，并且保存编译结果。会生成可执行的二进制文件。 每个源文件都以一条package声明语句开始。表示该文件属于哪个包。 main包定义了一个独立可执行的程序而不是一个库。main函数是程序执行时候的入口。 gofmt将代码格式化为标准格式。go fmt会对包，默认为当前目录的.">
+<meta name="keywords" content="读书笔记,Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言圣经 - 读书笔记(1)">
+<meta property="og:url" content="http://skyrover.me/2018/01/11/go语言圣经_note_1/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="入门 go run编译一个或者多个以.go结尾的源文件，链接库文件，并运行最终生成的可执行文件。 go build会编译程序，并且保存编译结果。会生成可执行的二进制文件。 每个源文件都以一条package声明语句开始。表示该文件属于哪个包。 main包定义了一个独立可执行的程序而不是一个库。main函数是程序执行时候的入口。 gofmt将代码格式化为标准格式。go fmt会对包，默认为当前目录的.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-11T15:23:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go语言圣经 - 读书笔记(1)">
+<meta name="twitter:description" content="入门 go run编译一个或者多个以.go结尾的源文件，链接库文件，并运行最终生成的可执行文件。 go build会编译程序，并且保存编译结果。会生成可执行的二进制文件。 每个源文件都以一条package声明语句开始。表示该文件属于哪个包。 main包定义了一个独立可执行的程序而不是一个库。main函数是程序执行时候的入口。 gofmt将代码格式化为标准格式。go fmt会对包，默认为当前目录的.">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Go语言圣经 - 读书笔记(1)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Go语言圣经 - 读书笔记(1)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-01-11T15:23:46.000Z" itemprop="datePublished" class="page-time">
+  2018-01-11 23:23:46
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#入门"><span class="post-toc-number">1.</span> <span class="post-toc-text">入门</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#命令行参数"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">命令行参数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#查找重复的行"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">查找重复的行</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#获取URL"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">获取URL</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#并发获取多个URL"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">并发获取多个URL</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Web服务"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Web服务</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#程序结构"><span class="post-toc-number">2.</span> <span class="post-toc-text">程序结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#命名，声明和变量"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">命名，声明和变量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#赋值"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">赋值</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#类型"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">类型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#包和文件"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">包和文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#作用域"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">作用域</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基础数据类型"><span class="post-toc-number">3.</span> <span class="post-toc-text">基础数据类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#整型"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">整型</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-go语言圣经_note_1"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Go语言圣经 - 读书笔记(1)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-01-11 23:23:46 23:23:46" datetime="2018-01-11T15:23:46.000Z"  itemprop="datePublished">2018-01-11 23:23:46</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><ul>
+<li><code>go run</code>编译一个或者多个以<code>.go</code>结尾的源文件，链接库文件，并运行最终生成的可执行文件。</li>
+<li><code>go build</code>会编译程序，并且保存编译结果。会生成可执行的二进制文件。</li>
+<li>每个源文件都以一条package声明语句开始。表示该文件属于哪个包。</li>
+<li>main包定义了一个独立可执行的程序而不是一个库。main函数是程序执行时候的入口。</li>
+<li><code>gofmt</code>将代码格式化为标准格式。<code>go fmt</code>会对包，默认为当前目录的<code>.go</code>源文件应用<code>gofmt</code>命令。</li>
+<li><code>goimports</code>可以根据代码需要, 自动地添加或删除import声明。</li>
+</ul>
+<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
+<li>程序的命令行参数可从os包的Args变量获取，os.Args变量是一个字符串的切片</li>
+<li><code>os.Args[0]</code>, 是命令本身的名字</li>
+<li><code>s := &quot;&quot;</code> 短变量声明，只能用在函数内部，不能用于包变量。可以使用<code>var s string</code>, <code>var s = &quot;&quot;</code>, <code>var s string = &quot;&quot;</code></li>
+<li><code>strings</code>的<code>Join</code>函数: <code>strings.Join(os.Args[1:], &quot; &quot;)</code></li>
+</ul>
+<h2 id="查找重复的行"><a href="#查找重复的行" class="headerlink" title="查找重复的行"></a>查找重复的行</h2><ul>
+<li>map中的键，要能够用<code>==</code>运算符比较。map的迭代顺序不确定。</li>
+<li><code>%v</code> 变量的自然形式</li>
+<li><p>读取输入</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import &quot;bufio&quot;</div><div class="line">// func 下</div><div class="line">counts := make(map[string]int)</div><div class="line">input := bufio.NewScanner(os.Stdin)</div><div class="line">for input.Scan() &#123;</div><div class="line">    counts[input.Text()]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>函数参数为map的时候，map会以引用的拷贝来传递，被调用的函数对map的数据结构的修改，调用者函数的map也会相应变化。实际上传递的是目前map指针的拷贝，是另外一个指针，但是内部存储的值是指向同一块内存。</p>
+</li>
+<li><p>一行一行读取文件，以流模式读取输入</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">import &quot;os&quot;</div><div class="line">// func 下</div><div class="line">f, err := os.Open(filename)</div><div class="line">if err != nil &#123;</div><div class="line">    return</div><div class="line">&#125;</div><div class="line">input := bufio.NewScanner(f)</div><div class="line">for input.Scan() &#123;</div><div class="line">    counts[input.Text()]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取整个文件的数据</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import &quot;io/ioutil&quot;</div><div class="line">data, err := ioutil.ReadFile(filename)</div><div class="line">if err != nil &#123;</div><div class="line">    return</div><div class="line">&#125;</div><div class="line">// ReadFile返回字节切片，必须转换为String，才能用Split分割</div><div class="line">for _, line := range strings.Split(string(data), &quot;\n) &#123;</div><div class="line">    counts[line]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="获取URL"><a href="#获取URL" class="headerlink" title="获取URL"></a>获取URL</h2><ul>
+<li>struct是一组值或者叫字段的集合。</li>
+<li><p><code>http.Get</code>返回的<code>resp.Body</code>是一个可读的服务器响应流，使用<code>ioutil.ReadAll</code>函数从resp中读取到所有内容，然后使用<code>resp.Body.Close</code>关闭流。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">resp, err := http.Get(url)</div><div class="line">if err != nil &#123;</div><div class="line">    fmt.Fprintf(os.Stderr, &quot;fetch: %v\n&quot;, err)</div><div class="line">    os.Exit(1)</div><div class="line">&#125;</div><div class="line">b, err := ioutil.ReadAll(resp.Body)</div><div class="line">resp.Body.Close()</div><div class="line">if err != nil &#123;</div><div class="line">    fmt.Fprintf(os.Stderr, &quot;fetch: reading %s: %v\n&quot;, url, err)</div><div class="line">    os.Exit(1)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="并发获取多个URL"><a href="#并发获取多个URL" class="headerlink" title="并发获取多个URL"></a>并发获取多个URL</h2><ul>
+<li><code>nbytes, err := io.Copy(ioutil.Discard, resp.Body)</code> 会将响应的Body内容拷贝到<code>ioutil.Discard</code>输出流中，这个是一个垃圾桶。返回字节数。</li>
+<li>使用channel: <code>ch := make(chan string)</code></li>
+</ul>
+<h2 id="Web服务"><a href="#Web服务" class="headerlink" title="Web服务"></a>Web服务</h2><ul>
+<li>发送到这个服务的请求是一个<code>http.Request</code>类型的对象，这个对象中包含了请求中的一系列相关字段</li>
+<li>服务器每一次接收请求处理时都会另起一个goroutine，这样服务器就可以同一时间处理多个请求。</li>
+<li>共同的接口，被调用需要一个标准流输出时都可以满足。这个接口叫作<code>io.Writer</code></li>
+<li>方法是和命名类型关联的一类函数。Go语言里比较特殊的是方法可以被关联到任意一种命名类型。</li>
+<li>源代码文件或者函数开头之前写注释，可以被godoc检测到。</li>
+</ul>
+<h1 id="程序结构"><a href="#程序结构" class="headerlink" title="程序结构"></a>程序结构</h1><h2 id="命名，声明和变量"><a href="#命名，声明和变量" class="headerlink" title="命名，声明和变量"></a>命名，声明和变量</h2><ul>
+<li>驼峰式命名</li>
+<li><code>var</code>, <code>const</code>, <code>type</code>, <code>func</code>，type是类型</li>
+<li>包一级声明语句声明的名字可在整个包对应的每个源文件中访问。</li>
+<li><code>var 变量名字 类型 = 表达式</code>, <code>var i, j, k int</code></li>
+<li>接口或者引用类型变量对应的零值是nil。数组或者结构体聚合类型对应的零值是每个元素或者字段对应该类型的零值。</li>
+<li>指针对应的数据类型是<code>*int</code>，<code>*p</code>表示读取指针指向的变量的值。</li>
+<li>指针的零值是nil</li>
+<li>指针包含了变量地址，将指针作为参数调用函数，将来可以在函数中通过指针来更新变量的值。</li>
+<li><code>new(T)</code> 将创建一个T类型的匿名变量，初始化T类型的零值，然后返回变量地址，返回的指针类型为<code>*T</code></li>
+<li>从每个包级变量和每个当前运行函数的每一个局部变量开始，通过指针或者引用的访问路径遍历，是否可以找到该变量。</li>
+<li><p>在函数退出后，如果局部变量被全局变量引用了，那么该局部变量就是从函数中逃逸了，那么它将会被在堆中分配内存。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var global *int</div><div class="line"></div><div class="line">func f() &#123;</div><div class="line">    var x int</div><div class="line">    x = 1</div><div class="line">    global = &amp;x</div><div class="line">&#125;</div><div class="line"></div><div class="line">func g() &#123;</div><div class="line">    y := new(int)</div><div class="line">    *y = 1</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果将指向短生命周期对象的指针保存到具有长生命周期的对象中，特别是保存到全局变量时，会阻止对短生命周期对象的垃圾回收</p>
+</li>
+</ul>
+<h2 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h2><ul>
+<li><p>以下三个操作会返回ok</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">v, ok = m[key] // map</div><div class="line">v, ok = x.(string) // 类型断言</div><div class="line">v, ok = &lt;-ch // channel</div></pre></td></tr></table></figure>
+</li>
+<li><p>nil可以赋值给任何指针或者引用类型的变量。</p>
+</li>
+<li>两个值要想比较，那么第二个值必须是对第一个值类型对应的变量是可以赋值的。</li>
+</ul>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><ul>
+<li>一个类型声明语句创建了一个新的类型名称，和现有类型具有相同的底层结构。比如<code>type Celsius float64</code>摄氏温度</li>
+<li>如果两个值有着不同的类型，那么就不能直接进行比较。</li>
+<li>使用fmt包的打印方法时候，将会优先使用该类型对应的String方法返回的结果。</li>
+</ul>
+<h2 id="包和文件"><a href="#包和文件" class="headerlink" title="包和文件"></a>包和文件</h2><ul>
+<li>每个包都有一个全局唯一的导入路径。比如<code>gopl.io/ch2/tempconv</code></li>
+<li>另外，每个包都有包名，一般是导入路径的最后一个字段。</li>
+<li>包的初始化首先是解决包级变量的依赖顺序，按照包级变量声明出现的顺序依次进行初始化。</li>
+<li>可以使用init函数来进行初始化函数，每个文件可以包含多个init初始化函数。按照声明的顺序被自动调用。</li>
+<li>导入的包，每个包只会被初始化一次。</li>
+<li>如果<code>for i := range pc</code>，是省略了第二个值，也可以是这样<code>for i, value := range pc</code></li>
+</ul>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><ul>
+<li>作用域是一个编译时候的属性，生命周期是程序运行时候变量存在的有效时间段。</li>
+<li>语法块(花括弧包起来的)内部声明的名字是无法被外部语法块访问的。for循环的初始化，条件测试和循环后的部分都是隐式的词法域。</li>
+<li>导入的包是源文件级的作用域，只能在当前的文件中访问导入的包。</li>
+</ul>
+<h1 id="基础数据类型"><a href="#基础数据类型" class="headerlink" title="基础数据类型"></a>基础数据类型</h1><ol>
+<li>基础类型 - 数字，字符串和布尔</li>
+<li>复合类型 - 数组，结构体</li>
+<li>引用类型 - 指针，切片，字典，函数，通道</li>
+<li>接口类型</li>
+</ol>
+<h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><ul>
+<li>Unicode字符rune类型是和int32等价的类型，通常用于表示一个Unicode码点。</li>
+<li>byte是unit8的等价类型，用于强调数值是一个原始数据而不是小整数。</li>
+<li>无符号整数类型uintptr，容纳指针。</li>
+<li>需要将int当作int32类型的时候需要一个显式的类型转换。</li>
+<li><code>/</code>运算符的行为依赖操作数是否全为整数。</li>
+<li>许多整形数之间的相互转换并不会改变数值，它们只是告诉编译器如何解释这个值。</li>
+<li>字符面值通过单引号来包含对应字符。<code>%q</code>来打印单引号字符</li>
+</ul>
+     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/01/11/go语言圣经_note_1/" target="_blank" rel="external">http://skyrover.me/2018/01/11/go语言圣经_note_1/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/01/11/go语言圣经_note_1/&title=《Go语言圣经 - 读书笔记(1)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/01/11/go语言圣经_note_1/&title=《Go语言圣经 - 读书笔记(1)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/01/11/go语言圣经_note_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Go语言圣经 - 读书笔记(1)》 — SkyRover&url=http://skyrover.me/2018/01/11/go语言圣经_note_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/01/11/go语言圣经_note_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/01/11/leetcode_algorithm_go_and_python_1/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">LeetCode刷题 - Algorithm篇</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/01/11/go语言圣经_note_1/&title=《Go语言圣经 - 读书笔记(1)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/01/11/go语言圣经_note_1/&title=《Go语言圣经 - 读书笔记(1)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/01/11/go语言圣经_note_1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Go语言圣经 - 读书笔记(1)》 — SkyRover&url=http://skyrover.me/2018/01/11/go语言圣经_note_1/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/01/11/go语言圣经_note_1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACL0lEQVR42u3aQW4CMQwFUO5/aSp11Yp25tuGqnheViiUTB6VjGPndovH/XN8fZ3MPL5b/ZsnDwwMjLdl3A/H4yOrnz1e4TdSdX0MDIwrMKpLH5Oq4TsJ3Cd7xsDAwIjTwWQkIRsDAwPjWQE3T/iSGQwMDIxjRhL48gJZcpSdB3EMDIzrMHqNgb95/fL+BgYGxr9n3MdjvuZ8PxgYGLsZ1YJ+nuTNj6z5gRYDA2M3Y358Tb6I5N1eIS/63cDAwFjESBZKAmjvMJzPYGBgXI1xnF8l870t5kG8HOIxMDDWMXrbysNitZ6fsH/YCQYGxmpGNdRWy/rHyVweyqOnYGBgrGZUk7McnBxEq0diDAyMqzGShC8PnUlRrFn6T34xMDAwljLyw2ovTayuMzr6YmBgXIDRS/WSnkM+U31WOUJjYGC8ISMPeXkvNC+o5WW7k/QUAwNjNSO5tjVvGBRqfq32JwYGxm5Gb0N5iJy0Ewr/BwwMjNWMSVltUvTvfSnlqiEGBsY6Rm/TvXSwV+A7+WowMDAuw+iV/qtXvqpNhSh5xcDAWM3olbqOZ6oXL55WL8TAwFjH6JXJXp3wJRcvvs1gYGCsZvSCbMLLQ2qywrOCNQYGxvsy8tCZNACqlzPyCxknARcDA+MCjPzw2avGz6+FnXwKAwMDo3jNotqGnBxlMTAwMHrH0XmrYHTOxsDAWMroXQubtDzzJkEhNcTAwFjK6DUG8rhXLaj12qUYGBhLGR/NlVbk1A6+9QAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
