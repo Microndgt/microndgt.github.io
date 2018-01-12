@@ -2622,9 +2622,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
             <tag> Thrift </tag>
             
@@ -3708,9 +3708,9 @@
             
             <tag> 翻译 </tag>
             
-            <tag> pytest </tag>
-            
             <tag> 协程 </tag>
+            
+            <tag> pytest </tag>
             
         </tags>
         
@@ -3854,9 +3854,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
         </tags>
         
@@ -3988,9 +3988,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
         </tags>
         
@@ -4046,9 +4046,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
             <tag> gevent </tag>
             
@@ -4106,9 +4106,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
             <tag> Thrift </tag>
             
@@ -4181,9 +4181,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
             <tag> Thrift </tag>
             
@@ -6098,39 +6098,6 @@
   
     
     <entry>
-      <title><![CDATA[Categories]]></title>
-      <url>/categories/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[About]]></title>
-      <url>/about/index.html</url>
-      <content type="html"><![CDATA[<p>爱玩，爱旅行，爱折腾。。。现在开始爱做饭;-)</p>
-<p>经历过失学，失业，失身，失恋但是仍未成熟</p>
-<p>旅行，已与40个城市亲密接触..</p>
-<p>小时候的梦想是当一名黑客</p>
-<p>天文爱好者，攒钱买镜子</p>
-<p>英语</p>
-<p>喜欢宋词</p>
-<p>喜欢历史，读过资治通鉴，史记</p>
-<p>大爱美剧，冰与火之歌</p>
-<p>格言：</p>
-<blockquote>
-<p>I shall be telling this with a sigh</p>
-<p>Somewhere ages and ages hence:</p>
-<p>Two roads diverged in a wood,and I—</p>
-<p>I took the one less traveled by,</p>
-<p>And that has made all the difference.</p>
-<p>  ——Robert Frost 《The Road Not Taken》</p>
-</blockquote>
-<h2 id="FL"><a href="#FL" class="headerlink" title="FL"></a>FL</h2><ul>
-<li><a href="https://surmon.me" target="_blank" rel="external">「 Surmon 」</a>  <a href="http://jooger.me" target="_blank" rel="external">「 Jooger 」</a></li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
       <title></title>
       <url>/css/My.css</url>
       <content type="html"><![CDATA[/*@import "black.css";*/
@@ -6196,6 +6163,12 @@ code,b,strong{
     list-style: none;
 }
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Categories]]></title>
+      <url>/categories/index.html</url>
+      <content type="html"></content>
     </entry>
     
     <entry>
@@ -6458,6 +6431,33 @@ code{
     </entry>
     
     <entry>
+      <title><![CDATA[About]]></title>
+      <url>/about/index.html</url>
+      <content type="html"><![CDATA[<p>爱玩，爱旅行，爱折腾。。。现在开始爱做饭;-)</p>
+<p>经历过失学，失业，失身，失恋但是仍未成熟</p>
+<p>旅行，已与40个城市亲密接触..</p>
+<p>小时候的梦想是当一名黑客</p>
+<p>天文爱好者，攒钱买镜子</p>
+<p>英语</p>
+<p>喜欢宋词</p>
+<p>喜欢历史，读过资治通鉴，史记</p>
+<p>大爱美剧，冰与火之歌</p>
+<p>格言：</p>
+<blockquote>
+<p>I shall be telling this with a sigh</p>
+<p>Somewhere ages and ages hence:</p>
+<p>Two roads diverged in a wood,and I—</p>
+<p>I took the one less traveled by,</p>
+<p>And that has made all the difference.</p>
+<p>  ——Robert Frost 《The Road Not Taken》</p>
+</blockquote>
+<h2 id="FL"><a href="#FL" class="headerlink" title="FL"></a>FL</h2><ul>
+<li><a href="https://surmon.me" target="_blank" rel="external">「 Surmon 」</a>  <a href="http://jooger.me" target="_blank" rel="external">「 Jooger 」</a></li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title></title>
       <url>/css/vj.css</url>
       <content type="html"><![CDATA[.problem_title{
@@ -6586,6 +6586,38 @@ $(document).ready(function(){
     
     <entry>
       <title></title>
+      <url>/js/My.js</url>
+      <content type="html"><![CDATA[//document.write("<script language="javascript" src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>");
+document.write("<script language="javascript" src="/js/jquery.js"></script>");
+document.write("<script language="javascript" src="/js/after_jquery.js"></script>");
+document.write("<script language="javascript" src="/js/spfk.js"></script>");
+
+
+//网站重定向
+host = window.location.host
+if(host=="ohyee.coding.me")
+    window.location.href = window.location.href.replace(/ohyee.coding.me/,"www.oyohyee.com")
+
+//to https
+protocol = window.location.protocol
+if(protocol == "http:" && host!="localhost:4000")
+  window.location.href = window.location.href.replace("http://","https://")
+
+//百度站长统计
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c3c4a93be88257973d97af02f735ed4e";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+
+//alert("加载完成");
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
       <url>/js/about.js</url>
       <content type="html"><![CDATA[//生成一个 Work 对象
 function Work(title,url,img,introduction,tag){
@@ -6617,38 +6649,6 @@ function ShowWork(){
 }
 
 ShowWork();
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>/js/My.js</url>
-      <content type="html"><![CDATA[//document.write("<script language="javascript" src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>");
-document.write("<script language="javascript" src="/js/jquery.js"></script>");
-document.write("<script language="javascript" src="/js/after_jquery.js"></script>");
-document.write("<script language="javascript" src="/js/spfk.js"></script>");
-
-
-//网站重定向
-host = window.location.host
-if(host=="ohyee.coding.me")
-    window.location.href = window.location.href.replace(/ohyee.coding.me/,"www.oyohyee.com")
-
-//to https
-protocol = window.location.protocol
-if(protocol == "http:" && host!="localhost:4000")
-  window.location.href = window.location.href.replace("http://","https://")
-
-//百度站长统计
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?c3c4a93be88257973d97af02f735ed4e";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
-
-//alert("加载完成");
 ]]></content>
     </entry>
     
