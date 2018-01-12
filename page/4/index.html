@@ -315,13 +315,7 @@ var _hmt = _hmt || [];
 <p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
 <p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/flask_https/flask-ssl-03.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/flask_https/flask-ssl-03.png" alt=""></p>
 <h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
 <p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
 <p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
@@ -655,13 +649,7 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>When I see you<br>looking back at me<br>watching these eyes still<br>through your fingers<br>and your eyes<br>have told a thousand lights<br>but I cant tell this time<br>what you really mean it<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>I can sing another broken song<br>trying to hold on to your picture<br>out of face<br>you hide behind your face<br>it’s more than I can take<br>I know you run deeper<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>you left me handing on the light<br>why you stealing all my time<br>you take a piss me<br>you’ve been driving too slow<br>so I gotta let you go<br>before you break me em~ yeah~<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>Bye Bye</p>
 </blockquote>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/byebyebye.jpeg" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/byebyebye.jpeg" alt=""></p>
 
 	
 	</div>
@@ -766,45 +754,45 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/git/">git<span>2</span></a></li>
+			<li><a href="/tags/pytest/">pytest<span>2</span></a></li>
 		
-			<li><a href="/tags/并发/">并发<span>5</span></a></li>
-		
-			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
-		
-			<li><a href="/tags/宋词/">宋词<span>1</span></a></li>
-		
-			<li><a href="/tags/明朝/">明朝<span>1</span></a></li>
-		
-			<li><a href="/tags/算法/">算法<span>15</span></a></li>
-		
-			<li><a href="/tags/gevent/">gevent<span>1</span></a></li>
-		
-			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
+			<li><a href="/tags/Database/">Database<span>5</span></a></li>
 		
 			<li><a href="/tags/R/">R<span>1</span></a></li>
 		
-			<li><a href="/tags/日记/">日记<span>0</span></a></li>
+			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
 		
-			<li><a href="/tags/pytest/">pytest<span>2</span></a></li>
+			<li><a href="/tags/青海/">青海<span>1</span></a></li>
 		
-			<li><a href="/tags/TED/">TED<span>1</span></a></li>
+			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
-			<li><a href="/tags/Docker/">Docker<span>1</span></a></li>
-		
-			<li><a href="/tags/金融/">金融<span>1</span></a></li>
-		
-			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
 		
 			<li><a href="/tags/VSCode/">VSCode<span>1</span></a></li>
 		
-			<li><a href="/tags/SQLAlchemy/">SQLAlchemy<span>1</span></a></li>
+			<li><a href="/tags/git/">git<span>2</span></a></li>
 		
-			<li><a href="/tags/旅行/">旅行<span>1</span></a></li>
-		
-			<li><a href="/tags/Thrift/">Thrift<span>3</span></a></li>
+			<li><a href="/tags/Mac/">Mac<span>1</span></a></li>
 		
 			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+		
+			<li><a href="/tags/Shell/">Shell<span>1</span></a></li>
+		
+			<li><a href="/tags/协程/">协程<span>1</span></a></li>
+		
+			<li><a href="/tags/LeetCode/">LeetCode<span>6</span></a></li>
+		
+			<li><a href="/tags/SQLAlchemy/">SQLAlchemy<span>1</span></a></li>
+		
+			<li><a href="/tags/TED/">TED<span>1</span></a></li>
+		
+			<li><a href="/tags/并发/">并发<span>5</span></a></li>
+		
+			<li><a href="/tags/日记/">日记<span>0</span></a></li>
+		
+			<li><a href="/tags/宋词/">宋词<span>1</span></a></li>
+		
+			<li><a href="/tags/interview/">interview<span>0</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>46</span></a></li>

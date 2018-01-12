@@ -234,13 +234,7 @@ var _hmt = _hmt || [];
 	
 		<p>最近在看当代明月的<em>明朝那些事儿</em>，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了<em>历史通俗演义(前汉和后汉)</em>，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看<em>历史通俗演义(唐)</em>，最近看<em>明朝那些事</em>。读史你能感受到人之间的复杂，但是读着读着就能体会出来一个人的心理和历史规律，正所谓，<strong>鉴于往事，有资于治道</strong>，读史使人明智之意。</p>
 <p>从小学习的时候就喜欢形成一个框架，这样知识是被索引的，按照一条主线，将知识塞到框架的不同地方，记忆的会更牢固。其实更多的含义是自己能够一览全局。所以此处将明朝所读之处，按照皇帝的顺序塞进历史事件总结于此。不时根据自己的认识和理解进行更新。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/history/ming_history.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/history/ming_history.png" alt=""></p>
 <p>下面是基于这个明朝历史架构记录的大事件，也就是塞到框架里面的一个个组成部分。</p>
 <h1 id="朱元璋-明太祖"><a href="#朱元璋-明太祖" class="headerlink" title="朱元璋(明太祖)"></a>朱元璋(明太祖)</h1><ul>
 <li>与陈友琼鄱阳湖水战</li>
@@ -718,13 +712,7 @@ var _hmt = _hmt || [];
 <p>文件描述符表中每一项包含了文件描述符标志和指向文件表项的指针。</p>
 <p>文件表项是存在于内核中的文件表中的，内核为所有打开的文件维护了一个文件表。每个文件表项包含了 <strong>文件状态标志(读，写，同步，非阻塞等)</strong>，<strong>当前文件偏移量</strong>，<strong>指向该文件v节点表项的指针</strong>。</p>
 <p>每个打开文件都有一个v节点结构，v节点包含了 <strong>文件类型</strong> 以及对此文件进行 <strong>各种操作函数的指针</strong>。v节点还包含了该文件的i节点，即索引节点。这些信息是打开文件时候从磁盘上读入内存的，所以文件的所有信息都是随时可用的。比如i节点包含了文件所有者，文件长度，指向文件实际数据块在磁盘上所在位置的指针。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/WechatIMG44.jpeg" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/WechatIMG44.jpeg" alt=""></p>
 <p>如果两个进程同时打开了一个文件，那么这两个进程分别有不同的文件表项，但是对一个给定的文件只有一个v节点表项，之所以每个进程获得自己的文件表项，因为这可以使得每个进程都有它自己的对该文件的偏移量。那么lseek这样的函数，修改的是文件表项中的文件偏移量。但是对于写入，修改的是i节点中的当前文件长度信息。</p>
 <p>可能有多个文件描述符项指向同一个文件表项，比如dup函数(复制一个文件描述符)，fork之后父进程，子进程各自的每一个打开文件描述符共享同一个文件表项。</p>
 <p>文件描述符标志，当前只定义了一个文件描述符标志<code>FD_CLOEXEC</code>，设置则表示当程序执行exec函数的时候，fd将被系统自动关闭。设置文件描述符标志只会影响一个文件描述符。</p>
@@ -924,13 +912,7 @@ var _hmt = _hmt || [];
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
 <p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/mkm_run.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/mkm_run.png" alt=""></p>
 <p>其中每个node的信息如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------------------------------+</div><div class="line">|        function name         |</div><div class="line">| total time % ( self time % ) |</div><div class="line">|         total calls          |</div><div class="line">+------------------------------+</div></pre></td></tr></table></figure>
 <p>每个edge的信息如下：</p>
@@ -1076,45 +1058,45 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
+			<li><a href="/tags/设计模式/">设计模式<span>4</span></a></li>
 		
-			<li><a href="/tags/Go/">Go<span>2</span></a></li>
-		
-			<li><a href="/tags/金融/">金融<span>1</span></a></li>
-		
-			<li><a href="/tags/Docker/">Docker<span>1</span></a></li>
-		
-			<li><a href="/tags/git/">git<span>2</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
-		
-			<li><a href="/tags/青海/">青海<span>1</span></a></li>
-		
-			<li><a href="/tags/Thrift/">Thrift<span>3</span></a></li>
-		
-			<li><a href="/tags/SQLAlchemy/">SQLAlchemy<span>1</span></a></li>
-		
-			<li><a href="/tags/并发/">并发<span>5</span></a></li>
-		
-			<li><a href="/tags/VSCode/">VSCode<span>1</span></a></li>
-		
-			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
-		
-			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
+			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
 		
 			<li><a href="/tags/算法/">算法<span>15</span></a></li>
 		
+			<li><a href="/tags/Traitlets/">Traitlets<span>1</span></a></li>
+		
+			<li><a href="/tags/git/">git<span>2</span></a></li>
+		
 			<li><a href="/tags/SQL学习指南/">SQL学习指南<span>1</span></a></li>
 		
-			<li><a href="/tags/设计模式/">设计模式<span>4</span></a></li>
+			<li><a href="/tags/Docker/">Docker<span>1</span></a></li>
 		
-			<li><a href="/tags/宋词/">宋词<span>1</span></a></li>
+			<li><a href="/tags/SQLAlchemy/">SQLAlchemy<span>1</span></a></li>
 		
-			<li><a href="/tags/Shell/">Shell<span>1</span></a></li>
+			<li><a href="/tags/Python-Cookbook/">Python_Cookbook<span>1</span></a></li>
+		
+			<li><a href="/tags/Song/">Song<span>3</span></a></li>
+		
+			<li><a href="/tags/StackOverFlow/">StackOverFlow<span>1</span></a></li>
 		
 			<li><a href="/tags/TED/">TED<span>1</span></a></li>
 		
-			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
+			<li><a href="/tags/宋词/">宋词<span>1</span></a></li>
+		
+			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
+		
+			<li><a href="/tags/Thrift/">Thrift<span>3</span></a></li>
+		
+			<li><a href="/tags/Go/">Go<span>2</span></a></li>
+		
+			<li><a href="/tags/Shell/">Shell<span>1</span></a></li>
+		
+			<li><a href="/tags/明朝/">明朝<span>1</span></a></li>
+		
+			<li><a href="/tags/金融/">金融<span>1</span></a></li>
+		
+			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>46</span></a></li>

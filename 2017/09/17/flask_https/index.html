@@ -158,13 +158,7 @@ var _hmt = _hmt || [];
 <p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
 <p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/flask_https/flask-ssl-03.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/flask_https/flask-ssl-03.png" alt=""></p>
 <h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
 <p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
 <p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
@@ -254,7 +248,7 @@ var _hmt = _hmt || [];
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li> <li><a href="/tags/翻译/">翻译<span>16</span></a></li> <li><a href="/tags/Python/">Python<span>56</span></a></li> <li><a href="/tags/Flask/">Flask<span>8</span></a></li>
+  <li><a href="/tags/Python/">Python<span>56</span></a></li> <li><a href="/tags/翻译/">翻译<span>16</span></a></li> <li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li> <li><a href="/tags/Flask/">Flask<span>8</span></a></li>
     </ul>
 	</div>
 		

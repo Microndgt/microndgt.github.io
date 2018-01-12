@@ -229,49 +229,19 @@ var _hmt = _hmt || [];
 <li><code>git push</code></li>
 </ul>
 <h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><p>一次提交会产生三种对象，一种是文件快照内容的blob对象，一种是记录目录树内容和对应文件blob对象索引的tree对象，以及包含tree对象和其他提交元数据的commit对象。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_2.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_2.png" alt=""></p>
 <p>再次提交之后，这次的commit对象就会包含上次提交对象的指针。</p>
 <p>分支，本质上是指向commit对象的可变指针。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_3.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_3.png" alt=""></p>
 <p><code>git branch testing</code>或者<code>git checkout -b testing</code>会创建分支并且切换到这个分支。</p>
 <p>另外git还有一个HEAD指针，它指向正在工作的本地分支的指针，也就是当前分支的别名。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_4.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_4.png" alt=""></p>
 <p>经历一段时间的开发之后，就会是这个样子</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_5.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_5.png" alt=""></p>
 <p><code>git merge hotfix</code>将hotfix的分支合并到当前分支来。Fast forward的意思是可以直接顺着合并的分支走下去，也就是要合并的分支的直接祖先就是当前提交对象。</p>
 <p><code>git branch -d hotfix</code> 删除分支</p>
 <h2 id="分支的合并"><a href="#分支的合并" class="headerlink" title="分支的合并"></a>分支的合并</h2><p>如果要合并的分支的直接祖先不是当前提交对象，那么就会用两个分支的末端和它们的共同祖先来做三方合并计算。git会自动识别最佳同源合并点。然后对合并结果做新的快照，然后创建一个提交对象，这个提交对象有两个祖先。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_6.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_6.png" alt=""></p>
 <p>如果有冲突，手工解决冲突，并且将相关文件暂存，并且创建提交对象，然后完成合并。</p>
 <h2 id="分支的管理"><a href="#分支的管理" class="headerlink" title="分支的管理"></a>分支的管理</h2><ul>
 <li><code>git branch</code> 列出分支</li>

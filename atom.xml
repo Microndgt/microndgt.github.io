@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-01-11T23:59:10.000Z</updated>
+  <updated>2018-01-12T07:21:00.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://skyrover.me/2018/01/12/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_1/"/>
     <id>http://skyrover.me/2018/01/12/go语言圣经_note_1/</id>
     <published>2018-01-11T23:59:46.000Z</published>
-    <updated>2018-01-11T23:59:10.000Z</updated>
+    <updated>2018-01-12T07:21:00.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><ul>
 <li><code>go run</code>编译一个或者多个以<code>.go</code>结尾的源文件，链接库文件，并运行最终生成的可执行文件。</li>
@@ -158,7 +158,7 @@
     <link href="http://skyrover.me/2018/01/11/leetcode_algorithm_go_and_python_1/"/>
     <id>http://skyrover.me/2018/01/11/leetcode_algorithm_go_and_python_1/</id>
     <published>2018-01-11T11:54:32.000Z</published>
-    <updated>2018-01-11T11:54:57.000Z</updated>
+    <updated>2018-01-11T13:41:26.000Z</updated>
     
     <content type="html"><![CDATA[<p>开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！</p>
 <p>对Python能更熟点，Go是初学，若有写的不好的地方，请各位看官留言。</p>
@@ -305,11 +305,11 @@
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
+      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+    
       <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
     
       <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
-    
-      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
     
   </entry>
   
@@ -340,7 +340,7 @@
     <link href="http://skyrover.me/2018/01/01/learning_sql_note_1/"/>
     <id>http://skyrover.me/2018/01/01/learning_sql_note_1/</id>
     <published>2018-01-01T04:11:14.000Z</published>
-    <updated>2018-01-01T04:11:17.000Z</updated>
+    <updated>2018-01-01T10:27:10.000Z</updated>
     
     <content type="html"><![CDATA[<p>这段时间将SQL学习指南这本书翻完了，买这本书的时候是2016年9月21日，时隔一年多啊，终于读完了。不过觉得也正常的，以当时的水平以及工作内容，似乎就算当时看完，也是看的稀里糊涂吧。现在看完，可能不是说学习新知识，毕竟这本书的确是比较入门的书，而更多的是系统性的掌握SQL，以及对相关方面体会更加深刻吧。下面就记录下看这本书得到的一些体会和有意思的东西。</p>
 <h1 id="日期时间数据"><a href="#日期时间数据" class="headerlink" title="日期时间数据"></a>日期时间数据</h1><p>在数据库中存储时间数据，究竟存储哪种格式比较好呢。MySQL中有<code>date</code>, <code>datetime</code>, <code>timestamp</code>, <code>year</code>, <code>time</code>这几种类型，同时也还可以以字符串，数字的格式进行存储，那么究竟该如何选择呢。以前我是直接都用字符串，现在看来就有点太low了。这里就对这方面的东西做一个总结。</p>
@@ -404,11 +404,11 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
-    
       <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
     
       <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
     
       <category term="SQL学习指南" scheme="http://skyrover.me/tags/SQL%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/"/>
     
@@ -419,7 +419,7 @@
     <link href="http://skyrover.me/2017/12/17/git_usage_summary/"/>
     <id>http://skyrover.me/2017/12/17/git_usage_summary/</id>
     <published>2017-12-16T16:55:35.000Z</published>
-    <updated>2017-12-16T16:56:03.000Z</updated>
+    <updated>2018-01-03T07:06:20.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>Git会将变化的文件作快照后，记录在微型的文件系统中，保存一个指向这次快照的索引。在保存到git之前，所有数据都要进行内容的校验和(checksum)计算。使用SHA-1算法计算数据的校验和。</p>
 <h2 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h2><ul>
@@ -515,49 +515,19 @@
 <li><code>git push</code></li>
 </ul>
 <h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><p>一次提交会产生三种对象，一种是文件快照内容的blob对象，一种是记录目录树内容和对应文件blob对象索引的tree对象，以及包含tree对象和其他提交元数据的commit对象。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_2.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_2.png" alt=""></p>
 <p>再次提交之后，这次的commit对象就会包含上次提交对象的指针。</p>
 <p>分支，本质上是指向commit对象的可变指针。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_3.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_3.png" alt=""></p>
 <p><code>git branch testing</code>或者<code>git checkout -b testing</code>会创建分支并且切换到这个分支。</p>
 <p>另外git还有一个HEAD指针，它指向正在工作的本地分支的指针，也就是当前分支的别名。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_4.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_4.png" alt=""></p>
 <p>经历一段时间的开发之后，就会是这个样子</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_5.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_5.png" alt=""></p>
 <p><code>git merge hotfix</code>将hotfix的分支合并到当前分支来。Fast forward的意思是可以直接顺着合并的分支走下去，也就是要合并的分支的直接祖先就是当前提交对象。</p>
 <p><code>git branch -d hotfix</code> 删除分支</p>
 <h2 id="分支的合并"><a href="#分支的合并" class="headerlink" title="分支的合并"></a>分支的合并</h2><p>如果要合并的分支的直接祖先不是当前提交对象，那么就会用两个分支的末端和它们的共同祖先来做三方合并计算。git会自动识别最佳同源合并点。然后对合并结果做新的快照，然后创建一个提交对象，这个提交对象有两个祖先。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_6.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_6.png" alt=""></p>
 <p>如果有冲突，手工解决冲突，并且将相关文件暂存，并且创建提交对象，然后完成合并。</p>
 <h2 id="分支的管理"><a href="#分支的管理" class="headerlink" title="分支的管理"></a>分支的管理</h2><ul>
 <li><code>git branch</code> 列出分支</li>
@@ -604,7 +574,7 @@
     <link href="http://skyrover.me/2017/12/15/shortcut/"/>
     <id>http://skyrover.me/2017/12/15/shortcut/</id>
     <published>2017-12-15T15:57:57.000Z</published>
-    <updated>2017-12-17T01:22:01.000Z</updated>
+    <updated>2017-12-17T03:52:29.000Z</updated>
     
     <content type="html"><![CDATA[<p>仅列出自己觉得有用并且常用的快捷键</p>
 <h1 id="Mac中的快捷键"><a href="#Mac中的快捷键" class="headerlink" title="Mac中的快捷键"></a>Mac中的快捷键</h1><h2 id="常用"><a href="#常用" class="headerlink" title="常用"></a>常用</h2><ul>
@@ -733,19 +703,13 @@
     <link href="http://skyrover.me/2017/12/13/2017_summary/"/>
     <id>http://skyrover.me/2017/12/13/2017_summary/</id>
     <published>2017-12-13T12:42:46.000Z</published>
-    <updated>2017-12-13T11:48:43.000Z</updated>
+    <updated>2017-12-13T14:29:28.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近对公司的量化平台做了一个比较大的重构级别的操作，花了三个星期的时间，效果很好，我的感觉就是类似于将之前长歪的树给颁直的快感吧。看到现在代码稳定的运行着，自己也算是比较满意，然后这段时间也提了离职，觉得这对公司也算是一个交代吧。</p>
 <p>2017年，不像2016年去了很多地方玩，厦门，上海，武汉，桂林，广州，深圳，北京等等，2017年除了出差去了几次北京之外，就老老实实的在西安呆着。一个是自己工作也趋于稳定，另一个是女朋友也在西安，其实不需要到什么地方玩，两个人在一起去哪里都挺开心的。</p>
 <p>关于工作，今年主要做了三个系统，这两个系统都是公司主要的三个系统，然后做了两个工具库，目前呢，代码稳定，bug不多，还是比较满意的，这也是离职的一个原因，觉得在公司呆着，发展空间有限吧。另外看了几本书，流畅的Python，Python算法教程，其实看博客的文章，就知道自己这一年在做什么了，写博客从另一个角度来说，也是自己的一个成长和总结。然后看了不少源码。总之，今年学习了不少东西，想到这些，觉得今年还是蛮有收获的。</p>
 <p>关于感情，<code>得之我幸，失之我命</code>吧。不论如何，曾经的曾经都很开心，都有对未来的憧憬，都爱着对方，也许这就是最好的结局：想起曾经的过往也是冬日里的一丝温暖。谢谢。还记得那年的油菜花吗，也许我们只是迷失在花海之中了。关于未来，现在有一种失落感，希望能好起来吧。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/2017_summary_1.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/2017_summary_1.png" alt=""></p>
 <p>自己给自己做过很多承诺，后来没有几个完成的，比如健身，想起来就挺痛恨自己的—体重越来越高，希望2018年有所改变吧。</p>
 <p>加油。</p>
 ]]></content>
@@ -810,9 +774,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Traitlets" scheme="http://skyrover.me/tags/Traitlets/"/>
     
@@ -922,9 +886,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Jupyter" scheme="http://skyrover.me/tags/Jupyter/"/>
     
@@ -940,13 +904,7 @@
     <content type="html"><![CDATA[<p>翻译自：<a href="http://jupyter-client.readthedocs.io/en/latest/messaging.html" target="_blank" rel="external">Messaging in Jupyter</a></p>
 <p>这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。</p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>基本的设计可以用下图来解释：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/messaging_in_jupyter.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/messaging_in_jupyter.png" alt=""></p>
 <p>一个kernel可能同时连接一个或者多个前端。kernel有专注于以下功能的sockets:</p>
 <ol>
 <li>Shell: 这个单路由的socket允许从前端来的多个连接，这也是实现通过前端来对kernel来做代码运行请求，对象信息，提示符等功能的套接字。在这个套接字上的通信是一系列从每个前端到kernel的请求/回应的动作。</li>
@@ -1049,9 +1007,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Jupyter" scheme="http://skyrover.me/tags/Jupyter/"/>
     
@@ -1295,11 +1253,11 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
-    
       <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
     
       <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
     
   </entry>
   
@@ -1464,9 +1422,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
@@ -1550,11 +1508,11 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="SQLAlchemy" scheme="http://skyrover.me/tags/SQLAlchemy/"/>
     
@@ -1584,13 +1542,7 @@
 <p>在运行一段程序时候，先执行导入，导入执行的代码，在运行时候就不会运行，因为已经绑定，直接使用。并且类装饰器不会对子类产生影响，除非子类调用了super()</p>
 <h1 id="元类"><a href="#元类" class="headerlink" title="元类"></a>元类</h1><p>元类是构建类的类，还是一种类，所以会被实例化等。因为类也是对象，所以类也会是另外一个类的实例。一般来说，Python中的类是type类的实例。type类是大部分类的元类。即<code>int.__class__</code>是<code>&lt;class &#39;type&#39;&gt;</code>。避免无限回溯，type是自身的实例。</p>
 <p>int是type类的实例，但是int是object的子类，而object类也是type类的实例。而object是大部分类的父类，所以type也是object的子类。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/metaclass1.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/metaclass1.png" alt=""></p>
 <p>type和object的关系，还有type是自身的实例这两点都很神奇而且很难说明白。</p>
 <p>自己定义的元类，既是type的实例，也是type的子类，因为自己定义的元类从type继承了构建类的能力。元类可以实现<code>__init__</code>方法定制实例。</p>
 <p>在元类初始化的时候对类进行修改(也就是对实例进行修改)，因为类是元类的实例</p>
@@ -1891,17 +1843,11 @@
     <link href="http://skyrover.me/2017/10/21/ming_dynasty/"/>
     <id>http://skyrover.me/2017/10/21/ming_dynasty/</id>
     <published>2017-10-21T06:13:56.000Z</published>
-    <updated>2017-10-21T06:10:48.000Z</updated>
+    <updated>2017-10-21T06:45:33.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看当代明月的<em>明朝那些事儿</em>，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了<em>历史通俗演义(前汉和后汉)</em>，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看<em>历史通俗演义(唐)</em>，最近看<em>明朝那些事</em>。读史你能感受到人之间的复杂，但是读着读着就能体会出来一个人的心理和历史规律，正所谓，<strong>鉴于往事，有资于治道</strong>，读史使人明智之意。</p>
 <p>从小学习的时候就喜欢形成一个框架，这样知识是被索引的，按照一条主线，将知识塞到框架的不同地方，记忆的会更牢固。其实更多的含义是自己能够一览全局。所以此处将明朝所读之处，按照皇帝的顺序塞进历史事件总结于此。不时根据自己的认识和理解进行更新。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/history/ming_history.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/history/ming_history.png" alt=""></p>
 <p>下面是基于这个明朝历史架构记录的大事件，也就是塞到框架里面的一个个组成部分。</p>
 <h1 id="朱元璋-明太祖"><a href="#朱元璋-明太祖" class="headerlink" title="朱元璋(明太祖)"></a>朱元璋(明太祖)</h1><ul>
 <li>与陈友琼鄱阳湖水战</li>
@@ -2122,11 +2068,11 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
+      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
     
       <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
     
-      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
   </entry>
   
@@ -2331,9 +2277,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
       <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
@@ -2370,13 +2316,7 @@
 <p>文件描述符表中每一项包含了文件描述符标志和指向文件表项的指针。</p>
 <p>文件表项是存在于内核中的文件表中的，内核为所有打开的文件维护了一个文件表。每个文件表项包含了 <strong>文件状态标志(读，写，同步，非阻塞等)</strong>，<strong>当前文件偏移量</strong>，<strong>指向该文件v节点表项的指针</strong>。</p>
 <p>每个打开文件都有一个v节点结构，v节点包含了 <strong>文件类型</strong> 以及对此文件进行 <strong>各种操作函数的指针</strong>。v节点还包含了该文件的i节点，即索引节点。这些信息是打开文件时候从磁盘上读入内存的，所以文件的所有信息都是随时可用的。比如i节点包含了文件所有者，文件长度，指向文件实际数据块在磁盘上所在位置的指针。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/WechatIMG44.jpeg" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/WechatIMG44.jpeg" alt=""></p>
 <p>如果两个进程同时打开了一个文件，那么这两个进程分别有不同的文件表项，但是对一个给定的文件只有一个v节点表项，之所以每个进程获得自己的文件表项，因为这可以使得每个进程都有它自己的对该文件的偏移量。那么lseek这样的函数，修改的是文件表项中的文件偏移量。但是对于写入，修改的是i节点中的当前文件长度信息。</p>
 <p>可能有多个文件描述符项指向同一个文件表项，比如dup函数(复制一个文件描述符)，fork之后父进程，子进程各自的每一个打开文件描述符共享同一个文件表项。</p>
 <p>文件描述符标志，当前只定义了一个文件描述符标志<code>FD_CLOEXEC</code>，设置则表示当程序执行exec函数的时候，fd将被系统自动关闭。设置文件描述符标志只会影响一个文件描述符。</p>
@@ -2510,7 +2450,7 @@
     <link href="http://skyrover.me/2017/10/02/Python%E4%B8%AD%E7%9A%84%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
     <id>http://skyrover.me/2017/10/02/Python中的单例模式/</id>
     <published>2017-10-02T02:07:35.000Z</published>
-    <updated>2017-10-28T04:18:28.000Z</updated>
+    <updated>2017-10-28T05:07:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>单例模式其实在实际的程序开发中使用过，比如数据库连接池等，但是仍然需要抽象到一定高度来理解它。</p>
 <p>单例模式：保证一个类仅有一个实例，并提供一个访问他的全局访问点。目的就是令到单个进程中只存在一个类的实例，从而可以实现数据的共享，节省系统开销，防止io阻塞等等。方法就是让类自身保存他的唯一实例，这个类可以保证没有其他实例可以被创建。</p>
@@ -2573,13 +2513,7 @@
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
 <p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/mkm_run.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/mkm_run.png" alt=""></p>
 <p>其中每个node的信息如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------------------------------+</div><div class="line">|        function name         |</div><div class="line">| total time % ( self time % ) |</div><div class="line">|         total calls          |</div><div class="line">+------------------------------+</div></pre></td></tr></table></figure>
 <p>每个edge的信息如下：</p>
@@ -2662,9 +2596,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
     
@@ -2802,9 +2736,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -2840,13 +2774,7 @@
 <p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
 <p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/flask_https/flask-ssl-03.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/flask_https/flask-ssl-03.png" alt=""></p>
 <h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
 <p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
 <p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
@@ -2879,11 +2807,11 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+      <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
       <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
@@ -3008,9 +2936,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
   </entry>
   
@@ -3173,13 +3101,7 @@
 <blockquote>
 <p>When I see you<br>looking back at me<br>watching these eyes still<br>through your fingers<br>and your eyes<br>have told a thousand lights<br>but I cant tell this time<br>what you really mean it<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>I can sing another broken song<br>trying to hold on to your picture<br>out of face<br>you hide behind your face<br>it’s more than I can take<br>I know you run deeper<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>you left me handing on the light<br>why you stealing all my time<br>you take a piss me<br>you’ve been driving too slow<br>so I gotta let you go<br>before you break me em~ yeah~<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>Bye Bye</p>
 </blockquote>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/byebyebye.jpeg" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/byebyebye.jpeg" alt=""></p>
 ]]></content>
     
     <summary type="html">
@@ -3461,9 +3383,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
     
@@ -3738,9 +3660,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="StackOverFlow" scheme="http://skyrover.me/tags/StackOverFlow/"/>
     
@@ -3801,9 +3723,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="pytest" scheme="http://skyrover.me/tags/pytest/"/>
     
@@ -3870,9 +3792,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="unittest" scheme="http://skyrover.me/tags/unittest/"/>
     
@@ -3889,21 +3811,9 @@
 <blockquote>
 <p>我曾经跨过山和大海<br>也穿过人山人海<br>我曾经拥有着一切<br>转眼都飘散如烟<br>我曾经失落失望失掉所有方向<br>直到看见平凡才是唯一的答案<br>我曾经毁了我的一切<br>只想永远地离开<br>我曾经堕入无边黑暗<br>想挣扎无法自拔<br>我曾经像你像他像那野草野花<br>绝望着 也渴望着 也哭也笑平凡着</p>
 </blockquote>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai2.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai2.png" alt=""></p>
 <p>茶卡盐湖</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai1.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai1.png" alt=""></p>
 ]]></content>
     
     <summary type="html">
@@ -3962,9 +3872,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="协程" scheme="http://skyrover.me/tags/%E5%8D%8F%E7%A8%8B/"/>
     
@@ -4117,9 +4027,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
   </entry>
   
@@ -4230,13 +4140,7 @@
     
     <content type="html"><![CDATA[<p>最近用到了一个库<a href="https://github.com/noamraph/tqdm" target="_blank" rel="external">tqdm</a>很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。</p>
 <p>以下是运行效果：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" alt="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" title="">
-                </div>
-                <div class="image-caption">http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png</div>
-            </figure>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" alt="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png"></p>
 <p>那么就来看看这个库吧</p>
 <h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p>首先这个库的用法是这样的，很简单，这样运行后，就会有输出进度条了。简直丧心病狂的简单，那到底是怎么做到的呢！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from tqdm import tqdm</div><div class="line">for i in tqdm(range(10000)):</div><div class="line">    ...</div></pre></td></tr></table></figure>
@@ -4264,9 +4168,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
   </entry>
   
@@ -4324,9 +4228,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="gevent" scheme="http://skyrover.me/tags/gevent/"/>
     
@@ -4386,9 +4290,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -4440,20 +4344,8 @@
 <h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>其实thrift是一种开源的跨语言的RPC服务框架，可以基于它进行RPC请求等的处理，而不用进行HTTP请求，减少资源消耗，提高效率。用于微服务是极好的，特别是数据量大的请求。</p>
 <h2 id="与HTTP的性能比较"><a href="#与HTTP的性能比较" class="headerlink" title="与HTTP的性能比较"></a>与HTTP的性能比较</h2><p>thrift 体积超小，使用起来比较麻烦，不如json容易，但是对于1.高并发、2.数据传输量大、3.多语言环境 比较适合。</p>
 <p>假定需要传输相同的内容，但使用不同的方式从 1、传输内容所产生的大小 2、传输过程中服务端和客户端所产生的开销，这2个方面进行比较，如下：</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt=""></p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt=""></p>
 <h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><h2 id="thrift文件"><a href="#thrift文件" class="headerlink" title="thrift文件"></a>thrift文件</h2><p>首先定义thrift文件，这个文件相当于一个协议，在客户端和服务器都应该包含这个文件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring tdx_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue),</div><div class="line">truestring tdx_ability_status(),</div><div class="line">truestring tdx_increment(),</div><div class="line">truestring signal_ability(),</div><div class="line"></div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div><div class="line"></div><div class="line">service Read &#123;</div><div class="line">truestring summary(),</div><div class="line">truestring prices(),</div><div class="line">truestring ability()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>其中Calc和Read定义为两个服务，服务底下有多个函数，函数定义为返回值类型，函数名，函数参数</p>
@@ -4478,9 +4370,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -4519,9 +4411,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
   </entry>
   
@@ -4695,22 +4587,10 @@
 <p>节点：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Node:</div><div class="line">  lft = None</div><div class="line">truergt = None</div><div class="line">truelvl = 1</div><div class="line">truedef __init__(self, key, val):</div><div class="line">true  self.key = key</div><div class="line">truetrueself.val = val</div></pre></td></tr></table></figure>
 <p>偏斜即翻转操作</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png" alt=""></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def skew(node):</div><div class="line">  # 如果都没有左侧节点，说明不需要偏斜</div><div class="line">  if None in [node, node.left]: return node</div><div class="line">true# 左侧节点的level和现在节点不一样，说明不是一个内部节点</div><div class="line">trueif node.lft.lvl != node.lvl: return node</div><div class="line">true# 剩余情况就是既有左侧节点，而且level还一样</div><div class="line">true# 过程参考想象2-3树</div><div class="line">truelft = node.lft</div><div class="line">truenode.lft = lft.rgt</div><div class="line">truelft.rgt = node</div><div class="line">true# 将真正的节点返回给父节点进行索引</div><div class="line">truereturn lft</div></pre></td></tr></table></figure>
 <p>分割操作，溢出</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/split.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/split.png" alt=""></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def split(node):</div><div class="line">  # 说明没有溢出的节点</div><div class="line">  if None in [node.rgt, node.rgt.rgt, node]: return node</div><div class="line">trueif node.rgt.rgt.lvl != node.lvl: return node</div><div class="line">true# 溢出操作，想象2-3节点</div><div class="line">truergt = node.rgt</div><div class="line">truenode.rgt = rgt.lft</div><div class="line">truergt.lft = node</div><div class="line">true# 将level上升，即上升到父节点</div><div class="line">truergt.lvl += 1</div><div class="line">truereturn rgt</div></pre></td></tr></table></figure>
 <p>插入操作，普通的二叉树剪枝操作加偏斜和溢出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def insert(node, key, val):</div><div class="line">  if node is None: return Node(key, val)</div><div class="line">trueif node.key == key: node.val = val</div><div class="line">trueelif key &lt; node.key:</div><div class="line">true  node.lft = insert(node.lft, key, val)</div><div class="line">trueelse:</div><div class="line">true  node.rgt = insert(node.rgt, key, val)</div><div class="line">true# 插入完成之后，对每一个节点进行偏斜和溢出（分割）操作</div><div class="line">true# 返回正确的node</div><div class="line">truenode = skew(node)</div><div class="line">truenode = split(node)</div><div class="line">truereturn node</div></pre></td></tr></table></figure>
@@ -4794,13 +4674,7 @@
 <p>求2的指数的递归式：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def two_pow(i):</div><div class="line">    if i == 0: return 1</div><div class="line">truetruereturn two_pow(i-1) + two_pow(i-1)</div></pre></td></tr></table></figure>
 <p>如果引入memo函数，那么就很高效了，因为缓存会给第二次或者以上的调用直接返回值。这样就把递归调用的数量从2降到了1，从而将指数级的运行时间降为了线性级。666。当各级子问题之间存在重叠的时候，其带来的冗余运算就会变成指数级操作。如下图</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170520112910.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170520112910.png" alt=""></p>
 <p>那么最开始的那个迭代版的最大子数组和的问题，转换成递归版就是这样：但是将这个代码在leetcode提交，爆栈~</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def dp_solution(i, max_num):</div><div class="line">            if i == 0:</div><div class="line">                return nums[0], nums[0]</div><div class="line">            dp_deep, max_num = dp_solution(i-1, max_num)</div><div class="line">            if dp_deep &gt; 0:</div><div class="line">                res = dp_deep + nums[i]</div><div class="line">            else:</div><div class="line">                res = nums[i]</div><div class="line">            max_num = max(max_num, res)</div><div class="line">            return res, max_num</div><div class="line">        return dp_solution(len(nums) - 1, 0)[1]</div></pre></td></tr></table></figure>
 <p>使用了记忆体来缓存，然后再用迭代的方式来逐个求值，这样就解决了上述问题，因为即使在做最大长度的时候，之前的值都已经缓存了，所以栈的深度就保持在1。</p>
@@ -4989,13 +4863,7 @@
 <p>前一段时间和官哥讲，突然有点想你了，官哥说，你不是想我了，你是在想过去。多长时间过去了，官哥依然是这么犀利。我是在怀念过去。讲真，大学的时光是我最开心的几年了。</p>
 <p>还记得高数老师的矫健身姿，记得6月份一个人在大教室复习高数的情景，当时一条说说是<code>借用官哥的说法：这是一个快速刷题的节奏～</code>，记得和官哥，健哥湖畔把酒，记得周至骑行130公里，记得骑行偶遇美景，记得秦岭野营看星星，记得秦岭河边烧烤，记得游戏开黑，记得看那本苏菲的世界，记得那一幕幕，在新校区的那两年真的，很美，很美好。</p>
 <p>还记得当时就对计算机有一种发自内心的兴趣，大一时候学C，学数据结构，学算法，看离散数学。可惜没有深入便止步于此！如果能坚持下来，就不是现在这个样子了。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/sshuo.png" alt="当年的说说" title="">
-                </div>
-                <div class="image-caption">当年的说说</div>
-            </figure>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/sshuo.png" alt="当年的说说"></p>
 <p>我都可以嘲笑自己了。时间过的飞快，转眼就毕业了，真希望生活可以重来。<code>If I Had My Life to Live Over</code>。</p>
 <p>昨晚，我梦见自己又回到了曼陀丽庄园。恍惚中，我站在那扇通往车道的大铁门前，好一会儿被挡在门外进不去。铁门上挂着把大锁，还系了根铁链。我在梦里大声叫唤看门人，却没人答应。于是我就凑近身子，隔着门上生锈的铁条朝里张望，这才明白曼陀丽已是座阒寂无人的空宅。</p>
 <p>那时有激情，有理想，有对未来的期待，有梦，关于文学，关于爱情，关于穿越世界的旅行，如今深夜饮酒，杯子掉下去，都是梦破碎的声音。如今却仍在说：我们看海去。。。</p>
@@ -5020,7 +4888,7 @@
     <link href="http://skyrover.me/2017/05/13/LeetCode%E5%88%B7%E9%A2%98(1)/"/>
     <id>http://skyrover.me/2017/05/13/LeetCode刷题(1)/</id>
     <published>2017-05-13T14:46:32.000Z</published>
-    <updated>2017-09-01T12:42:39.000Z</updated>
+    <updated>2018-01-07T11:31:16.000Z</updated>
     
     <content type="html"><![CDATA[<p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
 <h1 id="Longest-Palindrome"><a href="#Longest-Palindrome" class="headerlink" title="Longest Palindrome"></a><a href="https://leetcode.com/problems/longest-palindrome/#/description" target="_blank" rel="external">Longest Palindrome</a></h1><p>其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大长度了。<code>Runtime: 42 ms Your runtime beats 95.32 % of python submissions.</code> 棒！</p>
@@ -5474,7 +5342,7 @@
     <link href="http://skyrover.me/2017/04/13/%E9%81%8D%E5%8E%86/"/>
     <id>http://skyrover.me/2017/04/13/遍历/</id>
     <published>2017-04-13T03:22:46.000Z</published>
-    <updated>2017-09-01T06:13:08.000Z</updated>
+    <updated>2018-01-05T01:52:32.000Z</updated>
     
     <content type="html"><![CDATA[<p>对图中所有节点的探索及访问操作就是遍历，这是很多问题的万能钥匙。图中有两种基本的遍历策略：深度优先搜索和广度优先搜索。</p>
 <p>图中任意两点都是连通的，那么图就被称为连通图，连通也有可能是通过另外的节点连通。连通分量就是指的目标图中最大而且独立的连通子图。找出这种连通分量的方法之一就是从图中的某个部分开始，逐步的扩大其连通子图的确认范围，直到再也无法向外连通为止。</p>
@@ -5996,7 +5864,7 @@
     <link href="http://skyrover.me/2017/03/10/%E7%8E%AF%E5%A2%83%E4%BB%A5%E5%8F%8A%E9%83%A8%E7%BD%B2%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/"/>
     <id>http://skyrover.me/2017/03/10/环境以及部署问题汇总/</id>
     <published>2017-03-10T09:10:18.000Z</published>
-    <updated>2017-09-01T04:58:03.000Z</updated>
+    <updated>2017-10-29T08:30:51.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="virtualenv"><a href="#virtualenv" class="headerlink" title="virtualenv"></a>virtualenv</h1><p>创建virtualenv时候遇到这个问题：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">kevin@duguangtingdeMacBook-Pro:~ $ virtualenv myblog_env --python=python3</div><div class="line">Running virtualenv with interpreter /Users/kevin/anaconda/bin/python3</div><div class="line">Using base prefix &apos;/Users/kevin/anaconda&apos;</div><div class="line">New python executable in /Users/kevin/myblog_env/bin/python3</div><div class="line">Not overwriting existing python script /Users/kevin/myblog_env/bin/python (you must use /Users/kevin/myblog_env/bin/python3)</div><div class="line">ERROR: The executable /Users/kevin/myblog_env/bin/python3 is not functioning</div><div class="line">ERROR: It thinks sys.prefix is &apos;/Users/kevin&apos; (should be &apos;/Users/kevin/myblog_env&apos;)</div><div class="line">ERROR: virtualenv is not compatible with this system or executable</div></pre></td></tr></table></figure>
@@ -6164,9 +6032,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
     

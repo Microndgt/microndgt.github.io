@@ -159,13 +159,7 @@ var _hmt = _hmt || [];
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
 <p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/mkm_run.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/mkm_run.png" alt=""></p>
 <p>其中每个node的信息如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------------------------------+</div><div class="line">|        function name         |</div><div class="line">| total time % ( self time % ) |</div><div class="line">|         total calls          |</div><div class="line">+------------------------------+</div></pre></td></tr></table></figure>
 <p>每个edge的信息如下：</p>

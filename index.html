@@ -646,49 +646,19 @@ var _hmt = _hmt || [];
 <li><code>git push</code></li>
 </ul>
 <h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><p>一次提交会产生三种对象，一种是文件快照内容的blob对象，一种是记录目录树内容和对应文件blob对象索引的tree对象，以及包含tree对象和其他提交元数据的commit对象。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_2.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_2.png" alt=""></p>
 <p>再次提交之后，这次的commit对象就会包含上次提交对象的指针。</p>
 <p>分支，本质上是指向commit对象的可变指针。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_3.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_3.png" alt=""></p>
 <p><code>git branch testing</code>或者<code>git checkout -b testing</code>会创建分支并且切换到这个分支。</p>
 <p>另外git还有一个HEAD指针，它指向正在工作的本地分支的指针，也就是当前分支的别名。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_4.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_4.png" alt=""></p>
 <p>经历一段时间的开发之后，就会是这个样子</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_5.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_5.png" alt=""></p>
 <p><code>git merge hotfix</code>将hotfix的分支合并到当前分支来。Fast forward的意思是可以直接顺着合并的分支走下去，也就是要合并的分支的直接祖先就是当前提交对象。</p>
 <p><code>git branch -d hotfix</code> 删除分支</p>
 <h2 id="分支的合并"><a href="#分支的合并" class="headerlink" title="分支的合并"></a>分支的合并</h2><p>如果要合并的分支的直接祖先不是当前提交对象，那么就会用两个分支的末端和它们的共同祖先来做三方合并计算。git会自动识别最佳同源合并点。然后对合并结果做新的快照，然后创建一个提交对象，这个提交对象有两个祖先。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/git_6.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/git_6.png" alt=""></p>
 <p>如果有冲突，手工解决冲突，并且将相关文件暂存，并且创建提交对象，然后完成合并。</p>
 <h2 id="分支的管理"><a href="#分支的管理" class="headerlink" title="分支的管理"></a>分支的管理</h2><ul>
 <li><code>git branch</code> 列出分支</li>
@@ -877,13 +847,7 @@ var _hmt = _hmt || [];
 <p>2017年，不像2016年去了很多地方玩，厦门，上海，武汉，桂林，广州，深圳，北京等等，2017年除了出差去了几次北京之外，就老老实实的在西安呆着。一个是自己工作也趋于稳定，另一个是女朋友也在西安，其实不需要到什么地方玩，两个人在一起去哪里都挺开心的。</p>
 <p>关于工作，今年主要做了三个系统，这两个系统都是公司主要的三个系统，然后做了两个工具库，目前呢，代码稳定，bug不多，还是比较满意的，这也是离职的一个原因，觉得在公司呆着，发展空间有限吧。另外看了几本书，流畅的Python，Python算法教程，其实看博客的文章，就知道自己这一年在做什么了，写博客从另一个角度来说，也是自己的一个成长和总结。然后看了不少源码。总之，今年学习了不少东西，想到这些，觉得今年还是蛮有收获的。</p>
 <p>关于感情，<code>得之我幸，失之我命</code>吧。不论如何，曾经的曾经都很开心，都有对未来的憧憬，都爱着对方，也许这就是最好的结局：想起曾经的过往也是冬日里的一丝温暖。谢谢。还记得那年的油菜花吗，也许我们只是迷失在花海之中了。关于未来，现在有一种失落感，希望能好起来吧。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/2017_summary_1.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
+<p><img src="/img/2017_summary_1.png" alt=""></p>
 <p>自己给自己做过很多承诺，后来没有几个完成的，比如健身，想起来就挺痛恨自己的—体重越来越高，希望2018年有所改变吧。</p>
 <p>加油。</p>
 
@@ -1124,45 +1088,45 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
-		
-			<li><a href="/tags/并发/">并发<span>5</span></a></li>
+			<li><a href="/tags/旅行/">旅行<span>1</span></a></li>
 		
 			<li><a href="/tags/Docker/">Docker<span>1</span></a></li>
 		
-			<li><a href="/tags/SQLAlchemy/">SQLAlchemy<span>1</span></a></li>
+			<li><a href="/tags/Song/">Song<span>3</span></a></li>
 		
-			<li><a href="/tags/unittest/">unittest<span>1</span></a></li>
+			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
+		
+			<li><a href="/tags/金融/">金融<span>1</span></a></li>
+		
+			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
 		
 			<li><a href="/tags/明朝/">明朝<span>1</span></a></li>
 		
-			<li><a href="/tags/设计模式/">设计模式<span>4</span></a></li>
-		
-			<li><a href="/tags/interview/">interview<span>0</span></a></li>
-		
-			<li><a href="/tags/Python-Cookbook/">Python_Cookbook<span>1</span></a></li>
-		
-			<li><a href="/tags/协程/">协程<span>1</span></a></li>
-		
-			<li><a href="/tags/VSCode/">VSCode<span>1</span></a></li>
-		
-			<li><a href="/tags/源码/">源码<span>6</span></a></li>
-		
-			<li><a href="/tags/Jupyter/">Jupyter<span>2</span></a></li>
+			<li><a href="/tags/git/">git<span>2</span></a></li>
 		
 			<li><a href="/tags/青海/">青海<span>1</span></a></li>
 		
-			<li><a href="/tags/Go/">Go<span>2</span></a></li>
+			<li><a href="/tags/Traitlets/">Traitlets<span>1</span></a></li>
 		
-			<li><a href="/tags/SQL学习指南/">SQL学习指南<span>1</span></a></li>
+			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
 		
-			<li><a href="/tags/TED/">TED<span>1</span></a></li>
+			<li><a href="/tags/LeetCode/">LeetCode<span>6</span></a></li>
 		
-			<li><a href="/tags/Database/">Database<span>5</span></a></li>
+			<li><a href="/tags/算法/">算法<span>15</span></a></li>
 		
-			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
+			<li><a href="/tags/interview/">interview<span>0</span></a></li>
+		
+			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
+		
+			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
+		
+			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
+		
+			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
 			<li><a href="/tags/pytest/">pytest<span>2</span></a></li>
+		
+			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>46</span></a></li>
