@@ -321,7 +321,11 @@ var _hmt = _hmt || [];
 
 	<!-- toc -->
 	<div class="meta-widget">
-	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#读写csv数据"><span class="toc-article-text">读写csv数据</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#read-csv"><span class="toc-article-text">read_csv()</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#to-csv"><span class="toc-article-text">to_csv()</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#数据框操作"><span class="toc-article-text">数据框操作</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#10-mins-to-pandas"><span class="toc-article-text">10 mins to pandas</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#排序"><span class="toc-article-text">排序</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#对单列数据进行排序"><span class="toc-article-text">对单列数据进行排序</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#对多列数据进行排序"><span class="toc-article-text">对多列数据进行排序</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#获得最小的前10项"><span class="toc-article-text">获得最小的前10项</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#获得最大的前10项"><span class="toc-article-text">获得最大的前10项</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#筛选"><span class="toc-article-text">筛选</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#单列数据筛选并且排序"><span class="toc-article-text">单列数据筛选并且排序</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#多列数据筛选并且排序"><span class="toc-article-text">多列数据筛选并且排序</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#按筛选条件求和"><span class="toc-article-text">按筛选条件求和</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#按筛选条件计数"><span class="toc-article-text">按筛选条件计数</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#按筛选条件计算均值"><span class="toc-article-text">按筛选条件计算均值</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#按筛选条件获取最大值和最小值"><span class="toc-article-text">按筛选条件获取最大值和最小值</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#loc-ix-iloc区别"><span class="toc-article-text">loc ix iloc区别</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#loc-通过行标签索引行数据"><span class="toc-article-text">loc-通过行标签索引行数据</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#iloc-通过行号获取行数据"><span class="toc-article-text">iloc-通过行号获取行数据</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#ix-前两种的混合索引"><span class="toc-article-text">ix-前两种的混合索引</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#Ipython"><span class="toc-article-text">Ipython</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#快捷键"><span class="toc-article-text">快捷键</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#交互式调试器"><span class="toc-article-text">交互式调试器</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#测试代码执行时间-time和-timeit"><span class="toc-article-text">测试代码执行时间%time和%timeit</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#基本性能分析-prun和-run-p"><span class="toc-article-text">基本性能分析%prun和%run -p</span></a></li></ol></li></ol>
+		</div>
 	</div>
 	
     <hr>
@@ -339,10 +343,12 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2018 Kevin Du
+  2016-2018
   
-      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
-     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+  &copy;  Kevin Du
+  
+    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
 </p>
  </footer>
 </div> <!-- container-narrow -->

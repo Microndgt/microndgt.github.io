@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>第 17 页 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="SkyRover"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 <div class="page-header logo">
+  <h1>靡不有初 鲜克有终<span class="blink-fast">∎</span></h1>
+</div>
+
+<div class="row page">
+
+	
+	<div class="col-md-9">
+	
+
+		<div class="slogan">
+      <i class="fa fa-heart blink-slow"></i>
+      Keep and carry on.
+</div>    
+		<div id="top_search"></div>
+		<div class="mypage">
+		
+		<!-- title and entry -->
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2016/12/02/shell命令总结/" >shell命令总结</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2016-12-02 15:57:57  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>工作中遇到的shell命令总结～</p>
+<h1 id="清除cache"><a href="#清除cache" class="headerlink" title="清除cache"></a>清除cache</h1><p>在运行程序过程中，<code>free -h</code>发现cache占用太大，于是：</p>
+<ul>
+<li><code>sync</code> 保存数据</li>
+<li><code>echo 1 &gt; /proc/sys/vm/drop_caches</code></li>
+</ul>
+<p>这样之后即可清除内存中的cache占用</p>
+<h1 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h1><h2 id="重新生成id"><a href="#重新生成id" class="headerlink" title="重新生成id"></a>重新生成id</h2><p><code>awk &#39;BEGIN{FS=&quot;,&quot;;OFS=&quot;,&quot;;}{$1=NR;print $0}&#39; summary.csv &gt; summary_ex.csv</code></p>
+<h2 id="打印出前两个字段"><a href="#打印出前两个字段" class="headerlink" title="打印出前两个字段"></a>打印出前两个字段</h2><p><code>awk &#39;BEGIN{FS=&quot;,&quot;;OFS=&quot;,&quot;;}{print $1,$2}&#39; summary.csv &gt; summary_ex.csv</code></p>
+<h2 id="获取含有inf的id"><a href="#获取含有inf的id" class="headerlink" title="获取含有inf的id"></a>获取含有inf的id</h2><p><code>cat summary.csv | grep inf | awk -F &#39;,&#39; &#39;{print $2}&#39; &gt; inf_ids.txt</code></p>
+<h2 id="使用if语句"><a href="#使用if语句" class="headerlink" title="使用if语句"></a>使用if语句</h2><p>第三个不为空，但是第四个为空</p>
+<p><code>cat find_result.txt | awk -F &#39;,&#39; &#39;{if(!($3==&quot;&quot;) &amp;&amp; $4==&quot;&quot;){print $0}&#39; | awk -F &#39;,&#39; &#39;{if($1==20160624){print $0}}&#39; | wc -l</code></p>
+<p>不匹配正则表达式，不匹配数字</p>
+<p><code>cat find_result.txt | awk -F &#39;,&#39; &#39;{if($3!~&quot;[0-9]&quot;) &amp;&amp; $4==&quot;&quot;){print $0}&#39; | awk -F &#39;,&#39; &#39;{if($1==20160624){print $0}}&#39; | wc -l</code></p>
+<h1 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h1><p>根据第一个字段，分隔符是, 按数字排序</p>
+<p><code>sort -t , -k1 -n summary_ex.csv &gt; summary_ex_sort.csv</code></p>
+<h1 id="find"><a href="#find" class="headerlink" title="find"></a>find</h1><p>查找此类文件有多少个</p>
+<p><code>find /data/output/ -type f -name ability*.csv | wc -l</code></p>
+<p>在所有文件内容中查找有220010的行</p>
+<p><code>find /data/output/errors/ -name &#39;stk*.csv&#39; | xargs grep &#39;220010&#39;</code></p>
+<p>查找内容为空的ability文件</p>
+<p><code>find /data/output -name ability*.csv -type f －empty | wc -l</code></p>
+<h1 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h1><p><code>:%s/app/data/gc</code> 全文提醒替换</p>
+<h1 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h1><p>删除grep出的特定行,形成新文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for id in $(cat inf_ids.txt)</div><div class="line">do</div><div class="line">    sed -i “/$id/d” summary.csv</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>将新生成的文件贴到某个文件末尾</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for line in $(cat summary.csv)</div><div class="line">do</div><div class="line">truesed -i &quot;\$a $line&quot; summary_45.csv</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>其实这样就OK了。。</p>
+<p><code>cat test1 test2 &gt; test3</code></p>
+<p><code>cat test2 &gt;&gt; test1</code> 使用追加</p>
+<p>接下来重新生成id</p>
+<p><code>-e</code> 以选项中指定的script来处理输入的文本文件</p>
+<p>在文件第四行后面添加一行,a表示新增，在下一行</p>
+<p><code>sed -e 4a\newLine testfile</code></p>
+<p>删除第2-5行,不加-e也是可以的，记得加单引号</p>
+<p><code>cat -n /etc/passwd | sed &#39;2,5d&#39;</code></p>
+<p>删除到最后一行</p>
+<p><code>cat -n /etc/passwd | sed &#39;3,$d&#39;</code></p>
+<p>i表示插入，在目前的上一行</p>
+<p><code>cat -n /etc/passwd | sed &#39;2i drink tea&#39;</code></p>
+<p>反斜杠加入多行</p>
+<p><code>cat -n /etc/passwd | sed &#39;2a drink tea or ...\drink beer?&#39;</code></p>
+<p>c表示取代</p>
+<p><code>cat -n /etc/passwd | sed &#39;2,5c no 2-5 number&#39;</code></p>
+<p>p显示</p>
+<p><code>cat -n /etc/passwd | sed -n &#39;5,7p&#39;</code></p>
+<p>显示特定关键字的行,-n表示仅打印包含模板的行</p>
+<p><code>cat -n /etc/passwd | sed &#39;/root/p&#39;</code></p>
+<p>删除所有包含关键字的行，其他行输出</p>
+<p><code>cat -n /etc/passwd | sed &#39;/root/d&#39;</code></p>
+<p>数据搜寻并且执行命令</p>
+<p><code>cat -n /etc/passwd | sed -n &#39;/root/{s/bash/blueshell/;p}&#39;</code></p>
+<p>多点编辑</p>
+<p><code>cat -n /etc/passwd | sed -e &#39;3,$d&#39; -e &#39;s/bash/blueshell/&#39;</code></p>
+<p>-i 直接修改文件内容</p>
+<p><code>sed -i &#39;s/\.$/\!/g&#39; regular.txt</code></p>
+<p><code>sed -i &#39;$a # This is a test&#39; regular.txt</code></p>
+
+	
+	</div>
+  <a type="button" href="/2016/12/02/shell命令总结/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+
+		</div>
+
+		<!-- pagination -->
+		<div>
+  		<center>
+		<div class="pagination">
+
+   
+    
+     <a href="/page/16/" type="button" class="btn btn-default"><i class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+      
+
+        <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+ 
+          <a type="button" class="btn btn-default disabled">下一页<i class="fa fa-arrow-circle-o-right"></i></a>
+        
+
+  
+</div>
+
+  		</center>
+		</div>
+
+		
+		
+	</div> <!-- col-md-9 -->
+
+	
+		<div class="col-md-3">
+	<div id="sidebar">
+	
+			
+  <div id="site_search">
+   <div class="form-group">
+    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="st-search-input st-default-search-input form-control"/>
+   </div>  
+  <div id="local-search-result"></div>
+  </div>
+
+
+		
+			
+	<div class="widget">
+		<h4>分类</h4>
+		<ul class="tag_box inline list-unstyled">
+		
+			<li><a href="/categories/Music/">Music<span>3</span></a></li>
+		
+			<li><a href="/categories/人生/">人生<span>4</span></a></li>
+		
+			<li><a href="/categories/历史/">历史<span>1</span></a></li>
+		
+			<li><a href="/categories/编程/">编程<span>73</span></a></li>
+		
+		</ul>
+	</div>
+
+		
+			
+	<div class="widget">
+		<h4>标签云</h4>
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/并发/">并发<span>5</span></a></li>
+		
+			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
+		
+			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
+		
+			<li><a href="/tags/Song/">Song<span>3</span></a></li>
+		
+			<li><a href="/tags/Traitlets/">Traitlets<span>1</span></a></li>
+		
+			<li><a href="/tags/Database/">Database<span>5</span></a></li>
+		
+			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
+		
+			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
+		
+			<li><a href="/tags/TED/">TED<span>1</span></a></li>
+		
+			<li><a href="/tags/青海/">青海<span>1</span></a></li>
+		
+			<li><a href="/tags/明朝/">明朝<span>1</span></a></li>
+		
+			<li><a href="/tags/R/">R<span>1</span></a></li>
+		
+			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
+		
+			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
+		
+			<li><a href="/tags/Shell/">Shell<span>1</span></a></li>
+		
+			<li><a href="/tags/日记/">日记<span>0</span></a></li>
+		
+			<li><a href="/tags/金融/">金融<span>1</span></a></li>
+		
+			<li><a href="/tags/SQL学习指南/">SQL学习指南<span>1</span></a></li>
+		
+			<li><a href="/tags/Docker/">Docker<span>1</span></a></li>
+		
+			<li><a href="/tags/协程/">协程<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>46</span></a></li>
+		 
+		</ul>
+	</div>
+
+
+		
+			
+<div class="widget">
+  <h4>最新文章</h4>
+  <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/11/leetcode_algorithm_go_and_python_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Algorithm篇</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/06/leetcode_database_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Database篇</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
+      </li>
+    
+  </ul>
+</div>
+
+		
+			
+<div class="widget">
+	<h4>链接</h4>
+	<ul class="blogroll list-unstyled">
+	
+		<li><i class="fa fa-github"></i><a href="https://github.com/Microndgt" title="My Github account." target="_blank"]);">Github</a></li>
+	
+		<li><i class="fa fa-weibo"></i><a href="https://weibo.com/KevinDu2016" title="My weibo account." target="_blank"]);">My Weibo</a></li>
+	
+	</ul>
+</div>
+
+
+		
+	</div> <!-- sidebar -->
+</div> <!-- col-md-3 -->
+
+	
+	
+</div> <!-- row-fluid -->
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  2016-2018
+  
+  &copy;  Kevin Du
+  
+    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

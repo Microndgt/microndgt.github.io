@@ -1,0 +1,586 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>第 12 页 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="SkyRover"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 <div class="page-header logo">
+  <h1>靡不有初 鲜克有终<span class="blink-fast">∎</span></h1>
+</div>
+
+<div class="row page">
+
+	
+	<div class="col-md-9">
+	
+
+		<div class="slogan">
+      <i class="fa fa-heart blink-slow"></i>
+      Keep and carry on.
+</div>    
+		<div id="top_search"></div>
+		<div class="mypage">
+		
+		<!-- title and entry -->
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/03/thriftpy_2_processor/" >thriftpy源码解析(二) - 处理器</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-03 17:14:25  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="从make-server入手"><a href="#从make-server入手" class="headerlink" title="从make_server入手"></a>从<code>make_server</code>入手</h1><p>首先来看看官方给的服务器demo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">pingpong_thrift = thriftpy.load(&quot;pingpong.thrift&quot;, module_name=&quot;pingpong_thrift&quot;)</div><div class="line"></div><div class="line">from thriftpy.rpc import make_server</div><div class="line"></div><div class="line">class Dispatcher(object):</div><div class="line">    def ping(self):</div><div class="line">        return &quot;pong&quot;</div><div class="line"></div><div class="line">server = make_server(pingpong_thrift.PingPong, Dispatcher(), &apos;127.0.0.1&apos;, 6000)</div><div class="line">server.serve()</div></pre></td></tr></table></figure>
+<p>首先载入thrift文件没话说，下来是创建服务器，它是直接用里面的一个函数<code>make_server</code> ，这个函数会接收thrift导入协议中定义的服务和处理这个服务的处理对象，以及host和port作为参数，然后调用<code>serve()</code>方法，来创建一个服务器。</p>
+<p>那么关键就在<code>make_server</code>函数上了，进入查看源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">def make_server(service, handler, host=&quot;localhost&quot;, port=9090, unix_socket=None, proto_factory=TBinaryProtocolFactory(), trans_factory=TBufferedTransportFactory(), client_timeout=3000, certfile=None):</div><div class="line">truetrue# 为传入的服务和处理方法创建处理器</div><div class="line">    processor = TProcessor(service, handler)</div><div class="line"></div><div class="line">truetrue# 如果是Unix_socket</div><div class="line">    if unix_socket:</div><div class="line">        server_socket = TServerSocket(unix_socket=unix_socket)</div><div class="line">        if certfile:</div><div class="line">            warnings.warn(&quot;SSL only works with host:port, not unix_socket.&quot;)</div><div class="line">    elif host and port:</div><div class="line">        if certfile:</div><div class="line">            server_socket = TSSLServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout,</div><div class="line">                certfile=certfile)</div><div class="line">        else:</div><div class="line">            server_socket = TServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout)</div><div class="line">    else:</div><div class="line">        raise ValueError(&quot;Either host/port or unix_socket must be provided.&quot;)</div><div class="line"></div><div class="line">    server = TThreadedServer(processor, server_socket,</div><div class="line">                             iprot_factory=proto_factory,</div><div class="line">                             itrans_factory=trans_factory)</div><div class="line">    return server</div></pre></td></tr></table></figure>
+<p>可以看到，创建一个服务器其实过程非常简单，首先创建一个处理器Processor，然后创建一个Socket，接下来创建服务器，这里使用的是<code>TThreadedServer</code>，顾名思义是多线程的服务器了。</p>
+<p>其中有进行判断<code>unix_socket</code>和SSL的，SSL不多解释了。但是<code>unix_socket</code>是什么呢，UNIX 域套接字（UNIX domain socket），即通过文件系统（而非网络地址）进行寻址和访问的套接字。因此其不需要host和port。其实是进程间通信的一种方式吧，在一台电脑上进程间通信也可以使用TCP套接字或者UDP套接字，但它们的效率都没有域套接字高，另外域套接字使用的库函数和TCP套接字使用的库函数一样，这样操作比较简单。</p>
+<p>那么不管这些<code>unix_socket</code>还有SSL这些东西，我们抽象一下就可以发现，其实只有5个东西：</p>
+<ul>
+<li>处理器 Processor 默认使用的是<code>TProcessor</code></li>
+<li>套接字 socket 默认使用的是<code>TServerSocket</code></li>
+<li>协议 默认使用的是<code>TBinaryProtocolFactory()</code></li>
+<li>传输类型 默认使用的是<code>TBufferedTransportFactory()</code></li>
+<li>服务器类型 默认使用的是<code>TThreadedServer</code></li>
+</ul>
+<p>那么要自定义一个自己的服务器，那么只要自定义这些就行了，比如我不想用多线程的服务器，我想用基于协程的服务器，自己写一个就好了<code>= = !</code></p>
+<p>下面一系列文章，将对这些内容进行分析讲解，使得大家可以轻松的自定义的使用thriftpy</p>
+<h1 id="处理器-Processor"><a href="#处理器-Processor" class="headerlink" title="处理器 Processor"></a>处理器 Processor</h1><p>目前在源码中看到的有2个Processor，一个是<code>TProcessor</code>，一个是<code>TMultiplexedProcessor</code>，另外还有一个Processor工厂<code>TProcessorFactory</code>。所以处理器总共就两个，一个是单服务处理器，一个是多服务处理器。</p>
+<p>处理器中<code>process</code>方法是外部比如服务器调用的方法，而<code>process_in</code>是处理器内部调用的处理逻辑</p>
+<h2 id="TProcessor"><a href="#TProcessor" class="headerlink" title="TProcessor"></a><code>TProcessor</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line">class TProcessor(object):</div><div class="line">    &quot;&quot;&quot;Base class for procsessor, which works on two streams.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, service, handler):</div><div class="line">        self._service = service</div><div class="line">        self._handler = handler</div><div class="line"></div><div class="line">    def process_in(self, iprot):</div><div class="line">        api, type, seqid = iprot.read_message_begin()</div><div class="line">        if api not in self._service.thrift_services:</div><div class="line">            iprot.skip(TType.STRUCT)</div><div class="line">            iprot.read_message_end()</div><div class="line">            return api, seqid, TApplicationException(TApplicationException.UNKNOWN_METHOD), None  # noqa</div><div class="line"></div><div class="line">        args = getattr(self._service, api + &quot;_args&quot;)()</div><div class="line">        args.read(iprot)</div><div class="line">        iprot.read_message_end()</div><div class="line">        result = getattr(self._service, api + &quot;_result&quot;)()</div><div class="line"></div><div class="line">        # convert kwargs to args</div><div class="line">        api_args = [args.thrift_spec[k][1] for k in sorted(args.thrift_spec)]</div><div class="line"></div><div class="line">        def call():</div><div class="line">            f = getattr(self._handler, api)</div><div class="line">            return f(*(args.__dict__[k] for k in api_args))</div><div class="line"></div><div class="line">        return api, seqid, result, call</div><div class="line"></div><div class="line">    def send_exception(self, oprot, api, exc, seqid):</div><div class="line">        oprot.write_message_begin(api, TMessageType.EXCEPTION, seqid)</div><div class="line">        exc.write(oprot)</div><div class="line">        oprot.write_message_end()</div><div class="line">        oprot.trans.flush()</div><div class="line"></div><div class="line">    def send_result(self, oprot, api, result, seqid):</div><div class="line">        oprot.write_message_begin(api, TMessageType.REPLY, seqid)</div><div class="line">        result.write(oprot)</div><div class="line">        oprot.write_message_end()</div><div class="line">        oprot.trans.flush()</div><div class="line"></div><div class="line">    def handle_exception(self, e, result):</div><div class="line">        for k in sorted(result.thrift_spec):</div><div class="line">            if result.thrift_spec[k][1] == &quot;success&quot;:</div><div class="line">                continue</div><div class="line"></div><div class="line">            _, exc_name, exc_cls, _ = result.thrift_spec[k]</div><div class="line">            if isinstance(e, exc_cls):</div><div class="line">                setattr(result, exc_name, e)</div><div class="line">                break</div><div class="line">        else:</div><div class="line">            raise</div><div class="line"></div><div class="line">    def process(self, iprot, oprot):</div><div class="line">        api, seqid, result, call = self.process_in(iprot)</div><div class="line"></div><div class="line">        if isinstance(result, TApplicationException):</div><div class="line">            return self.send_exception(oprot, api, result, seqid)</div><div class="line"></div><div class="line">        try:</div><div class="line">            result.success = call()</div><div class="line">        except Exception as e:</div><div class="line">            # raise if api don&apos;t have throws</div><div class="line">            self.handle_exception(e, result)</div><div class="line"></div><div class="line">        if not result.oneway:</div><div class="line">            self.send_result(oprot, api, result, seqid)</div></pre></td></tr></table></figure>
+<p>具体的就不讲解了，主要的东西就是这个处理器可以将一个服务和一个处理方法对应起来，这个处理方法一般是类的实例，然后服务里定义的的函数一般就是这个类的方法，在<code>process_in</code>方法里面定义了call函数，它其实就是调用handler的具体方法，其中api就是thrift中定义的服务的api。</p>
+<p>另外需要根据不同的协议来确定返回的值，比如下面的例子，返回的是字典，我就需要使用<code>TJSONProtocolFactory</code>，还有其他的一些协议，后面再讲。</p>
+<p>handler的话比如这样，实例方法也ok，我这里函数都是独立的，所以使用静态方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class CalcAbility(object):</div><div class="line">    @staticmethod</div><div class="line">    def sync_ability(fundId, assets, flows, stocks, start, stop, calc_type):</div><div class="line">        try:</div><div class="line">            assert fundId and assets and start and stop, &quot;fundId or assets or start or end not found - testing&quot;</div><div class="line">            start_date = strpdate(start)</div><div class="line">            stop_date = strpdate(stop)</div><div class="line">            calc_type = calc_type or DEFAULT_CALC_TYPE</div><div class="line">            res = is_continuous_trade_day(start, stop, assets)</div><div class="line">            assert res[0], res[1]</div><div class="line">        except Exception as e:</div><div class="line">            sentry_logger.exception(e)</div><div class="line">            return gen_response(data=None, msg=str(e), errorcode=1)</div><div class="line">        return assets</div></pre></td></tr></table></figure>
+<p>thrift文件定义如下，thrift文件定义花样比较多，后面再说。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="TMultiplexedProcessor"><a href="#TMultiplexedProcessor" class="headerlink" title="TMultiplexedProcessor"></a><code>TMultiplexedProcessor</code></h2><p>这个处理器支持多个服务分别对应不同的处理方法，其实是一堆<code>TProcessor</code>和处理方法的集合，使用字典实现，其中<code>service_name</code>对应<code>processor</code>，所以定义<code>TMultiplexedProcessor</code>后，必须进行注册：<code>register_processor</code></p>
+<p>源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">class TMultiplexedProcessor(TProcessor):</div><div class="line">    SEPARATOR = &quot;:&quot;</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        self.processors = &#123;&#125;</div><div class="line"></div><div class="line">    def register_processor(self, service_name, processor):</div><div class="line">        if service_name in self.processors:</div><div class="line">            raise TApplicationException(</div><div class="line">                type=TApplicationException.INTERNAL_ERROR,</div><div class="line">                message=&apos;processor for `&#123;0&#125;` already registered&apos;</div><div class="line">                .format(service_name))</div><div class="line">        self.processors[service_name] = processor</div><div class="line"></div><div class="line">    def process_in(self, iprot):</div><div class="line">        api, type, seqid = iprot.read_message_begin()</div><div class="line">        if type not in (TMessageType.CALL, TMessageType.ONEWAY):</div><div class="line">            raise TException(&quot;TMultiplex protocol only supports CALL &amp; ONEWAY&quot;)</div><div class="line">        if TMultiplexedProcessor.SEPARATOR not in api:</div><div class="line">            raise TException(&quot;Service name not found in message. &quot;</div><div class="line">                             &quot;You should use TMultiplexedProtocol in client.&quot;)</div><div class="line"></div><div class="line">        service_name, api = api.split(TMultiplexedProcessor.SEPARATOR)</div><div class="line">        if service_name not in self.processors:</div><div class="line">            iprot.skip(TType.STRUCT)</div><div class="line">            iprot.read_message_end()</div><div class="line">            e = TApplicationException(TApplicationException.UNKNOWN_METHOD)</div><div class="line">            return api, seqid, e, None</div><div class="line"></div><div class="line">        proc = self.processors[service_name]</div><div class="line">        args = getattr(proc._service, api + &quot;_args&quot;)()</div><div class="line">        args.read(iprot)</div><div class="line">        iprot.read_message_end()</div><div class="line">        result = getattr(proc._service, api + &quot;_result&quot;)()</div><div class="line"></div><div class="line">        # convert kwargs to args</div><div class="line">        api_args = [args.thrift_spec[k][1] for k in sorted(args.thrift_spec)]</div><div class="line"></div><div class="line">        def call():</div><div class="line">            f = getattr(proc._handler, api)</div><div class="line">            return f(*(args.__dict__[k] for k in api_args))</div><div class="line"></div><div class="line">        return api, seqid, result, call</div></pre></td></tr></table></figure>
+<p>使用<code>TMultiplexedProcessor</code>来注册几个服务和处理器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">thrift_app = TMultiplexedProcessor()</div><div class="line"></div><div class="line">calc_processor = TProcessor(ability_thrift.Calc, CalcAbility())</div><div class="line">read_processor = TProcessor(ability_thrift.Read, ReadAbility())</div><div class="line"></div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Calc&apos;, calc_processor)</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Read&apos;, read_processor)</div></pre></td></tr></table></figure>
+<p>其中Read服务在thrift文件中定义，然后处理方法<code>ReadAbility</code>根据thrift协议来定，其实就是通过<code>service_name</code>找到对应的处理器，其他的就和<code>TProcessor</code>一样了</p>
+<h2 id="TProcessorFactory"><a href="#TProcessorFactory" class="headerlink" title="TProcessorFactory"></a><code>TProcessorFactory</code></h2><p>处理器工厂，感觉其实没什么卵用，源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class TProcessorFactory(object):</div><div class="line"></div><div class="line">    def __init__(self, processor_class, *args, **kwargs):</div><div class="line">        self.args = args</div><div class="line">        self.kwargs = kwargs</div><div class="line"></div><div class="line">        self.processor_class = processor_class</div><div class="line"></div><div class="line">    def get_processor(self):</div><div class="line">        return self.processor_class(*self.args, **self.kwargs)</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这一节对常用的<code>Processor</code>做了一个介绍，当然深入的实现细节没有讲到，毕竟太复杂，现在的目标只是做个介绍罢了。</p>
+<h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节我们将了解下<code>TServerSocket</code></p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/03/thriftpy_2_processor/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/03/Flask应用在Celery中使用current_app的思考/" >Flask应用在Celery中使用current_app的思考</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-03 16:29:40  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>写应用的时候遇到这样的一个问题，定义的celery task中无法使用<code>current_app</code>，并且有时候会出现pop wrong app context。</p>
+<p>这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的时候，根本就没有app这一系列东西，所以上下文栈就是空的，因此就不能使用app，以及<code>app.logger</code>了。</p>
+<p>知道这一点之后，就在celery的task调用的时候加上了<code>with app.app_context():</code>，但是有时候task执行出错的时候，或者运行完成的时候就会出现，<code>AssertionError(&#39;Popped wrong app context.  (&lt;flask.ctx.AppContext object at 0x7f4e1ed56d30&gt; instead of &lt;flask.ctx.AppContext object at 0x7f4e1f02c7f0&gt;)&#39;,)</code>，这个问题后来找到可能的原因是，多个celery worker执行的时候会创建多个app实例，并且对于一个进程的上下文栈进行了多次的上下文进栈，在发生错误的时候，就会导致出栈的上下文混乱。</p>
+<p>最后的解决方案是，给celery的Task类做猴子补丁，在调用task的时候，只使用唯一的app实例（对于每个进程来讲，上下文栈是不同的）进行上下文切换。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def make_celery(app):</div><div class="line">    celery = Celery(&apos;backend&apos;, broker=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB),</div><div class="line">                    backend=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB))</div><div class="line">    TaskBase = celery.Task</div><div class="line"></div><div class="line">    class ContextTask(TaskBase):</div><div class="line">        abstract = True</div><div class="line"></div><div class="line">        def __call__(self, *args, **kwargs):</div><div class="line">            with app.app_context():</div><div class="line">                return TaskBase.__call__(self, *args, **kwargs)</div><div class="line"></div><div class="line">    celery.Task = ContextTask</div><div class="line">    return celery</div></pre></td></tr></table></figure>
+<p>这样就可以开心的在celery的task里面使用<code>current_app</code>了</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/03/Flask应用在Celery中使用current_app的思考/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/02/thriftpy_1_introduction/" >thriftpy源码解析(一) - 综述</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-02 10:58:28  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>本文使用的工具是饿了么开发的<a href="https://github.com/eleme/thriftpy" target="_blank" rel="external">thriftpy</a>和<a href="https://github.com/eleme/gunicorn_thrift" target="_blank" rel="external">gunicorn_thrift</a></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h2><p>首先thrift是啥呢？thrift是一个软件框架，用来进行可扩展且跨语言的服务的开发。它结合了功能强大的软件堆栈和代码生成引擎，以构建在 C++, Java, Go,Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, JavaScript, Node.js, Smalltalk, and OCaml 这些编程语言间无缝结合的、高效的服务。</p>
+<h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>说thrift不得不提的是RPC, RPC(Remote Procedure Call Protocol) 远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>其实thrift是一种开源的跨语言的RPC服务框架，可以基于它进行RPC请求等的处理，而不用进行HTTP请求，减少资源消耗，提高效率。用于微服务是极好的，特别是数据量大的请求。</p>
+<h2 id="与HTTP的性能比较"><a href="#与HTTP的性能比较" class="headerlink" title="与HTTP的性能比较"></a>与HTTP的性能比较</h2><p>thrift 体积超小，使用起来比较麻烦，不如json容易，但是对于1.高并发、2.数据传输量大、3.多语言环境 比较适合。</p>
+<p>假定需要传输相同的内容，但使用不同的方式从 1、传输内容所产生的大小 2、传输过程中服务端和客户端所产生的开销，这2个方面进行比较，如下：</p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt=""></p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt=""></p>
+<h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><h2 id="thrift文件"><a href="#thrift文件" class="headerlink" title="thrift文件"></a>thrift文件</h2><p>首先定义thrift文件，这个文件相当于一个协议，在客户端和服务器都应该包含这个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring tdx_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue),</div><div class="line">truestring tdx_ability_status(),</div><div class="line">truestring tdx_increment(),</div><div class="line">truestring signal_ability(),</div><div class="line"></div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div><div class="line"></div><div class="line">service Read &#123;</div><div class="line">truestring summary(),</div><div class="line">truestring prices(),</div><div class="line">truestring ability()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中Calc和Read定义为两个服务，服务底下有多个函数，函数定义为返回值类型，函数名，函数参数</p>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><p>下来创建一个服务器，这里有多个服务，因此需要创建多个服务处理器，同时需要指定视情况而需要的协议和传输类型，最后选择需要的服务器。</p>
+<p>我们这里选择了<code>TJSONProtocolFactory()</code>和<code>TBufferedTransportFactory()</code>，服务器使用了<code>gunicorn_thrift</code>，后面会详细介绍这些东西。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">import os</div><div class="line">from thriftpy.transport import TServerSocket</div><div class="line">from thriftpy.thrift import TMultiplexedProcessor</div><div class="line">from thriftpy.rpc import TProcessor</div><div class="line">from config import THRIFT_HOST, THRIFT_PORT</div><div class="line">from .calc_ability import CalcAbility</div><div class="line">from .read_ability import ReadAbility</div><div class="line">dir_path = os.path.abspath(os.path.dirname(__file__))</div><div class="line">thrift_path = os.path.join(dir_path, &apos;ability.thrift&apos;)</div><div class="line"></div><div class="line"># 导入thrift文件</div><div class="line">ability_thrift = thriftpy.load(thrift_path, module_name=&quot;ability_thrift&quot;)</div><div class="line"># 创建socket</div><div class="line">server_socket = TServerSocket(host=THRIFT_HOST, port=THRIFT_PORT, client_timeout=None)</div><div class="line"># 创建thrift的主应用，这里的应用可以为多个服务注册多个处理器</div><div class="line">thrift_app = TMultiplexedProcessor()</div><div class="line"></div><div class="line"># 为每个服务创建处理器</div><div class="line">calc_processor = TProcessor(ability_thrift.Calc, CalcAbility())</div><div class="line">read_processor = TProcessor(ability_thrift.Read, ReadAbility())</div><div class="line"></div><div class="line"># 在thrift主应用中注册这些处理器</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Calc&apos;, calc_processor)</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Read&apos;, read_processor)</div></pre></td></tr></table></figure>
+<p>这样就创建了一个thrift应用，然后需要指定服务器，这里我们使用<code>gunicorn_thrift</code>，其实thriftpy里面有许多简单的服务器，比如单线程服务器，多线程服务器，但是这些服务器并不能满足生产需要。</p>
+<p>启动gunicorn服务器：<code>gunicorn_thrift thrift_abi:thrift_app -k thriftpy_sync --thrift-protocol-factory thriftpy.protocol:TJSONProtocolFactory --thrift-transport-factory thriftpy.transport:TBufferedTransportFactory</code></p>
+<p><code>-k</code>参数指定是同步还是异步，另外需要指定协议和传输方式</p>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>客户端就比较容易了，只需要导入thrift文件，并且根据协议和传输方式创建客户端就行了，然后客户端就可以远程调用服务器的方法函数了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">from thriftpy.protocol import TJSONProtocolFactory, TMultiplexedProtocolFactory</div><div class="line">from thriftpy.transport import TBufferedTransportFactory</div><div class="line">from thriftpy.rpc import make_client</div><div class="line"></div><div class="line"></div><div class="line">ability_thrift = thriftpy.load(&quot;ability.thrift&quot;, module_name=&quot;ability_thrift&quot;)</div><div class="line">client = make_client(ability_thrift.Calc, &apos;127.0.0.1&apos;, 5004, proto_factory=TMultiplexedProtocolFactory(TJSONProtocolFactory(), &apos;ability_thrift.Calc&apos;), trans_factory=TBufferedTransportFactory())</div><div class="line">client.tdx_ability()</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>thrift的使用是比直接HTTP请求要麻烦一点，并且如果服务器要改动函数签名，就需要更改thrift文件，并且客户端也需要同步，并且修改签名，但是这样的方式在微服务架构中带来的性能提升是很大的，值得作出这样的改变。</p>
+<h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节将对thriftpy中的核心组件进行解析。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/02/thriftpy_1_introduction/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/01/翻译 - Easy in-place file rewriting/" >翻译 - Easy in-place file rewriting</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-01 18:20:18  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>原文：<a href="http://www.zopatista.com/python/2013/11/26/inplace-file-rewriting/" target="_blank" rel="external">http://www.zopatista.com/python/2013/11/26/inplace-file-rewriting/</a></p>
+<p>使用上下文管理器进行无痛的文件重写。</p>
+<p>如果你需要就地处理文件，修改其内容并且重新输出在同一个位置，你可以使用<code>fileinput</code>模块使用<code>inplace</code>选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import fileinput</div><div class="line"></div><div class="line">for line in fileinput.input(somefilename, inplace=True):</div><div class="line">    line = &apos;additional information &apos; + line.rstrip(&apos;\n&apos;)</div><div class="line">    print line</div></pre></td></tr></table></figure>
+<p><code>fileinput</code>模块有一些问题，我觉得最大的就是模块非常依赖于全局变量。比如<code>fileinput.input()</code>创建了一个全局的<code>fileinput.FileInput()</code>对象，在这个模块的其他函数就可以使用它。你当然可以忽略这些并且直接去使用<code>fileinput.FileInput()</code>构造器，但是<code>fileinput.input()</code>却是主的API入口。</p>
+<p>其他的问题在于<code>in-place</code>方法劫持了<code>sys.stdout</code>，作为写回替换文件的方法。显然这可以方便的使用<code>print</code>语句来写回，但是你必须记得从以前的文件中读取的数据行中移除新的数据行。</p>
+<p>最后，也是很重要的，<code>fileinput</code>在Python3中的版本不支持指定编码方式，错误模式或者处理新数据行。你可以在二进制模式下打开文件，但是输出总是在文本模式下的。这些问题极大的降低了这个库的可用性。</p>
+<p>因此我写了一个替代方案，使用了非常棒的<code>@contextlib.contextmanager</code>装饰器，这个在Python2和Python3都可以使用，依赖于<code>io.open()</code>来在不同的Python版本中保持兼容性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">from contextlib import contextmanager</div><div class="line">import io</div><div class="line">import os</div><div class="line"></div><div class="line"></div><div class="line">@contextmanager</div><div class="line">def inplace(filename, mode=&apos;r&apos;, buffering=-1, encoding=None, errors=None,</div><div class="line">            newline=None, backup_extension=None):</div><div class="line">    &quot;&quot;&quot;允许使用新的内容来替换一个文件</div><div class="line">truetrue产生一个(readable, writable)文件对象元组，writable会替换readable</div><div class="line">truetrue异常发生的时候，原始文件会被重新保存，移除写入的数据</div><div class="line">truetrue模式不应该使用w a 或者 + 只支持只读模式</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    # move existing file to backup, create new file with same permissions</div><div class="line">    # borrowed extensively from the fileinput module</div><div class="line">    if set(mode).intersection(&apos;wa+&apos;):</div><div class="line">        raise ValueError(&apos;Only read-only file modes can be used&apos;)</div><div class="line"></div><div class="line">    backupfilename = filename + (backup_extension or os.extsep + &apos;bak&apos;)</div><div class="line">    try:</div><div class="line">truetruetruetrue# 删除文件</div><div class="line">        os.unlink(backupfilename)</div><div class="line">    except os.error:</div><div class="line">        pass</div><div class="line">    os.rename(filename, backupfilename)</div><div class="line">    readable = io.open(backupfilename, mode, buffering=buffering,</div><div class="line">                       encoding=encoding, errors=errors, newline=newline)</div><div class="line">    try:</div><div class="line">truetruetruetrue# 返回文件描述符fd的状态, st_mode文件信息的掩码，包含了文件的权限信息，文件的类型信息</div><div class="line">        perm = os.fstat(readable.fileno()).st_mode</div><div class="line">    except OSError:</div><div class="line">        writable = open(filename, &apos;w&apos; + mode.replace(&apos;r&apos;, &apos;&apos;),</div><div class="line">                        buffering=buffering, encoding=encoding, errors=errors,</div><div class="line">                        newline=newline)</div><div class="line">    else:</div><div class="line">        os_mode = os.O_CREAT | os.O_WRONLY | os.O_TRUNC</div><div class="line">        if hasattr(os, &apos;O_BINARY&apos;):</div><div class="line">            os_mode |= os.O_BINARY</div><div class="line">        fd = os.open(filename, os_mode, perm)</div><div class="line">        writable = io.open(fd, &quot;w&quot; + mode.replace(&apos;r&apos;, &apos;&apos;), buffering=buffering,</div><div class="line">                           encoding=encoding, errors=errors, newline=newline)</div><div class="line">        try:</div><div class="line">            if hasattr(os, &apos;chmod&apos;):</div><div class="line">                os.chmod(filename, perm)</div><div class="line">        except OSError:</div><div class="line">            pass</div><div class="line">    try:</div><div class="line">        yield readable, writable</div><div class="line">    except Exception:</div><div class="line">        # move backup back</div><div class="line">        try:</div><div class="line">            os.unlink(filename)</div><div class="line">        except os.error:</div><div class="line">            pass</div><div class="line">        os.rename(backupfilename, filename)</div><div class="line">        raise</div><div class="line">    finally:</div><div class="line">        readable.close()</div><div class="line">        writable.close()</div><div class="line">        try:</div><div class="line">            os.unlink(backupfilename)</div><div class="line">        except os.error:</div><div class="line">            pass</div></pre></td></tr></table></figure>
+<p>译者注：首先将原文件备份，然后<code>readable</code>是从备份文件中读取的，<code>writable</code>是读取了一个与原文件名相同的空文件，在<code>yield readable, writable</code>处相当于<code>__enter__</code>方法返回了一个元组，之后如果在上下文管理器中产生了异常就会删除已经写入的文件，然后将备份文件重命名为原文件名，即相当于执行了<code>__exit__</code>方法</p>
+<p>这个上下文管理器只关注于一个文件，并且忽略了<code>sys.stdin</code>，不像<code>fileinput</code>模块。它的目标就是只将一个文件原地替换。</p>
+<p>使用的例子，Python2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import csv</div><div class="line"></div><div class="line">with inplace(csvfilename, &apos;rb&apos;) as (infh, outfh):</div><div class="line">    reader = csv.reader(infh)</div><div class="line">    writer = csv.writer(outfh)</div><div class="line"></div><div class="line">    for row in reader:</div><div class="line">        row += [&apos;new&apos;, &apos;columns&apos;]</div><div class="line">        writer.writerow(row)</div></pre></td></tr></table></figure>
+<p>Python3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import csv</div><div class="line"></div><div class="line">with inplace(csvfilename, &apos;r&apos;, newline=&apos;&apos;) as (infh, outfh):</div><div class="line">    reader = csv.reader(infh)</div><div class="line">    writer = csv.writer(outfh)</div><div class="line"></div><div class="line">    for row in reader:</div><div class="line">        row += [&apos;new&apos;, &apos;columns&apos;]</div><div class="line">        writer.writerow(row)</div></pre></td></tr></table></figure>
+
+	
+	</div>
+  <a type="button" href="/2017/08/01/翻译 - Easy in-place file rewriting/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/07/13/LRUCache在Python中的实现/" >LRU Cache在Python中的实现</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-07-13 10:12:39  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>LRU Cache在Python中的实现</p>
+<p><code>LRU Cache - Least Recently Used Cache</code> 最近最久未使用缓存</p>
+<p>今天问了同事一个问题，LRU Cache系统如何实现，同事答使用时间戳。那么使用时间戳的话，他可能的想法是在Python里的字典中实现，这样通过判断时间戳的迟早来实现LRU。</p>
+<p>首先缓存，比如对于一个这样的函数,<code>task(arg1, arg2)</code>，缓存主要是缓存其参数和返回值，那么就可以直接使用字典来实现，关键在于参数是可以哈希的，也就是说参数不应该是可变的，这样就可以将参数作为key，函数返回值作为value来存储到字典之中。</p>
+<p>那么对于LRU，LRU比较常用的在操作系统内存管理的页面置换中使用到了，就是最近使用的页面在内存中，否则就在硬盘里，为了提高页面的命中率，其英文为hits，没有命中则为misses。对于上面的这个函数来说就是要存储最近使用的参数和返回值这么一个对应关系。</p>
+<h1 id="时间戳字典可行吗？"><a href="#时间戳字典可行吗？" class="headerlink" title="时间戳字典可行吗？"></a>时间戳字典可行吗？</h1><p>对于同事提到的字典，其缓存模型应该是函数参数作为key，因为要通过key来判断是否命中，时间戳也作为key，因为要比较最近使用，比如缓存已经满了，要将最早使用的缓存清除出去，那么这时候就要比较哪个参数对应的时间是最早的。</p>
+<p>这里有一种<code>multi_key_dict</code>，也就是多个键对应一个值，假设时间戳不会冲突的话，使用时间戳和参数作为键，那么要取到最早的时间戳，也需要一个排序，因为键在字典中是无序的。且不说从这么多键中找出时间戳这种键，并且还有一个问题是如果参数也是时间戳呢<code>= = !</code></p>
+<h1 id="使用list"><a href="#使用list" class="headerlink" title="使用list"></a>使用list</h1><p>既然要取时间戳需要排序，那么不用时间戳，直接将对应的key也就是函数参数存储到一个Python列表中就行了，最近使用的在列表头，最早使用的在列表尾，然后用一个字典存储参数-返回值，这样就实现了一个LRU嘛。</p>
+<p>如果有参数命中(key在字典中)，那么就把这个参数从其原始位置放到列表头，如果满了就删除最后一个元素。这样看起来可以，但是涉及性能问题。从列表中间pop和从头insert都是性能瓶颈操作，时间复杂度在<code>O(n)</code>。</p>
+<h1 id="使用链表"><a href="#使用链表" class="headerlink" title="使用链表"></a>使用链表</h1><p>既然使用list在insert时候有性能问题，那么使用单链表呢，只有有头指针，我就可以在头部插入，此时时间复杂度只有<code>O(1)</code>。但是将参数从单链表尾部移除呢，还得从头遍历一遍到尾部，那那那就用双向循环链表好了，这样找尾部元素，就可以直接使用头指针向前得到了。</p>
+<p>看起来好像一切OK了，但是认真想想，如果命中一个参数，那么要将其从中间某个位置弄到最开头呢？双向循环链表还是得去遍历一遍链表去查找，平均的时间复杂度也要<code>O(n)</code></p>
+<h1 id="使用字典和链表相结合"><a href="#使用字典和链表相结合" class="headerlink" title="使用字典和链表相结合"></a>使用字典和链表相结合</h1><p>在取缓存的时候，通过字典直接从参数取到返回值，那么可不可以将链表和字典结合起来呢，使用key能不能直接获取到key在链表的位置呢？当然可以，key对应的value存储为这个key对应的链表节点不就可以了，同时这个链表节点还存储了返回值不就刚好可以将返回值取到了嘛。</p>
+<h1 id="functools-lru-cache"><a href="#functools-lru-cache" class="headerlink" title="functools.lru_cache"></a><code>functools.lru_cache</code></h1><p>Python中functools的<code>lru_cache</code>实现了LRU Cache，核心是一个双向循环链表再加一个字典。</p>
+<p><code>from functools import lru_cache</code>可以看到<code>lru_cache</code>的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">_CacheInfo = namedtuple(&quot;CacheInfo&quot;, [&quot;hits&quot;, &quot;misses&quot;, &quot;maxsize&quot;, &quot;currsize&quot;])</div><div class="line">def lru_cache(maxsize=128, typed=False):</div><div class="line">    &apos;&apos;&apos;最近最少使用的缓存装饰器</div><div class="line">    如果maxsize为None，则不使用LRU特性，并且缓存可以没有限制的增长</div><div class="line">    如果typed为True，不同类型的参数将会独立的缓存，比如f(3.0)和f(3)将被看作不同的调用，并且有不同的结果。</div><div class="line">    缓存函数的参数必须是可哈希的。</div><div class="line">    访问命名元组(hints, misses, maxsize, currsize)来查看缓存统计数据，使用f.cache_info()来得到。使用f.cache_clear()来清除缓存数据。使用f.__wrapped__来获取底层包装函数</div><div class="line">    &apos;&apos;&apos;</div><div class="line">    if maxsize is not None and not isinstance(maxsize, int):</div><div class="line">        raise TypeError(&apos;Expected maxsize to be an integer or None&apos;)</div><div class="line">    def decorating_function(user_function):</div><div class="line">        wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)</div><div class="line">        return update_wrapper(wrapper, user_function)</div><div class="line">    return decorating_function</div></pre></td></tr></table></figure>
+<p>首先这是一个带参数的装饰器，使用的时候应该<code>@lru_cache()</code>，这样会返回<code>decorating_function</code>，用来装饰用户的函数，其内部会返回将用户的包装后的函数，使用的是<code>_lru_cache_wrapper</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div></pre></td><td class="code"><pre><div class="line">def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):</div><div class="line">    # 所有lru缓存实例共享的常量</div><div class="line">    sentinel = object()          # 当缓存没有命中的时候返回的对象</div><div class="line">    make_key = _make_key         # 从函数参数来生成一个key的函数</div><div class="line">    PREV, NEXT, KEY, RESULT = 0, 1, 2, 3   # 每一个链表节点中存储的每个元素位置</div><div class="line">    cache = &#123;&#125;</div><div class="line">    hits = misses = 0</div><div class="line">    full = False</div><div class="line">    cache_get = cache.get  # 绑定查询键的函数</div><div class="line">    lock = RLock()  # 链表的更新可能不是线程安全的，对于一个函数，可能多线程调用</div><div class="line">    root = []   # 双向循环链表的头指针</div><div class="line">    root[:] = [root, root, None, None]  # 初始化双向循环链表</div><div class="line"></div><div class="line">    if maxsize == 0:</div><div class="line">        # 不使用缓存，每次调用没有命中次数都会加一</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            # 重新绑定自由变量misses</div><div class="line">            nonlocal misses</div><div class="line">            result = user_function(*args, **kwds)</div><div class="line">            misses += 1</div><div class="line">            return result</div><div class="line">    elif maxsize is None:</div><div class="line">        # 简单的缓存，没有次序，也没有大小限制，也就是直接使用字典进行缓存</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            nonlocal hits, misses</div><div class="line">            key = make_key(args, kwds, typed)</div><div class="line">            result = cache_get(key, sentinel)</div><div class="line">            if result is not sentinel:</div><div class="line">                hits += 1</div><div class="line">                return result</div><div class="line">            result = user_function(*args, **kwds)</div><div class="line">            cache[key] = result</div><div class="line">            misses += 1</div><div class="line">            return result</div><div class="line">    else:</div><div class="line">        # 这种情况就是有大小限制的lru_cache，我觉得应该加一个有限制的普通缓存系统</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            nonlocal root, hits, misses, full</div><div class="line">            key = make_key(args, kwds, typed)</div><div class="line">            with lock:</div><div class="line">                link = cache_get(key)</div><div class="line">                # 如果命中，将命中的链表节点放到头部，每个链表节点存储了PREV,NEXT,KEY,VALUE</div><div class="line">                # 所以先将当前节点的前后节点接在一起</div><div class="line">                if link is not None:</div><div class="line">                    # 从链表中取出这个节点</div><div class="line">                    link_prev, link_next, _key, result = link</div><div class="line">                    link_prev[NEXT] = link_next</div><div class="line">                    link_next[PREV] = link_prev</div><div class="line">                    # 将链表节点放到头部,root前面</div><div class="line">                    last = root[PREV]</div><div class="line">                    last[NEXT] = root[PREV] = link</div><div class="line">                    link[PREV] = last</div><div class="line">                    link[NEXT] = root]</div><div class="line">                    hits += 1</div><div class="line">                    return result</div><div class="line">                result = user_function(*args, **kwds)</div><div class="line">                # 没有命中的话，将其放入缓存，更新操作必须加锁</div><div class="line">                with lock:</div><div class="line">                    if key in cache:</div><div class="line">                        # 如果key已经在cache，说明有其它的线程已经将这个key放入缓存中了</div><div class="line">                        pass</div><div class="line">                    elif full:</div><div class="line">                        # 如果缓存已经满了，则取出最久没有使用的节点将其pop出去，也就是双向循环链表中root后面的指针。</div><div class="line">                        # 这段代码的具体过程是，将root指针作为新节点，root指针后面的节点作为root节点</div><div class="line">                        oldroot = root</div><div class="line">                        oldroot[KEY] = key</div><div class="line">                        oldroot[RESULT] = result</div><div class="line">                        # root的节点作为新节点，只需要将key，result换掉</div><div class="line"></div><div class="line">                        root = oldroot[NEXT]</div><div class="line">                        # 记录oldkey是为了在cache字典中删除</div><div class="line">                        oldkey = root[KEY]</div><div class="line">                        oldresult = root[RESULT]</div><div class="line">                        root[KEY] = root[RESULT] = None</div><div class="line">                        # 更新好root节点后删除字典中的key</div><div class="line"></div><div class="line">                        del cache[oldkey]</div><div class="line"></div><div class="line">                        cache[key] = oldroot</div><div class="line">                    else:</div><div class="line">                        # 如果缓存没有满，更新缓存</div><div class="line">                        last = root[PREV]</div><div class="line">                        # 新的链表节点在root和root前一个节点之间</div><div class="line">                        link = [last, root, key, result]</div><div class="line">                        last[NEXT] = root[PREV] = cache[key] = link</div><div class="line">                        full = (len(cache) &gt;= maxsize)</div><div class="line">                    misses += 1</div><div class="line">                return result</div><div class="line"></div><div class="line">        def cache_info():</div><div class="line">            &quot;&quot;&quot;Report cache statistics&quot;&quot;&quot;</div><div class="line">            with lock:</div><div class="line">                # 因为以下数据可能在更新，所以加锁获取共享资源</div><div class="line">                return _CacheInfo(hits, misses, maxsize, len(cache))</div><div class="line"></div><div class="line">        def cache_clear():</div><div class="line">            &quot;&quot;&quot;Clear the cache and cache statistics&quot;&quot;&quot;</div><div class="line">            nonlocal hits, misses, full</div><div class="line">            with lock:</div><div class="line">                cache.clear()</div><div class="line">                root[:] = [root, root, None, None]</div><div class="line">                hits = misses = 0</div><div class="line">                full = False</div><div class="line"></div><div class="line">        wrapper.cache_info = cache_info</div><div class="line">        wrapper.cache_clear = cache_clear</div><div class="line">        return wrapper</div></pre></td></tr></table></figure>
+<p>当缓存已经满了的时候，这种处理方式还是挺不错的，但是要是我来搞就是删除后面的节点，然后将新节点放到root前面。另外这个人是左撇子么，喜欢逆时针转啊。</p>
+<h1 id="OrderedDict相关"><a href="#OrderedDict相关" class="headerlink" title="OrderedDict相关"></a>OrderedDict相关</h1><p>另一个使用双向循环链表的例子是OrderedDict，链表保存了key添加到字典的顺序，但其实这个字典实际用的时候，是用的C语言实现的版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">try:</div><div class="line">    from _collections import OrderedDict</div><div class="line">except ImportError:</div><div class="line">    # Leave the pure Python version in place.</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<p>下面是OrderedDict的源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">class OrderedDict(dict):</div><div class="line">    &apos;&apos;&apos;记录插入顺序的字典</div><div class="line">    内部的self.__map字典记录了key到双向循环链表的节点，双向循环链表开始和结束都是一个sentinel元素。这个元素从来都不会被删除，它在self.__hardroot, 并且self.__hardroot在self.__root有一个弱引用代理</div><div class="line">    往前的连接是弱引用代理，为了防止循环引用</div><div class="line">    在self.__map中存储了硬连接到单个链表节点上，当key被删除后，这些硬连接就会消失</div><div class="line">    &apos;&apos;&apos;</div><div class="line">    def __init__(*args, **kwds):</div><div class="line">    &apos;&apos;&apos;Initialize an ordered dictionary.  The signature is the same as</div><div class="line">    regular dictionaries, but keyword arguments are not recommended because</div><div class="line">    their insertion order is arbitrary.</div><div class="line"></div><div class="line">    &apos;&apos;&apos;</div><div class="line">    if not args:</div><div class="line">        raise TypeError(&quot;descriptor &apos;__init__&apos; of &apos;OrderedDict&apos; object &quot;</div><div class="line">                        &quot;needs an argument&quot;)</div><div class="line">    self, *args = args</div><div class="line">    if len(args) &gt; 1:</div><div class="line">        raise TypeError(&apos;expected at most 1 arguments, got %d&apos; % len(args))</div><div class="line">    try:</div><div class="line">        self.__root</div><div class="line">    except AttributeError:</div><div class="line">        # 这里使用的是一个限定属性的类来作为链表节点</div><div class="line">        self.__hardroot = _Link()</div><div class="line">        self.__root = root = _proxy(self.__hardroot)</div><div class="line">        root.prev = root.next = root</div><div class="line">        self.__map = &#123;&#125;</div><div class="line">    self.__update(*args, **kwds)</div></pre></td></tr></table></figure>
+<p>这里<code>_Link()</code>是一个限定属性的类，代码如下；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class _Link(object):</div><div class="line">    __slots__ = &apos;prev&apos;, &apos;next&apos;, &apos;key&apos;, &apos;__weakref__&apos;</div></pre></td></tr></table></figure>
+<p><code>_proxy</code>是<code>from _weakref import proxy as _proxy</code> 对一个对象的弱引用。相对于通常的引用来说，如果一个对象有一个常规的引用，它是不会被垃圾收集器销毁的，但是如果一个对象只剩下一个弱引用，那么它可能被垃圾收集器收回。<a href="https://docs.python.org/3/library/weakref.html" target="_blank" rel="external">werkref</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def proxy(p_object, callback=None):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    创建一个代理对象，弱引用至object</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<p>继续来看OrderedDict:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">def __setitem__(self, key, value, dict_setitem=dict.__setitem__, proxy=_proxy, Link=_Link):</div><div class="line">    # 当设置一个新值时，首先查看是否已经在字典中了，如果在字典中，就不需要再加入到链表中了，保持之前的次序</div><div class="line">    # 如果没有，则加入到链表中，同样是将新节点放到root前面一个</div><div class="line">    if key not in self:</div><div class="line">        self.__map[key] = link = Link()</div><div class="line">        root = self.__root</div><div class="line">        last = root.prev</div><div class="line">        link.prev, link.next, link.key = last, root, key</div><div class="line">        last.next = link</div><div class="line">        # prev连接是一个proxy</div><div class="line">        root.prev = proxy(link)</div><div class="line">    dict_setitem(self, key, value)</div><div class="line"></div><div class="line">def __delitem__(self, key, dict_delitem=dict.__delitem__):</div><div class="line">    dict_delitem(self, key)</div><div class="line">    link = self.__map.pop(key)</div><div class="line">    link_prev = link.prev</div><div class="line">    link_next = link.next</div><div class="line">    link_prev.next = link_next</div><div class="line">    link_next.prev = link_prev</div><div class="line">    link.prev = None</div><div class="line">    link.next = None</div><div class="line"></div><div class="line">def __iter__(self):</div><div class="line">    root = self.__root</div><div class="line">    curr = root.next</div><div class="line">    while curr is not root:</div><div class="line">        yield curr.key</div><div class="line">        curr = curr.next</div><div class="line"></div><div class="line">def __reversed__(self):</div><div class="line">    root = self.__root</div><div class="line">    curr = root.prev</div><div class="line">    while curr is not root:</div><div class="line">        yield curr.key</div><div class="line">        curr = curr.prev</div><div class="line"></div><div class="line">def clear(self):</div><div class="line">    root = self.__root</div><div class="line">    root.prev = root.next = root</div><div class="line">    self.__map.clear()</div><div class="line">    dict.clear(self)</div></pre></td></tr></table></figure>
+<p>其它方法就不一一说明了，但是从中可以看出，涉及到元素顺序的操作，双向循环链表的应用还是很广泛的。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/07/13/LRUCache在Python中的实现/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+
+		</div>
+
+		<!-- pagination -->
+		<div>
+  		<center>
+		<div class="pagination">
+
+   
+    
+     <a href="/page/11/" type="button" class="btn btn-default"><i class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+      
+
+        <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+ 
+       <a href="/page/13/" type="button" class="btn btn-default ">下一页<i class="fa fa-arrow-circle-o-right"></i></a>     
+        
+
+  
+</div>
+
+  		</center>
+		</div>
+
+		
+		
+	</div> <!-- col-md-9 -->
+
+	
+		<div class="col-md-3">
+	<div id="sidebar">
+	
+			
+  <div id="site_search">
+   <div class="form-group">
+    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="st-search-input st-default-search-input form-control"/>
+   </div>  
+  <div id="local-search-result"></div>
+  </div>
+
+
+		
+			
+	<div class="widget">
+		<h4>分类</h4>
+		<ul class="tag_box inline list-unstyled">
+		
+			<li><a href="/categories/Music/">Music<span>3</span></a></li>
+		
+			<li><a href="/categories/人生/">人生<span>4</span></a></li>
+		
+			<li><a href="/categories/历史/">历史<span>1</span></a></li>
+		
+			<li><a href="/categories/编程/">编程<span>73</span></a></li>
+		
+		</ul>
+	</div>
+
+		
+			
+	<div class="widget">
+		<h4>标签云</h4>
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/SQL学习指南/">SQL学习指南<span>1</span></a></li>
+		
+			<li><a href="/tags/算法/">算法<span>15</span></a></li>
+		
+			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
+		
+			<li><a href="/tags/并发/">并发<span>5</span></a></li>
+		
+			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
+		
+			<li><a href="/tags/Shell/">Shell<span>1</span></a></li>
+		
+			<li><a href="/tags/设计模式/">设计模式<span>4</span></a></li>
+		
+			<li><a href="/tags/TED/">TED<span>1</span></a></li>
+		
+			<li><a href="/tags/源码/">源码<span>6</span></a></li>
+		
+			<li><a href="/tags/StackOverFlow/">StackOverFlow<span>1</span></a></li>
+		
+			<li><a href="/tags/VSCode/">VSCode<span>1</span></a></li>
+		
+			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
+		
+			<li><a href="/tags/gevent/">gevent<span>1</span></a></li>
+		
+			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
+		
+			<li><a href="/tags/Docker/">Docker<span>1</span></a></li>
+		
+			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
+		
+			<li><a href="/tags/旅行/">旅行<span>1</span></a></li>
+		
+			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
+		
+			<li><a href="/tags/git/">git<span>2</span></a></li>
+		
+			<li><a href="/tags/Go/">Go<span>2</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>46</span></a></li>
+		 
+		</ul>
+	</div>
+
+
+		
+			
+<div class="widget">
+  <h4>最新文章</h4>
+  <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/11/leetcode_algorithm_go_and_python_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Algorithm篇</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/06/leetcode_database_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Database篇</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
+      </li>
+    
+  </ul>
+</div>
+
+		
+			
+<div class="widget">
+	<h4>链接</h4>
+	<ul class="blogroll list-unstyled">
+	
+		<li><i class="fa fa-github"></i><a href="https://github.com/Microndgt" title="My Github account." target="_blank"]);">Github</a></li>
+	
+		<li><i class="fa fa-weibo"></i><a href="https://weibo.com/KevinDu2016" title="My weibo account." target="_blank"]);">My Weibo</a></li>
+	
+	</ul>
+</div>
+
+
+		
+	</div> <!-- sidebar -->
+</div> <!-- col-md-3 -->
+
+	
+	
+</div> <!-- row-fluid -->
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  2016-2018
+  
+  &copy;  Kevin Du
+  
+    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

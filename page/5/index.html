@@ -138,11 +138,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/09/03/进程间通信/" >进程间通信</a>
+			<a href="/2017/10/21/python_decorator/" >Python的decorator模块</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-09-03 15:23:03  </div>
+		<div class="date">post @ 2017-10-21 15:59:35  </div>
 		</div>
 	</div>
 	
@@ -152,82 +152,63 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>IPC(Inter Process Communication)</p>
-<p>同样的问题和解决办法也适用于线程。</p>
-<h1 id="竞争条件"><a href="#竞争条件" class="headerlink" title="竞争条件"></a>竞争条件</h1><p>也就是在协作进程中共享了一些公用存储区，但是这些存储区最后的结果取决于进程运行的精确时序，比如A先输出了，但是B也输出了，最后的正确结果是B输出的，所以这种称为竞争条件。也就是说这种需要依赖进程运行顺序的，是竞争的条件。</p>
-<h1 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h1><p>为了防止这种情况，必须有某种途径来阻止多个进程同时读写共享的数据，需要进行互斥，即以某种手段确保当一个进程在使用一个共享变量或者文件的时候，其他进程不能做同样的操作。为实现互斥而选择适当的原语是任何操作系统的主要设计内容之一。</p>
-<p>把 <strong>对共享内存进行访问的程序片段称为临界区域或者临界区</strong>，经过调度，<strong>使得两个进程不能同时处于临界区中</strong>，就能避免竞争条件，这样就不会依赖于进程运行的顺序。</p>
-<h1 id="忙等待的互斥"><a href="#忙等待的互斥" class="headerlink" title="忙等待的互斥"></a>忙等待的互斥</h1><h2 id="屏蔽中断"><a href="#屏蔽中断" class="headerlink" title="屏蔽中断"></a>屏蔽中断</h2><p>单处理器系统中，使每个进程在刚刚进入临界区后立即屏蔽所有中断，并在就要离开之前再打开中断，屏蔽中断后，时钟中断也被屏蔽，这样CPU就不会被切换到其他进程。这样一个进程屏蔽中断后，就可以检查和修改共享内存，而不必担心其他进程介入。</p>
-<p>但是在多处理器中就不好弄了，因为只能对执行disable指令的那个CPU有效，而且如果屏蔽之后不再打开中断，那么系统就有可能终止。</p>
-<h2 id="锁变量"><a href="#锁变量" class="headerlink" title="锁变量"></a>锁变量</h2><p>设置一个共享锁变量，但是这种还是有可能在设置锁的时候，另一个进程被调度执行。然后同时就有可能有两个进程进入临界区中。</p>
-<h2 id="严格轮换法"><a href="#严格轮换法" class="headerlink" title="严格轮换法"></a>严格轮换法</h2><p>类似于下面代码描述的情况：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># 进程0 等待turn==0才开始运行</div><div class="line">while (TRUE)&#123;</div><div class="line">  while (turn != 0)&#123;</div><div class="line">    critical_region();</div><div class="line">    turn = 1;</div><div class="line">    noncritical_region();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"># 进程1 等待turn==1才开始运行</div><div class="line">while (TRUE)&#123;</div><div class="line">  while (turn != 1)&#123;</div><div class="line">    critical_region();</div><div class="line">    turn = 0;</div><div class="line">    noncritical_region();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>开始运行时候，turn为0，进程0开始运行，运行完临界区后，turn为1，进程1开始运行临界区。如果进程0运行完后，turn=1，但是进程1还没有完成上一轮非临界区的执行，这时候turn就为0，进程0就只能阻塞等待了。所以进程0被一个临界区之外的进程阻塞。</p>
-<p>这个等待被称为忙等待，用于忙等待的锁，称为自旋锁。</p>
-<h2 id="Peterson解法"><a href="#Peterson解法" class="headerlink" title="Peterson解法"></a>Peterson解法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#define FALSE 0</div><div class="line">#define TRUE 1</div><div class="line">#define N 2</div><div class="line"></div><div class="line">int turn;  /* turn作为全局变量指示现在应该谁进入临界区 */</div><div class="line">int interested[N];</div><div class="line"></div><div class="line">void enter_region(int process)&#123;</div><div class="line">  int other;</div><div class="line"></div><div class="line">  other = 1 - process;</div><div class="line">  interested[process] = TRUE;</div><div class="line">  turn = process;</div><div class="line">  while (turn == process &amp;&amp; interested[other] == TRUE);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void leave_region(int process)&#123;</div><div class="line">  interested[process] = False;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>从代码可以看出来假设只有一个进程进入，那么情况很简单，立马返回就开始执行了。如果进程0进入了，但是没有离开，那么进程1要进入，必须等待<code>interested[other]</code>为False才可以进入。如果几乎是两个一起进入的，那么后面进入的将会将turn值重写，这样前面的就直接进入了临界区(因为<code>turn!=process</code>)，后面的进程要等待到<code>interested[other]</code>为False，也就是进程0从临界区出来。</p>
-<p>关键在于这个条件判断，<code>interested[other]</code>主要用来在一个已经进入了临界区的进程，要进行等待。<code>turn==process</code>的话主要是用在两个几乎是同时进入，用来第一个进程打破循环先进入临界区的。</p>
-<h2 id="TSL指令"><a href="#TSL指令" class="headerlink" title="TSL指令"></a>TSL指令</h2><p><code>TSL RX, LOCK</code>测试并且加锁(Test and Set Lock)，将一个内存字lock读到寄存器RX中，然后在该内存地址上存一个非0值。读字和写字的操作是不可分割的，在该指令结束之前其他处理器均不允许访问该内存字。执行TSL指令的CPU将锁住内存总线，禁止其他CPU在本指令结束之前访问内存。</p>
-<p>用一个共享变量lock来协调对共享内存的访问，lock为0的时候，任何进程都可以使用TSL指令将其设置为1，并读写共享内存，操作结束之后，进程用一个普通的move指令将lock值重新设置为0.</p>
-<h1 id="睡眠与唤醒"><a href="#睡眠与唤醒" class="headerlink" title="睡眠与唤醒"></a>睡眠与唤醒</h1><p>之前的这些解决办法都是忙等待，本质上都是：当一个进程想进入临界区时候，先检查是否允许进入，若不允许，则该进程将原地等待，直到允许为止。</p>
-<p>sleep和wakeup会在无法进入临界区的时候阻塞而不是忙等待，会引起调用进程阻塞的系统调用，直到另一个进程将其唤醒。</p>
-<h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量 Semaphore"></a>信号量 Semaphore</h1><p>即PV操作，信号量也就是该资源的有效数目，对信号量进行down操作，首先检查信号量的值是否大于0，如果大于0，则将其值减一然后继续。如果为0，那么进程将会睡眠。up操作将对信号量的值增加1，也就是释放操作，如果有一个或者多个进程在这个信号量上睡眠，那么up之后，信号量的值依然为0，但是有一个进程被唤醒了。</p>
-<p>down和up操作都是原子的，down中检查数值，修改变量值以及可能发生的睡眠操作都是一个单一的原子操作，up的值增1和唤醒一个进程也是，这种原子性对于解决同步问题和避免竞争条件是绝对必要的。</p>
-<p>通常是将up和down作为系统调用实现，操作系统需要在执行下面操作的时候屏蔽所有中断，测试信号量，更新信号量以及在需要时候使得某个进程睡眠。如果使用多个CPU，则每个信号量由一个锁变量来进行抱回，通过TSL来确保同一个时刻只有一个CPU在对信号量进行操作。</p>
-<p>一个生产者和消费者的例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">#define N 100</div><div class="line">typedef int semaphore;</div><div class="line">semaphore mutex = 1;</div><div class="line">semaphore empty = N;</div><div class="line">semaphore full = 0;</div><div class="line"></div><div class="line">void producer(void)&#123;</div><div class="line">  int item;</div><div class="line">  while (TRUE)&#123;</div><div class="line">    item = produce_item();</div><div class="line">    down(&amp;empty);</div><div class="line">    down(&amp;mutex); /* 进入临界区 */</div><div class="line">    insert_item(item);</div><div class="line">    up(&amp;mutex); /* 离开临界区 */</div><div class="line">    up(&amp;full);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void consumer(void)&#123;</div><div class="line">  int item;</div><div class="line">  while (TRUE)&#123;</div><div class="line">    down(&amp;full);</div><div class="line">    down(&amp;mutex);</div><div class="line">    item = remove_item();</div><div class="line">    up(&amp;mutex);</div><div class="line">    up(&amp;empty);</div><div class="line">    consume_item(item);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样信号量就实现了临界区互斥操作，而消费者等待生产者放入item，这又是一种同步操作。同步是多个进程在执行次序上的协调，相互等待消息，而互斥是对临界资源的使用。所以信号量full和empty用来保证某种事件的顺序发生或者不发生，保证了缓冲区满的时候生产者停止运行，缓冲区空的时候消费者停止运行。</p>
-<h1 id="互斥量-mutex"><a href="#互斥量-mutex" class="headerlink" title="互斥量 mutex"></a>互斥量 mutex</h1><p>互斥量是信号量的一个简化版本，仅仅适用于管理共享资源或者一小段代码，有两个状态，解锁和加锁，当一个线程或者进程需要访问临界区的时候，调用<code>mutex_lock</code>，如果该互斥量当前是解锁的，调用成功，则线程或者进程可以进入该临界区。如果已经加锁，那么线程将会被阻塞，直到在临界区的线程完成并且调用<code>mutex_unlock</code>，如果有多个线程阻塞，那么随机选择一个。</p>
-<p>和<code>enter_region</code>的区别在于，<code>enter_region</code>在阻塞的时候会一直运行，测试锁，忙等待，而这个线程也不会得到锁，因为不会切换给其他线程运行来释放锁。但是<code>mutex_lock</code>在没有获得锁的时候会<code>thread_yield</code>，所以没有忙等待，在该线程下一次运行的时候，再一次对锁进行测试。</p>
-<p>这个方法和之前提到的加锁区别在于互斥量使用了TSL，保证了原子性。</p>
-<p>但是有一个问题是，对于用户级线程，可以共用一个互斥量，因为所有的线程都在一个公共地址空间中操作。但是对于进程来说，就必须访问一些共享内存。两种方案，第一有些共享数据结构，比如信号量是可以放在内核中的，并且只能通过系统调用来访问。第二种，是进程和其他进程共享部分地址空间，或者共享文件。</p>
-<h2 id="Pthread中的互斥"><a href="#Pthread中的互斥" class="headerlink" title="Pthread中的互斥"></a>Pthread中的互斥</h2><ul>
-<li><code>pthread_mutex_init</code></li>
-<li><code>pthread_mutex_destroy</code></li>
-<li><code>pthread_mutex_lock</code></li>
-<li><code>pthread_mutex_try_lock</code></li>
-<li><code>pthread_mutex_unlock</code></li>
-</ul>
-<p>另外一种同步机制：条件变量，其允许线程由于一些未达到的条件而阻塞。</p>
+		<p>在httpbin源代码中遇到这么一个路由：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/gzip&apos;)</div><div class="line">@filters.gzip</div><div class="line">def view_gzip_encoded_content():</div><div class="line">    &quot;&quot;&quot;Returns GZip-Encoded Data.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    return jsonify(get_dict(</div><div class="line">        &apos;origin&apos;, &apos;headers&apos;, method=request.method, gzipped=True))</div></pre></td></tr></table></figure>
+<p>其中gzip是这么实现的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">@decorator</div><div class="line">def gzip(f, *args, **kwargs):</div><div class="line">    &quot;&quot;&quot;GZip Flask Response Decorator.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    data = f(*args, **kwargs)</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        content = data.data</div><div class="line">    else:</div><div class="line">        content = data</div><div class="line"></div><div class="line">    gzip_buffer = BytesIO()</div><div class="line">    gzip_file = gzip2.GzipFile(</div><div class="line">        mode=&apos;wb&apos;,</div><div class="line">        compresslevel=4,</div><div class="line">        fileobj=gzip_buffer</div><div class="line">    )</div><div class="line">    gzip_file.write(content)</div><div class="line">    gzip_file.close()</div><div class="line"></div><div class="line">    gzip_data = gzip_buffer.getvalue()</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        data.data = gzip_data</div><div class="line">        data.headers[&apos;Content-Encoding&apos;] = &apos;gzip&apos;</div><div class="line">        data.headers[&apos;Content-Length&apos;] = str(len(data.data))</div><div class="line"></div><div class="line">        return data</div><div class="line"></div><div class="line">    return gzip_data</div></pre></td></tr></table></figure>
+<p>从这个函数来看，gzip函数做的工作就是将路由函数执行一遍，取的结果后，将回应压缩，然后再返回发送响应。然后gzip函数是作为装饰器使用的。那么上面那个decorator装饰器做了什么工作呢，可以看出gzip目前的功能和普通的装饰器函数中内层函数功能基本上是一致的，所以调用这个<code>view_gzip_encoded_content</code>这个视图函数就相当于调用gzip函数。</p>
+<p>那么decorator到底做了什么呢，怎么做的呢？在这里详细拆解一番。</p>
+<p>以下内容部分翻译自<a href="http://decorator.readthedocs.io/en/stable/tests.documentation.html" target="_blank" rel="external">decorator document</a></p>
+<p>文档上说，如果你想以在Python版本中以一致性的方式保存被装饰函数的签名，这是你最好的选择。</p>
+<h1 id="装饰器的用处"><a href="#装饰器的用处" class="headerlink" title="装饰器的用处"></a>装饰器的用处</h1><p>Python中的装饰器是一个为什么语法糖很重要的有趣的例子。装饰器做到了以下的事情：</p>
 <ul>
-<li><code>pthread_cond_init</code></li>
-<li><code>pthread_cond_destroy</code></li>
-<li><code>pthread_cond_wait</code></li>
-<li><code>pthread_cond_signal</code> 向另一个线程发信号来唤醒它</li>
-<li><code>pthread_cond_broadcast</code> 向多个线程发信号来让他们全部唤醒</li>
+<li>装饰器减少了样板代码</li>
+<li>装饰器帮助分离关注点(模块化开发就起到了分离关注点的作用)</li>
+<li>装饰器增强了可读性和可维护性</li>
+<li>装饰器很明显</li>
 </ul>
-<p>被阻塞的线程经常是在等待发信号的线程去做某些工作，释放某些资源或者是进行其他一些活动，只有完成后阻塞的线程才可以继续运行。</p>
-<p>条件变量与互斥量一起使用，让一个线程锁住一个互斥量，然后当它不能获得期待的结果时候等待一个条件变量。最后另一个线程会向它发送信号，然后继续执行。<code>pthread_cond_wait</code>原子性调用并且解锁它持有的互斥量，所以互斥量是参数之一。</p>
-<p>一起使用的原因是因为有临界区需要进行互斥操作，如果没有临界区就可以直接使用条件变量来进行资源的同步。比如<code>aiossdb</code>中需要获取可用连接时候等待其他协程释放连接，然后通知等待的条件变量。</p>
-<p>一个使用信号量的例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;pthread.h&gt;</div><div class="line">#define MAX 10000000</div><div class="line">pthread_mutex_init the_mutex;</div><div class="line">pthread_cond_init condc, condp;</div><div class="line">int buffer = 0;</div><div class="line"></div><div class="line">void *producer(void *ptr)&#123;</div><div class="line">  int i;</div><div class="line">  for(i=1;i&lt;=MAX;i++)&#123;</div><div class="line">    pthread_mutex_lock(&amp;the_mutex); /* 互斥使用缓冲区，在条件变量wait时候会解锁 */</div><div class="line">    while(buffer != 0) pthread_cond_wait(&amp;condp, &amp;the_mutex);</div><div class="line">    buffer = i;</div><div class="line">    pthread_cond_signal(&amp;condc);</div><div class="line">    pthread_mutex_unlock(&amp;the_mutex); /* 释放缓冲区 */</div><div class="line"></div><div class="line">  &#125;</div><div class="line">  pthread_exit(0);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void *consumer(void *ptr)&#123;</div><div class="line">  int i;</div><div class="line">  for (i=1;i&lt;=MAX;i++)&#123;</div><div class="line">    pthread_mutex_lock(&amp;the_mutex);</div><div class="line">    while(buffer == 0) pthread_cond_wait(&amp;condc,&amp;the_mutex);</div><div class="line">    buffer = 0;</div><div class="line">    pthread_cond_signal(&amp;condp);</div><div class="line">    pthread_mutex_unlock(&amp;the_mutex);</div><div class="line">  &#125;</div><div class="line">  pthread_exit(0);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(int argc, char **argv)&#123;</div><div class="line">  pthread_t pro, con;</div><div class="line">  pthread_mutex_init(&amp;the_mutex, 0);</div><div class="line">  pthread_cond_init(&amp;condc, 0);</div><div class="line">  pthread_cond_init(&amp;condp, 0);</div><div class="line">  pthread_create(&amp;con, 0, consumer, 0);</div><div class="line">  pthread_create(&amp;pro, 0, producer, 0);</div><div class="line">  pthread_join(pro, 0);</div><div class="line">  pthread_join(con, 0);</div><div class="line">  pthread_cond_destroy(&amp;condc);</div><div class="line">  pthread_cond_destroy(&amp;condp);</div><div class="line">  pthread_mutex_destroy(&amp;the_mutex);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="管程-monitor"><a href="#管程-monitor" class="headerlink" title="管程 monitor"></a>管程 monitor</h1><p>一个管程是一个由过程，变量以及数据结构等组成的一个集合，进程可以在任何需要的时候调用管程中的过程，但是不能在管程之外声明的过程中直接访问管程内的数据结构。任意时刻管程中只能由一个活跃进程，这样管程就可以实现互斥，也就是实现了一个集合，比如Java中的<code>synchronized</code>，Java会保证一旦某个线程执行该方法，就不允许其他线程执行该对象中的任何<code>synchronized</code>方法。</p>
-<p> 一个管程过程发现其无法继续运行的时候，会在某个条件变量上执行wait操作，会导致调用进程自身阻塞，并且将一个等待管程过程的进程调入管程，比如缓冲区满。消费者消费之后，可以唤醒正在睡眠的生产者进程，可以给正在等待的条件变量执行signal完成，一般会在最后执行signal，这样，执行后该进程就会退出管程。</p>
-<p> 对管程过程的自动互斥保证了进程完成wait操作不会被打断，也就是在wait完成之前切换进程，在wait执行完成把生产者标志为不可运行之前，就不会允许消费者进入管程。</p>
-<p> 新的问题是分布式系统中，每个CPU由自己的私有内存，这样目前使用的原语没有提供机器间的信息交换方法。</p>
-<h1 id="消息传递-message-passing"><a href="#消息传递-message-passing" class="headerlink" title="消息传递 message passing"></a>消息传递 message passing</h1><p>进程间通信的方式，使用这两条原语<code>send</code>和<code>receive</code>，如果没有消息可用，接收者可能被阻塞，直到一条消息到达。</p>
-<h2 id="消息传递系统的设计要点"><a href="#消息传递系统的设计要点" class="headerlink" title="消息传递系统的设计要点"></a>消息传递系统的设计要点</h2><ul>
-<li>发送，确认。</li>
-<li>原始消息嵌入序号</li>
-<li>身份认证</li>
-</ul>
-<h2 id="消息传递解决生产者-消费者问题"><a href="#消息传递解决生产者-消费者问题" class="headerlink" title="消息传递解决生产者-消费者问题"></a>消息传递解决生产者-消费者问题</h2><p>首先消费者向生产者发送空消息，生产者拿走空消息，然后生产填充消息，然后发送给消费者。消费者拿走消息，消费并且向生产者发送空消息。</p>
-<p>对消息进行编址的两种方式：</p>
+<p>但是经典的装饰器实现需要嵌套函数，但是我们知道扁平是比嵌套要好得多。</p>
+<p>所以<code>decorator</code>模块的目标是简化装饰器的使用，当然对于所有的技术，都有可能被滥用，你不应该在解决任何问题的时候都试图使用装饰器，虽然你可以这么做。</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>一般来说，任何可以被以一个参数调用的Python对象都可以被用作装饰器。然而，这种定义太大以至于没太多用。将装饰器这个一般的类分成两种子类会更加方便：</p>
 <ul>
-<li>为每个进程分配一个唯一地址，让消息按照进程地址编址</li>
-<li>使用信箱，对一定数量的消息进行缓冲，如果进程向满的信箱发送消息，将会被挂起，直到由空消息，类似于消息队列</li>
+<li><p>保留签名的装饰器</p>
+<p>  接受一个函数作为参数的可调用对象会返回一个函数作为输出，并且有相同的签名</p>
+</li>
+<li><p>改变签名的装饰器</p>
+<p>  装饰器会改变给它们输入的函数的签名，或者装饰器会返回一个非调用对象</p>
+</li>
 </ul>
-<p>通常在并行程序设计系统中使用消息传递。下面是一个例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">#define N 100</div><div class="line"></div><div class="line">void producer(void)&#123;</div><div class="line">  int item;</div><div class="line">  message m;</div><div class="line">  while(TRUE)&#123;</div><div class="line">    item = produce_item();</div><div class="line">    receive(consumer, &amp;m); /* 等待消费者发送空缓冲区 */</div><div class="line">    build_message(&amp;m, item);</div><div class="line">    send(consumer, &amp;m);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void consumer(void)&#123;</div><div class="line">  int item, i;</div><div class="line">  message m;</div><div class="line">  for (i=0;i&lt;N;i++) send(producer, &amp;m);</div><div class="line">  while(TRUE)&#123;</div><div class="line">    receive(producer, &amp;m);</div><div class="line">    item = extrace_item(&amp;m);</div><div class="line">    send(producer, &amp;m);</div><div class="line">    consume_item(item);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="屏障"><a href="#屏障" class="headerlink" title="屏障"></a>屏障</h1><p>对于划分了多个阶段的进程组来说，必须所有进程都完成了这一阶段的工作，才可以进入下一个阶段。使得每一个进程在完成当前迭代工作后执行一个barrier操作。具体实现，有可能是一个计数器，也可能是一个不断的轮询。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>进程通信，第一，进程如何将信息传递给另外一个，第二确保进程之间在临界区不会冲突，即互斥，第三个是进程之间的同步问题（顺序问题）。</p>
-<p>第一个，管道，共享存储区，共享文件，共享数据结构（信号量），消息传递（消息队列）。其中线程本身就是共享一个地址空间（同一个进程的线程）</p>
-<p>第二个，互斥，忙等待，信号量，互斥量，管程等</p>
-<p>第三个，信号量实现同步</p>
+<p>签名改变的装饰器有它们自己的用处：比如，内置的<code>staticmethod</code>和<code>classmethod</code>就是这种，它们接受函数然后返回描述符对象，既不是函数，也不是可调用对象。</p>
+<p>当然，保留签名的装饰器更加普遍，更加容易去实现。特别的，它们可以组合在一起，但是其他装饰器一般不可以。</p>
+<p>直接写一个保留签名的装饰器并不是那么显而易见，比如想定义一个合适的装饰器，接受有任意签名的函数作为输入。一个简单的例子将会澄清这个问题。</p>
+<h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>一个装饰器通常的使用例子是将一个函数进行缓存。一个<code>memorize</code>装饰器通过将函数的返回结果存储在字典中起到缓存的作用。</p>
+<p>这里有很多<code>memorize</code>的实现例子，但是它们都不保留签名。在最近的Python版本中你可以找到一个复杂的<code>lru_cache</code>装饰器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def memoize_uw(func):</div><div class="line">    func.cache = &#123;&#125;</div><div class="line"></div><div class="line">    def memoize(*args, **kw):</div><div class="line">        if kw:  # frozenset is used to ensure hashability</div><div class="line">            key = args, frozenset(kw.items())</div><div class="line">        else:</div><div class="line">            key = args</div><div class="line">        if key not in func.cache:</div><div class="line">            func.cache[key] = func(*args, **kw)</div><div class="line">        return func.cache[key]</div><div class="line">    return functools.update_wrapper(memoize, func)</div></pre></td></tr></table></figure>
+<p>这里使用了<code>functools.update_wrapper</code>，这样你就不用从原来函数复制<code>__name__</code>, <code>__doc__</code>, <code>__module__</code>和<code>__dict__</code>等属性了，等同于调用<code>functools.wraps(func)</code>装饰器</p>
+<p>这是一个使用例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@memoize_uw</div><div class="line">def f1(x):</div><div class="line">    &quot;Simulate some long computation&quot;</div><div class="line">    time.sleep(1)</div><div class="line">    return x</div></pre></td></tr></table></figure>
+<p>但是这个不是一个保留签名的装饰器，因为<code>memoize_uw</code>返回了一个和原始函数签名不同的函数。原先的函数只有一个参数x，但是装饰后的函数可以获得任意个参数和关键字参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from decorator import getargspec  # akin to inspect.getargspec</div><div class="line">&gt;&gt;&gt; print(getargspec(f1))</div><div class="line">ArgSpec(args=[], varargs=&apos;args&apos;, varkw=&apos;kw&apos;, defaults=None)</div></pre></td></tr></table></figure>
+<p>这就意味着内省工具，比如<code>pydoc</code>会提供关于f1签名的错误信息-除非你是用Python3.5。这样会非常不好，<code>pydoc</code>说你可以接收一般的签名<code>*args, **kw</code>，但是这样调用就会出错。因为它真的只接收一个参数。</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>解决方式就是提供一个一般的生成器工厂，其隐藏了生成一个保留签名的装饰器的复杂性。<code>decorator</code>函数在<code>decorator</code>模块就是这样一个工厂函数<code>from decorator import decorate</code></p>
+<p><code>decorator</code>接受两个参数</p>
+<ul>
+<li>一个函数描述了装饰器的功能的调用者</li>
+<li>被装饰的函数</li>
+</ul>
+<p>调用者必须有<code>(f, *args, **kw)</code>这样的签名，而且它必须使用<code>args</code>和<code>kw</code>来调用原始函数<code>f</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def _memoize(func, *args, **kw):</div><div class="line">    if kw:  # frozenset is used to ensure hashability</div><div class="line">        key = args, frozenset(kw.items())</div><div class="line">    else:</div><div class="line">        key = args</div><div class="line">    cache = func.cache  # attribute added by memoize</div><div class="line">    if key not in cache:</div><div class="line">        cache[key] = func(*args, **kw)</div><div class="line">    return cache[key]</div></pre></td></tr></table></figure>
+<p>这样你就可以像下面这样定义你的装饰器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def memoize(f):</div><div class="line">    f.cache = &#123;&#125;</div><div class="line">    return decorate(f, _memoize)</div></pre></td></tr></table></figure>
+<p>和嵌套函数的方式不同的地方在于decorator模块强制让你将内层函数放在了上一层。而且，你也必须明确的传递你想装饰的函数，没有闭包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; @memoize</div><div class="line">... def heavy_computation():</div><div class="line">...     time.sleep(2)</div><div class="line">...     return &quot;done&quot;</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the first time it will take 2 seconds</div><div class="line">done</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the second time it will be instantaneous</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>这样函数的签名是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; print(getargspec(heavy_computation))</div><div class="line">ArgSpec(args=[], varargs=None, varkw=None, defaults=None)</div></pre></td></tr></table></figure>
+<p>所以一开始那个例子，就是这样的，先由<code>decorator</code>装饰了gzip，那么<code>def decorator(caller, _func=None)</code>中的caller就是gzip，在<code>decorator</code>中最后返回了<code>FunctionMaker.create</code>创建的一个对象，这个就是<code>gzip</code>的真正面目(在这个过程中，就处理了签名以及装饰器等问题)，然后再由<code>gzip</code>去装饰视图函数，那么视图函数执行后的结果就会在gzip中处理，然后返回。</p>
 
 	
 	</div>
-  <a type="button" href="/2017/09/03/进程间通信/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/10/21/python_decorator/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -237,11 +218,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/08/31/C1000k/" >C1000k</a>
+			<a href="/2017/10/21/ming_dynasty/" >大明王朝</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-08-31 11:01:35  </div>
+		<div class="date">post @ 2017-10-21 14:13:56  </div>
 		</div>
 	</div>
 	
@@ -251,42 +232,44 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>C1000k 这里关注操作系统是否支持百万连接</p>
-<h2 id="全局最大打开文件数"><a href="#全局最大打开文件数" class="headerlink" title="全局最大打开文件数"></a>全局最大打开文件数</h2><p><code>cat /proc/sys/fs/file-nr</code>，为了修改这个数值, 用 root 权限修改 <code>/etc/sysctl.conf</code> 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">fs.file-max = 1020000</div><div class="line">net.ipv4.ip_conntrack_max = 1020000</div><div class="line">net.ipv4.netfilter.ip_conntrack_max = 1020000</div></pre></td></tr></table></figure>
-<p>重启系统服务</p>
-<p><code>sudo sysctl -p /etc/sysctl.conf</code></p>
-<h2 id="进程限制"><a href="#进程限制" class="headerlink" title="进程限制"></a>进程限制</h2><p><code>ulimit -n</code></p>
-<p>Linux 系统的每一个进程只能最多打开 1024 个文件. 为了支持 C1000K, 你同样需要修改这个限制.</p>
-<p>临时修改: <code>ulimit -n 1020000</code></p>
-<p>永久修改：</p>
-<p>编辑 <code>/etc/security/limits.conf</code> 文件，加入以下行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">*         hard    nofile      1020000</div><div class="line">*         soft    nofile      1020000</div></pre></td></tr></table></figure>
-<h2 id="docker容器中修改ulimit"><a href="#docker容器中修改ulimit" class="headerlink" title="docker容器中修改ulimit"></a>docker容器中修改ulimit</h2><p>容器中应该是无法直接修改的，可以通过修改docker daemon的设置，这种方式要重启docker服务</p>
-<p><code>docker -d --default-ulimit nproc=20480:40960</code></p>
-<p>或者在启动容器时，单独对其ulimit进行设置：</p>
-<p><code>docker run -d --ulimit nofile=20480:40960 nproc=1024:2048 gitlab</code></p>
-<ul>
-<li><code>nofile</code> 指的是单个进程能够打开的最大文件数</li>
-<li><code>file-max</code> 是所有进程能够打开的最大文件数</li>
-<li><code>nproc</code>是操作系统对每个用户创建的进程数的限制</li>
+		<p>最近在看当代明月的<em>明朝那些事儿</em>，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了<em>历史通俗演义(前汉和后汉)</em>，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看<em>历史通俗演义(唐)</em>，最近看<em>明朝那些事</em>。读史你能感受到人之间的复杂，但是读着读着就能体会出来一个人的心理和历史规律，正所谓，<strong>鉴于往事，有资于治道</strong>，读史使人明智之意。</p>
+<p>从小学习的时候就喜欢形成一个框架，这样知识是被索引的，按照一条主线，将知识塞到框架的不同地方，记忆的会更牢固。其实更多的含义是自己能够一览全局。所以此处将明朝所读之处，按照皇帝的顺序塞进历史事件总结于此。不时根据自己的认识和理解进行更新。</p>
+<p><img src="/img/history/ming_history.png" alt=""></p>
+<p>下面是基于这个明朝历史架构记录的大事件，也就是塞到框架里面的一个个组成部分。</p>
+<h1 id="朱元璋-明太祖"><a href="#朱元璋-明太祖" class="headerlink" title="朱元璋(明太祖)"></a>朱元璋(明太祖)</h1><ul>
+<li>与陈友琼鄱阳湖水战</li>
+<li>1368年建立大明</li>
+<li>徐达，常遇春等将北伐，攻破大都后继而深入漠北，大破北元</li>
+<li>胡惟庸案，蓝玉案，锦衣卫</li>
 </ul>
-<h2 id="有关协程的一些问题"><a href="#有关协程的一些问题" class="headerlink" title="有关协程的一些问题"></a>有关协程的一些问题</h2><p>昨天在Flask+Celery中写了一个使用gevent的程序，大概是这样的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">def distribute_calc_gevent(self, fundIds, start, end, stype):</div><div class="line">    from gevent.pool import Pool</div><div class="line">    from gevent import monkey</div><div class="line">    monkey.patch_all()</div><div class="line">    length = len(fundIds)</div><div class="line">    current_app.logger.info(&apos;handling fundId: &#123;&#125;&apos;.format(length))</div><div class="line">    pool = Pool(size=GEVENTLETS_NUM)</div><div class="line"></div><div class="line">    def calc(fundId):</div><div class="line">        try:</div><div class="line">            plat_calc_whole_call(fundId, start, end, stype)</div><div class="line">            gc.collect()</div><div class="line">        except Exception as e:</div><div class="line">            return e, fundId</div><div class="line">        return None, fundId</div><div class="line"></div><div class="line">    # imap是惰性的，所以要list一下吧，或者迭代一下</div><div class="line">    try:</div><div class="line">        for index, res, fundId in enumerate(pool.imap_unordered(calc, fundIds)):</div><div class="line">            if isinstance(res, Exception):</div><div class="line">                if isinstance(res, StockError):</div><div class="line">                    current_app.logger.error(&quot;[** CALC ERROR] fundId: &#123;&#125; date: &#123;&#125; symbol:&quot;</div><div class="line">                                             &quot; &#123;&#125; stock not exists error&quot;.format(res.fundId, res.date, res.symbol))</div><div class="line">                elif isinstance(res, FlowsMissingError):</div><div class="line">                    current_app.logger.error(&quot;[** CALC ERROR] fundId: &#123;&#125; start_date: &#123;&#125; assets_start: &#123;&#125;&quot;</div><div class="line">                                             &quot; assets_end: &#123;&#125; missing flows&quot;.</div><div class="line">                                             format(res.fundId, res.calc_start, res.assets_start, res.assets_end))</div><div class="line">                else:</div><div class="line">                    current_app.logger.exception(res)</div><div class="line">        pool.join()</div><div class="line">    except Exception as e:</div><div class="line">        current_app.logger.exception(e)</div><div class="line">    finally:</div><div class="line">        current_app.ssdb.close()</div></pre></td></tr></table></figure>
-<ul>
-<li><code>GEVENTLETS_NUM</code>可以指定并发量</li>
-<li><code>monkey.patch_all()</code>如果在全局使用，就会导致整个模块的程序被patch，这不是我想要的，所以在启动task之后才patch_all</li>
-<li>使用gevent的pool，这样可以限制并发量</li>
-<li>pool里面的imap是惰性的，因此需要迭代或者之类操作激活</li>
-<li>在calc函数里面不能使用<code>current_app</code>，因为协程的id和外部app上下文所在线程id不是同一个，所以会导致<code>working out of context</code></li>
-<li>可以在calc里使用<code>with app.app_context():</code>来取得上下文，就可以使用<code>current_app</code>，但是没什么意义，所以暂时在外部获取结果的时候使用</li>
-<li>获取异常，目前没有好的办法，所以只能在迭代imap的时候来处理，如果以后有更好的操作，再记之</li>
-<li>因为并发量太大，会导致ssdb连接池出现过多连接，所以完成任务后，手动关闭连接池，否则没有显式关闭由于垃圾回收的那个原理，会导致一些连接没有关闭，再启动下一次计算会出现问题</li>
+<h1 id="朱允炆-明惠宗"><a href="#朱允炆-明惠宗" class="headerlink" title="朱允炆(明惠宗)"></a>朱允炆(明惠宗)</h1><ul>
+<li>靖难之役</li>
+</ul>
+<h1 id="朱棣-明成祖"><a href="#朱棣-明成祖" class="headerlink" title="朱棣(明成祖)"></a>朱棣(明成祖)</h1><ul>
+<li>靖难之役</li>
+<li>迁都北京</li>
+<li>收复安南，攻打鞑靼和瓦剌</li>
+<li>郑和下西洋</li>
+<li>永乐大典</li>
+<li>东厂</li>
+</ul>
+<h1 id="朱高炽-明仁宗"><a href="#朱高炽-明仁宗" class="headerlink" title="朱高炽(明仁宗)"></a>朱高炽(明仁宗)</h1><ul>
+<li>三杨(杨士奇，杨荣，杨溥(<code>pǔ</code>))</li>
+</ul>
+<h1 id="朱瞻基-明宣宗"><a href="#朱瞻基-明宣宗" class="headerlink" title="朱瞻基(明宣宗)"></a>朱瞻基(明宣宗)</h1><ul>
+<li>平叛朱高煦</li>
+<li>设立内书堂教宦官读书</li>
+</ul>
+<h1 id="朱祁镇-明英宗"><a href="#朱祁镇-明英宗" class="headerlink" title="朱祁镇(明英宗)"></a>朱祁镇(明英宗)</h1><ul>
+<li>土木堡之变</li>
+</ul>
+<h1 id="朱祁钰-明代宗"><a href="#朱祁钰-明代宗" class="headerlink" title="朱祁钰(明代宗)"></a>朱祁钰(明代宗)</h1><ul>
+<li>于谦北京保卫战</li>
 </ul>
 
 	
 	</div>
-  <a type="button" href="/2017/08/31/C1000k/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/10/21/ming_dynasty/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -296,11 +279,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/" >翻译 -  concurrent.futures — Launching parallel tasks</a>
+			<a href="/2017/10/20/httpbin中的奇技淫巧/" >httpbin中的奇技淫巧</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-08-30 09:46:35  </div>
+		<div class="date">post @ 2017-10-20 11:31:18  </div>
 		</div>
 	</div>
 	
@@ -310,67 +293,21 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>翻译自 <a href="https://docs.python.org/3/library/concurrent.futures.html" target="_blank" rel="external"><code>concurrent.futures</code> 运行并行任务</a></p>
-<p>估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。</p>
-<p><code>concurrent.futures</code>为异步调用提供了高层次的接口。</p>
-<p>异步运行可以通过线程来运行，使用<code>ThreadPoolExecutor</code>。或者是独立的进程，使用<code>ProcessPoolExecutor</code>。每种实现都是相同的接口，都是通过抽象类<code>Executor</code>来定义的。</p>
-<h1 id="Executor-Objects"><a href="#Executor-Objects" class="headerlink" title="Executor Objects"></a>Executor Objects</h1><p><code>Executor</code>是一个抽象类，提供了异步调用的方法。不应该直接使用而是通过具体的子类来调用，其中包含了以下方法。</p>
-<h2 id="submit"><a href="#submit" class="headerlink" title="submit"></a>submit</h2><p><code>submit(fn, *args, **kwargs)</code></p>
-<p>排定任务，然后会返回一个<code>Future</code>对象，代表了要执行的可调用对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">with ThreadPoolExecutor(max_workers=1) as executor:</div><div class="line">    future = executor.submit(pow, 323, 1235)</div><div class="line">    print(future.result())</div></pre></td></tr></table></figure>
-<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p><code>map(func, *iterables, timeout=None, chunksize=1)</code></p>
-<p>和Python中的map很像，但是是异步调用的并且一些调用将会是并发执行的。返回的迭代器当在<code>timeout</code>秒后没有得到结果，那么将会引发<code>concurrent.futures.TimeoutError</code>异常。如果timeout没有指定或者是None的话，将不会限制等待时间。</p>
-<p>如果其中的一个调用引发了异常，那么当从迭代器中取数据的时候这个异常会引发。当使用<code>ProcessPoolExecutor</code>的时候，这个方法将会将迭代对象分成不同份提交给进程池来独立的运行。这些块的大小通过设置<code>chunksize</code>来指定。对于特别长的可迭代对象，给<code>chunksize</code>指定一个特别大的值可以有效的提高性能。使用<code>ThreadPoolExecutor</code>时候，<code>chunksize</code>是无效的。</p>
-<h2 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h2><p><code>shutdown(wait=True)</code></p>
-<p>当等待的任务结束后，给运行单元一个释放所有资源的信号。在shutdown之后调用<code>Executor.submit()</code>和<code>Executor.map()</code>将会引发一个<code>RuntimeError</code></p>
-<p>如果<code>wait</code>是True，这个方法会等待所有的任务结束后，然后与这个运行单元相关的资源都释放了才返回。如果<code>wait</code>是False，那么这个方法会立即返回，并且在所有等待任务结束后释放资源。如果忽略这个参数，整个Python程序将一直到所有等待任务结束后才会退出。</p>
-<p>你可以避免显式的取调用这个方法，如果你是用with语句的话，它会关闭这个执行器的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">import shutil</div><div class="line">with ThreadPoolExecutor(max_workers=4) as e:</div><div class="line">    e.submit(shutil.copy, &apos;src1.txt&apos;, &apos;dest1.txt&apos;)</div><div class="line">    e.submit(shutil.copy, &apos;src2.txt&apos;, &apos;dest2.txt&apos;)</div><div class="line">    e.submit(shutil.copy, &apos;src3.txt&apos;, &apos;dest3.txt&apos;)</div><div class="line">    e.submit(shutil.copy, &apos;src4.txt&apos;, &apos;dest4.txt&apos;)</div></pre></td></tr></table></figure>
-<h1 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h1><p><code>ThreadPoolExecutor</code>是<code>Executor</code>的一个子类，会使用一个线程池来异步执行调用。</p>
-<p>在从可调用对象生成的Future中等待另一个Future的结果的时候，会发生死锁。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import time</div><div class="line">def wait_on_b():</div><div class="line">    time.sleep(5)</div><div class="line">    print(b.result())  # b will never complete because it is waiting on a.</div><div class="line">    return 5</div><div class="line"></div><div class="line">def wait_on_a():</div><div class="line">    time.sleep(5)</div><div class="line">    print(a.result())  # a will never complete because it is waiting on b.</div><div class="line">    return 6</div><div class="line"></div><div class="line"></div><div class="line">executor = ThreadPoolExecutor(max_workers=2)</div><div class="line">a = executor.submit(wait_on_b)</div><div class="line">b = executor.submit(wait_on_a)</div></pre></td></tr></table></figure>
-<p>还有这个，因为只有一个线程来执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def wait_on_future():</div><div class="line">    f = executor.submit(pow, 5, 2)</div><div class="line">    print(f.result())</div><div class="line"></div><div class="line">executor = ThreadPoolExecutor(max_workers=1)</div><div class="line">executor.submit(wait_on_future)</div></pre></td></tr></table></figure>
-<h2 id="ThreadPoolExecutor-1"><a href="#ThreadPoolExecutor-1" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h2><p><code>ThreadPoolExecutor(max_workers=None, thread_name_prefix=”)</code></p>
-<p><code>Executor</code>子类使用最多<code>max_workers</code>个线程去异步调用。</p>
-<p>如果<code>max_workers</code>给定None或者没有给定，那么默认会执行当前机器核心数的5倍线程数，假定<code>ThreadPoolExecutor</code>会经常在<code>I/O</code>而不是CPU运算的时候，<code>max_workers</code>应该给定更高的值。</p>
-<p><code>thread_name_prefix</code>允许用户去控制线程，也比较容易debug</p>
-<h2 id="ThreadPoolExecutor-Example"><a href="#ThreadPoolExecutor-Example" class="headerlink" title="ThreadPoolExecutor Example"></a>ThreadPoolExecutor Example</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import concurrent.futures</div><div class="line">import urllib.request</div><div class="line"></div><div class="line">URLS = [&apos;http://www.foxnews.com/&apos;,</div><div class="line">        &apos;http://www.cnn.com/&apos;,</div><div class="line">        &apos;http://europe.wsj.com/&apos;,</div><div class="line">        &apos;http://www.bbc.co.uk/&apos;,</div><div class="line">        &apos;http://some-made-up-domain.com/&apos;]</div><div class="line"></div><div class="line"># Retrieve a single page and report the URL and contents</div><div class="line">def load_url(url, timeout):</div><div class="line">    with urllib.request.urlopen(url, timeout=timeout) as conn:</div><div class="line">        return conn.read()</div><div class="line"></div><div class="line"># We can use a with statement to ensure threads are cleaned up promptly</div><div class="line">with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:</div><div class="line">    # Start the load operations and mark each future with its URL</div><div class="line">    future_to_url = &#123;executor.submit(load_url, url, 60): url for url in URLS&#125;</div><div class="line">    for future in concurrent.futures.as_completed(future_to_url):</div><div class="line">        url = future_to_url[future]</div><div class="line">        try:</div><div class="line">            data = future.result()</div><div class="line">        except Exception as exc:</div><div class="line">            print(&apos;%r generated an exception: %s&apos; % (url, exc))</div><div class="line">        else:</div><div class="line">            print(&apos;%r page is %d bytes&apos; % (url, len(data)))</div></pre></td></tr></table></figure>
-<h1 id="ProcessPoolExecutor"><a href="#ProcessPoolExecutor" class="headerlink" title="ProcessPoolExecutor"></a>ProcessPoolExecutor</h1><p>这个类使用进程池的<code>Executor</code>子类，它使用了<code>multiprocessing</code>模块，这样就可以避开全局解释器锁，同时也意味这只有可序列化的对象可以被执行和返回。</p>
-<p><code>__main__</code>模块必须被子进程的worker导入，因此意味着<code>ProcessPoolExecutor</code>是不能在交互式解释器中运行的。</p>
-<p>在提交到<code>ProcessPoolExecutor</code>可调用对象中调用<code>Executor</code>或者<code>Future</code>方法会导致死锁。</p>
-<p><code>ProcessPoolExecutor(max_workers=None)</code></p>
-<p>它会使用最多<code>max_workers</code>个进程来异步执行任务。如果<code>max_workers</code>没有给定或者是None，将会启动当前机器核心数相同的进程。如果<code>max_workers</code>数目小于等于0，将会引发<code>ValueError</code></p>
-<p>如果worker进程中的一个意外终止了，<code>BrokenProcessPool</code>错误将会引发。在之前，行为是不确定的，大多数情况是死锁。</p>
-<h2 id="ProcessPoolExecutor-Example"><a href="#ProcessPoolExecutor-Example" class="headerlink" title="ProcessPoolExecutor Example"></a>ProcessPoolExecutor Example</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">import concurrent.futures</div><div class="line">import math</div><div class="line"></div><div class="line">PRIMES = [</div><div class="line">    112272535095293,</div><div class="line">    112582705942171,</div><div class="line">    112272535095293,</div><div class="line">    115280095190773,</div><div class="line">    115797848077099,</div><div class="line">    1099726899285419]</div><div class="line"></div><div class="line">def is_prime(n):</div><div class="line">    if n % 2 == 0:</div><div class="line">        return False</div><div class="line"></div><div class="line">    sqrt_n = int(math.floor(math.sqrt(n)))</div><div class="line">    for i in range(3, sqrt_n + 1, 2):</div><div class="line">        if n % i == 0:</div><div class="line">            return False</div><div class="line">    return True</div><div class="line"></div><div class="line">def main():</div><div class="line">    with concurrent.futures.ProcessPoolExecutor() as executor:</div><div class="line">        for number, prime in zip(PRIMES, executor.map(is_prime, PRIMES)):</div><div class="line">            print(&apos;%d is prime: %s&apos; % (number, prime))</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h1 id="Future-Objects"><a href="#Future-Objects" class="headerlink" title="Future Objects"></a>Future Objects</h1><p>Future类压缩了异步调用的执行。通过<code>Executor.submit()</code>来创建一个Future实例，不应该直接实例化，下面是其中的方法</p>
-<h2 id="cancel（）"><a href="#cancel（）" class="headerlink" title="cancel（）"></a>cancel（）</h2><p>尝试取消调用，如果调用已经被执行，那么是无法取消的，这个方法就会返回False。否则将会被取消，返回True</p>
-<h2 id="cancelled"><a href="#cancelled" class="headerlink" title="cancelled()"></a>cancelled()</h2><p>如果成功取消则返回True</p>
-<h2 id="running"><a href="#running" class="headerlink" title="running()"></a>running()</h2><p>如果正在运行，并且不能取消，则返回True</p>
-<h2 id="done"><a href="#done" class="headerlink" title="done()"></a>done()</h2><p>如果被成功取消或者完成运行后返回True</p>
-<h2 id="result-timeout-None"><a href="#result-timeout-None" class="headerlink" title="result(timeout=None)"></a>result(timeout=None)</h2><p>返回调用的结果。如果调用没有完成，那么将会等待timeout秒。如果在timeout秒还没有完成，将会引发<code>concurrent.futures.TimeoutError</code>。如果没有设置或者是None，将不会有等待时间</p>
-<p>如果future在完成前取消，<code>cancelledError</code>将会引发。</p>
-<p>如果调用引发异常，这里会引发同样的异常。</p>
-<ul>
-<li><code>exception(timeout=None)</code></li>
-<li><code>add_done_callback(fn)</code></li>
-<li><code>set_result(result)</code></li>
-<li><code>set_exception(exception)</code></li>
-</ul>
-<h1 id="模块函数"><a href="#模块函数" class="headerlink" title="模块函数"></a>模块函数</h1><h2 id="concurrent-futures-wait"><a href="#concurrent-futures-wait" class="headerlink" title="concurrent.futures.wait"></a><code>concurrent.futures.wait</code></h2><p><code>wait(fs, timeout=None, return_when=ALL_COMPLETED)</code></p>
-<p>等待通过fs给定的Future实例完成运行，返回两个值，第一个值是在wait函数完成调用时，完成的Future。第二个是没有完成的</p>
-<p><code>return_when</code>表示了函数应该在什么时候返回，有以下几个参数</p>
-<ul>
-<li><code>FIRST_COMPLETED</code></li>
-<li><code>FIRST_EXCEPTION</code></li>
-<li><code>ALL_COMPLETED</code></li>
-</ul>
-<h2 id="concurrent-futures-as-completed"><a href="#concurrent-futures-as-completed" class="headerlink" title="concurrent.futures.as_completed"></a><code>concurrent.futures.as_completed</code></h2><p><code>as_completed(fs, timeout=None)</code></p>
-<p>返回一个通过fs给定的Future实例的迭代器，可能是不同的<code>Executor</code>实例创建的，这个迭代器y有任务完成的时候产生future，因此这个必须迭代才能起到阻塞完成的效果。fs给定的任何future如果重复的话，只会返回一次。如果在<code>as_completed</code>之前返回的会最先产生。</p>
+		<p>kennethreitz大神写的，<a href="https://github.com/kennethreitz/httpbin" target="_blank" rel="external">项目地址</a></p>
+<h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
+<p>它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">d = MultiDict([(&apos;a&apos;, &apos;b&apos;), (&apos;a&apos;, &apos;c&apos;)])</div><div class="line">d.getlist(&apos;a&apos;)</div><div class="line"># [&apos;b&apos;, &apos;c&apos;]</div><div class="line">&apos;a&apos; in d</div><div class="line"># True</div><div class="line">d[&apos;a&apos;]</div><div class="line"># &apos;b&apos;</div></pre></td></tr></table></figure>
+<p>KeyError也是BadRequest的子类，因此当被捕获的时候会渲染<code>400 BAD REQUEST</code>。</p>
+<p>所以说白了，就是一个key对应了一个list，然后一般返回的只是key和list[0]，然后实现了一系列的方法。</p>
+<h1 id="CaseInsensitiveDict"><a href="#CaseInsensitiveDict" class="headerlink" title="CaseInsensitiveDict"></a><code>CaseInsensitiveDict</code></h1><p>比如<code>headers[&#39;content-encoding&#39;]</code>将会被返回<code>headers[&#39;Content-Encoding&#39;]</code>的值。实现也很简单，就是读取的时候将键都转换成小写就行了。源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class CaseInsensitiveDict(dict):</div><div class="line">    def _lower_keys(self):</div><div class="line">        # 将字典的key都转换成小写</div><div class="line">        return [k.lower() for k in self.keys()]</div><div class="line"></div><div class="line">    def __contains__(self, key):</div><div class="line">        # 判断某个key(转换成小写)是否存在于字典中(key都转换成小写)</div><div class="line">        return key.lower() in self._lower_keys()</div><div class="line"></div><div class="line">    def __getitem__(self, key):</div><div class="line">        # 这里有个问题就是key如果是None，这里就会报错，所以应该</div><div class="line">        # if key is None:</div><div class="line">        #     return</div><div class="line"></div><div class="line">        if key in self:</div><div class="line">            # 先找到目标key在keys中的位置，然后取出来一个元组，第二个值就是value</div><div class="line">            return list(self.items())[self._lower_keys().index(key.lower())][1]</div></pre></td></tr></table></figure>
+<p>这里涉及到一个知识点，就是Python字典中的<code>keys()</code>, <code>values()</code>和<code>items()</code>方法返回的是view对象。它基于字典的实体提供了动态的view，意味着当字典改变的时候，view会表现这个改变。</p>
+<p>字典views会被迭代并且生成它们各自的数据，并且支持成员测试。</p>
+<p>keys和values会被以任意的顺序迭代，但是这个顺序不是随机的，而是基于不同的Python实现而不同，并且基于字典的插入和删除历史。如果keys，values和items views迭代过程中没有改变字典的话，它们之间的顺序将是一致的。因此可以使用<code>pair = zip(d.values(), d.keys())</code>，另外一种创建相同的列表的方法是<code>pair = [(v, k) for (k, v) in d.items()]</code></p>
 
 	
 	</div>
-  <a type="button" href="/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/10/20/httpbin中的奇技淫巧/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -380,11 +317,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/08/27/进程与线程/" >进程与线程</a>
+			<a href="/2017/10/19/mysql_interview_1/" >MySQL面试题集锦</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-08-27 11:33:03  </div>
+		<div class="date">post @ 2017-10-19 12:30:35  </div>
 		</div>
 	</div>
 	
@@ -394,480 +331,168 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>多道程序设计系统中，CPU由一个进程快速切换至另外一个进程。在一瞬间，CPU只能运行一个进程，在某一段时间，可能运行多个进程。</p>
-<p>一个进程就是一个正在执行程序的实例，包括程序计数器，寄存器和变量的当前值。每个进程由自己的逻辑程序计数器。实际上，只有一个物理程序计数器，在每个程序执行的时候，逻辑程序计数器被装入实际的程序计数器中。程序暂停执行的时候，物理程序计数器被保存在内存中该进程的逻辑程序计数器中。</p>
-<p>一个进程是某种类型的一个活动，它有程序，输入，输出以及状态。单个处理器可以被若干的进程共享。但是程序，通俗的讲是一些代码，所以操作系统可以使得不同的进程来共享代码，因此只有一个副本放在内存中。</p>
-<h2 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h2><ul>
-<li>系统初始化</li>
-</ul>
-<p>启动操作系统的时候，会创建新进程，前台进程(和人类交互的进程)和后台进程，后台进程又叫做守护进程<code>daemon</code></p>
+		<p>翻译自：</p>
 <ul>
-<li><p>运行的进程发出系统调用</p>
-</li>
-<li><p>用户请求创建一个新进程</p>
-</li>
-<li><p>批处理作业的初始化</p>
-</li>
+<li><a href="https://www.tecmint.com/10-mysql-database-interview-questions-for-beginners-and-intermediates/" target="_blank" rel="external">10 MySQL Database Interview Questions for Beginners and Intermediates</a></li>
+<li><a href="http://www.careerride.com/MySQL-Interview-Questions.aspx" target="_blank" rel="external">MySql Interview Questions and Answers</a></li>
 </ul>
-<p>其实本质上，新进程都是由于一个已经存在的进程执行了一个用于创建进程的系统调用，这个系统调用通知操作系统创建一个新进程，并且直接或者间接的指定在该进程中运行的程序。</p>
-<p>Unix系统中，使用fork来创建新进程，这个系统调用会创建一个与调用进程相同的副本，调用fork之后，两个进程拥有相同的存储映像，同样的环境字符串和同样的打开文件。然后子进程接着执行execve或者一个类似的系统调用，以修改其存储映射并且运行一个新的程序。在执行execve之前，子进程还可以处理文件描述符，以完成对标准输入，标准输出和标准出错的重定向。</p>
-<p>进程创建之后，父进程和子进程有各自不同的地址空间。子进程的初始地址空间是父进程的一个副本，但是是两个不同的地址空间，不可写的内存区是共享的，对于一个新创建的进程，可能共享创建者的其他资源，必须打开的文件。</p>
-<h2 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h2><ul>
-<li>正常退出</li>
-</ul>
-<p>完成工作后会执行一个系统调用，通知操作系统它的工作已经完成，Unix中是exit</p>
+<ol>
+<li><p>如何定义SQL？</p>
+<p> SQL代表的是结构化查询语言(Structured Query Language)。SQL是一门专门在关系型数据库管理系统中管理数据的编程语言。</p>
+</li>
+<li><p>什么是RDBMS？解释其特性？</p>
+<p> Relational Database Management System(RDBMS)是在关系数据库模型中最广泛使用的数据库管理系统。</p>
+<p> RDBMS的特性：</p>
 <ul>
-<li><p>出错退出，文件不存在之类</p>
+<li>在表中存储数据</li>
+<li>表中含有行和列</li>
+<li>可以通过SQL创建和检索表</li>
+</ul>
 </li>
-<li><p>进程引起的错误，程序错误，引用不存在内存之类</p>
+<li><p>什么是数据挖掘？</p>
+<p> 数据挖掘是计算机科学的子分类，其目的是从数据集中提取信息，并且将其转换成人类友好的结构在以后使用。</p>
 </li>
-<li><p>某个进程执行一个系统调用通知操作系统杀死某个进程。Unix中是kill</p>
+<li><p>什么是ERD？</p>
+<p> ERD代表实体关系模型(Entity Relationship Diagram)，其中图形代表了表，它们之间是它们的关系。</p>
+</li>
+<li><p>Primary Key主键和Unique Key有什么区别？</p>
+<p> Primary和Unique都是实现了列值的唯一性。主键为列创建了聚集索引，而Unique key创建了非聚集索引。并且主键不允许NULL值，而Unique key允许NULL值。</p>
+</li>
+<li><p>如何在数据库中存储图片文件。使用了哪种对象类型？</p>
+<p> 在数据库存储图片不是个好主意。为了在数据库中存储图片，Blob对象类型是被推荐的。BLOB是一个二进制大对象，可以容纳可变数量的数据。而TEXT列被视为非二进制字符串(字符字符串)。</p>
+</li>
+<li><p>什么是数据仓库？</p>
+<p> 数据仓库一般是指企业数据仓库，是一个集中数据仓库，使用不同数据源来创建的。</p>
+</li>
+<li><p>数据库中的索引是什么，索引有哪几种类型？</p>
+<p> 索引是在数据库进行数据快速索引的快速引用。有两种不同的索引类型：</p>
+<ul>
+<li>聚集索引<ul>
+<li>在一个表中只有一个</li>
+<li>查询的时候比非聚集索引要快，因为数据是按照索引顺序存储</li>
+</ul>
+</li>
+<li><p>非聚集索引</p>
+<ul>
+<li>可以在一个表中使用多次</li>
+<li>比聚集索引可以更快的插入和更新</li>
+</ul>
+<p>聚集索引，该索引中键值的逻辑顺序决定了表中相应行的物理顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引）。聚集索引对于那些经常要搜索范围值的列特别有效。使用聚集索引找到包含第一个值的行后，便可以确保包含后续索引值的行在物理相邻。如果对从表中检索的数据进行排序时经常要用到某一列，则可以将该表在该列上聚集（物理排序），避免每次查询该列时都进行排序，从而节省成本。当索引值唯一时，使用聚集索引查找特定的行也很有效率。例如，使用唯一雇员 ID 列<code>emp_id</code>查找特定雇员的最快速的方法，是在<code>emp_id</code>列上创建聚集索引或<code>PRIMARY KEY</code>约束。</p>
+<p>非聚集索引，该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。索引是通过二叉树的数据结构来描述的，我们可以这么理解聚集索引：索引的叶节点就是数据节点。而非聚簇索引的叶节点仍然是索引节点，只不过有一个指针指向对应的数据块。因为聚集索引的数据的逻辑顺序和物理顺序是一致的，而非聚集索引的逻辑顺序和数据的物理顺序不同，所以最后的叶节点是一个指向对应数据块的。</p>
+<p>一个例子就是字典中按拼音查询和按部首查询。也就是说部首的目录纯粹是目录，正文纯粹是正文的排序方式是非聚集索引，两个不相关联，因此一个表中可以有多个非聚合索引。每个表只有一个聚集索引，因为一个数据集只有一种物理存放顺序。</p>
+<p>那么何时使用聚集索引，何时使用非聚集索引呢</p>
+</li>
+<li><p>返回某范围内的数据：应该使用聚集索引，而不应该使用非聚集索引，因为非聚集索引即使逻辑顺序对了，但是物理顺序仍然不对，所以没用。</p>
+</li>
+<li><p>频繁更新的列：不应该使用聚集索引，而应该使用非聚集索引，因为如果使用聚集索引，就会导致物理结构的变化，不好。</p>
+<p>所以聚集索引一般可以加快查询的速度，但是更新就不行了</p>
 </li>
 </ul>
-<h2 id="进程的层次结构"><a href="#进程的层次结构" class="headerlink" title="进程的层次结构"></a>进程的层次结构</h2><p>进程只有一个父进程，但是可以有多个子进程。</p>
-<p>Unix中，进程和它的所有后代组成一个进程组，用户从键盘发出信号时候，信号被发送给当前与键盘相关的进程组中的所有成员，每个进程可以分别捕获该信号，忽略信号或者采取默认的动作，即被信号杀死。</p>
-<p>Unix启动时候会启动一个init进程，开始运行的时候，读入一个说明终端数量的文件，为每个终端创建一个新进程，这些进程等待用户登录，如果登陆成功，这个登陆进程就执行一个shell准备执行命令，所接收的命令会启动更多的进程。</p>
-<h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><ul>
-<li>运行态</li>
-<li>就绪态</li>
-<li>阻塞态</li>
-</ul>
-<p>等待输入时候，会进入阻塞态，出现有效输入会转入就绪态等待CPU。</p>
-<h2 id="进程的实现"><a href="#进程的实现" class="headerlink" title="进程的实现"></a>进程的实现</h2><p>操作系统维护这一张表格，进程表。每个进程占用一个进程表项，表项包含了进程状态的重要信息，包括程序计数器，堆栈指针，内存分配状况，打开文件的状态，账号和调度信息以及在由运行态转换到就绪态或者阻塞态必须保存的信息。</p>
-<h2 id="多道程序设计模型"><a href="#多道程序设计模型" class="headerlink" title="多道程序设计模型"></a>多道程序设计模型</h2><p>这样可以更好的去满负荷使用CPU，Very good.</p>
-<p>目前我的程序中IO时间大概占比在<code>25.5%</code>，那么对于8核处理器，如果是8个进程，那么同时在IO的概率为0.000017878103348，所以基本上已经达到很高的CPU占用率了。</p>
-<p>计算过程如下，一个进程等待IO的时间和其在内存中的时间比为p，内存中有n个进程，n个进程都在等待I/O的比率是<code>p^n</code>，那么CPU的利用率是<code>1-p^n</code></p>
-<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><p>每个进程有一个地址空间和一个控制线程，经常存在在同一个地址空间中准并行运行多个控制线程的情况，这些线程类似于分离的进程，但是又共享相同的地址空间。</p>
-<h2 id="线程的使用"><a href="#线程的使用" class="headerlink" title="线程的使用"></a>线程的使用</h2><ul>
-<li>多线程，并行实体共享同一个地址空间和所有可用数据</li>
-<li>线程更加轻量级，容易创建，容易撤销，切换消耗小</li>
-<li>多IO情况，会使得这些活动重叠进行，加快程序速度</li>
-</ul>
-<p>对于web服务器，既可以用多线程来处理IO操作，也可以使用read系统调用的非阻塞版本。对于非阻塞I/O来说，磁盘读取完毕后会以信号或者中断的形式出现。但是这种方法，从一个请求的工作状态切换到另外一个状态时候，需要显式的保存或者重新装入相应的计算状态。这样看来，这种异步形式也相当于一种线程，但是我们可以看成协程。在这里，每一个计算都有一个被保存的状态，存在一个会发生且使得相关状态发生改变的事件集合，比如中断，这类设计为有限状态机。</p>
-<h2 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h2><ul>
-<li>基本</li>
-</ul>
-<p>进程模型基于两种独立的概念：资源分组处理与执行，进程会将相关的资源集中在一起，进程有存放程序正文和数据以及其他资源的地址空间。</p>
-<p>进程有一个控制线程，线程中有一个程序计数器，记录接着要执行哪条指令，同时有寄存器，用来保存线程当前的工作变量，还有一个栈，用来记录执行历史，每一帧保存了一个已经调用但是还没有从中返回的过程。所以可以看出，进程用于将资源集中在一起，而线程是在CPU上被调度的实体。</p>
-<p>线程给进程模型增加了一项内容，在同一个进程中，可以有多个线程执行，在同一个进程中并行运行多个线程，是在一个机器上并行运行多个进程的模拟。多线程中，会共享一个进程的资源和地址空间，多进程中，共享物理内存，磁盘和其他资源。</p>
-<p>除了共享地址空间外，所有线程还共享一个打开文件集，子进程，报警以及相关信号，全局变量。</p>
-<p>一个线程打开了一个文件，那么其他线程也可以对该文件进行读写，资源管理的单位是进程。线程实现的是，共享一组资源的多个线程的执行能力，这样多个线程可以为完成一个任务而共同工作。</p>
-<p>所以多个线程是可以用一个数据库连接的，但是必须加锁使用。</p>
-<p>每个线程有自己的堆栈，每个线程的堆栈有一帧，供各个被调用但是还没有从中返回的过程使用。在该帧中存放了相应过程的局部变量以及过程调用完成之后使用的返回地址。每个线程会有不同的过程，从而有一个不同的执行历史，所以需要自己的堆栈。</p>
+</li>
+<li><p>在MySQL中有多少可能的Triggers?</p>
 <ul>
-<li>创建</li>
+<li>Before Insert</li>
+<li>After Insert</li>
+<li>Before Update</li>
+<li>After Update</li>
+<li>Before Delete</li>
+<li><p>After Delete</p>
+<p>一个示例,<code>CREATE TRIGGER ins_sum BEFORE INSERT ON account FOR EACH ROW SET @SUM=@SUM+NEW.amount;</code></p>
+</li>
 </ul>
-<p>进程通常会从当前的单个线程开始，这个线程可以调用一个库函数(<code>thread_create</code>)来创建新线程，并且一般所有线程都是平等的，而不像进程那种，创建线程后会返回一个线程标识符，标识符就是新线程的名字。</p>
+</li>
+<li><p>什么是堆表(Heap table)?</p>
+<p>存在内存中的表叫做Heap tables。这些表是内存表，这些内存表没有像BLOB或者TEXT的数据类型。没有<code>AUTO_INCREMENT</code>。他们可以使用索引使得它们更快，索引是针对少量特定字段的值拿出来进行排序存储，并记录在表中的位置, 而因为索引是有序的, 所以就会很容易通过索引查询到具体的记录位置, 然后再根据记录位置直接从表中读取该记录。数据存储没有任何的顺序，插入数据也没顺序。由于数据没有任何顺序，查询数据会非常慢，但是写入操作会比较快。还有就是上面介绍的表Index-Organized table，直接就是索引表，表中数据本身就是有序的, 这样查询表的时候就可以快速的找到符合条件的记录位置。</p>
+</li>
+<li><p>如何控制HEAP表的最大大小？</p>
+<p>可以使用MySQL配置<code>max_heap_table_size</code>来控制HEAP表的大小</p>
+</li>
+<li><p>FLOAT和DOUBLE的区别？</p>
+<p>FLOAT存储了8位精度的浮点数，并且有4字节。DOUBLE存储了18位精度的浮点数，有8字节。MySQL 浮点型和定点型可以用类型名称后加（M，D）来表示，M表示该值的总共长度，D表示小数点后面的长度。</p>
+</li>
+<li><p>什么是BLOB？</p>
+<p>表示binary large object，二进制大对象，可以存储可变数量的数据。有4种不同类型的BLOB，基于可以存储的最大数量</p>
 <ul>
-<li>退出</li>
+<li>TINYBLOB</li>
+<li>BLOB</li>
+<li>MEDIUMBLOB</li>
+<li>LONGBLOB</li>
 </ul>
-<p><code>thread_exit</code>退出，或者调用<code>thread_join</code>等待另外一个线程退出，阻塞一直到那个线程退出。</p>
+</li>
+<li><p>什么是TEXT？</p>
+<p>TEXT是大小写不敏感的BLOB，有4种类型</p>
 <ul>
-<li><code>thread_yield</code></li>
+<li>TINYTEXT</li>
+<li>TEXT</li>
+<li>MEDIUMTEXT</li>
+<li>LONGTEXT</li>
 </ul>
-<p>允许线程自动放弃CPU从而让另一个线程运行，因为不同于进程，线程库没法使用时钟中断来强制线程让出CPU。所以得随时间推移自动交出CPU。</p>
-<p>加入线程后，在fork中可能出现问题，fork后子进程也包含父进程的线程。还有如果一个线程关闭了文件，另一个线程还在执行。所以多线程程序需要更多的努力。</p>
-<h2 id="POSIX线程"><a href="#POSIX线程" class="headerlink" title="POSIX线程"></a>POSIX线程</h2><p>线程包叫做<code>Pthread</code>。每个线程都含有一个标识符，一组寄存器(包括程序计数器)和一组存储在结构中的属性，这些属性包含堆栈大小，调度参数以及线程需要的其他项目。</p>
-<h2 id="用户空间实现线程"><a href="#用户空间实现线程" class="headerlink" title="用户空间实现线程"></a>用户空间实现线程</h2><p>将整个线程包放在用户空间中，从内核角度考虑，就是按单线程进程的方式来管理，优点是可以在不支持线程的操作系统上实现，所以可以使用函数库来实现线程。</p>
-<p>这些线程会在一个进程中运行，进程中保存了相应的线程表，用来跟踪该进程中的线程。线程表仅仅记录各个线程的属性，如每个线程的程序计数器，堆栈指针，寄存器和状态等。当一个线程转换到就绪状态或者阻塞状态时候，在该线程表中存放重新启动该线程所需要的信息。</p>
+</li>
+<li><p>BLOB和TEXT的区别是什么？</p>
+<p>在BLOB中，排序和比较是大小写敏感的，在TEXT中排序和比较是大小写不敏感的。</p>
+</li>
+<li><p>MyISAM表是怎么存储的？</p>
+<p>MyISAM表在磁盘上以三种方式存储</p>
 <ul>
-<li>优点</li>
+<li><code>.frm</code>文件，存储了表的定义</li>
+<li><code>.MYD</code>(MYData) 数据文件</li>
+<li><code>.MYI</code>(MYIndex) 索引文件</li>
 </ul>
-<p>如果进行本地阻塞，也就是说和系统没有太大关系，比如等待进程中的另外一个线程完成某项工作。首先会调用一个运行时系统的过程，检查该线程是否必须进入阻塞状态，如果是，则在线程表中保存该线程的寄存器，查看表中可运行的就绪线程，把新线程的保存值重新装入机器的寄存器中。只要堆栈指针和程序计数器一被切换，新线程就开始运行。这样进行线程切换要比陷入内核至少快一个数量级。</p>
-<p>线程完成运行时候，比如调用<code>thread_yield</code>的时候，首先将该线程的信息保存在线程表中，然后调用线程调度程序来选择另一个要运行的线程，因为保存该线程状态和调度程序都只是本地过程，所以启动它们要比内核调用效率要高，不需要陷阱，不需要上下文切换，不需要对内存高速缓存进行刷新。</p>
-<p>另外，用户级线程允许每个进程有自己的调度算法，并且用户线程具有好的可扩展性，因为内核线程需要特定的空间来存储表格和堆栈，当线程数量特别大的时候，就有问题。</p>
+</li>
+<li><p>解释MyISAM相对于InnoDB的优点？</p>
+<p>MyISAM在磁盘管理中遵循了更保守的方法，将每个MyISAM表存储在了单独的文件中，如果需要可以进行更进一步的压缩。而InnoDB将表存储在tablespace，进一步的优化比较困难，但是InnoDB支持事务和外键。MyISAM读能快点，Innodb写快点。</p>
+</li>
+<li><p>如果在MySQL中连接字符串？</p>
+<p><code>select concat(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;);</code></p>
+</li>
+<li><p>如果在MySQL中获取当前日期？</p>
+<p><code>select current_date();</code></p>
+</li>
+</ol>
+
+	
+	</div>
+  <a type="button" href="/2017/10/19/mysql_interview_1/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/10/17/music_1/" >最是人间留不住</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-17 22:53:46  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>再推荐一首歌，最近单曲循环中。。有意境，有感觉，有情怀</p>
 <blockquote>
-<p>综上，可以看出，用户级线程的优点的核心在于其不需要进行内核态的转换，所有过程本地进行，不论是切换，还是保存的数据位置，所以可以保证其高效。</p>
+<p>帘卷细雨，付一阕别离<br>楼上依稀和旧曲<br>是你当时，弦上生《金缕》<br>牵我今时几思忆 </p>
+<p>竹伞微倾，遮半面涟漪<br>怕听取，他年词笔<br>可知别后，五弦疏云泥<br>江郎才已为谁尽 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>只往事还如，青丝缠梳<br>无端把韶光负 </p>
+<p>三千红尘路，寥寥九州土<br>长安于我意何如？<br>无关青云路，无关诗书<br>无你处，无江湖 </p>
+<p>仲夏正半，你留书落款<br>写「别矣，吾乡长安」<br>流音未挽，只湿我罗衫<br>经年憔悴总相关 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>只往事还如，青丝缠梳<br>无端把韶光负 </p>
+<p>三千红尘路，寥寥九州土<br>长安于我意何如?<br>无关青云路，无关诗书<br>无你处，无江湖 </p>
+<p>梦也阑珊，梦也清寒<br>载你归程，偿我悲欢 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>三千红尘路，长安故土<br>最忆处，最难诉<br>无关青云路，无关诗书<br>无你处，无江湖</p>
 </blockquote>
-<ul>
-<li>缺点</li>
-</ul>
-<p>如何实现阻塞系统调用，如果一个线程执行阻塞系统调用，系统因为并不知道这个线程的存在，所以会将整个进程阻塞！这样就会影响该进程的其他线程的运行。所以需要允许每个线程使用阻塞调用，但是还要避免被阻塞的线程影响其他线程。</p>
-<p>一种解决方案是，如果某个调用会阻塞，就提前通知，比如系统调用<code>select</code>允许调用者通知预期的<code>read</code>是否会阻塞。所以就可以先进行<code>select</code>调用，只有在安全的情形下才进行<code>read</code>掉哟哦那个，如果<code>read</code>调用会被阻塞，有关调用就不进行，代之运行另外一个线程。到下次有关运行系统取得控制权后，再去检查<code>read</code>调用是否安全。</p>
-<p>另一个问题是页面故障问题，因为程序不是一次性在内存中，如果某个程序调用或者跳转到了一条不在内存的指令上，就会发生页面故障。就需要去磁盘读取，这样就会阻塞相关进程直到磁盘<code>I/O</code>完成为止，因为内核不知道有线程的存在。</p>
-<p>另外一个问题是，在一个单独的进程内部，没有时钟中断，所以不可能用轮转调度方式调度进程。</p>
-<p>但是程序员在经常发生线程阻塞的应用中才希望使用多个线程。就得持续进行select系统调用，以便检查read系统调用是否安全。</p>
-<h2 id="内核中实现线程"><a href="#内核中实现线程" class="headerlink" title="内核中实现线程"></a>内核中实现线程</h2><p>现在在内核中记录系统中所有线程的线程表，某个线程希望创建一个新线程或者撤销一个已有线程时候，进行一个系统调用，这个系统调用通过对线程表的更新完成线程创建和撤销工作。与此同时，内核还维护了传统的进程表，以便跟踪进程的状态。</p>
-<p>所有能够阻塞线程的调用都以系统调用的形式实现，一个线程阻塞的时候，内核根据其选择，可以运行同一个进程的另一个线程或者另一个进程中的线程。</p>
-<p>回收线程的时候，将其标志为不可运行，但是内核数据结构没有受到影响，在创建一个线程的时候，就重新启动某个旧线程。所以节省了一些开销。</p>
-<p>内核级线程的主要缺点是系统调用的代价较大，如果有许多创建和终止，就会有很大的开销。线程切换由内核控制，切换的时候，要从用户态进入内核态，切换完毕要从内核态返回用户态</p>
-<p>还有以下这些问题，比如多线程进程创建新进程的线程管理。以及信号的处理，因为信号是发送给进程而不是线程的。内核级线程的速度慢。</p>
-<h2 id="混合实现"><a href="#混合实现" class="headerlink" title="混合实现"></a>混合实现</h2><p>使用内核级线程，然后将用户级线程与某些或者全部内核线程多路复用起来。内核只识别内核级线程，并对其进行调度，一些内核级线程会被多个用户级线程多路复用。每个内核级线程有一个可以轮流使用的用户级线程集合。</p>
-<p>线程创建完全在用户空间中完成，线程的调度和同步也在应用程序中进行. 一个应用程序中的多个用户级线程被映射到一些（小于或等于用户级线程的数目）内核级线程上。</p>
-<p>这样即使某些线程阻塞掉，也会切换到另外一个内核线程对应的用户线程里。</p>
-<h2 id="调度程序激活机制"><a href="#调度程序激活机制" class="headerlink" title="调度程序激活机制"></a>调度程序激活机制</h2><p>调度程序激活机制是模拟内核线程的功能，如果用户线程从事某种系统调用是安全的，那么就不应该进行专门的非阻塞调用或者进行提前性检查。如果线程阻塞在某个系统调用或者页面故障上，只要同一个进程有任何就绪的线程，就应该有可能运行其他的线程。</p>
-<p>使用调度程序激活机制时，内核给每个进程安排一定数量的虚拟处理器，让用户空间的运行时系统将线程分配到处理器上。当内核了解到一个线程被阻塞之后，内核通知该进程的运行时系统，并且在堆栈中以参数形式传递有问题的线程编号和所发生事件的描述。这个机制就是上行调用。</p>
-<p>这样激活之后，运行时系统重新调度线程，把当前线程标记为阻塞并从就绪表中取出另一个线程，设置其寄存器，然后再启动之。等到内核直到原来线程又可以运行时候，内核再次上行调用运行时系统，通知这个事件，运行时系统根据情况重启被阻塞的线程，或者放入就绪表稍后运行。</p>
-<p>上行调用是违反分层次系统内在结构的概念，通常，n层提供n+1层可调用的特定服务，但是n层不能调用n+1层中的过程。</p>
-<h2 id="弹出式线程"><a href="#弹出式线程" class="headerlink" title="弹出式线程"></a>弹出式线程</h2><p>分布式系统中经常使用线程。在处理服务请求中，传统的方法是将进程或者线程阻塞在一个<code>receive</code>系统调用上，瞪大系统到来，当消息到达时候，系统调用接收消息，并且打开消息检查内容，然后处理。</p>
-<p>弹出式线程中，一个消息的到达导致系统创建一个处理该消息的线程，这个线程是全新的，每个必须存储的寄存器，堆栈这些内容，可以快速创建这类线程，对该线程指定要处理的消息。</p>
-<p>可以在用户级创建这种线程，也可以在内核级，内核级更方便，可以访问所有的I/O设备，但是危害也更大。</p>
-<h2 id="使单线程代码多线程化"><a href="#使单线程代码多线程化" class="headerlink" title="使单线程代码多线程化"></a>使单线程代码多线程化</h2><ul>
-<li>全局变量的问题</li>
-</ul>
-<p>有可能在一个线程中写入会影响到另一个线程的读取。一种解决方案是给每个线程赋予其私有的全局变量。</p>
-<ul>
-<li>许多库过程并不是可重入的，在前面的调用没有结束之前，不能进行第二次调用。因为可能库内部使用一个固定的缓冲区进行消息组合。</li>
-</ul>
+<p>嗯，长夜总会过去。</p>
 
 	
 	</div>
-  <a type="button" href="/2017/08/27/进程与线程/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/25/Python内存管理和gc/" >Python内存管理和gc</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-25 11:02:37  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>Python内存管理和gc</p>
-<p>参考:</p>
-<ul>
-<li><a href="http://www.cnblogs.com/vamei/p/3232088.html" target="_blank" rel="external">Python深入06 Python的内存管理</a></li>
-<li><a href="https://docs.python.org/2/library/gc.html" target="_blank" rel="external">gc — Garbage Collector interface</a></li>
-</ul>
-<p>最近开始大规模跑数据了，跑着跑着进程就被系统kill掉了，查其原因，原来是OOM(Out of Memory)了，为什么会占这么多的内存呢，我的程序需要计算数万个资金账号，然后每个资金账号可能计算数年，而且我是每天每天算的，所以基本每个资金账号都会循环个几百次，然后几万个资金账号，想想确是吓人。但是Python有垃圾回收机制啊，每个资金账号计算完成后，理应回收掉啊，也不应该出现这个超出内存的问题啊。看来得深入研究一下Python的内存管理机制了，心中隐隐约约的觉得Python不会立即进行垃圾回收，所以导致了内存超限。</p>
-<h1 id="对象与引用"><a href="#对象与引用" class="headerlink" title="对象与引用"></a>对象与引用</h1><p><code>a = 1</code>这样整数1是一个对象，a是一个引用，而Python对于这种整数和短小的字符，会缓存这些对象，以便重复使用，如果<code>b = 1</code>那么a和b是引用的同一个对象。</p>
-<p>Python里每个对象都存有指向该对象的引用总数，即引用计数，可以使用<code>sys</code>包的<code>getrefcount()</code>来查看某个对象的引用计数。</p>
-<p>对于容器对象，里面包含的是元素对象的引用。比如对于列表<code>[1, 2, 3]</code>，如果随便改一个元素，就会导致这个元素的引用和以前的不一样，所以列表也会发生变化。但是如果<code>[[1,2], 3]</code>，第一个元素是一个列表，而这个列表存的是第一个元素所代表的列表的引用，所以子列表里面的内容发生变化，原列表也会track到。</p>
-<p>两个对象之间可能互相引用，形成引用环。</p>
-<p>可以使用del关键字来删除某个引用，使得某个对象的引用减少，所以del不能使得释放内存，而只是减少一次引用。</p>
-<h1 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h1><p>Python会在适当的时候启动垃圾回收。如果Python某个对象的引用计数为0，则说明没有任何引用指向该对象，该对象就成为要被回收的垃圾了。当垃圾回收启动时，Python扫描到这个引用计数为0的对象，就将它所占据的内存清空。垃圾回收时，Python不能进行其它的任务。频繁的垃圾回收将大大降低Python的工作效率。如果内存中的对象不多，就没有必要总启动垃圾回收。所以，<strong>Python只会在特定条件下，自动启动垃圾回收。</strong> 当Python运行时，会记录其中分配对象(object allocation)和取消分配对象(object deallocation)的次数。当两者的差值高于某个阈值时，垃圾回收才会启动。</p>
-<p>我们也可以手动启动垃圾回收，即使用<code>gc.collect()</code>。</p>
-<p>说到这里，大概就知道自己的程序为什么内存占用这么高了：在开始一次垃圾回收之前，积攒的对象太慢，但是每个对象都会占用相当大的内存，所以基本上还没有来得及释放，就已经满了。比如分配对象和取消分配对象的次数需要5000次才开始回收，但是每个对象占用了2M，那么就是占用10G内存多，8个进程，80G？</p>
-<p>后来每个资金账号计算完成后，添加了一句<code>gc.collect()</code>，强制进行垃圾回收，然后再也没有出现过内存占用高的情况了。</p>
-<h1 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a>分代回收</h1><p>基本假设是，存活时间越久的对象，越不可能在后面的程序中变成垃圾。我们的程序往往会产生大量的对象，许多对象很快产生和消失，但也有一些对象长期被使用。出于信任和效率，对于这样一些“长寿”对象，我们相信它们的用处，所以减少在垃圾回收中扫描它们的频率。</p>
-<p>Python将所有的对象分为0，1，2三代。所有的新建对象都是0代对象。当某一代对象经历过垃圾回收，依然存活，那么它就被归入下一代对象。垃圾回收启动时，一定会扫描所有的0代对象。如果0代经过一定次数垃圾回收，那么就启动对0代和1代的扫描清理。当1代也经历了一定次数的垃圾回收后，那么会启动对0，1，2，即对所有对象进行扫描。</p>
-<h1 id="孤立的引用环"><a href="#孤立的引用环" class="headerlink" title="孤立的引用环"></a>孤立的引用环</h1><p>回收这样的引用环，Python复制每个对象的引用计数，可以记为<code>gc_ref</code>。假设，每个对象i，该计数为<code>gc_ref_i</code>。Python会遍历所有的对象i。对于每个对象i引用的对象j，将相应的<code>gc_ref_j</code>减1。</p>
-<p>在结束遍历后，<code>gc_ref</code>不为0的对象，和这些对象引用的对象，以及继续更下游引用的对象，需要被保留。而其它的对象则被垃圾回收。</p>
-<p>比如对于a和b相互引用，首先遍历到a, 然后<code>gc_ref_j</code>减一等于0，然后遍历b,<code>gc_ref_i</code>减一等于0，然后a和b引用都等于0，所以被回收。</p>
-<h1 id="gc"><a href="#gc" class="headerlink" title="gc"></a>gc</h1><p>这个模块提供了自定义垃圾收集器的接口。它提供了禁止收集器，调整收集频率，设置debugging选项。并且也提供访问收集器发现但是无法收集的不可达对象。自从收集器在Python中补充了引用计数，在你确保程序中不会产生引用循环的情况下你可以禁止收集器。可以通过<code>gc.disable()</code>来禁止自动收集。来debug一个内存泄漏的程序可以调用<code>gc.set_debug(gc.DEBUG_LEAK)</code>。注意到这一标志包含了<code>gc.DEBUG_SAVEALL</code>，导致垃圾收集对象会在<code>gc.garbage</code>中存储下来用于检查。</p>
-<p>下面介绍几个主要常用的方法</p>
-<ul>
-<li><code>gc.enable()</code></li>
-</ul>
-<p>开启自动垃圾收集，默认是开着的</p>
-<ul>
-<li><code>gc.disable()</code></li>
-</ul>
-<p>关闭自动垃圾收集</p>
-<ul>
-<li><code>gc.isenabled()</code></li>
-</ul>
-<p>返回自动垃圾收集是否打开</p>
-<ul>
-<li><code>gc.collect(generation=2)</code></li>
-</ul>
-<p>如果没有参数，进行全方位的收集，可选参数<code>generation</code>为整数，来指定取收集哪一代(0-2)。如果给定的代数无效，会引发<code>ValueError</code>，会返回找到的不可达的对象个数。</p>
-<ul>
-<li><code>gc.set_debug()</code></li>
-</ul>
-<p>设置垃圾收集的debugging标志。调试信息将会写入到<code>sys.stderr</code>，下面的调试标志可以组合起来用。</p>
-<ul>
-<li><code>gc.get_dubug()</code></li>
-</ul>
-<p>返回目前设置的调试标志</p>
-<ul>
-<li><code>gc.get_stats()</code></li>
-</ul>
-<p>返回三代每代的包含收集统计信息的字典列表。键的数目在将来可能会改变，但是当前每个字典会包含以下：</p>
-<p>collections 是这代被收集过的次数</p>
-<p>collected 是在这代总共收集的对象总数</p>
-<p>uncollectable 是这代中无法收集的对象总数</p>
-<ul>
-<li><code>gc.set_threshold(threshold0[, threshold1[, threshold2]])</code></li>
-</ul>
-<p>设置垃圾收集阈值，即收集频率。设置threshold0为0禁止垃圾收集</p>
-<p>GC视对象可以在多少次垃圾收集里存活将对象分成三代。新的对象会分配在第0代。如果一个对象在一次垃圾收集里还会存活，那么会将其移动到更老的一代。2是最老的代，在这里面的对象会保持在这一代。<strong>为了决定什么时候去运行垃圾收集，收集器会从上一次收集开始跟踪对象分配数和取消分配数。当两者之差超过了threshold0，就会开始收集。</strong> 最开始只有0代会被检查，如果0代检查的次数超过了threshold1，那么1代也开始检查，1代检查次数超过threshold2，那么2代开始检查。</p>
-<ul>
-<li><code>gc.garbage</code></li>
-</ul>
-<p>收集器发现的不可达的对象列表。如果<code>DEBUG_SAVEALL</code>被设置，那么就会将这些对象加入列表而不是释放它们。</p>
-<ul>
-<li><code>gc.DEBUG_LEAK</code></li>
-</ul>
-<p>调试内存泄漏程序，等于<code>DEBUG_COLLECTABLE | DEBUG_UNCOLLECTABLE | DEBUG_SAVEALL</code></p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/25/Python内存管理和gc/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/23/翻译 - How to close a SQLAlchemy session/" >翻译 - How to close a SQLAlchemy session</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-23 14:29:33  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>在StackOverFlow中看到这个问题，比较有意思<a href="https://stackoverflow.com/questions/21738944/how-to-close-a-sqlalchemy-session" target="_blank" rel="external">How to close a SQLAlchemy session?</a></p>
-<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>继续我们在<a href="https://stackoverflow.com/questions/8645250/how-to-close-sqlalchemy-connection-in-mysql/8705750?noredirect=1#comment32872652_8705750" target="_blank" rel="external">How to close sqlalchemy connection in MySQL</a>的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python</p>
-<p>如果我在python控制台中运行这一段程序，它将会保持session打开一直到我退出Python</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy.orm import sessionmaker</div><div class="line">from models import OneTable, get_engine</div><div class="line"></div><div class="line">engine = get_engine(database=&quot;mydb&quot;)</div><div class="line">session = sessionmaker(bind=engine)()</div><div class="line"></div><div class="line">results = session.query(OneTable.company_name).all()</div><div class="line"></div><div class="line"># some work with the data #</div><div class="line"></div><div class="line">session.close()</div></pre></td></tr></table></figure>
-<p>唯一我发现的解决方式是<code>engine.dispose()</code></p>
-<p>按照我给出连接的讨论，我的问题是：</p>
-<ul>
-<li>为什么<code>engine.dispose()</code>是关闭session所必须的</li>
-<li><code>session.close()</code>不够吗</li>
-</ul>
-<h1 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h1><p>高票回答：</p>
-<p>这主要是对<code>session</code>这个词有混淆。你可能混淆了<code>SQLAlchemy Session</code>和<code>MySQL session</code>，后者指的是当你第一次连接到MySQL和断开连接之间这一段范围。</p>
-<p>这两个概念是不同的，SQLAlchemy Session指的是一个或者多个transactions的范围，在一个特定的数据库连接之上。</p>
-<p>因此，就你所问的答案应该是调用<code>session.close()</code>，也就是，如何正确的关闭SQLAlchemy Session</p>
-<p>然后，剩下的问题说明你想凭借一些功能性的东西，当特定的Session关闭时候，而且真实的DBAPI连接也要关闭</p>
-<p>也就是说你希望禁止connection pooling连接池，就像其他答案一样，非常容易，使用NullPool，<code>poolclass=NullPool</code></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>最近在应用中出现了这个问题<code>Too many open files:/sqlalchemy/dialects</code></p>
-<p>首先这个<code>too many open files</code>原因是因为程序打开的文件/socket连接数量超过系统设定值，然后又是sqlalchemy报错的，因此很大可能性是因为sqlalchemy建立的连接过多。</p>
-<p>然后给所有使用<code>db.session.commit()</code>的后面加入一行<code>db.session.close()</code>用来关闭连接会话。</p>
-<p>看来涉及数据库连接等连接问题时候还是得谨慎啊。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/23/翻译 - How to close a SQLAlchemy session/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/" >翻译 - use pytest-asyncio to test your coroutines</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-22 11:15:14  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>翻译自 <a href="https://stefan.sofa-rockers.org/2016/03/10/advanced-asyncio-testing/" target="_blank" rel="external">Advanced asyncio testing</a></p>
-<p>其实就是这个库的使用:<a href="https://github.com/pytest-dev/pytest-asyncio" target="_blank" rel="external">pytest-asyncio</a></p>
-<p>参考使用例子：<a href="https://github.com/Microndgt/aiossdb/tree/master/tests" target="_blank" rel="external">aiossdb</a></p>
-<p>上篇文章中，我展示了如何使用pytest的fixture系统和插件结构来帮助你写出更简洁和更好的测试。fixture允许你为每一个测试用例创建一个更清晰的事件循环实例。插件系统允许你将异步的协程作为测试用例。但是还有更方便的<code>pytest-asyncio</code>可以用来写测试用例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import time</div><div class="line"></div><div class="line">import pytest</div><div class="line"></div><div class="line">@pytest.mark.asyncio</div><div class="line">async def test_coro(event_loop):</div><div class="line">    before = time.monotonic()</div><div class="line">    await asyncio.sleep(0.1, loop=event_loop)</div><div class="line">    after = time.monotonic()</div><div class="line">    assert after - before &gt;= 0.1</div></pre></td></tr></table></figure>
-<p><code>event_loop</code>是内置的fixture，因此可以直接使用</p>
-<p>因此使用<code>pytest-asyncio</code>很好的提高了你的测试，并且还有更好用的</p>
-<p>其包含以下特性：</p>
-<ul>
-<li>创建和注入asyncio的事件循环的fixture</li>
-<li>注入未使用的tcp端口的fixture</li>
-<li>可以将测试用例标记为协程的markers</li>
-<li>非常容易的测试非默认事件循环</li>
-<li>支持定义异步fixture和异步生成器fixture</li>
-</ul>
-<h1 id="Fixtures"><a href="#Fixtures" class="headerlink" title="Fixtures"></a>Fixtures</h1><h2 id="event-loop"><a href="#event-loop" class="headerlink" title="event_loop"></a><code>event_loop</code></h2><p>创建并且注入一个默认异步事件循环的新实例，默认情况下，这个循环将在测试结束后关闭，也就是说默认的fixture范围是function级别的</p>
-<p>只用<code>event_loop</code>fixture是不会使得你的测试函数变成协程的，你必须和<code>event_loop</code>进行交互，使用<code>event_loop.run_until_complete</code>方法。</p>
-<p>或者使用<code>pytest.mark.asyncio</code>将测试函数变成协程，查看<code>pytest.mark.asyncio</code>是如何将测试函数当成协程来处理的。</p>
-<p>只是简单的使用这个<code>event_loop</code>不会将其变成全局的loop，必须使用<code>pytest.mark.asyncio</code>才可以，这样其他的fixture以及pytest来测试的事件循环就使用的是同一个全局loop，在一个测试中可能有多个fixture，这些fixture可能也使用loop，所以这样可以确保其fixtures都是使用的一个loop.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def test_http_client(event_loop):</div><div class="line">    url = &apos;http://httpbin.org/get&apos;</div><div class="line">    resp = event_loop.run_until_complete(http_client(url))</div><div class="line">    assert b&apos;HTTP/1.1 200 OK&apos; in resp</div></pre></td></tr></table></figure>
-<p>这个fixture可以在标准的pytest测试文件中被覆盖，比如直接在测试文件里，或者是<code>conftest.py</code>，定义一个自定义的事件循环。这样自定义的<code>event_loop</code>在测试中就会生效。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@pytest.fixture()</div><div class="line">def event_loop():</div><div class="line">    loop = MyCustomLoop()</div><div class="line">    yield loop</div><div class="line">    loop.close()</div></pre></td></tr></table></figure>
-<p>如果使用了<code>pytest.mark.asyncio</code>，pytest的hook就会确保产生的loop会被作为默认的全局loop。依赖于<code>event_loop</code>的fixture就可以在运行的时候期望它们的loop被合适的修改为自定义的loop。</p>
-<h2 id="event-loop-process-pool"><a href="#event-loop-process-pool" class="headerlink" title="event_loop_process_pool"></a><code>event_loop_process_pool</code></h2><p><code>event_loop_process_pool</code>几乎和<code>event_loop</code>是一直的，除了创建的事件循环会将<code>concurrent.futures.ProcessPoolExecutor</code>作为默认的处理器。</p>
-<h2 id="unused-tcp-port"><a href="#unused-tcp-port" class="headerlink" title="unused_tcp_port"></a><code>unused_tcp_port</code></h2><p>查找并且产生一个没有用过的tcp端口，对于绑定一个临时的测试服务器是比较有用的。</p>
-<h2 id="unused-tcp-port-factory"><a href="#unused-tcp-port-factory" class="headerlink" title="unused_tcp_port_factory"></a><code>unused_tcp_port_factory</code></h2><p>在每次调用时候都会产生一个没有使用的tcp端口，在一个测试中要使用多个端口的情况比较有用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def a_test(unused_tcp_port_factory):</div><div class="line">    port1, port2 = unused_tcp_port_factory(), unused_tcp_port_factory()</div><div class="line">    ...</div></pre></td></tr></table></figure>
-<h2 id="Async-fixtures"><a href="#Async-fixtures" class="headerlink" title="Async fixtures"></a><code>Async fixtures</code></h2><p>异步的fixture就和普通的pytest fixture一样定义，除了它们应该是协程或者异步的生成器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@pytest.fixture</div><div class="line">async def async_gen_fixture():</div><div class="line">    await asyncio.sleep(0.1)</div><div class="line">    # 同样，生成一个值，作为调用fixture结果</div><div class="line">    yield &apos;a value&apos;</div><div class="line"></div><div class="line">@pytest.fixture(scope=&apos;module&apos;)</div><div class="line">async def async_fixture():</div><div class="line">    return await asyncio.sleep(0.1)</div></pre></td></tr></table></figure>
-<p>所有的范围都支持，如果你需要使用一个不是函数级别的范围的话，你需要重新定义<code>event_loop</code>来获取更大的范围，异步的fixture需要事件循环，因此必须定义和<code>event_loop</code>一个一样的或者更窄的范围</p>
-<p>如果你想在Python 3.5中使用，<code>yield</code>语句必须用<code>await yield_()</code>来替换，并且协程函数必须使用<code>@async_generator</code>来替换</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from async_generator import yield_, async_generator</div><div class="line"></div><div class="line">@pytest.fixture</div><div class="line">@async_generator</div><div class="line">async def async_gen_fixture():</div><div class="line">    await asyncio.sleep(0.1)</div><div class="line">    await yield_(&apos;a value&apos;)</div></pre></td></tr></table></figure>
-<h1 id="Markers"><a href="#Markers" class="headerlink" title="Markers"></a>Markers</h1><h2 id="pytest-mark-asyncio"><a href="#pytest-mark-asyncio" class="headerlink" title="pytest.mark.asyncio"></a><code>pytest.mark.asyncio</code></h2><p>使用这个marker来标记你的测试协程，然后pytest就会使用<code>event_loop</code>提供的事件循环来运行你的异步测试函数。</p>
-<p>可以将<code>event_loop</code>覆盖来使用新的事件循环（参考上面）</p>
-<p>为了让你的测试代码更加简洁，<code>pytestmark</code>特性可以用来将整个的模块或者类来使用这个标记。只有测试协程会被影响，默认的协程应该以<code>test_</code>为前缀，因此，fixtures是可以安全定义的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import pytest</div><div class="line"></div><div class="line"># All test coroutines will be treated as marked.</div><div class="line">pytestmark = pytest.mark.asyncio</div><div class="line"></div><div class="line">async def test_example(event_loop):</div><div class="line">    &quot;&quot;&quot;No marker!&quot;&quot;&quot;</div><div class="line">    await asyncio.sleep(0, loop=event_loop)</div></pre></td></tr></table></figure>
-<h2 id="pytest-mark-asyncio-process-pool"><a href="#pytest-mark-asyncio-process-pool" class="headerlink" title="pytest.mark.asyncio_process_pool"></a><code>pytest.mark.asyncio_process_pool</code></h2><p><code>asyncio_process_pool</code>和<code>asyncio</code> marker是基本一致的，除了事件循环会使用<code>concurrent.futures.ProcessPoolExecutor</code>作为默认的处理器。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/21/翻译 - unittest.mock — mock object library/" >翻译 - unittest.mock — mock object library</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-21 11:18:30  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><code>unittest.mock</code> - mock object library</p>
-<p>翻译自<a href="https://docs.python.org/3/library/unittest.mock.html#" target="_blank" rel="external">unittest.mock — mock object library</a></p>
-<p><code>unittest.mock</code>是一个在Python中做测试的库，它允许你使用mock对象在测试中替换系统的的某些部分，并且假定它们是怎样使用的。</p>
-<p><code>unittest.mock</code>提供了一个核心<code>Mock</code>类来在测试中移除创建众多基础构件的需要。在使用之后，你可以假定哪些方法属性被使用以及调用的时候使用哪些参数。你也可以指定返回值并且以普通的方式设置需要的属性。</p>
-<p>另外，mock提供了<code>patch()</code>装饰器用来在测试中对模块级和类级属性进行补丁，协同使用sentinel来创建一个独一无二的对象。</p>
-<p>Mock非常容易使用并且是设计与unittest一起使用的。Mock是基于<code>action -&gt; assertion</code>模式而不是很多mocking测试框架使用的<code>record -&gt; replay</code></p>
-<h1 id="Quick-Guide"><a href="#Quick-Guide" class="headerlink" title="Quick Guide"></a>Quick Guide</h1><p><code>Mock</code>和<code>MagicMock</code>对象创建了所有的属性和方法，这样你可以获取它们并且储存关于它们如何被使用的细节。你可以配置它们，去指定返回值或者限制哪些属性是可用的，然后做出关于它们如何被使用的假定。</p>
-<h2 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import MagicMock</div><div class="line">thing = ProductionClass()</div><div class="line">thing.method = MagicMock(return_value=3)</div><div class="line">thing.method(3, 4, 5, key=&apos;value&apos;)  # 3</div><div class="line">thing.method.assert_called_with(3, 4, 5, key=&apos;value&apos;)</div></pre></td></tr></table></figure>
-<h2 id="side-effect"><a href="#side-effect" class="headerlink" title="side_effect"></a><code>side_effect</code></h2><p><code>side_effect</code>允许你配置side effects，包括当mock被调用的时候引发一个异常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mock = Mock(side_effect=KeyError(&apos;foo&apos;))</div><div class="line">mock()  # raise KeyError Exception</div><div class="line">values = &#123;&apos;a&apos;: 1, &apos;b&apos;: 2, &apos;c&apos;: 3&#125;</div><div class="line">def side_effect(arg):</div><div class="line">    return values[arg]</div><div class="line">mock.side_effect = side_effect</div><div class="line">mock(&apos;a&apos;), mock(&apos;b&apos;), mock(&apos;c&apos;)  # (1,2,3)</div><div class="line">mock.side_effect = [5, 4, 3, 2, 1]</div><div class="line">mock(), mock(), mock()  # (5, 4, 3)</div></pre></td></tr></table></figure>
-<p>当mock调用的时候<code>side_effect</code>可以是一个函数也可以是一个可迭代对象或者一个异常</p>
-<p>Mock有其他多种方式来配置并且控制其行为，比如<code>spec</code>参数配置mock通过其它对象去设定其指定值。尝试获取在<code>spec</code>中不存在的属性和方法会导致失败并且引发<code>AttributeError</code></p>
-<p>如果你传递进去一个函数，它将会和mock同样的参数调用。除非函数返回了<code>DEFAULT</code>单例，mock调用将会返回这个函数返回的值。如果这个函数返回了<code>DEFAULT</code>，mock就会返回其正常值，<code>return_value</code>。返回None应该也是返回正常值。</p>
-<p><code>DEFAULT</code>是一个提前创建的值，它被<code>side_effect</code>用来指示应该使用正常的返回值</p>
-<p>如果传递了一个可迭代对象，它将会被用来恢复一个迭代器，然后每次调用的时候产生一个值。这个值可以是一个异常实例，或者从调用mock中返回的一个值。</p>
-<p>一个mock使用示例来产生一个异常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.side_effect = Exception(&apos;Boom!&apos;)</div><div class="line">mock()</div></pre></td></tr></table></figure>
-<p>使用<code>side_effect</code>来返回一个value的序列</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.side_effect = [3, 2, 1]</div><div class="line">mock(), mock(), mock()</div></pre></td></tr></table></figure>
-<p>使用一个可调用对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mock = Mock(return_value=3)</div><div class="line">def side_effect(*args, **kwargs):</div><div class="line">    return DEFAULT</div><div class="line">mock.side_effect = side_effect</div><div class="line">mock()</div></pre></td></tr></table></figure>
-<p><code>side_effect</code>可以在构造器中使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">side_effect = lambda value: value + 1</div><div class="line">mock = Mock(side_effect=side_effect)</div><div class="line">mock(3)</div><div class="line">mock(-8)</div></pre></td></tr></table></figure>
-<p>将<code>side_effect</code>置为None来清除它</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">m = Mock(side_effect=KeyError, return_value=3)</div><div class="line">m()  # raise Exception</div><div class="line">m.side_effect = None</div><div class="line">m()</div></pre></td></tr></table></figure>
-<h2 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h2><p><code>patch()</code>装饰器/上下文管理器使得mock测试中某个模块的类或者对象非常容易。你指定的对象将被在测试中的mock对象替换，然后在测试结束时候重新载入原来的对象。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import patch</div><div class="line">@patch(&apos;module.ClassName2&apos;)</div><div class="line">@patch(&apos;module.ClassName1&apos;)</div><div class="line">def test(MockClass1, MockClass2):</div><div class="line">    module.ClassName1()</div><div class="line">    module.ClassName2()</div><div class="line">    assert MockClass1 is module.ClassName1</div><div class="line">    assert MockClass2 is module.ClassName2</div><div class="line">    assert MockClass1.called</div><div class="line">    assert MockClass2.called</div><div class="line">test()</div></pre></td></tr></table></figure>
-<p>装饰器的顺序就是传入的参数的顺序，装饰器顺序是从下往上，参数就是从左往右。</p>
-<p><code>patch()</code>关键的是要patch的对象查找的命名空间，通常是非常直接的。</p>
-<p>同样<code>patch()</code>可以被用作成为一个上下文管理器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">with patch.object(ProductionClass, &apos;method&apos;, return_value=None) as mock_method:</div><div class="line">    thing = ProductionClass()</div><div class="line">    # 返回值是None</div><div class="line">    thing.method(1, 2, 3)</div><div class="line">mock_method.assert_called_once_with(1, 2, 3)</div></pre></td></tr></table></figure>
-<p><code>patch.dict()</code>可以用来在字典中在某个作用域中设置值，并且在测试完成后重新载入之前的字典</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">foo = &#123;&apos;key&apos;: &apos;value&apos;&#125;</div><div class="line">original = foo.copy()</div><div class="line">with patch.dict(foo, &#123;&apos;newkey&apos;: &apos;newvalue&apos;&#125;, clear=True):</div><div class="line">    assert foo == &#123;&apos;newkey&apos;: &apos;newvalue&apos;&#125;</div><div class="line">assert foo == original</div></pre></td></tr></table></figure>
-<h2 id="magic-method"><a href="#magic-method" class="headerlink" title="magic method"></a><code>magic method</code></h2><p>Mock支持模拟Python魔法方法，最简单的使用魔法方法是使用<code>MagicMock</code>类，它允许你这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mock = MagicMock()</div><div class="line">mock.__str__.return_value = &apos;foobarbaz&apos;</div><div class="line">str(mock)</div><div class="line">mock.__str__.assert_called_with()</div></pre></td></tr></table></figure>
-<p>Mock允许你将函数赋值给魔法方法，然后它们就会被调用。<code>MagicMock</code>类只是一个Mock变体，拥有所有的预先创建的魔法方法。</p>
-<p>下面是使用普通的Mock类来使用魔法方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.__str__ = Mock(return_value=&apos;wheeeeee&apos;)</div><div class="line">str(mock)</div></pre></td></tr></table></figure>
-<h2 id="auto-speccing"><a href="#auto-speccing" class="headerlink" title="auto-speccing"></a><code>auto-speccing</code></h2><p>为了确保在你的测试中的mock对象有和要替换的对象相同的api，你可以使用<code>auto-speccing</code>,<code>auto-speccing</code>可以通过<code>autospec</code>参数改变完成，或者<code>create_autospec()</code>函数。<code>auto-speccing</code>创建了和要替换的对象相同的属性和方法的mock对象，任意的函数和方法都将有和真实对象一样的签名。</p>
-<p>如果使用错误，将会产生和生产代码一样的错误方式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import create_autospec</div><div class="line">def function(a, b, c):</div><div class="line">    pass</div><div class="line">mock_function = create_autospec(function, return_value=&apos;fishy&apos;)</div><div class="line">mock_function(1, 2, 3)  # &apos;fishy&apos;</div><div class="line">mock_function.assert_called_once_with(1, 2, 3)</div><div class="line">mock_function(&apos;wrong arguments&apos;)  # 异常TypeError</div></pre></td></tr></table></figure>
-<p><code>create_autospec</code>也可以使用在类中，它会赋值<code>__init__</code>方法的签名，在可调用对象中将会复制<code>__call__</code>方法的签名。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/21/翻译 - unittest.mock — mock object library/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/20/后会无期/" >后会无期</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-20 21:29:06  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>当天下午订票和租车，当天晚上赶火车，第二天到西宁，三天开了快800公里。</p>
-<blockquote>
-<p>我曾经跨过山和大海<br>也穿过人山人海<br>我曾经拥有着一切<br>转眼都飘散如烟<br>我曾经失落失望失掉所有方向<br>直到看见平凡才是唯一的答案<br>我曾经毁了我的一切<br>只想永远地离开<br>我曾经堕入无边黑暗<br>想挣扎无法自拔<br>我曾经像你像他像那野草野花<br>绝望着 也渴望着 也哭也笑平凡着</p>
-</blockquote>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai2.png" alt=""></p>
-<p>茶卡盐湖</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai1.png" alt=""></p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/20/后会无期/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/" >翻译 - Testing (asyncio) coroutines with pytest</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-16 10:14:27  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>写的aiossdb库，需要对协程进行测试，但是pytest会默认将定义的函数就当成普通函数来测试，当然可以在一个测试函数里面定义要测试的部分，但是比较麻烦吧，每次都得写loop之类。这篇文章介绍了一种使用pytest对协程进行测试的优雅方法。</p>
-<p>翻译自：<a href="https://stefan.sofa-rockers.org/2015/04/22/testing-coroutines/" target="_blank" rel="external">Testing (asyncio) coroutines with pytest</a></p>
-<p>pytest是一个非常棒的Python测试库，并且也是我最喜欢的Python库之一。它使得写测试很简单，并且它在测试失败的时候的报告能力也非常棒。</p>
-<p>但是，它不能在测试协程上给你太大帮助，所以一个简单的测试协程的程序可能会是这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line"></div><div class="line">def test_coro():</div><div class="line">    loop = asyncio.get_event_loop()</div><div class="line"></div><div class="line">    @asyncio.coroutine</div><div class="line">    def do_test():</div><div class="line">        yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">        assert 0  # onoes!</div><div class="line"></div><div class="line">    loop.run_until_complete(do_test())</div></pre></td></tr></table></figure>
-<p>这种方法有些许问题，并且很冗余，我们真正感兴趣的代码只有包含<code>yield from</code>和<code>assert</code>的那几行。</p>
-<p>如果每个测试用例都有自己的事件循环实例，并且在测试通过或者失败的时候自动正确关闭那会更好。</p>
-<p>我们也不能简单的在测试用例里<code>yield</code>，因为pytest会认为我们的测试用例会产生不在这里的新的测试用例。所以我们必须创建一个独立的协程来包含我们真实的测试，并且放到事件循环里去运行它。</p>
-<p>如果我们可以像下面这么做，我们的测试将会看起来更加整洁，并且会表现更好</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@asyncio.coroutine</div><div class="line">def test_coro(loop):</div><div class="line">    yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">    assert 0</div></pre></td></tr></table></figure>
-<p>幸亏pytest的灵活的插件系统，使得可以实现我们期望的操作。但是，大多数需要的hooks都没有非常好的形成文档，这使得找出以需要实现的hooks以及如何实现相当难。</p>
-<p>我们创建一个本地每个目录的插件，因为这样比创建一个真正的外部插件要容易一些。pytest会查看每一个测试目录去寻找一个<code>conftest.py</code>文件，然后对这个目录下的所有测试应用这里定义的fixtures和hooks。</p>
-<p>让我们开始从写一个会给每一个测试用例创建新的事件循环实例，并且会在测试完成后关闭的fixture开始吧</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import pytest</div><div class="line"></div><div class="line"># yield_fixture 已经弃用，统一使用fixture</div><div class="line">@pytest.fixture</div><div class="line">def loop():</div><div class="line">    # Set-up</div><div class="line">    loop = asyncio.new_event_loop()</div><div class="line">    asyncio.set_event_loop(loop)</div><div class="line">    yield loop</div><div class="line"></div><div class="line">    # Clean-up</div><div class="line">    loop.close()</div><div class="line"></div><div class="line"></div><div class="line"># tests/test_coros.py</div><div class="line"></div><div class="line">def test_coro(loop):</div><div class="line">    @asyncio.coroutine</div><div class="line">    def do_test():</div><div class="line">        yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">        assert 0  # onoes!</div><div class="line"></div><div class="line">    loop.run_until_complete(do_test())</div></pre></td></tr></table></figure>
-<p>在每一个测试之前，pytest执行loop fixture直到第一个<code>yield</code>语句，yielded获得的值将会传递给我们的测试用例作为loop参数。当测试完成，无论成功与否，pytest会结束loop fixture的运行，因此会合适的关闭loop。同样的你可以写一个fixture来创建一个socket，并且在每个测试完成之后关闭。你的socket fixture可以依赖loop fixture，就和我们的测试做的一样。很不错，不是吗？</p>
-<p>但是我们还没有完成，让我们教pytest怎样去执行我们的测试协程吧。因此，我们需要去改变asyncio协程被收集的行为，它们应该像普通测试函数一样收集，而不是测试生成器。还有要改变它们被执行的方式，通过<code>loop.run_until_complete()</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"># tests/conftest.py</div><div class="line"></div><div class="line">def pytest_pycollect_makeitem(collector, name, obj):</div><div class="line">    &quot;&quot;&quot;收集asyncio协程作为普通函数，而不是生成器</div><div class="line">    collector 是收集器实例</div><div class="line">    name 应该是收集到的函数名字</div><div class="line">    obj 是函数对象&quot;&quot;&quot;</div><div class="line">    if collector.funcnamefilter(name) and asyncio.iscoroutinefunction(obj):</div><div class="line">        # 我们返回测试函数对象的list，依赖于fixtures，一个测试函数可能会导致多个测试项</div><div class="line">        # 也就是它被 pytest.mark.parametrize()装饰器装饰的时候</div><div class="line">        # 将其生成为普通函数，也就是说，这些协程会被当成普通函数收集，但是它还是协程</div><div class="line">        return list(collector._genfunctions(name, obj))</div><div class="line">    # else:</div><div class="line">    # 我们返回None，pytest的默认行为会将其应用到obj</div><div class="line"></div><div class="line"></div><div class="line">def pytest_pyfunc_call(pyfuncitem):</div><div class="line">    &quot;&quot;&quot;如果 pyfuncitem.obj 是一个asyncio的协程函数，通过在时间循环中执行它而不是直接调用&quot;&quot;&quot;</div><div class="line">    testfunction = pyfuncitem.obj</div><div class="line"></div><div class="line">    if not asyncio.iscoroutinefunction(testfunction):</div><div class="line">        # 如果不是协程的话直接返回，pytest会通过正常方式去处理它</div><div class="line">        return</div><div class="line"></div><div class="line">    # 从所有可用的fixtures中抽取需要的参数</div><div class="line">    funcargs = pyfuncitem.funcargs  # 所有fixtures的字典</div><div class="line">    argnames = pyfuncitem._fixtureinfo.argnames  # 这个测试的参数名字</div><div class="line">    # 也就是从fixtures字典中来找出所需要的fixture对象，fixture对象可能直接返回值yield return</div><div class="line">    # 也可能是返回一个函数对象，所以需要调用</div><div class="line">    testargs = &#123;arg: funcargs[arg] for arg in argnames&#125;</div><div class="line"></div><div class="line">    # 为这个测试创建生成器对象，测试这时候将不会被执行</div><div class="line">    coro = testfunction(**testargs)</div><div class="line"></div><div class="line">    # 在事件循环中执行这个协程并且开始测试</div><div class="line">    loop = testargs[&apos;loop&apos;] if loop in testargs else asyncio.get_event_loop()</div><div class="line">    loop.run_until_complete(coro)</div><div class="line"></div><div class="line">    return True  # 我们执行完测试后的信号</div></pre></td></tr></table></figure>
-<p>这一个插件应该在pytest 2.4或者更新中运行。</p>
-<p>看起来pytest dev正在试着清理并且重构pytest的插件系统。也许，将来的版本将会包含和我们的插件相同的函数。如果pytest支持即时可用的(out-of-the-box)协程测试方法那将会非常棒，因为协程正在在不同的框架中变得非常广泛。</p>
-<p>另外：<a href="https://github.com/pytest-dev/pytest-asyncio" target="_blank" rel="external">pytest-asyncio</a>正是pytest support for asyncio，可以拿来用！</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/10/17/music_1/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -935,45 +560,45 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/interview/">interview<span>0</span></a></li>
+			<li><a href="/tags/日记/">日记<span>0</span></a></li>
 		
-			<li><a href="/tags/金融/">金融<span>1</span></a></li>
+			<li><a href="/tags/算法/">算法<span>15</span></a></li>
 		
-			<li><a href="/tags/Go/">Go<span>2</span></a></li>
-		
-			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
-		
-			<li><a href="/tags/旅行/">旅行<span>1</span></a></li>
-		
-			<li><a href="/tags/宋词/">宋词<span>1</span></a></li>
-		
-			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
-		
-			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
-		
-			<li><a href="/tags/Database/">Database<span>5</span></a></li>
-		
-			<li><a href="/tags/gevent/">gevent<span>1</span></a></li>
-		
-			<li><a href="/tags/unittest/">unittest<span>1</span></a></li>
-		
-			<li><a href="/tags/Traitlets/">Traitlets<span>1</span></a></li>
-		
-			<li><a href="/tags/Thrift/">Thrift<span>3</span></a></li>
-		
-			<li><a href="/tags/Song/">Song<span>3</span></a></li>
-		
-			<li><a href="/tags/StackOverFlow/">StackOverFlow<span>1</span></a></li>
-		
-			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
 		
 			<li><a href="/tags/SQL学习指南/">SQL学习指南<span>1</span></a></li>
 		
-			<li><a href="/tags/Python/">Python<span>56</span></a></li>
+			<li><a href="/tags/并发/">并发<span>5</span></a></li>
 		
-			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
+			<li><a href="/tags/TED/">TED<span>1</span></a></li>
 		
-			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
+			<li><a href="/tags/git/">git<span>2</span></a></li>
+		
+			<li><a href="/tags/Traitlets/">Traitlets<span>1</span></a></li>
+		
+			<li><a href="/tags/Docker/">Docker<span>1</span></a></li>
+		
+			<li><a href="/tags/宋词/">宋词<span>1</span></a></li>
+		
+			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
+		
+			<li><a href="/tags/Mac/">Mac<span>1</span></a></li>
+		
+			<li><a href="/tags/gevent/">gevent<span>1</span></a></li>
+		
+			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
+		
+			<li><a href="/tags/Thrift/">Thrift<span>3</span></a></li>
+		
+			<li><a href="/tags/Shell/">Shell<span>1</span></a></li>
+		
+			<li><a href="/tags/明朝/">明朝<span>1</span></a></li>
+		
+			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
+		
+			<li><a href="/tags/Jupyter/">Jupyter<span>2</span></a></li>
+		
+			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>46</span></a></li>
@@ -1019,7 +644,7 @@ var _hmt = _hmt || [];
 	
 		<li><i class="fa fa-github"></i><a href="https://github.com/Microndgt" title="My Github account." target="_blank"]);">Github</a></li>
 	
-		<li><i class="fa fa-linkedin"></i><a href="http://www.weibo.com/in/xxx" title="My weibo account." target="_blank"]);">My Weibo</a></li>
+		<li><i class="fa fa-weibo"></i><a href="https://weibo.com/KevinDu2016" title="My weibo account." target="_blank"]);">My Weibo</a></li>
 	
 	</ul>
 </div>
@@ -1036,10 +661,12 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2018 Kevin Du
+  2016-2018
   
-      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
-     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+  &copy;  Kevin Du
+  
+    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
 </p>
  </footer>
 </div> <!-- container-narrow -->

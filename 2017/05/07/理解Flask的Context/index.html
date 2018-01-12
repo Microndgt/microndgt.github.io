@@ -326,7 +326,11 @@ var _hmt = _hmt || [];
 
 	<!-- toc -->
 	<div class="meta-widget">
-	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#Thread-Local"><span class="toc-article-text">Thread Local</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#Werkzeug实现的本地线程"><span class="toc-article-text">Werkzeug实现的本地线程</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#LocalStack"><span class="toc-article-text">LocalStack</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#LocalProxy"><span class="toc-article-text">LocalProxy</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#Flask-基于-Local-Stack-的-Context"><span class="toc-article-text">Flask 基于 Local Stack 的 Context</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#App-Context和Request-Context两者独立"><span class="toc-article-text">App Context和Request Context两者独立</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#离线脚本或者测试运行Flask关联的代码"><span class="toc-article-text">离线脚本或者测试运行Flask关联的代码</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#App-Factory"><span class="toc-article-text">App Factory</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#详解应用上下文"><span class="toc-article-text">详解应用上下文</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#应用上下文的作用"><span class="toc-article-text">应用上下文的作用</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#创建应用上下文"><span class="toc-article-text">创建应用上下文</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#应用上下文局部变量"><span class="toc-article-text">应用上下文局部变量</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#上下文用法"><span class="toc-article-text">上下文用法</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Flask扩展开发"><span class="toc-article-text">Flask扩展开发</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#请求上下文"><span class="toc-article-text">请求上下文</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#上下文如何工作"><span class="toc-article-text">上下文如何工作</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#请求的一个处理过程和错误处理"><span class="toc-article-text">请求的一个处理过程和错误处理</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#销毁回调"><span class="toc-article-text">销毁回调</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#代理"><span class="toc-article-text">代理</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#使用上下文"><span class="toc-article-text">使用上下文</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#使用LocalProxy代替g"><span class="toc-article-text">使用LocalProxy代替g</span></a></li></ol></li></ol>
+		</div>
 	</div>
 	
     <hr>
@@ -344,10 +348,12 @@ var _hmt = _hmt || [];
   </div>
   <div class="container-narrow">
   <footer> <p>
-  &copy; 2018 Kevin Du
+  2016-2018
   
-      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
-     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+  &copy;  Kevin Du
+  
+    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
 </p>
  </footer>
 </div> <!-- container-narrow -->

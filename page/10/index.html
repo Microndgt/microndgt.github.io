@@ -1,0 +1,605 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>第 10 页 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="SkyRover"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 <div class="page-header logo">
+  <h1>靡不有初 鲜克有终<span class="blink-fast">∎</span></h1>
+</div>
+
+<div class="row page">
+
+	
+	<div class="col-md-9">
+	
+
+		<div class="slogan">
+      <i class="fa fa-heart blink-slow"></i>
+      Keep and carry on.
+</div>    
+		<div id="top_search"></div>
+		<div class="mypage">
+		
+		<!-- title and entry -->
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/23/翻译 - How to close a SQLAlchemy session/" >翻译 - How to close a SQLAlchemy session</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-23 14:29:33  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>在StackOverFlow中看到这个问题，比较有意思<a href="https://stackoverflow.com/questions/21738944/how-to-close-a-sqlalchemy-session" target="_blank" rel="external">How to close a SQLAlchemy session?</a></p>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>继续我们在<a href="https://stackoverflow.com/questions/8645250/how-to-close-sqlalchemy-connection-in-mysql/8705750?noredirect=1#comment32872652_8705750" target="_blank" rel="external">How to close sqlalchemy connection in MySQL</a>的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python</p>
+<p>如果我在python控制台中运行这一段程序，它将会保持session打开一直到我退出Python</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy.orm import sessionmaker</div><div class="line">from models import OneTable, get_engine</div><div class="line"></div><div class="line">engine = get_engine(database=&quot;mydb&quot;)</div><div class="line">session = sessionmaker(bind=engine)()</div><div class="line"></div><div class="line">results = session.query(OneTable.company_name).all()</div><div class="line"></div><div class="line"># some work with the data #</div><div class="line"></div><div class="line">session.close()</div></pre></td></tr></table></figure>
+<p>唯一我发现的解决方式是<code>engine.dispose()</code></p>
+<p>按照我给出连接的讨论，我的问题是：</p>
+<ul>
+<li>为什么<code>engine.dispose()</code>是关闭session所必须的</li>
+<li><code>session.close()</code>不够吗</li>
+</ul>
+<h1 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h1><p>高票回答：</p>
+<p>这主要是对<code>session</code>这个词有混淆。你可能混淆了<code>SQLAlchemy Session</code>和<code>MySQL session</code>，后者指的是当你第一次连接到MySQL和断开连接之间这一段范围。</p>
+<p>这两个概念是不同的，SQLAlchemy Session指的是一个或者多个transactions的范围，在一个特定的数据库连接之上。</p>
+<p>因此，就你所问的答案应该是调用<code>session.close()</code>，也就是，如何正确的关闭SQLAlchemy Session</p>
+<p>然后，剩下的问题说明你想凭借一些功能性的东西，当特定的Session关闭时候，而且真实的DBAPI连接也要关闭</p>
+<p>也就是说你希望禁止connection pooling连接池，就像其他答案一样，非常容易，使用NullPool，<code>poolclass=NullPool</code></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>最近在应用中出现了这个问题<code>Too many open files:/sqlalchemy/dialects</code></p>
+<p>首先这个<code>too many open files</code>原因是因为程序打开的文件/socket连接数量超过系统设定值，然后又是sqlalchemy报错的，因此很大可能性是因为sqlalchemy建立的连接过多。</p>
+<p>然后给所有使用<code>db.session.commit()</code>的后面加入一行<code>db.session.close()</code>用来关闭连接会话。</p>
+<p>看来涉及数据库连接等连接问题时候还是得谨慎啊。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/23/翻译 - How to close a SQLAlchemy session/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/" >翻译 - use pytest-asyncio to test your coroutines</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-22 11:15:14  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自 <a href="https://stefan.sofa-rockers.org/2016/03/10/advanced-asyncio-testing/" target="_blank" rel="external">Advanced asyncio testing</a></p>
+<p>其实就是这个库的使用:<a href="https://github.com/pytest-dev/pytest-asyncio" target="_blank" rel="external">pytest-asyncio</a></p>
+<p>参考使用例子：<a href="https://github.com/Microndgt/aiossdb/tree/master/tests" target="_blank" rel="external">aiossdb</a></p>
+<p>上篇文章中，我展示了如何使用pytest的fixture系统和插件结构来帮助你写出更简洁和更好的测试。fixture允许你为每一个测试用例创建一个更清晰的事件循环实例。插件系统允许你将异步的协程作为测试用例。但是还有更方便的<code>pytest-asyncio</code>可以用来写测试用例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import time</div><div class="line"></div><div class="line">import pytest</div><div class="line"></div><div class="line">@pytest.mark.asyncio</div><div class="line">async def test_coro(event_loop):</div><div class="line">    before = time.monotonic()</div><div class="line">    await asyncio.sleep(0.1, loop=event_loop)</div><div class="line">    after = time.monotonic()</div><div class="line">    assert after - before &gt;= 0.1</div></pre></td></tr></table></figure>
+<p><code>event_loop</code>是内置的fixture，因此可以直接使用</p>
+<p>因此使用<code>pytest-asyncio</code>很好的提高了你的测试，并且还有更好用的</p>
+<p>其包含以下特性：</p>
+<ul>
+<li>创建和注入asyncio的事件循环的fixture</li>
+<li>注入未使用的tcp端口的fixture</li>
+<li>可以将测试用例标记为协程的markers</li>
+<li>非常容易的测试非默认事件循环</li>
+<li>支持定义异步fixture和异步生成器fixture</li>
+</ul>
+<h1 id="Fixtures"><a href="#Fixtures" class="headerlink" title="Fixtures"></a>Fixtures</h1><h2 id="event-loop"><a href="#event-loop" class="headerlink" title="event_loop"></a><code>event_loop</code></h2><p>创建并且注入一个默认异步事件循环的新实例，默认情况下，这个循环将在测试结束后关闭，也就是说默认的fixture范围是function级别的</p>
+<p>只用<code>event_loop</code>fixture是不会使得你的测试函数变成协程的，你必须和<code>event_loop</code>进行交互，使用<code>event_loop.run_until_complete</code>方法。</p>
+<p>或者使用<code>pytest.mark.asyncio</code>将测试函数变成协程，查看<code>pytest.mark.asyncio</code>是如何将测试函数当成协程来处理的。</p>
+<p>只是简单的使用这个<code>event_loop</code>不会将其变成全局的loop，必须使用<code>pytest.mark.asyncio</code>才可以，这样其他的fixture以及pytest来测试的事件循环就使用的是同一个全局loop，在一个测试中可能有多个fixture，这些fixture可能也使用loop，所以这样可以确保其fixtures都是使用的一个loop.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def test_http_client(event_loop):</div><div class="line">    url = &apos;http://httpbin.org/get&apos;</div><div class="line">    resp = event_loop.run_until_complete(http_client(url))</div><div class="line">    assert b&apos;HTTP/1.1 200 OK&apos; in resp</div></pre></td></tr></table></figure>
+<p>这个fixture可以在标准的pytest测试文件中被覆盖，比如直接在测试文件里，或者是<code>conftest.py</code>，定义一个自定义的事件循环。这样自定义的<code>event_loop</code>在测试中就会生效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@pytest.fixture()</div><div class="line">def event_loop():</div><div class="line">    loop = MyCustomLoop()</div><div class="line">    yield loop</div><div class="line">    loop.close()</div></pre></td></tr></table></figure>
+<p>如果使用了<code>pytest.mark.asyncio</code>，pytest的hook就会确保产生的loop会被作为默认的全局loop。依赖于<code>event_loop</code>的fixture就可以在运行的时候期望它们的loop被合适的修改为自定义的loop。</p>
+<h2 id="event-loop-process-pool"><a href="#event-loop-process-pool" class="headerlink" title="event_loop_process_pool"></a><code>event_loop_process_pool</code></h2><p><code>event_loop_process_pool</code>几乎和<code>event_loop</code>是一直的，除了创建的事件循环会将<code>concurrent.futures.ProcessPoolExecutor</code>作为默认的处理器。</p>
+<h2 id="unused-tcp-port"><a href="#unused-tcp-port" class="headerlink" title="unused_tcp_port"></a><code>unused_tcp_port</code></h2><p>查找并且产生一个没有用过的tcp端口，对于绑定一个临时的测试服务器是比较有用的。</p>
+<h2 id="unused-tcp-port-factory"><a href="#unused-tcp-port-factory" class="headerlink" title="unused_tcp_port_factory"></a><code>unused_tcp_port_factory</code></h2><p>在每次调用时候都会产生一个没有使用的tcp端口，在一个测试中要使用多个端口的情况比较有用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def a_test(unused_tcp_port_factory):</div><div class="line">    port1, port2 = unused_tcp_port_factory(), unused_tcp_port_factory()</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<h2 id="Async-fixtures"><a href="#Async-fixtures" class="headerlink" title="Async fixtures"></a><code>Async fixtures</code></h2><p>异步的fixture就和普通的pytest fixture一样定义，除了它们应该是协程或者异步的生成器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@pytest.fixture</div><div class="line">async def async_gen_fixture():</div><div class="line">    await asyncio.sleep(0.1)</div><div class="line">    # 同样，生成一个值，作为调用fixture结果</div><div class="line">    yield &apos;a value&apos;</div><div class="line"></div><div class="line">@pytest.fixture(scope=&apos;module&apos;)</div><div class="line">async def async_fixture():</div><div class="line">    return await asyncio.sleep(0.1)</div></pre></td></tr></table></figure>
+<p>所有的范围都支持，如果你需要使用一个不是函数级别的范围的话，你需要重新定义<code>event_loop</code>来获取更大的范围，异步的fixture需要事件循环，因此必须定义和<code>event_loop</code>一个一样的或者更窄的范围</p>
+<p>如果你想在Python 3.5中使用，<code>yield</code>语句必须用<code>await yield_()</code>来替换，并且协程函数必须使用<code>@async_generator</code>来替换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from async_generator import yield_, async_generator</div><div class="line"></div><div class="line">@pytest.fixture</div><div class="line">@async_generator</div><div class="line">async def async_gen_fixture():</div><div class="line">    await asyncio.sleep(0.1)</div><div class="line">    await yield_(&apos;a value&apos;)</div></pre></td></tr></table></figure>
+<h1 id="Markers"><a href="#Markers" class="headerlink" title="Markers"></a>Markers</h1><h2 id="pytest-mark-asyncio"><a href="#pytest-mark-asyncio" class="headerlink" title="pytest.mark.asyncio"></a><code>pytest.mark.asyncio</code></h2><p>使用这个marker来标记你的测试协程，然后pytest就会使用<code>event_loop</code>提供的事件循环来运行你的异步测试函数。</p>
+<p>可以将<code>event_loop</code>覆盖来使用新的事件循环（参考上面）</p>
+<p>为了让你的测试代码更加简洁，<code>pytestmark</code>特性可以用来将整个的模块或者类来使用这个标记。只有测试协程会被影响，默认的协程应该以<code>test_</code>为前缀，因此，fixtures是可以安全定义的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import pytest</div><div class="line"></div><div class="line"># All test coroutines will be treated as marked.</div><div class="line">pytestmark = pytest.mark.asyncio</div><div class="line"></div><div class="line">async def test_example(event_loop):</div><div class="line">    &quot;&quot;&quot;No marker!&quot;&quot;&quot;</div><div class="line">    await asyncio.sleep(0, loop=event_loop)</div></pre></td></tr></table></figure>
+<h2 id="pytest-mark-asyncio-process-pool"><a href="#pytest-mark-asyncio-process-pool" class="headerlink" title="pytest.mark.asyncio_process_pool"></a><code>pytest.mark.asyncio_process_pool</code></h2><p><code>asyncio_process_pool</code>和<code>asyncio</code> marker是基本一致的，除了事件循环会使用<code>concurrent.futures.ProcessPoolExecutor</code>作为默认的处理器。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/21/翻译 - unittest.mock — mock object library/" >翻译 - unittest.mock — mock object library</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-21 11:18:30  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><code>unittest.mock</code> - mock object library</p>
+<p>翻译自<a href="https://docs.python.org/3/library/unittest.mock.html#" target="_blank" rel="external">unittest.mock — mock object library</a></p>
+<p><code>unittest.mock</code>是一个在Python中做测试的库，它允许你使用mock对象在测试中替换系统的的某些部分，并且假定它们是怎样使用的。</p>
+<p><code>unittest.mock</code>提供了一个核心<code>Mock</code>类来在测试中移除创建众多基础构件的需要。在使用之后，你可以假定哪些方法属性被使用以及调用的时候使用哪些参数。你也可以指定返回值并且以普通的方式设置需要的属性。</p>
+<p>另外，mock提供了<code>patch()</code>装饰器用来在测试中对模块级和类级属性进行补丁，协同使用sentinel来创建一个独一无二的对象。</p>
+<p>Mock非常容易使用并且是设计与unittest一起使用的。Mock是基于<code>action -&gt; assertion</code>模式而不是很多mocking测试框架使用的<code>record -&gt; replay</code></p>
+<h1 id="Quick-Guide"><a href="#Quick-Guide" class="headerlink" title="Quick Guide"></a>Quick Guide</h1><p><code>Mock</code>和<code>MagicMock</code>对象创建了所有的属性和方法，这样你可以获取它们并且储存关于它们如何被使用的细节。你可以配置它们，去指定返回值或者限制哪些属性是可用的，然后做出关于它们如何被使用的假定。</p>
+<h2 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import MagicMock</div><div class="line">thing = ProductionClass()</div><div class="line">thing.method = MagicMock(return_value=3)</div><div class="line">thing.method(3, 4, 5, key=&apos;value&apos;)  # 3</div><div class="line">thing.method.assert_called_with(3, 4, 5, key=&apos;value&apos;)</div></pre></td></tr></table></figure>
+<h2 id="side-effect"><a href="#side-effect" class="headerlink" title="side_effect"></a><code>side_effect</code></h2><p><code>side_effect</code>允许你配置side effects，包括当mock被调用的时候引发一个异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mock = Mock(side_effect=KeyError(&apos;foo&apos;))</div><div class="line">mock()  # raise KeyError Exception</div><div class="line">values = &#123;&apos;a&apos;: 1, &apos;b&apos;: 2, &apos;c&apos;: 3&#125;</div><div class="line">def side_effect(arg):</div><div class="line">    return values[arg]</div><div class="line">mock.side_effect = side_effect</div><div class="line">mock(&apos;a&apos;), mock(&apos;b&apos;), mock(&apos;c&apos;)  # (1,2,3)</div><div class="line">mock.side_effect = [5, 4, 3, 2, 1]</div><div class="line">mock(), mock(), mock()  # (5, 4, 3)</div></pre></td></tr></table></figure>
+<p>当mock调用的时候<code>side_effect</code>可以是一个函数也可以是一个可迭代对象或者一个异常</p>
+<p>Mock有其他多种方式来配置并且控制其行为，比如<code>spec</code>参数配置mock通过其它对象去设定其指定值。尝试获取在<code>spec</code>中不存在的属性和方法会导致失败并且引发<code>AttributeError</code></p>
+<p>如果你传递进去一个函数，它将会和mock同样的参数调用。除非函数返回了<code>DEFAULT</code>单例，mock调用将会返回这个函数返回的值。如果这个函数返回了<code>DEFAULT</code>，mock就会返回其正常值，<code>return_value</code>。返回None应该也是返回正常值。</p>
+<p><code>DEFAULT</code>是一个提前创建的值，它被<code>side_effect</code>用来指示应该使用正常的返回值</p>
+<p>如果传递了一个可迭代对象，它将会被用来恢复一个迭代器，然后每次调用的时候产生一个值。这个值可以是一个异常实例，或者从调用mock中返回的一个值。</p>
+<p>一个mock使用示例来产生一个异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.side_effect = Exception(&apos;Boom!&apos;)</div><div class="line">mock()</div></pre></td></tr></table></figure>
+<p>使用<code>side_effect</code>来返回一个value的序列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.side_effect = [3, 2, 1]</div><div class="line">mock(), mock(), mock()</div></pre></td></tr></table></figure>
+<p>使用一个可调用对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mock = Mock(return_value=3)</div><div class="line">def side_effect(*args, **kwargs):</div><div class="line">    return DEFAULT</div><div class="line">mock.side_effect = side_effect</div><div class="line">mock()</div></pre></td></tr></table></figure>
+<p><code>side_effect</code>可以在构造器中使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">side_effect = lambda value: value + 1</div><div class="line">mock = Mock(side_effect=side_effect)</div><div class="line">mock(3)</div><div class="line">mock(-8)</div></pre></td></tr></table></figure>
+<p>将<code>side_effect</code>置为None来清除它</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">m = Mock(side_effect=KeyError, return_value=3)</div><div class="line">m()  # raise Exception</div><div class="line">m.side_effect = None</div><div class="line">m()</div></pre></td></tr></table></figure>
+<h2 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h2><p><code>patch()</code>装饰器/上下文管理器使得mock测试中某个模块的类或者对象非常容易。你指定的对象将被在测试中的mock对象替换，然后在测试结束时候重新载入原来的对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import patch</div><div class="line">@patch(&apos;module.ClassName2&apos;)</div><div class="line">@patch(&apos;module.ClassName1&apos;)</div><div class="line">def test(MockClass1, MockClass2):</div><div class="line">    module.ClassName1()</div><div class="line">    module.ClassName2()</div><div class="line">    assert MockClass1 is module.ClassName1</div><div class="line">    assert MockClass2 is module.ClassName2</div><div class="line">    assert MockClass1.called</div><div class="line">    assert MockClass2.called</div><div class="line">test()</div></pre></td></tr></table></figure>
+<p>装饰器的顺序就是传入的参数的顺序，装饰器顺序是从下往上，参数就是从左往右。</p>
+<p><code>patch()</code>关键的是要patch的对象查找的命名空间，通常是非常直接的。</p>
+<p>同样<code>patch()</code>可以被用作成为一个上下文管理器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">with patch.object(ProductionClass, &apos;method&apos;, return_value=None) as mock_method:</div><div class="line">    thing = ProductionClass()</div><div class="line">    # 返回值是None</div><div class="line">    thing.method(1, 2, 3)</div><div class="line">mock_method.assert_called_once_with(1, 2, 3)</div></pre></td></tr></table></figure>
+<p><code>patch.dict()</code>可以用来在字典中在某个作用域中设置值，并且在测试完成后重新载入之前的字典</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">foo = &#123;&apos;key&apos;: &apos;value&apos;&#125;</div><div class="line">original = foo.copy()</div><div class="line">with patch.dict(foo, &#123;&apos;newkey&apos;: &apos;newvalue&apos;&#125;, clear=True):</div><div class="line">    assert foo == &#123;&apos;newkey&apos;: &apos;newvalue&apos;&#125;</div><div class="line">assert foo == original</div></pre></td></tr></table></figure>
+<h2 id="magic-method"><a href="#magic-method" class="headerlink" title="magic method"></a><code>magic method</code></h2><p>Mock支持模拟Python魔法方法，最简单的使用魔法方法是使用<code>MagicMock</code>类，它允许你这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mock = MagicMock()</div><div class="line">mock.__str__.return_value = &apos;foobarbaz&apos;</div><div class="line">str(mock)</div><div class="line">mock.__str__.assert_called_with()</div></pre></td></tr></table></figure>
+<p>Mock允许你将函数赋值给魔法方法，然后它们就会被调用。<code>MagicMock</code>类只是一个Mock变体，拥有所有的预先创建的魔法方法。</p>
+<p>下面是使用普通的Mock类来使用魔法方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.__str__ = Mock(return_value=&apos;wheeeeee&apos;)</div><div class="line">str(mock)</div></pre></td></tr></table></figure>
+<h2 id="auto-speccing"><a href="#auto-speccing" class="headerlink" title="auto-speccing"></a><code>auto-speccing</code></h2><p>为了确保在你的测试中的mock对象有和要替换的对象相同的api，你可以使用<code>auto-speccing</code>,<code>auto-speccing</code>可以通过<code>autospec</code>参数改变完成，或者<code>create_autospec()</code>函数。<code>auto-speccing</code>创建了和要替换的对象相同的属性和方法的mock对象，任意的函数和方法都将有和真实对象一样的签名。</p>
+<p>如果使用错误，将会产生和生产代码一样的错误方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import create_autospec</div><div class="line">def function(a, b, c):</div><div class="line">    pass</div><div class="line">mock_function = create_autospec(function, return_value=&apos;fishy&apos;)</div><div class="line">mock_function(1, 2, 3)  # &apos;fishy&apos;</div><div class="line">mock_function.assert_called_once_with(1, 2, 3)</div><div class="line">mock_function(&apos;wrong arguments&apos;)  # 异常TypeError</div></pre></td></tr></table></figure>
+<p><code>create_autospec</code>也可以使用在类中，它会赋值<code>__init__</code>方法的签名，在可调用对象中将会复制<code>__call__</code>方法的签名。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/21/翻译 - unittest.mock — mock object library/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/20/后会无期/" >后会无期</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-20 21:29:06  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>当天下午订票和租车，当天晚上赶火车，第二天到西宁，三天开了快800公里。</p>
+<blockquote>
+<p>我曾经跨过山和大海<br>也穿过人山人海<br>我曾经拥有着一切<br>转眼都飘散如烟<br>我曾经失落失望失掉所有方向<br>直到看见平凡才是唯一的答案<br>我曾经毁了我的一切<br>只想永远地离开<br>我曾经堕入无边黑暗<br>想挣扎无法自拔<br>我曾经像你像他像那野草野花<br>绝望着 也渴望着 也哭也笑平凡着</p>
+</blockquote>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai2.png" alt=""></p>
+<p>茶卡盐湖</p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai1.png" alt=""></p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/20/后会无期/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/" >翻译 - Testing (asyncio) coroutines with pytest</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-16 10:14:27  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>写的aiossdb库，需要对协程进行测试，但是pytest会默认将定义的函数就当成普通函数来测试，当然可以在一个测试函数里面定义要测试的部分，但是比较麻烦吧，每次都得写loop之类。这篇文章介绍了一种使用pytest对协程进行测试的优雅方法。</p>
+<p>翻译自：<a href="https://stefan.sofa-rockers.org/2015/04/22/testing-coroutines/" target="_blank" rel="external">Testing (asyncio) coroutines with pytest</a></p>
+<p>pytest是一个非常棒的Python测试库，并且也是我最喜欢的Python库之一。它使得写测试很简单，并且它在测试失败的时候的报告能力也非常棒。</p>
+<p>但是，它不能在测试协程上给你太大帮助，所以一个简单的测试协程的程序可能会是这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line"></div><div class="line">def test_coro():</div><div class="line">    loop = asyncio.get_event_loop()</div><div class="line"></div><div class="line">    @asyncio.coroutine</div><div class="line">    def do_test():</div><div class="line">        yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">        assert 0  # onoes!</div><div class="line"></div><div class="line">    loop.run_until_complete(do_test())</div></pre></td></tr></table></figure>
+<p>这种方法有些许问题，并且很冗余，我们真正感兴趣的代码只有包含<code>yield from</code>和<code>assert</code>的那几行。</p>
+<p>如果每个测试用例都有自己的事件循环实例，并且在测试通过或者失败的时候自动正确关闭那会更好。</p>
+<p>我们也不能简单的在测试用例里<code>yield</code>，因为pytest会认为我们的测试用例会产生不在这里的新的测试用例。所以我们必须创建一个独立的协程来包含我们真实的测试，并且放到事件循环里去运行它。</p>
+<p>如果我们可以像下面这么做，我们的测试将会看起来更加整洁，并且会表现更好</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@asyncio.coroutine</div><div class="line">def test_coro(loop):</div><div class="line">    yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">    assert 0</div></pre></td></tr></table></figure>
+<p>幸亏pytest的灵活的插件系统，使得可以实现我们期望的操作。但是，大多数需要的hooks都没有非常好的形成文档，这使得找出以需要实现的hooks以及如何实现相当难。</p>
+<p>我们创建一个本地每个目录的插件，因为这样比创建一个真正的外部插件要容易一些。pytest会查看每一个测试目录去寻找一个<code>conftest.py</code>文件，然后对这个目录下的所有测试应用这里定义的fixtures和hooks。</p>
+<p>让我们开始从写一个会给每一个测试用例创建新的事件循环实例，并且会在测试完成后关闭的fixture开始吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import pytest</div><div class="line"></div><div class="line"># yield_fixture 已经弃用，统一使用fixture</div><div class="line">@pytest.fixture</div><div class="line">def loop():</div><div class="line">    # Set-up</div><div class="line">    loop = asyncio.new_event_loop()</div><div class="line">    asyncio.set_event_loop(loop)</div><div class="line">    yield loop</div><div class="line"></div><div class="line">    # Clean-up</div><div class="line">    loop.close()</div><div class="line"></div><div class="line"></div><div class="line"># tests/test_coros.py</div><div class="line"></div><div class="line">def test_coro(loop):</div><div class="line">    @asyncio.coroutine</div><div class="line">    def do_test():</div><div class="line">        yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">        assert 0  # onoes!</div><div class="line"></div><div class="line">    loop.run_until_complete(do_test())</div></pre></td></tr></table></figure>
+<p>在每一个测试之前，pytest执行loop fixture直到第一个<code>yield</code>语句，yielded获得的值将会传递给我们的测试用例作为loop参数。当测试完成，无论成功与否，pytest会结束loop fixture的运行，因此会合适的关闭loop。同样的你可以写一个fixture来创建一个socket，并且在每个测试完成之后关闭。你的socket fixture可以依赖loop fixture，就和我们的测试做的一样。很不错，不是吗？</p>
+<p>但是我们还没有完成，让我们教pytest怎样去执行我们的测试协程吧。因此，我们需要去改变asyncio协程被收集的行为，它们应该像普通测试函数一样收集，而不是测试生成器。还有要改变它们被执行的方式，通过<code>loop.run_until_complete()</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"># tests/conftest.py</div><div class="line"></div><div class="line">def pytest_pycollect_makeitem(collector, name, obj):</div><div class="line">    &quot;&quot;&quot;收集asyncio协程作为普通函数，而不是生成器</div><div class="line">    collector 是收集器实例</div><div class="line">    name 应该是收集到的函数名字</div><div class="line">    obj 是函数对象&quot;&quot;&quot;</div><div class="line">    if collector.funcnamefilter(name) and asyncio.iscoroutinefunction(obj):</div><div class="line">        # 我们返回测试函数对象的list，依赖于fixtures，一个测试函数可能会导致多个测试项</div><div class="line">        # 也就是它被 pytest.mark.parametrize()装饰器装饰的时候</div><div class="line">        # 将其生成为普通函数，也就是说，这些协程会被当成普通函数收集，但是它还是协程</div><div class="line">        return list(collector._genfunctions(name, obj))</div><div class="line">    # else:</div><div class="line">    # 我们返回None，pytest的默认行为会将其应用到obj</div><div class="line"></div><div class="line"></div><div class="line">def pytest_pyfunc_call(pyfuncitem):</div><div class="line">    &quot;&quot;&quot;如果 pyfuncitem.obj 是一个asyncio的协程函数，通过在时间循环中执行它而不是直接调用&quot;&quot;&quot;</div><div class="line">    testfunction = pyfuncitem.obj</div><div class="line"></div><div class="line">    if not asyncio.iscoroutinefunction(testfunction):</div><div class="line">        # 如果不是协程的话直接返回，pytest会通过正常方式去处理它</div><div class="line">        return</div><div class="line"></div><div class="line">    # 从所有可用的fixtures中抽取需要的参数</div><div class="line">    funcargs = pyfuncitem.funcargs  # 所有fixtures的字典</div><div class="line">    argnames = pyfuncitem._fixtureinfo.argnames  # 这个测试的参数名字</div><div class="line">    # 也就是从fixtures字典中来找出所需要的fixture对象，fixture对象可能直接返回值yield return</div><div class="line">    # 也可能是返回一个函数对象，所以需要调用</div><div class="line">    testargs = &#123;arg: funcargs[arg] for arg in argnames&#125;</div><div class="line"></div><div class="line">    # 为这个测试创建生成器对象，测试这时候将不会被执行</div><div class="line">    coro = testfunction(**testargs)</div><div class="line"></div><div class="line">    # 在事件循环中执行这个协程并且开始测试</div><div class="line">    loop = testargs[&apos;loop&apos;] if loop in testargs else asyncio.get_event_loop()</div><div class="line">    loop.run_until_complete(coro)</div><div class="line"></div><div class="line">    return True  # 我们执行完测试后的信号</div></pre></td></tr></table></figure>
+<p>这一个插件应该在pytest 2.4或者更新中运行。</p>
+<p>看起来pytest dev正在试着清理并且重构pytest的插件系统。也许，将来的版本将会包含和我们的插件相同的函数。如果pytest支持即时可用的(out-of-the-box)协程测试方法那将会非常棒，因为协程正在在不同的框架中变得非常广泛。</p>
+<p>另外：<a href="https://github.com/pytest-dev/pytest-asyncio" target="_blank" rel="external">pytest-asyncio</a>正是pytest support for asyncio，可以拿来用！</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+
+		</div>
+
+		<!-- pagination -->
+		<div>
+  		<center>
+		<div class="pagination">
+
+   
+    
+     <a href="/page/9/" type="button" class="btn btn-default"><i class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+      
+
+        <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+ 
+       <a href="/page/11/" type="button" class="btn btn-default ">下一页<i class="fa fa-arrow-circle-o-right"></i></a>     
+        
+
+  
+</div>
+
+  		</center>
+		</div>
+
+		
+		
+	</div> <!-- col-md-9 -->
+
+	
+		<div class="col-md-3">
+	<div id="sidebar">
+	
+			
+  <div id="site_search">
+   <div class="form-group">
+    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="st-search-input st-default-search-input form-control"/>
+   </div>  
+  <div id="local-search-result"></div>
+  </div>
+
+
+		
+			
+	<div class="widget">
+		<h4>分类</h4>
+		<ul class="tag_box inline list-unstyled">
+		
+			<li><a href="/categories/Music/">Music<span>3</span></a></li>
+		
+			<li><a href="/categories/人生/">人生<span>4</span></a></li>
+		
+			<li><a href="/categories/历史/">历史<span>1</span></a></li>
+		
+			<li><a href="/categories/编程/">编程<span>73</span></a></li>
+		
+		</ul>
+	</div>
+
+		
+			
+	<div class="widget">
+		<h4>标签云</h4>
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/Database/">Database<span>5</span></a></li>
+		
+			<li><a href="/tags/协程/">协程<span>1</span></a></li>
+		
+			<li><a href="/tags/宋词/">宋词<span>1</span></a></li>
+		
+			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
+		
+			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
+		
+			<li><a href="/tags/SQLAlchemy/">SQLAlchemy<span>1</span></a></li>
+		
+			<li><a href="/tags/金融/">金融<span>1</span></a></li>
+		
+			<li><a href="/tags/Jupyter/">Jupyter<span>2</span></a></li>
+		
+			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
+		
+			<li><a href="/tags/Thrift/">Thrift<span>3</span></a></li>
+		
+			<li><a href="/tags/StackOverFlow/">StackOverFlow<span>1</span></a></li>
+		
+			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
+		
+			<li><a href="/tags/旅行/">旅行<span>1</span></a></li>
+		
+			<li><a href="/tags/SQL学习指南/">SQL学习指南<span>1</span></a></li>
+		
+			<li><a href="/tags/Go/">Go<span>2</span></a></li>
+		
+			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
+		
+			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+		
+			<li><a href="/tags/Mac/">Mac<span>1</span></a></li>
+		
+			<li><a href="/tags/明朝/">明朝<span>1</span></a></li>
+		
+			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>46</span></a></li>
+		 
+		</ul>
+	</div>
+
+
+		
+			
+<div class="widget">
+  <h4>最新文章</h4>
+  <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/11/leetcode_algorithm_go_and_python_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Algorithm篇</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/06/leetcode_database_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Database篇</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
+      </li>
+    
+  </ul>
+</div>
+
+		
+			
+<div class="widget">
+	<h4>链接</h4>
+	<ul class="blogroll list-unstyled">
+	
+		<li><i class="fa fa-github"></i><a href="https://github.com/Microndgt" title="My Github account." target="_blank"]);">Github</a></li>
+	
+		<li><i class="fa fa-weibo"></i><a href="https://weibo.com/KevinDu2016" title="My weibo account." target="_blank"]);">My Weibo</a></li>
+	
+	</ul>
+</div>
+
+
+		
+	</div> <!-- sidebar -->
+</div> <!-- col-md-3 -->
+
+	
+	
+</div> <!-- row-fluid -->
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  2016-2018
+  
+  &copy;  Kevin Du
+  
+    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
