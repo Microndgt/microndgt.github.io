@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>SkyRover</title>
-  <subtitle>所谓热血的少年，青涩的爱恋，死亡与梦之约。</subtitle>
+  <subtitle>靡不有初 鲜克有终</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
@@ -158,7 +158,7 @@
     <link href="http://skyrover.me/2018/01/11/leetcode_algorithm_go_and_python_1/"/>
     <id>http://skyrover.me/2018/01/11/leetcode_algorithm_go_and_python_1/</id>
     <published>2018-01-11T11:54:32.000Z</published>
-    <updated>2018-01-11T13:41:26.000Z</updated>
+    <updated>2018-01-12T10:17:18.000Z</updated>
     
     <content type="html"><![CDATA[<p>开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！</p>
 <p>对Python能更熟点，Go是初学，若有写的不好的地方，请各位看官留言。</p>
@@ -2736,9 +2736,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -3876,9 +3876,9 @@
     
       <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
-      <category term="协程" scheme="http://skyrover.me/tags/%E5%8D%8F%E7%A8%8B/"/>
-    
       <category term="pytest" scheme="http://skyrover.me/tags/pytest/"/>
+    
+      <category term="协程" scheme="http://skyrover.me/tags/%E5%8D%8F%E7%A8%8B/"/>
     
   </entry>
   
@@ -4027,9 +4027,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
   </entry>
   
@@ -4168,9 +4168,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
   </entry>
   
@@ -4228,9 +4228,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
       <category term="gevent" scheme="http://skyrover.me/tags/gevent/"/>
     
@@ -4290,9 +4290,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -4325,9 +4325,9 @@
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
-      <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
-    
       <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
+    
+      <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
   </entry>
   
@@ -4370,9 +4370,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
-    
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -6036,9 +6036,9 @@
     
       <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
-      <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
-    
       <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
+    
+      <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
   </entry>
   
