@@ -233,6 +233,23 @@ var _hmt = _hmt || [];
     <h2 class="title">留言</h2>
 
     
+        <section class="comments" id="comments">
+                <div id="gitment_thread"></div>
+                <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+                <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+                <script>
+                    var gitment = new Gitment({
+                        owner: 'Microndgt',
+                        repo: 'microndgt.github.io',
+                        oauth: {
+                            client_id: 'f54490fb6635a5c3c3ba',
+                            client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+                        },
+                    })
+                    gitment.render('comments')
+                </script>
+            </section>
+    
 </section>
 
 
