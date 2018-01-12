@@ -1,208 +1,141 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>grequests 详解 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+  <meta property="og:title" content="grequests 详解"/>
+  <meta property="og:site_name" content="SkyRover"/>
 
-    
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
-    <meta charset="utf-8">
-    
-    
-    
-    <title>grequests 详解 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <meta name="theme-color" content="#3F51B5">
-    
-    
-    <meta name="keywords" content="Python,源码,gevent">
-    <meta name="description" content="前段时间看到这个grequests库，感觉还是蛮有意思的，所以今天来对这个库拆解拆解。这个库是崇拜的大神kennethreitz写的。Github地址：https://github.com/kennethreitz/grequests 首先看到文档上给的示例： 123456789101112131415161718192021222324252627import grequestsurls = [">
-<meta name="keywords" content="Python,源码,gevent">
-<meta property="og:type" content="article">
-<meta property="og:title" content="grequests 详解">
-<meta property="og:url" content="http://skyrover.me/2017/08/07/grequests 详解/index.html">
-<meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="前段时间看到这个grequests库，感觉还是蛮有意思的，所以今天来对这个库拆解拆解。这个库是崇拜的大神kennethreitz写的。Github地址：https://github.com/kennethreitz/grequests 首先看到文档上给的示例： 123456789101112131415161718192021222324252627import grequestsurls = [">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-01T06:34:24.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="grequests 详解">
-<meta name="twitter:description" content="前段时间看到这个grequests库，感觉还是蛮有意思的，所以今天来对这个库拆解拆解。这个库是崇拜的大神kennethreitz写的。Github地址：https://github.com/kennethreitz/grequests 首先看到文档上给的示例： 123456789101112131415161718192021222324252627import grequestsurls = [">
-    
-        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
-    
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
-    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
-    <script>window.lazyScripts=[]</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
-    <!-- custom head -->
-    
 
 </head>
 
-<body>
-    <div id="loading" class="active"></div>
-
-    <aside id="menu" class="hide" >
-  <div class="inner flex-row-vertical">
-    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
-        <i class="icon icon-lg icon-close"></i>
-    </a>
-    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
-      <div class="brand">
-        <a href="/about" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
-        </a>
-        <hgroup class="introduce">
-          <h5 class="nickname">Kevin Du</h5>
-          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
-        </hgroup>
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
       </div>
-    </div>
-    <div class="scroll-wrap flex-col">
-      <ul class="nav">
-        
-            <li class="waves-block waves-effect">
-              <a href="/"  >
-                <i class="icon icon-lg icon-home"></i>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
 
-                主页
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-
-                文章
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/tags"  >
-                <i class="icon icon-lg icon-tags"></i>
-
-                标签
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/categories"  >
-                <i class="icon icon-lg icon-list"></i>
-
-                分类
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/about"  >
-                <i class="icon icon-lg icon-star"></i>
-
-                关于我
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://github.com/Microndgt" target="_blank" >
-                <i class="icon icon-lg icon-github"></i>
-
-                Github
-              </a>
-            </li>
-        
-      </ul>
-    </div>
-  </div>
-</aside>
-
-    <main id="main">
-        <header class="top-header" id="header">
-    <div class="flex-row">
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
-          <i class="icon icon-lg icon-navicon"></i>
-        </a>
-        <div class="flex-col header-title ellipsis">grequests 详解</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
-        
-        
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
-    </div>
-</header>
-<header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title">grequests 详解</h1>
-        <h5 class="subtitle">
-            
-                <time datetime="2017-08-07T09:03:59.000Z" itemprop="datePublished" class="page-time">
-  2017-08-07 17:03:59
-</time>
+  <div class="container">
+  	<div class="content">
+    	 
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	
+		<div class="page-header">
+			<h1> grequests 详解</h1>
+		</div>
+	
 
 
-            
-        </h5>
-    </div>
 
-    
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
 
+	<!-- content -->
+	<div class="mypage">		
+	  		
 
-</header>
-
-
-<div class="container body-wrap">
-    
-    <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#AsyncRequest"><span class="post-toc-number">1.</span> <span class="post-toc-text">AsyncRequest</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#map"><span class="post-toc-number">2.</span> <span class="post-toc-text">map</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Gevent的并发"><span class="post-toc-number">3.</span> <span class="post-toc-text">Gevent的并发</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#gevent-spawn"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">gevent.spawn</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#pool-spawn"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">pool.spawn</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#r-send"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">r.send</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#imap"><span class="post-toc-number">4.</span> <span class="post-toc-text">imap</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#pool-imap"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">pool.imap</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#pool-imap-unordered"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">pool.imap_unordered</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#join"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">join</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小结"><span class="post-toc-number">5.</span> <span class="post-toc-text">小结</span></a></li></ol>
-        </nav>
-    </aside>
-    
-
-<article id="post-grequests 详解"
-  class="post-article article-type-post fade" itemprop="blogPost">
-
-    <div class="post-card">
-        <h1 class="post-card-title">grequests 详解</h1>
-        <div class="post-meta">
-            <time class="post-time" title="2017-08-07 17:03:59 17:03:59" datetime="2017-08-07T09:03:59.000Z"  itemprop="datePublished">2017-08-07 17:03:59</time>
-
-            
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-            
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
-    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
-</span>
-
-
-        </div>
-        <div class="post-content" id="post-content" itemprop="postContent">
-            
-            
-            
-            <p>前段时间看到这个grequests库，感觉还是蛮有意思的，所以今天来对这个库拆解拆解。这个库是崇拜的大神kennethreitz写的。Github地址：<a href="https://github.com/kennethreitz/grequests" target="_blank" rel="external">https://github.com/kennethreitz/grequests</a></p>
+	  <p>前段时间看到这个grequests库，感觉还是蛮有意思的，所以今天来对这个库拆解拆解。这个库是崇拜的大神kennethreitz写的。Github地址：<a href="https://github.com/kennethreitz/grequests" target="_blank" rel="external">https://github.com/kennethreitz/grequests</a></p>
 <p>首先看到文档上给的示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">import grequests</div><div class="line"></div><div class="line">urls = [</div><div class="line">    &apos;http://www.heroku.com&apos;,</div><div class="line">    &apos;http://python-tablib.org&apos;,</div><div class="line">    &apos;http://httpbin.org&apos;,</div><div class="line">    &apos;http://python-requests.org&apos;,</div><div class="line">    &apos;http://fakedomain/&apos;,</div><div class="line">    &apos;http://kennethreitz.com&apos;</div><div class="line">]</div><div class="line"># 创建没有发送的request集合</div><div class="line">rs = (grequests.get(u) for u in urls)</div><div class="line"># 发送</div><div class="line">grequests.map(rs)</div><div class="line"></div><div class="line"># 为了防止超时和异常发生，可以指定一个异常处理器</div><div class="line">def exception_handler(request, exception):</div><div class="line">    print(&quot;Request failed&quot;)</div><div class="line"></div><div class="line">reqs = [</div><div class="line">   grequests.get(&apos;http://httpbin.org/delay/1&apos;, timeout=0.001),</div><div class="line">   grequests.get(&apos;http://fakedomain/&apos;),</div><div class="line">   grequests.get(&apos;http://httpbin.org/status/500&apos;)]</div><div class="line"></div><div class="line">grequests.map(reqs, exception_handler=exception_handler)</div><div class="line"></div><div class="line">另外，可以使用imap来提高性能</div></pre></td></tr></table></figure>
 <p>根据这个示例，我们来看看源代码</p>
@@ -238,314 +171,139 @@
 <p>可以看到，如果不要求顺序的话，<code>imap_unordered</code>会比imap更加高效，同时imap版本肯定比map版本性能好，因为map版本必须全部运行完才能拿数据，但是imap版本只要有greenlet有结果就可以取出来。</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这个库就这么多内容，其实主要是使用gevent封装了一层requests，所以核心就是使用gevent，gevent怎么用，如何用，待我继续研究。</p>
 <p>不过通过看这个库，也了解到了简单的gevent的用法。</p>
-     
-        </div>
+	  
+	</div>
 
-        <blockquote class="post-copyright">
-    <div class="content">
-        
+	<div>
+  	<center>
+	<div class="pagination">
 
-        
-        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/07/grequests 详解/" target="_blank" rel="external">http://skyrover.me/2017/08/07/grequests 详解/</a>
-        
-    </div>
-    <footer>
-        <a href="http://skyrover.me">
-            <img src="/img/avatar.jpg" alt="Kevin Du">
-            Kevin Du
-        </a>
-    </footer>
-</blockquote>
+    
+    
+    <a href="/2017/08/08/tqdm 详解/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+    
 
-        
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2017/08/03/thriftpy_2_processor/" type="button" class="btn btn-default ">下一页<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
 </div>
 
-
-
-        <div class="post-footer">
-            
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gevent/">gevent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码/">源码</a></li></ul>
-
-
-
-            
-<div class="page-share-wrap">
-    
-
-<div class="page-share" id="pageShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/07/grequests 详解/&title=《grequests 详解》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/07/grequests 详解/&title=《grequests 详解》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/07/grequests 详解/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《grequests 详解》 — SkyRover&url=http://skyrover.me/2017/08/07/grequests 详解/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/07/grequests 详解/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
-
-
-
-    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
-        <i class="icon icon-share-alt icon-lg"></i>
-    </a>
-</div>
-
-
-
-        </div>
-    </div>
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+    <h2 class="title">留言</h2>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2017/08/08/tqdm 详解/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">tqdm 详解</h4>
-      </a>
-    </div>
-  
-  
-    <div class="waves-block waves-effect next">
-      <a href="/2017/08/03/thriftpy_2_processor/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">thriftpy源码解析(二) - 处理器</h4>
-      </a>
-    </div>
-  
-</nav>
-
-
-
-    
-
-
-
-
-
-
-
-
-<section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
-    <script>
-        var gitment = new Gitment({
-            owner: 'Microndgt',
-            repo: 'microndgt.github.io',
-            oauth: {
-                client_id: 'f54490fb6635a5c3c3ba',
-                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
-            },
-        })
-        gitment.render('comments')
-    </script>
 </section>
 
 
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
 
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-08-07 17:03:59 
+	</div>
+	
 
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/编程/">编程<span>73</span></a></li>
+  </li>
 
-
-
-</article>
-
-<div id="reward" class="page-modal reward-lay">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <h3 class="reward-title">
-        <i class="icon icon-quote-left"></i>
-        谢谢支持~
-        <i class="icon icon-quote-right"></i>
-    </h3>
-    <div class="reward-content">
-        
-        <div class="reward-code">
-            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
-        </div>
-        
-        <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
-                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
-            <div class="reward-toggle-ctrol">
-                <span class="reward-toggle-item wechat">微信</span>
-                <span class="reward-toggle-label"></span>
-                <span class="reward-toggle-item alipay">支付宝</span>
-            </div>
-        </label>
-        
-    </div>
-</div>
-
-
-
-</div>
-
-        <footer class="footer">
-    <div class="top">
-        
-<p>
-    <span id="busuanzi_container_site_uv" style='display:none'>
-        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
-    </span>
-    <span id="busuanzi_container_site_pv" style='display:none'>
-        总访问量：<span id="busuanzi_value_site_pv"></span>
-    </span>
-</p>
-
-
-        <p>
-            
-                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            
-            <span>欢迎订阅</span>
-        </p>
-    </div>
-    <div class="bottom">
-        <p><span>Kevin Du &copy; 2016 - 2018</span>
-            <span>
-                
-                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
-                
-                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
-            </span>
-        </p>
-    </div>
-</footer>
-
-    </main>
-    <div class="mask" id="mask"></div>
-<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-
-
-<div class="global-share" id="globalShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/07/grequests 详解/&title=《grequests 详解》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/07/grequests 详解/&title=《grequests 详解》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/07/grequests 详解/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《grequests 详解》 — SkyRover&url=http://skyrover.me/2017/08/07/grequests 详解/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/07/grequests 详解/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
     </ul>
- </div>
+	</div>
+	
 
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Python/">Python<span>56</span></a></li> <li><a href="/tags/源码/">源码<span>6</span></a></li> <li><a href="/tags/gevent/">gevent<span>1</span></a></li>
+    </ul>
+	</div>
+		
 
-<div class="page-modal wx-share" id="wxShare">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aQW7DMAwFUd//0i6QbWF7PukEEDVaBWkj63lBUCSPA6/zs+6/P8G6+tX/HY5vLBkyZCzLeOvBV//Dj3i1z/3ZZMiQsQ+DB9NaDLzfmf/18nsZMmTIwMH0Ht8J7jJkyJCRBlx+dJ6GkhRThgwZOzPIdjylS4/+07u4DBkyFmSkjYFffv5if0OGDBmLMM5wkSIaOQTZITiVDBkyRjNqSV6nxE+elaakMmTImM2oDUnwcNwv96MgLkOGjNGMdGCrU1zj+6QnkSFDxg6M+4QsbSvWLqi1ZPGhHytDhoxBjLTEFryb0lgGR8qQIWMHxtlYnTGylPfwWYYMGdswgosiTiXTsYliOJYhQ8YGjLRtwIcteNKZNgZkyJCxG4MfKL2gpsU7fvOWIUPGPoxayEtTwE7KGKStMmTI2IzBy2rpg/nneFBDhgwZQxmd5mU6WNa5Hj8EbhkyZGzAqF1K0+HXzst6CP0yZMgYzeChME370iBba2TGEV2GDBkLMtIGAB//SlPGdMwiePcyZMgYwSAtAR4uO+G7OH4hQ4aM0QzeYky7De+W59CvZMiQMZRxhou0G98KyvyKK0OGjNmMNNjx8PrW4FdnHE2GDBmTGG8F2bfSR75bsVMqQ4aMZRm1Yn2nkVm7xMqQIUNG53D9xLEWxGXIkCGDHJSkehzAX9NlP1aGDBlDGbzETxoA/BuePj6klTJkyBjN6JTvO43PWtGtM64hQ4aMBRl/WFF/rchRII8AAAAASUVORK5CYII=" alt="微信分享二维码">
-</div>
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
 
+	</div>
+		
 
-
-
-    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
-<script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
-
-
-</script>
-
-<script src="/js/main.min.js?v=1.7.1"></script>
-
-
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<template id="search-tpl">
-<li class="item">
-    <a href="{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
-            </div>
-            <time class="flex-col time">{date}</time>
-        </div>
-    </a>
-</li>
-</template>
-
-<script src="/js/search.min.js?v=1.7.1" async></script>
+</div><!-- row -->
 
 
 
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2018 Kevin Du
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
+     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
 
 
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
 
 
-
-<script>
-(function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title = '快回来！';
-            clearTimeout(titleTime);
-        } else {
-            document.title = '(つェ⊂)喜欢你!';
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
-        }
-    });
-})();
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
 </script>
 
 
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
 
 </body>
-</html>
+   </html>

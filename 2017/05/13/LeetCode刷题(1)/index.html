@@ -1,208 +1,141 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>LeetCode刷题(1) | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+  <meta property="og:title" content="LeetCode刷题(1)"/>
+  <meta property="og:site_name" content="SkyRover"/>
 
-    
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
-    <meta charset="utf-8">
-    
-    
-    
-    <title>LeetCode刷题(1) | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <meta name="theme-color" content="#3F51B5">
-    
-    
-    <meta name="keywords" content="Python,算法,LeetCode">
-    <meta name="description" content="终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！ Longest Palindrome其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大">
-<meta name="keywords" content="Python,算法,LeetCode">
-<meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode刷题(1)">
-<meta property="og:url" content="http://skyrover.me/2017/05/13/LeetCode刷题(1)/index.html">
-<meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！ Longest Palindrome其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-01T12:42:39.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LeetCode刷题(1)">
-<meta name="twitter:description" content="终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！ Longest Palindrome其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大">
-    
-        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
-    
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
-    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
-    <script>window.lazyScripts=[]</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
-    <!-- custom head -->
-    
 
 </head>
 
-<body>
-    <div id="loading" class="active"></div>
-
-    <aside id="menu" class="hide" >
-  <div class="inner flex-row-vertical">
-    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
-        <i class="icon icon-lg icon-close"></i>
-    </a>
-    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
-      <div class="brand">
-        <a href="/about" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
-        </a>
-        <hgroup class="introduce">
-          <h5 class="nickname">Kevin Du</h5>
-          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
-        </hgroup>
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
       </div>
-    </div>
-    <div class="scroll-wrap flex-col">
-      <ul class="nav">
-        
-            <li class="waves-block waves-effect">
-              <a href="/"  >
-                <i class="icon icon-lg icon-home"></i>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
 
-                主页
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-
-                文章
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/tags"  >
-                <i class="icon icon-lg icon-tags"></i>
-
-                标签
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/categories"  >
-                <i class="icon icon-lg icon-list"></i>
-
-                分类
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/about"  >
-                <i class="icon icon-lg icon-star"></i>
-
-                关于我
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://github.com/Microndgt" target="_blank" >
-                <i class="icon icon-lg icon-github"></i>
-
-                Github
-              </a>
-            </li>
-        
-      </ul>
-    </div>
-  </div>
-</aside>
-
-    <main id="main">
-        <header class="top-header" id="header">
-    <div class="flex-row">
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
-          <i class="icon icon-lg icon-navicon"></i>
-        </a>
-        <div class="flex-col header-title ellipsis">LeetCode刷题(1)</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
-        
-        
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
-    </div>
-</header>
-<header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title">LeetCode刷题(1)</h1>
-        <h5 class="subtitle">
-            
-                <time datetime="2017-05-13T14:46:32.000Z" itemprop="datePublished" class="page-time">
-  2017-05-13 22:46:32
-</time>
+  <div class="container">
+  	<div class="content">
+    	 
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	
+		<div class="page-header">
+			<h1> LeetCode刷题(1)</h1>
+		</div>
+	
 
 
-            
-        </h5>
-    </div>
 
-    
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
 
+	<!-- content -->
+	<div class="mypage">		
+	  		
 
-</header>
-
-
-<div class="container body-wrap">
-    
-    <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Longest-Palindrome"><span class="post-toc-number">1.</span> <span class="post-toc-text">Longest Palindrome</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Base-7"><span class="post-toc-number">2.</span> <span class="post-toc-text">Base 7</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Best-Time-to-Buy-and-Sell-Stock-II"><span class="post-toc-number">3.</span> <span class="post-toc-text">Best Time to Buy and Sell Stock II</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Relative-Ranks"><span class="post-toc-number">4.</span> <span class="post-toc-text">Relative Ranks</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Two-Sum-II-Input-array-is-sorted"><span class="post-toc-number">5.</span> <span class="post-toc-text">Two Sum II - Input array is sorted</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Minimum-Absolute-Difference-in-BST"><span class="post-toc-number">6.</span> <span class="post-toc-text">Minimum Absolute Difference in BST</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Binary-Tree-Tilt"><span class="post-toc-number">7.</span> <span class="post-toc-text">Binary Tree Tilt</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Hamming-Distance"><span class="post-toc-number">8.</span> <span class="post-toc-text">Hamming Distance</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Reverse-Words-in-a-String-III"><span class="post-toc-number">9.</span> <span class="post-toc-text">Reverse Words in a String III</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Number-Complement"><span class="post-toc-number">10.</span> <span class="post-toc-text">Number Complement</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Keyboard-Row"><span class="post-toc-number">11.</span> <span class="post-toc-text">Keyboard Row</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Fizz-Buzz"><span class="post-toc-number">12.</span> <span class="post-toc-text">Fizz Buzz</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Reverse-String"><span class="post-toc-number">13.</span> <span class="post-toc-text">Reverse String</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Array-Partition-I"><span class="post-toc-number">14.</span> <span class="post-toc-text">Array Partition I</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Reshape-the-Matrix"><span class="post-toc-number">15.</span> <span class="post-toc-text">Reshape the Matrix</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Numpy解法"><span class="post-toc-number">15.1.</span> <span class="post-toc-text">Numpy解法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sum函数扁平化"><span class="post-toc-number">15.2.</span> <span class="post-toc-text">sum函数扁平化</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Next-Greater-Element-I"><span class="post-toc-number">16.</span> <span class="post-toc-text">Next Greater Element I</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一个O-n-的算法"><span class="post-toc-number">16.1.</span> <span class="post-toc-text">一个O(n)的算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Max-Consecutive-Ones"><span class="post-toc-number">17.</span> <span class="post-toc-text">Max Consecutive Ones</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#统计的算法"><span class="post-toc-number">17.1.</span> <span class="post-toc-text">统计的算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Detect-Capital"><span class="post-toc-number">18.</span> <span class="post-toc-text">Detect Capital</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#istitle-所有单词是否首字母为大写，其他字母为小写"><span class="post-toc-number">18.1.</span> <span class="post-toc-text">istitle() 所有单词是否首字母为大写，其他字母为小写</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Add-Two-Numbers"><span class="post-toc-number">19.</span> <span class="post-toc-text">Add Two Numbers</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Find-All-Numbers-Disappeared-in-an-Array"><span class="post-toc-number">20.</span> <span class="post-toc-text">Find All Numbers Disappeared in an Array</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Distribute-Candies"><span class="post-toc-number">21.</span> <span class="post-toc-text">Distribute Candies</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Longest-Uncommon-Subsequence-I"><span class="post-toc-number">22.</span> <span class="post-toc-text">Longest Uncommon Subsequence I</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Construct-the-Rectangle"><span class="post-toc-number">23.</span> <span class="post-toc-text">Construct the Rectangle</span></a></li></ol>
-        </nav>
-    </aside>
-    
-
-<article id="post-LeetCode刷题(1)"
-  class="post-article article-type-post fade" itemprop="blogPost">
-
-    <div class="post-card">
-        <h1 class="post-card-title">LeetCode刷题(1)</h1>
-        <div class="post-meta">
-            <time class="post-time" title="2017-05-13 22:46:32 22:46:32" datetime="2017-05-13T14:46:32.000Z"  itemprop="datePublished">2017-05-13 22:46:32</time>
-
-            
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-            
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
-    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
-</span>
-
-
-        </div>
-        <div class="post-content" id="post-content" itemprop="postContent">
-            
-            
-            
-            <p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
+	  <p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
 <h1 id="Longest-Palindrome"><a href="#Longest-Palindrome" class="headerlink" title="Longest Palindrome"></a><a href="https://leetcode.com/problems/longest-palindrome/#/description" target="_blank" rel="external">Longest Palindrome</a></h1><p>其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大长度了。<code>Runtime: 42 ms Your runtime beats 95.32 % of python submissions.</code> 棒！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def longestPalindrome(self, s):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type s: str</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        set_s = set(s)</div><div class="line">        length = 0</div><div class="line">        odd_times = 0</div><div class="line">        for i in set_s:</div><div class="line">            count = s.count(i)</div><div class="line">            if count % 2 == 0:</div><div class="line">                length += count</div><div class="line">            else:</div><div class="line">                odd_times += 1</div><div class="line">                length += count</div><div class="line">        if odd_times &gt; 1:</div><div class="line">            length -= (odd_times - 1)</div><div class="line">        return length</div></pre></td></tr></table></figure>
 <h1 id="Base-7"><a href="#Base-7" class="headerlink" title="Base 7"></a><a href="https://leetcode.com/problems/base-7/#/description" target="_blank" rel="external">Base 7</a></h1><p>我去，这道题不知道错了多少次，我也是醉了，简直是考察细心程度的，可惜自己总是考虑不全面。而且写的也不优雅，哎。大致思路就是短除法，跟一个数字求二进制一样的，取模，然后再除。将每次的余数放在列表前面，然后就是结果了，但是需要考虑负数情况，因为自己设定的while循环条件是<code>divide &gt;= 7</code>，所以。而且divide必须大于等于7，因为7是10。负数-1%7等于6, 所以应该%-7。<code>Runtime: 49 ms Your runtime beats 41.62 % of python submissions</code></p>
@@ -341,314 +274,139 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def constructRectangle(self, area):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type area: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        import math</div><div class="line">        L_start = int(math.floor(math.sqrt(area)))</div><div class="line">        if L_start ** 2 == area:</div><div class="line">            return [L_start] * 2</div><div class="line">        for L in xrange(L_start, 0, -1):</div><div class="line">            if area % L:</div><div class="line">                continue</div><div class="line">            else:</div><div class="line">                return [int(area / L), L]</div></pre></td></tr></table></figure>
 <p>39ms版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def constructRectangle(self, area):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type area: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        import math</div><div class="line">        low = int(math.sqrt(area))</div><div class="line">        while low &gt; 0:</div><div class="line">            if area % low == 0:</div><div class="line">                return [int(area/low),int(low)]</div><div class="line">            low -= 1</div></pre></td></tr></table></figure>
-     
-        </div>
+	  
+	</div>
 
-        <blockquote class="post-copyright">
-    <div class="content">
-        
+	<div>
+  	<center>
+	<div class="pagination">
 
-        
-        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/05/13/LeetCode刷题(1)/" target="_blank" rel="external">http://skyrover.me/2017/05/13/LeetCode刷题(1)/</a>
-        
-    </div>
-    <footer>
-        <a href="http://skyrover.me">
-            <img src="/img/avatar.jpg" alt="Kevin Du">
-            Kevin Du
-        </a>
-    </footer>
-</blockquote>
+    
+    
+    <a href="/2017/05/19/热血的少年/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+    
 
-        
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2017/05/07/理解Flask的Context/" type="button" class="btn btn-default ">下一页<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
 </div>
 
-
-
-        <div class="post-footer">
-            
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-
-
-            
-<div class="page-share-wrap">
-    
-
-<div class="page-share" id="pageShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&title=《LeetCode刷题(1)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&title=《LeetCode刷题(1)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/13/LeetCode刷题(1)/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LeetCode刷题(1)》 — SkyRover&url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
-
-
-
-    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
-        <i class="icon icon-share-alt icon-lg"></i>
-    </a>
-</div>
-
-
-
-        </div>
-    </div>
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+    <h2 class="title">留言</h2>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2017/05/19/热血的少年/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">热血的少年，青涩的爱恋，死亡与梦之约</h4>
-      </a>
-    </div>
-  
-  
-    <div class="waves-block waves-effect next">
-      <a href="/2017/05/07/理解Flask的Context/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">理解Flask的Context</h4>
-      </a>
-    </div>
-  
-</nav>
-
-
-
-    
-
-
-
-
-
-
-
-
-<section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
-    <script>
-        var gitment = new Gitment({
-            owner: 'Microndgt',
-            repo: 'microndgt.github.io',
-            oauth: {
-                client_id: 'f54490fb6635a5c3c3ba',
-                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
-            },
-        })
-        gitment.render('comments')
-    </script>
 </section>
 
 
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
 
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-05-13 22:46:32 
+	</div>
+	
 
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/编程/">编程<span>73</span></a></li>
+  </li>
 
-
-
-</article>
-
-<div id="reward" class="page-modal reward-lay">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <h3 class="reward-title">
-        <i class="icon icon-quote-left"></i>
-        谢谢支持~
-        <i class="icon icon-quote-right"></i>
-    </h3>
-    <div class="reward-content">
-        
-        <div class="reward-code">
-            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
-        </div>
-        
-        <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
-                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
-            <div class="reward-toggle-ctrol">
-                <span class="reward-toggle-item wechat">微信</span>
-                <span class="reward-toggle-label"></span>
-                <span class="reward-toggle-item alipay">支付宝</span>
-            </div>
-        </label>
-        
-    </div>
-</div>
-
-
-
-</div>
-
-        <footer class="footer">
-    <div class="top">
-        
-<p>
-    <span id="busuanzi_container_site_uv" style='display:none'>
-        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
-    </span>
-    <span id="busuanzi_container_site_pv" style='display:none'>
-        总访问量：<span id="busuanzi_value_site_pv"></span>
-    </span>
-</p>
-
-
-        <p>
-            
-                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            
-            <span>欢迎订阅</span>
-        </p>
-    </div>
-    <div class="bottom">
-        <p><span>Kevin Du &copy; 2016 - 2018</span>
-            <span>
-                
-                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
-                
-                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
-            </span>
-        </p>
-    </div>
-</footer>
-
-    </main>
-    <div class="mask" id="mask"></div>
-<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-
-
-<div class="global-share" id="globalShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&title=《LeetCode刷题(1)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&title=《LeetCode刷题(1)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/13/LeetCode刷题(1)/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《LeetCode刷题(1)》 — SkyRover&url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/13/LeetCode刷题(1)/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
     </ul>
- </div>
+	</div>
+	
 
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Python/">Python<span>56</span></a></li> <li><a href="/tags/算法/">算法<span>15</span></a></li> <li><a href="/tags/LeetCode/">LeetCode<span>6</span></a></li>
+    </ul>
+	</div>
+		
 
-<div class="page-modal wx-share" id="wxShare">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHklEQVR42u3aS27DMAwFwNz/0uk2QGHnkVQWlsaronBsjRa0+Hm94ut9e93f+fn/5J7/z1x2YWBgPJaRLDFZXPUtV0u/f+8lFQMD4wDG1YvvH50H0+pv87VhYGBgXN1TfWUviGNgYGCsCrj3v6qmqRgYGBiTJDbBz5f181wcAwPjgYzJUn7990/6GxgYGI9ivItX8pxJ47O5KgwMjK0ZeYCblMYmJbzCxmFgYBzDyItlvataRCukrBgYGMcwqolrPmCRb03eIo2+GxgYGJsyqs3LPImtblze7MTAwDiBkRfUckx+uFwwioGBgbEpY9VYQ3ULcnwzC8fAwNiakSSQ1cCabNmo8YmBgbE1o3ewy4NscuCbj3FgYGCcw8gHJpKXTQY4qkVADAyMvRm9Av3k2FdtWy7uwWJgYDycMQ+aydbk5bZ8yAMDA+M0Ri8F7bUTekdGDAyM0xjzxHV+4KsG+nIqi4GBsQUjD7iTgdT7p1WDb9QSwMDA2IhRHSTttRWTpSTlti/fDQwMjAMY8/Gvaoq7bMswMDAOYMybAXnrsVeS+3KsxMDA2JTxLl552yAPsr0y3JcvBgYGxkaMVTE7Od7lSykPW2BgYBzAWBVk58MT1YCLgYFxGmNtU3NVwS5pi2JgYGAk91TbA9UDJQYGBsYkmayW6qpjFskbMTAwzmFUS/nN4a1iWzS/HwMDY2/GKHVsvSAPxBMqBgbGFow/0WnbGZfkp3oAAAAASUVORK5CYII=" alt="微信分享二维码">
-</div>
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
 
+	</div>
+		
 
-
-
-    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
-<script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
-
-
-</script>
-
-<script src="/js/main.min.js?v=1.7.1"></script>
-
-
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<template id="search-tpl">
-<li class="item">
-    <a href="{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
-            </div>
-            <time class="flex-col time">{date}</time>
-        </div>
-    </a>
-</li>
-</template>
-
-<script src="/js/search.min.js?v=1.7.1" async></script>
+</div><!-- row -->
 
 
 
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2018 Kevin Du
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
+     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
 
 
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
 
 
-
-<script>
-(function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title = '快回来！';
-            clearTimeout(titleTime);
-        } else {
-            document.title = '(つェ⊂)喜欢你!';
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
-        }
-    });
-})();
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
 </script>
 
 
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
 
 </body>
-</html>
+   </html>

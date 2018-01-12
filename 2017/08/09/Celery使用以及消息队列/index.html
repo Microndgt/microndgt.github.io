@@ -1,208 +1,141 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Celery使用以及消息队列 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+  <meta property="og:title" content="Celery使用以及消息队列"/>
+  <meta property="og:site_name" content="SkyRover"/>
 
-    
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
-    <meta charset="utf-8">
-    
-    
-    
-    <title>Celery使用以及消息队列 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <meta name="theme-color" content="#3F51B5">
-    
-    
-    <meta name="keywords" content="Python,Celery">
-    <meta name="description" content="Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。 这是其使用场景：  web应用，需要较长时间完成的任务，就可以作为任务交给celery异步执行，执行完返回给用户。 网站的定时任务 异步执行的其他任务。比如清理/设置缓存  有以下特点：  任务执行情况 管理后台管理任务 任务和配置管理相关联 多进程，EventLet和Gevent">
-<meta name="keywords" content="Python,Celery">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Celery使用以及消息队列">
-<meta property="og:url" content="http://skyrover.me/2017/08/09/Celery使用以及消息队列/index.html">
-<meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。 这是其使用场景：  web应用，需要较长时间完成的任务，就可以作为任务交给celery异步执行，执行完返回给用户。 网站的定时任务 异步执行的其他任务。比如清理/设置缓存  有以下特点：  任务执行情况 管理后台管理任务 任务和配置管理相关联 多进程，EventLet和Gevent">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-01T06:20:19.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Celery使用以及消息队列">
-<meta name="twitter:description" content="Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。 这是其使用场景：  web应用，需要较长时间完成的任务，就可以作为任务交给celery异步执行，执行完返回给用户。 网站的定时任务 异步执行的其他任务。比如清理/设置缓存  有以下特点：  任务执行情况 管理后台管理任务 任务和配置管理相关联 多进程，EventLet和Gevent">
-    
-        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
-    
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
-    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
-    <script>window.lazyScripts=[]</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
-    <!-- custom head -->
-    
 
 </head>
 
-<body>
-    <div id="loading" class="active"></div>
-
-    <aside id="menu" class="hide" >
-  <div class="inner flex-row-vertical">
-    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
-        <i class="icon icon-lg icon-close"></i>
-    </a>
-    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
-      <div class="brand">
-        <a href="/about" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
-        </a>
-        <hgroup class="introduce">
-          <h5 class="nickname">Kevin Du</h5>
-          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
-        </hgroup>
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
       </div>
-    </div>
-    <div class="scroll-wrap flex-col">
-      <ul class="nav">
-        
-            <li class="waves-block waves-effect">
-              <a href="/"  >
-                <i class="icon icon-lg icon-home"></i>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
 
-                主页
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-
-                文章
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/tags"  >
-                <i class="icon icon-lg icon-tags"></i>
-
-                标签
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/categories"  >
-                <i class="icon icon-lg icon-list"></i>
-
-                分类
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/about"  >
-                <i class="icon icon-lg icon-star"></i>
-
-                关于我
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://github.com/Microndgt" target="_blank" >
-                <i class="icon icon-lg icon-github"></i>
-
-                Github
-              </a>
-            </li>
-        
-      </ul>
-    </div>
-  </div>
-</aside>
-
-    <main id="main">
-        <header class="top-header" id="header">
-    <div class="flex-row">
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
-          <i class="icon icon-lg icon-navicon"></i>
-        </a>
-        <div class="flex-col header-title ellipsis">Celery使用以及消息队列</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
-        
-        
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
-    </div>
-</header>
-<header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title">Celery使用以及消息队列</h1>
-        <h5 class="subtitle">
-            
-                <time datetime="2017-08-09T03:57:53.000Z" itemprop="datePublished" class="page-time">
-  2017-08-09 11:57:53
-</time>
+  <div class="container">
+  	<div class="content">
+    	 
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	
+		<div class="page-header">
+			<h1> Celery使用以及消息队列</h1>
+		</div>
+	
 
 
-            
-        </h5>
-    </div>
 
-    
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
 
+	<!-- content -->
+	<div class="mypage">		
+	  		
 
-</header>
-
-
-<div class="container body-wrap">
-    
-    <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Celery的架构"><span class="post-toc-number">1.</span> <span class="post-toc-text">Celery的架构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Celery的序列化"><span class="post-toc-number">2.</span> <span class="post-toc-text">Celery的序列化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一个例子"><span class="post-toc-number">3.</span> <span class="post-toc-text">一个例子</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#celery中的任务绑定"><span class="post-toc-number">4.</span> <span class="post-toc-text">celery中的任务绑定</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#停止任务"><span class="post-toc-number">5.</span> <span class="post-toc-text">停止任务</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Celery监控工具Flower"><span class="post-toc-number">6.</span> <span class="post-toc-text">Celery监控工具Flower</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用自动扩展"><span class="post-toc-number">7.</span> <span class="post-toc-text">使用自动扩展</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在Celery-tasks里面使用多进程"><span class="post-toc-number">8.</span> <span class="post-toc-text">在Celery tasks里面使用多进程</span></a></li></ol>
-        </nav>
-    </aside>
-    
-
-<article id="post-Celery使用以及消息队列"
-  class="post-article article-type-post fade" itemprop="blogPost">
-
-    <div class="post-card">
-        <h1 class="post-card-title">Celery使用以及消息队列</h1>
-        <div class="post-meta">
-            <time class="post-time" title="2017-08-09 11:57:53 11:57:53" datetime="2017-08-09T03:57:53.000Z"  itemprop="datePublished">2017-08-09 11:57:53</time>
-
-            
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-            
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
-    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
-</span>
-
-
-        </div>
-        <div class="post-content" id="post-content" itemprop="postContent">
-            
-            
-            
-            <p>Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。</p>
+	  <p>Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。</p>
 <p>这是其使用场景：</p>
 <ol>
 <li>web应用，需要较长时间完成的任务，就可以作为任务交给celery异步执行，执行完返回给用户。</li>
@@ -273,314 +206,139 @@
 <h2 id="在Celery-tasks里面使用多进程"><a href="#在Celery-tasks里面使用多进程" class="headerlink" title="在Celery tasks里面使用多进程"></a>在Celery tasks里面使用多进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">from celery import Celery</div><div class="line">import time</div><div class="line">import multiprocessing as mp</div><div class="line">app = Celery(&apos;proj&apos;, broker=&apos;amqp://admin:admin@ip:5672&apos;, include=&quot;tasks&quot;)</div><div class="line">def test_func(i):</div><div class="line">    print &quot;beg...:&quot;, i</div><div class="line">    time.sleep(5)</div><div class="line">    print &quot;....end:&quot;, i</div><div class="line">    return i * 5</div><div class="line">@app.task</div><div class="line">def fun_1(n):</div><div class="line">    curr_proc = mp.current_process()</div><div class="line">    curr_proc.daemon = False</div><div class="line">    p = mp.Pool(mp.cpu_count())</div><div class="line">    curr_proc.daemon = True</div><div class="line">    for i in range(n):</div><div class="line">        p.apply_async(test_func, args=(i,))</div><div class="line">    p.close()</div><div class="line">    p.join()</div><div class="line">    return 1</div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.start()</div></pre></td></tr></table></figure>
 <p>直接启动多进程是肯定不可以的，因为是守候进程curr_proc.daemon=True，所以启多进程之前主动设置为非守候进程curr_proc.daemon=False，启动了以后再设为守候进程</p>
 <p><strong><em>参考自：Python Web 开发实战 – 董伟明</em></strong></p>
-     
-        </div>
+	  
+	</div>
 
-        <blockquote class="post-copyright">
-    <div class="content">
-        
+	<div>
+  	<center>
+	<div class="pagination">
 
-        
-        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/09/Celery使用以及消息队列/" target="_blank" rel="external">http://skyrover.me/2017/08/09/Celery使用以及消息队列/</a>
-        
-    </div>
-    <footer>
-        <a href="http://skyrover.me">
-            <img src="/img/avatar.jpg" alt="Kevin Du">
-            Kevin Du
-        </a>
-    </footer>
-</blockquote>
+    
+    
+    <a href="/2017/08/09/contextlib 详解/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+    
 
-        
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2017/08/08/tqdm 详解/" type="button" class="btn btn-default ">下一页<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
 </div>
 
-
-
-        <div class="post-footer">
-            
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Celery/">Celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-
-
-
-            
-<div class="page-share-wrap">
-    
-
-<div class="page-share" id="pageShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/09/Celery使用以及消息队列/&title=《Celery使用以及消息队列》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/09/Celery使用以及消息队列/&title=《Celery使用以及消息队列》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/09/Celery使用以及消息队列/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Celery使用以及消息队列》 — SkyRover&url=http://skyrover.me/2017/08/09/Celery使用以及消息队列/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/09/Celery使用以及消息队列/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
-
-
-
-    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
-        <i class="icon icon-share-alt icon-lg"></i>
-    </a>
-</div>
-
-
-
-        </div>
-    </div>
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+    <h2 class="title">留言</h2>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2017/08/09/contextlib 详解/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">contextlib 详解</h4>
-      </a>
-    </div>
-  
-  
-    <div class="waves-block waves-effect next">
-      <a href="/2017/08/08/tqdm 详解/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">tqdm 详解</h4>
-      </a>
-    </div>
-  
-</nav>
-
-
-
-    
-
-
-
-
-
-
-
-
-<section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
-    <script>
-        var gitment = new Gitment({
-            owner: 'Microndgt',
-            repo: 'microndgt.github.io',
-            oauth: {
-                client_id: 'f54490fb6635a5c3c3ba',
-                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
-            },
-        })
-        gitment.render('comments')
-    </script>
 </section>
 
 
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
 
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-08-09 11:57:53 
+	</div>
+	
 
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/编程/">编程<span>73</span></a></li>
+  </li>
 
-
-
-</article>
-
-<div id="reward" class="page-modal reward-lay">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <h3 class="reward-title">
-        <i class="icon icon-quote-left"></i>
-        谢谢支持~
-        <i class="icon icon-quote-right"></i>
-    </h3>
-    <div class="reward-content">
-        
-        <div class="reward-code">
-            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
-        </div>
-        
-        <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
-                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
-            <div class="reward-toggle-ctrol">
-                <span class="reward-toggle-item wechat">微信</span>
-                <span class="reward-toggle-label"></span>
-                <span class="reward-toggle-item alipay">支付宝</span>
-            </div>
-        </label>
-        
-    </div>
-</div>
-
-
-
-</div>
-
-        <footer class="footer">
-    <div class="top">
-        
-<p>
-    <span id="busuanzi_container_site_uv" style='display:none'>
-        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
-    </span>
-    <span id="busuanzi_container_site_pv" style='display:none'>
-        总访问量：<span id="busuanzi_value_site_pv"></span>
-    </span>
-</p>
-
-
-        <p>
-            
-                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            
-            <span>欢迎订阅</span>
-        </p>
-    </div>
-    <div class="bottom">
-        <p><span>Kevin Du &copy; 2016 - 2018</span>
-            <span>
-                
-                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
-                
-                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
-            </span>
-        </p>
-    </div>
-</footer>
-
-    </main>
-    <div class="mask" id="mask"></div>
-<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-
-
-<div class="global-share" id="globalShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/09/Celery使用以及消息队列/&title=《Celery使用以及消息队列》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/09/Celery使用以及消息队列/&title=《Celery使用以及消息队列》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/09/Celery使用以及消息队列/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Celery使用以及消息队列》 — SkyRover&url=http://skyrover.me/2017/08/09/Celery使用以及消息队列/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/09/Celery使用以及消息队列/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
     </ul>
- </div>
+	</div>
+	
 
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Python/">Python<span>56</span></a></li> <li><a href="/tags/Celery/">Celery<span>4</span></a></li>
+    </ul>
+	</div>
+		
 
-<div class="page-modal wx-share" id="wxShare">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMklEQVR42u3aS46DMBBF0ex/0/S0JRpzX5XTEsVlFCUEfIjk1O/zwcdxOn6/vz5z/a3z6/M1tx0yZMh4LIPfmDCurr9eKIFdrUGGDBnvYZDbEzwBrM8nj0mGDBky0k2wtlAeLMqQIUNGn1H7dL2Vy5AhQ0a/QMZLY+uFktBwcy4uQ4aMBzJ41f3/X3+lvyFDhoxHMY7w6Bf3v7IqGTJkjGakbcg0He00G9L1yJAhYyojLdMTQO2aKeyP30GGDBlDGXx4gg+K8WGLdLkII0OGjHGM/maaprLpNopaCDJkyBjN6F+CJ7GdMBQFhTJkyBjK4JtgOvjFy2fx8+YRqAwZMkYw0sI9v1lnsIwPgd0U3WTIkDGUQcK4tFjGC3kbklgZMmSMY9TCwWLnAT+s+HeQIUPGaEZa+ueXJiFduqEXi24yZMgYwUjT1M4idg2fBRgZMmQMYuxqMW7rqdZKfjJkyBjH4GlqLeDjW3DtwcmQIeMNjE4Alw5S8CZBESBDhozRjHS4oZ9wpiMUqPwnQ4aM1zDS5iLfdmvTHwFYhgwZL2B0anVp6xHNpqUFOBkyZAxlHOHBb0ASVD72epPEypAhYzQj3ebSoTGOSQt/RYwMGTIey6iV7MlYWC0BTsdnZciQ8R5Gp6nZD+/4P8BlWClDhgwZ4UL5O7VG5oYNV4YMGaMZtZCxs0R0vgwZMl7AIElsWvrnYR9PWW9CQxkyZAxl1EYc0iYBDyhJYtzqb8iQIeNJjB/AgCLggXCn7gAAAABJRU5ErkJggg==" alt="微信分享二维码">
-</div>
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
 
+	</div>
+		
 
-
-
-    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
-<script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
-
-
-</script>
-
-<script src="/js/main.min.js?v=1.7.1"></script>
-
-
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<template id="search-tpl">
-<li class="item">
-    <a href="{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
-            </div>
-            <time class="flex-col time">{date}</time>
-        </div>
-    </a>
-</li>
-</template>
-
-<script src="/js/search.min.js?v=1.7.1" async></script>
+</div><!-- row -->
 
 
 
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2018 Kevin Du
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
+     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
 
 
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
 
 
-
-<script>
-(function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title = '快回来！';
-            clearTimeout(titleTime);
-        } else {
-            document.title = '(つェ⊂)喜欢你!';
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
-        }
-    });
-})();
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
 </script>
 
 
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
 
 </body>
-</html>
+   </html>

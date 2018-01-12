@@ -1,208 +1,141 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>BAIDU的DNS解析 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+  <meta property="og:title" content="BAIDU的DNS解析"/>
+  <meta property="og:site_name" content="SkyRover"/>
 
-    
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
-    <meta charset="utf-8">
-    
-    
-    
-    <title>BAIDU的DNS解析 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <meta name="theme-color" content="#3F51B5">
-    
-    
-    <meta name="keywords" content="计算机网络">
-    <meta name="description" content="今天用nslookup命令解析查看了www.baidu.com的IP地址，却意外发现百度的CNAME居然是www.a.shifen.com 解析过程1234567891011nslookup www.baidu.com&amp;gt;&amp;gt;&amp;gt;Server:		119.29.29.29Address:	119.29.29.29#53Non-authoritative answer:www.baidu">
-<meta name="keywords" content="计算机网络">
-<meta property="og:type" content="article">
-<meta property="og:title" content="BAIDU的DNS解析">
-<meta property="og:url" content="http://skyrover.me/2017/02/19/BAIDU的DNS解析/index.html">
-<meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="今天用nslookup命令解析查看了www.baidu.com的IP地址，却意外发现百度的CNAME居然是www.a.shifen.com 解析过程1234567891011nslookup www.baidu.com&amp;gt;&amp;gt;&amp;gt;Server:		119.29.29.29Address:	119.29.29.29#53Non-authoritative answer:www.baidu">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-01T04:58:47.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BAIDU的DNS解析">
-<meta name="twitter:description" content="今天用nslookup命令解析查看了www.baidu.com的IP地址，却意外发现百度的CNAME居然是www.a.shifen.com 解析过程1234567891011nslookup www.baidu.com&amp;gt;&amp;gt;&amp;gt;Server:		119.29.29.29Address:	119.29.29.29#53Non-authoritative answer:www.baidu">
-    
-        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
-    
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
-    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
-    <script>window.lazyScripts=[]</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
-    <!-- custom head -->
-    
 
 </head>
 
-<body>
-    <div id="loading" class="active"></div>
-
-    <aside id="menu" class="hide" >
-  <div class="inner flex-row-vertical">
-    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
-        <i class="icon icon-lg icon-close"></i>
-    </a>
-    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
-      <div class="brand">
-        <a href="/about" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
-        </a>
-        <hgroup class="introduce">
-          <h5 class="nickname">Kevin Du</h5>
-          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
-        </hgroup>
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
       </div>
-    </div>
-    <div class="scroll-wrap flex-col">
-      <ul class="nav">
-        
-            <li class="waves-block waves-effect">
-              <a href="/"  >
-                <i class="icon icon-lg icon-home"></i>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
 
-                主页
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-
-                文章
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/tags"  >
-                <i class="icon icon-lg icon-tags"></i>
-
-                标签
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/categories"  >
-                <i class="icon icon-lg icon-list"></i>
-
-                分类
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/about"  >
-                <i class="icon icon-lg icon-star"></i>
-
-                关于我
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://github.com/Microndgt" target="_blank" >
-                <i class="icon icon-lg icon-github"></i>
-
-                Github
-              </a>
-            </li>
-        
-      </ul>
-    </div>
-  </div>
-</aside>
-
-    <main id="main">
-        <header class="top-header" id="header">
-    <div class="flex-row">
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
-          <i class="icon icon-lg icon-navicon"></i>
-        </a>
-        <div class="flex-col header-title ellipsis">BAIDU的DNS解析</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
-        
-        
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
-    </div>
-</header>
-<header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title">BAIDU的DNS解析</h1>
-        <h5 class="subtitle">
-            
-                <time datetime="2017-02-19T09:31:18.000Z" itemprop="datePublished" class="page-time">
-  2017-02-19 17:31:18
-</time>
+  <div class="container">
+  	<div class="content">
+    	 
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	
+		<div class="page-header">
+			<h1> BAIDU的DNS解析</h1>
+		</div>
+	
 
 
-            
-        </h5>
-    </div>
 
-    
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
 
+	<!-- content -->
+	<div class="mypage">		
+	  		
 
-</header>
-
-
-<div class="container body-wrap">
-    
-    <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解析过程"><span class="post-toc-number">1.</span> <span class="post-toc-text">解析过程</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#彩蛋-shifen-com由来"><span class="post-toc-number">2.</span> <span class="post-toc-text">彩蛋-shifen.com由来</span></a></li></ol>
-        </nav>
-    </aside>
-    
-
-<article id="post-BAIDU的DNS解析"
-  class="post-article article-type-post fade" itemprop="blogPost">
-
-    <div class="post-card">
-        <h1 class="post-card-title">BAIDU的DNS解析</h1>
-        <div class="post-meta">
-            <time class="post-time" title="2017-02-19 17:31:18 17:31:18" datetime="2017-02-19T09:31:18.000Z"  itemprop="datePublished">2017-02-19 17:31:18</time>
-
-            
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-            
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
-    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
-</span>
-
-
-        </div>
-        <div class="post-content" id="post-content" itemprop="postContent">
-            
-            
-            
-            <p>今天用<code>nslookup</code>命令解析查看了<code>www.baidu.com</code>的IP地址，却意外发现百度的<code>CNAME</code>居然是<code>www.a.shifen.com</code></p>
+	  <p>今天用<code>nslookup</code>命令解析查看了<code>www.baidu.com</code>的IP地址，却意外发现百度的<code>CNAME</code>居然是<code>www.a.shifen.com</code></p>
 <h1 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">nslookup www.baidu.com</div><div class="line">&gt;&gt;&gt;</div><div class="line">Server:		119.29.29.29</div><div class="line">Address:	119.29.29.29#53</div><div class="line"></div><div class="line">Non-authoritative answer:</div><div class="line">www.baidu.com	canonical name = www.a.shifen.com.</div><div class="line">Name:	www.a.shifen.com</div><div class="line">Address: 220.181.111.188</div><div class="line">Name:	www.a.shifen.com</div><div class="line">Address: 220.181.112.244</div></pre></td></tr></table></figure>
 <p>接下来看看一个详细的baidu的dns解析过程</p>
 <p>理论上，目前我的电脑通过ISP接入互联网，ISP就会分配一个本地DNS服务器（非权威服务器），然后我的电脑向这个ISP DNS服务器发起请求，查询<code>www.baidu.com</code>的IP地址。</p>
@@ -222,314 +155,139 @@
 <p>直接访问之，正是百度的页面。</p>
 <h1 id="彩蛋-shifen-com由来"><a href="#彩蛋-shifen-com由来" class="headerlink" title="彩蛋-shifen.com由来"></a><code>彩蛋-shifen.com由来</code></h1><p><code>http://shifen.com</code>是百度当年为了竞价排名这个广告系统注册的，这个后台系统被命名为Shifen竞价排名，以前的销售系统现在还叫shifen销售系统。因为当年百度那个广告最低点击10分起价。为什么有这么一个奇怪的名字呢？在《相信中国》中，梁冬先生这样写道：“这个将来成就了百度80%收入的商业模式，最初的管理平台是由一个叫刘子正的实习生主持开发的。这也是唯一一个除<code>http://baidu.com</code>以外，外人所知的百度公司所拥有的国际域名。</p>
 <p>另外：大公司都跟“十分”有关系啊，比如腾讯——TenCent⋯⋯</p>
-     
-        </div>
+	  
+	</div>
 
-        <blockquote class="post-copyright">
-    <div class="content">
-        
+	<div>
+  	<center>
+	<div class="pagination">
 
-        
-        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/02/19/BAIDU的DNS解析/" target="_blank" rel="external">http://skyrover.me/2017/02/19/BAIDU的DNS解析/</a>
-        
-    </div>
-    <footer>
-        <a href="http://skyrover.me">
-            <img src="/img/avatar.jpg" alt="Kevin Du">
-            Kevin Du
-        </a>
-    </footer>
-</blockquote>
+    
+    
+    <a href="/2017/03/01/Using-Celery-With-Flask/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+    
 
-        
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2017/01/05/群体性孤独/" type="button" class="btn btn-default ">下一页<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
 </div>
 
-
-
-        <div class="post-footer">
-            
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
-
-
-
-            
-<div class="page-share-wrap">
-    
-
-<div class="page-share" id="pageShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/02/19/BAIDU的DNS解析/&title=《BAIDU的DNS解析》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/02/19/BAIDU的DNS解析/&title=《BAIDU的DNS解析》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/02/19/BAIDU的DNS解析/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《BAIDU的DNS解析》 — SkyRover&url=http://skyrover.me/2017/02/19/BAIDU的DNS解析/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/02/19/BAIDU的DNS解析/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
-
-
-
-    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
-        <i class="icon icon-share-alt icon-lg"></i>
-    </a>
-</div>
-
-
-
-        </div>
-    </div>
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+    <h2 class="title">留言</h2>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2017/03/01/Using-Celery-With-Flask/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">Using Celery With Flask</h4>
-      </a>
-    </div>
-  
-  
-    <div class="waves-block waves-effect next">
-      <a href="/2017/01/05/群体性孤独/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">群体性孤独</h4>
-      </a>
-    </div>
-  
-</nav>
-
-
-
-    
-
-
-
-
-
-
-
-
-<section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
-    <script>
-        var gitment = new Gitment({
-            owner: 'Microndgt',
-            repo: 'microndgt.github.io',
-            oauth: {
-                client_id: 'f54490fb6635a5c3c3ba',
-                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
-            },
-        })
-        gitment.render('comments')
-    </script>
 </section>
 
 
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
 
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-02-19 17:31:18 
+	</div>
+	
 
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/编程/">编程<span>73</span></a></li>
+  </li>
 
-
-
-</article>
-
-<div id="reward" class="page-modal reward-lay">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <h3 class="reward-title">
-        <i class="icon icon-quote-left"></i>
-        谢谢支持~
-        <i class="icon icon-quote-right"></i>
-    </h3>
-    <div class="reward-content">
-        
-        <div class="reward-code">
-            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
-        </div>
-        
-        <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
-                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
-            <div class="reward-toggle-ctrol">
-                <span class="reward-toggle-item wechat">微信</span>
-                <span class="reward-toggle-label"></span>
-                <span class="reward-toggle-item alipay">支付宝</span>
-            </div>
-        </label>
-        
-    </div>
-</div>
-
-
-
-</div>
-
-        <footer class="footer">
-    <div class="top">
-        
-<p>
-    <span id="busuanzi_container_site_uv" style='display:none'>
-        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
-    </span>
-    <span id="busuanzi_container_site_pv" style='display:none'>
-        总访问量：<span id="busuanzi_value_site_pv"></span>
-    </span>
-</p>
-
-
-        <p>
-            
-                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            
-            <span>欢迎订阅</span>
-        </p>
-    </div>
-    <div class="bottom">
-        <p><span>Kevin Du &copy; 2016 - 2018</span>
-            <span>
-                
-                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
-                
-                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
-            </span>
-        </p>
-    </div>
-</footer>
-
-    </main>
-    <div class="mask" id="mask"></div>
-<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-
-
-<div class="global-share" id="globalShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/02/19/BAIDU的DNS解析/&title=《BAIDU的DNS解析》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/02/19/BAIDU的DNS解析/&title=《BAIDU的DNS解析》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/02/19/BAIDU的DNS解析/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《BAIDU的DNS解析》 — SkyRover&url=http://skyrover.me/2017/02/19/BAIDU的DNS解析/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/02/19/BAIDU的DNS解析/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
     </ul>
- </div>
+	</div>
+	
 
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+    </ul>
+	</div>
+		
 
-<div class="page-modal wx-share" id="wxShare">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3aS27DMAxF0ex/0y7QUYFCyn2kE8DU1ahoHUdHA1b8vF54Xb9r9Zvrz9r/9f97+DM3LBkyZDyWcW0X2db+s6uD2B8K35sMGTLOYfBXkyPgsXH/e7I3GTJkyOBfsHqmFtBlyJAhoxNw+bUvffKr/zdkyJDxQAYJiGnKyot0te+VIUPGOYy0MfDNnz/Y35AhQ8ZDGFdp1QpwnWvim3fKkCFjNGN/jUtjHUo1cVOBH5wMGTJmM2pBlqesKZWf/TLUypAhYxyjE1jjuF5qMNycl8uQIeOxDB4oScmebGgfstNAL0OGjNmMFLBnfKLxgI5VhgwZhzFqZX0OrhX43qTNMmTIOJ5RK5+ll780xZUhQ8aZjFpimW6d59Zxf0OGDBlDGbyJyEe7eOmtc0FcjoXJkCFjNCMdWu0MqvLiXXCsMmTIGMpIB7w66W567QuORoYMGQcw0hJYnF6GWyzm4jJkyDiM0WkY8DenCfPyUzJkyBjN4GNY/VSWhNFaQ1SGDBknM9KSWXod7Dch4hOSIUPGwxk8jPJLZC195UewTGVlyJAxjlEb8+LjXOnVMw39MmTImM2oBda0NNYZxUCNTxkyZIxmpGWv2pMEScJ32kyVIUPGJEYaZEmNq5OIFgO9DBkyDmDwsYZ9eS4NvmkoR4U2GTJkHM/gpbrasFexkSBDhgwZeHO17ZKQ+gYjQ4aMAxgkieUJ513hOKgUypAhYzSj3xi4azis1uaUIUPGaMYPrdWyUMNLWV8AAAAASUVORK5CYII=" alt="微信分享二维码">
-</div>
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
 
+	</div>
+		
 
-
-
-    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
-<script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
-
-
-</script>
-
-<script src="/js/main.min.js?v=1.7.1"></script>
-
-
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<template id="search-tpl">
-<li class="item">
-    <a href="{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
-            </div>
-            <time class="flex-col time">{date}</time>
-        </div>
-    </a>
-</li>
-</template>
-
-<script src="/js/search.min.js?v=1.7.1" async></script>
+</div><!-- row -->
 
 
 
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2018 Kevin Du
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
+     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
 
 
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
 
 
-
-<script>
-(function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title = '快回来！';
-            clearTimeout(titleTime);
-        } else {
-            document.title = '(つェ⊂)喜欢你!';
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
-        }
-    });
-})();
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
 </script>
 
 
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
 
 </body>
-</html>
+   </html>

@@ -1,808 +1,910 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    
-
-    
-
-    
-
-
-
-    <meta charset="utf-8">
-    
-    
-    
-    <title>SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <meta name="theme-color" content="#3F51B5">
-    
-    
-    <meta name="keywords" content="Python,编程,算法,人生,博客">
-    <meta name="description" content="仲夏夜之梦">
-<meta name="keywords" content="Python,编程,算法,人生,博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="SkyRover">
-<meta property="og:url" content="http://skyrover.me/page/4/index.html">
-<meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="仲夏夜之梦">
-<meta property="og:locale" content="zh-CN">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SkyRover">
-<meta name="twitter:description" content="仲夏夜之梦">
-    
-        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
-    
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
-    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
-    <script>window.lazyScripts=[]</script>
-
-    <!-- custom head -->
-    
-
-</head>
-
-<body>
-    <div id="loading" class="active"></div>
-
-    <aside id="menu"  >
-  <div class="inner flex-row-vertical">
-    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
-        <i class="icon icon-lg icon-close"></i>
-    </a>
-    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
-      <div class="brand">
-        <a href="/about" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
-        </a>
-        <hgroup class="introduce">
-          <h5 class="nickname">Kevin Du</h5>
-          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
-        </hgroup>
-      </div>
-    </div>
-    <div class="scroll-wrap flex-col">
-      <ul class="nav">
-        
-            <li class="waves-block waves-effect">
-              <a href="/"  >
-                <i class="icon icon-lg icon-home"></i>
-
-                主页
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-
-                文章
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/tags"  >
-                <i class="icon icon-lg icon-tags"></i>
-
-                标签
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/categories"  >
-                <i class="icon icon-lg icon-list"></i>
-
-                分类
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/about"  >
-                <i class="icon icon-lg icon-star"></i>
-
-                关于我
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://github.com/Microndgt" target="_blank" >
-                <i class="icon icon-lg icon-github"></i>
-
-                Github
-              </a>
-            </li>
-        
-      </ul>
-    </div>
-  </div>
-</aside>
-
-    <main id="main">
-        <header class="top-header" id="header">
-    <div class="flex-row">
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
-          <i class="icon icon-lg icon-navicon"></i>
-        </a>
-        <div class="flex-col header-title ellipsis">SkyRover</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
-        
-        
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
-    </div>
-</header>
-<header class="content-header index-header">
-
-    <div class="container fade-scale">
-        <h1 class="title">SkyRover</h1>
-        <h5 class="subtitle">
-            
-                所谓热血的少年，青涩的爱恋，死亡与梦之约。
-            
-        </h5>
-    </div>
-
-    
-
-
-</header>
-
-<div class="container body-wrap">
-
-    <ul class="post-list">
-    
-        <li class="post-list-item fade">
-            <article id="post-lowest_common_ancestor_of_a_tree"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-21 15:58:32 15:58:32" datetime="2017-09-21T07:58:32.000Z"  itemprop="datePublished">2017-09-21 15:58:32</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>第 4 页 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/21/lowest_common_ancestor_of_a_tree/">最低共同祖先</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。
-先就做这两道题吧，总体感觉很容易，基本上提交一次就accepted了，哎，突然想去面试下，说不定还可以去小米= =!
-其实我觉得寻找最低公共祖先，你得摸清情况，比如...
-    
-
-        <a href="/2017/09/21/lowest_common_ancestor_of_a_tree/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-风月无边"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-19 08:40:06 08:40:06" datetime="2017-09-19T00:40:06.000Z"  itemprop="datePublished">2017-09-19 08:40:06</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Music/">Music</a></li></ul>
-
-
-    </div>
-
-    
-
+  <meta property="og:site_name" content="SkyRover"/>
 
   
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/19/风月无边/">风月无边</a>
-    </h3>
+    <meta property="og:image" content=""/>
   
 
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        从小就喜欢宋词，风流婉转，令人心醉。杨柳岸 晓风残月多么美的意境。古风的歌曲也特别喜欢，最近听到一首风月无边，不错。
-另外记一首苏轼的西江月
-
-照野弥弥浅浪，横空隐隐层霄。障泥未解玉骢骄，我欲醉眠芳草。可惜一溪风月，莫教踏碎琼瑶。解鞍欹枕绿杨桥，杜宇一声春晓。
-
-完全把自然与自己融为一体了有没有，物我两忘啊
-风月无边这首歌中最喜欢的几句歌词
-
-痴心殿 我掌风月权我不曾 江上夜停船琵琶里 婉转...
-    
-
-        <a href="/2017/09/19/风月无边/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Song/">Song</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/宋词/">宋词</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-thriftpy_3_socket"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-17 13:44:28 13:44:28" datetime="2017-09-17T05:44:28.000Z"  itemprop="datePublished">2017-09-17 13:44:28</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
   
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/17/thriftpy_3_socket/">thriftpy源码解析(三) - 套接字</a>
-    </h3>
   
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。
-上次提到默认使用的套接字是TServerSocket，是在make_server中创建的，可以使用unix_socket或者TCP的套接字，另外如果基于https，就可以使用TSSLServerSocket。其实套接字也算传输transport协议中的一个部分，所以可以看到源码...
-    
-
-        <a href="/2017/09/17/thriftpy_3_socket/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thrift/">Thrift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码/">源码</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-flask_https"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-17 09:31:30 09:31:30" datetime="2017-09-17T01:31:30.000Z"  itemprop="datePublished">2017-09-17 09:31:30</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
+    <link href="/favicon.png" rel="icon">
   
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/17/flask_https/">翻译 - Running Your Flask Application Over HTTPS</a>
-    </h3>
   
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
+  <script src="/js/jquery-2.0.3.min.js"></script>
 
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        翻译自: Running Your Flask Application Over HTTPS
-当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。
-人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，...
-    
-
-        <a href="/2017/09/17/flask_https/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flask/">Flask</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-进程的调度"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-14 16:23:03 16:23:03" datetime="2017-09-14T08:23:03.000Z"  itemprop="datePublished">2017-09-14 16:23:03</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
+  <!-- analytics -->
   
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/14/进程的调度/">进程的调度</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。
-调度进程的切换首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存...
-    
-
-        <a href="/2017/09/14/进程的调度/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-subprocess管理"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-12 09:00:35 09:00:35" datetime="2017-09-12T01:00:35.000Z"  itemprop="datePublished">2017-09-12 09:00:35</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/12/subprocess管理/">翻译 - subprocess — Subprocess management</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如os.system和os.spawn*
-使用subprocess模块run函数推荐的调用子进程的方式是使用run()函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的Popen接口。
-subprocess.run(args, *,...
-    
-
-        <a href="/2017/09/12/subprocess管理/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-属性描述符"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-05 21:40:46 21:40:46" datetime="2017-09-05T13:40:46.000Z"  itemprop="datePublished">2017-09-05 21:40:46</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/05/属性描述符/">属性描述符</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        
-From 流畅的Python 人民邮电出版社 20章属性描述符
-
-描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的__get__和__set__方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。
-描述符是实现了特定协议的类，这个协议包括__get__, ...
-    
-
-        <a href="/2017/09/05/属性描述符/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-特性属性和特殊方法"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-04 18:21:46 18:21:46" datetime="2017-09-04T10:21:46.000Z"  itemprop="datePublished">2017-09-04 18:21:46</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/04/特性属性和特殊方法/">特性，属性和特殊方法</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        
-From 流畅的Python 人民邮电出版社 19章动态属性和特性
-
-特性数据的属性和处理数据的方法统称为属性，其实方法只是可调用的属性。然后还有特性：property(fget=None, fset=None, fdel=None, doc=None)
-经典的使用方法12345678910111213141516171819class LineItem:    def __init__(...
-    
-
-        <a href="/2017/09/04/特性属性和特殊方法/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-Bye Bye Bye"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-04 08:53:46 08:53:46" datetime="2017-09-04T00:53:46.000Z"  itemprop="datePublished">2017-09-04 08:53:46</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Music/">Music</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/04/Bye Bye Bye/">Bye Bye Bye</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        无意间发现很好听的歌，单曲循环中。。。
-
-When I see youlooking back at mewatching these eyes stillthrough your fingersand your eyeshave told a thousand lightsbut I cant tell this timewhat you really mean itWe’ve been ...
-    
-
-        <a href="/2017/09/04/Bye Bye Bye/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Song/">Song</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-LeetCode刷题(3)"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017-09-03 17:33:01 17:33:01" datetime="2017-09-03T09:33:01.000Z"  itemprop="datePublished">2017-09-03 17:33:01</time>
-
-        
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/09/03/LeetCode刷题(3)/">LeetCode刷题(3)</a>
-    </h3>
-  
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        Combination Sum III想了半天，最后使用了递归形式的回溯法来解决，其实本质还是一种遍历吧，每一个元素位上去找可能成立的元素，后一个元素位上的元素肯定比前一个大，然后有一些限制条件，就可以得出来结果。回溯法从这里看来就是一种dfs，找到最后一个元素上。然后再回到上一层元素去找。
-123456789101112131415161718192021222324class Solut...
-    
-
-        <a href="/2017/09/03/LeetCode刷题(3)/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-
-    </div>
-    
-</article>
-
-        </li>
-    
-    </ul>
-
-    
-<nav id="page-nav">
-    <div class="inner">
-    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
-    </div>
-</nav>
-
-
-
-</div>
-
-        <footer class="footer">
-    <div class="top">
-        
-<p>
-    <span id="busuanzi_container_site_uv" style='display:none'>
-        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
-    </span>
-    <span id="busuanzi_container_site_pv" style='display:none'>
-        总访问量：<span id="busuanzi_value_site_pv"></span>
-    </span>
-</p>
-
-
-        <p>
-            
-                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            
-            <span>欢迎订阅</span>
-        </p>
-    </div>
-    <div class="bottom">
-        <p><span>Kevin Du &copy; 2016 - 2018</span>
-            <span>
-                
-                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
-                
-                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
-            </span>
-        </p>
-    </div>
-</footer>
-
-    </main>
-    <div class="mask" id="mask"></div>
-<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-
-
-<div class="global-share" id="globalShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/page/4/&title=SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/page/4/&title=SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/page/4/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=SkyRover&url=http://skyrover.me/page/4/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/page/4/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
-
-
-<div class="page-modal wx-share" id="wxShare">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAAAAAAZai4+AAABTklEQVR42u3aSxaDIBBEUfe/6WQDAau6m0Gox8ijHrkO+BU8j1w+Qtm//5wosGBdxFIqm71WfgwWrEzWqoWu3lHuKN9Z3ocFC5bc4PdfgAUL1gmWXoH+S7BgwXInzTXc8bk8LFhXsPRUp399JN+CBevPWR+zrAZjt7N4qQUWrDBWJ9LdD7HKpsvL1BkWrBiWO7V1F6562AQLVjKrP4F2F6vDFFiwYlh6w1a6EnfwhgUrk9UJgNyFrhHpwoIVw+ovUPUh2ZiOw4IVw3IHWn2hq3Q0L10DLFhhLAWqN/haTAwLFqzOsYOpQww/hmpYsAJYxaMApThJ3zqFBSuNVQuJ9HhI6VaKIFiwrmO5B+/cTqR2rAEWrExWJ4SdmkDDggXLXfXuo1s3hDKyXliwYMkDrf7UjnRhwbqaNVvNwK4lLFhhLHcjRGnks78EC9bVrC9I9cCAuObPWQAAAABJRU5ErkJggg==" alt="微信分享二维码">
-</div>
-
-
-
-
-    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 <script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
-
-
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
 </script>
 
-<script src="/js/main.min.js?v=1.7.1"></script>
-
-
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<template id="search-tpl">
-<li class="item">
-    <a href="{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
-            </div>
-            <time class="flex-col time">{date}</time>
-        </div>
-    </a>
-</li>
-</template>
-
-<script src="/js/search.min.js?v=1.7.1" async></script>
-
-
-
-
-
-
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
 
 
 <script>
+var _hmt = _hmt || [];
 (function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title = '快回来！';
-            clearTimeout(titleTime);
-        } else {
-            document.title = '(つェ⊂)喜欢你!';
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
-        }
-    });
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
 })();
 </script>
 
 
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 <div class="page-header logo">
+  <h1>所谓热血的少年，青涩的爱恋，死亡与梦之约。<span class="blink-fast">∎</span></h1>
+</div>
+
+<div class="row page">
+
+	
+	<div class="col-md-9">
+	
+
+		<div class="slogan">
+      <i class="fa fa-heart blink-slow"></i>
+      Keep and carry on.
+</div>    
+		<div id="top_search"></div>
+		<div class="mypage">
+		
+		<!-- title and entry -->
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/21/lowest_common_ancestor_of_a_tree/" >最低共同祖先</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-21 15:58:32  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。</p>
+<p>先就做这两道题吧，总体感觉很容易，基本上提交一次就accepted了，哎，突然想去面试下，说不定还可以去小米= =!</p>
+<p>其实我觉得寻找最低公共祖先，你得摸清情况，比如在BST中，有这么几种情况，当要搜寻的节点比p,q值都大，说明共同祖先应该在这个节点左侧，反之则在右侧，然后如果在这两个值中间，那就说明这个节点就是最低公共祖先了。</p>
+<p>如果是普通的二叉树，递归的进行查找，首先来看查看的这个节点如果是p或者q，则返回，然后去这个节点左侧找，直到为None或者找到p，接下来去这个节点的右侧找，直到找到None或者找到p，如果一个找到p，一个找到q，则说明这个节点就是最低公共祖先。如果有一个是None，说明一个p在q上面，或者q在p上面。</p>
+<p>总之吧，就是递归地处理这些情况，考虑清楚就好了。</p>
+<h1 id="BST"><a href="#BST" class="headerlink" title="BST"></a>BST</h1><p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/" target="_blank" rel="external">原题链接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line"></div><div class="line">class Solution(object):</div><div class="line">    def lowestCommonAncestor(self, root, p, q):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :type p: TreeNode</div><div class="line">        :type q: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if not root:</div><div class="line">            return</div><div class="line">        if p == q:</div><div class="line">            return p</div><div class="line">        a, b = sorted([p.val, q.val])</div><div class="line">        def find_ancestor(node):</div><div class="line">            if not node:</div><div class="line">                return</div><div class="line">            elif node.val &gt; a and node.val &gt; b:</div><div class="line">                return find_ancestor(node.left)</div><div class="line">            elif node.val &lt; a and node.val &lt; b:</div><div class="line">                return find_ancestor(node.right)</div><div class="line">            else:</div><div class="line">                return node</div><div class="line">        res = find_ancestor(root)</div><div class="line">        return res</div></pre></td></tr></table></figure>
+<h1 id="Binary-Tree"><a href="#Binary-Tree" class="headerlink" title="Binary Tree"></a>Binary Tree</h1><p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/" target="_blank" rel="external">原题链接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line"></div><div class="line">class Solution(object):</div><div class="line">    def lowestCommonAncestor(self, root, p, q):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :type p: TreeNode</div><div class="line">        :type q: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def find_ancestor(node):</div><div class="line">            if not node:</div><div class="line">                return</div><div class="line">            if node == p or node == q:</div><div class="line">                return node</div><div class="line">            l = find_ancestor(node.left)</div><div class="line">            r = find_ancestor(node.right)</div><div class="line">            if l and r:</div><div class="line">                return node</div><div class="line">            return l or r</div><div class="line">        return find_ancestor(root)</div></pre></td></tr></table></figure>
+
+	
+	</div>
+  <a type="button" href="/2017/09/21/lowest_common_ancestor_of_a_tree/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/19/风月无边/" >风月无边</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-19 08:40:06  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>从小就喜欢宋词，风流婉转，令人心醉。<code>杨柳岸 晓风残月</code>多么美的意境。古风的歌曲也特别喜欢，最近听到一首风月无边，不错。</p>
+<p>另外记一首苏轼的<code>西江月</code></p>
+<blockquote>
+<p>照野弥弥浅浪，横空隐隐层霄。<br>障泥未解玉骢骄，我欲醉眠芳草。<br>可惜一溪风月，莫教踏碎琼瑶。<br>解鞍欹枕绿杨桥，杜宇一声春晓。</p>
+</blockquote>
+<p>完全把自然与自己融为一体了有没有，物我两忘啊</p>
+<p>风月无边这首歌中最喜欢的几句歌词</p>
+<blockquote>
+<p>痴心殿 我掌风月权<br>我不曾 江上夜停船<br>琵琶里 婉转潸然<br>也不曾 三千金甲破楼兰<br>更不曾 风雪策马入蓝关<br>我只合搅起那情潮乱<br>演离合断厮缠似苦实甜<br>我红尘踏遍 萧瑟染不到足尖<br>愿他年 化尽春泥见骨气犹艳<br>戏能弄人 人方知肠断<br>不入风月 风月怎无边<br>漫将清狂 身前身后作笑谈</p>
+</blockquote>
+<p>一缕轻愁，悲恨相续，魂飞千载寻伊尽，唤不醒，相思人憔悴，夜半静听万千泪..经流年，梦回曲水边，烟波碎，人已醉，红尘滚滚皆是泪，风逝一抹暗脆。倾尽了风华，寂寞了容颜。跌碎了谁的思念？一袭霓裳，抚起月亮的寒光，穿越过万水千山的屏障，只为短暂的缠绵。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/09/19/风月无边/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/17/thriftpy_3_socket/" >thriftpy源码解析(三) - 套接字</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-17 13:44:28  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>离上次更新thrift源码解析已经快有2个月了，自己也真是效率低。不管了，这次介绍的是Thriftpy中的套接字。</p>
+<p>上次提到默认使用的套接字是<code>TServerSocket</code>，是在<code>make_server</code>中创建的，可以使用<code>unix_socket</code>或者TCP的套接字，另外如果基于https，就可以使用<code>TSSLServerSocket</code>。其实套接字也算传输<code>transport</code>协议中的一个部分，所以可以看到源码有关socket的都在<code>Thriftpy/transport</code>里面，其中有<code>socket.py</code>和<code>sslsocket.py</code>，这里我们只介绍以下<code>socket.py</code></p>
+<p><code>socket.py</code>中只有两个类，一个是<code>TSocket</code>，一个是<code>TServerSocket</code>，前者是在客户端方面使用的，<code>TServerSocket</code>是在服务器端使用的</p>
+<p>客户端和服务器端对应，它使用<code>make_client</code>来创建一个客户端，其内部使用了<code>TSocket</code>，<code>TSSLSocket</code>。</p>
+<h1 id="TServerSocket"><a href="#TServerSocket" class="headerlink" title="TServerSocket"></a>TServerSocket</h1><p>我们先来看服务器端的Socket实现。Socket编程在服务器部分大致流程就是：</p>
+<ul>
+<li>创建</li>
+<li>绑定，监听</li>
+<li>接受</li>
+<li>读取和回应</li>
+<li>关闭</li>
+</ul>
+<p>基本上<code>TServerSocket</code>类中就是这么些方法:</p>
+<h2 id="创建和初始化"><a href="#创建和初始化" class="headerlink" title="创建和初始化"></a>创建和初始化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">class TServerSocket(object):</div><div class="line">    &quot;&quot;&quot;Socket implementation for server side.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, host=None, port=None, unix_socket=None,</div><div class="line">                 socket_family=socket.AF_INET, client_timeout=3000,</div><div class="line">                 backlog=128):</div><div class="line">        if unix_socket:</div><div class="line">            self.unix_socket = unix_socket</div><div class="line">            self.host = None</div><div class="line">            self.port = None</div><div class="line">        else:</div><div class="line">            self.unix_socket = None</div><div class="line">            self.host = host</div><div class="line">            self.port = port</div><div class="line"></div><div class="line">        self.socket_family = socket_family</div><div class="line">        self.client_timeout = client_timeout / 1000 if client_timeout else None</div><div class="line">        self.backlog = backlog</div><div class="line"></div><div class="line">    def _init_sock(self):</div><div class="line">        if self.unix_socket:</div><div class="line">            # try remove the sock file it already exists</div><div class="line">            _sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)</div><div class="line">            try:</div><div class="line">                _sock.connect(self.unix_socket)</div><div class="line">            except (socket.error, OSError) as err:</div><div class="line">                if err.args[0] == errno.ECONNREFUSED:</div><div class="line">                    os.unlink(self.unix_socket)</div><div class="line">        else:</div><div class="line">            _sock = socket.socket(self.socket_family, socket.SOCK_STREAM)</div><div class="line">        # 这里设置了端口重用，在套接字级别上设置选项</div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)</div><div class="line">        if hasattr(socket, &quot;SO_REUSEPORT&quot;):</div><div class="line">            _sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)</div><div class="line">        _sock.settimeout(None)</div><div class="line">        self.sock = _sock</div></pre></td></tr></table></figure>
+<h2 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def listen(self):</div><div class="line">    self._init_sock()</div><div class="line"></div><div class="line">    addr = self.unix_socket or (self.host, self.port)</div><div class="line">    self.sock.bind(addr)</div><div class="line">    self.sock.listen(self.backlog)</div></pre></td></tr></table></figure>
+<h2 id="接受"><a href="#接受" class="headerlink" title="接受"></a>接受</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def accept(self):</div><div class="line">    client, _ = self.sock.accept()</div><div class="line">    if self.client_timeout:</div><div class="line">        client.settimeout(self.client_timeout)</div><div class="line">    return TSocket(sock=client)</div></pre></td></tr></table></figure>
+<h2 id="读取和回应"><a href="#读取和回应" class="headerlink" title="读取和回应"></a>读取和回应</h2><p><code>TServerSocket</code>没有定义这几个方法，因为是Thriftpy支持不同的协议，因此实现由不同的协议来实现不同的读取和解析方法。</p>
+<h2 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def close(self):</div><div class="line">    if not self.sock:</div><div class="line">        return</div><div class="line"></div><div class="line">    try:</div><div class="line">        self.sock.shutdown(socket.SHUT_RDWR)</div><div class="line">        self.sock.close()</div><div class="line">    except (socket.error, OSError):</div><div class="line">        pass</div></pre></td></tr></table></figure>
+<h1 id="TSocket"><a href="#TSocket" class="headerlink" title="TSocket"></a>TSocket</h1><p><code>TSocket</code>即客户端的套接字，遵循以下流程:</p>
+<ul>
+<li>创建</li>
+<li>连接</li>
+<li>发送</li>
+<li>读取</li>
+<li>关闭</li>
+</ul>
+<p>代码依旧很简单，这里就全部贴上来了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div></pre></td><td class="code"><pre><div class="line">class TSocket(object):</div><div class="line">    &quot;&quot;&quot;Socket implementation for client side.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, host=None, port=None, unix_socket=None,</div><div class="line">                 sock=None, socket_family=socket.AF_INET,</div><div class="line">                 socket_timeout=3000, connect_timeout=None):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        @param sock(socket) 使用一个打开的套接字直接初始化</div><div class="line">        @param socket_family(str) socket.AF_INET or socket.AF_INET6.</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if sock:</div><div class="line">            self.sock = sock</div><div class="line">        elif unix_socket:</div><div class="line">            self.unix_socket = unix_socket</div><div class="line">            self.host = None</div><div class="line">            self.port = None</div><div class="line">            self.sock = None</div><div class="line">        else:</div><div class="line">            self.unix_socket = None</div><div class="line">            self.host = host</div><div class="line">            self.port = port</div><div class="line">            self.sock = None</div><div class="line"></div><div class="line">        self.socket_family = socket_family</div><div class="line">        self.socket_timeout = socket_timeout / 1000 if socket_timeout else None</div><div class="line">        self.connect_timeout = connect_timeout / 1000 if connect_timeout \</div><div class="line">            else self.socket_timeout</div><div class="line"></div><div class="line">    def _init_sock(self):</div><div class="line">        if self.unix_socket:</div><div class="line">            _sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)</div><div class="line">        else:</div><div class="line">            _sock = socket.socket(self.socket_family, socket.SOCK_STREAM)</div><div class="line">            _sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)</div><div class="line"></div><div class="line">        # socket options</div><div class="line">        linger = struct.pack(&apos;ii&apos;, 0, 0)</div><div class="line">        # close或 shutdown将等到所有套接字里排队的消息成功发送或到达延迟时间后才会返回。</div><div class="line">        # 该选项的参数（option_value)是一个linger结构</div><div class="line">        # struct linger &#123;  </div><div class="line">        #      int   l_onoff;      </div><div class="line">        #      int   l_linger;     </div><div class="line">        #  &#125;;  </div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, linger)</div><div class="line">        _sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)</div><div class="line"></div><div class="line">        self.sock = _sock</div><div class="line"></div><div class="line">    def set_handle(self, sock):</div><div class="line">        self.sock = sock</div><div class="line"></div><div class="line">    def set_timeout(self, ms):</div><div class="line">        &quot;&quot;&quot;Backward compat api, will bind the timeout to both connect_timeout</div><div class="line">        and socket_timeout.</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        self.socket_timeout = ms / 1000 if (ms and ms &gt; 0) else None</div><div class="line">        self.connect_timeout = self.socket_timeout</div><div class="line"></div><div class="line">        if self.sock is not None:</div><div class="line">            self.sock.settimeout(self.socket_timeout)</div><div class="line"></div><div class="line">    def is_open(self):</div><div class="line">        return bool(self.sock)</div><div class="line"></div><div class="line">    def open(self):</div><div class="line">        self._init_sock()</div><div class="line"></div><div class="line">        addr = self.unix_socket or (self.host, self.port)</div><div class="line"></div><div class="line">        try:</div><div class="line">            if self.connect_timeout:</div><div class="line">                self.sock.settimeout(self.connect_timeout)</div><div class="line"></div><div class="line">            self.sock.connect(addr)</div><div class="line"></div><div class="line">            if self.socket_timeout:</div><div class="line">                self.sock.settimeout(self.socket_timeout)</div><div class="line"></div><div class="line">        except (socket.error, OSError):</div><div class="line">            raise TTransportException(</div><div class="line">                type=TTransportException.NOT_OPEN,</div><div class="line">                message=&quot;Could not connect to %s&quot; % str(addr))</div><div class="line"></div><div class="line">    def read(self, sz):</div><div class="line">        try:</div><div class="line">            buff = self.sock.recv(sz)</div><div class="line">        except socket.error as e:</div><div class="line">            if (e.args[0] == errno.ECONNRESET and</div><div class="line">                    (sys.platform == &apos;darwin&apos; or</div><div class="line">                     sys.platform.startswith(&apos;freebsd&apos;))):</div><div class="line">                # freebsd and Mach don&apos;t follow POSIX semantic of recv</div><div class="line">                # and fail with ECONNRESET if peer performed shutdown.</div><div class="line">                # See corresponding comment and code in TSocket::read()</div><div class="line">                # in lib/cpp/src/transport/TSocket.cpp.</div><div class="line">                self.close()</div><div class="line">                # Trigger the check to raise the END_OF_FILE exception below.</div><div class="line">                buff = &apos;&apos;</div><div class="line">            else:</div><div class="line">                raise</div><div class="line"></div><div class="line">        if len(buff) == 0:</div><div class="line">            raise TTransportException(type=TTransportException.END_OF_FILE,</div><div class="line">                                      message=&apos;TSocket read 0 bytes&apos;)</div><div class="line">        return buff</div><div class="line"></div><div class="line">    def write(self, buff):</div><div class="line">        self.sock.sendall(buff)</div><div class="line"></div><div class="line">    def flush(self):</div><div class="line">        pass</div><div class="line"></div><div class="line">    def close(self):</div><div class="line">        if not self.sock:</div><div class="line">            return</div><div class="line"></div><div class="line">        try:</div><div class="line">            self.sock.shutdown(socket.SHUT_RDWR)</div><div class="line">            self.sock.close()</div><div class="line">            self.sock = None</div><div class="line">        except (socket.error, OSError):</div><div class="line">            pass</div></pre></td></tr></table></figure>
+<h1 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h1><p>这里补充一个知识点，就是Python操作字节流的库struct。</p>
+<p>Python没有专门处理字节的数据类型。但由于b’str’可以表示字节，所以，字节数组＝二进制str。但是对于其他的二进制数据比如整数值，浮点数等就比较麻烦了，因此Python提供了一个struct模块来解决bytes和其他二进制数据类型的转换。</p>
+<p>struct的pack函数把任意数据类型变成bytes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import struct</div><div class="line">&gt;&gt;&gt; struct.pack(&apos;&gt;I&apos;, 10240099)</div><div class="line">b&apos;\x00\x9c@c&apos;</div></pre></td></tr></table></figure>
+<p>pack的第一个参数是处理指令，<code>&#39;&gt;I&#39;</code>的意思是：&gt;表示字节顺序是big-endian，也就是网络序，I表示4字节无符号整数。后面的参数个数要和处理指令一致。</p>
+<p>unpack把bytes变成相应的数据类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; struct.unpack(&apos;&gt;IH&apos;, b&apos;\xf0\xf0\xf0\xf0\x80\x80&apos;)</div><div class="line">(4042322160, 32896)</div></pre></td></tr></table></figure>
+<p>根据<code>&gt;IH</code>的说明，后面的bytes依次变为I：4字节无符号整数和H：2字节无符号整数。</p>
+<p>上面程序里用到了<code>linger = struct.pack(&#39;ii&#39;, 0, 0)</code>，也就是将两个0分别转换成int(有符号)的字节序列(bytes)</p>
+<p><a href="https://docs.python.org/3/library/struct.html#format-characters" target="_blank" rel="external">这里有一些转换的格式</a></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>关于Thriftpy中使用的套接字就介绍到这里了，下一节将是Thriftpy中使用的协议，比如常用的<code>TJSONProtocol</code></p>
+
+	
+	</div>
+  <a type="button" href="/2017/09/17/thriftpy_3_socket/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/17/flask_https/" >翻译 - Running Your Flask Application Over HTTPS</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-17 09:31:30  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https" target="_blank" rel="external">Running Your Flask Application Over HTTPS</a></p>
+<p>当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。</p>
+<p>人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，从5秒钟就可以应用的方法，到一个非常健壮的解决方案，从而在<a href="https://www.ssllabs.com/ssltest/index.html" target="_blank" rel="external">SSL Server Test</a>上可以得到A+的分数</p>
+<h1 id="How-Does-HTTPS-Work"><a href="#How-Does-HTTPS-Work" class="headerlink" title="How Does HTTPS Work?"></a>How Does HTTPS Work?</h1><p>HTTP的加密和安全功能是通过Transport Layer Security(TLS 传输层安全协议) Protocol实现的。TLS定义了一种网络传输安全的标准方式。因为我不是一个安全专家，因此我不认为我能很好的给你解释TLS协议的详细内容，因此我只会给你一些我们对于配置一个安全和加密的Flask服务器中感兴趣的部分。</p>
+<p>当客户端创建一个到服务器的连接并且请求一个加密连接，服务器会使用其SSL(Secure Sockets Layer)证书进行响应。证书是作为服务器的身份证明，其包括了服务器名和域名。为了保证服务器提供的信息是正确的，证书是通过一个证书认证机构签名的。如果客户端知道并且信任(Certificate authority)CA的话，它就可以确认这个签名是从这个CA签发的，这样这个客户端就可以确定这个连接的服务器是合法的。</p>
+<p>在客户端验证证书之后，它为与服务器的通信创建了一个加密密钥。为了确保这个密钥被安全的送到服务器，它使用一个服务器证书上的公钥来加密。服务器拥有与证书上公钥对应的私钥，所以服务器是唯一能够解密的。这样从服务器接受到加密密钥之后，所有服务器和客户端之间的通信都是使用这个密钥加密的。</p>
+<p>从这个总结中，你大概可以知道实现一个TLS加密我们需要两个东西：服务器证书，包含一个公钥并且是CA签名的，还有一个与公钥对应的私钥。</p>
+<h1 id="The-Simplest-Way-To-Do-It"><a href="#The-Simplest-Way-To-Do-It" class="headerlink" title="The Simplest Way To Do It"></a>The Simplest Way To Do It</h1><p>Flask，更确切的说是Werkzeug，支持<code>on-the-fly</code>证书的使用，可以快速在HTTPS上服务应用并且不用处理证书。所有你需要做的是，在你的<code>app.run()</code>调用里添加<code>ssl_context=&#39;adhoc&#39;</code>。不幸的是，这个选项并不能通过Flask命令行接口使用。下面你可以看到官方文档上的一个hello world的Flask应用示例，添加了TLS加密。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=&apos;adhoc&apos;)</div></pre></td></tr></table></figure>
+<p>为了能够在Flask上使用ad hoc(点对点)证书，你需要在你的虚拟环境中安装一个额外的依赖:<code>pip install pyopenssl</code></p>
+<p>当你运行脚本的时候，你会注意到Flask正在运行一个<code>https://</code>服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python hello.py</div><div class="line"> * Running on https://127.0.0.1:5000/ (Press CTRL+C to quit)</div></pre></td></tr></table></figure>
+<p>很简单，是吧？问题是浏览器不喜欢这种类型的证书，因此它会在你可以访问网站之前显示一个很大的警告标志。一旦你允许浏览器连接之后，你将会得到一个加密的连接，就像你从一个服务器得到了有效证书一样，这样点对点的证书在快速测试中很方便，但是不会用于真实应用中。</p>
+<h1 id="Self-Signed-Certificates"><a href="#Self-Signed-Certificates" class="headerlink" title="Self-Signed Certificates"></a>Self-Signed Certificates</h1><p><code>self-signed</code>证书是签名通过私钥来生成的并且关联的证书。我上面提到了客户端需要知道并且信任CA签发的证书，因为正是信任关系才允许客户端去确认服务器证书。web浏览器和其他HTTP客户端会提前配置好一个已知的信任CAs列表，不过明显如果你使用一个<code>self-signed</code>证书，浏览器就不知道这个CA，因此验证也会失败。这也是我们之前使用的ad hoc证书时候发生的事情。如果浏览器不能验证服务器证书，它就会让你在存在问题的情况下运行和访问网站，但是它会确保你理解你正在有风险的访问。</p>
+<p>但是风险是什么？对于Flask服务器，你当然可以信任，并且是没有风险的。问题是用户如果连接了他们不知道的或者无法控制的服务器出现的。在那种情况，用户就不知道服务器是否是认证过的，因为任何人都可以为任何域名生成证书。</p>
+<p><code>self-signed</code>证书有时会比较有用，Flask的ad hoc证书就不是这样了，因为每次服务器运行的时候，通过pyOpenSSL就会生成一个不同的运行中证书。当你在使用一个<code>self-signed</code>证书的时候，在每次运行服务器的时候使用同样的证书是比较好的，因为你可以配置浏览器去信任它，这样就可以消除安全报警了。</p>
+<p>你可以很容易的从命令行中生成<code>self-signed</code>证书。所有你需要的是安装<code>openssl</code></p>
+<p><code>openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365</code></p>
+<p>命令生成了一个新的证书<code>cert.pem</code>以及对应的私钥在<code>key.pem</code>，有一个365天的有效周期。当你运行这个命令的时候，你将会被询问几个问题。下面是一个示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Generating a 4096 bit RSA private key</div><div class="line">......................++</div><div class="line">.............++</div><div class="line">writing new private key to &apos;key.pem&apos;</div><div class="line">-----</div><div class="line">You are about to be asked to enter information that will be incorporated</div><div class="line">into your certificate request.</div><div class="line">What you are about to enter is what is called a Distinguished Name or a DN.</div><div class="line">There are quite a few fields but you can leave some blank</div><div class="line">For some fields there will be a default value,</div><div class="line">If you enter &apos;.&apos;, the field will be left blank.</div><div class="line">-----</div><div class="line">Country Name (2 letter code) [AU]:US</div><div class="line">State or Province Name (full name) [Some-State]:Oregon</div><div class="line">Locality Name (eg, city) []:Portland</div><div class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:Miguel Grinberg Blog</div><div class="line">Organizational Unit Name (eg, section) []:</div><div class="line">Common Name (e.g. server FQDN or YOUR name) []:localhost</div><div class="line">Email Address []:</div></pre></td></tr></table></figure>
+<p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
+<p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/flask_https/flask-ssl-03.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
+<p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
+<p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
+<p>如果你使用nginx作为反向代理，你可以在nginx中配置证书，然后nginx就会终止加密连接，也就是说它会接受外部的加密连接，然后使用正常的非加密连接和你的应用通信。这是一个非常有用的配置，使得你的应用不需要处理证书和加密。在nginx进行如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443 ssl;</div><div class="line">    server_name example.com;</div><div class="line">    ssl_certificate /path/to/cert.pem;</div><div class="line">    ssl_certificate_key /path/to/key.pem;</div><div class="line">    # ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另外比较重要的是你需要考虑用户通过普通的HTTP连接的时候如何处理。最好的方式，在我看来，是给一个未加密请求一个基于HTTPS的相同url的重定向响应。对于Flask应用，你可以通过<code>Flask-SSLify</code>扩展来实现它。在nginx，你可以在另一个<code>server</code>块配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果用的是另外的web服务器，你可以参考文档找到类似的配置方法。</p>
+<h1 id="Using-“Real”-Certificates"><a href="#Using-“Real”-Certificates" class="headerlink" title="Using “Real” Certificates"></a>Using “Real” Certificates</h1><p>我们已经探索了关于<code>self-signed</code>证书所有的选项，但是在那些例子中，存在的限制是除非你告诉浏览器去信任这些证书，否则浏览器不会这么做。因此在生产环境中的网站的服务器证书最好是从那些浏览器自动信任的CAs获取。</p>
+<p>当你向一个CA请求证书的时候，CA会检查你是否有服务器和域名的控制权，但是至于检查怎么完成的是要取决于CA。如果服务器通过检查，CA会发行一个自己签名的网站证书然后给你去安装。证书通常的有效期是一年。大多数CA会收费，但是仍然有一些是免费的。最流行的免费CA是<code>Let&#39;s Encrypt</code></p>
+<p>从<code>Let&#39;s Encrypt</code>获取证书是非常容易的，整个的处理都是自动的。假设你使用的是Ubuntu服务器，你可以通过在你的服务器上安装<code>certbot</code>工具来开始</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install software-properties-common</div><div class="line">$ sudo add-apt-repository ppa:certbot/certbot</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install certbot</div></pre></td></tr></table></figure>
+<p>现在你就可以请求证书了。有几种核实网站的方法。<code>webroot</code>方法是最容易实现的。在这种方法下,<code>certbot</code>在你的web服务器的暴露出来的静态文件夹里添加一些文件，然后尝试通过HTTP使用你想来生成证书的域名来获取这些文件。如果测试成功，<code>certbot</code>就会知道服务器和域名是相对应的，然后它就会发行证书。请求证书的命令是这样的</p>
+<p><code>$ sudo certbot certonly --webroot -w /var/www/example -d example.com</code></p>
+<p>这个例子中，我们试图为<code>example.com</code>域名生成证书，使用了<code>/var/www/example</code>作为静态文件根目录。如果<code>certbot</code>可以核实域名，它就会写入证书文件<code>/etc/letsencrypt/live/example.com/fullchain.pem</code>和私钥文件<code>/etc/letsencrypt/live/example.com/privkey.pem</code>，有效期为90天。</p>
+<p>为了使用这些新获取的证书，你可以将在<code>self-signed</code>使用的文件替换掉，并且要使用上面提到的配置。当然你需要你的域名可以访问你的应用，这是唯一可以使浏览器接受并且作为有效证书的方法。</p>
+<p>如果你使用nginx作为反向代理，你可以充分使用它的映射功能，你可以在配置里创建并且给<code>certbot</code>一个私有目录，可以让它来写入核验文件。在下面的例子里，我扩展了HTTP server块来发送所有<code>Let&#39;s Encrypt</code>相关的请求到你指定的目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location ~ /.well-known &#123;</div><div class="line">        root /path/to/letsencrypt/verification/directory;</div><div class="line">    &#125;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>certbot</code>也可以用在你更新证书的时候，你只需要下面这个命令</p>
+<p><code>$ sudo certbot renew</code></p>
+<p>如果系统中有任何即将过期的证书，上面的命令就可以更新它们，会在同样的地址留下新的证书。你只需要重启服务器就可以使用它们。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/09/17/flask_https/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/14/进程的调度/" >进程的调度</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-14 16:23:03  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。</p>
+<h1 id="调度"><a href="#调度" class="headerlink" title="调度"></a>调度</h1><h2 id="进程的切换"><a href="#进程的切换" class="headerlink" title="进程的切换"></a>进程的切换</h2><p>首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存中动态重新装入两次（进入内核一次，离开内核一次），所以每秒钟切换进程过多，会耗费大量CPU时间。</p>
+<h2 id="进程类型"><a href="#进程类型" class="headerlink" title="进程类型"></a>进程类型</h2><ul>
+<li>计算密集型进程：具有较长时间的CPU集中使用和较小额度的I/O等待</li>
+<li>I/O密集型：较短时间的CPU集中使用和频繁的I/O等待，如果运行I/O密集型进程，那么就应该让它尽快得到机会，以便发出磁盘请求并且保持磁盘忙碌</li>
+</ul>
+<h2 id="调度时机"><a href="#调度时机" class="headerlink" title="调度时机"></a>调度时机</h2><ul>
+<li>创建一个新进程后，选择运行父进程还是子进程</li>
+<li>进程退出时候</li>
+<li>进程阻塞在I/O和信号量上或者其他阻塞时候</li>
+<li>一个I/O中断发生的时候</li>
+</ul>
+<h2 id="调度算法分类"><a href="#调度算法分类" class="headerlink" title="调度算法分类"></a>调度算法分类</h2><p>根据如何处理时钟中断，有两种调度算法，非抢占式调度算法和抢占式算法</p>
+<p>根据环境不同，有批处理，交互式，实时环境</p>
+<h2 id="调度算法的评价"><a href="#调度算法的评价" class="headerlink" title="调度算法的评价"></a>调度算法的评价</h2><ul>
+<li>吞吐量，每小时完成的作业数量。</li>
+<li>周转时间，从一个批处理作业提交到作业完成的统计平均时间</li>
+<li>CPU利用率</li>
+<li>最小响应时间，在交互式系统</li>
+</ul>
+<h1 id="批处理系统中的调度"><a href="#批处理系统中的调度" class="headerlink" title="批处理系统中的调度"></a>批处理系统中的调度</h1><h2 id="先来先服务"><a href="#先来先服务" class="headerlink" title="先来先服务"></a>先来先服务</h2><p>按照请求CPU的顺序使用CPU，当正在运行的进程被阻塞的时候，队列的第一个进程就接着运行，在阻塞的进程变成就绪的时候，加入到队列的尾部。</p>
+<h2 id="最短作业优先"><a href="#最短作业优先" class="headerlink" title="最短作业优先"></a>最短作业优先</h2><p>适用于运行时间可以预知的非抢占式批处理调度算法</p>
+<h2 id="最短剩余时间优先"><a href="#最短剩余时间优先" class="headerlink" title="最短剩余时间优先"></a>最短剩余时间优先</h2><p>最短作业优先的抢占式版本是最短剩余时间优先，在到来一个进程时候，新进程比当前运行进程需要更少的时间，当前进程就被挂起，而运行新的进程。</p>
+<h1 id="交互式系统中的调度"><a href="#交互式系统中的调度" class="headerlink" title="交互式系统中的调度"></a>交互式系统中的调度</h1><h2 id="轮转调度"><a href="#轮转调度" class="headerlink" title="轮转调度"></a>轮转调度</h2><p>每个进程被分配一个时间段，称为时间片，允许进程在该时间段中运行。时间片的长度应该合适，因为从一个进程切换到另一个进程是需要一定时间进行管理事务处理的，保存和装入寄存器值以及内存映像，更新各种表格和列表，清除和重新调入内存高速缓存。也就是CPU在进程切换的时间在整个时间片的比例越少越好，但是太少这样会导致在需要切换的时候太慢。所以时间片设置为20ms-50ms是一个合理的折中。</p>
+<h2 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h2><p>提高I/O密集型进程的优先级，因为其多数时间是等待I/O结束，这样阻塞后可以开始另一个进程了。可以将一组进程按照优先级分成若干类，在各类之间采用优先级调度，在各类进程内部采用轮转调度。这种低优先级的进程可能会产生饥饿现象。</p>
+<h2 id="多级队列"><a href="#多级队列" class="headerlink" title="多级队列"></a>多级队列</h2><p>设立优先级类，属于最高优先级类的进程运行一个时间片，属于次高优先级的进程运行2个时间片，再次一级运行4个时间片。当一个进程用完分配的时间片后，被移到下一类。</p>
+<h2 id="最短进程优先"><a href="#最短进程优先" class="headerlink" title="最短进程优先"></a>最短进程优先</h2><p>核心在于如何从当前可运行进程中找出最短的那一个进程。可以根据过去的行为进行预测，并执行估计某个终端上运行时间最短的那一个，<code>aT0 + (1-a)T1</code></p>
+<h2 id="保证调度"><a href="#保证调度" class="headerlink" title="保证调度"></a>保证调度</h2><p>向用户作出明确的性能保证，然后去实现它，对于每个进程平分CPU时间，这样系统跟踪每个进程创建以来使用了多少CPU时间，然后计算各个进程应该获得的时间。然后算法转向比率最低的进程，直到该进程比率超过它的最接近竞争者为止。</p>
+<h2 id="彩票调度"><a href="#彩票调度" class="headerlink" title="彩票调度"></a>彩票调度</h2><p>向进程中提供各种系统资源的彩票，一旦需要一项调度决策，就可以随机抽出一张彩票。</p>
+<h2 id="公平分享调度"><a href="#公平分享调度" class="headerlink" title="公平分享调度"></a>公平分享调度</h2><p>每个用户分配CPU时间的一部分，而调度程序以一种强制的方式选择进程，这样每个用户都会得到应有的份额。</p>
+<h1 id="实时系统中的调度"><a href="#实时系统中的调度" class="headerlink" title="实时系统中的调度"></a>实时系统中的调度</h1><ul>
+<li>硬实时: 必须满足绝对的截止时间</li>
+<li>软实时: 可以偶尔错失截止时间</li>
+</ul>
+<h1 id="策略和机制"><a href="#策略和机制" class="headerlink" title="策略和机制"></a>策略和机制</h1><p>在主进程能掌握子进程的信息的时候，可以根据此进行调度和选择，将调度机制和调度策略分离，调度算法以某种形式参数化，参数可以由用户进程填写。比如内核使用优先级调度算法，提供一条可供进程设置的优先级的系统调用，这样父进程就可以控制子进程的细节。</p>
+<h1 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h1><p>如果线程都是用户级线程，那么内核就是和以前一样，只调度进程，内部的话，因为不存在时钟中断，所以这个线程可以按照意愿运行。</p>
+<p>如果使用内核级线程，内核选择一个特定的线程运行，它不用考虑线程属于哪个进程，对被选择的线程赋予一个时间片，如果超过了时间片，则强制挂起该线程。</p>
+<p>用户级线程和内核级线程之间的差别在于性能，用户级线程切换需要少量的机器指令，而内核级线程切换需要完整的上下文切换，修改内存映像，使高速缓存失效。在使用内核级线程时候，一旦线程阻塞在I/O上不需要像用户级线程将整个进程挂起。</p>
+<h1 id="经典的IPC问题"><a href="#经典的IPC问题" class="headerlink" title="经典的IPC问题"></a>经典的IPC问题</h1><h2 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">#define N 5</div><div class="line">#define LEFT (i+N-1)%N</div><div class="line">#define RIGHT (i+1)%N</div><div class="line">#define THINKING 0</div><div class="line">#define HUNGRY 1</div><div class="line">#define EATING 2</div><div class="line">typedef int semaphore;</div><div class="line">int state[N];</div><div class="line">semaphore mutex = 1;</div><div class="line">semaphore s[N];  // 相当于哲学家拿的筷子数，2个的时候吃饭，1个的时候正常，0个时候阻塞</div><div class="line"></div><div class="line">void philosopher(int i)&#123;</div><div class="line">  while (TRUE)&#123;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 叉子是临界资源，所以需要加锁获取</div><div class="line"></div><div class="line">void take_forks(int i)&#123;</div><div class="line">  down(&amp;mutex);</div><div class="line">  state[i] = HUNGRY;</div><div class="line">  test(i);   // 尝试获得两把叉子，并且为EATING</div><div class="line">  up(&amp;mutex);  //离开临界区</div><div class="line">  down(&amp;s[i]);  //如果得不到叉子则阻塞，如果已经获得两把叉子，那么接下来状态就是1个叉子</div><div class="line">&#125;</div><div class="line"></div><div class="line">void put_forks(i)&#123;</div><div class="line">  //释放临界资源，但是放筷子动作是在take_forks已经执行的</div><div class="line">  down(&amp;mutex);</div><div class="line">  state[i] = THINKING;  // 就餐完毕</div><div class="line">  test(LEFT);  // 检查左边邻居可以吃吗</div><div class="line">  test(RIGHT); // 检查右边邻居可以吃吗</div><div class="line">  up(&amp;mutex);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void test(i)&#123;</div><div class="line">  if (state[i] == HUNGRY &amp;&amp; state[LEFT] != EATING &amp;&amp; state[RIGHT] != EATING)&#123;</div><div class="line">    state[i] = EATING;</div><div class="line">    up(&amp;s[i]);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+	
+	</div>
+  <a type="button" href="/2017/09/14/进程的调度/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/12/subprocess管理/" >翻译 - subprocess — Subprocess management</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-12 09:00:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如<code>os.system</code>和<code>os.spawn*</code></p>
+<h1 id="使用subprocess模块"><a href="#使用subprocess模块" class="headerlink" title="使用subprocess模块"></a>使用subprocess模块</h1><h2 id="run函数"><a href="#run函数" class="headerlink" title="run函数"></a>run函数</h2><p>推荐的调用子进程的方式是使用<code>run()</code>函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的<code>Popen</code>接口。</p>
+<p><code>subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, shell=False, timeout=None, check=False)</code></p>
+<p>args是你要运行的命令，然后等待命令运行结束，然后返回一个<code>CompletedProcess</code>实例</p>
+<p>上面显示的参数是最常使用的，在下面的<code>Frequently Used Arguments</code>有详细介绍。它默认不会捕获stdout或者stderr，为了捕获这些信息，给stdout或者stderr参数传递<code>PIPE</code>。</p>
+<p>timeout参数会被传递给<code>Popen.communicate()</code>，如果到了timeout，子进程会被kill掉，在子进程被杀死之后会重新引发<code>TimeoutExpired</code>异常</p>
+<p>输入参数会被传递给<code>Popen.communicate()</code>，然后会被作为子进程的输入。如果要使用这个参数，传递的必须是一个二进制序列，或者当<code>universal_newlines=True</code>的时候可以传递一个字符串。当使用这个参数的时候，内部的Popen对象会自动的加入<code>stdin=PIPE</code>创建对象，同时stdin参数将不会被使用。</p>
+<p>如果check参数为True，如果子进程以非0状态码退出的话，一个<code>CalledProcessError</code>异常将会被引发。异常会保持参数，退出码，stdout以及stderr，如果能捕获的话。</p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;])  # doesn&apos;t capture output</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;], returncode=0)</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run(&quot;exit 1&quot;, shell=True, check=True)</div><div class="line">Traceback (most recent call last):</div><div class="line">  ...</div><div class="line">subprocess.CalledProcessError: Command &apos;exit 1&apos; returned non-zero exit status 1</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;, &quot;/dev/null&quot;], stdout=subprocess.PIPE)</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;, &apos;/dev/null&apos;], returncode=0,</div><div class="line">stdout=b&apos;crw-rw-rw- 1 root root 1, 3 Jan 23 16:23 /dev/null\n&apos;)</div></pre></td></tr></table></figure>
+<p>基本上最简单的用法就是<code>check=True</code>，然后<code>stdout=PIPE</code>直接调用run函数就好了</p>
+<h2 id="CompletedProcess"><a href="#CompletedProcess" class="headerlink" title="CompletedProcess"></a>CompletedProcess</h2><p>从run函数的返回值，表示一个进程已经结束</p>
+<ul>
+<li>args: 用来启动进程的参数，会是一个列表或者字符串</li>
+<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
+<li>stdout: 从子进程中捕获stdout，二进制序列，如果run函数加上<code>universal_newlines=True</code>调用就是一个字符串，如果什么都没捕获的话就是一个None</li>
+<li>stderr: 跟上面一样</li>
+<li><code>check_returncode()</code>: 如果returncode不是0，则引发一个<code>CalledProcessError</code></li>
+</ul>
+<h2 id="DEVNULL"><a href="#DEVNULL" class="headerlink" title="DEVNULL"></a>DEVNULL</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示<code>os.devnull</code>文件将会被使用</p>
+<h2 id="PIPE"><a href="#PIPE" class="headerlink" title="PIPE"></a>PIPE</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示标准流的管道应该被打开。</p>
+<h2 id="STDOUT"><a href="#STDOUT" class="headerlink" title="STDOUT"></a>STDOUT</h2><p>用在Popen的stderr参数，用来指示标准错误应该和标准输出一同处理</p>
+<h2 id="CalledProcessError"><a href="#CalledProcessError" class="headerlink" title="CalledProcessError"></a>CalledProcessError</h2><ul>
+<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
+<li>cmd: 用来启动进程的命令</li>
+<li>output: 如果被run或者<code>check_output</code>捕获就是子进程的输出，否则是None</li>
+<li>stdout:</li>
+<li>stderr</li>
+</ul>
+<h2 id="Frequently-Used-Arguments"><a href="#Frequently-Used-Arguments" class="headerlink" title="Frequently Used Arguments"></a>Frequently Used Arguments</h2><p>为了支持更广泛的使用，Popen构造器和一些有用的函数，接受大量的可选参数。对于大部分典型使用来说，这些参数中的大部分都可以使用其默认值。经常需要使用的参数是这些：</p>
+<ul>
+<li><code>args</code> 每一次调用都需要这个参数，应该是一个字符串或者是程序的参数序列。通常建议传递参数序列，因为这样可以允许模块更好的处理转义和参数引用，比如在文件名中允许空格。<strong>如果传递了单个的字符串，shell参数应该为True或者是程序调用的时候不需要额外参数</strong></li>
+<li><code>stdin, stdout, stderr</code> 分别指定了程序的标准输入，标准输出和标准错误的文件处理器。有效的值是<code>PIPE</code>，<code>DEVNULL</code>，一个存在的文件描述符，一个存在的文件对象和None。<code>PIPE</code>指定了一个连接到子进程的管道应该被创建。<code>DEVNULL</code>指定了这个特殊的文件<code>os.devnull</code>会被使用。默认值None说明没有重定向发生。子进程的文件处理器会继承父进程的。另外，<code>stderr</code>将会是<code>STDOUT</code>，表明子进程的stderr数据会和stdout一块捕获。</li>
+<li><code>universal_newlines</code> 如果为False，stdin, stdout, stderr将会以二进制流的方式打开，并且没有行结束符。如果为True，将会以文本模式打开，并且使用<code>locale.getpreferredencoding(False)</code>返回的编码方式。对于stdin，<code>\n</code>将会被转换成默认的行分隔符<code>os.linesep</code>。对于stderr和stdout，所有的行结束都会被转换成<code>\n</code>。</li>
+<li><code>shell</code> 如果为True，指定的命令将会通过shell来执行，在你主要用Python来做控制，但是又想有shell的便利性的时候很有用，比如shell管道，文件名通配符，环境变量扩展，<code>~</code>用户家目录的扩展。然而，Python自己也实现了很多shell特性的东西，比如<code>glob</code>, <code>fnmatch</code>, <code>os.walk()</code>, <code>os.path.expandvars()</code>, <code>os.path.expanduser()</code>和<code>shutil</code></li>
+</ul>
+
+	
+	</div>
+  <a type="button" href="/2017/09/12/subprocess管理/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/05/属性描述符/" >属性描述符</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-05 21:40:46  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>From <strong>流畅的Python 人民邮电出版社 20章属性描述符</strong></p>
+</blockquote>
+<p>描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的<code>__get__</code>和<code>__set__</code>方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。</p>
+<p>描述符是实现了特定协议的类，这个协议包括<code>__get__</code>, <code>__set__</code>和<code>__delete__</code>方法。使用描述符的Python功能还有方法以及classmethod和staticmethod装饰器。</p>
+<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>描述符的用法是，创建一个描述符实例，作为另外一个类的类属性，这样就会托管该类实例的同名属性，所以实例的属性和使用描述符的类属性是分离的。描述符属性通过将属性存储到相应实例的字典中来区分不同实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Quantity:</div><div class="line"></div><div class="line">    def __init__(self, storage_name):</div><div class="line">       self.storage_name = storage_name</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[self.storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        return instance.__dict__[self.storage_name]</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    weight = Quantity(&apos;weight&apos;)</div><div class="line"></div><div class="line">    def __init__(self, weight):</div><div class="line">        self.weight = weight</div></pre></td></tr></table></figure>
+<p>这里设置实例的属性的时候，会将设置代理到描述符的<code>__set__</code>，这样就将其设置到了实例的属性字典里，<code>__set__</code>中self是描述符实例，而instance是托管类的实例，应该将属性放在实例中，这样可以区分不同实例的同名属性。对于<code>__get__</code>方法，owner是instance对应的托管类，必须通过实例字典的方式拿出属性，这样才不会无限循环。</p>
+<p>如果通过类来访问托管属性，instance就是None，然后就会产生<code>AttributeError</code>异常，所以可以进行判断，让<code>__get__</code>方法返回描述符实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def __get__(self, instance, owner):</div><div class="line">    if instance is None:</div><div class="line">        # self是描述符实例</div><div class="line">        return self</div><div class="line">    else:</div><div class="line">        return instance.__dict__[self.storage_name]</div></pre></td></tr></table></figure>
+<h1 id="利用继承扩展描述符"><a href="#利用继承扩展描述符" class="headerlink" title="利用继承扩展描述符"></a>利用继承扩展描述符</h1><p>通常描述符会作为一个工具来控制很多类的属性管理，而且基于面向对象的设计，可以利用继承来重用代码创建新的描述符。比如下面的描述符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class AutoStorage:</div><div class="line">    __counter = 0</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        cls = self.__class__</div><div class="line">        prefix = cls.__name__</div><div class="line">        index = cls.__counter</div><div class="line">        self.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(prefix, index)</div><div class="line">        cls.__counter += 1</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        if instance is None:</div><div class="line">            return self</div><div class="line">        else:</div><div class="line">            return getattr(instance, self.storage_name)</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        setattr(instance, self.storage_name, value)</div></pre></td></tr></table></figure>
+<p>这个描述符实现了属性的存取，并且可以实现多个属性的托管而不用传递任何参数，因为内部已经做好名称处理了，所以也可以直接使用getattr以及setattr来对属性进行存取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class Validated(abc.ABC, AutoStorage):</div><div class="line">    def __set__(self, instance, value):</div><div class="line">        value = self.validate(instance, value)</div><div class="line">        # super的使用方法</div><div class="line">        super().__set__(instance, value)</div><div class="line"></div><div class="line">    @abc.abstractmethod</div><div class="line">    def validate(self, instance, value):</div><div class="line"></div><div class="line">class Quantity(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        if value &lt;= 0:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">        return value</div><div class="line"></div><div class="line">class NonBlank(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        value = value.strip()</div><div class="line">        if len(value) == 0:</div><div class="line">            raise ValueError(&apos;value cannot be empty or blank&apos;)</div><div class="line">        return value</div></pre></td></tr></table></figure>
+<p>通过继承基础的AutoStorage，Validated会在set的时候进行检查，具体怎么检查，委托给validate的子类实现，这样就形成了代码复用，然后制造一堆描述符。</p>
+<h1 id="覆盖型描述符和非覆盖型描述符"><a href="#覆盖型描述符和非覆盖型描述符" class="headerlink" title="覆盖型描述符和非覆盖型描述符"></a>覆盖型描述符和非覆盖型描述符</h1><p>实现<code>__set__</code>方法的描述符是覆盖型描述符，因为这样会覆盖对实例属性的赋值操作。比如特性如果没有提供设值的函数，那么就会引发<code>AttributeError</code>。</p>
+<p>如果只实现了<code>__set__</code>，写操作是由描述符处理，如果通过实例读取描述符会返回描述符对象本身。但是如果设置了实例的同名实例属性(通过<code>__dict__</code>实现)的话，再读取的话，就会直接从实例中返回<code>__dict__</code>的属性值。而写仍然会被描述符覆盖。</p>
+<p>没有实现<code>__set__</code>的描述符是非覆盖型描述符，如果设置了同名实例属性，那么描述符会被覆盖。类中的方法就是非覆盖型描述符实现的，如果重新设置就会被覆盖。</p>
+<p>对类属性赋值都能覆盖描述符。如果想控制类属性的操作，要把描述符依附在类的类上，即依附在元类上。</p>
+<h1 id="方法是描述符"><a href="#方法是描述符" class="headerlink" title="方法是描述符"></a>方法是描述符</h1><p>用户在类中定义的函数都有<code>__get__</code>方法，所以依附在类上，就是描述符，而且是非覆盖型描述符，可以被实例属性重新覆盖。</p>
+<p>比如<code>obj.test</code>就是绑定方法，即函数的<code>__get__</code>方法会返回绑定方法对象，相当于<code>functools.partial</code>将obj绑定给了函数第一个参数，就是self。</p>
+<p>但是<code>Test.test</code>就是一个函数，即函数的<code>__get__</code>方法会返回自身的引用。</p>
+<p><code>Test.test.__get__(obj)</code>就是一个绑定方法对象，而<code>Test.test.__get__(None, Test)</code>就是一个函数对象，返回函数自身的引用。</p>
+<p>绑定方法对象有一个<code>__call__</code>方法，来处理真正的调用过程，会调用<code>__func__</code>属性引用的原始函数，把函数的第一个参数设为绑定方法的<code>__self__</code>属性，这就是self的隐式绑定。所以函数会变成绑定方法。</p>
+<h1 id="描述符的使用"><a href="#描述符的使用" class="headerlink" title="描述符的使用"></a>描述符的使用</h1><ul>
+<li>只读描述符必须有<code>__set__</code>方法</li>
+</ul>
+<p>这样才可以控制属性的赋值，要不然实例的同名属性会覆盖描述符。在<code>__set__</code>方法只需要跑出<code>AttributeError</code>异常就可以了。</p>
+<ul>
+<li>验证的描述符可以只实现<code>__set__</code>方法</li>
+</ul>
+<p>这是一种覆盖型描述符，在set的时候检查属性值，设置在实例的<code>__dict__</code>，然后get的时候，就会从实例中拿值，比较快。因为设置了实例属性，就会将get给覆盖掉，而set不会被覆盖。</p>
+<ul>
+<li>只实现<code>__get__</code>可以实现缓存</li>
+</ul>
+<p>在第一次的时候调用<code>__get__</code>进行计算，然后给实例<code>__dict__</code>设置同名的值，此后实例同名属性就会将描述符给覆盖了，所以就不用计算了。</p>
+<ul>
+<li>非特殊方法可以被实例属性覆盖</li>
+</ul>
+<p>因为解释器会在类中寻找特殊方法，所以就不会受到描述符的影响，也不会因为实例中设置了相同的方法而影响。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/09/05/属性描述符/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/04/特性属性和特殊方法/" >特性，属性和特殊方法</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-04 18:21:46  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>From <strong>流畅的Python 人民邮电出版社 19章动态属性和特性</strong></p>
+</blockquote>
+<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>数据的属性和处理数据的方法统称为属性，其实方法只是可调用的属性。然后还有特性：<code>property(fget=None, fset=None, fdel=None, doc=None)</code></p>
+<h2 id="经典的使用方法"><a href="#经典的使用方法" class="headerlink" title="经典的使用方法"></a>经典的使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class LineItem:</div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">    def get_weight(self):</div><div class="line">        return self.__weight</div><div class="line"></div><div class="line">    def set_weight(self, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            self.__weight = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">    # 构建property对象，然后赋值给公开的类属性 self.weight</div><div class="line">    weight = property(get_weight, set_weight)</div></pre></td></tr></table></figure>
+<h2 id="新式使用方法"><a href="#新式使用方法" class="headerlink" title="新式使用方法"></a>新式使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class LineItem:</div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">    @property</div><div class="line">    def weight(self):</div><div class="line">        return self.__weight</div><div class="line"></div><div class="line">    @weight.setter</div><div class="line">    def weight(self, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            self.__weight = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div></pre></td></tr></table></figure>
+<p>特性都是类属性，但是特性管理的是实例属性的存取。特性是一种描述符，所以肯定是类属性，管理的是实例属性。</p>
+<p>实例属性会遮盖类的数据属性，但是实例属性不会遮盖类特性，就是即使存在同样的实例属性名和特性属性名，再访问，也只会访问特性，而不会访问实例属性。如果删除这个类的特性，再去访问，就会是实例属性了。这种特性是覆盖型描述符：<code>obj.attr</code>会首先从<code>obj.__class__</code>开始，当类中没有名为attr的特性时候，Python才会在obj实例中寻找。</p>
+<p>特性的doc是在<code>@property</code>装饰的函数上的，经典的特性是doc参数<code>property(fget=None, fset=None, fdel=None, doc=None)</code></p>
+<h1 id="特性工厂函数"><a href="#特性工厂函数" class="headerlink" title="特性工厂函数"></a>特性工厂函数</h1><p>赋值语句的右边先计算</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">def quantity(storage_name):</div><div class="line">    # 获取属性的方法</div><div class="line">    def qty_getter(instance):</div><div class="line">        # 跳过特性，直接访问实例属性</div><div class="line">        return instance.__dict__[storage_name]</div><div class="line">    # 设置属性的方法</div><div class="line">    def qty_setter(instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">    # 返回一个特性，这样类中的一个属性就变成了特性</div><div class="line">    return property(qty_getter, qty_setter)</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    # weight类属性，现在是一个特性</div><div class="line">    weight = quantity(&apos;weight&apos;)</div><div class="line">    price = quantity(&apos;price&apos;)</div><div class="line"></div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line">    def subtotal(self):</div><div class="line">        # 特性会覆盖实例属性</div><div class="line">        return self.weight * self.price</div></pre></td></tr></table></figure>
+<p>特性会覆盖实例属性，所以可以直接存取<code>__dict__</code>属性来跳过特性的处理逻辑</p>
+<h1 id="处理属性的重要属性和函数"><a href="#处理属性的重要属性和函数" class="headerlink" title="处理属性的重要属性和函数"></a>处理属性的重要属性和函数</h1><ul>
+<li><code>__class__</code> 对象所属类的引用,<code>obj.__class__</code>和<code>type(obj)</code>，以及特殊方法只在对象的类中寻找，而不在实例中寻找</li>
+<li><code>__dict__</code> 存储对象或者类的可写属性，有<code>__dict__</code>的对象，可以随意设置新属性</li>
+<li><code>__slots__</code>限制实例能有哪些属性，定义了类中所有的实例属性，让解释器在元组中存储实例属性，而不用字典，节约内存！</li>
+</ul>
+<h2 id="处理属性的内置函数"><a href="#处理属性的内置函数" class="headerlink" title="处理属性的内置函数"></a>处理属性的内置函数</h2><ul>
+<li><code>dir(obj)</code> 列出对象的大多数属性，可以在有<code>__dict__</code>和没有<code>__dict__</code>属性的对象上使用</li>
+<li><code>getattr(object, name)</code> 从object对象中获取name字符串对应的属性</li>
+<li><code>hasattr(object, name)</code> 如果object中存在指定的属性，则返回True</li>
+<li><code>setattr(object, name, value)</code> 把object对象指定属性的值设为value</li>
+<li><code>vars([object])</code> 返回object对象的<code>__dict__</code>属性，如果没有参数，返回表示本地作用域的字典，如果没有<code>__dict__</code>属性，返回TypeError</li>
+</ul>
+<h2 id="处理属性的特殊方法"><a href="#处理属性的特殊方法" class="headerlink" title="处理属性的特殊方法"></a>处理属性的特殊方法</h2><p>直接访问实例的<code>__dict__</code>属性，就不会触发这些特殊方法</p>
+<ul>
+<li><code>__setattr__(self, name, value)</code></li>
+</ul>
+<p>尝试设置指定的属性时候总会调用这个方法。这种方式被成为代替正常机制（也就是在实例字典种存储值）。name是属性名字，值就是要设置的值。</p>
+<p>如果<code>__setattr__()</code>尝试给实例属性赋值，它应该调用基类方法，比如<code>object.__setattr__(self, name, value)</code>，object已经实现了这个方法</p>
+<ul>
+<li><code>__delattr__(self, name)</code></li>
+</ul>
+<p>删除属性会调用这个，如果<code>del obj.name</code>对象是有意义的才会去实现这个方法</p>
+<ul>
+<li><code>__dir__(self)</code></li>
+</ul>
+<p>在对象上调用dir函数时候被调用，返回一个列表。dir()转换并且返回一个排序的列表</p>
+<ul>
+<li><code>__getattribute__(self, name)</code></li>
+</ul>
+<p>无条件调用来实现类中实例的属性获取。如果类中同时定义了<code>__getattr__</code>，后者将会在<code>__getattribute__</code>显示调用的时候或者引发了一个<code>AttributeError</code>时候被调用。</p>
+<p>这个方法应该返回一个计算后的属性值或者引发一个<code>AttributeError</code>异常。为了防止在这个方法中无限循环，它的实现应该总是调用基类方法来获取它需要的任何属性，比如<code>object.__getattribute__(self, name)</code></p>
+<p>这个方法还是可能被忽略的，当查询一些特殊方法的时候。因为它们会被语法或者内置函数隐式调用。比如<code>__len__</code>方法(len函数)</p>
+<ul>
+<li><code>__getattr__(self, name)</code></li>
+</ul>
+<p>在获取指定的属性失败时候调用，在obj, Class和超类查找之后调用。</p>
+<p>如果正常机制可以找到属性的话，就不会调用这个方法。这个方法和<code>setattr</code>是不对称的。一方面是效率原因，另一方面因为要不然的话<code>__getattr__</code>就没法去获取实例的其他属性了。</p>
+<h1 id="查询特殊方法"><a href="#查询特殊方法" class="headerlink" title="查询特殊方法"></a>查询特殊方法</h1><p>对于自定义类，特殊方法的隐式调用只有在定义在object的类中才会保证正确，而不是在对象的实例字典中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class C:</div><div class="line">...     pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; c = C()</div><div class="line">&gt;&gt;&gt; c.__len__ = lambda: 5</div><div class="line">&gt;&gt;&gt; len(c)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">TypeError: object of type &apos;C&apos; has no len()</div></pre></td></tr></table></figure>
+<p>这种行为后面的基本原理在于几个特殊方法，比如被所有对象都实现的<code>__hash__()</code>和<code>__repr__()</code>，包括type对象。如果这些方法的隐式查询使用传统的查询过程，那么在type对象上调用这些方法的时候就会失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; 1 .__hash__() == hash(1)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; int.__hash__() == hash(int)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">TypeError: descriptor &apos;__hash__&apos; of &apos;int&apos; object needs an argument</div></pre></td></tr></table></figure>
+<p>使用这种不正确的调用未绑定方法的方式有时被称为<code>metaclass confusion</code>，并在查询特殊方法的时候忽略实例来避免这种情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; type(1).__hash__(1) == hash(1)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; type(int).__hash__(int) == hash(int)</div><div class="line">True</div></pre></td></tr></table></figure>
+<p>除了绕过任何实例属性，隐式的特殊方法查询一般也会忽略<code>__getattribute__()</code>方法即使对象是元类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Meta(type):</div><div class="line">...     def __getattribute__(*args):</div><div class="line">...         print(&quot;Metaclass getattribute invoked&quot;)</div><div class="line">...         return type.__getattribute__(*args)</div><div class="line">...</div><div class="line">&gt;&gt;&gt; class C(object, metaclass=Meta):</div><div class="line">...     def __len__(self):</div><div class="line">...         return 10</div><div class="line">...     def __getattribute__(*args):</div><div class="line">...         print(&quot;Class getattribute invoked&quot;)</div><div class="line">...         return object.__getattribute__(*args)</div><div class="line">...</div><div class="line">&gt;&gt;&gt; c = C()</div><div class="line">&gt;&gt;&gt; c.__len__()                 # Explicit lookup via instance</div><div class="line">Class getattribute invoked</div><div class="line">10</div><div class="line">&gt;&gt;&gt; type(c).__len__(c)          # Explicit lookup via type</div><div class="line">Metaclass getattribute invoked</div><div class="line">10</div><div class="line">&gt;&gt;&gt; len(c)                      # Implicit lookup</div><div class="line">10</div></pre></td></tr></table></figure>
+<p>绕过<code>__getattribute__()</code>机制在解释器中提供了意义重大的速度提升，当然在处理一些特殊方法上失去了灵活性(为了能够被解释器一致的调用，特殊方法必须在类中设置)</p>
+
+	
+	</div>
+  <a type="button" href="/2017/09/04/特性属性和特殊方法/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/04/Bye Bye Bye/" >Bye Bye Bye</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-04 08:53:46  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>无意间发现很好听的歌，单曲循环中。。。</p>
+<blockquote>
+<p>When I see you<br>looking back at me<br>watching these eyes still<br>through your fingers<br>and your eyes<br>have told a thousand lights<br>but I cant tell this time<br>what you really mean it<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>I can sing another broken song<br>trying to hold on to your picture<br>out of face<br>you hide behind your face<br>it’s more than I can take<br>I know you run deeper<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>you left me handing on the light<br>why you stealing all my time<br>you take a piss me<br>you’ve been driving too slow<br>so I gotta let you go<br>before you break me em~ yeah~<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>Bye Bye</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/byebyebye.jpeg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+	
+	</div>
+  <a type="button" href="/2017/09/04/Bye Bye Bye/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/03/LeetCode刷题(3)/" >LeetCode刷题(3)</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-03 17:33:01  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="Combination-Sum-III"><a href="#Combination-Sum-III" class="headerlink" title="Combination Sum III"></a><a href="https://leetcode.com/problems/combination-sum-iii/discuss/" target="_blank" rel="external">Combination Sum III</a></h1><p>想了半天，最后使用了递归形式的回溯法来解决，其实本质还是一种遍历吧，每一个元素位上去找可能成立的元素，后一个元素位上的元素肯定比前一个大，然后有一些限制条件，就可以得出来结果。回溯法从这里看来就是一种dfs，找到最后一个元素上。然后再回到上一层元素去找。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def combinationSum3(self, k, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type k: int</div><div class="line">        :type n: int</div><div class="line">        :rtype: List[List[int]]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def backtrack(result, ans, start, k, target):</div><div class="line">            if target == 0 and k == 0:</div><div class="line">                # 当结果和最终的定位都是0，说明是一个结果</div><div class="line">                result.append(list(ans))</div><div class="line">                return</div><div class="line">            # 在这里进行遍历可能的组合</div><div class="line">            for i in range(start, target+1):</div><div class="line">                if i &gt; 10 - k:</div><div class="line">                    break</div><div class="line">                ans.append(i)</div><div class="line">                # 查看下一个元素是否可以完成任务,如果可以则会将ans添加到结果集，</div><div class="line">                backtrack(result, ans, i+1, k-1, target-i)</div><div class="line">                ans.pop()</div><div class="line">        result = []</div><div class="line">        ans = []</div><div class="line">        backtrack(result, ans, 1, k, n)</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p>Runtime: 39 ms Your runtime beats 42.64 % of python submissions.</p>
+<h1 id="Magical-String"><a href="#Magical-String" class="headerlink" title="Magical String"></a><a href="https://leetcode.com/problems/magical-string/description/" target="_blank" rel="external">Magical String</a></h1><p>这道题主要是要发现规律，根据规律行事，通过观察可以得出这个字符串从第三位开始生成，比如1221121，第三位是2，所以后面生成2个1，现在结果是12211, 然后第四位是1，所以后面加一个2（要和目前最后一位的值不一样，所以是2），现在结果是122112，第五位是1，所以后面加一个1，结果是1221121，哈哈，这样直到规律，就开始编码吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def magicalString(self, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type n: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        start = &quot;122&quot;</div><div class="line">        if n == 0:</div><div class="line">            return 0</div><div class="line">        elif n &lt;= 3:</div><div class="line">            return start.count(&apos;1&apos;)</div><div class="line">        else:</div><div class="line">            # 在这里生成</div><div class="line">            res = start</div><div class="line">            pos = 2</div><div class="line">            while len(res) &lt;= n:</div><div class="line">                if res[pos] == &quot;2&quot;:</div><div class="line">                    res += &apos;1&apos; * 2 if res[-1] == &apos;2&apos; else &apos;2&apos; * 2</div><div class="line">                elif res[pos] == &apos;1&apos;:</div><div class="line">                    res += &apos;2&apos; if res[-1] == &apos;1&apos; else &apos;1&apos;</div><div class="line">                pos += 1</div><div class="line">            return res[:n].count(&apos;1&apos;)</div></pre></td></tr></table></figure>
+<p>结果也是相当高效的，Runtime: 145 ms Your runtime beats 94.27 % of python submissions.</p>
+
+	
+	</div>
+  <a type="button" href="/2017/09/03/LeetCode刷题(3)/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+
+		</div>
+
+		<!-- pagination -->
+		<div>
+  		<center>
+		<div class="pagination">
+
+   
+    
+     <a href="/page/3/" type="button" class="btn btn-default"><i class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+      
+
+        <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+ 
+       <a href="/page/5/" type="button" class="btn btn-default ">下一页<i class="fa fa-arrow-circle-o-right"></i></a>     
+        
+
+  
+</div>
+
+  		</center>
+		</div>
+
+		
+		
+	</div> <!-- col-md-9 -->
+
+	
+		<div class="col-md-3">
+	<div id="sidebar">
+	
+			
+  <div id="site_search">
+   <div class="form-group">
+    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="st-search-input st-default-search-input form-control"/>
+   </div>  
+  <div id="local-search-result"></div>
+  </div>
+
+
+		
+			
+	<div class="widget">
+		<h4>分类</h4>
+		<ul class="tag_box inline list-unstyled">
+		
+			<li><a href="/categories/Music/">Music<span>3</span></a></li>
+		
+			<li><a href="/categories/人生/">人生<span>4</span></a></li>
+		
+			<li><a href="/categories/历史/">历史<span>1</span></a></li>
+		
+			<li><a href="/categories/编程/">编程<span>73</span></a></li>
+		
+		</ul>
+	</div>
+
+		
+			
+	<div class="widget">
+		<h4>标签云</h4>
+		<ul class="tag_box inline list-unstyled">		
+		
+			<li><a href="/tags/LeetCode/">LeetCode<span>6</span></a></li>
+		
+			<li><a href="/tags/旅行/">旅行<span>1</span></a></li>
+		
+			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+		
+			<li><a href="/tags/SQLAlchemy/">SQLAlchemy<span>1</span></a></li>
+		
+			<li><a href="/tags/宋词/">宋词<span>1</span></a></li>
+		
+			<li><a href="/tags/VSCode/">VSCode<span>1</span></a></li>
+		
+			<li><a href="/tags/Python/">Python<span>56</span></a></li>
+		
+			<li><a href="/tags/interview/">interview<span>0</span></a></li>
+		
+			<li><a href="/tags/青海/">青海<span>1</span></a></li>
+		
+			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
+		
+			<li><a href="/tags/Thrift/">Thrift<span>3</span></a></li>
+		
+			<li><a href="/tags/Database/">Database<span>5</span></a></li>
+		
+			<li><a href="/tags/Web/">Web<span>1</span></a></li>
+		
+			<li><a href="/tags/unittest/">unittest<span>1</span></a></li>
+		
+			<li><a href="/tags/金融/">金融<span>1</span></a></li>
+		
+			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
+		
+			<li><a href="/tags/源码/">源码<span>6</span></a></li>
+		
+			<li><a href="/tags/Go/">Go<span>2</span></a></li>
+		
+			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
+		
+			<li><a href="/tags/明朝/">明朝<span>1</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>46</span></a></li>
+		 
+		</ul>
+	</div>
+
+
+		
+			
+<div class="widget">
+  <h4>最新文章</h4>
+  <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/11/leetcode_algorithm_go_and_python_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Algorithm篇</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/06/leetcode_database_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Database篇</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
+      </li>
+    
+      <li>
+        <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
+      </li>
+    
+  </ul>
+</div>
+
+		
+			
+<div class="widget">
+	<h4>链接</h4>
+	<ul class="blogroll list-unstyled">
+	
+		<li><i class="fa fa-github"></i><a href="https://github.com/Microndgt" title="My Github account." target="_blank"]);">Github</a></li>
+	
+	</ul>
+</div>
+
+
+		
+	</div> <!-- sidebar -->
+</div> <!-- col-md-3 -->
+
+	
+	
+</div> <!-- row-fluid -->
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2018 Kevin Du
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
+     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
 
 </body>
-</html>
+   </html>

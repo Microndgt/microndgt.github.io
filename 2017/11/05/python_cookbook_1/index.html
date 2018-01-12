@@ -1,208 +1,141 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>笔记 - 元编程 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+  <meta property="og:title" content="笔记 - 元编程"/>
+  <meta property="og:site_name" content="SkyRover"/>
 
-    
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
-    <meta charset="utf-8">
-    
-    
-    
-    <title>笔记 - 元编程 | SkyRover | 所谓热血的少年，青涩的爱恋，死亡与梦之约。</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <meta name="theme-color" content="#3F51B5">
-    
-    
-    <meta name="keywords" content="Python,读书笔记,Python_Cookbook">
-    <meta name="description" content="实现单例的另一种方法上次实现单例用到了__new__，在创建实例的时候检测是否已经有创建过实例，如果有，则将其拿过来直接使用。这次是使用元类来实现，在之前的 类元编程 中提到过类是元类的实例，而type类是大部分类的元类，因此元类的__call__方法，就会在调用指定类(元类的实例)的实例化方法的时候被调用。 比如： 12345678910class NoInstances(type):    d">
-<meta name="keywords" content="Python,读书笔记,Python_Cookbook">
-<meta property="og:type" content="article">
-<meta property="og:title" content="笔记 - 元编程">
-<meta property="og:url" content="http://skyrover.me/2017/11/05/python_cookbook_1/index.html">
-<meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="实现单例的另一种方法上次实现单例用到了__new__，在创建实例的时候检测是否已经有创建过实例，如果有，则将其拿过来直接使用。这次是使用元类来实现，在之前的 类元编程 中提到过类是元类的实例，而type类是大部分类的元类，因此元类的__call__方法，就会在调用指定类(元类的实例)的实例化方法的时候被调用。 比如： 12345678910class NoInstances(type):    d">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-11-06T14:55:11.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="笔记 - 元编程">
-<meta name="twitter:description" content="实现单例的另一种方法上次实现单例用到了__new__，在创建实例的时候检测是否已经有创建过实例，如果有，则将其拿过来直接使用。这次是使用元类来实现，在之前的 类元编程 中提到过类是元类的实例，而type类是大部分类的元类，因此元类的__call__方法，就会在调用指定类(元类的实例)的实例化方法的时候被调用。 比如： 12345678910class NoInstances(type):    d">
-    
-        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
-    
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
-    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
-    <script>window.lazyScripts=[]</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
-    <!-- custom head -->
-    
 
 </head>
 
-<body>
-    <div id="loading" class="active"></div>
-
-    <aside id="menu" class="hide" >
-  <div class="inner flex-row-vertical">
-    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
-        <i class="icon icon-lg icon-close"></i>
-    </a>
-    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
-      <div class="brand">
-        <a href="/about" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
-        </a>
-        <hgroup class="introduce">
-          <h5 class="nickname">Kevin Du</h5>
-          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
-        </hgroup>
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
       </div>
-    </div>
-    <div class="scroll-wrap flex-col">
-      <ul class="nav">
-        
-            <li class="waves-block waves-effect">
-              <a href="/"  >
-                <i class="icon icon-lg icon-home"></i>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
 
-                主页
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-
-                文章
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/tags"  >
-                <i class="icon icon-lg icon-tags"></i>
-
-                标签
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/categories"  >
-                <i class="icon icon-lg icon-list"></i>
-
-                分类
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/about"  >
-                <i class="icon icon-lg icon-star"></i>
-
-                关于我
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://github.com/Microndgt" target="_blank" >
-                <i class="icon icon-lg icon-github"></i>
-
-                Github
-              </a>
-            </li>
-        
-      </ul>
-    </div>
-  </div>
-</aside>
-
-    <main id="main">
-        <header class="top-header" id="header">
-    <div class="flex-row">
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
-          <i class="icon icon-lg icon-navicon"></i>
-        </a>
-        <div class="flex-col header-title ellipsis">笔记 - 元编程</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
-        
-        
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
-    </div>
-</header>
-<header class="content-header post-header">
-
-    <div class="container fade-scale">
-        <h1 class="title">笔记 - 元编程</h1>
-        <h5 class="subtitle">
-            
-                <time datetime="2017-11-05T09:22:14.000Z" itemprop="datePublished" class="page-time">
-  2017-11-05 17:22:14
-</time>
+  <div class="container">
+  	<div class="content">
+    	 
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	
+		<div class="page-header">
+			<h1> 笔记 - 元编程</h1>
+		</div>
+	
 
 
-            
-        </h5>
-    </div>
 
-    
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
 
+	<!-- content -->
+	<div class="mypage">		
+	  		
 
-</header>
-
-
-<div class="container body-wrap">
-    
-    <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实现单例的另一种方法"><span class="post-toc-number">1.</span> <span class="post-toc-text">实现单例的另一种方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#缓存实例"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">缓存实例</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#捕获类的属性定义顺序"><span class="post-toc-number">2.</span> <span class="post-toc-text">捕获类的属性定义顺序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#定义有可选参数的元类"><span class="post-toc-number">3.</span> <span class="post-toc-text">定义有可选参数的元类</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#args和-kwargs的强制参数签名"><span class="post-toc-number">4.</span> <span class="post-toc-text">*args和**kwargs的强制参数签名</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在类上强制使用编程规约"><span class="post-toc-number">5.</span> <span class="post-toc-text">在类上强制使用编程规约</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#以编程方式定义类"><span class="post-toc-number">6.</span> <span class="post-toc-text">以编程方式定义类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#exec-object-globals-locals"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">exec(object[, globals[, locals]])</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用types-new-class-来初始化新的类对象"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">使用types.new_class()来初始化新的类对象</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在定义的时候初始化类的成员"><span class="post-toc-number">7.</span> <span class="post-toc-text">在定义的时候初始化类的成员</span></a></li></ol>
-        </nav>
-    </aside>
-    
-
-<article id="post-python_cookbook_1"
-  class="post-article article-type-post fade" itemprop="blogPost">
-
-    <div class="post-card">
-        <h1 class="post-card-title">笔记 - 元编程</h1>
-        <div class="post-meta">
-            <time class="post-time" title="2017-11-05 17:22:14 17:22:14" datetime="2017-11-05T09:22:14.000Z"  itemprop="datePublished">2017-11-05 17:22:14</time>
-
-            
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
-
-
-            
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
-    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
-</span>
-
-
-        </div>
-        <div class="post-content" id="post-content" itemprop="postContent">
-            
-            
-            
-            <h1 id="实现单例的另一种方法"><a href="#实现单例的另一种方法" class="headerlink" title="实现单例的另一种方法"></a>实现单例的另一种方法</h1><p>上次实现单例用到了<code>__new__</code>，在创建实例的时候检测是否已经有创建过实例，如果有，则将其拿过来直接使用。这次是使用元类来实现，在之前的 <a href="http://skyrover.me/2017/10/28/%E7%B1%BB%E5%85%83%E7%BC%96%E7%A8%8B/">类元编程</a> 中提到过类是元类的实例，而type类是大部分类的元类，因此元类的<code>__call__</code>方法，就会在调用指定类(元类的实例)的实例化方法的时候被调用。</p>
+	  <h1 id="实现单例的另一种方法"><a href="#实现单例的另一种方法" class="headerlink" title="实现单例的另一种方法"></a>实现单例的另一种方法</h1><p>上次实现单例用到了<code>__new__</code>，在创建实例的时候检测是否已经有创建过实例，如果有，则将其拿过来直接使用。这次是使用元类来实现，在之前的 <a href="http://skyrover.me/2017/10/28/%E7%B1%BB%E5%85%83%E7%BC%96%E7%A8%8B/">类元编程</a> 中提到过类是元类的实例，而type类是大部分类的元类，因此元类的<code>__call__</code>方法，就会在调用指定类(元类的实例)的实例化方法的时候被调用。</p>
 <p>比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class NoInstances(type):</div><div class="line">    def __call__(self, *args, **kwargs):</div><div class="line">        raise TypeError(&quot;Can&apos;t instantiate directly&quot;)</div><div class="line"></div><div class="line"># Example</div><div class="line"># Spam是NoInstances的实例，所以Spam()会调用NoInstances的__call__方法</div><div class="line">class Spam(metaclass=NoInstances):</div><div class="line">    @staticmethod</div><div class="line">    def grok(x):</div><div class="line">        print(&apos;Spam.grok&apos;)</div></pre></td></tr></table></figure>
 <p>这样，用户只能调用这个类的静态方法或者类方法，而不能创建它的实例。</p>
@@ -257,314 +190,139 @@
 <h1 id="在定义的时候初始化类的成员"><a href="#在定义的时候初始化类的成员" class="headerlink" title="在定义的时候初始化类的成员"></a>在定义的时候初始化类的成员</h1><p>元类会在定义的时候被触发，这时候可以做一些额外操作。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import operator</div><div class="line"></div><div class="line">class StructTupleMeta(type):</div><div class="line">    def __init__(cls, *args, **kwargs):</div><div class="line">        super().__init__(*args, **kwargs)</div><div class="line">        # 在类定义的时候设置属性</div><div class="line">        for n, name in enumerate(cls._fields):</div><div class="line">            setattr(cls, name, property(operator.itemgetter(n)))</div><div class="line"></div><div class="line">class StructTuple(tuple, metaclass=StructTupleMeta):</div><div class="line">    _fields = []</div><div class="line">    def __new__(cls, *args):</div><div class="line">        if len(args) != len(cls._fields):</div><div class="line">            raise ValueError(&apos;&#123;&#125; arguments required&apos;.format(len(cls._fields)))</div><div class="line">        return super().__new__(cls,args)</div><div class="line">class Stock(StructTuple):</div><div class="line">    _fields = [&apos;name&apos;, &apos;shares&apos;, &apos;price&apos;]</div><div class="line"></div><div class="line">class Point(StructTuple):</div><div class="line">    _fields = [&apos;x&apos;, &apos;y&apos;]</div></pre></td></tr></table></figure>
 <p>这样就形成了一个具名元组，函数 operator.itemgetter() 创建一个访问器函数， 然后 property() 函数将其转换成一个属性。</p>
-     
-        </div>
+	  
+	</div>
 
-        <blockquote class="post-copyright">
-    <div class="content">
-        
+	<div>
+  	<center>
+	<div class="pagination">
 
-        
-        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/11/05/python_cookbook_1/" target="_blank" rel="external">http://skyrover.me/2017/11/05/python_cookbook_1/</a>
-        
-    </div>
-    <footer>
-        <a href="http://skyrover.me">
-            <img src="/img/avatar.jpg" alt="Kevin Du">
-            Kevin Du
-        </a>
-    </footer>
-</blockquote>
+    
+    
+    <a href="/2017/11/11/session_and_cookie/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+    
 
-        
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2017/11/05/flask_user_session_security/" type="button" class="btn btn-default ">下一页<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
 </div>
 
-
-
-        <div class="post-footer">
-            
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python-Cookbook/">Python_Cookbook</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
-
-
-
-            
-<div class="page-share-wrap">
-    
-
-<div class="page-share" id="pageShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/05/python_cookbook_1/&title=《笔记 - 元编程》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/05/python_cookbook_1/&title=《笔记 - 元编程》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/05/python_cookbook_1/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《笔记 - 元编程》 — SkyRover&url=http://skyrover.me/2017/11/05/python_cookbook_1/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/05/python_cookbook_1/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
-
-
-
-    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
-        <i class="icon icon-share-alt icon-lg"></i>
-    </a>
-</div>
-
-
-
-        </div>
-    </div>
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+    <h2 class="title">留言</h2>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2017/11/11/session_and_cookie/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">session和数据存储</h4>
-      </a>
-    </div>
-  
-  
-    <div class="waves-block waves-effect next">
-      <a href="/2017/11/05/flask_user_session_security/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">翻译 - How Secure Is The Flask User Session?</h4>
-      </a>
-    </div>
-  
-</nav>
-
-
-
-    
-
-
-
-
-
-
-
-
-<section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
-    <script>
-        var gitment = new Gitment({
-            owner: 'Microndgt',
-            repo: 'microndgt.github.io',
-            oauth: {
-                client_id: 'f54490fb6635a5c3c3ba',
-                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
-            },
-        })
-        gitment.render('comments')
-    </script>
 </section>
 
 
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
 
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2017-11-05 17:22:14 
+	</div>
+	
 
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/编程/">编程<span>73</span></a></li>
+  </li>
 
-
-
-</article>
-
-<div id="reward" class="page-modal reward-lay">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <h3 class="reward-title">
-        <i class="icon icon-quote-left"></i>
-        谢谢支持~
-        <i class="icon icon-quote-right"></i>
-    </h3>
-    <div class="reward-content">
-        
-        <div class="reward-code">
-            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
-        </div>
-        
-        <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
-                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
-            <div class="reward-toggle-ctrol">
-                <span class="reward-toggle-item wechat">微信</span>
-                <span class="reward-toggle-label"></span>
-                <span class="reward-toggle-item alipay">支付宝</span>
-            </div>
-        </label>
-        
-    </div>
-</div>
-
-
-
-</div>
-
-        <footer class="footer">
-    <div class="top">
-        
-<p>
-    <span id="busuanzi_container_site_uv" style='display:none'>
-        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
-    </span>
-    <span id="busuanzi_container_site_pv" style='display:none'>
-        总访问量：<span id="busuanzi_value_site_pv"></span>
-    </span>
-</p>
-
-
-        <p>
-            
-                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            
-            <span>欢迎订阅</span>
-        </p>
-    </div>
-    <div class="bottom">
-        <p><span>Kevin Du &copy; 2016 - 2018</span>
-            <span>
-                
-                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
-                
-                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
-            </span>
-        </p>
-    </div>
-</footer>
-
-    </main>
-    <div class="mask" id="mask"></div>
-<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-
-
-<div class="global-share" id="globalShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/05/python_cookbook_1/&title=《笔记 - 元编程》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/05/python_cookbook_1/&title=《笔记 - 元编程》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/05/python_cookbook_1/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《笔记 - 元编程》 — SkyRover&url=http://skyrover.me/2017/11/05/python_cookbook_1/&via=http://skyrover.me" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/05/python_cookbook_1/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
     </ul>
- </div>
+	</div>
+	
 
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Python/">Python<span>56</span></a></li> <li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li> <li><a href="/tags/Python-Cookbook/">Python_Cookbook<span>1</span></a></li>
+    </ul>
+	</div>
+		
 
-<div class="page-modal wx-share" id="wxShare">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACGklEQVR42u3a0UrEQAwFUP//p1fwSRDrTTIrND3ztGCZzqkQkkk+PuL1+lrXf/3+zM/fvWcOLwwMjNsyXpfrmpEf5XqHnPcrFQMD4wGM5IhJAO3hJztgYGBgXL/g7LpGYmBgYORhMS9xewkiBgYGxqSIzV+WlLJ5cnm4FsfAwLgho9oY+M/fb+xvYGBg3IQxKTUnncQkTBfOg4GBsZpxncZNgu/ZEY0oEGNgYKxm5FtXmwfJZ+oliH98egwMjEWMXtKWg5PrtupHKfxrMDAwVjB67YE8sUuOmBTJyUfEwMDYzcjD67wAnhTDUScWAwNjKaNamibX/dWhigRWxmBgYKxm9C79c95kIKxZqWNgYNyWkYTRU8VnL+Am7QQMDIzdjGqJOE/yRkXpdVjHwMBYyqiGy17WWS10y+MXGBgYqxnV5mX1Bcnh8vM0U0MMDIx1jN5QxYH8tNgWxcDAeBqjOsjVO24esg8kiBgYGEsZ1e2qF3C9pLD3DAYGxj7GJJhOitJTjU8MDIznMKrjF9USNE8Tm61TDAyM1Yw8dZskc/NA3yxiMTAwbs54Fdd8hKK6T3Qlh4GBsZoxCXPvTiKrzQMMDIzdjGq7sdeArIbyciMTAwPjAYz8pr2aGuaBe1QwY2BgYLQu+idDGNXGJwYGBka19Vg97rzNgIGB8QRGHkB7Lz4boDEwMJ7GmE9q5LBJU3M+qIGBgXFDxifSDImHSXAjUAAAAABJRU5ErkJggg==" alt="微信分享二维码">
-</div>
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
 
+	</div>
+		
 
-
-
-    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
-<script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
-
-
-</script>
-
-<script src="/js/main.min.js?v=1.7.1"></script>
-
-
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<template id="search-tpl">
-<li class="item">
-    <a href="{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
-            </div>
-            <time class="flex-col time">{date}</time>
-        </div>
-    </a>
-</li>
-</template>
-
-<script src="/js/search.min.js?v=1.7.1" async></script>
+</div><!-- row -->
 
 
 
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  &copy; 2018 Kevin Du
+  
+      with help from <a href="http://hexo.io/" target="_blank">Hexo</a>,<a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind</a>,<a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a> and <a href="http://getbootstrap.com/" target="_blank">BOOTSTRA.386</a>. 
+     <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
 
 
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
 
 
-
-<script>
-(function() {
-    var OriginTitile = document.title, titleTime;
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            document.title = '快回来！';
-            clearTimeout(titleTime);
-        } else {
-            document.title = '(つェ⊂)喜欢你!';
-            titleTime = setTimeout(function() {
-                document.title = OriginTitile;
-            },2000);
-        }
-    });
-})();
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
 </script>
 
 
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
 
 </body>
-</html>
+   </html>
