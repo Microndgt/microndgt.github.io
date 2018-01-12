@@ -2693,9 +2693,9 @@
             
             <tag> Python </tag>
             
-            <tag> 翻译 </tag>
-            
             <tag> 计算机网络 </tag>
+            
+            <tag> 翻译 </tag>
             
             <tag> Flask </tag>
             
@@ -4138,9 +4138,9 @@
             
             <tag> Python </tag>
             
-            <tag> Celery </tag>
-            
             <tag> Flask </tag>
+            
+            <tag> Celery </tag>
             
         </tags>
         
@@ -5793,9 +5793,9 @@
             
             <tag> 翻译 </tag>
             
-            <tag> Celery </tag>
-            
             <tag> Flask </tag>
+            
+            <tag> Celery </tag>
             
         </tags>
         
@@ -6098,6 +6098,12 @@
   
     
     <entry>
+      <title><![CDATA[Categories]]></title>
+      <url>/categories/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[About]]></title>
       <url>/about/index.html</url>
       <content type="html"><![CDATA[<p>爱玩，爱旅行，爱折腾。。。现在开始爱做饭;-)</p>
@@ -6188,6 +6194,26 @@ code,b,strong{
 }
 .information ul{
     list-style: none;
+}
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>/css/vj.css</url>
+      <content type="html"><![CDATA[.problem_title{
+    color: blue;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.problem_des{
+    border-radius: 15px;
+    border-style: dotted;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(234, 235, 255);
 }
 ]]></content>
     </entry>
@@ -6453,32 +6479,6 @@ code{
     
     <entry>
       <title></title>
-      <url>/css/vj.css</url>
-      <content type="html"><![CDATA[.problem_title{
-    color: blue;
-    font-weight: bolder;
-    font-size: 20px;
-}
-
-.problem_des{
-    border-radius: 15px;
-    border-style: dotted;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(234, 235, 255);
-}
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Categories]]></title>
-      <url>/categories/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title></title>
       <url>/css/black.css</url>
       <content type="html"><![CDATA[/*黑色主题*/
 /*主题*/
@@ -6607,6 +6607,21 @@ ShowWork();
     
     <entry>
       <title></title>
+      <url>/js/after_jquery.js</url>
+      <content type="html"><![CDATA[//确保 jauery 加载完成
+$(document).ready(function(){
+    $(document).on('click', '.fold_hider', function(){
+        $('>.fold', this.parentNode).slideToggle();
+        $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display","none");
+});
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
       <url>/js/My.js</url>
       <content type="html"><![CDATA[//document.write("<script language="javascript" src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>");
 document.write("<script language="javascript" src="/js/jquery.js"></script>");
@@ -6634,21 +6649,6 @@ var _hmt = _hmt || [];
 })();
 
 //alert("加载完成");
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>/js/after_jquery.js</url>
-      <content type="html"><![CDATA[//确保 jauery 加载完成
-$(document).ready(function(){
-    $(document).on('click', '.fold_hider', function(){
-        $('>.fold', this.parentNode).slideToggle();
-        $('>:first', this).toggleClass('open');
-    });
-    //默认情况下折叠
-    $("div.fold").css("display","none");
-});
 ]]></content>
     </entry>
     

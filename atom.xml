@@ -2809,9 +2809,9 @@
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
@@ -4325,9 +4325,9 @@
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
-      <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
-    
       <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
+    
+      <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
     
   </entry>
   
@@ -6036,9 +6036,9 @@
     
       <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
-      <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
-    
       <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
+    
+      <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
     
   </entry>
   
