@@ -135,7 +135,8 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
+	  <p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
 <h1 id="Second-Highest-Salary"><a href="#Second-Highest-Salary" class="headerlink" title="Second Highest Salary"></a><a href="https://leetcode.com/problems/second-highest-salary/description/" target="_blank" rel="external">Second Highest Salary</a></h1><p>这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT (</div><div class="line">    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFFSET 1</div><div class="line">) AS SecondHighestSalary;</div></pre></td></tr></table></figure>
 <p>这里加DISTINCT的原因是，如果有两条300是最大的，然后有一条200，那么第二大的是200.</p>

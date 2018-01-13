@@ -152,7 +152,8 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！</p>
+		<p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<p>开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！</p>
 <p>对Python能更熟点，Go是初学，若有写的不好的地方，请各位看官留言。</p>
 <h1 id="Hamming-Distance"><a href="#Hamming-Distance" class="headerlink" title="Hamming Distance"></a><a href="https://leetcode.com/problems/hamming-distance/description/" target="_blank" rel="external">Hamming Distance</a></h1><p>看汉明距离的定义，就可以想到求两个数的异或，然后统计二进制中1的个数，就是汉明距离。</p>
 <h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class Solution:</div><div class="line">    def hammingDistance(self, x, y):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type x: int</div><div class="line">        :type y: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        return bin(x^y).count(&apos;1&apos;)</div></pre></td></tr></table></figure>
@@ -362,7 +363,8 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
+		<p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
 <h1 id="Second-Highest-Salary"><a href="#Second-Highest-Salary" class="headerlink" title="Second Highest Salary"></a><a href="https://leetcode.com/problems/second-highest-salary/description/" target="_blank" rel="external">Second Highest Salary</a></h1><p>这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT (</div><div class="line">    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFFSET 1</div><div class="line">) AS SecondHighestSalary;</div></pre></td></tr></table></figure>
 <p>这里加DISTINCT的原因是，如果有两条300是最大的，然后有一条200，那么第二大的是200.</p>
@@ -539,6 +541,498 @@ var _hmt = _hmt || [];
 </div>
 
 		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/12/17/git_usage_summary/" >git使用总结</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-12-17 00:55:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>Git会将变化的文件作快照后，记录在微型的文件系统中，保存一个指向这次快照的索引。在保存到git之前，所有数据都要进行内容的校验和(checksum)计算。使用SHA-1算法计算数据的校验和。</p>
+<h2 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h2><ul>
+<li>已提交 commited</li>
+<li>已修改 modified</li>
+<li>已暂存 staged</li>
+</ul>
+<p>文件流转的三个工作区域</p>
+<ul>
+<li>工作目录</li>
+<li>暂存区域</li>
+<li>本地仓库</li>
+</ul>
+<p>git工作流程</p>
+<ul>
+<li>在工作目录中修改某些文件</li>
+<li>对修改后的文件进行快照，保存到暂存区域</li>
+<li>提交更新，将保存在暂存区域的文件快照永久转储到git目录中 </li>
+</ul>
+<p><img src="/img/git_1.png" alt=""></p>
+<p>几个状态:</p>
+<ul>
+<li>未跟踪</li>
+<li><p>已跟踪</p>
+<ul>
+<li>未修改</li>
+<li>已修改</li>
+<li>暂存区</li>
+</ul>
+</li>
+</ul>
+<h2 id="添加git-completed"><a href="#添加git-completed" class="headerlink" title="添加git-completed"></a>添加git-completed</h2><ul>
+<li><code>brew install bash-completion</code></li>
+<li><p>添加以下内容到<code>~/.bash_profile</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if [ -f $(brew --prefix)/etc/bash_completion ]; then</div><div class="line">  . $(brew --prefix)/etc/bash_completion</div><div class="line">fi</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>cd
+/usr/local/opt/bash-completion/etc/bash_completion.d</code></p>
+</li>
+<li><code>curl -L -O https://raw.github.com/git/git/master/contrib/completion/git-completion.bash</code></li>
+<li><code>brew unlink bash-completion</code></li>
+<li><code>brew link bash-completion</code></li>
+<li>重启bash</li>
+</ul>
+<h1 id="跟踪新文件"><a href="#跟踪新文件" class="headerlink" title="跟踪新文件"></a>跟踪新文件</h1><p><code>git add</code>将文件转换成已暂存状态，或者跟踪给定目录的文件。</p>
+<p>一开始就设置好 <code>.gitignore</code>文件的习惯，以免将来误提交这类无用的文件。</p>
+<ul>
+<li>匹配模式最后跟反斜杠（/）说明要忽略的是目录。</li>
+<li>要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。</li>
+</ul>
+<h1 id="查看已暂存和未暂存的更新"><a href="#查看已暂存和未暂存的更新" class="headerlink" title="查看已暂存和未暂存的更新"></a>查看已暂存和未暂存的更新</h1><p><code>git diff</code>会使用文件补丁的格式显示具体添加和删除的行。</p>
+<p>此命令比较的是工作目录中当前文件和暂存区域快照之间的差异，也就是修改之后还没有暂存起来的变化内容。</p>
+<p>若要看已经暂存起来的文件和上次提交时的快照之间的差异，可以用 <code>git diff --cached</code>或者<code>git diff --staged</code>命令。</p>
+<h1 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h1><p>每一次运行提交操作，都是对你项目作一次快照，以后可以回到这个状态，或者进行比较。</p>
+<p><code>git commit -a</code>会自动把所有已经跟踪过的文件暂存起来一并提交。</p>
+<h1 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h1><p><code>git rm</code>可以从暂存区域移除文件，并且连带从工作目录中删除指定的文件，这样以后就不会出现在未跟踪文件清单中了。如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项<code>-f</code></p>
+<p>如果只想从git仓库删除，暂存区域删除，但是还希望在工作目录中，<code>git rm --cached readme.txt</code>，随后在<code>.gitignore</code>文件中补上</p>
+<h1 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h1><p>Git 并不跟踪文件移动操作。所以需要<code>git mv file_from file_to</code></p>
+<h1 id="提交历史"><a href="#提交历史" class="headerlink" title="提交历史 "></a>提交历史 </h1><ul>
+<li><code>git log</code></li>
+<li><code>git log -p -2</code>展开显示最近两次提交的内容差异</li>
+<li><code>git log --stat</code>仅显示简要的增改行数统计</li>
+</ul>
+<h1 id="撤销操作"><a href="#撤销操作" class="headerlink" title="撤销操作"></a>撤销操作</h1><p><code>git commit --amend</code>重新提交</p>
+<ul>
+<li><p>取消已经暂存的文件</p>
+<p>  <code>git reset HEAD benchmarks.rb</code></p>
+</li>
+<li><p>取消对文件的修改</p>
+<p>  <code>git checkout -- benchmarks.rb</code></p>
+</li>
+</ul>
+<h2 id="一些别名"><a href="#一些别名" class="headerlink" title="一些别名"></a>一些别名</h2><ul>
+<li><code>git config --global alias.unstage &#39;reset HEAD --&#39;</code> 这样就可以<code>git unstage readme.md</code></li>
+<li><code>git config --global alias.last &#39;log -1 HEAD&#39;</code>这样就可以使用<code>git last</code>来查看最后一次提交的内容了</li>
+<li><code>git config --global alias.unmodify &#39;checkout --&#39;</code> 这样就可以使用<code>git unmodify readme.md</code>来返回文件的修改内容了</li>
+</ul>
+<h1 id="远程库"><a href="#远程库" class="headerlink" title="远程库"></a>远程库</h1><h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><ul>
+<li><code>git remote</code> 查看远程仓库名字，比如origin</li>
+<li><code>git remote -v</code> 显示对应的克隆地址</li>
+<li><code>git remote add [shortname] [url]</code> 添加一个远程仓库</li>
+<li><code>git remote show [remote-name]</code> 查看某个远程仓库的详细信息</li>
+<li><code>git remote set-url origin [GIT URL]</code> 修改当前远程库的源地址</li>
+<li><code>git remote rename origin origin2</code> 重命名一个远程仓库</li>
+<li><code>git remote rm origin</code> 删除一个远程仓库</li>
+</ul>
+<h2 id="从远程仓库抓取数据"><a href="#从远程仓库抓取数据" class="headerlink" title="从远程仓库抓取数据"></a>从远程仓库抓取数据</h2><p><code>git fetch origin</code> 从远程仓库拉取本地仓库还没有的数据，包括所有分支，但是这个命令只是将数据拉到本地仓库，但是不会自动合并到当前工作分支。但是<code>git pull</code>就会将数据拿下来，然后将远端分支自动合并到本地仓库当前分支。</p>
+<h2 id="推送数据"><a href="#推送数据" class="headerlink" title="推送数据"></a>推送数据</h2><p><code>git push [remote-name] [branch-name]</code> 比如 <code>git push origin master</code>，选择要推送的远程仓库和分支名字，遇到冲突，必须先将更新抓取到本地，合并之后才可以再推送。</p>
+<h1 id="将单个文件回退到历史版本"><a href="#将单个文件回退到历史版本" class="headerlink" title="将单个文件回退到历史版本"></a>将单个文件回退到历史版本</h1><ul>
+<li><code>git reset a4e215234aa4927c85693dca7b68e9976948a35e book.pdf</code> 第三个为要回退的版本commit id</li>
+<li><code>git commit -m &quot;revert book.pdf&quot;</code> 提交</li>
+<li><code>git checkout book.pdf</code> 更新到工作目录</li>
+<li><code>git push</code></li>
+</ul>
+<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><p>一次提交会产生三种对象，一种是文件快照内容的blob对象，一种是记录目录树内容和对应文件blob对象索引的tree对象，以及包含tree对象和其他提交元数据的commit对象。</p>
+<p><img src="/img/git_2.png" alt=""></p>
+<p>再次提交之后，这次的commit对象就会包含上次提交对象的指针。</p>
+<p>分支，本质上是指向commit对象的可变指针。</p>
+<p><img src="/img/git_3.png" alt=""></p>
+<p><code>git branch testing</code>或者<code>git checkout -b testing</code>会创建分支并且切换到这个分支。</p>
+<p>另外git还有一个HEAD指针，它指向正在工作的本地分支的指针，也就是当前分支的别名。</p>
+<p><img src="/img/git_4.png" alt=""></p>
+<p>经历一段时间的开发之后，就会是这个样子</p>
+<p><img src="/img/git_5.png" alt=""></p>
+<p><code>git merge hotfix</code>将hotfix的分支合并到当前分支来。Fast forward的意思是可以直接顺着合并的分支走下去，也就是要合并的分支的直接祖先就是当前提交对象。</p>
+<p><code>git branch -d hotfix</code> 删除分支</p>
+<h2 id="分支的合并"><a href="#分支的合并" class="headerlink" title="分支的合并"></a>分支的合并</h2><p>如果要合并的分支的直接祖先不是当前提交对象，那么就会用两个分支的末端和它们的共同祖先来做三方合并计算。git会自动识别最佳同源合并点。然后对合并结果做新的快照，然后创建一个提交对象，这个提交对象有两个祖先。</p>
+<p><img src="/img/git_6.png" alt=""></p>
+<p>如果有冲突，手工解决冲突，并且将相关文件暂存，并且创建提交对象，然后完成合并。</p>
+<h2 id="分支的管理"><a href="#分支的管理" class="headerlink" title="分支的管理"></a>分支的管理</h2><ul>
+<li><code>git branch</code> 列出分支</li>
+<li><code>git branch -v</code> 查看分支最后一个提交对象的信息</li>
+<li><code>git branch --merged</code> 查看那些分支已经被并入当前分支，也就是那些分支是当前分支的上游</li>
+<li><code>git branch --no-merged</code> 查看尚未合并的工作</li>
+</ul>
+<p>从远程分支checkout出来的本地分支，为跟踪分支，跟踪分支是一种和某个远程分支有直接联系的本地分支。然后直接git push就可以push到对应分支，git pull会获取对应的远程分支的数据。</p>
+<p>克隆的时候，会自动创建一个master的分支跟踪<code>origin/master</code></p>
+<p>但是可能会有其他的一些不一样的地方，比如<code>git fetch origin</code>之后会得到一个新的远程分支<code>origin/serverfix</code>，但是你没有本地的serverfix分支，所以可以</p>
+<ul>
+<li><code>git merge origin/serverfix</code></li>
+<li><code>git checkout -b serverfix origin/serverfix</code></li>
+<li><code>git checkout --track origin/serverfix</code></li>
+</ul>
+<p>然后推送的时候可以指定本地分支和远程分支：<code>git push origin master:master</code></p>
+<h2 id="分支的衍合"><a href="#分支的衍合" class="headerlink" title="分支的衍合"></a>分支的衍合</h2><p>也就是在一个分支的提交内容在当前分支再进行一遍，这样的好处是分支历史是一条直线。<code>git rebase experiment</code></p>
+<h1 id="储藏-stashing"><a href="#储藏-stashing" class="headerlink" title="储藏(stashing)"></a>储藏(stashing)</h1><p>可以获取你工作目录的中间状态，修改过的被追踪文件和暂存的变更，保存到未完结变更的堆栈中。</p>
+<p><code>git stash</code> 就可以储藏变更。<code>git stash list</code>查看现有的储藏。应用储藏<code>git stash apply stash@{2}</code>，如果直接<code>git stash apply</code>就会使用最近的储藏。即使使用了最近的储藏，这个储藏也不会消失，仍然会保存着。删除的话使用<code>git stash drop stash@{0}</code>，可以使用<code>git stash pop</code>应用储藏，并且从堆栈中拿走。</p>
+<p>而且对文件的变更会被重新应用，被暂存的文件没有重新被暂存。如果想要重新应用被暂存的变更，<code>git stash apply --index</code></p>
+<p>其中WIP是Work in Process。</p>
+<h2 id="取消储藏"><a href="#取消储藏" class="headerlink" title="取消储藏"></a>取消储藏</h2><p>应用储藏之后有修改，但是又要取消储藏的修改。也就是弃用储藏的修改。</p>
+<p><code>git stash show -p stash@{0} | git apply -R</code></p>
+<p>也可以加一个别名<code>git config --global alias.stash-unapply &#39;git stash show -p | git apply -R&#39;</code></p>
+<p>然后可以再<code>git stash apply</code>再恢复储藏</p>
+<h1 id="重写历史"><a href="#重写历史" class="headerlink" title="重写历史"></a>重写历史</h1><h2 id="改变最近一次提交"><a href="#改变最近一次提交" class="headerlink" title="改变最近一次提交"></a>改变最近一次提交</h2><p><code>git commit --amend</code>修改最近一次的提交说明，并且如果有文件在暂存区的时候，就会将其提交，作为新提交的快照。但是如果push上去了，就不要改上次的提交了。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/12/17/git_usage_summary/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/12/15/shortcut/" >快捷键大全 - Mac</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-12-15 23:57:57  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>仅列出自己觉得有用并且常用的快捷键</p>
+<h1 id="Mac中的快捷键"><a href="#Mac中的快捷键" class="headerlink" title="Mac中的快捷键"></a>Mac中的快捷键</h1><h2 id="常用"><a href="#常用" class="headerlink" title="常用"></a>常用</h2><ul>
+<li><code>command + q</code> 退出程序</li>
+<li><code>command + ,</code> 程序的偏好设置</li>
+<li><code>shift + command + 3</code> 全部截屏</li>
+<li><code>shift + command + 4</code> 选取截屏</li>
+<li><code>shift + command + 4 + space</code> 截取选择窗口</li>
+<li><code>command + r</code> 刷新</li>
+<li><code>ctrl + tab</code> 在应用程序标签页中切换</li>
+<li><code>command + 1/2/3</code> 在有标签页的程序中都可以用</li>
+<li><code>command + d</code> 收藏页面</li>
+<li><p><code>command + delete</code> 删除文件</p>
+</li>
+<li><p><code>command + h</code> 隐藏最前面应用的窗口</p>
+</li>
+<li><code>command + option + h</code> 隐藏后面应用窗口</li>
+<li><code>command + m</code> 将目前窗口最小化</li>
+<li><code>command + shift + s</code>另存为</li>
+<li><code>command + control + 空格</code> 调出emoji表情</li>
+<li><code>command + shift + delete</code> 清空回收站，这个还是慎重!</li>
+</ul>
+<h2 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h2><ul>
+<li><code>command + k</code> 清屏</li>
+<li><code>command + d</code> 垂直分割，一样的内容</li>
+<li><code>shift + command + d</code> 关闭垂直分页</li>
+<li><code>ctrl + u</code> 向前全部删除</li>
+<li><code>ctrl + k</code> 向后全部删除</li>
+<li><code>ctrl + d</code> 向后删除一个字符</li>
+<li><code>ctrl + p</code> 调出历史的前一条记录</li>
+<li><code>ctrl + n</code> 调出历史的下一条记录</li>
+<li><code>ctrl + r</code> 递归搜索</li>
+</ul>
+<h1 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h1><h2 id="基本控制"><a href="#基本控制" class="headerlink" title="基本控制"></a>基本控制</h2><ul>
+<li><code>shift + command + p</code> 打开命令面板</li>
+<li><code>command + p</code> 快速打开，在其中输入<code>&gt;</code>就可以到命令面板</li>
+<li><code>shift + command + n</code> 新建窗口</li>
+<li><code>command + w</code> 关闭文件窗口</li>
+<li><code>shift + command + w</code> 关闭窗口</li>
+<li><code>shift + command + c</code> 打开外部shell</li>
+<li><code>ctrl + r</code> 切换工作区(项目)</li>
+<li><code>command + k + commad + s</code> 打开键盘快捷方式设置</li>
+</ul>
+<h2 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h2><ul>
+<li><code>alt + 上/下</code> 移动一行</li>
+<li><code>shift + alt + 上/下</code> 复制一行</li>
+<li><code>shift + command + k</code> 删除当前行</li>
+<li><code>command + enter</code> 下一行插入</li>
+<li><code>shift + command + enter</code> 上一行插入</li>
+<li><code>command + [/]</code> 缩进，反缩进</li>
+<li><code>command + 上/下</code> 文档首，尾</li>
+<li><code>command + 左/右</code> 行首，尾</li>
+<li><code>shift + command + 左/右</code> 选择光标左边或者右边的文本</li>
+<li><code>shift + command + 上/下</code> 选择光标上面或者下面的文本</li>
+<li><code>shift + alt + 左/右</code> 选择光标左边或者右边的单词</li>
+<li><code>command + /</code> 行注释</li>
+<li><code>shift + alt + a</code> 块注释，这个挺有用的</li>
+<li><code>command + I</code> 选择当前行</li>
+<li><code>ctrl + d</code> 向后删除一个字符</li>
+<li><code>ctrl + k</code> 删除右面所有内容 </li>
+<li><code>ctrl + u</code> 删除左面所有内容</li>
+<li><code>ctrl + a</code> 行首</li>
+<li><code>ctrl + e</code> 行尾</li>
+<li><code>command + k + command + 0</code> 全部折叠</li>
+<li><code>command + k + command + j</code> 全部展开</li>
+<li><code>command + k + command + ]</code> 递归的局部展开</li>
+<li><code>command + k + command + [</code> 递归的局部折叠</li>
+</ul>
+<h2 id="多选"><a href="#多选" class="headerlink" title="多选"></a>多选</h2><ul>
+<li><code>alt + click</code> 插入光标，有选择性的多选光标</li>
+<li><code>alt + command + 上/下</code> 在上面或者下面增加光标</li>
+<li><code>command + d</code> 同样的单词多选，一个个选中</li>
+<li><code>shift + command + l</code> 所有的匹配项都选中</li>
+</ul>
+<h2 id="搜索替换"><a href="#搜索替换" class="headerlink" title="搜索替换"></a>搜索替换</h2><ul>
+<li><code>alt + command + f</code> 替换</li>
+<li><code>command + g</code> 下一个</li>
+<li><code>shift + command + g</code> 上一个</li>
+<li><code>alt + enter</code> 选择所有查找项</li>
+</ul>
+<h2 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h2><ul>
+<li><code>control + g</code> 跳到第几行</li>
+<li><code>control + -</code> 后退</li>
+<li><code>shift + control + -</code> 前进</li>
+</ul>
+<h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><ul>
+<li><code>command + \</code> 切分窗口</li>
+<li><code>ctrl + tab</code> 文件窗口切换</li>
+<li><code>shift + command + [/]</code> 切换文件选项卡</li>
+<li><code>command + 2/1/3</code> 开始或者切换第二个(同样)文件窗口</li>
+</ul>
+<h2 id="显示"><a href="#显示" class="headerlink" title="显示"></a>显示</h2><ul>
+<li><code>control + command + F</code> 全屏</li>
+<li><code>command + b</code> 显示或者不显示侧边栏</li>
+<li><code>shift + command + e</code> 显示资源管理器</li>
+<li><code>command + enter</code> 在文件上敲击这个，会打开文件，直接enter修改名字</li>
+<li><code>shift + command + x</code> 显示扩展</li>
+<li><code>shift + command + d</code> 显示调试</li>
+<li><code>ctrl + shift + g</code> 显示git</li>
+<li><code>shift + command + U</code> 显示输出 再次按就消失</li>
+<li><code>shift + command + f</code> 显示全局搜索</li>
+<li><code>control + ·</code> 打开集成终端 再次按就消失</li>
+</ul>
+<h1 id="VSCode的Python配置"><a href="#VSCode的Python配置" class="headerlink" title="VSCode的Python配置"></a>VSCode的Python配置</h1><p>配合conda来进行环境的管理，比如一个项目cat, 可以<code>conda create -n cat python=3.6</code>创建虚拟环境，然后<code>shift+command+p</code>，输入<code>python: select interpreter</code>来选择刚才配置的虚拟环境，这样就会在项目下面生成一个<code>.vscode</code>，不过这个需要加入<code>.gitignore</code>。</p>
+<p>这样<code>f5</code>就可以开始调试了, <code>shift+command+d</code>开启调试页面，可以看到调试变量。另外在终端也可以键入<code>source activate cat</code>启动虚拟环境，进行<code>pip</code>等管理或者运行。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/12/15/shortcut/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/12/13/2017_summary/" >二零一七二三事</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-12-13 20:42:46  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>最近对公司的量化平台做了一个比较大的重构级别的操作，花了三个星期的时间，效果很好，我的感觉就是类似于将之前长歪的树给颁直的快感吧。看到现在代码稳定的运行着，自己也算是比较满意，然后这段时间也提了离职，觉得这对公司也算是一个交代吧。</p>
+<p>2017年，不像2016年去了很多地方玩，厦门，上海，武汉，桂林，广州，深圳，北京等等，2017年除了出差去了几次北京之外，就老老实实的在西安呆着。一个是自己工作也趋于稳定，另一个是女朋友也在西安，其实不需要到什么地方玩，两个人在一起去哪里都挺开心的。</p>
+<p>关于工作，今年主要做了三个系统，这两个系统都是公司主要的三个系统，然后做了两个工具库，目前呢，代码稳定，bug不多，还是比较满意的，这也是离职的一个原因，觉得在公司呆着，发展空间有限吧。另外看了几本书，流畅的Python，Python算法教程，其实看博客的文章，就知道自己这一年在做什么了，写博客从另一个角度来说，也是自己的一个成长和总结。然后看了不少源码。总之，今年学习了不少东西，想到这些，觉得今年还是蛮有收获的。</p>
+<p>关于感情，<code>得之我幸，失之我命</code>吧。不论如何，曾经的曾经都很开心，都有对未来的憧憬，都爱着对方，也许这就是最好的结局：想起曾经的过往也是冬日里的一丝温暖。谢谢。还记得那年的油菜花吗，也许我们只是迷失在花海之中了。关于未来，现在有一种失落感，希望能好起来吧。</p>
+<p><img src="/img/2017_summary_1.png" alt=""></p>
+<p>自己给自己做过很多承诺，后来没有几个完成的，比如健身，想起来就挺痛恨自己的—体重越来越高，希望2018年有所改变吧。</p>
+<p>加油。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/12/13/2017_summary/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/12/10/traitlets_guide/" >Traitlets Guide</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-12-10 21:59:33  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自: <a href="http://traitlets.readthedocs.io/en/stable/using_traitlets.html" target="_blank" rel="external">Traitlets Guide</a></p>
+<h1 id="Using-Traitlets"><a href="#Using-Traitlets" class="headerlink" title="Using Traitlets"></a>Using Traitlets</h1><p>总而言之，traitlets可以让用户定义一个类有以下功能：</p>
+<ol>
+<li>可以进行类型检查的属性和动态计算默认值</li>
+<li>当属性被改变Traits会发起一个改变事件</li>
+<li>Traitlets可以进行验证，并且允许在赋值的时候使用新的属性值。允许用户基于其他属性值自定义属性验证逻辑。</li>
+</ol>
+<h2 id="Default-values-and-checking-type-and-value"><a href="#Default-values-and-checking-type-and-value" class="headerlink" title="Default values, and checking type and value"></a>Default values, and checking type and value</h2><p>最基本的功能，traitlets提供了类型检查，以及在<code>traitlets.HasTraits</code>子类上动态生成默认的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import getpass</div><div class="line"></div><div class="line">class Identity(HasTraits):</div><div class="line">    username = Unicode()</div><div class="line"></div><div class="line">    # 生成默认值</div><div class="line">    @default(&apos;username&apos;)</div><div class="line">    def _default_username(self):</div><div class="line">        return getpass.getuser()</div><div class="line"></div><div class="line"># 类型检查</div><div class="line">class Foo(HasTraits):</div><div class="line">    bar = Int()</div><div class="line"></div><div class="line">foo = Foo(bar=&apos;3&apos;)  # raises a TraitError</div></pre></td></tr></table></figure>
+<p>其中这里有一个<a href="https://docs.python.org/3/library/getpass.html" target="_blank" rel="external">getpass</a>模块，其提供了可移植的密码输入。主要提供了两个函数<code>getpass</code>和<code>getuser</code></p>
+<ul>
+<li><p><code>getpass(prompt=&#39;Password: &#39;, stream=None)</code></p>
+<p>  提示用户没有回显的输入密码。Unix上，提示符被写入到文件对象流中，如果需要会使用替换的错误处理。流默认会输入到控制终端<code>/dev/tty</code>，如果不可用会到<code>sys.stderr</code></p>
+</li>
+<li><p><code>getuser()</code></p>
+<p>  返回用户的登录名，诸如<code>LOGNAME, USER, LNAME, USERNAME</code>的环境变量。</p>
+</li>
+</ul>
+<h2 id="observe"><a href="#observe" class="headerlink" title="observe"></a>observe</h2><p>Traitlets实现了观察者模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class Foo(HasTraits):</div><div class="line">    bar = Int()</div><div class="line">    baz = Unicode()</div><div class="line"></div><div class="line">foo = Foo()</div><div class="line"></div><div class="line">def func(change):</div><div class="line">    print(change[&apos;old&apos;])</div><div class="line">    print(change[&apos;new&apos;])</div><div class="line"></div><div class="line"># 需要观察的变量是bar，用func来处理观察改变事件</div><div class="line">foo.observe(func, names=[&apos;bar&apos;])</div><div class="line">foo.bar = 1  # prints &apos;0\n 1&apos;</div><div class="line">foo.baz = &apos;abc&apos;  # prints nothing</div></pre></td></tr></table></figure>
+<p>如果观察者是类的方法，那么可以使用装饰器语法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Foo(HasTraits):</div><div class="line">    bar = Int()</div><div class="line">    baz = Unicode()</div><div class="line"></div><div class="line">    # 观察变量bar</div><div class="line">    @observe(&apos;bar&apos;)</div><div class="line">    def _observe_bar(self, change):</div><div class="line">        print(change[&apos;old&apos;])</div><div class="line">        print(change[&apos;new&apos;])</div></pre></td></tr></table></figure>
+<h2 id="Validation"><a href="#Validation" class="headerlink" title="Validation"></a>Validation</h2><p>在trait类中自定义验证逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">from traitlets import HasTraits, TraitError, Int, Bool, validate</div><div class="line"></div><div class="line">class Parity(HasTraits):</div><div class="line">    value = Int()</div><div class="line">    parity = Int()</div><div class="line"></div><div class="line">    @validate(&apos;value&apos;)</div><div class="line">    def _valid_value(self, proposal):</div><div class="line">        # 期望的值</div><div class="line">        if proposal[&apos;value&apos;] % 2 != self.parity:</div><div class="line">            raise TraitError(&apos;value and parity should be consistent&apos;)</div><div class="line">        return proposal[&apos;value&apos;]</div><div class="line"></div><div class="line">    @validate(&apos;parity&apos;)</div><div class="line">    def _valid_parity(self, proposal):</div><div class="line">        parity = proposal[&apos;value&apos;]</div><div class="line">        if parity not in [0, 1]:</div><div class="line">            raise TraitError(&apos;parity should be 0 or 1&apos;)</div><div class="line">        if self.value % 2 != parity:</div><div class="line">            raise TraitError(&apos;value and parity should be consistent&apos;)</div><div class="line">        return proposal[&apos;value&apos;]</div><div class="line"></div><div class="line">parity_check = Parity(value=2)</div><div class="line">with parity_check.hold_trait_notifications():</div><div class="line">    parity_check.value = 1</div><div class="line">    parity_check.parity = 1</div></pre></td></tr></table></figure>
+<p>当<code>hold_trait_notifications</code>上下文管理器被释放的时候，如果有验证错误发生，那么改变就会恢复到最初的状态。</p>
+<p>最后，trait类型可以有除了trait改变之外其他的事件。在一个类中如果有值的改变那么就可以触发通知。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>关于Traitlets就先总结于此，若有更深入的再补充。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/12/10/traitlets_guide/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/12/07/making_kernels_for_jupyter/" >翻译 - Making kernels for Jupyter</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-12-07 15:01:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自: <a href="http://jupyter-client.readthedocs.io/en/latest/kernels.html" target="_blank" rel="external">Making kernels for Jupyter</a></p>
+<h1 id="Making-kernels-for-Jupyter"><a href="#Making-kernels-for-Jupyter" class="headerlink" title="Making kernels for Jupyter"></a>Making kernels for Jupyter</h1><p>一个内核是运行和解析用户代码的程序。IPython包含了一个运行和解析Python代码的内核，而且人们已经写了多种语言的内核。</p>
+<p>当Jupyter开始一个内核的时候，它会传递它一个连接文件。它指定了如何与前端开始通信。</p>
+<p>关于写一个内核有两个选项：</p>
+<ul>
+<li>你可以重用IPython内核机制来处理通信，只需要描述如何运行你的代码就行了。如果你的目标语言可以被Python驱动的话，这种方式就比较简单。请查看<a href="http://jupyter-client.readthedocs.io/en/latest/wrapperkernels.html" target="_blank" rel="external">Making simple Python wrapper kernels</a>以获得详细细节。</li>
+<li>你可以使用目标语言了实现这个内核。开始这个工作会很多，但是后面如果有人开始用你的内核，就会有人来贡献代码。</li>
+</ul>
+<h2 id="Connection-files"><a href="#Connection-files" class="headerlink" title="Connection files"></a>Connection files</h2><p>当内核开始的时候将会传入一个连接文件的路径(查看Kernel Specs 如何为你的内核指定命令行参数)。这个文件，只对当前用户可用，会包含类似下面的一个JSON字典。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;control_port&quot;: 50160,</div><div class="line">  &quot;shell_port&quot;: 57503,</div><div class="line">  &quot;transport&quot;: &quot;tcp&quot;,</div><div class="line">  &quot;signature_scheme&quot;: &quot;hmac-sha256&quot;,</div><div class="line">  &quot;stdin_port&quot;: 52597,</div><div class="line">  &quot;hb_port&quot;: 42540,</div><div class="line">  &quot;ip&quot;: &quot;127.0.0.1&quot;,</div><div class="line">  &quot;iopub_port&quot;: 40885,</div><div class="line">  &quot;key&quot;: &quot;a0436f6c-1916-498b-8eb9-e81ab9368e84&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>transport</code>, <code>ip</code>和制定了内核应该使用ZeroMQ绑定的五个<code>_port</code>。比如shell套接字的地址应该是：<code>tcp://127.0.0.1:57503</code></p>
+<p>在每个内核开始的时候会指定随意的端口。<code>signature_scheme</code>和<code>key</code>用来加密信息，因此系统的其他用户不能发送代码来运行内核。</p>
+<h2 id="Handling-messages"><a href="#Handling-messages" class="headerlink" title="Handling messages"></a>Handling messages</h2><p>在读取连接文件后和绑定必须的套接字之后，内核应该进入一个事件循环，监听hb(heartbeat)，control和shell套接字。</p>
+<p>Heartbeat消息应该在同样的套接字上立即返回，前端使用这个消息来检查内核是否在线。</p>
+<p>control和shell套接字的消息应该被解析，而且它们的签名应该是有效的。</p>
+<p>内核会在iopub套接字上发送消息以展示输出，在stdin套接字上提示用户来输入。</p>
+<h2 id="Kernel-specs"><a href="#Kernel-specs" class="headerlink" title="Kernel specs"></a>Kernel specs</h2><p>通过创建一个目录来让IPython识别一个内核，名字就是内核的标识符。目录可能在不同的位置</p>
+<ul>
+<li><p>System:</p>
+<ul>
+<li><code>/usr/share/jupyter/kernels</code></li>
+<li><code>/usr/local/share/jupyter/kernels</code></li>
+</ul>
+</li>
+<li><p>Env:</p>
+<ul>
+<li><code>{sys.prefix}/share/jupyter/kernels</code></li>
+</ul>
+</li>
+<li><p>User:</p>
+<ul>
+<li><code>~/.local/share/jupyter/kernels</code> (Linux)</li>
+<li><code>~/Library/Jupyter/kernels</code> (Mac)</li>
+</ul>
+</li>
+</ul>
+<p>用户位置的优先级高于系统级别的，忽略名字的大小写。因此不论系统是否大小写敏感，都可以以同样的烦噶事来获取内核。因为内核名字会在URL出现，因此内核名字需要是一个简单的，只使用ASCII字母，数字和简单的分隔符<code>-</code>, <code>.</code>, <code>_</code></p>
+<p>如果设置了<code>JUPYTER_PATH</code>环境变量的话，也会搜索其他位置。</p>
+<p>在内核文件夹下，现在会使用三种类型的文件。<code>kernel.json</code>, <code>kernel.js</code>和log图片文件。目前，没有使用其他文件，但是将来可能会改变。</p>
+<p>最重要的文件是<code>kernel.json</code>，应该是一个json序列化的字典包含以下字段</p>
+<ul>
+<li><code>argv</code>: 用来启动内核的命令行参数列表。<code>{connection_file}</code>将会被实际的连接文件的路径替换。</li>
+<li><code>display_name</code>: 在UI上展示的内核名字。不像在API中使用的内核名字，这里的名字可以包含任意字符。</li>
+<li><code>language</code>: 内核的语言名字。当载入notebook的时候，如果没有找到匹配的内核，那么匹配相应语言的内核将会被启动。这样允许一个写了任何Python或者julia内核的notebook可以与用户的Python或者julia内核合适的联系起来，即使它们没有在与用户内核同样的名字下。</li>
+<li><code>interrupt_mode</code>：可能是signal或者message指定了客户端如何在这个内核中停止单元运行。是通过发送一个信号呢，还是发送一个<code>interrupt_request</code>消息在control channel。如果没有指定，将默认使用signal模式。</li>
+<li><code>env</code>：为内核设置的环境变量。在内核启动前，会添加到当前的环境变量里。</li>
+<li><code>metadata</code>：关于这个内核的其他相关属性。帮助客户端选择内核。</li>
+</ul>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"> &quot;argv&quot;: [&quot;python3&quot;, &quot;-m&quot;, &quot;IPython.kernel&quot;,</div><div class="line">          &quot;-f&quot;, &quot;&#123;connection_file&#125;&quot;],</div><div class="line"> &quot;display_name&quot;: &quot;Python 3&quot;,</div><div class="line"> &quot;language&quot;: &quot;python&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>查看有多少可用内核:<code>jupyter kernelspec list</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Available kernels:</div><div class="line">  python3    /Users/kevin/anaconda/lib/python3.5/site-packages/ipykernel/resources</div><div class="line">  ir         /Users/kevin/Library/Jupyter/kernels/ir</div></pre></td></tr></table></figure>
+<h1 id="Making-simple-Python-wrapper-kernels"><a href="#Making-simple-Python-wrapper-kernels" class="headerlink" title="Making simple Python wrapper kernels"></a>Making simple Python wrapper kernels</h1><p>你可以重用IPython的内核机制来非常容易的创建新内核。这对于Python绑定的语言来说非常有用。或者可以用pexpect来控制REPL的语言，比如bash</p>
+<h2 id="Required-steps"><a href="#Required-steps" class="headerlink" title="Required steps"></a>Required steps</h2><p>子类化<code>ipykernel.kernelbase.Kernel</code>，然后实现下面的方法和属性</p>
+<ul>
+<li><p><code>class MyKernel</code></p>
+<ul>
+<li><code>implementation</code></li>
+<li><code>implementation_version</code></li>
+<li><p><code>banner</code></p>
+<p>  Kernel info会返回的信息。<code>Implementation</code>指的是内核而不是语言，比如IPython而不是Python。<code>banner</code>是在控制UI上显示第一个提示符之前的东西。这些都是字符串</p>
+</li>
+<li><p><code>language_info</code></p>
+<p>  Kernel info会返回的信息字典。应该包含<code>mimetype</code>键，值是目标语言的mimetype，比如<code>text/x-python</code>。name键是实现的语言比如<code>python</code>，<code>file_extension</code>比如<code>.py</code>，而且也可能根据不同语言包含<code>codemirror_mode</code>和<code>pygments_lexer</code></p>
+</li>
+<li><p><code>do_execute(code, silent, store_history=True, user_expressions=None, allow_stdin=False)</code></p>
+<p>  执行用户代码</p>
+<ul>
+<li>code：要执行的代码</li>
+<li>silent：是否展示输出</li>
+<li><code>store_history</code>: 是否在历史里记录代码，并且增加执行次数。</li>
+<li><code>user_expressions</code>：在代码被执行后对这些表达式求值</li>
+<li><p><code>allow_stdin</code>：前端是否提供输入请求</p>
+<p>你的方法应该返回一个字典，包含在<code>Execution results</code>规定的字典。为了展现输出，它可以使用<code>send_response()</code>来发送消息。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>为了启动你的内核，在模块后面加上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    from ipykernel.kernelapp import IPKernelApp</div><div class="line">    IPKernelApp.launch_instance(kernel_class=MyKernel)</div></pre></td></tr></table></figure>
+<p>现在创建一个JSON的内核说明文件，然后通过<code>jupyter kernelspec install &lt;/path/to/kernel&gt;</code>。将你的内核模块放在Python可以导入的地方，一般是当前目录(做测试)。最后，你可以使用<code>jupyter console --kernel &lt;mykernelname&gt;</code>来运行你的内核。</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><code>echokernel.py</code>会简单的将输入输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">from ipykernel.kernelbase import Kernel</div><div class="line"></div><div class="line">class EchoKernel(Kernel):</div><div class="line">    implementation = &apos;Echo&apos;</div><div class="line">    implementation_version = &apos;1.0&apos;</div><div class="line">    language = &apos;no-op&apos;</div><div class="line">    language_version = &apos;0.1&apos;</div><div class="line">    language_info = &#123;</div><div class="line">        &apos;name&apos;: &apos;Any text&apos;,</div><div class="line">        &apos;mimetype&apos;: &apos;text/plain&apos;,</div><div class="line">        &apos;file_extension&apos;: &apos;.txt&apos;,</div><div class="line">    &#125;</div><div class="line">    banner = &quot;Echo kernel - as useful as a parrot&quot;</div><div class="line"></div><div class="line">    def do_execute(self, code, silent, store_history=True, user_expressions=None,</div><div class="line">                   allow_stdin=False):</div><div class="line">        if not silent:</div><div class="line">            stream_content = &#123;&apos;name&apos;: &apos;stdout&apos;, &apos;text&apos;: code&#125;</div><div class="line">            self.send_response(self.iopub_socket, &apos;stream&apos;, stream_content)</div><div class="line"></div><div class="line">        return &#123;&apos;status&apos;: &apos;ok&apos;,</div><div class="line">                # The base class increments the execution count</div><div class="line">                &apos;execution_count&apos;: self.execution_count,</div><div class="line">                &apos;payload&apos;: [],</div><div class="line">                &apos;user_expressions&apos;: &#123;&#125;,</div><div class="line">               &#125;</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    from ipykernel.kernelapp import IPKernelApp</div><div class="line">    IPKernelApp.launch_instance(kernel_class=EchoKernel)</div></pre></td></tr></table></figure>
+<p>下面是内核说明文件<code>kernel.json</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;argv&quot;:[&quot;python&quot;,&quot;-m&quot;,&quot;echokernel&quot;, &quot;-f&quot;, &quot;&#123;connection_file&#125;&quot;],</div><div class="line"> &quot;display_name&quot;:&quot;Echo&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2017/12/07/making_kernels_for_jupyter/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
 
 		</div>
 
@@ -603,27 +1097,27 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/源码/">源码<span>6</span></a></li>
+			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
 			<li><a href="/tags/Python/">Python<span>56</span></a></li>
 		
-			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
+			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
 			<li><a href="/tags/Database/">Database<span>5</span></a></li>
 		
 			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
-		
 			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
+			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
-			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
-		
 			<li><a href="/tags/interview/">interview<span>0</span></a></li>
+		
+			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
 		
 			<li><a href="/tags/日记/">日记<span>0</span></a></li>
 		
@@ -639,9 +1133,9 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/算法/">算法<span>15</span></a></li>
 		
-			<li><a href="/tags/LeetCode/">LeetCode<span>6</span></a></li>
-		
 			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
+		
+			<li><a href="/tags/设计模式/">设计模式<span>4</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>46</span></a></li>

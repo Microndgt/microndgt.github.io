@@ -5,7 +5,8 @@
     <entry>
       <title><![CDATA[LeetCode刷题 - Algorithm篇]]></title>
       <url>/2018/01/12/leetcode_algorithm_go_and_python_1/</url>
-      <content type="html"><![CDATA[<p>开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！</p>
+      <content type="html"><![CDATA[<p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<p>开始刷LeetCode上面的算法题，将以两种语言Python, Go同时完成，记录完成题目的思路和代码。长久坚持下去，必将会有更大的提高！</p>
 <p>对Python能更熟点，Go是初学，若有写的不好的地方，请各位看官留言。</p>
 <h1 id="Hamming-Distance"><a href="#Hamming-Distance" class="headerlink" title="Hamming Distance"></a><a href="https://leetcode.com/problems/hamming-distance/description/" target="_blank" rel="external">Hamming Distance</a></h1><p>看汉明距离的定义，就可以想到求两个数的异或，然后统计二进制中1的个数，就是汉明距离。</p>
 <h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class Solution:</div><div class="line">    def hammingDistance(self, x, y):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type x: int</div><div class="line">        :type y: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        return bin(x^y).count(&apos;1&apos;)</div></pre></td></tr></table></figure>
@@ -209,7 +210,8 @@
     <entry>
       <title><![CDATA[LeetCode刷题 - Database篇]]></title>
       <url>/2018/01/06/leetcode_database_1/</url>
-      <content type="html"><![CDATA[<p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
+      <content type="html"><![CDATA[<p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<p>无事来leetcode刷下题，Database相关的题就是写相关的SQL语句，自己这方面颇弱，因此来提升一下。</p>
 <h1 id="Second-Highest-Salary"><a href="#Second-Highest-Salary" class="headerlink" title="Second Highest Salary"></a><a href="https://leetcode.com/problems/second-highest-salary/description/" target="_blank" rel="external">Second Highest Salary</a></h1><p>这道题意思是在记录中找到第二大的记录，如果没有就是NULL。SQL语句如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SELECT (</div><div class="line">    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFFSET 1</div><div class="line">) AS SecondHighestSalary;</div></pre></td></tr></table></figure>
 <p>这里加DISTINCT的原因是，如果有两条300是最大的，然后有一条200，那么第二大的是200.</p>
@@ -2629,9 +2631,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
             <tag> Thrift </tag>
             
@@ -2995,7 +2997,8 @@
     <entry>
       <title><![CDATA[LeetCode刷题(3)]]></title>
       <url>/2017/09/03/LeetCode%E5%88%B7%E9%A2%98(3)/</url>
-      <content type="html"><![CDATA[<h1 id="Combination-Sum-III"><a href="#Combination-Sum-III" class="headerlink" title="Combination Sum III"></a><a href="https://leetcode.com/problems/combination-sum-iii/discuss/" target="_blank" rel="external">Combination Sum III</a></h1><p>想了半天，最后使用了递归形式的回溯法来解决，其实本质还是一种遍历吧，每一个元素位上去找可能成立的元素，后一个元素位上的元素肯定比前一个大，然后有一些限制条件，就可以得出来结果。回溯法从这里看来就是一种dfs，找到最后一个元素上。然后再回到上一层元素去找。</p>
+      <content type="html"><![CDATA[<p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<h1 id="Combination-Sum-III"><a href="#Combination-Sum-III" class="headerlink" title="Combination Sum III"></a><a href="https://leetcode.com/problems/combination-sum-iii/discuss/" target="_blank" rel="external">Combination Sum III</a></h1><p>想了半天，最后使用了递归形式的回溯法来解决，其实本质还是一种遍历吧，每一个元素位上去找可能成立的元素，后一个元素位上的元素肯定比前一个大，然后有一些限制条件，就可以得出来结果。回溯法从这里看来就是一种dfs，找到最后一个元素上。然后再回到上一层元素去找。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def combinationSum3(self, k, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type k: int</div><div class="line">        :type n: int</div><div class="line">        :rtype: List[List[int]]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def backtrack(result, ans, start, k, target):</div><div class="line">            if target == 0 and k == 0:</div><div class="line">                # 当结果和最终的定位都是0，说明是一个结果</div><div class="line">                result.append(list(ans))</div><div class="line">                return</div><div class="line">            # 在这里进行遍历可能的组合</div><div class="line">            for i in range(start, target+1):</div><div class="line">                if i &gt; 10 - k:</div><div class="line">                    break</div><div class="line">                ans.append(i)</div><div class="line">                # 查看下一个元素是否可以完成任务,如果可以则会将ans添加到结果集，</div><div class="line">                backtrack(result, ans, i+1, k-1, target-i)</div><div class="line">                ans.pop()</div><div class="line">        result = []</div><div class="line">        ans = []</div><div class="line">        backtrack(result, ans, 1, k, n)</div><div class="line">        return result</div></pre></td></tr></table></figure>
 <p>Runtime: 39 ms Your runtime beats 42.64 % of python submissions.</p>
 <h1 id="Magical-String"><a href="#Magical-String" class="headerlink" title="Magical String"></a><a href="https://leetcode.com/problems/magical-string/description/" target="_blank" rel="external">Magical String</a></h1><p>这道题主要是要发现规律，根据规律行事，通过观察可以得出这个字符串从第三位开始生成，比如1221121，第三位是2，所以后面生成2个1，现在结果是12211, 然后第四位是1，所以后面加一个2（要和目前最后一位的值不一样，所以是2），现在结果是122112，第五位是1，所以后面加一个1，结果是1221121，哈哈，这样直到规律，就开始编码吧。</p>
@@ -3861,9 +3864,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
         </tags>
         
@@ -3995,9 +3998,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
         </tags>
         
@@ -4053,9 +4056,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
             <tag> gevent </tag>
             
@@ -4113,9 +4116,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
             <tag> Thrift </tag>
             
@@ -4188,9 +4191,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
             <tag> Thrift </tag>
             
@@ -4562,7 +4565,8 @@
     <entry>
       <title><![CDATA[LeetCode刷题(2)]]></title>
       <url>/2017/05/20/LeetCode%E5%88%B7%E9%A2%98(2)/</url>
-      <content type="html"><![CDATA[<h1 id="Maximum-Subarray"><a href="#Maximum-Subarray" class="headerlink" title="Maximum Subarray"></a><a href="https://leetcode.com/problems/maximum-subarray/#/description" target="_blank" rel="external">Maximum Subarray</a></h1><p>想出解决办法不难，但是要全面，最关键的是不能超时。。。在我的分析之下，要想达到最大的和，首先起始和终点的值都是正数才行，所以我用到了第一个条件，遍历直到起始值是正值开始下一轮遍历。然后到正值的时候结束记录一次和。</p>
+      <content type="html"><![CDATA[<p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<h1 id="Maximum-Subarray"><a href="#Maximum-Subarray" class="headerlink" title="Maximum Subarray"></a><a href="https://leetcode.com/problems/maximum-subarray/#/description" target="_blank" rel="external">Maximum Subarray</a></h1><p>想出解决办法不难，但是要全面，最关键的是不能超时。。。在我的分析之下，要想达到最大的和，首先起始和终点的值都是正数才行，所以我用到了第一个条件，遍历直到起始值是正值开始下一轮遍历。然后到正值的时候结束记录一次和。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if len(nums) == 0:</div><div class="line">            return 0</div><div class="line">        elif len(nums) == 1:</div><div class="line">            return nums[0]</div><div class="line">        sum_dict = &#123;&#125;</div><div class="line">        for index, num in enumerate(nums):</div><div class="line">            if num &gt; 0:</div><div class="line">                num_sum = 0</div><div class="line">                ori_index = index</div><div class="line">                for stop_index, stop_num in enumerate(nums[index:], 0):</div><div class="line">                    if stop_num &gt; 0:</div><div class="line">                        num_sum = num_sum + stop_num</div><div class="line">                        sum_dict[(ori_index, ori_index+stop_index)] = num_sum</div><div class="line">                    else:</div><div class="line">                        num_sum = num_sum + stop_num</div><div class="line">                        continue</div><div class="line">            else:</div><div class="line">                continue</div><div class="line">        if not sum_dict:</div><div class="line">            # 说明没有找到正数，而且序列长度大于1，那么就找到最小的负数即可</div><div class="line">            return sorted(nums)[-1]</div><div class="line">        return sorted(sum_dict.items(), key=lambda x: x[1])[-1][1]</div></pre></td></tr></table></figure>
 <p>优化了一下程序，不用字典存储和值了， 直接用一个result来记录最大值，然后使用max函数，然后判断序列下一个元素是不是正的，如果是正的，那么继续循环，否则求最大值，但是仍然超限，遇到这种情况，这种挣扎是无谓的，必须修改算法，把n2算法降下来。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        length = len(nums)</div><div class="line">        if length == 0:</div><div class="line">            return 0</div><div class="line">        elif length == 1:</div><div class="line">            return nums[0]</div><div class="line">        result = 0</div><div class="line">        for index, num in enumerate(nums):</div><div class="line">            if num &gt; 0:</div><div class="line">                ori_index = index</div><div class="line">                for stop_index, stop_num in enumerate(nums[index:], 0):</div><div class="line">                    if stop_num &gt; 0:</div><div class="line">                        # 如果序列往后一个还是正的，那么继续循环，否则求最大值</div><div class="line">                        if length - 1 &gt;= ori_index+stop_index+1 and nums[ori_index+stop_index+1] &gt; 0:</div><div class="line">                            continue</div><div class="line">                        else:</div><div class="line">                            result = max(result, sum(nums[ori_index:ori_index+stop_index+1]))</div><div class="line">                    else:</div><div class="line">                        continue</div><div class="line">            else:</div><div class="line">                continue</div><div class="line">        if result == 0:</div><div class="line">            result = sorted(nums)[-1]</div><div class="line">        return result</div></pre></td></tr></table></figure>
@@ -4687,7 +4691,8 @@
     <entry>
       <title><![CDATA[LeetCode刷题(1)]]></title>
       <url>/2017/05/13/LeetCode%E5%88%B7%E9%A2%98(1)/</url>
-      <content type="html"><![CDATA[<p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
+      <content type="html"><![CDATA[<p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
 <h1 id="Longest-Palindrome"><a href="#Longest-Palindrome" class="headerlink" title="Longest Palindrome"></a><a href="https://leetcode.com/problems/longest-palindrome/#/description" target="_blank" rel="external">Longest Palindrome</a></h1><p>其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大长度了。<code>Runtime: 42 ms Your runtime beats 95.32 % of python submissions.</code> 棒！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def longestPalindrome(self, s):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type s: str</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        set_s = set(s)</div><div class="line">        length = 0</div><div class="line">        odd_times = 0</div><div class="line">        for i in set_s:</div><div class="line">            count = s.count(i)</div><div class="line">            if count % 2 == 0:</div><div class="line">                length += count</div><div class="line">            else:</div><div class="line">                odd_times += 1</div><div class="line">                length += count</div><div class="line">        if odd_times &gt; 1:</div><div class="line">            length -= (odd_times - 1)</div><div class="line">        return length</div></pre></td></tr></table></figure>
 <h1 id="Base-7"><a href="#Base-7" class="headerlink" title="Base 7"></a><a href="https://leetcode.com/problems/base-7/#/description" target="_blank" rel="external">Base 7</a></h1><p>我去，这道题不知道错了多少次，我也是醉了，简直是考察细心程度的，可惜自己总是考虑不全面。而且写的也不优雅，哎。大致思路就是短除法，跟一个数字求二进制一样的，取模，然后再除。将每次的余数放在列表前面，然后就是结果了，但是需要考虑负数情况，因为自己设定的while循环条件是<code>divide &gt;= 7</code>，所以。而且divide必须大于等于7，因为7是10。负数-1%7等于6, 所以应该%-7。<code>Runtime: 49 ms Your runtime beats 41.62 % of python submissions</code></p>
@@ -6105,6 +6110,39 @@
   
     
     <entry>
+      <title><![CDATA[About]]></title>
+      <url>/about/index.html</url>
+      <content type="html"><![CDATA[<p>爱玩，爱旅行，爱折腾。。。现在开始爱做饭;-)</p>
+<p>经历过失学，失业，失身，失恋但是仍未成熟</p>
+<p>旅行，已与40个城市亲密接触..</p>
+<p>小时候的梦想是当一名黑客</p>
+<p>天文爱好者，攒钱买镜子</p>
+<p>英语</p>
+<p>喜欢宋词</p>
+<p>喜欢历史，读过资治通鉴，史记</p>
+<p>大爱美剧，冰与火之歌</p>
+<p>格言：</p>
+<blockquote>
+<p>I shall be telling this with a sigh</p>
+<p>Somewhere ages and ages hence:</p>
+<p>Two roads diverged in a wood,and I—</p>
+<p>I took the one less traveled by,</p>
+<p>And that has made all the difference.</p>
+<p>  ——Robert Frost 《The Road Not Taken》</p>
+</blockquote>
+<h2 id="友链"><a href="#友链" class="headerlink" title="友链"></a>友链</h2><ul>
+<li><a href="https://surmon.me" target="_blank" rel="external">「 Surmon 」</a>  <a href="http://jooger.me" target="_blank" rel="external">「 Jooger 」</a></li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Categories]]></title>
+      <url>/categories/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title></title>
       <url>/css/My.css</url>
       <content type="html"><![CDATA[/*@import "black.css";*/
@@ -6170,12 +6208,6 @@ code,b,strong{
     list-style: none;
 }
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Categories]]></title>
-      <url>/categories/index.html</url>
-      <content type="html"></content>
     </entry>
     
     <entry>
@@ -6438,53 +6470,6 @@ code{
     </entry>
     
     <entry>
-      <title><![CDATA[About]]></title>
-      <url>/about/index.html</url>
-      <content type="html"><![CDATA[<p>爱玩，爱旅行，爱折腾。。。现在开始爱做饭;-)</p>
-<p>经历过失学，失业，失身，失恋但是仍未成熟</p>
-<p>旅行，已与40个城市亲密接触..</p>
-<p>小时候的梦想是当一名黑客</p>
-<p>天文爱好者，攒钱买镜子</p>
-<p>英语</p>
-<p>喜欢宋词</p>
-<p>喜欢历史，读过资治通鉴，史记</p>
-<p>大爱美剧，冰与火之歌</p>
-<p>格言：</p>
-<blockquote>
-<p>I shall be telling this with a sigh</p>
-<p>Somewhere ages and ages hence:</p>
-<p>Two roads diverged in a wood,and I—</p>
-<p>I took the one less traveled by,</p>
-<p>And that has made all the difference.</p>
-<p>  ——Robert Frost 《The Road Not Taken》</p>
-</blockquote>
-<h2 id="友链"><a href="#友链" class="headerlink" title="友链"></a>友链</h2><ul>
-<li><a href="https://surmon.me" target="_blank" rel="external">「 Surmon 」</a>  <a href="http://jooger.me" target="_blank" rel="external">「 Jooger 」</a></li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>/css/vj.css</url>
-      <content type="html"><![CDATA[.problem_title{
-    color: blue;
-    font-weight: bolder;
-    font-size: 20px;
-}
-
-.problem_des{
-    border-radius: 15px;
-    border-style: dotted;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(234, 235, 255);
-}
-]]></content>
-    </entry>
-    
-    <entry>
       <title></title>
       <url>/css/black.css</url>
       <content type="html"><![CDATA[/*黑色主题*/
@@ -6578,16 +6563,21 @@ blockquote {
     
     <entry>
       <title></title>
-      <url>/js/after_jquery.js</url>
-      <content type="html"><![CDATA[//确保 jauery 加载完成
-$(document).ready(function(){
-    $(document).on('click', '.fold_hider', function(){
-        $('>.fold', this.parentNode).slideToggle();
-        $('>:first', this).toggleClass('open');
-    });
-    //默认情况下折叠
-    $("div.fold").css("display","none");
-});
+      <url>/css/vj.css</url>
+      <content type="html"><![CDATA[.problem_title{
+    color: blue;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.problem_des{
+    border-radius: 15px;
+    border-style: dotted;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(234, 235, 255);
+}
 ]]></content>
     </entry>
     
@@ -6656,6 +6646,21 @@ function ShowWork(){
 }
 
 ShowWork();
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>/js/after_jquery.js</url>
+      <content type="html"><![CDATA[//确保 jauery 加载完成
+$(document).ready(function(){
+    $(document).on('click', '.fold_hider', function(){
+        $('>.fold', this.parentNode).slideToggle();
+        $('>:first', this).toggleClass('open');
+    });
+    //默认情况下折叠
+    $("div.fold").css("display","none");
+});
 ]]></content>
     </entry>
     

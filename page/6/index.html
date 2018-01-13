@@ -138,11 +138,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/10/17/cross_origin_resources_sharing/" >跨域资源共享</a>
+			<a href="/2017/08/13/Celery 踩坑记/" >Celery 踩坑记</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-10-17 16:12:35  </div>
+		<div class="date">post @ 2017-08-13 16:47:05  </div>
 		</div>
 	</div>
 	
@@ -152,155 +152,87 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h1 id="同源政策"><a href="#同源政策" class="headerlink" title="同源政策"></a>同源政策</h1><p>浏览器安全的基石是”<a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">同源政策</a>“</p>
-<p>在计算机科学中，同源政策是web应用安全模型中非常重要的概念，一个web浏览器允许第一个web页面的程序可以获取在第二个页面的数据，当且仅当两个web页面是同源的。源被定义为URI scheme，域名和端口号。这个政策阻止了一个页面的恶意程序通过页面的Document Object模型去另外一个web页面获取敏感数据的权限。</p>
-<p>这个机制对广大的基于HTTP cookies的现代web应用意义重大，cookies维护了认证的用户sessions，而服务器是基于HTTP cookie信息来传递敏感信息或者完成状态改变的行为。不相关的站点之间的严格分离必须在客户端方来维护，来阻止数据的机密性或者完整性下降。</p>
-<p>通俗的讲，A网页设置的 Cookie，B网页不能打开，除非这两个网页”同源”。</p>
-<p>所谓”同源”指的是”三个相同”:</p>
+		<p>最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。</p>
+<h1 id="使用RabbitMQ而不是Redis做Broker"><a href="#使用RabbitMQ而不是Redis做Broker" class="headerlink" title="使用RabbitMQ而不是Redis做Broker"></a>使用RabbitMQ而不是Redis做Broker</h1><p>这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。</p>
+<p>另外，使用RabbitMQ的时候，实例化celery的时候，Broker应该使用pyamqp: <code>celery = Celery(app.__name__, broker=&#39;pyamqp://{}:{}@{}:{}/{}&#39;.format(RM_USER, RM_PWD, RM_HOST, RM_PORT, RM_VHOST))</code></p>
+<h2 id="RabbitMQ的安装"><a href="#RabbitMQ的安装" class="headerlink" title="RabbitMQ的安装"></a>RabbitMQ的安装</h2><p>参考：<a href="http://docs.celeryproject.org/en/v4.1.0/getting-started/brokers/rabbitmq.html" target="_blank" rel="external">Using RabbitMQ</a></p>
 <ul>
-<li>协议相同</li>
-<li>域名相同</li>
-<li>端口相同</li>
+<li>MacOS:</li>
 </ul>
-<p>比如<code>http://www.example.com/dir/page.html</code>和<code>http://example.com/dir/other.html</code>就不同源，因为域名不同，而和<code>http://www.example.com/dir2/other.html</code>同源，因为协议相同，域名相同，端口也相同。</p>
-<p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据。</p>
-<p>目前，如果非同源，共有三种行为受到限制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">brew install rabbitmq</div><div class="line"># 设置PATH</div><div class="line">PATH=$PATH:/usr/local/sbin</div></pre></td></tr></table></figure>
 <ul>
-<li>Cookie、LocalStorage 和 IndexDB 无法读取。</li>
-<li>DOM 无法获得。</li>
-<li>AJAX 请求不能发送。</li>
+<li>Ubuntu</li>
 </ul>
-<p>其中Cookie，iframe，LocalStorage等当不同源的时候的解决办法不涉及后端，因此暂时不做介绍。</p>
-<p>同源政策规定，AJAX请求只能发给同源的网址，否则就报错。除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install rabbitmq-server</div></pre></td></tr></table></figure>
 <ul>
-<li>JSONP</li>
-<li>WebSocket</li>
-<li>CORS</li>
+<li>docker</li>
 </ul>
-<p>其中WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。</p>
-<p>WebSocket的请求头中有一个Origin字段，表示该请求的请求源（origin），即发自哪个域名。正是因为有了Origin这个字段，所以WebSocket才没有实行同源政策。因为服务器可以根据这个字段，判断是否许可本次通信。如果该域名在白名单内，服务器就会做出如下回应。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 101 Switching Protocols</div><div class="line">Upgrade: websocket</div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=</div><div class="line">Sec-WebSocket-Protocol: chat</div></pre></td></tr></table></figure>
-<h1 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h1><p>CORS是跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</p>
-<p>CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能。整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
-<p>实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。</p>
-<p>其中浏览器将CORS请求分成两类：简单请求（simple request）和非简单请求（not-so-simple request）。</p>
-<h2 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h2><ol>
-<li>请求方法是以下三种方法之一：<ul>
-<li>HEAD</li>
-<li>GET</li>
-<li>POST</li>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># management是带管理界面的，latest没有管理界面</div><div class="line">docker pull hub.c.163.com/library/rabbitmq:3.6.10-management</div></pre></td></tr></table></figure>
+<h2 id="RabbitMQ的配置"><a href="#RabbitMQ的配置" class="headerlink" title="RabbitMQ的配置"></a>RabbitMQ的配置</h2><ul>
+<li>普通</li>
 </ul>
-</li>
-<li>HTTP的头信息不超出以下几种字段：<ul>
-<li>Accept</li>
-<li>Accept-Language</li>
-<li>Content-Language</li>
-<li>Last-Event-ID</li>
-<li>Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain</li>
-</ul>
-</li>
-</ol>
-<p>对于简单请求，浏览器直接发出CORS请求。具体来说，浏览器发现这次跨源AJAX请求是简单请求，就在头信息之中自动增加一个Origin字段。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GET /cors HTTP/1.1</div><div class="line">Origin: http://api.bob.com</div><div class="line">Host: api.alice.com</div><div class="line">Accept-Language: en-US</div><div class="line">Connection: keep-alive</div><div class="line">User-Agent: Mozilla/5.0...</div></pre></td></tr></table></figure>
-<p>Origin字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。</p>
-<p>如果Origin指定的源，不在许可范围内，服务器会返回一个正常的HTTP回应。浏览器发现，这个回应的头信息没有包含<code>Access-Control-Allow-Origin</code>字段，就知道出错了，从而抛出一个错误，被XMLHttpRequest的onerror回调函数捕获。注意，这种错误无法通过状态码识别，因为HTTP回应的状态码有可能是200。</p>
-<p>如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Access-Control-Allow-Origin: http://api.bob.com</div><div class="line">Access-Control-Allow-Credentials: true</div><div class="line">Access-Control-Expose-Headers: FooBar Content-Type: text/html; charset=utf-8</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo rabbitmqctl add_user celery celerypwd</div><div class="line">sudo rabbitmqctl add_vhost celery_host</div><div class="line">sudo rabbitmqctl set_permissions -p celery_host celery &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</div><div class="line"># 启动</div><div class="line">sudo rabbitmq-server</div><div class="line">sudo rabbitmq-server -detached</div><div class="line">sudo rabbitmqctl stop</div></pre></td></tr></table></figure>
 <ul>
-<li>Access-Control-Allow-Origin: 它的值要么是请求时Origin字段的值，要么是一个<code>*</code>，表示接受任意域名的请求。</li>
-<li>Access-Control-Allow-Credentials: 它的值是一个布尔值，表示是否允许发送Cookie。如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。</li>
-<li>Access-Control-Expose-Headers: CORS请求时，XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定。</li>
+<li>docker</li>
 </ul>
-<p>其中，如果有Cookie，则Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。</p>
-<h2 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h2><p>除了简单请求之外的都是非简单请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># http://localhost:15672/ 是管理界面</div><div class="line">docker run -d --name=rabbitmq_ability --net=host -e RABBITMQ_DEFAULT_USER=celery -e RABBITMQ_DEFAULT_VHOST=celery_host -e RABBITMQ_DEFAULT_PASS=celerypwd -p 5672:5672 -p 15672:15672 -it hub.c.163.com/library/rabbitmq:3.6.10-management</div></pre></td></tr></table></figure>
+<h1 id="Celery中的Signature"><a href="#Celery中的Signature" class="headerlink" title="Celery中的Signature"></a>Celery中的Signature</h1><h2 id="subtask"><a href="#subtask" class="headerlink" title="subtask"></a>subtask</h2><p>Broker是Redis，在一个函数中，如果重复调用一个task执行<code>apply_async</code>，第一个可以执行，后面的都是<code>NotRegisted</code>，但是如果改成subtask就可以正常运行。subtask的意义和Signature相似的，感觉是Signature的前身吧。下面是几个用法，这个subtask概念理解起来很简单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tasks.add.subtask((2,2), countdown=10)</div><div class="line">test_print_cp = subtask(test_print, app=celery_current_app)</div><div class="line">test_print_cp.apply_async()</div></pre></td></tr></table></figure>
+<p>子任务的调用和普通任务都是一样的</p>
+<h2 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h2><p>作用就是为了可以将一个任务调用的签名传递给其他处理函数或者是作为其他函数的参数，signature包含了参数，关键字参数和单个任务调用的执行选项，这样就可以传递给函数或者是序列化传递给其他地方。functools里面有一个partial和这个概念很像，以下是几个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from celery import signature</div><div class="line">signature(&apos;tasks.add&apos;, args=(2, 2), countdown=10)</div><div class="line"># 也可以这么调用</div><div class="line">tasks.add.signature((2, 2), countdown=10)</div><div class="line">tasks.add.s(2, 2)</div></pre></td></tr></table></figure>
 <ul>
-<li>预检请求</li>
+<li><code>add.s()</code> 可变signature</li>
 </ul>
-<p>非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为”预检”请求（preflight）。浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">OPTIONS /cors HTTP/1.1</div><div class="line">Origin: http://api.bob.com</div><div class="line">Access-Control-Request-Method: PUT</div><div class="line">Access-Control-Request-Headers: X-Custom-Header</div><div class="line">Host: api.alice.com</div><div class="line">Accept-Language: en-US</div><div class="line">Connection: keep-alive</div><div class="line">User-Agent: Mozilla/5.0...</div></pre></td></tr></table></figure>
-<p>“预检”请求用的请求方法是OPTIONS，表示这个请求是用来询问的。头信息里面，关键字段是Origin，表示请求来自哪个源。</p>
+<p>上面这些只是创建了签名但是并不会调用，注意在后面的概念理解上，需要明确的区分哪些是signature，哪些是result，这很关键，这样可以清楚的区分一长串的原语是怎么构成的。如果要调用的话，需要使用调用API，比如<code>delay</code>, <code>apply_async</code>也可以直接调用，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tasks.add.s(2, 2).delay()</div><div class="line">tasks.add.s(2, 2)()</div><div class="line">tasks.add.s(2, 2).apply_async()</div></pre></td></tr></table></figure>
 <ul>
-<li>Access-Control-Request-Method: 列出浏览器的CORS请求会用到哪些HTTP方法</li>
-<li><p>Access-Control-Request-Headers: 指定浏览器CORS请求会额外发送的头信息字段</p>
-</li>
-<li><p>预检请求回应</p>
-</li>
+<li>partial signature</li>
 </ul>
-<p>服务器收到”预检”请求以后，检查了Origin、Access-Control-Request-Method和Access-Control-Request-Headers字段以后，确认允许跨源请求，就可以做出回应。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 200 OK</div><div class="line">Date: Mon, 01 Dec 2008 01:15:39 GMT</div><div class="line">Server: Apache/2.0.61 (Unix)</div><div class="line">Access-Control-Allow-Origin: http://api.bob.com</div><div class="line">Access-Control-Allow-Methods: GET, POST, PUT</div><div class="line">Access-Control-Allow-Headers: X-Custom-Header</div><div class="line">Content-Type: text/html; charset=utf-8</div><div class="line">Content-Encoding: gzip</div><div class="line">Content-Length: 0</div><div class="line">Keep-Alive: timeout=2, max=100</div><div class="line">Connection: Keep-Alive</div><div class="line">Content-Type: text/plain</div></pre></td></tr></table></figure>
+<p>上面这些都返回的是<code>AsyncResult</code>的实例，这里面包含了许多控制task还有获取结果的方法。除了在创建signature的时候将参数传递进去，也可以传递一部分参数，然后在调用的时候再传递剩余的，比如这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">partial = add.s(2)</div><div class="line">partial.delay(4)  </div><div class="line">partial.apply_async((4,))</div><div class="line"># 可以在task上面调用clone方法，根据之前的task创建目前的task</div><div class="line">s = add.s(2)</div><div class="line">s.clone(args=(4,), kwargs=&#123;&apos;debug&apos;: True&#125;)</div><div class="line"># 等同于 add.s(4, 2, debug=True)</div></pre></td></tr></table></figure>
 <ul>
-<li>Access-Control-Allow-Origin: 表示<a href="http://api.bob.com可以请求数据。该字段也可以设为星号，表示同意任意跨源请求。" target="_blank" rel="external">http://api.bob.com可以请求数据。该字段也可以设为星号，表示同意任意跨源请求。</a></li>
-<li>Access-Control-Allow-Methods: 表明服务器支持的所有跨域请求的方法</li>
-<li>Access-Control-Allow-Headers: 表明服务器支持的所有头信息字段，不限于浏览器在”预检”中请求的字段。</li>
-<li>Access-Control-Max-Age: 用来指定本次预检请求的有效期</li>
+<li>不可变的signature</li>
 </ul>
-<p>如果浏览器否定了”预检”请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被XMLHttpRequest对象的onerror回调函数捕获。</p>
-<h1 id="flask-cors"><a href="#flask-cors" class="headerlink" title="flask-cors"></a><code>flask-cors</code></h1><p>搞懂了原理，下来看这个库就非常容易了。</p>
-<p>这个库提供了一个Flask扩展，其默认在所有路由上开启了CORS支持，支持所有源和方法。它参数化了所有单独的CORS头。这个包同时包含了一个装饰器。</p>
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>这是推荐的开启CORS的方式，默认的配置将在大部分情况下工作正常。</p>
-<p><code>class flask_cors.CORS(app=None, **kwargs)</code></p>
-<p>为这个应用初始化跨域资源共享。参数和<code>cross_origin()</code>是一致的，多了一个资源参数。资源参数定义了一系列的去匹配的资源路径的正则表达式，其他的可选参数将在这些路径(路由)上起作用。可选参数和<code>cross_origin()</code>是一致的。</p>
-<p>CORS的设置是以下列顺序决定的：</p>
-<ol>
-<li>资源层级的设置（当传递进去一个字典）</li>
-<li>关键字参数设置</li>
-<li>应用级别的配置参数(比如. <code>CORS_*</code>)</li>
-<li>默认参数</li>
-</ol>
-<p>因为有可能多个正则表达式会匹配到一个资源路径上，所以正则表达式首先会通过长度来排序，最长到最短，试图匹配一个最特定的正则表达式。这样做的好处是，首先匹配特定的资源，然后使用通配符匹配其他的资源。</p>
+<p>就是在创建了这个signature之后，signature的参数就是不可变的了，partial这种会用到callbacks或者其他的工作流上，就会动态的给其signature传递参数，但是使用不可变的signature，就不会传参数了。这个特性是很经常用到的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">add.si(2, 2)</div></pre></td></tr></table></figure>
+<h1 id="原语"><a href="#原语" class="headerlink" title="原语"></a>原语</h1><p>想起一句话<code>May the force be with you</code>，原力，感觉原语就和原力一样强大</p>
+<h2 id="group"><a href="#group" class="headerlink" title="group"></a>group</h2><p>group可以使得一组任务并行，比如这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># task集合必须是signature或者子任务的集合，也就是不会立即启动的任务</div><div class="line">tasks = [distribute_calc.si(fundId, start, end, stype) for fundId in fundIds_group]</div><div class="line"># 返回的是group对象</div><div class="line">grp = group(tasks)</div><div class="line"># 调用后返回的是GroupResult对象,就可以使用相应的方法来处理了</div><div class="line">grp()</div><div class="line"># 可以使用任何调用API来调用</div><div class="line">grp.apply_async()</div></pre></td></tr></table></figure>
+<p>如果后面要在其他地方可以取到GroupResult，必须在调用后获得GroupResult对象后，调用save方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">res = grp.apply_async()</div><div class="line">res.save()</div></pre></td></tr></table></figure>
+<p>在其他地方调用<code>restore()</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># res就是一个GroupResult对象</div><div class="line">res = celery_result.GroupResult.restore(task_id, app=celery_current_app, backend=celery_app.backend)</div></pre></td></tr></table></figure>
+<h2 id="chain"><a href="#chain" class="headerlink" title="chain"></a>chain</h2><p>顾名思义，这个就是将一串signature串在一起运行，一个接一个，本质是组成了一组回调函数，chain会将前一个函数的结果传递到后一个函数来，不过也可以使用<code>si()</code>方法来拒绝传递，chain会返回最后一个调用的task的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 返回的是chain对象</div><div class="line">task = chain(add.s(4,4) | mul.s(8))</div><div class="line"># 任意方式调用</div><div class="line">res = task.apply_async()</div><div class="line"># 调用后返回的是AsyncResult</div><div class="line">res.get()</div><div class="line"># 也可以这么调用</div><div class="line">(add.s(2, 2) | add.s(4) | add.s(8))</div><div class="line"># 也可以使用partial</div><div class="line">c1 = (add.s(4) | mul.s(8))</div><div class="line">res = c1(16)</div></pre></td></tr></table></figure>
+<p>与group的连接，如果group在前面，会导致变成一个chord，也就是这个group运行完成后，会执行后面的函数作为回调，如果group在后面，则group的每一个任务都会使用前面的task的结果作为参数，可以使用si来拒绝参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 调用后返回的还是AsyncResult</div><div class="line">c3 = (group(add.s(i, i) for i in xrange(10)) | xsum.s())</div><div class="line"></div><div class="line"># group在后面</div><div class="line">new_user_workflow = (create_user.s() | group(import_contacts.s(), send_welcome_email.s()))</div><div class="line">new_user_workflow.delay(username=&apos;artv&apos;, first=&apos;Art&apos;, last=&apos;Vandelay&apos;, email=&apos;art@vandelay.com&apos;)</div></pre></td></tr></table></figure>
+<p><em>如何在先调用group，然后调用普通任务的情况下，获得GroupResult，这个还没有好的方法。</em></p>
+<p><code>group([(group(add.s(i, i) for i in xrange(10)) | xsum.s())])</code>这个呢？</p>
+<p>首先外部是group对象，没毛病，但是内部tasks集合就是一个chain对象，在调用的时候先调用group，会形成并发，然后完成之后调用<code>xsum.s()</code>，最后会返回一个AsyncResult，这种情况，计算是可以正常完成的！获取状态也比较好弄，因为可以获取外部group的结果，可以使用<code>res.children[0].parent</code>来获取里面的group的状态，即GroupResult。可以使用获取的这个GroupResult来对task进行操作，<code>res.revoke(terminated=True)</code>。</p>
+<p>P.S.</p>
 <ul>
-<li><code>resources(dict, iterable or string)</code></li>
+<li>可能需要以下的参数配置</li>
 </ul>
-<p>一系列正则表达式和应用于给定的资源路径的可选的CORS选项</p>
-<p>如果是字典的话，key是正则表达式，值是和这个方法一样的关键字参数。</p>
-<p>如果是列表的话，就是一系列的正则表达式。会应用app层级的配置。</p>
-<p>如果是字符串的话，就是一个正则表达式。会应用app层级的参数。</p>
-<p>默认会匹配所有的并且应用app层级的配置。</p>
+<p><code>task_sent</code> event 当一个任务消息被发布并且<code>CELERY_TASK_SEND_SENT_EVENT</code>配置有效的时候的时候发送这个event</p>
+<p><code>CELERY_TASK_SEND_SENT_EVENT</code> 如果启用，<code>task_sent</code> event 将会发送给每一个task，这样在task被worker运行之前tasks可以被追踪到</p>
+<p><code>CELERY_SEND_EVENTS</code> # 发送task相关的event，这样task就可以被比如flower之类的进行控制了</p>
 <ul>
-<li><code>origins(list, string or regex)</code></li>
+<li>terminated</li>
 </ul>
-<p>源，或者是一个列表的允许源。可能是正则表达式，大小写敏感的字符串，或者是一个星号。</p>
-<ul>
-<li><code>methods(list or string)</code></li>
-</ul>
-<p>默认是 [GET, HEAD, POST, OPTIONS, PUT, PATCH, DELETE]</p>
-<ul>
-<li><code>expose_headers (list or string)</code></li>
-<li><code>allow_headers (list, string or regex)</code></li>
-<li><code>supports_credentials (bool)</code> </li>
-</ul>
-<p>允许用户发起认证的请求，即允许cookie。如果是true，将会在回应中加入<code>Access-Control-Allow-Credentials</code>头。不可以与<code>*</code>域一起使用。</p>
-<ul>
-<li><code>max_age (timedelta, integer, string or None)</code></li>
-<li><code>send_wildcard (bool)</code></li>
-</ul>
-<p>如果为True，并且源参数是<code>*</code>，那么一个通配符<code>Access-Control-Allow-Origin</code>头将会被发送，而不是请求的源头。</p>
-<ul>
-<li><code>vary_header (bool)</code></li>
-</ul>
-<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p><code>flask_cors.cross_origin(*args, **kwargs)</code></p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><ul>
-<li>CORS</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask, session</div><div class="line">from flask_cors import CORS</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line">CORS(app, supports_credentials=True)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def helloWorld():</div><div class="line">  return &quot;Hello, %s&quot; % session[&apos;username&apos;]</div></pre></td></tr></table></figure>
-<ul>
-<li><code>cross_origin()</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@app.route(&quot;/&quot;, methods=[&apos;GET&apos;])</div><div class="line">@cross_origin()</div><div class="line">def helloWorld():</div><div class="line">    return &apos;&apos;&apos;&lt;h1&gt;Hello CORS!&lt;/h1&gt; Read about my spec at the</div><div class="line">&lt;a href=&quot;http://www.w3.org/TR/cors/&quot;&gt;W3&lt;/a&gt; Or, checkout my documentation</div><div class="line">on &lt;a href=&quot;https://github.com/corydolphin/flask-cors&quot;&gt;Github&lt;/a&gt;&apos;&apos;&apos;</div></pre></td></tr></table></figure>
-<h2 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h2><p>当然可以自己来实现这个CORS，主要就是加上一些头信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@app.after_request</div><div class="line">def set_cors_headers(response):</div><div class="line">    # 不论预检响应还是正常响应都会有的头</div><div class="line">    response.headers[&apos;Access-Control-Allow-Origin&apos;] = request.headers.get(&apos;Origin&apos;, &apos;*&apos;)</div><div class="line">    response.headers[&apos;Access-Control-Allow-Credentials&apos;] = &apos;true&apos;</div><div class="line"></div><div class="line">    if request.method == &apos;OPTIONS&apos;:</div><div class="line">        # 只会在预检响应中出现的</div><div class="line">        # http://www.w3.org/TR/cors/#access-control-allow-methods-response-header</div><div class="line">        response.headers[&apos;Access-Control-Allow-Methods&apos;] = &apos;GET, POST, PUT, DELETE, PATCH, OPTIONS&apos;</div><div class="line">        response.headers[&apos;Access-Control-Max-Age&apos;] = &apos;3600&apos;  # 1 hour cache</div><div class="line">        if request.headers.get(&apos;Access-Control-Request-Headers&apos;) is not None:</div><div class="line">            response.headers[&apos;Access-Control-Allow-Headers&apos;] = request.headers[&apos;Access-Control-Request-Headers&apos;]</div><div class="line">    return response</div></pre></td></tr></table></figure>
-<p>参考：</p>
-<ol>
-<li><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">浏览器同源政策及其规避方法</a></li>
-<li><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">Wiki - Same-origin policy</a></li>
-<li><a href="https://www.w3.org/TR/cors" target="_blank" rel="external">Cross-Origin Resource Sharing</a></li>
-<li><a href="http://flask-cors.corydolphin.com/en/latest/api.html" target="_blank" rel="external">flask-cors API doc</a></li>
-</ol>
-
+<p>这里Celery使用的是SIGTERM，所以会关闭进程相关的程序，也就是等待进程释放自己的资源，然后再停止，如果程序再等待I/O，可能就不会立马作出反应。也就是说，SIGTERM多半是会被阻塞的，忽略的。</p>
+<p>如果使用SIGKILL，就会强制杀死进程，所以可能导致孤儿进程的产生。</p>
+<h2 id="chord"><a href="#chord" class="headerlink" title="chord"></a>chord</h2><p>chord可以使得你完成group所有的task之后来调用一个回调函数，这个方法经常会在易并行(embarrassingly parallel)的场景使用，关于这个embarrassingly…<a href="https://english.stackexchange.com/questions/83677/what-is-embarrassing-about-an-embarrassingly-parallel-problem" target="_blank" rel="external">What is “embarrassing” about an embarrassingly parallel problem?</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from celery import chord</div><div class="line"># 这样会导致前面的十个任务并行处理，并且将结果组成一个list，传递给后面的xsum</div><div class="line"># 当然后面的也可以不用前面的结果，使用si()就行了</div><div class="line">res = chord((add.s(i, i) for i in xrange(10)), xsum.s())()</div></pre></td></tr></table></figure>
+<p>下面这个是我自己写的一个并发处理，并且还能拿到状态用于后续的控制和状态读取的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">task = group([chord(group(gen_group_tasks.si(start, end, stype)()))(publish.si(start, end, stype))]).apply_async()</div><div class="line"># first 这个会返回所有的要并行的tasks列表</div><div class="line">gen_group_tasks.si(start, end, stype)()</div><div class="line"># 然后形成并行group</div><div class="line">group(gen_group_tasks.si(start, end, stype)())</div><div class="line"># 然后是chord，增加回调函数，回调函数不接受参数</div><div class="line">chord(group(gen_group_tasks.si(start, end, stype)()))(publish.si(start, end, stype))</div><div class="line"># 然后将这个chord组建成为一个group，可以获取到GroupResult，否则就只能得到publish的AsyncResult</div></pre></td></tr></table></figure>
+<p>实现的机理是：有一个循环任务不断的(间隔1秒)去检测group任务是否完成，当完成的时候调用signature回调。但是在Redis和 Memcached: 它们实现了一个计数器，在每个并行的任务完成后给计数器增加，直到计数器的数字等于并行任务的数目时候调用回调函数。</p>
+<p>另外：chord不能在redis 2.2版本以前正常工作，最好升级到2.2以上。</p>
+<p>尽可能的不要用chord因为它是一个同步操作，但是如果并行任务后面的同步操作是必须的，那么chord很有用，只有header里面的所有task任务被执行完成后并且返回，回调函数才可以被调用。header里面的每一步都是并行处理的，在不同的节点。然后header里面每个任务的返回值会传给回调函数，然后执行。返回的task id是回调函数的，所以可以等待最终的返回值。</p>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><h2 id="starmap"><a href="#starmap" class="headerlink" title="starmap"></a>starmap</h2><h2 id="chunks"><a href="#chunks" class="headerlink" title="chunks"></a>chunks</h2><h1 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h1><h2 id="AsyncResult"><a href="#AsyncResult" class="headerlink" title="AsyncResult"></a>AsyncResult</h2><h2 id="GroupResult"><a href="#GroupResult" class="headerlink" title="GroupResult"></a>GroupResult</h2><h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1>
 	
 	</div>
-  <a type="button" href="/2017/10/17/cross_origin_resources_sharing/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/08/13/Celery 踩坑记/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -310,11 +242,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/10/07/IO模型/" >IO模型</a>
+			<a href="/2017/08/09/contextlib 详解/" >contextlib 详解</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-10-07 11:11:11  </div>
+		<div class="date">post @ 2017-08-09 17:44:21  </div>
 		</div>
 	</div>
 	
@@ -324,144 +256,35 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>最近对IO模型做了深入的学习，参考书籍的章节如下：</p>
-<blockquote>
-<p>Unix系统编程手册 上 2.5节，4，5章<br>Unix系统编程手册 下 63章<br>Unix环境高级编程 3，5，14章</p>
-</blockquote>
-<p>首先最基本的是文件IO模型，在这里引出了文件描述符的概念，常用的文件IO函数以及相关的操作文件描述符的函数，比较重要的就是<code>fcntl</code>。基本的文件IO模型都是阻塞型的并且是不带缓冲的，后面就介绍了标准IO模型，即带缓冲的IO模型，也就是在内核进行系统调用再封装了一层缓冲区，并且引入了流的概念。在后面引入了非阻塞型IO模型，以及IO多路复用，比如select，poll，epoll，最后介绍了异步IO模型。</p>
-<h1 id="文件IO模型"><a href="#文件IO模型" class="headerlink" title="文件IO模型"></a>文件IO模型</h1><p>基本的文件IO函数是不带缓冲的IO，即每个read和write都调用内核中的一个系统调用，即直接在内核中运行。</p>
-<p>常用的文件IO函数有<code>open()</code>, <code>close()</code>, <code>lseek()</code>, <code>read()</code>, <code>write()</code></p>
-<h2 id="read系统调用"><a href="#read系统调用" class="headerlink" title="read系统调用"></a>read系统调用</h2><p><code>ssize_t read(int fd, void *buf, size_t nbytes)</code></p>
-<p>如果read成功，则返回读到的字节数，如果已经到达文件的尾端，则返回0。这里的buf是应用程序自己的buffer，实际对文件进行写操作的时候，都会写到内核的缓冲存储器中，然后延迟写。基本上这里的buf和缓冲不是一个概念，这里只是规定了从哪里读或者从哪里写，本质上就是一块存放数据的内存区域。写的时候还是直接对内核的缓冲区进行操作，但是标准IO模型就是在系统调用的上层多了一个缓冲区，所以不带缓冲的IO是对文件描述符进行操作，而带缓冲的标准IO是针对流的。</p>
-<p>系统调用不会分配内存缓冲区用以返回信息给调用者，必须预先分配大小合适的缓冲区并且将缓冲区指针传递给系统调用。比如<code>char buf[BUF_SIZE];</code></p>
-<h2 id="write系统调用"><a href="#write系统调用" class="headerlink" title="write系统调用"></a>write系统调用</h2><p><code>ssize_t write(int fd, const void *buf, size_t nbytes)</code></p>
-<p>其返回值通常与参数nbytes的值相同，否则表示出错。出错的一个常见原因就是磁盘已经写满，或者超过了一个给定进程的文件长度限制。</p>
-<h2 id="IO预读与延迟写"><a href="#IO预读与延迟写" class="headerlink" title="IO预读与延迟写"></a>IO预读与延迟写</h2><p>预读：当检测到正进行顺序读取时候，系统就试图读入比应用所要求的更多数据，并且假想应用会很快读取这些数据。</p>
-<p>延迟写：内核中设有缓冲区高速缓存或者页高速缓存，大多数磁盘IO都通过缓冲区进行，向文件中写入数据的时候，内核通常先将数据复制到缓冲区中，然后排入队列，晚些时候再写入磁盘。当内核需要重用缓冲区来存放其他磁盘块数据时候，就会将所有延迟写的数据写入磁盘。</p>
-<ul>
-<li><code>sync</code>: 将所有修改过的块缓冲区排入写队列，然后就返回，并不等待实际写磁盘操作结束。</li>
-<li><code>fsync</code>: 支队由文件描述符fd指定的一个文件起作用，并且等待写磁盘操作结束后才返回</li>
-<li><code>fdatasync</code>: 和fsync一样，但是只影响文件的数据部分，但是fsync还会影响文件的属性。</li>
-</ul>
-<h2 id="内核中IO的数据结构"><a href="#内核中IO的数据结构" class="headerlink" title="内核中IO的数据结构"></a>内核中IO的数据结构</h2><p>内核使用3种数据结构来表示打开文件。</p>
-<p>首先进程表中每个进程表项表示一个进程，其中每个进程表项里面包含了一张打开文件描述符表，这个文件描述符表记录了所有打开的文件描述符。</p>
-<p>文件描述符表中每一项包含了文件描述符标志和指向文件表项的指针。</p>
-<p>文件表项是存在于内核中的文件表中的，内核为所有打开的文件维护了一个文件表。每个文件表项包含了 <strong>文件状态标志(读，写，同步，非阻塞等)</strong>，<strong>当前文件偏移量</strong>，<strong>指向该文件v节点表项的指针</strong>。</p>
-<p>每个打开文件都有一个v节点结构，v节点包含了 <strong>文件类型</strong> 以及对此文件进行 <strong>各种操作函数的指针</strong>。v节点还包含了该文件的i节点，即索引节点。这些信息是打开文件时候从磁盘上读入内存的，所以文件的所有信息都是随时可用的。比如i节点包含了文件所有者，文件长度，指向文件实际数据块在磁盘上所在位置的指针。</p>
-<p><img src="/img/WechatIMG44.jpeg" alt=""></p>
-<p>如果两个进程同时打开了一个文件，那么这两个进程分别有不同的文件表项，但是对一个给定的文件只有一个v节点表项，之所以每个进程获得自己的文件表项，因为这可以使得每个进程都有它自己的对该文件的偏移量。那么lseek这样的函数，修改的是文件表项中的文件偏移量。但是对于写入，修改的是i节点中的当前文件长度信息。</p>
-<p>可能有多个文件描述符项指向同一个文件表项，比如dup函数(复制一个文件描述符)，fork之后父进程，子进程各自的每一个打开文件描述符共享同一个文件表项。</p>
-<p>文件描述符标志，当前只定义了一个文件描述符标志<code>FD_CLOEXEC</code>，设置则表示当程序执行exec函数的时候，fd将被系统自动关闭。设置文件描述符标志只会影响一个文件描述符。</p>
-<p>文件状态标志，比如<code>O_RDONLY</code>表示只读打开。可以使用<code>fcntl</code>进行设置，应用于指向该给定文件表项的任何进程中的所有描述符。</p>
-<h2 id="复制一个文件描述符"><a href="#复制一个文件描述符" class="headerlink" title="复制一个文件描述符"></a>复制一个文件描述符</h2><p><code>int dup(int fd)</code></p>
-<p>由dup返回的新文件描述符是当前可用文件描述符的最小值。</p>
-<p><code>int dup2(int fd, int fd2)</code></p>
-<p>fd2参数是指定新描述符的值，如果fd2已经打开，则先将其关闭。如果fd等于fd2，那么直接返回fd2，不会关闭。</p>
-<p>返回的新文件描述符与参数fd共享同一个文件表项，所以共享同一个文件状态标志与偏移量。但是每一个文件描述符都由其特有的文件描述符标志，新描述符的执行时关闭<code>FD_CLOEXEC</code>会被dup函数清除。</p>
-<h2 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h2><p><code>int fcntl(int fd, int cmd, ...)</code></p>
-<p>其中fcntl有以下5中功能：</p>
-<ol>
-<li>复制一个已有的描述符，使用cmd为<code>F_DUPFD</code>或者<code>F_DUPFD_CLOSEXEC</code>，前者返回的文件描述符值是大于或者等于第三个参数的最小的值，与fd共享一套文件表项，但是其<code>FD_CLOEXEC</code>会被清除。后者可以设置<code>FD_CLOEXEC</code>的值，然后返回一个文件描述符值。</li>
-<li>获取/设置文件描述符标志，使用cmd为<code>F_GETFD</code>或者<code>F_SETFD</code>，也就是<code>FD_CLOEXEC</code></li>
-<li>获取/设置文件状态标志，使用cmd为<code>F_GETFL</code>或者<code>F_SETFL</code>，比如<code>O_RDONLY</code>之类的参数，但是设置的范围要比获取范围要小</li>
-<li>获取/设置异步IO所有权，使用cmd为<code>F_GETOWN</code>或者<code>F_SETOWN</code>，前者获取当前接收SIGIO和SIGURG信号的进程ID或者进程组ID，后者设置接收SIGIO和SIGURG信号的进程ID或者进程组ID</li>
-<li>获取/设置记录锁，使用cmd为<code>F_GETLK</code>, <code>F_SETLK</code>或者<code>F_SETLKW</code></li>
-</ol>
-<p>所以在使用fcntl，只要知道打开文件的描述符，就可以修改描述符的属性。</p>
-<h1 id="标准IO"><a href="#标准IO" class="headerlink" title="标准IO"></a>标准IO</h1><p>标准IO处理了很多细节，比如缓冲区分配，以优化的块长度执行IO等。</p>
-<h2 id="流和FILE对象"><a href="#流和FILE对象" class="headerlink" title="流和FILE对象"></a>流和FILE对象</h2><p>前面的IO函数是围绕文件描述符的，打开一个文件返回一个文件描述符，然后该文件描述符就用于后面的IO操作。但是标准IO里面，都是围绕流的，使用标准IO库打开或者创建一个文件，就会使得一个流与一个文件相关联。</p>
-<p>打开一个流的时候，标准IO函数fopen返回一个指向FILE对象的指针，该对象是一个结构，包含了标准IO库为管理该流需要的所有信息，包括用于实际IO的文件描述符，指向用于该流缓冲区的指针，缓冲区的长度，当前在缓冲区的字符数以及出错标志等。为了引用一个流，需要将FILE指针作为参数传递给每个标准IO函数。</p>
-<h2 id="缓冲"><a href="#缓冲" class="headerlink" title="缓冲"></a>缓冲</h2><p>提供缓冲的目的是减少read和write系统调用的次数，毕竟在内核中进行系统调用是一个比较耗费资源的事情，必须切换上下文等等。它也对每个IO流自动的进行缓冲管理。分为以下缓冲类型：</p>
-<p>输入和输出的缓冲区是在一起</p>
-<ul>
-<li>全缓冲：在填满标准IO缓冲区后才进行实际的IO操作，磁盘上的文件使用的是全缓冲。</li>
-<li>行缓冲：当输入和输出中遇到换行符的时候，进行IO操作。当流涉及一个终端的时候，使用的是行缓冲。但是只要填满了缓冲区，那么也会进行IO操作。如果要输入数据(从内核)，那么会先冲洗所有行缓冲输出流。</li>
-<li>不带缓冲：标准错误流stdeer通常是不带缓冲的，这样可以使得出错信息可以尽快显示出来。</li>
-</ul>
-<p><code>int fflush(FILE *fp);</code></p>
-<p>此函数使得该流所有未写的数据都被传送至内核，如果fp是NULL，则此函数会导致所有输出被清洗。</p>
-<h1 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h1><h2 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h2><p>非阻塞IO可以使我们发出open，read和write这样的IO操作，并且使得这些操作不会永远阻塞，如果这种操作不能完成，则调用立即出错返回，表示该操作如继续将会被阻塞。</p>
-<p>有两种方法指定一个描述符为非阻塞IO</p>
-<ol>
-<li>调用open获得描述符的时候，指定<code>O_NONBLOCK</code>标志</li>
-<li>对于已经打开的描述符，使用<code>fcntl</code>，由该函数打开<code>O_NONBLOCK</code>文件状态标志</li>
-</ol>
-<p>出错对应的标志为<code>EAGAIN</code>，使用这种非阻塞IO进行IO操作，一种方式就是轮询，每次去调用，如果报错则继续询问，直到可以进行IO，所以就有可能进行了很多次系统调用(read, write等)，只有少数真正的输出了数据。</p>
-<p>这种方式非常消耗以及浪费CPU时间，因此一般会用到基于非阻塞描述符的IO多路复用，也就是对一大堆描述符进行轮询的方式。</p>
-<p>当然可以使用阻塞型描述符+多线程的方式来进行，但是线程同步的开销有时会增加复杂性，当然如果每个描述符之间没有什么关系，是可以使用多线程的模式的，这样还简化了程序设计。</p>
-<p>IO多路复用，先构造一张感兴趣的描述符列表，然后调用一个函数，直到这些描述符中的一个已经准备好进行IO时候，函数才返回。函数返回的时候，进程会被告知哪些描述符已经准备好可以进行IO。</p>
-<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p><code>int select(int maxfdp1, fd_set *restrict readfds, fd_set *restrict writefds, fd_set *restrict exceptfds, struct timeval *restrict tvptr)</code></p>
-<ul>
-<li>maxfdp1 指定最大文件描述符编号加1，最大容量限制由常量<code>FD_SETSIZE</code>决定，Linux上，该值是1024</li>
-<li>readfds 用来检测输入是否就绪的文件描述符集合</li>
-<li>writefds 用来检测输出是否就绪的文件描述符集合</li>
-<li>exceptfds 用来检测异常情况是否就绪的文件描述符集合</li>
-<li><p>tvptr 愿意等待的时间长度，NULL为永远等待</p>
-</li>
-<li><p>返回值-1表示出错，比如在没有描述符准备好的时候返回，这样不会修改描述符集合。</p>
-</li>
-<li>返回值0表示没有描述符准备好但是超时了。所有描述符集合都会置为0.</li>
-<li>返回正值表示已经准备好的描述符数目。内核会修改相应的描述符集合，就绪的描述符仍旧为1，未就绪的是0.</li>
-</ul>
-<p>每次select调用的时候，都需要初始化，将要检查的描述符集合都置为1，传给内核，然后内核检查从0-maxfdp1+1的描述符集合，看是否在readfds，writefds和exceptfds中，是否完成了这些事件，如果完成，则将相应的位置为1，否则为0，直到所有的检查完。检查完之后，将所有描述符集合又传回去，应用程序再检查一遍传回来的描述符集合，已经为1的进行IO操作。然后循环这一过程直到结束。</p>
-<p>使用示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">int main()</div><div class="line">    &#123;</div><div class="line">        int sock;</div><div class="line">        FILE* fp;</div><div class="line">        struct fd_set fds;</div><div class="line">        struct timeval timeout = &#123;3, 0&#125;; // select 等待 3 秒，3 秒轮询， 要非阻塞就置 0</div><div class="line">        char buffer[256] = &#123;0&#125;;             // 256 字节的接收缓冲区</div><div class="line">        /* 假设已经建立 UDP 连接，具体过程不写，简单，当然 TCP 也同理，主机 IP 和 port 都已经给定，要写的文件已经打开 */</div><div class="line">        sock = socket(...);</div><div class="line">        bind(...);</div><div class="line">        fp = fopen(...); */</div><div class="line">        while(1)</div><div class="line">        &#123;</div><div class="line">            FD_ZERO(&amp;fds);        // 每次循环都要清空，否则不能检测描述符变化</div><div class="line">            FD_SET(sock, &amp;fds); // 添加套接字描述符</div><div class="line">            FD_SET(fp, &amp;fds);     // 添加文件描述符</div><div class="line">            maxfdp = sock&gt;fp ? sock+1 : fp+1;  //描述符最大值加1</div><div class="line">            switch(select(maxfdp, &amp;fds, &amp;fds, NULL, &amp;timeout)) // select 使用</div><div class="line">            &#123;</div><div class="line">                case SOCKET_ERROR: exit(-1); break; //select 错误，退出程序</div><div class="line">                case 0: break; //再次轮询</div><div class="line">                default:</div><div class="line">                    if(FD_ISSET(sock, &amp;fds)) // 测试sock是否可读，即是否网络上有数据</div><div class="line">                    &#123;</div><div class="line">                        recvfrom(sock, buffer, 256, .... ); //接受网络数据</div><div class="line">                        if(FD_ISSET(fp, &amp;fds)) //测试文件是否可写</div><div class="line">                        fwrite(fp, buffer...); //写入文件</div><div class="line">                        // buffer清空；</div><div class="line">                    &#125; //end if break</div><div class="line">            &#125; //end switch</div><div class="line">        &#125; //end while</div><div class="line">    &#125; //end main</div></pre></td></tr></table></figure>
-<h2 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h2><p><code>int poll(struct pollfd fdarray[], nfds_t nfds, int timeout)</code></p>
-<p>poll是构造了一个pollfd的数组，每个数组元素可以指定一个描述符编号以及对描述符感兴趣的条件。pollfd结构如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">struct pollfd&#123;</div><div class="line">  int fd;</div><div class="line">  short events;</div><div class="line">  short revents;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其中events是描述符感兴趣的事件，revents是内核设置的，每个描述符实际发生了什么事件。</p>
-<p>nfds是fdarray数组中的元素数目。</p>
-<p>所以同样，poll系统调用也需要将感兴趣的描述符集合传给内核，然后内核检查后修改revents后传回来，然后应用程序去检查。和select不同的是，select每次调用前都需要初始化，并且在检查上select必须检查0-maxfdp1+1的描述符集合，而poll只需要检查感兴趣的描述符集合就行了。</p>
-<p>在有大量的描述符集合中，select和poll的效率就变得非常低了，所以出现了在Linux上特有的epoll。</p>
-<p>libevent库提供了检查文件描述符I/O事件的抽象，移植到了多个Unix系统中，其底层机制可以任意一种I/O技术，select(), poll(), 信号驱动I/O或者epoll</p>
-<h2 id="边缘触发和水平触发"><a href="#边缘触发和水平触发" class="headerlink" title="边缘触发和水平触发"></a>边缘触发和水平触发</h2><ul>
-<li>水平触发通知: 文件描述符上可以非阻塞地执行I/O系统调用，则就绪时候发送通知</li>
-<li>边缘触发通知：文件描述符自从上次状态检查以来有了新的I/O活动，则触发通知</li>
-</ul>
-<p>select，poll支持水平触发，信号驱动IO支持边缘触发，epoll两者都支持。</p>
-<p>水平触发模式允许在任意时刻重复检查I/O状态，没有必要在就绪后尽可能多的执行IO，因为可以随时检查状态。</p>
-<p>但是边缘触发是当I/O事件发生的时候才会收到通知，在另一个I/O事件到来之前是不会收到任何新的通知，而且文件描述符收到I/O事件通知的时候，通常并不知道要处理多少I/O。所以</p>
-<ol>
-<li>在文件描述符接受到I/O事件通知的时候，应该尽可能多的执行I/O，要不然等待下一个I/O事件到来都不知道什么时候了。这样却又会导致其他文件描述符处于饥饿状态。</li>
-<li>如果程序用循环对文件描述符执行尽可能多的I/O，那么每个被检查的文件描述符都应该被设置为非阻塞模式，在得到I/O事件通知后重复执行I/O操作，直到相应的系统调用失败。</li>
-</ol>
-<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>event poll的缩写，也可以检查多个文件描述符上的I/O就绪状态。epoll的核心数据结构为epoll实例，它和一个打开的文件描述符相关联，这个文件描述符是内核数据结构的句柄，实现了两个目的。</p>
-<ul>
-<li>记录了进程中声明过的感兴趣的文件描述符列表</li>
-<li>维护了处于I/O就绪态的文件描述符列表</li>
-</ul>
-<p>epoll API主要有以下三个系统调用：<code>epoll_create()</code>，<code>epoll_ctl()</code>和<code>epoll_wait()</code></p>
-<ul>
-<li><code>int epoll_create(int size);</code></li>
-</ul>
-<p>创建一个新epoll，对应的兴趣列表为空，size是想要epoll检查的文件描述符的个数。返回值就是创建好的epoll实例的文件描述符。如果这个文件描述符不在需要的时候，使用close()关闭。多个文件描述符可能引用到相同的epoll实例，比如调用了fork()函数或者dup函数，就会导致不同的文件描述符指向同一个文件表项，因此引用到相同的epoll实例。</p>
-<ul>
-<li><code>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *ev);</code></li>
-</ul>
-<p>修改epoll的兴趣列表:</p>
-<ul>
-<li>epfd 是epoll实例</li>
-<li>op 用来指定要执行的操作，有<code>EPOLL_CTL_ADD</code>, <code>EPOLL_CTL_MOD</code>和<code>EPOLL_CTL_DEL</code></li>
-<li>fd 表示要修改兴趣列表中哪一个文件描述符的设定，也可以是一个epoll实例，这样就形成了一种层次关系</li>
-<li>ev 是指向结构体<code>epoll_event</code>的指针，其中结构体包含了events和data，events是一个位掩码，指定了为待检查的描述符fd上所感兴趣的事件集合。data是一个联合体，当描述符fd成为就绪态的时候，联合体成员可用来指定传回给调用进程的信息。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">int epfd;</div><div class="line">struct epoll_event ev;</div><div class="line"></div><div class="line">epfd = epoll_create(5);</div><div class="line">if (epfd == -1)</div><div class="line">    errExit(&quot;epoll_create&quot;);</div><div class="line">ev.data.fd = fd;</div><div class="line">ev.events = EPOLLIN;</div><div class="line">if (epoll_ctl(epfd, EPOLL_CTL_ADD, fd, ev) == -1)</div><div class="line">    errExit(&quot;epoll_ctl&quot;)</div></pre></td></tr></table></figure>
-<ul>
-<li><code>int epoll_wait(int epfd, struct epoll_event *evlist, int maxevents, int timeout)</code></li>
-</ul>
-<p>系统调用<code>epoll_wait()</code>返回epoll实例中处于就绪态的文件描述符信息，单个<code>epoll_wait()</code>调用能返回多个就绪态文件描述符的信息。返回就绪的文件描述符的个数，0表示超时，-1表示错误</p>
-<p>evlist指向的结构体数组中返回的是有关就绪态文件描述符的信息。所包含的元素个数为maxevents。evlist中，每个元素返回的都是单个就绪态文件描述符的信息。events字段返回了在该描述符上发生的事件掩码。Data字段返回的是在描述符使用<code>epoll_ctl()</code>注册感兴趣事件时候在ev.data中指定的值。data字段是唯一可以获知同这个事件相关的文件描述符的途径。</p>
-<p>多线程程序中，可以在一个线程中使用<code>epoll_ctl()</code>将文件描述符添加到另一个线程中由<code>epoll_wait()</code>所监视的epoll实例的兴趣列表中去。这些对兴趣列表的修改将立刻得到处理，而<code>epoll_wait()</code>调用将返回有关新添加文件描述符的就绪信息。</p>
-<p>通过<code>epoll_ctl</code>指定了需要监视的文件描述符时候，内核会在与打开的文件描述上下文相关联的列表中记录该描述符。之后每当执行I/O操作使得文件描述符成为就绪态时候，内核就在epoll描述符的就绪列表中添加一个元素。单个打开的文件描述上下文的一次I/O事件可能导致与之相关的多个文件描述符成为就绪态。这样<code>epoll_wait()</code>调用从就绪列表中简单的取出这些元素。epoll在内核空间创建了一个数据结构，该数据结构会将待监视的文件描述符都记录下来。</p>
-<p>因此epoll的性能在大规模的文件描述符检查情况下，效率远高于select和poll，常见的能高效使用epoll的应用场景就是需要同时处理许多客户端的服务器，需要监视大量的文件描述符，但大部分处于空闲状态，只有少数文件描述符处于就绪状态。</p>
-<h1 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h1><p>发起IO操作后不阻塞，用户得递一个回调函数待IO结束后被调用。进程请求内核执行一次I/O操作，内核启动该操作之后立即将控制权还给调用进程，稍后当I/O操作完成或者有错误发生的时候，该进程会得到通知。一般是使用信号来实现的。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>linux一般使用non-blocking IO提高IO并发度。当IO并发度很低时，non-blocking IO不一定比blocking IO更高效，因为后者完全由内核负责，而read/write这类系统调用已高度优化，效率显然高于一般得多个线程协作的non-blocking IO。</p>
-<p>但当IO并发度愈发提高时，blocking IO阻塞一个线程的弊端便显露出来：内核得不停地在线程间切换才能完成有效的工作，一个cpu core上可能只做了一点点事情，就马上又换成了另一个线程，cpu cache没得到充分利用，程序整体性能往往也会随之下降。</p>
-<p>而non-blocking IO一般由少量event dispatching线程和一些运行用户逻辑的worker线程组成，这些线程往往会被复用（换句话说调度工作转移到了用户态），event dispatching和worker可以同时在不同的核运行（流水线化），内核不用频繁的切换就能完成有效的工作。线程总量也不用很多，所以对thread-local的使用也比较充分。这时候non-blocking IO就往往比blocking IO快了。不过non-blocking IO也有自己的问题，它需要调用更多系统调用，比如<code>epoll_ctl</code>，由于epoll实现为一棵红黑树，<code>epoll_ctl</code>并不是一个很快的操作，特别在多核环境下，依赖<code>epoll_ctl</code>的实现往往会面临棘手的扩展性问题。non-blocking需要更大的缓冲，否则就会触发更多的事件而影响效率。non-blocking还得解决不少多线程问题，代码比blocking复杂很多。</p>
+		<p>今天我们来看看<code>contextlib</code>这个库里面的<code>contextmanager</code>和<code>closing</code>怎么用，为什么这么用，背后的原理是什么。首先看看<code>contextmanager</code>：</p>
+<h1 id="contextmanager"><a href="#contextmanager" class="headerlink" title="contextmanager"></a><code>contextmanager</code></h1><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">from contextlib import contextmanager</div><div class="line"></div><div class="line">class Query(object):</div><div class="line"></div><div class="line">    def __init__(self, name):</div><div class="line">        self.name = name</div><div class="line"></div><div class="line">    def query(self):</div><div class="line">        print(&apos;Query info about %s...&apos; % self.name)</div><div class="line"></div><div class="line">@contextmanager</div><div class="line">def create_query(name):</div><div class="line">    print(&apos;Begin&apos;)</div><div class="line">    q = Query(name)</div><div class="line">    yield q</div><div class="line">    print(&apos;End&apos;)</div></pre></td></tr></table></figure>
+<p>这样就定义了一个上下文管理器，<code>create_query</code>也可以使用with语句了，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">with create_query(&apos;Bob&apos;) as q:</div><div class="line">    q.query()</div></pre></td></tr></table></figure>
+<p>with语句首先执行yield之前的语句，yield调用会返回后面的变量，然后执行with语句内部的所有语句，with内部语句执行完成之后执行yield之后的语句</p>
+<p>所以我们就可以在yield之前定义类似<code>__enter__</code>的代码，yield后面的变量就是<code>__enter__</code>的返回值，然后yield之后的语句是定义类似<code>__exit__</code>的代码。</p>
+<p>清楚了使用，来看看源代码：</p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><p><code>contextmanager</code>是一个装饰器函数，其中的注释也清楚的解释了自己的用法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&quot;&quot;&quot;@contextmanager decorator.</div><div class="line"></div><div class="line">    Typical usage:</div><div class="line"></div><div class="line">        @contextmanager</div><div class="line">        def some_generator(&lt;arguments&gt;):</div><div class="line">            &lt;setup&gt;  # 初始化代码 __enter__</div><div class="line">            try:</div><div class="line">                yield &lt;value&gt;  # __enter__返回的值</div><div class="line">            finally:</div><div class="line">                &lt;cleanup&gt;  # __exit__</div><div class="line"></div><div class="line">    This makes this:</div><div class="line"></div><div class="line">        with some_generator(&lt;arguments&gt;) as &lt;variable&gt;:</div><div class="line">            &lt;body&gt;</div><div class="line"></div><div class="line">    equivalent to this:</div><div class="line"></div><div class="line">        &lt;setup&gt;</div><div class="line">        try:</div><div class="line">            &lt;variable&gt; = &lt;value&gt;</div><div class="line">            &lt;body&gt;</div><div class="line">        finally:</div><div class="line">            &lt;cleanup&gt;</div><div class="line"></div><div class="line">    &quot;&quot;&quot;</div></pre></td></tr></table></figure>
+<p>其代码是调用了一个<code>_GeneratorContextManager</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def contextmanager(func):</div><div class="line">    @wraps(func)</div><div class="line">    def helper(*args, **kwds):</div><div class="line">        return _GeneratorContextManager(func, args, kwds)</div><div class="line">    return helper</div></pre></td></tr></table></figure>
+<p>相当于用<code>contextmanager</code>装饰的函数在调用的时候，比如<code>with func() as f:</code>的时候，<code>func()</code>其实是调用了<code>helper()</code>，而这个返回的是一个<code>_GeneratorContextManager</code>对象，也就是说其实是<code>_GeneratorContextManager</code>对象实现了上下文协议，这个对象肯定就定义了<code>__enter__</code>和<code>__exit__</code>方法，当然这个方法是与func有关的，那么继续来看看<code>_GeneratorContextManager</code></p>
+<h2 id="GeneratorContextManager"><a href="#GeneratorContextManager" class="headerlink" title="_GeneratorContextManager"></a><code>_GeneratorContextManager</code></h2><p>这里有一个要点就是使用类来实现了一个装饰器，这种做法被推荐过，因为可以更好的弄清楚内部变量的作用域之类的东西。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">class _GeneratorContextManager(ContextDecorator):</div><div class="line">    &quot;&quot;&quot;Helper for @contextmanager decorator. 发现helper这个经常用，啊哈，以后我也开始用这个变量名&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, func, args, kwds):</div><div class="line">        # func是一个生成器函数，这里首先&quot;实例化&quot;</div><div class="line">        self.gen = func(*args, **kwds)</div><div class="line">        # 保存之前函数的一些参数</div><div class="line">        self.func, self.args, self.kwds = func, args, kwds</div><div class="line">        doc = getattr(func, &quot;__doc__&quot;, None)</div><div class="line">        if doc is None:</div><div class="line">            doc = type(self).__doc__</div><div class="line">        self.__doc__ = doc</div><div class="line"></div><div class="line">    def _recreate_cm(self):</div><div class="line">        # _GCM instances are one-shot context managers, so the</div><div class="line">        # CM must be recreated each time a decorated function is</div><div class="line">        # called</div><div class="line">        return self.__class__(self.func, self.args, self.kwds)</div><div class="line"></div><div class="line">    def __enter__(self):</div><div class="line">        try:</div><div class="line">            # enter方法，返回的肯定是生成器yield的值</div><div class="line">            # 在next执行的过程中，已经将yield之前的代码执行了</div><div class="line">            return next(self.gen)</div><div class="line">        except StopIteration:</div><div class="line">            raise RuntimeError(&quot;generator didn&apos;t yield&quot;) from None</div><div class="line"></div><div class="line">    def __exit__(self, type, value, traceback):</div><div class="line">        # 如果没有错误，继续next生成器</div><div class="line">        # 如果生成器没有结束，那么引发异常</div><div class="line">        if type is None:</div><div class="line">            try:</div><div class="line">                next(self.gen)</div><div class="line">            except StopIteration:</div><div class="line">                return</div><div class="line">            else:</div><div class="line">                raise RuntimeError(&quot;generator didn&apos;t stop&quot;)</div><div class="line">        # 如果在with语句中有异常</div><div class="line">        else:</div><div class="line">            if value is None:</div><div class="line">                # 实例化异常类型的实例</div><div class="line">                value = type()</div><div class="line">            try:</div><div class="line">                # 向生成器发送这个异常，使其停止</div><div class="line">                self.gen.throw(type, value, traceback)</div><div class="line">                # 如果没有停止，则引发RuntimeError异常</div><div class="line">                raise RuntimeError(&quot;generator didn&apos;t stop after throw()&quot;)</div><div class="line">            except StopIteration as exc:</div><div class="line">                # 生成器停止异常，如果exit处理的异常是StopIteration,则返回True，相当于已经执行了清理代码</div><div class="line">                # 如果exit处理的异常不是停止异常，则继续向上引发这个异常，说明这个异常已经使得清理代码执行，但是需要往上引发</div><div class="line">                return exc is not value</div><div class="line">            except RuntimeError as exc:</div><div class="line">                # 如果在将exit的异常（比如是生成器停止异常）发送给生成器，但是没有停止，所以捕捉到了RuntimeError异常</div><div class="line">                # 如果该RuntimeError的异常是由于exit处理的异常（生成器停止异常）引发的，则继续引发这个异常，因为是先发生生成器停止异常，然后再发生RuntimeError，所以会继续向上引发RuntimeError</div><div class="line">                if exc.__cause__ is value:</div><div class="line">                    return False</div><div class="line">                # 否则向上引发RuntimeError</div><div class="line">                raise</div><div class="line">            except:</div><div class="line">                # 只会重新引发不是传递给throw的异常，因为__exit__一定不会引发异常除非__exit__本身失败了</div><div class="line">                # 但是throw方法不得不引发异常导致异常传播，因此这里修正了throw协议和__exit__协议的不匹配问题</div><div class="line">                # 也就是说，这个异常一定不能是throw发出的，因为__exit__不会引发异常的，所以只有当这个处理的异常不是throw发出的，即exit传递进来的value，就会重新引发</div><div class="line">                if sys.exc_info()[1] is not value:</div><div class="line">                    raise</div></pre></td></tr></table></figure>
+<p>有一点需要说明的是<code>__exit__</code>方法返回True，说明已经处理好了，返回False，会继续抛出异常。</p>
+<p>这里有一大堆的错误处理，以后可以参考。要理解其核心点在于，exit方法接收到的异常可能是StopIteration，因为可能在with语句中将生成器迭代完成了，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">with create_query(&apos;Bob&apos;) as q:</div><div class="line">    next(q)</div></pre></td></tr></table></figure>
+<p>当然形式可能不一样，但是效果都是在with中引发了StopIteration异常，然后这里处理的时候就会有这么多种情况，异常处理的主要目的是抑制StopIteration异常的发出。</p>
+<h1 id="closing"><a href="#closing" class="headerlink" title="closing"></a><code>closing</code></h1><p>还有一个简单的上下文处理器就是这个closing，主要的功能就是给加了一个<code>__exit__</code>方法和<code>__enter__</code>方法，使其可以支持上下文管理器协议，下面是使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from contextlib import closing</div><div class="line">from urllib.request import urlopen</div><div class="line"></div><div class="line">with closing(urlopen(&apos;https://www.python.org&apos;)) as page:</div><div class="line">    for line in page:</div><div class="line">        print(line)</div></pre></td></tr></table></figure>
+<p>下面是源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class closing(object):</div><div class="line">    def __init__(self, thing):</div><div class="line">        self.thing = thing</div><div class="line">    def __enter__(self):</div><div class="line">        return self.thing</div><div class="line">    def __exit__(self, *exc_info):</div><div class="line">        self.thing.close()</div></pre></td></tr></table></figure>
+<p>也可以这么实现，很机智吧！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@contextmanager</div><div class="line">def closing(thing):</div><div class="line">    try:</div><div class="line">        yield thing</div><div class="line">    finally:</div><div class="line">        thing.close()</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p><code>contextlib</code>库常用的内容就是这些了，不得不感叹设计真的是巧妙，非常不错。</p>
 
 	
 	</div>
-  <a type="button" href="/2017/10/07/IO模型/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/08/09/contextlib 详解/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -471,11 +294,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/10/02/Python中的单例模式/" >Python中的单例模式</a>
+			<a href="/2017/08/09/Celery使用以及消息队列/" >Celery使用以及消息队列</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-10-02 10:07:35  </div>
+		<div class="date">post @ 2017-08-09 11:57:53  </div>
 		</div>
 	</div>
 	
@@ -485,82 +308,81 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>单例模式其实在实际的程序开发中使用过，比如数据库连接池等，但是仍然需要抽象到一定高度来理解它。</p>
-<p>单例模式：保证一个类仅有一个实例，并提供一个访问他的全局访问点。目的就是令到单个进程中只存在一个类的实例，从而可以实现数据的共享，节省系统开销，防止io阻塞等等。方法就是让类自身保存他的唯一实例，这个类可以保证没有其他实例可以被创建。</p>
-<p>多线程时的单例模式：加锁-双重锁定</p>
-<ul>
-<li>饿汉式单例类：在类被加载时就将自己实例化（静态初始化）。其优点是躲避了多线程访问的安全性问题，缺点是提前占用系统资源。</li>
-<li>懒汉式单例类：在第一次被引用时，才将自己实例化。避免开始时占用系统资源，但是有多线程访问安全性问题。</li>
-</ul>
-<h2 id="简单粗暴-模块实现"><a href="#简单粗暴-模块实现" class="headerlink" title="简单粗暴-模块实现"></a>简单粗暴-模块实现</h2><p>直接导入某个模块下创建好的实例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># some module.py</div><div class="line">class SingletonClass:</div><div class="line">    pass</div><div class="line"></div><div class="line"># 在别处我们想用这个实例都直接使用 module.single_instance 这个实例就好。</div><div class="line"># 这是最简单也是最直观的一种方式,嗯，直接导入这个实例用，而不是导入class，简单粗暴</div><div class="line">single_instance = SingletonClass()</div></pre></td></tr></table></figure>
-<h2 id="静态方法实现"><a href="#静态方法实现" class="headerlink" title="静态方法实现"></a>静态方法实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">#encoding=utf-8</div><div class="line">#单例模式</div><div class="line">def print_info(info):</div><div class="line">    print(info)</div><div class="line"></div><div class="line">import threading</div><div class="line">#单例类</div><div class="line">class Singleton:</div><div class="line">    instance = None</div><div class="line">    mutex = threading.Lock()</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        pass</div><div class="line"></div><div class="line">    @staticmethod</div><div class="line">    def get_instance():</div><div class="line">        if Singleton.instance is None:</div><div class="line">            Singleton.mutex.acquire()</div><div class="line">            if Singleton.instance is None:</div><div class="line">                print_info(&apos;初始化实例&apos;)</div><div class="line">                Singleton.instance = Singleton()</div><div class="line">            else:</div><div class="line">                print_info(&apos;单例已经实例化&apos;)</div><div class="line">            Singleton.mutex.release()</div><div class="line">        else:</div><div class="line">            print_info(&apos;单例已经实例化&apos;)</div><div class="line"></div><div class="line">        return Singleton.instance</div><div class="line"></div><div class="line">def clientUI():</div><div class="line">    Singleton.get_instance()</div><div class="line">    Singleton.get_instance()</div><div class="line">    Singleton.get_instance()</div><div class="line"></div><div class="line">if __name__==&apos;__main__&apos;:</div><div class="line">    clientUI();</div></pre></td></tr></table></figure>
-<h2 id="元类实现"><a href="#元类实现" class="headerlink" title="元类实现"></a>元类实现</h2><p>也可以使用<code>__new__</code>来实现单例模式，但是如果需要做到线程安全就必须加锁。<code>__new__</code>必须返回一个类的实例，所以可以在对象创建之前或者之后修改类。如果它返回的不是<code>cls</code>的实例，那么<code>__init__</code>方法是不会调用的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class Singleton(object):</div><div class="line">    __instance = None</div><div class="line"></div><div class="line">    def__new__(cls, *args, **kwd):</div><div class="line">        if Singleton.__instance is None:</div><div class="line">            Singleton.__instance = object.__new__(cls, *args, **kwd)</div><div class="line">        return Singleton.__instance</div><div class="line"></div><div class="line">class MyClass(metaclass=Singleton):</div><div class="line">    pass</div></pre></td></tr></table></figure>
-<h2 id="装饰器实现"><a href="#装饰器实现" class="headerlink" title="装饰器实现"></a>装饰器实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class BaseClass:</div><div class="line">    pass</div><div class="line"></div><div class="line"></div><div class="line"># 装饰器实现</div><div class="line">def singleton(class_):</div><div class="line">    instances = &#123;&#125;</div><div class="line">    def getinstance(*args, **kwargs):</div><div class="line">        if class_ not in instances:</div><div class="line">            instances[class_] = class_(*args, **kwargs)</div><div class="line">        return instances[class_]</div><div class="line">    return getinstance</div><div class="line"></div><div class="line"></div><div class="line">@singleton</div><div class="line">class MyClass(BaseClass):</div><div class="line">    pass</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/10/02/Python中的单例模式/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/09/30/Python程序性能分析/" >Python程序性能分析</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-09-30 12:14:53  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。</p>
-<h1 id="cProfile"><a href="#cProfile" class="headerlink" title="cProfile"></a>cProfile</h1><p>使用工具cProfile，在一个脚本中写好要测试的程序，然后在终端中运行<code>python -m cProfile -s tottime calc_efficiency.py</code>表示对单个函数的运行总时间进行统计，这样就会在终端上打印出来性能分析结果，比如这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1723 function calls (1578 primitive calls) in 0.004 seconds</div><div class="line"></div><div class="line">Ordered by: internal time</div><div class="line"></div><div class="line">ncalls  tottime  percall  cumtime  percall filename:lineno(function)</div><div class="line">   4    0.000    0.000    0.000    0.000 _methods.py:86(_var)</div><div class="line">  13    0.000    0.000    0.000    0.000 calculators.py:18(nan2zero)</div><div class="line">   2    0.000    0.000    0.000    0.000 financial.py:25(_adjust_returns)</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;cumprod&apos; of &apos;numpy.ndarray&apos; objects&#125;</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;accumulate&apos; of &apos;numpy.ufunc&apos; objects&#125;</div></pre></td></tr></table></figure>
-<p>表示1723个函数调用被监控，其中1578是原生调用，即不涉及递归调用，总共执行时间是0.004秒，结果列表是按照函数内部调用时间来排序，即不包括他自己调用的其他函数的时间。</p>
-<ul>
-<li>ncalls 表示调用次数，如果是4/3 表示4次总调用次数，3表示原生调用次数</li>
-<li>tottime 表示函数内部调用时间</li>
-<li>percall 是tottime/ncalls</li>
-<li>cumtime 累计时间，包含了自己内部调用函数的时间</li>
-<li>最后一列，文件名，行号，函数名</li>
-</ul>
-<p>cProfile除了可以在终端上使用，还有编程接口<code>cProfile.run(&#39;re.compile(&quot;foo|bar&quot;)&#39;)</code></p>
-<p>具体cProfile的使用方法请戳<a href="https://docs.python.org/3.6/library/profile.html" target="_blank" rel="external">这里</a></p>
-<p>另外官方给出的使用pstats模块的Stats类来读取和操作stats文件，Analysis of the profiler data is done using the Stats class.</p>
-<p>一个使用示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import cProfile</div><div class="line">import pstats</div><div class="line">from ability import WholeAbility</div><div class="line">import time</div><div class="line"></div><div class="line">profile = cProfile.Profile()</div><div class="line">profile.enable()</div><div class="line">t0 = time.time()</div><div class="line">fundId = &quot;test&quot;</div><div class="line">start = &quot;20151021&quot;</div><div class="line">end = &quot;20151023&quot;</div><div class="line">wa = WholeAbility(fundId, start, end, assets, flows, stocks)</div><div class="line">ability_data, positions, trades = wa.calc_ability()</div><div class="line">summary_data = wa.summary()</div><div class="line">print(&quot;using &#123;&#125;&quot;.format(time.time()-t0))</div><div class="line">profile.disable()</div><div class="line">profile.print_stats(sort=&apos;tottime&apos;)</div><div class="line">sortby = &quot;tottime&quot;</div><div class="line">ps = pstats.Stats(profile).sort_stats(sortby)</div><div class="line">ps.dump_stats(&quot;./eff.txt&quot;)</div></pre></td></tr></table></figure>
-<p>使用<code>dump_stats</code>可以把当前性能分析结果写入文件，这个结果可以在后面进行可视化分析。</p>
-<h1 id="gprof2dot-分析结果可视化"><a href="#gprof2dot-分析结果可视化" class="headerlink" title="gprof2dot 分析结果可视化"></a>gprof2dot 分析结果可视化</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
-<li>Mac: <code>brew install graphviz</code></li>
-<li>Ubuntu: <code>apt-get install python graphviz</code></li>
-</ul>
-<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
-<p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
-<p><img src="/img/mkm_run.png" alt=""></p>
-<p>其中每个node的信息如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------------------------------+</div><div class="line">|        function name         |</div><div class="line">| total time % ( self time % ) |</div><div class="line">|         total calls          |</div><div class="line">+------------------------------+</div></pre></td></tr></table></figure>
-<p>每个edge的信息如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">total time %</div><div class="line">   calls</div><div class="line">parent --------------------&gt; children</div></pre></td></tr></table></figure>
-<h1 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h1><ol>
-<li>尽量不要使用deepcopy，很慢，详见这篇文章<a href="http://news.hiapk.com/internet/s5937a1ded022.html" target="_blank" rel="external">蜗牛般的 Python 深拷贝</a></li>
-<li>优化算法，不要在循环里面进行耗时操作</li>
+		<p>Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。</p>
+<p>这是其使用场景：</p>
+<ol>
+<li>web应用，需要较长时间完成的任务，就可以作为任务交给celery异步执行，执行完返回给用户。</li>
+<li>网站的定时任务</li>
+<li>异步执行的其他任务。比如清理/设置缓存</li>
 </ol>
+<p>有以下特点：</p>
+<ol>
+<li>任务执行情况</li>
+<li>管理后台管理任务</li>
+<li>任务和配置管理相关联</li>
+<li>多进程，EventLet和Gevent三种模式并发执行</li>
+<li>错误处理机制</li>
+<li>任务原语，任务分组，拆分和调用链</li>
+</ol>
+<h2 id="Celery的架构"><a href="#Celery的架构" class="headerlink" title="Celery的架构"></a>Celery的架构</h2><ol>
+<li>Celery Beat，任务调度器，Beat进程会读取配置文件的内容，周期性的将配置中到期需要执行的任务发送给任务队列</li>
+<li>Celery Worker，执行任务的消费者</li>
+<li>Broker，消息代理，接受生产者的任务消息，存进队列然后按序发送给消费者</li>
+<li>Producer，定时任务或者调用了API产生任务交给任务队列进行处理</li>
+<li>Result Backend，任务处理完后保存状态信息和结果</li>
+</ol>
+<p>整体机制就是，任务发布者（一般是web应用）或者任务调度，即定时任务将任务发布到消息代理上（使用Redis或者RabbitMQ)，然后消息代理将任务按序发送给Worker执行，Worker执行完后将结果存储到Backend中，也可以用Redis。</p>
+<h2 id="Celery的序列化"><a href="#Celery的序列化" class="headerlink" title="Celery的序列化"></a>Celery的序列化</h2><p>一般使用json, yaml, msgpack，其中msgpack是一个二进制的json序列化方案，比json数据结构更小，更快。序列化的作用是在客户端和消费者之间传输数据的途中需要序列化和反序列化。</p>
+<h2 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h2><ul>
+<li>主程序（实例化Celery)</li>
+</ul>
+<p>一种方式，直接进行，简单粗暴</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from celery import Celery</div><div class="line">from config import REDISHOST, REDISDB, REDISPORT</div><div class="line">celery = Celery(&apos;backend&apos;, broker=&apos;redis://%s:%d/%d&apos; % (REDISHOST, REDISPORT, REDISDB),backend=&apos;redis://%s:%d/%d&apos; % (REDISHOST, REDISPORT, REDISDB))</div></pre></td></tr></table></figure>
+<p>另一种方式，使用配置文件，类似于Flask应用实例的方式吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from celery import Celery</div><div class="line">app = Celery(&apos;proj&apos;, include=[&apos;proj.tasks&apos;])</div><div class="line">app.config_from_object(&apos;proj.celeryconfig&apos;)</div><div class="line"># celery.conf.update(app.config)</div></pre></td></tr></table></figure>
+<p>第三种方式，为了能在celery task中使用应用上下文，可以这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">def make_celery(app):</div><div class="line">    celery = Celery(app.__name__, broker=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB),</div><div class="line">                    backend=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB))</div><div class="line">    TaskBase = celery.Task</div><div class="line"></div><div class="line">    class ContextTask(TaskBase):</div><div class="line">        abstract = True</div><div class="line"></div><div class="line">        def __call__(self, *args, **kwargs):</div><div class="line">            with app.app_context():</div><div class="line">                return TaskBase.__call__(self, *args, **kwargs)</div><div class="line"></div><div class="line">    celery.Task = ContextTask</div><div class="line">    return celery</div><div class="line"></div><div class="line"></div><div class="line">celery = make_celery(app)</div></pre></td></tr></table></figure>
+<ul>
+<li>Celery配置文件</li>
+</ul>
+<p>如果都在实例化的时候指定好了配置，那么就不需要了，如果需要指定额外的参数，那么就可以放在配置文件里，以下是几个常用的参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"># 导入tasks</div><div class="line">from celery.schedules import crontab</div><div class="line">from datetime import timedelta</div><div class="line"># 防止内存泄漏</div><div class="line">CELERYD_MAX_TASKS_PER_CHILD = 40</div><div class="line"># 指定时区</div><div class="line">CELERY_TIMEZONE = &apos;Asia/Shanghai&apos;</div><div class="line">CELERY_IMPORTS = (&quot;tasks&quot;, &quot;graph_data_tasks&quot;)</div><div class="line"># broker代理地址</div><div class="line">BROKER_URL = &apos;&apos;</div><div class="line"># backend地址</div><div class="line">CELERY_RESULT_BACKEND = &apos;&apos;</div><div class="line">CELERY_TASK_SERIALIZER = &apos;msgpack&apos;</div><div class="line">CELERY_RESULT_SERIALIZER = &apos;json&apos;</div><div class="line"># A value of None or 0 means results will never expire</div><div class="line">CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24 # 任务结果过期时间</div><div class="line">CELERY_ACCEPT_CONTENT = [&apos;json&apos;, &apos;msgpack&apos;]</div><div class="line"># 路由，指定队列</div><div class="line">CELERY_ROUTES = &#123;&apos;backend.celery_tasks.calc_ability&apos;: &#123;&apos;queue&apos;: &apos;capacity&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.graph_data_tasks&apos;: &#123;&apos;queue&apos;: &apos;celery&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.calc_plat&apos;: &#123;&apos;queue&apos;: &apos;celery&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.calc_sections&apos;: &#123;&apos;queue&apos;: &apos;guchong&apos;&#125;,</div><div class="line">                 &apos;backend.celery_tasks.publish_data&apos;: &#123;&apos;queue&apos;: &apos;mysql&apos;&#125;&#125;</div><div class="line"># celery worker的并发数</div><div class="line">CELERYD_CONCURRENCY = 2</div><div class="line"># 使用任务调度，使用Beat进程自动生成任务</div><div class="line">CELERYBEAT_SCHEDULE = &#123;</div><div class="line">    &apos;graph_data&apos;: &#123;</div><div class="line">        &apos;task&apos;: &apos;graph_data_tasks.sync_graph&apos;,</div><div class="line">        &apos;schedule&apos;: timedelta(minutes=60),</div><div class="line">        &apos;args&apos;: ()</div><div class="line">    &#125;,</div><div class="line">truetrue&apos;rank_for_guchong&apos;: &#123;</div><div class="line">        &apos;task&apos;: &apos;backend.celerytasks.rank_for_guchong.calc_ability_schedule&apos;,</div><div class="line">        &apos;schedule&apos;: crontab(hour=11, minute=55),</div><div class="line">        &apos;args&apos;: ()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Celery的tasks</li>
+</ul>
+<p>将实例化的celery实例导入进来之后，使用celery的装饰器task()即可完成tasks的注册</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 指定bind为True就可以更新状态</div><div class="line">@celery.task(bind=True)</div><div class="line">def calc_capacity(strategy_id, start_date, end_date, assets, flows, stocks, output_path):</div><div class="line">    # meta可以指定用户数据</div><div class="line">    self.update_state(state=&apos;PROGRESS&apos;, meta=&#123;&apos;status&apos;: &apos;running&apos;, &apos;percentage&apos;: 0.1, &apos;data&apos;: None&#125;)</div><div class="line">    c = CalcAbility(strategy_id, assets, flows, stocks, output_path)</div><div class="line">    c.run(start_date, end_date)</div><div class="line">    return &#123;&apos;current&apos;: 1, &apos;total&apos;: 1, &apos;status&apos;: &apos;success&apos;, &apos;reason&apos;: &apos;&apos;&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使用tasks</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@be_data.route(&apos;/data/graph&apos;, methods=[&apos;GET&apos;])</div><div class="line"># @token_required</div><div class="line">def gen_megapool_from_summary():</div><div class="line">    &apos;&apos;&apos;直接从summary文件计算这些汇总信息&apos;&apos;&apos;</div><div class="line">    pie_tuple = Cache.get_summary_data(name=&apos;summary_data&apos;, data_type=float)</div><div class="line">    meta = &#123;&#125;</div><div class="line">    if not pie_tuple:</div><div class="line">        task = sync_graph.apply_async(args=[])</div><div class="line">        return gen_response(data=meta, message=&quot;success&quot;, errorcode=0), 200</div><div class="line">    elif pie_tuple[11] != db_clients.hsize(&apos;summary_ability&apos;):</div><div class="line">        sync_graph.apply_async(args=[])</div><div class="line">        return gen_response(data=meta, message=&quot;success&quot;, errorcode=0), 200</div></pre></td></tr></table></figure>
+<p>另外可以通过task.id来获取task的运行状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">task = calc_ability.AsyncResult(task_id)</div><div class="line">response = &#123;</div><div class="line">            &apos;current&apos;: task.info.get(&apos;current&apos;, 0),</div><div class="line">            &apos;total&apos;: task.info.get(&apos;total&apos;, 1),</div><div class="line">            &apos;time&apos;: task.info.get(&apos;time&apos;, 0),</div><div class="line">            &apos;start_time&apos;: start_time,</div><div class="line">            &apos;fundid_nums&apos;: calc_task.fundid_nums,</div><div class="line">            &apos;status&apos;: task.info.get(&apos;status&apos;, &apos;&apos;),</div><div class="line">            &apos;reason&apos;: task.info.get(&apos;reason&apos;, &apos;&apos;)</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>也可以指定<code>task_id</code>和app以及backend来获取状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from celery import result as celery_result, current_app as celery_current_app</div><div class="line">res = celery_result.AsyncResult(task_id, app=celery_current_app, backend=celery.backend)</div><div class="line">res.state</div><div class="line">res.status</div><div class="line"># 这个就是用户数据或者返回时候return的数据</div><div class="line">res.result</div></pre></td></tr></table></figure>
+<ul>
+<li>Celery的执行</li>
+</ul>
+<p><code>celery --app=backend.celery worker --loglevel=DEBUG --config=celery_settings --beat</code></p>
+<ul>
+<li>指定队列</li>
+</ul>
+<p>Celery通常使用默认名为celery的队列来存放任务，可以通过CELERY_DEFAULT_QUEUE修改，可以使用优先级不同的队列来确保高优先级的任务不需要等待就可以得到相应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from kombu import Queue</div><div class="line">CELERY_QUEUES = (</div><div class="line">  Queue(&apos;default&apos;, routing_key=&apos;task.#&apos;),</div><div class="line">trueQueue(&apos;web_tasks&apos;, routing_key=&apos;web.#&apos;)</div><div class="line">)</div><div class="line"># 默认交换机名字为tasks</div><div class="line">CELERY_DEFAULT_EXCHANGE = &apos;tasks&apos;</div><div class="line"># 交换类型是topic</div><div class="line">CELERY_DEFAULT_EXCHANGE_TYPE = &apos;topic&apos;</div><div class="line"># 默认的路由键是task.default</div><div class="line">CELERY_DEFAULT_ROUTING_KEY = &apos;task.default&apos;</div><div class="line">CELERY_ROUTES = &#123;</div><div class="line">  &apos;projq.tasks.add&apos;: &#123;</div><div class="line">    &apos;queue&apos;: &apos;web_tasks&apos;,</div><div class="line">    &apos;routing_key&apos;: &apos;web.add&apos;,</div><div class="line">true&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>指定队列方式启动消费者进程：<code>celery -A projq worker -Q web_tasks -l info</code></p>
+<h2 id="celery中的任务绑定"><a href="#celery中的任务绑定" class="headerlink" title="celery中的任务绑定"></a>celery中的任务绑定</h2><p>任务可以通过 app.task 装饰器进行注册，需要注意的一点是，当函数有多个装饰器时，为了保证 Celery 的正常运行，app.task 装饰器需要在最外层。其中有一个bind 参数，当设置了 bind 参数，则会为这个任务绑定一个 Task 实例，通过第一个 self 参数传入，可以通过这个 self 参数访问到 Task 对象的所有属性。绑定任务用于尝试重新执行任务（使用app.Task.retry()),绑定了任务就可以访问当前请求的任务信息和任何你添加到指定任务基类中的方法。也可以使用<code>self.update_state()</code>方法来更新状态信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@celery.task(bind=True)</div><div class="line">def calc_ability(self, fundIds, start_date, end_date, increment_end_date, maxsize):</div><div class="line">    start_date = parse_date(start_date)</div><div class="line">    end_date = parse_date(end_date)</div><div class="line">truetrueself.update_state(state=&apos;PROGRESS&apos;,</div><div class="line">                              meta=&#123;&apos;current&apos;: index, &apos;total&apos;: total,</div><div class="line">                              &apos;time&apos;: used_time.used_time() / 60, &apos;status&apos;: &apos;running&apos;, &apos;reason&apos;: &apos;&apos;&#125;)</div></pre></td></tr></table></figure>
+<h2 id="停止任务"><a href="#停止任务" class="headerlink" title="停止任务"></a>停止任务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">rs = add.delay(1, 2)</div><div class="line">rs.revoke()  # 只是撤销，如果任务已经在执行，则撤销无效</div><div class="line">rs.task_id  # 任务id</div><div class="line">app.control.revoke(rs.task_id) # 通过task_id撤销</div><div class="line">app.control.revoke(rs.task_id, terminate=True) ＃ 撤销正在执行的任务，默认使用TERM信号</div><div class="line">app.control.revoke(rs.task_id, terminate=True, signal=&apos;SIGKILL&apos;) # 撤销正在执行的任务，使用KILL信号</div><div class="line"># 而在最新的celery3版本中，这样停止一个任务</div><div class="line">from .. import celery  # 就是创建的celery实例</div><div class="line">celery.control.terminate(task_id)</div><div class="line"># 其实本质还是调用了revoke</div><div class="line">return self.revoke(task_id, destination=destination, terminate=True, signal=signal, **kwargs)</div></pre></td></tr></table></figure>
+<h2 id="Celery监控工具Flower"><a href="#Celery监控工具Flower" class="headerlink" title="Celery监控工具Flower"></a>Celery监控工具Flower</h2><p><code>pip install flower</code></p>
+<p>需要在celery_settings中指定<code>CELERY_SEND_TASK_SENT_EVENT = True</code>，然后和启动celery同样的目录下运行<code>flower -A backend.celery --port=5555</code>，即可看到管理界面了。访问<code>http://localhost:5555</code></p>
+<h2 id="使用自动扩展"><a href="#使用自动扩展" class="headerlink" title="使用自动扩展"></a>使用自动扩展</h2><p><code>celery -A proj worker -l info --autoscale=6,3</code>表示平时保持3个进程，最大并发进程数可以达到6个。</p>
+<h2 id="在Celery-tasks里面使用多进程"><a href="#在Celery-tasks里面使用多进程" class="headerlink" title="在Celery tasks里面使用多进程"></a>在Celery tasks里面使用多进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">from celery import Celery</div><div class="line">import time</div><div class="line">import multiprocessing as mp</div><div class="line">app = Celery(&apos;proj&apos;, broker=&apos;amqp://admin:admin@ip:5672&apos;, include=&quot;tasks&quot;)</div><div class="line">def test_func(i):</div><div class="line">    print &quot;beg...:&quot;, i</div><div class="line">    time.sleep(5)</div><div class="line">    print &quot;....end:&quot;, i</div><div class="line">    return i * 5</div><div class="line">@app.task</div><div class="line">def fun_1(n):</div><div class="line">    curr_proc = mp.current_process()</div><div class="line">    curr_proc.daemon = False</div><div class="line">    p = mp.Pool(mp.cpu_count())</div><div class="line">    curr_proc.daemon = True</div><div class="line">    for i in range(n):</div><div class="line">        p.apply_async(test_func, args=(i,))</div><div class="line">    p.close()</div><div class="line">    p.join()</div><div class="line">    return 1</div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.start()</div></pre></td></tr></table></figure>
+<p>直接启动多进程是肯定不可以的，因为是守候进程curr_proc.daemon=True，所以启多进程之前主动设置为非守候进程curr_proc.daemon=False，启动了以后再设为守候进程</p>
+<p><strong><em>参考自：Python Web 开发实战 – 董伟明</em></strong></p>
 
 	
 	</div>
-  <a type="button" href="/2017/09/30/Python程序性能分析/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/08/09/Celery使用以及消息队列/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -570,11 +392,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/09/28/heapq/" >翻译 - heapq — Heap queue algorithm</a>
+			<a href="/2017/08/08/tqdm 详解/" >tqdm 详解</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-09-28 12:01:46  </div>
+		<div class="date">post @ 2017-08-08 16:26:11  </div>
 		</div>
 	</div>
 	
@@ -584,49 +406,334 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>翻译自<a href="https://docs.python.org/3/library/heapq.html" target="_blank" rel="external">heapq — Heap queue algorithm</a></p>
-<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>这个模块实现了堆队列算法，也被称为优先队列算法。</p>
-<p>堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有<code>heap[k] &lt;= heap[2*k+1]</code>和<code>heap[k] &lt;= heap[2*k+2]</code>，对于第n层树，其有<code>2^(n-1)</code>个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素将会被认为是无穷大的。堆中有意思的特性是最小的元素总是在树的根部，即heap[0]。</p>
-<p>下面的API有两点不同于教科书上的堆算法：</p>
-<ul>
-<li>我们的索引从0开始，这样使得父节点和其子节点的关系有所不同，但是这样在Python里更加合适，因为Python里就是索引从0开始。</li>
-<li>我们的pop方法会返回最小的元素，而不是最大的，也就是最小堆，最大堆通常在原地排序很有用</li>
-</ul>
-<p>这两个使得可以在普通的Python列表中获取堆中元素，heap[0]就是最小的元素，heap.sort()维护堆。</p>
-<p>为了创建一个堆，使用列表将其初始化为<code>[]</code>，或者你也可以通过<code>heapify()</code>将一个列表转换成堆。</p>
-<p>提供下面的方法</p>
-<ul>
-<li><code>heappush(heap, item)</code></li>
-<li><code>heappop(heap)</code></li>
-<li><code>heappushpop(heap, item)</code></li>
-</ul>
-<p>将item push到堆里，并且pop出最小的元素，比先执行heappush()然后执行heappop()更有效率</p>
-<ul>
-<li><code>heapify(x)</code></li>
-<li><code>heapreplace(heap, item)</code></li>
-</ul>
-<p>pop并且返回最小的元素，并且push一个新的元素，堆的大小不会改变。这个步骤比先执行heappop()然后执行heappush()更有效率，并且在使用一个固定大小的堆会比较合适。这个函数总会返回一个元素，并且以item替换。</p>
-<p>返回的元素可能比插入的元素要大，使用heappushpop将会返回一个比插入元素小或者等于的元素。</p>
-<ul>
-<li><code>merge(*iterables, key=None, reverse=False)</code></li>
-</ul>
-<p>将多个排序的输入转换成一个排序后的输出，返回一个排序后的迭代器。和<code>sorted(itertools.chain(*iterables))</code>类似，但是它会返回迭代对象，而不是将数据一次性放入内存。</p>
-<p>两个可选参数必须使用成关键字参数。</p>
-<p>key指定了如何进行排序，reverse如果是True就会反转。</p>
-<ul>
-<li><code>nlargest(n, iterable, key=None)</code></li>
-</ul>
-<p>返回一个迭代器的前n个大的元素列表，key如果提供，指定进行比较的函数。</p>
-<ul>
-<li><code>nsmallest(n, iterable, key=None)</code></li>
-</ul>
-<p>对于n比较小的时候比较高效。如果比较大，使用<code>sorted()</code>函数更加高效，当n等于1的时候，使用min和max更高效。如果要重复使用这几个函数，那么考虑将其转换成heap。</p>
-<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>堆排序可以通过向堆里push元素，然后每次pop出最小的元素来实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def heapsort(iterable):</div><div class="line">...     h = []</div><div class="line">...     for value in iterable:</div><div class="line">...         heappush(h, value)</div><div class="line">...     return [heappop(h) for i in range(len(h))]</div></pre></td></tr></table></figure>
+		<p>最近用到了一个库<a href="https://github.com/noamraph/tqdm" target="_blank" rel="external">tqdm</a>很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。</p>
+<p>以下是运行效果：</p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" alt="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png"></p>
+<p>那么就来看看这个库吧</p>
+<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p>首先这个库的用法是这样的，很简单，这样运行后，就会有输出进度条了。简直丧心病狂的简单，那到底是怎么做到的呢！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from tqdm import tqdm</div><div class="line">for i in tqdm(range(10000)):</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<h1 id="tqdm"><a href="#tqdm" class="headerlink" title="tqdm"></a><code>tqdm</code></h1><p>点击tqdm后进入源代码模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">def tqdm(iterable, desc=&apos;&apos;, total=None, leave=False, file=sys.stderr,</div><div class="line">         mininterval=0.5, miniters=1):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    给定一个可迭代对象，返回一个可以迭代的对象，但是会打印出进度条来，并且每当有一个元素被迭代的时候就可以更新运行时间和剩余时间以及进度条</div><div class="line">    desc: 包含一个简短的string，用来描述进度条，会在一行的最前面</div><div class="line">    total: 可以给定预期的迭代次数，如果没有给定，将会使用len(iterable)</div><div class="line">    如果leave为False，则tqdm在完成后删除屏幕上的进度条</div><div class="line">    如果少于mininterval秒或者miniters个迭代上次进度条更新的时候已经过了，将不会再次更新，也就是说，首先会检测是否到迭代个数了，然后才会检测时间</div><div class="line">    file:表示输出位置，默认是sys.stderr</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    if total is None:</div><div class="line">        try:</div><div class="line">            total = len(iterable)</div><div class="line">        except TypeError:</div><div class="line">            total = None</div><div class="line"></div><div class="line">    # 如果给定desc，才会有prefix</div><div class="line">    prefix = desc+&apos;: &apos; if desc else &apos;&apos;</div><div class="line"></div><div class="line">    sp = StatusPrinter(file)</div><div class="line">    sp.print_status(prefix + format_meter(0, total, 0))</div><div class="line"></div><div class="line">    start_t = last_print_t = time.time()</div><div class="line">    last_print_n = 0</div><div class="line">    n = 0</div><div class="line">    for obj in iterable:</div><div class="line">        # 居然是一个生成器函数，每次迭代会返回迭代元素</div><div class="line">        # 然后继续执行下面的逻辑，然后再在此处暂停</div><div class="line">        yield obj</div><div class="line">        # Now the object was created and processed, so we can print the meter.</div><div class="line">        n += 1</div><div class="line">        # 首先判断迭代次数</div><div class="line">        if n - last_print_n &gt;= miniters:</div><div class="line">            # We check the counter first, to reduce the overhead of time.time()</div><div class="line">            cur_t = time.time()</div><div class="line">            # 其次判断间隔时间</div><div class="line">            if cur_t - last_print_t &gt;= mininterval:</div><div class="line">                sp.print_status(prefix + format_meter(n, total, cur_t-start_t))</div><div class="line">                last_print_n = n</div><div class="line">                last_print_t = cur_t</div><div class="line">    # 如果leave为False，最后屏幕上就会清除进度条</div><div class="line">    if not leave:</div><div class="line">        sp.print_status(&apos;&apos;)</div><div class="line">        sys.stdout.write(&apos;\r&apos;)</div><div class="line">    else:</div><div class="line">        if last_print_n &lt; n:</div><div class="line">            cur_t = time.time()</div><div class="line">            # 将进度条输满</div><div class="line">            sp.print_status(prefix + format_meter(n, total, cur_t-start_t))</div><div class="line">        file.write(&apos;\n&apos;)</div></pre></td></tr></table></figure>
+<p>可以看到主逻辑还是很简单的，但是关键是在于这个<code>StatusPrinter</code>和<code>format_meter</code>是如何在终端上输出的</p>
+<h1 id="format-meter"><a href="#format-meter" class="headerlink" title="format_meter"></a><code>format_meter</code></h1><p>这个函数就是专门来控制进度条打印的，传入已经完成的迭代次数，总的迭代次数和已经耗费的时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">def format_meter(n, total, elapsed):</div><div class="line">    if n &gt; total:</div><div class="line">        total = None</div><div class="line"></div><div class="line">    elapsed_str = format_interval(elapsed)</div><div class="line">    # 一秒执行几个</div><div class="line">    rate = &apos;%5.2f&apos; % (n / elapsed) if elapsed else &apos;?&apos;</div><div class="line"></div><div class="line">    if total:</div><div class="line">        # 如果有总数，那么将输出进度条</div><div class="line"></div><div class="line">        # 目前进行的比例</div><div class="line">        frac = float(n) / total</div><div class="line"></div><div class="line">        N_BARS = 10</div><div class="line">        # 进度条的长度</div><div class="line">        bar_length = int(frac*N_BARS)</div><div class="line">        # 整个进度条</div><div class="line">        bar = &apos;#&apos;*bar_length + &apos;-&apos;*(N_BARS-bar_length)</div><div class="line"></div><div class="line">        # 进行的百分比 %%输出百分号</div><div class="line">        percentage = &apos;%3d%%&apos; % (frac * 100)</div><div class="line"></div><div class="line">        # 剩余时间</div><div class="line">        left_str = format_interval(elapsed / n * (total-n)) if n else &apos;?&apos;</div><div class="line"></div><div class="line">        # 返回进度条和时间</div><div class="line">        return &apos;|%s| %d/%d %s [elapsed: %s left: %s, %s iters/sec]&apos; % (</div><div class="line">            bar, n, total, percentage, elapsed_str, left_str, rate)</div><div class="line"></div><div class="line">    else:</div><div class="line">        # 如果没有total，则直接返回目前进行的，所花时间和速度字符串</div><div class="line">        return &apos;%d [elapsed: %s, %s iters/sec]&apos; % (n, elapsed_str, rate)</div></pre></td></tr></table></figure>
+<p>其中<code>format_interval</code>是用来将时间格式化的函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def format_interval(t):</div><div class="line">    # 首先求出时分秒，divmod输出分别是商和余数</div><div class="line">    mins, s = divmod(int(t), 60)</div><div class="line">    h, m = divmod(mins, 60)</div><div class="line">    if h:</div><div class="line">        return &apos;%d:%02d:%02d&apos; % (h, m, s)</div><div class="line">    else:</div><div class="line">        return &apos;%02d:%02d&apos; % (m, s)</div></pre></td></tr></table></figure>
+<p>可以看到，这里就是对进度条的长度之类做了控制，进度条总长一定，然后进行的长度和剩余的长度根据已经执行的进行控制，然后格式化时间以及剩余时间，返回一个字符串。</p>
+<h1 id="StatusPrinter"><a href="#StatusPrinter" class="headerlink" title="StatusPrinter"></a><code>StatusPrinter</code></h1><p>源代码很少，关键在于<code>self.file.write</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class StatusPrinter(object):</div><div class="line">    def __init__(self, file):</div><div class="line">        self.file = file</div><div class="line">        # 记录上次的打印长度</div><div class="line">        self.last_printed_len = 0</div><div class="line"></div><div class="line">    def print_status(self, s):</div><div class="line">        self.file.write(&apos;\r&apos;+s+&apos; &apos;*max(self.last_printed_len-len(s), 0))</div><div class="line">        self.file.flush()</div><div class="line">        self.last_printed_len = len(s)</div></pre></td></tr></table></figure>
+<p>这里涉及一个<code>\r</code>和<code>\n</code>的区分，<code>\r</code>是回车，就是回到这一行的开始，<code>\n</code>是走纸，会到下一行，但是位置还在目前的列，所以<code>\r\n</code>就是到下一行的行首，但是Linux只用<code>\n</code>来换行，所以这里用<code>\r</code>来回到开头进行打印</p>
+<p>然后后面的就很好理解了，比如这一次打印长度80，下一次是50，那么多余的30就要用空白符来覆盖掉。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这就是tqdm库的主要部分了，看起来挺简单的，要是自己做，需要控制很多细节问题，不过真的是学到了。</p>
 
 	
 	</div>
-  <a type="button" href="/2017/09/28/heapq/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/08/08/tqdm 详解/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/07/grequests 详解/" >grequests 详解</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-07 17:03:59  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>前段时间看到这个grequests库，感觉还是蛮有意思的，所以今天来对这个库拆解拆解。这个库是崇拜的大神kennethreitz写的。Github地址：<a href="https://github.com/kennethreitz/grequests" target="_blank" rel="external">https://github.com/kennethreitz/grequests</a></p>
+<p>首先看到文档上给的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">import grequests</div><div class="line"></div><div class="line">urls = [</div><div class="line">    &apos;http://www.heroku.com&apos;,</div><div class="line">    &apos;http://python-tablib.org&apos;,</div><div class="line">    &apos;http://httpbin.org&apos;,</div><div class="line">    &apos;http://python-requests.org&apos;,</div><div class="line">    &apos;http://fakedomain/&apos;,</div><div class="line">    &apos;http://kennethreitz.com&apos;</div><div class="line">]</div><div class="line"># 创建没有发送的request集合</div><div class="line">rs = (grequests.get(u) for u in urls)</div><div class="line"># 发送</div><div class="line">grequests.map(rs)</div><div class="line"></div><div class="line"># 为了防止超时和异常发生，可以指定一个异常处理器</div><div class="line">def exception_handler(request, exception):</div><div class="line">    print(&quot;Request failed&quot;)</div><div class="line"></div><div class="line">reqs = [</div><div class="line">   grequests.get(&apos;http://httpbin.org/delay/1&apos;, timeout=0.001),</div><div class="line">   grequests.get(&apos;http://fakedomain/&apos;),</div><div class="line">   grequests.get(&apos;http://httpbin.org/status/500&apos;)]</div><div class="line"></div><div class="line">grequests.map(reqs, exception_handler=exception_handler)</div><div class="line"></div><div class="line">另外，可以使用imap来提高性能</div></pre></td></tr></table></figure>
+<p>根据这个示例，我们来看看源代码</p>
+<h1 id="AsyncRequest"><a href="#AsyncRequest" class="headerlink" title="AsyncRequest"></a>AsyncRequest</h1><p>首先来看<code>grequests.get</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">get = partial(AsyncRequest, &apos;GET&apos;)</div><div class="line">options = partial(AsyncRequest, &apos;OPTIONS&apos;)</div></pre></td></tr></table></figure>
+<p>它和其他诸多HTTP方法一样，只是一个快捷方式，其本质是调用了AsyncRequest，看到这个名字就应该知道是异步的Request，所以应该是对普通的Request做了封装和修改:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class AsyncRequest(object):</div><div class="line">    &quot;&quot;&quot; 异步的Request，接收和Session.request相同的参数，还有一些额外的参数</div><div class="line">    session： 发送请求的session</div><div class="line">    callback： 在返回对象上的回调函数，和传递hooks=&#123;&apos;response&apos;: callback&#125;一样</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    def __init__(self, method, url, **kwargs):</div><div class="line">        #: Request method</div><div class="line">        self.method = method</div><div class="line">        #: URL to request</div><div class="line">        self.url = url</div><div class="line">        #: Associated ``Session``</div><div class="line">        self.session = kwargs.pop(&apos;session&apos;, None)</div><div class="line">        if self.session is None:</div><div class="line">            # requests里的Session对象</div><div class="line">            self.session = Session()</div><div class="line"></div><div class="line">        callback = kwargs.pop(&apos;callback&apos;, None)</div><div class="line">        if callback:</div><div class="line">            kwargs[&apos;hooks&apos;] = &#123;&apos;response&apos;: callback&#125;</div><div class="line"></div><div class="line">        #: The rest arguments for ``Session.request``</div><div class="line">        self.kwargs = kwargs</div><div class="line">        #: Resulting ``Response``</div><div class="line">        self.response = None</div></pre></td></tr></table></figure>
+<p>可以看到使用<code>partial(AsyncRequest, &#39;GET&#39;)</code>会使得method默认为<code>GET</code>，然后再<code>rs = (grequests.get(u) for u in urls)</code>会形成一个生成器，里面生成AsyncRequest对象。下面来看看这些request是如何发送的：</p>
+<h1 id="map"><a href="#map" class="headerlink" title="map"></a>map</h1><p>之后程序会调用<code>grequests.map(rs)</code>，那么我们来看看map:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">def map(requests, stream=False, size=None, exception_handler=None, gtimeout=None):</div><div class="line">    &quot;&quot;&quot;并发的将Requests列表转换成响应</div><div class="line">    requests: Request对象的集合</div><div class="line">    stream: 如果为True，那么响应内容不会立即下载</div><div class="line">    size: 指定同时发起的请求数目，如果为None，就不会有限制</div><div class="line">    exception_handler: 回调函数，当异常发生的时候调用,参数是Request和Exception</div><div class="line">    gtimeout: Gevent合并所有的超时时间，单位为秒(与每个request的超时时间无关)</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    # 将生成器直接转换成list</div><div class="line">    requests = list(requests)</div><div class="line"></div><div class="line">    # gevent的Pool对象，是时候研究一波gevent了</div><div class="line">    pool = Pool(size) if size else None</div><div class="line">    # 调用send函数来发送请求</div><div class="line">    jobs = [send(r, pool, stream=stream) for r in requests]</div><div class="line">    # 等待所有的greenlet处理单元结束运行</div><div class="line">    gevent.joinall(jobs, timeout=gtimeout)</div><div class="line"></div><div class="line">    ret = []</div><div class="line"></div><div class="line">    # 处理所有的请求响应，并且处理异常</div><div class="line">    for request in requests:</div><div class="line">        if request.response is not None:</div><div class="line">            ret.append(request.response)</div><div class="line">        # 如果有异常处理器并且request有异常进行处理</div><div class="line">        elif exception_handler and hasattr(request, &apos;exception&apos;):</div><div class="line">            ret.append(exception_handler(request, request.exception))</div><div class="line">        else:</div><div class="line">            # 否则结果置为None</div><div class="line">            ret.append(None)</div><div class="line"></div><div class="line">    return ret</div></pre></td></tr></table></figure>
+<p>可以看到map函数很简单，大体流程就是建立了greenlet处理器池，然后对每个request进行调用，然后等待结束，最后得到响应并且处理响应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 如果给定size则创建greenlet池，否则为None</div><div class="line">pool = Pool(size) if size else None</div><div class="line">jobs = [send(r, pool, stream=stream) for r in requests]</div><div class="line">gevent.joinall(jobs, timeout=gtimeout)</div></pre></td></tr></table></figure>
+<p>所以问题的关键还是在于gevent那几行的调用，创建管理greenlet的池，用来限制并发，创建好了之后，调用这个pool然后去发送请求，最后等待所有的greenlet结束。</p>
+<h1 id="Gevent的并发"><a href="#Gevent的并发" class="headerlink" title="Gevent的并发"></a>Gevent的并发</h1><p>无论创建还是没有创建池，最终是要调用send方法的，来看看这个函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def send(r, pool=None, stream=False):</div><div class="line">    &quot;&quot;&quot;使用指定的pool发送request对象，如果pool没有指定，这个方法就会阻塞，Pools很有用，因为你可以指定并发限制&quot;&quot;&quot;</div><div class="line">    if pool is not None:</div><div class="line">        return pool.spawn(r.send, stream=stream)</div><div class="line"></div><div class="line">    return gevent.spawn(r.send, stream=stream)</div></pre></td></tr></table></figure>
+<h2 id="gevent-spawn"><a href="#gevent-spawn" class="headerlink" title="gevent.spawn"></a><code>gevent.spawn</code></h2><p><code>gevent.spawn</code>创建一个新的Greenlet对象，并且排定运行调用<code>function(*args, **kwargs)</code>，这个可以使用<code>gevent.spawn</code>或者是<code>Greenlet.spawn</code>,其实<code>gevent.spawn</code>就是<code>Greenlet.spawn</code>，并且最后会调用Greenlet的类方法，首先实例化一个对象，然后调用start方法，所以也相当于调用<code>Greenlet(*args, **kwargs)</code></p>
+<p>这也是类方法的一个用法，另外的实例化对象的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@classmethod</div><div class="line">def spawn(cls, *args, **kwargs):</div><div class="line">    g = cls(*args, **kwargs)</div><div class="line">    g.start()</div><div class="line">    return g</div></pre></td></tr></table></figure>
+<h2 id="pool-spawn"><a href="#pool-spawn" class="headerlink" title="pool.spawn"></a><code>pool.spawn</code></h2><p>这个方法使用给定的参数开始一个新的greenlet，通常是传递给Greenlet构造函数，并且将其加入这个pool管理的greenlets集合</p>
+<p>Pool是Group的子类，提供了限制并发的方法，其spawn方法在greenlets数目达到上限的时候阻塞，直到有一个可用的greenlet。</p>
+<p>这个方法也是使用pool实例为Greenlet创建一个实例，然后start it</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def spawn(self, *args, **kwargs):</div><div class="line">    greenlet = self.greenlet_class(*args, **kwargs)</div><div class="line">    self.start(greenlet)</div><div class="line">    return greenlet</div></pre></td></tr></table></figure>
+<h2 id="r-send"><a href="#r-send" class="headerlink" title="r.send"></a>r.send</h2><p>这个是<code>AsyncRequest</code>的send方法，比较简单，就是发送请求，等待响应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def send(self, **kwargs):</div><div class="line">    merged_kwargs = &#123;&#125;</div><div class="line">    merged_kwargs.update(self.kwargs)</div><div class="line">    merged_kwargs.update(kwargs)</div><div class="line">    try:</div><div class="line">        self.response = self.session.request(self.method, self.url, **merged_kwargs)</div><div class="line">    except Exception as e:</div><div class="line">        self.exception = e</div><div class="line">        self.traceback = traceback.format_exc()</div><div class="line">    return self</div></pre></td></tr></table></figure>
+<h1 id="imap"><a href="#imap" class="headerlink" title="imap"></a>imap</h1><p>imap据说可以提高性能，快来看看吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">def imap(requests, stream=False, size=2, exception_handler=None):</div><div class="line">    &quot;&quot;&quot;并发的将Request对象的生成器转换成响应的生成器。</div><div class="line">    requests: Request对象的生成器</div><div class="line">    stream: 如果为True，则不会立即自动下载</div><div class="line">    size: 同时发起的请求数，默认为2</div><div class="line">    exception_handler: 当发生异常时候回调</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    pool = Pool(size)</div><div class="line"></div><div class="line">    def send(r):</div><div class="line">        return r.send(stream=stream)</div><div class="line"></div><div class="line">    for request in pool.imap_unordered(send, requests):</div><div class="line">        if request.response is not None:</div><div class="line">            yield request.response</div><div class="line">        elif exception_handler:</div><div class="line">            exception_handler(request, request.exception)</div><div class="line"></div><div class="line">    pool.join()</div></pre></td></tr></table></figure>
+<p>可以看到这个函数主要是使用了<code>pool.imap_unordered</code>，其实pool还有一个方法是<code>imap</code></p>
+<h2 id="pool-imap"><a href="#pool-imap" class="headerlink" title="pool.imap"></a><code>pool.imap</code></h2><p>和<code>itertools.imap()</code>是一致的，<code>itertools.imap()</code>可以用于迭代无穷序列，比如<code>itertools.imap(lambda x, y: x * y, [10, 20, 30], itertools.count(1))</code>，如果两个序列长短不一致，以短的为准，并且imap实现了惰性计算，类似生成器。</p>
+<p><code>pool.imap</code>可以并行运行，按顺序从迭代对象中取出元素迭代，应用在函数上，然后收集结果。</p>
+<p>如果限制了可以同时进行的greenlets数量，那么最多只有这么多个任务同时进行。</p>
+<h2 id="pool-imap-unordered"><a href="#pool-imap-unordered" class="headerlink" title="pool.imap_unordered"></a><code>pool.imap_unordered</code></h2><p>和imap一样，返回的结果顺序是随意的，比起imap更加轻量级，如果顺序不重要的话，首先应该选用这个。</p>
+<h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2><p>等待这个group的greenlets都运行完，如果这个group没有greenlet的话，立即返回</p>
+<p>可以看到，如果不要求顺序的话，<code>imap_unordered</code>会比imap更加高效，同时imap版本肯定比map版本性能好，因为map版本必须全部运行完才能拿数据，但是imap版本只要有greenlet有结果就可以取出来。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这个库就这么多内容，其实主要是使用gevent封装了一层requests，所以核心就是使用gevent，gevent怎么用，如何用，待我继续研究。</p>
+<p>不过通过看这个库，也了解到了简单的gevent的用法。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/07/grequests 详解/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/03/thriftpy_2_processor/" >thriftpy源码解析(二) - 处理器</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-03 17:14:25  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="从make-server入手"><a href="#从make-server入手" class="headerlink" title="从make_server入手"></a>从<code>make_server</code>入手</h1><p>首先来看看官方给的服务器demo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">pingpong_thrift = thriftpy.load(&quot;pingpong.thrift&quot;, module_name=&quot;pingpong_thrift&quot;)</div><div class="line"></div><div class="line">from thriftpy.rpc import make_server</div><div class="line"></div><div class="line">class Dispatcher(object):</div><div class="line">    def ping(self):</div><div class="line">        return &quot;pong&quot;</div><div class="line"></div><div class="line">server = make_server(pingpong_thrift.PingPong, Dispatcher(), &apos;127.0.0.1&apos;, 6000)</div><div class="line">server.serve()</div></pre></td></tr></table></figure>
+<p>首先载入thrift文件没话说，下来是创建服务器，它是直接用里面的一个函数<code>make_server</code> ，这个函数会接收thrift导入协议中定义的服务和处理这个服务的处理对象，以及host和port作为参数，然后调用<code>serve()</code>方法，来创建一个服务器。</p>
+<p>那么关键就在<code>make_server</code>函数上了，进入查看源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">def make_server(service, handler, host=&quot;localhost&quot;, port=9090, unix_socket=None, proto_factory=TBinaryProtocolFactory(), trans_factory=TBufferedTransportFactory(), client_timeout=3000, certfile=None):</div><div class="line">truetrue# 为传入的服务和处理方法创建处理器</div><div class="line">    processor = TProcessor(service, handler)</div><div class="line"></div><div class="line">truetrue# 如果是Unix_socket</div><div class="line">    if unix_socket:</div><div class="line">        server_socket = TServerSocket(unix_socket=unix_socket)</div><div class="line">        if certfile:</div><div class="line">            warnings.warn(&quot;SSL only works with host:port, not unix_socket.&quot;)</div><div class="line">    elif host and port:</div><div class="line">        if certfile:</div><div class="line">            server_socket = TSSLServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout,</div><div class="line">                certfile=certfile)</div><div class="line">        else:</div><div class="line">            server_socket = TServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout)</div><div class="line">    else:</div><div class="line">        raise ValueError(&quot;Either host/port or unix_socket must be provided.&quot;)</div><div class="line"></div><div class="line">    server = TThreadedServer(processor, server_socket,</div><div class="line">                             iprot_factory=proto_factory,</div><div class="line">                             itrans_factory=trans_factory)</div><div class="line">    return server</div></pre></td></tr></table></figure>
+<p>可以看到，创建一个服务器其实过程非常简单，首先创建一个处理器Processor，然后创建一个Socket，接下来创建服务器，这里使用的是<code>TThreadedServer</code>，顾名思义是多线程的服务器了。</p>
+<p>其中有进行判断<code>unix_socket</code>和SSL的，SSL不多解释了。但是<code>unix_socket</code>是什么呢，UNIX 域套接字（UNIX domain socket），即通过文件系统（而非网络地址）进行寻址和访问的套接字。因此其不需要host和port。其实是进程间通信的一种方式吧，在一台电脑上进程间通信也可以使用TCP套接字或者UDP套接字，但它们的效率都没有域套接字高，另外域套接字使用的库函数和TCP套接字使用的库函数一样，这样操作比较简单。</p>
+<p>那么不管这些<code>unix_socket</code>还有SSL这些东西，我们抽象一下就可以发现，其实只有5个东西：</p>
+<ul>
+<li>处理器 Processor 默认使用的是<code>TProcessor</code></li>
+<li>套接字 socket 默认使用的是<code>TServerSocket</code></li>
+<li>协议 默认使用的是<code>TBinaryProtocolFactory()</code></li>
+<li>传输类型 默认使用的是<code>TBufferedTransportFactory()</code></li>
+<li>服务器类型 默认使用的是<code>TThreadedServer</code></li>
+</ul>
+<p>那么要自定义一个自己的服务器，那么只要自定义这些就行了，比如我不想用多线程的服务器，我想用基于协程的服务器，自己写一个就好了<code>= = !</code></p>
+<p>下面一系列文章，将对这些内容进行分析讲解，使得大家可以轻松的自定义的使用thriftpy</p>
+<h1 id="处理器-Processor"><a href="#处理器-Processor" class="headerlink" title="处理器 Processor"></a>处理器 Processor</h1><p>目前在源码中看到的有2个Processor，一个是<code>TProcessor</code>，一个是<code>TMultiplexedProcessor</code>，另外还有一个Processor工厂<code>TProcessorFactory</code>。所以处理器总共就两个，一个是单服务处理器，一个是多服务处理器。</p>
+<p>处理器中<code>process</code>方法是外部比如服务器调用的方法，而<code>process_in</code>是处理器内部调用的处理逻辑</p>
+<h2 id="TProcessor"><a href="#TProcessor" class="headerlink" title="TProcessor"></a><code>TProcessor</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line">class TProcessor(object):</div><div class="line">    &quot;&quot;&quot;Base class for procsessor, which works on two streams.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, service, handler):</div><div class="line">        self._service = service</div><div class="line">        self._handler = handler</div><div class="line"></div><div class="line">    def process_in(self, iprot):</div><div class="line">        api, type, seqid = iprot.read_message_begin()</div><div class="line">        if api not in self._service.thrift_services:</div><div class="line">            iprot.skip(TType.STRUCT)</div><div class="line">            iprot.read_message_end()</div><div class="line">            return api, seqid, TApplicationException(TApplicationException.UNKNOWN_METHOD), None  # noqa</div><div class="line"></div><div class="line">        args = getattr(self._service, api + &quot;_args&quot;)()</div><div class="line">        args.read(iprot)</div><div class="line">        iprot.read_message_end()</div><div class="line">        result = getattr(self._service, api + &quot;_result&quot;)()</div><div class="line"></div><div class="line">        # convert kwargs to args</div><div class="line">        api_args = [args.thrift_spec[k][1] for k in sorted(args.thrift_spec)]</div><div class="line"></div><div class="line">        def call():</div><div class="line">            f = getattr(self._handler, api)</div><div class="line">            return f(*(args.__dict__[k] for k in api_args))</div><div class="line"></div><div class="line">        return api, seqid, result, call</div><div class="line"></div><div class="line">    def send_exception(self, oprot, api, exc, seqid):</div><div class="line">        oprot.write_message_begin(api, TMessageType.EXCEPTION, seqid)</div><div class="line">        exc.write(oprot)</div><div class="line">        oprot.write_message_end()</div><div class="line">        oprot.trans.flush()</div><div class="line"></div><div class="line">    def send_result(self, oprot, api, result, seqid):</div><div class="line">        oprot.write_message_begin(api, TMessageType.REPLY, seqid)</div><div class="line">        result.write(oprot)</div><div class="line">        oprot.write_message_end()</div><div class="line">        oprot.trans.flush()</div><div class="line"></div><div class="line">    def handle_exception(self, e, result):</div><div class="line">        for k in sorted(result.thrift_spec):</div><div class="line">            if result.thrift_spec[k][1] == &quot;success&quot;:</div><div class="line">                continue</div><div class="line"></div><div class="line">            _, exc_name, exc_cls, _ = result.thrift_spec[k]</div><div class="line">            if isinstance(e, exc_cls):</div><div class="line">                setattr(result, exc_name, e)</div><div class="line">                break</div><div class="line">        else:</div><div class="line">            raise</div><div class="line"></div><div class="line">    def process(self, iprot, oprot):</div><div class="line">        api, seqid, result, call = self.process_in(iprot)</div><div class="line"></div><div class="line">        if isinstance(result, TApplicationException):</div><div class="line">            return self.send_exception(oprot, api, result, seqid)</div><div class="line"></div><div class="line">        try:</div><div class="line">            result.success = call()</div><div class="line">        except Exception as e:</div><div class="line">            # raise if api don&apos;t have throws</div><div class="line">            self.handle_exception(e, result)</div><div class="line"></div><div class="line">        if not result.oneway:</div><div class="line">            self.send_result(oprot, api, result, seqid)</div></pre></td></tr></table></figure>
+<p>具体的就不讲解了，主要的东西就是这个处理器可以将一个服务和一个处理方法对应起来，这个处理方法一般是类的实例，然后服务里定义的的函数一般就是这个类的方法，在<code>process_in</code>方法里面定义了call函数，它其实就是调用handler的具体方法，其中api就是thrift中定义的服务的api。</p>
+<p>另外需要根据不同的协议来确定返回的值，比如下面的例子，返回的是字典，我就需要使用<code>TJSONProtocolFactory</code>，还有其他的一些协议，后面再讲。</p>
+<p>handler的话比如这样，实例方法也ok，我这里函数都是独立的，所以使用静态方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class CalcAbility(object):</div><div class="line">    @staticmethod</div><div class="line">    def sync_ability(fundId, assets, flows, stocks, start, stop, calc_type):</div><div class="line">        try:</div><div class="line">            assert fundId and assets and start and stop, &quot;fundId or assets or start or end not found - testing&quot;</div><div class="line">            start_date = strpdate(start)</div><div class="line">            stop_date = strpdate(stop)</div><div class="line">            calc_type = calc_type or DEFAULT_CALC_TYPE</div><div class="line">            res = is_continuous_trade_day(start, stop, assets)</div><div class="line">            assert res[0], res[1]</div><div class="line">        except Exception as e:</div><div class="line">            sentry_logger.exception(e)</div><div class="line">            return gen_response(data=None, msg=str(e), errorcode=1)</div><div class="line">        return assets</div></pre></td></tr></table></figure>
+<p>thrift文件定义如下，thrift文件定义花样比较多，后面再说。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="TMultiplexedProcessor"><a href="#TMultiplexedProcessor" class="headerlink" title="TMultiplexedProcessor"></a><code>TMultiplexedProcessor</code></h2><p>这个处理器支持多个服务分别对应不同的处理方法，其实是一堆<code>TProcessor</code>和处理方法的集合，使用字典实现，其中<code>service_name</code>对应<code>processor</code>，所以定义<code>TMultiplexedProcessor</code>后，必须进行注册：<code>register_processor</code></p>
+<p>源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">class TMultiplexedProcessor(TProcessor):</div><div class="line">    SEPARATOR = &quot;:&quot;</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        self.processors = &#123;&#125;</div><div class="line"></div><div class="line">    def register_processor(self, service_name, processor):</div><div class="line">        if service_name in self.processors:</div><div class="line">            raise TApplicationException(</div><div class="line">                type=TApplicationException.INTERNAL_ERROR,</div><div class="line">                message=&apos;processor for `&#123;0&#125;` already registered&apos;</div><div class="line">                .format(service_name))</div><div class="line">        self.processors[service_name] = processor</div><div class="line"></div><div class="line">    def process_in(self, iprot):</div><div class="line">        api, type, seqid = iprot.read_message_begin()</div><div class="line">        if type not in (TMessageType.CALL, TMessageType.ONEWAY):</div><div class="line">            raise TException(&quot;TMultiplex protocol only supports CALL &amp; ONEWAY&quot;)</div><div class="line">        if TMultiplexedProcessor.SEPARATOR not in api:</div><div class="line">            raise TException(&quot;Service name not found in message. &quot;</div><div class="line">                             &quot;You should use TMultiplexedProtocol in client.&quot;)</div><div class="line"></div><div class="line">        service_name, api = api.split(TMultiplexedProcessor.SEPARATOR)</div><div class="line">        if service_name not in self.processors:</div><div class="line">            iprot.skip(TType.STRUCT)</div><div class="line">            iprot.read_message_end()</div><div class="line">            e = TApplicationException(TApplicationException.UNKNOWN_METHOD)</div><div class="line">            return api, seqid, e, None</div><div class="line"></div><div class="line">        proc = self.processors[service_name]</div><div class="line">        args = getattr(proc._service, api + &quot;_args&quot;)()</div><div class="line">        args.read(iprot)</div><div class="line">        iprot.read_message_end()</div><div class="line">        result = getattr(proc._service, api + &quot;_result&quot;)()</div><div class="line"></div><div class="line">        # convert kwargs to args</div><div class="line">        api_args = [args.thrift_spec[k][1] for k in sorted(args.thrift_spec)]</div><div class="line"></div><div class="line">        def call():</div><div class="line">            f = getattr(proc._handler, api)</div><div class="line">            return f(*(args.__dict__[k] for k in api_args))</div><div class="line"></div><div class="line">        return api, seqid, result, call</div></pre></td></tr></table></figure>
+<p>使用<code>TMultiplexedProcessor</code>来注册几个服务和处理器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">thrift_app = TMultiplexedProcessor()</div><div class="line"></div><div class="line">calc_processor = TProcessor(ability_thrift.Calc, CalcAbility())</div><div class="line">read_processor = TProcessor(ability_thrift.Read, ReadAbility())</div><div class="line"></div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Calc&apos;, calc_processor)</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Read&apos;, read_processor)</div></pre></td></tr></table></figure>
+<p>其中Read服务在thrift文件中定义，然后处理方法<code>ReadAbility</code>根据thrift协议来定，其实就是通过<code>service_name</code>找到对应的处理器，其他的就和<code>TProcessor</code>一样了</p>
+<h2 id="TProcessorFactory"><a href="#TProcessorFactory" class="headerlink" title="TProcessorFactory"></a><code>TProcessorFactory</code></h2><p>处理器工厂，感觉其实没什么卵用，源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class TProcessorFactory(object):</div><div class="line"></div><div class="line">    def __init__(self, processor_class, *args, **kwargs):</div><div class="line">        self.args = args</div><div class="line">        self.kwargs = kwargs</div><div class="line"></div><div class="line">        self.processor_class = processor_class</div><div class="line"></div><div class="line">    def get_processor(self):</div><div class="line">        return self.processor_class(*self.args, **self.kwargs)</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这一节对常用的<code>Processor</code>做了一个介绍，当然深入的实现细节没有讲到，毕竟太复杂，现在的目标只是做个介绍罢了。</p>
+<h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节我们将了解下<code>TServerSocket</code></p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/03/thriftpy_2_processor/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/03/Flask应用在Celery中使用current_app的思考/" >Flask应用在Celery中使用current_app的思考</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-03 16:29:40  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>写应用的时候遇到这样的一个问题，定义的celery task中无法使用<code>current_app</code>，并且有时候会出现pop wrong app context。</p>
+<p>这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的时候，根本就没有app这一系列东西，所以上下文栈就是空的，因此就不能使用app，以及<code>app.logger</code>了。</p>
+<p>知道这一点之后，就在celery的task调用的时候加上了<code>with app.app_context():</code>，但是有时候task执行出错的时候，或者运行完成的时候就会出现，<code>AssertionError(&#39;Popped wrong app context.  (&lt;flask.ctx.AppContext object at 0x7f4e1ed56d30&gt; instead of &lt;flask.ctx.AppContext object at 0x7f4e1f02c7f0&gt;)&#39;,)</code>，这个问题后来找到可能的原因是，多个celery worker执行的时候会创建多个app实例，并且对于一个进程的上下文栈进行了多次的上下文进栈，在发生错误的时候，就会导致出栈的上下文混乱。</p>
+<p>最后的解决方案是，给celery的Task类做猴子补丁，在调用task的时候，只使用唯一的app实例（对于每个进程来讲，上下文栈是不同的）进行上下文切换。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def make_celery(app):</div><div class="line">    celery = Celery(&apos;backend&apos;, broker=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB),</div><div class="line">                    backend=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB))</div><div class="line">    TaskBase = celery.Task</div><div class="line"></div><div class="line">    class ContextTask(TaskBase):</div><div class="line">        abstract = True</div><div class="line"></div><div class="line">        def __call__(self, *args, **kwargs):</div><div class="line">            with app.app_context():</div><div class="line">                return TaskBase.__call__(self, *args, **kwargs)</div><div class="line"></div><div class="line">    celery.Task = ContextTask</div><div class="line">    return celery</div></pre></td></tr></table></figure>
+<p>这样就可以开心的在celery的task里面使用<code>current_app</code>了</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/03/Flask应用在Celery中使用current_app的思考/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/02/thriftpy_1_introduction/" >thriftpy源码解析(一) - 综述</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-02 10:58:28  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>本文使用的工具是饿了么开发的<a href="https://github.com/eleme/thriftpy" target="_blank" rel="external">thriftpy</a>和<a href="https://github.com/eleme/gunicorn_thrift" target="_blank" rel="external">gunicorn_thrift</a></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h2><p>首先thrift是啥呢？thrift是一个软件框架，用来进行可扩展且跨语言的服务的开发。它结合了功能强大的软件堆栈和代码生成引擎，以构建在 C++, Java, Go,Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, JavaScript, Node.js, Smalltalk, and OCaml 这些编程语言间无缝结合的、高效的服务。</p>
+<h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>说thrift不得不提的是RPC, RPC(Remote Procedure Call Protocol) 远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>其实thrift是一种开源的跨语言的RPC服务框架，可以基于它进行RPC请求等的处理，而不用进行HTTP请求，减少资源消耗，提高效率。用于微服务是极好的，特别是数据量大的请求。</p>
+<h2 id="与HTTP的性能比较"><a href="#与HTTP的性能比较" class="headerlink" title="与HTTP的性能比较"></a>与HTTP的性能比较</h2><p>thrift 体积超小，使用起来比较麻烦，不如json容易，但是对于1.高并发、2.数据传输量大、3.多语言环境 比较适合。</p>
+<p>假定需要传输相同的内容，但使用不同的方式从 1、传输内容所产生的大小 2、传输过程中服务端和客户端所产生的开销，这2个方面进行比较，如下：</p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt=""></p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt=""></p>
+<h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><h2 id="thrift文件"><a href="#thrift文件" class="headerlink" title="thrift文件"></a>thrift文件</h2><p>首先定义thrift文件，这个文件相当于一个协议，在客户端和服务器都应该包含这个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring tdx_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue),</div><div class="line">truestring tdx_ability_status(),</div><div class="line">truestring tdx_increment(),</div><div class="line">truestring signal_ability(),</div><div class="line"></div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div><div class="line"></div><div class="line">service Read &#123;</div><div class="line">truestring summary(),</div><div class="line">truestring prices(),</div><div class="line">truestring ability()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中Calc和Read定义为两个服务，服务底下有多个函数，函数定义为返回值类型，函数名，函数参数</p>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><p>下来创建一个服务器，这里有多个服务，因此需要创建多个服务处理器，同时需要指定视情况而需要的协议和传输类型，最后选择需要的服务器。</p>
+<p>我们这里选择了<code>TJSONProtocolFactory()</code>和<code>TBufferedTransportFactory()</code>，服务器使用了<code>gunicorn_thrift</code>，后面会详细介绍这些东西。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">import os</div><div class="line">from thriftpy.transport import TServerSocket</div><div class="line">from thriftpy.thrift import TMultiplexedProcessor</div><div class="line">from thriftpy.rpc import TProcessor</div><div class="line">from config import THRIFT_HOST, THRIFT_PORT</div><div class="line">from .calc_ability import CalcAbility</div><div class="line">from .read_ability import ReadAbility</div><div class="line">dir_path = os.path.abspath(os.path.dirname(__file__))</div><div class="line">thrift_path = os.path.join(dir_path, &apos;ability.thrift&apos;)</div><div class="line"></div><div class="line"># 导入thrift文件</div><div class="line">ability_thrift = thriftpy.load(thrift_path, module_name=&quot;ability_thrift&quot;)</div><div class="line"># 创建socket</div><div class="line">server_socket = TServerSocket(host=THRIFT_HOST, port=THRIFT_PORT, client_timeout=None)</div><div class="line"># 创建thrift的主应用，这里的应用可以为多个服务注册多个处理器</div><div class="line">thrift_app = TMultiplexedProcessor()</div><div class="line"></div><div class="line"># 为每个服务创建处理器</div><div class="line">calc_processor = TProcessor(ability_thrift.Calc, CalcAbility())</div><div class="line">read_processor = TProcessor(ability_thrift.Read, ReadAbility())</div><div class="line"></div><div class="line"># 在thrift主应用中注册这些处理器</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Calc&apos;, calc_processor)</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Read&apos;, read_processor)</div></pre></td></tr></table></figure>
+<p>这样就创建了一个thrift应用，然后需要指定服务器，这里我们使用<code>gunicorn_thrift</code>，其实thriftpy里面有许多简单的服务器，比如单线程服务器，多线程服务器，但是这些服务器并不能满足生产需要。</p>
+<p>启动gunicorn服务器：<code>gunicorn_thrift thrift_abi:thrift_app -k thriftpy_sync --thrift-protocol-factory thriftpy.protocol:TJSONProtocolFactory --thrift-transport-factory thriftpy.transport:TBufferedTransportFactory</code></p>
+<p><code>-k</code>参数指定是同步还是异步，另外需要指定协议和传输方式</p>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>客户端就比较容易了，只需要导入thrift文件，并且根据协议和传输方式创建客户端就行了，然后客户端就可以远程调用服务器的方法函数了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">from thriftpy.protocol import TJSONProtocolFactory, TMultiplexedProtocolFactory</div><div class="line">from thriftpy.transport import TBufferedTransportFactory</div><div class="line">from thriftpy.rpc import make_client</div><div class="line"></div><div class="line"></div><div class="line">ability_thrift = thriftpy.load(&quot;ability.thrift&quot;, module_name=&quot;ability_thrift&quot;)</div><div class="line">client = make_client(ability_thrift.Calc, &apos;127.0.0.1&apos;, 5004, proto_factory=TMultiplexedProtocolFactory(TJSONProtocolFactory(), &apos;ability_thrift.Calc&apos;), trans_factory=TBufferedTransportFactory())</div><div class="line">client.tdx_ability()</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>thrift的使用是比直接HTTP请求要麻烦一点，并且如果服务器要改动函数签名，就需要更改thrift文件，并且客户端也需要同步，并且修改签名，但是这样的方式在微服务架构中带来的性能提升是很大的，值得作出这样的改变。</p>
+<h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节将对thriftpy中的核心组件进行解析。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/02/thriftpy_1_introduction/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/08/01/翻译 - Easy in-place file rewriting/" >翻译 - Easy in-place file rewriting</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-01 18:20:18  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>原文：<a href="http://www.zopatista.com/python/2013/11/26/inplace-file-rewriting/" target="_blank" rel="external">http://www.zopatista.com/python/2013/11/26/inplace-file-rewriting/</a></p>
+<p>使用上下文管理器进行无痛的文件重写。</p>
+<p>如果你需要就地处理文件，修改其内容并且重新输出在同一个位置，你可以使用<code>fileinput</code>模块使用<code>inplace</code>选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import fileinput</div><div class="line"></div><div class="line">for line in fileinput.input(somefilename, inplace=True):</div><div class="line">    line = &apos;additional information &apos; + line.rstrip(&apos;\n&apos;)</div><div class="line">    print line</div></pre></td></tr></table></figure>
+<p><code>fileinput</code>模块有一些问题，我觉得最大的就是模块非常依赖于全局变量。比如<code>fileinput.input()</code>创建了一个全局的<code>fileinput.FileInput()</code>对象，在这个模块的其他函数就可以使用它。你当然可以忽略这些并且直接去使用<code>fileinput.FileInput()</code>构造器，但是<code>fileinput.input()</code>却是主的API入口。</p>
+<p>其他的问题在于<code>in-place</code>方法劫持了<code>sys.stdout</code>，作为写回替换文件的方法。显然这可以方便的使用<code>print</code>语句来写回，但是你必须记得从以前的文件中读取的数据行中移除新的数据行。</p>
+<p>最后，也是很重要的，<code>fileinput</code>在Python3中的版本不支持指定编码方式，错误模式或者处理新数据行。你可以在二进制模式下打开文件，但是输出总是在文本模式下的。这些问题极大的降低了这个库的可用性。</p>
+<p>因此我写了一个替代方案，使用了非常棒的<code>@contextlib.contextmanager</code>装饰器，这个在Python2和Python3都可以使用，依赖于<code>io.open()</code>来在不同的Python版本中保持兼容性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">from contextlib import contextmanager</div><div class="line">import io</div><div class="line">import os</div><div class="line"></div><div class="line"></div><div class="line">@contextmanager</div><div class="line">def inplace(filename, mode=&apos;r&apos;, buffering=-1, encoding=None, errors=None,</div><div class="line">            newline=None, backup_extension=None):</div><div class="line">    &quot;&quot;&quot;允许使用新的内容来替换一个文件</div><div class="line">truetrue产生一个(readable, writable)文件对象元组，writable会替换readable</div><div class="line">truetrue异常发生的时候，原始文件会被重新保存，移除写入的数据</div><div class="line">truetrue模式不应该使用w a 或者 + 只支持只读模式</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    # move existing file to backup, create new file with same permissions</div><div class="line">    # borrowed extensively from the fileinput module</div><div class="line">    if set(mode).intersection(&apos;wa+&apos;):</div><div class="line">        raise ValueError(&apos;Only read-only file modes can be used&apos;)</div><div class="line"></div><div class="line">    backupfilename = filename + (backup_extension or os.extsep + &apos;bak&apos;)</div><div class="line">    try:</div><div class="line">truetruetruetrue# 删除文件</div><div class="line">        os.unlink(backupfilename)</div><div class="line">    except os.error:</div><div class="line">        pass</div><div class="line">    os.rename(filename, backupfilename)</div><div class="line">    readable = io.open(backupfilename, mode, buffering=buffering,</div><div class="line">                       encoding=encoding, errors=errors, newline=newline)</div><div class="line">    try:</div><div class="line">truetruetruetrue# 返回文件描述符fd的状态, st_mode文件信息的掩码，包含了文件的权限信息，文件的类型信息</div><div class="line">        perm = os.fstat(readable.fileno()).st_mode</div><div class="line">    except OSError:</div><div class="line">        writable = open(filename, &apos;w&apos; + mode.replace(&apos;r&apos;, &apos;&apos;),</div><div class="line">                        buffering=buffering, encoding=encoding, errors=errors,</div><div class="line">                        newline=newline)</div><div class="line">    else:</div><div class="line">        os_mode = os.O_CREAT | os.O_WRONLY | os.O_TRUNC</div><div class="line">        if hasattr(os, &apos;O_BINARY&apos;):</div><div class="line">            os_mode |= os.O_BINARY</div><div class="line">        fd = os.open(filename, os_mode, perm)</div><div class="line">        writable = io.open(fd, &quot;w&quot; + mode.replace(&apos;r&apos;, &apos;&apos;), buffering=buffering,</div><div class="line">                           encoding=encoding, errors=errors, newline=newline)</div><div class="line">        try:</div><div class="line">            if hasattr(os, &apos;chmod&apos;):</div><div class="line">                os.chmod(filename, perm)</div><div class="line">        except OSError:</div><div class="line">            pass</div><div class="line">    try:</div><div class="line">        yield readable, writable</div><div class="line">    except Exception:</div><div class="line">        # move backup back</div><div class="line">        try:</div><div class="line">            os.unlink(filename)</div><div class="line">        except os.error:</div><div class="line">            pass</div><div class="line">        os.rename(backupfilename, filename)</div><div class="line">        raise</div><div class="line">    finally:</div><div class="line">        readable.close()</div><div class="line">        writable.close()</div><div class="line">        try:</div><div class="line">            os.unlink(backupfilename)</div><div class="line">        except os.error:</div><div class="line">            pass</div></pre></td></tr></table></figure>
+<p>译者注：首先将原文件备份，然后<code>readable</code>是从备份文件中读取的，<code>writable</code>是读取了一个与原文件名相同的空文件，在<code>yield readable, writable</code>处相当于<code>__enter__</code>方法返回了一个元组，之后如果在上下文管理器中产生了异常就会删除已经写入的文件，然后将备份文件重命名为原文件名，即相当于执行了<code>__exit__</code>方法</p>
+<p>这个上下文管理器只关注于一个文件，并且忽略了<code>sys.stdin</code>，不像<code>fileinput</code>模块。它的目标就是只将一个文件原地替换。</p>
+<p>使用的例子，Python2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import csv</div><div class="line"></div><div class="line">with inplace(csvfilename, &apos;rb&apos;) as (infh, outfh):</div><div class="line">    reader = csv.reader(infh)</div><div class="line">    writer = csv.writer(outfh)</div><div class="line"></div><div class="line">    for row in reader:</div><div class="line">        row += [&apos;new&apos;, &apos;columns&apos;]</div><div class="line">        writer.writerow(row)</div></pre></td></tr></table></figure>
+<p>Python3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import csv</div><div class="line"></div><div class="line">with inplace(csvfilename, &apos;r&apos;, newline=&apos;&apos;) as (infh, outfh):</div><div class="line">    reader = csv.reader(infh)</div><div class="line">    writer = csv.writer(outfh)</div><div class="line"></div><div class="line">    for row in reader:</div><div class="line">        row += [&apos;new&apos;, &apos;columns&apos;]</div><div class="line">        writer.writerow(row)</div></pre></td></tr></table></figure>
+
+	
+	</div>
+  <a type="button" href="/2017/08/01/翻译 - Easy in-place file rewriting/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/07/13/LRUCache在Python中的实现/" >LRU Cache在Python中的实现</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-07-13 10:12:39  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>LRU Cache在Python中的实现</p>
+<p><code>LRU Cache - Least Recently Used Cache</code> 最近最久未使用缓存</p>
+<p>今天问了同事一个问题，LRU Cache系统如何实现，同事答使用时间戳。那么使用时间戳的话，他可能的想法是在Python里的字典中实现，这样通过判断时间戳的迟早来实现LRU。</p>
+<p>首先缓存，比如对于一个这样的函数,<code>task(arg1, arg2)</code>，缓存主要是缓存其参数和返回值，那么就可以直接使用字典来实现，关键在于参数是可以哈希的，也就是说参数不应该是可变的，这样就可以将参数作为key，函数返回值作为value来存储到字典之中。</p>
+<p>那么对于LRU，LRU比较常用的在操作系统内存管理的页面置换中使用到了，就是最近使用的页面在内存中，否则就在硬盘里，为了提高页面的命中率，其英文为hits，没有命中则为misses。对于上面的这个函数来说就是要存储最近使用的参数和返回值这么一个对应关系。</p>
+<h1 id="时间戳字典可行吗？"><a href="#时间戳字典可行吗？" class="headerlink" title="时间戳字典可行吗？"></a>时间戳字典可行吗？</h1><p>对于同事提到的字典，其缓存模型应该是函数参数作为key，因为要通过key来判断是否命中，时间戳也作为key，因为要比较最近使用，比如缓存已经满了，要将最早使用的缓存清除出去，那么这时候就要比较哪个参数对应的时间是最早的。</p>
+<p>这里有一种<code>multi_key_dict</code>，也就是多个键对应一个值，假设时间戳不会冲突的话，使用时间戳和参数作为键，那么要取到最早的时间戳，也需要一个排序，因为键在字典中是无序的。且不说从这么多键中找出时间戳这种键，并且还有一个问题是如果参数也是时间戳呢<code>= = !</code></p>
+<h1 id="使用list"><a href="#使用list" class="headerlink" title="使用list"></a>使用list</h1><p>既然要取时间戳需要排序，那么不用时间戳，直接将对应的key也就是函数参数存储到一个Python列表中就行了，最近使用的在列表头，最早使用的在列表尾，然后用一个字典存储参数-返回值，这样就实现了一个LRU嘛。</p>
+<p>如果有参数命中(key在字典中)，那么就把这个参数从其原始位置放到列表头，如果满了就删除最后一个元素。这样看起来可以，但是涉及性能问题。从列表中间pop和从头insert都是性能瓶颈操作，时间复杂度在<code>O(n)</code>。</p>
+<h1 id="使用链表"><a href="#使用链表" class="headerlink" title="使用链表"></a>使用链表</h1><p>既然使用list在insert时候有性能问题，那么使用单链表呢，只有有头指针，我就可以在头部插入，此时时间复杂度只有<code>O(1)</code>。但是将参数从单链表尾部移除呢，还得从头遍历一遍到尾部，那那那就用双向循环链表好了，这样找尾部元素，就可以直接使用头指针向前得到了。</p>
+<p>看起来好像一切OK了，但是认真想想，如果命中一个参数，那么要将其从中间某个位置弄到最开头呢？双向循环链表还是得去遍历一遍链表去查找，平均的时间复杂度也要<code>O(n)</code></p>
+<h1 id="使用字典和链表相结合"><a href="#使用字典和链表相结合" class="headerlink" title="使用字典和链表相结合"></a>使用字典和链表相结合</h1><p>在取缓存的时候，通过字典直接从参数取到返回值，那么可不可以将链表和字典结合起来呢，使用key能不能直接获取到key在链表的位置呢？当然可以，key对应的value存储为这个key对应的链表节点不就可以了，同时这个链表节点还存储了返回值不就刚好可以将返回值取到了嘛。</p>
+<h1 id="functools-lru-cache"><a href="#functools-lru-cache" class="headerlink" title="functools.lru_cache"></a><code>functools.lru_cache</code></h1><p>Python中functools的<code>lru_cache</code>实现了LRU Cache，核心是一个双向循环链表再加一个字典。</p>
+<p><code>from functools import lru_cache</code>可以看到<code>lru_cache</code>的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">_CacheInfo = namedtuple(&quot;CacheInfo&quot;, [&quot;hits&quot;, &quot;misses&quot;, &quot;maxsize&quot;, &quot;currsize&quot;])</div><div class="line">def lru_cache(maxsize=128, typed=False):</div><div class="line">    &apos;&apos;&apos;最近最少使用的缓存装饰器</div><div class="line">    如果maxsize为None，则不使用LRU特性，并且缓存可以没有限制的增长</div><div class="line">    如果typed为True，不同类型的参数将会独立的缓存，比如f(3.0)和f(3)将被看作不同的调用，并且有不同的结果。</div><div class="line">    缓存函数的参数必须是可哈希的。</div><div class="line">    访问命名元组(hints, misses, maxsize, currsize)来查看缓存统计数据，使用f.cache_info()来得到。使用f.cache_clear()来清除缓存数据。使用f.__wrapped__来获取底层包装函数</div><div class="line">    &apos;&apos;&apos;</div><div class="line">    if maxsize is not None and not isinstance(maxsize, int):</div><div class="line">        raise TypeError(&apos;Expected maxsize to be an integer or None&apos;)</div><div class="line">    def decorating_function(user_function):</div><div class="line">        wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)</div><div class="line">        return update_wrapper(wrapper, user_function)</div><div class="line">    return decorating_function</div></pre></td></tr></table></figure>
+<p>首先这是一个带参数的装饰器，使用的时候应该<code>@lru_cache()</code>，这样会返回<code>decorating_function</code>，用来装饰用户的函数，其内部会返回将用户的包装后的函数，使用的是<code>_lru_cache_wrapper</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div></pre></td><td class="code"><pre><div class="line">def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):</div><div class="line">    # 所有lru缓存实例共享的常量</div><div class="line">    sentinel = object()          # 当缓存没有命中的时候返回的对象</div><div class="line">    make_key = _make_key         # 从函数参数来生成一个key的函数</div><div class="line">    PREV, NEXT, KEY, RESULT = 0, 1, 2, 3   # 每一个链表节点中存储的每个元素位置</div><div class="line">    cache = &#123;&#125;</div><div class="line">    hits = misses = 0</div><div class="line">    full = False</div><div class="line">    cache_get = cache.get  # 绑定查询键的函数</div><div class="line">    lock = RLock()  # 链表的更新可能不是线程安全的，对于一个函数，可能多线程调用</div><div class="line">    root = []   # 双向循环链表的头指针</div><div class="line">    root[:] = [root, root, None, None]  # 初始化双向循环链表</div><div class="line"></div><div class="line">    if maxsize == 0:</div><div class="line">        # 不使用缓存，每次调用没有命中次数都会加一</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            # 重新绑定自由变量misses</div><div class="line">            nonlocal misses</div><div class="line">            result = user_function(*args, **kwds)</div><div class="line">            misses += 1</div><div class="line">            return result</div><div class="line">    elif maxsize is None:</div><div class="line">        # 简单的缓存，没有次序，也没有大小限制，也就是直接使用字典进行缓存</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            nonlocal hits, misses</div><div class="line">            key = make_key(args, kwds, typed)</div><div class="line">            result = cache_get(key, sentinel)</div><div class="line">            if result is not sentinel:</div><div class="line">                hits += 1</div><div class="line">                return result</div><div class="line">            result = user_function(*args, **kwds)</div><div class="line">            cache[key] = result</div><div class="line">            misses += 1</div><div class="line">            return result</div><div class="line">    else:</div><div class="line">        # 这种情况就是有大小限制的lru_cache，我觉得应该加一个有限制的普通缓存系统</div><div class="line">        def wrapper(*args, **kwds):</div><div class="line">            nonlocal root, hits, misses, full</div><div class="line">            key = make_key(args, kwds, typed)</div><div class="line">            with lock:</div><div class="line">                link = cache_get(key)</div><div class="line">                # 如果命中，将命中的链表节点放到头部，每个链表节点存储了PREV,NEXT,KEY,VALUE</div><div class="line">                # 所以先将当前节点的前后节点接在一起</div><div class="line">                if link is not None:</div><div class="line">                    # 从链表中取出这个节点</div><div class="line">                    link_prev, link_next, _key, result = link</div><div class="line">                    link_prev[NEXT] = link_next</div><div class="line">                    link_next[PREV] = link_prev</div><div class="line">                    # 将链表节点放到头部,root前面</div><div class="line">                    last = root[PREV]</div><div class="line">                    last[NEXT] = root[PREV] = link</div><div class="line">                    link[PREV] = last</div><div class="line">                    link[NEXT] = root]</div><div class="line">                    hits += 1</div><div class="line">                    return result</div><div class="line">                result = user_function(*args, **kwds)</div><div class="line">                # 没有命中的话，将其放入缓存，更新操作必须加锁</div><div class="line">                with lock:</div><div class="line">                    if key in cache:</div><div class="line">                        # 如果key已经在cache，说明有其它的线程已经将这个key放入缓存中了</div><div class="line">                        pass</div><div class="line">                    elif full:</div><div class="line">                        # 如果缓存已经满了，则取出最久没有使用的节点将其pop出去，也就是双向循环链表中root后面的指针。</div><div class="line">                        # 这段代码的具体过程是，将root指针作为新节点，root指针后面的节点作为root节点</div><div class="line">                        oldroot = root</div><div class="line">                        oldroot[KEY] = key</div><div class="line">                        oldroot[RESULT] = result</div><div class="line">                        # root的节点作为新节点，只需要将key，result换掉</div><div class="line"></div><div class="line">                        root = oldroot[NEXT]</div><div class="line">                        # 记录oldkey是为了在cache字典中删除</div><div class="line">                        oldkey = root[KEY]</div><div class="line">                        oldresult = root[RESULT]</div><div class="line">                        root[KEY] = root[RESULT] = None</div><div class="line">                        # 更新好root节点后删除字典中的key</div><div class="line"></div><div class="line">                        del cache[oldkey]</div><div class="line"></div><div class="line">                        cache[key] = oldroot</div><div class="line">                    else:</div><div class="line">                        # 如果缓存没有满，更新缓存</div><div class="line">                        last = root[PREV]</div><div class="line">                        # 新的链表节点在root和root前一个节点之间</div><div class="line">                        link = [last, root, key, result]</div><div class="line">                        last[NEXT] = root[PREV] = cache[key] = link</div><div class="line">                        full = (len(cache) &gt;= maxsize)</div><div class="line">                    misses += 1</div><div class="line">                return result</div><div class="line"></div><div class="line">        def cache_info():</div><div class="line">            &quot;&quot;&quot;Report cache statistics&quot;&quot;&quot;</div><div class="line">            with lock:</div><div class="line">                # 因为以下数据可能在更新，所以加锁获取共享资源</div><div class="line">                return _CacheInfo(hits, misses, maxsize, len(cache))</div><div class="line"></div><div class="line">        def cache_clear():</div><div class="line">            &quot;&quot;&quot;Clear the cache and cache statistics&quot;&quot;&quot;</div><div class="line">            nonlocal hits, misses, full</div><div class="line">            with lock:</div><div class="line">                cache.clear()</div><div class="line">                root[:] = [root, root, None, None]</div><div class="line">                hits = misses = 0</div><div class="line">                full = False</div><div class="line"></div><div class="line">        wrapper.cache_info = cache_info</div><div class="line">        wrapper.cache_clear = cache_clear</div><div class="line">        return wrapper</div></pre></td></tr></table></figure>
+<p>当缓存已经满了的时候，这种处理方式还是挺不错的，但是要是我来搞就是删除后面的节点，然后将新节点放到root前面。另外这个人是左撇子么，喜欢逆时针转啊。</p>
+<h1 id="OrderedDict相关"><a href="#OrderedDict相关" class="headerlink" title="OrderedDict相关"></a>OrderedDict相关</h1><p>另一个使用双向循环链表的例子是OrderedDict，链表保存了key添加到字典的顺序，但其实这个字典实际用的时候，是用的C语言实现的版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">try:</div><div class="line">    from _collections import OrderedDict</div><div class="line">except ImportError:</div><div class="line">    # Leave the pure Python version in place.</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<p>下面是OrderedDict的源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">class OrderedDict(dict):</div><div class="line">    &apos;&apos;&apos;记录插入顺序的字典</div><div class="line">    内部的self.__map字典记录了key到双向循环链表的节点，双向循环链表开始和结束都是一个sentinel元素。这个元素从来都不会被删除，它在self.__hardroot, 并且self.__hardroot在self.__root有一个弱引用代理</div><div class="line">    往前的连接是弱引用代理，为了防止循环引用</div><div class="line">    在self.__map中存储了硬连接到单个链表节点上，当key被删除后，这些硬连接就会消失</div><div class="line">    &apos;&apos;&apos;</div><div class="line">    def __init__(*args, **kwds):</div><div class="line">    &apos;&apos;&apos;Initialize an ordered dictionary.  The signature is the same as</div><div class="line">    regular dictionaries, but keyword arguments are not recommended because</div><div class="line">    their insertion order is arbitrary.</div><div class="line"></div><div class="line">    &apos;&apos;&apos;</div><div class="line">    if not args:</div><div class="line">        raise TypeError(&quot;descriptor &apos;__init__&apos; of &apos;OrderedDict&apos; object &quot;</div><div class="line">                        &quot;needs an argument&quot;)</div><div class="line">    self, *args = args</div><div class="line">    if len(args) &gt; 1:</div><div class="line">        raise TypeError(&apos;expected at most 1 arguments, got %d&apos; % len(args))</div><div class="line">    try:</div><div class="line">        self.__root</div><div class="line">    except AttributeError:</div><div class="line">        # 这里使用的是一个限定属性的类来作为链表节点</div><div class="line">        self.__hardroot = _Link()</div><div class="line">        self.__root = root = _proxy(self.__hardroot)</div><div class="line">        root.prev = root.next = root</div><div class="line">        self.__map = &#123;&#125;</div><div class="line">    self.__update(*args, **kwds)</div></pre></td></tr></table></figure>
+<p>这里<code>_Link()</code>是一个限定属性的类，代码如下；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class _Link(object):</div><div class="line">    __slots__ = &apos;prev&apos;, &apos;next&apos;, &apos;key&apos;, &apos;__weakref__&apos;</div></pre></td></tr></table></figure>
+<p><code>_proxy</code>是<code>from _weakref import proxy as _proxy</code> 对一个对象的弱引用。相对于通常的引用来说，如果一个对象有一个常规的引用，它是不会被垃圾收集器销毁的，但是如果一个对象只剩下一个弱引用，那么它可能被垃圾收集器收回。<a href="https://docs.python.org/3/library/weakref.html" target="_blank" rel="external">werkref</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def proxy(p_object, callback=None):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    创建一个代理对象，弱引用至object</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<p>继续来看OrderedDict:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">def __setitem__(self, key, value, dict_setitem=dict.__setitem__, proxy=_proxy, Link=_Link):</div><div class="line">    # 当设置一个新值时，首先查看是否已经在字典中了，如果在字典中，就不需要再加入到链表中了，保持之前的次序</div><div class="line">    # 如果没有，则加入到链表中，同样是将新节点放到root前面一个</div><div class="line">    if key not in self:</div><div class="line">        self.__map[key] = link = Link()</div><div class="line">        root = self.__root</div><div class="line">        last = root.prev</div><div class="line">        link.prev, link.next, link.key = last, root, key</div><div class="line">        last.next = link</div><div class="line">        # prev连接是一个proxy</div><div class="line">        root.prev = proxy(link)</div><div class="line">    dict_setitem(self, key, value)</div><div class="line"></div><div class="line">def __delitem__(self, key, dict_delitem=dict.__delitem__):</div><div class="line">    dict_delitem(self, key)</div><div class="line">    link = self.__map.pop(key)</div><div class="line">    link_prev = link.prev</div><div class="line">    link_next = link.next</div><div class="line">    link_prev.next = link_next</div><div class="line">    link_next.prev = link_prev</div><div class="line">    link.prev = None</div><div class="line">    link.next = None</div><div class="line"></div><div class="line">def __iter__(self):</div><div class="line">    root = self.__root</div><div class="line">    curr = root.next</div><div class="line">    while curr is not root:</div><div class="line">        yield curr.key</div><div class="line">        curr = curr.next</div><div class="line"></div><div class="line">def __reversed__(self):</div><div class="line">    root = self.__root</div><div class="line">    curr = root.prev</div><div class="line">    while curr is not root:</div><div class="line">        yield curr.key</div><div class="line">        curr = curr.prev</div><div class="line"></div><div class="line">def clear(self):</div><div class="line">    root = self.__root</div><div class="line">    root.prev = root.next = root</div><div class="line">    self.__map.clear()</div><div class="line">    dict.clear(self)</div></pre></td></tr></table></figure>
+<p>其它方法就不一一说明了，但是从中可以看出，涉及到元素顺序的操作，双向循环链表的应用还是很广泛的。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/07/13/LRUCache在Python中的实现/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -694,27 +801,27 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/源码/">源码<span>6</span></a></li>
+			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
 			<li><a href="/tags/Python/">Python<span>56</span></a></li>
 		
-			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
+			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
 			<li><a href="/tags/Database/">Database<span>5</span></a></li>
 		
 			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
-		
 			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
+			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
-			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
-		
 			<li><a href="/tags/interview/">interview<span>0</span></a></li>
+		
+			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
 		
 			<li><a href="/tags/日记/">日记<span>0</span></a></li>
 		
@@ -730,9 +837,9 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/算法/">算法<span>15</span></a></li>
 		
-			<li><a href="/tags/LeetCode/">LeetCode<span>6</span></a></li>
-		
 			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
+		
+			<li><a href="/tags/设计模式/">设计模式<span>4</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>46</span></a></li>

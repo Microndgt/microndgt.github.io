@@ -138,11 +138,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/12/07/messaging_in_jupyter/" >翻译 - Messaging in Jupyter</a>
+			<a href="/2017/10/21/python_decorator/" >Python的decorator模块</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-12-07 09:46:35  </div>
+		<div class="date">post @ 2017-10-21 15:59:35  </div>
 		</div>
 	</div>
 	
@@ -152,104 +152,307 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>翻译自：<a href="http://jupyter-client.readthedocs.io/en/latest/messaging.html" target="_blank" rel="external">Messaging in Jupyter</a></p>
-<p>这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。</p>
-<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>基本的设计可以用下图来解释：</p>
-<p><img src="/img/messaging_in_jupyter.png" alt=""></p>
-<p>一个kernel可能同时连接一个或者多个前端。kernel有专注于以下功能的sockets:</p>
+		<p>在httpbin源代码中遇到这么一个路由：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/gzip&apos;)</div><div class="line">@filters.gzip</div><div class="line">def view_gzip_encoded_content():</div><div class="line">    &quot;&quot;&quot;Returns GZip-Encoded Data.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    return jsonify(get_dict(</div><div class="line">        &apos;origin&apos;, &apos;headers&apos;, method=request.method, gzipped=True))</div></pre></td></tr></table></figure>
+<p>其中gzip是这么实现的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">@decorator</div><div class="line">def gzip(f, *args, **kwargs):</div><div class="line">    &quot;&quot;&quot;GZip Flask Response Decorator.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    data = f(*args, **kwargs)</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        content = data.data</div><div class="line">    else:</div><div class="line">        content = data</div><div class="line"></div><div class="line">    gzip_buffer = BytesIO()</div><div class="line">    gzip_file = gzip2.GzipFile(</div><div class="line">        mode=&apos;wb&apos;,</div><div class="line">        compresslevel=4,</div><div class="line">        fileobj=gzip_buffer</div><div class="line">    )</div><div class="line">    gzip_file.write(content)</div><div class="line">    gzip_file.close()</div><div class="line"></div><div class="line">    gzip_data = gzip_buffer.getvalue()</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        data.data = gzip_data</div><div class="line">        data.headers[&apos;Content-Encoding&apos;] = &apos;gzip&apos;</div><div class="line">        data.headers[&apos;Content-Length&apos;] = str(len(data.data))</div><div class="line"></div><div class="line">        return data</div><div class="line"></div><div class="line">    return gzip_data</div></pre></td></tr></table></figure>
+<p>从这个函数来看，gzip函数做的工作就是将路由函数执行一遍，取的结果后，将回应压缩，然后再返回发送响应。然后gzip函数是作为装饰器使用的。那么上面那个decorator装饰器做了什么工作呢，可以看出gzip目前的功能和普通的装饰器函数中内层函数功能基本上是一致的，所以调用这个<code>view_gzip_encoded_content</code>这个视图函数就相当于调用gzip函数。</p>
+<p>那么decorator到底做了什么呢，怎么做的呢？在这里详细拆解一番。</p>
+<p>以下内容部分翻译自<a href="http://decorator.readthedocs.io/en/stable/tests.documentation.html" target="_blank" rel="external">decorator document</a></p>
+<p>文档上说，如果你想以在Python版本中以一致性的方式保存被装饰函数的签名，这是你最好的选择。</p>
+<h1 id="装饰器的用处"><a href="#装饰器的用处" class="headerlink" title="装饰器的用处"></a>装饰器的用处</h1><p>Python中的装饰器是一个为什么语法糖很重要的有趣的例子。装饰器做到了以下的事情：</p>
+<ul>
+<li>装饰器减少了样板代码</li>
+<li>装饰器帮助分离关注点(模块化开发就起到了分离关注点的作用)</li>
+<li>装饰器增强了可读性和可维护性</li>
+<li>装饰器很明显</li>
+</ul>
+<p>但是经典的装饰器实现需要嵌套函数，但是我们知道扁平是比嵌套要好得多。</p>
+<p>所以<code>decorator</code>模块的目标是简化装饰器的使用，当然对于所有的技术，都有可能被滥用，你不应该在解决任何问题的时候都试图使用装饰器，虽然你可以这么做。</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>一般来说，任何可以被以一个参数调用的Python对象都可以被用作装饰器。然而，这种定义太大以至于没太多用。将装饰器这个一般的类分成两种子类会更加方便：</p>
+<ul>
+<li><p>保留签名的装饰器</p>
+<p>  接受一个函数作为参数的可调用对象会返回一个函数作为输出，并且有相同的签名</p>
+</li>
+<li><p>改变签名的装饰器</p>
+<p>  装饰器会改变给它们输入的函数的签名，或者装饰器会返回一个非调用对象</p>
+</li>
+</ul>
+<p>签名改变的装饰器有它们自己的用处：比如，内置的<code>staticmethod</code>和<code>classmethod</code>就是这种，它们接受函数然后返回描述符对象，既不是函数，也不是可调用对象。</p>
+<p>当然，保留签名的装饰器更加普遍，更加容易去实现。特别的，它们可以组合在一起，但是其他装饰器一般不可以。</p>
+<p>直接写一个保留签名的装饰器并不是那么显而易见，比如想定义一个合适的装饰器，接受有任意签名的函数作为输入。一个简单的例子将会澄清这个问题。</p>
+<h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>一个装饰器通常的使用例子是将一个函数进行缓存。一个<code>memorize</code>装饰器通过将函数的返回结果存储在字典中起到缓存的作用。</p>
+<p>这里有很多<code>memorize</code>的实现例子，但是它们都不保留签名。在最近的Python版本中你可以找到一个复杂的<code>lru_cache</code>装饰器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def memoize_uw(func):</div><div class="line">    func.cache = &#123;&#125;</div><div class="line"></div><div class="line">    def memoize(*args, **kw):</div><div class="line">        if kw:  # frozenset is used to ensure hashability</div><div class="line">            key = args, frozenset(kw.items())</div><div class="line">        else:</div><div class="line">            key = args</div><div class="line">        if key not in func.cache:</div><div class="line">            func.cache[key] = func(*args, **kw)</div><div class="line">        return func.cache[key]</div><div class="line">    return functools.update_wrapper(memoize, func)</div></pre></td></tr></table></figure>
+<p>这里使用了<code>functools.update_wrapper</code>，这样你就不用从原来函数复制<code>__name__</code>, <code>__doc__</code>, <code>__module__</code>和<code>__dict__</code>等属性了，等同于调用<code>functools.wraps(func)</code>装饰器</p>
+<p>这是一个使用例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@memoize_uw</div><div class="line">def f1(x):</div><div class="line">    &quot;Simulate some long computation&quot;</div><div class="line">    time.sleep(1)</div><div class="line">    return x</div></pre></td></tr></table></figure>
+<p>但是这个不是一个保留签名的装饰器，因为<code>memoize_uw</code>返回了一个和原始函数签名不同的函数。原先的函数只有一个参数x，但是装饰后的函数可以获得任意个参数和关键字参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from decorator import getargspec  # akin to inspect.getargspec</div><div class="line">&gt;&gt;&gt; print(getargspec(f1))</div><div class="line">ArgSpec(args=[], varargs=&apos;args&apos;, varkw=&apos;kw&apos;, defaults=None)</div></pre></td></tr></table></figure>
+<p>这就意味着内省工具，比如<code>pydoc</code>会提供关于f1签名的错误信息-除非你是用Python3.5。这样会非常不好，<code>pydoc</code>说你可以接收一般的签名<code>*args, **kw</code>，但是这样调用就会出错。因为它真的只接收一个参数。</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>解决方式就是提供一个一般的生成器工厂，其隐藏了生成一个保留签名的装饰器的复杂性。<code>decorator</code>函数在<code>decorator</code>模块就是这样一个工厂函数<code>from decorator import decorate</code></p>
+<p><code>decorator</code>接受两个参数</p>
+<ul>
+<li>一个函数描述了装饰器的功能的调用者</li>
+<li>被装饰的函数</li>
+</ul>
+<p>调用者必须有<code>(f, *args, **kw)</code>这样的签名，而且它必须使用<code>args</code>和<code>kw</code>来调用原始函数<code>f</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def _memoize(func, *args, **kw):</div><div class="line">    if kw:  # frozenset is used to ensure hashability</div><div class="line">        key = args, frozenset(kw.items())</div><div class="line">    else:</div><div class="line">        key = args</div><div class="line">    cache = func.cache  # attribute added by memoize</div><div class="line">    if key not in cache:</div><div class="line">        cache[key] = func(*args, **kw)</div><div class="line">    return cache[key]</div></pre></td></tr></table></figure>
+<p>这样你就可以像下面这样定义你的装饰器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def memoize(f):</div><div class="line">    f.cache = &#123;&#125;</div><div class="line">    return decorate(f, _memoize)</div></pre></td></tr></table></figure>
+<p>和嵌套函数的方式不同的地方在于decorator模块强制让你将内层函数放在了上一层。而且，你也必须明确的传递你想装饰的函数，没有闭包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; @memoize</div><div class="line">... def heavy_computation():</div><div class="line">...     time.sleep(2)</div><div class="line">...     return &quot;done&quot;</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the first time it will take 2 seconds</div><div class="line">done</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the second time it will be instantaneous</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>这样函数的签名是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; print(getargspec(heavy_computation))</div><div class="line">ArgSpec(args=[], varargs=None, varkw=None, defaults=None)</div></pre></td></tr></table></figure>
+<p>所以一开始那个例子，就是这样的，先由<code>decorator</code>装饰了gzip，那么<code>def decorator(caller, _func=None)</code>中的caller就是gzip，在<code>decorator</code>中最后返回了<code>FunctionMaker.create</code>创建的一个对象，这个就是<code>gzip</code>的真正面目(在这个过程中，就处理了签名以及装饰器等问题)，然后再由<code>gzip</code>去装饰视图函数，那么视图函数执行后的结果就会在gzip中处理，然后返回。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/10/21/python_decorator/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/10/21/ming_dynasty/" >大明王朝</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-21 14:13:56  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>最近在看当代明月的<em>明朝那些事儿</em>，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了<em>历史通俗演义(前汉和后汉)</em>，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看<em>历史通俗演义(唐)</em>，最近看<em>明朝那些事</em>。读史你能感受到人之间的复杂，但是读着读着就能体会出来一个人的心理和历史规律，正所谓，<strong>鉴于往事，有资于治道</strong>，读史使人明智之意。</p>
+<p>从小学习的时候就喜欢形成一个框架，这样知识是被索引的，按照一条主线，将知识塞到框架的不同地方，记忆的会更牢固。其实更多的含义是自己能够一览全局。所以此处将明朝所读之处，按照皇帝的顺序塞进历史事件总结于此。不时根据自己的认识和理解进行更新。</p>
+<p><img src="/img/history/ming_history.png" alt=""></p>
+<p>下面是基于这个明朝历史架构记录的大事件，也就是塞到框架里面的一个个组成部分。</p>
+<h1 id="朱元璋-明太祖"><a href="#朱元璋-明太祖" class="headerlink" title="朱元璋(明太祖)"></a>朱元璋(明太祖)</h1><ul>
+<li>与陈友琼鄱阳湖水战</li>
+<li>1368年建立大明</li>
+<li>徐达，常遇春等将北伐，攻破大都后继而深入漠北，大破北元</li>
+<li>胡惟庸案，蓝玉案，锦衣卫</li>
+</ul>
+<h1 id="朱允炆-明惠宗"><a href="#朱允炆-明惠宗" class="headerlink" title="朱允炆(明惠宗)"></a>朱允炆(明惠宗)</h1><ul>
+<li>靖难之役</li>
+</ul>
+<h1 id="朱棣-明成祖"><a href="#朱棣-明成祖" class="headerlink" title="朱棣(明成祖)"></a>朱棣(明成祖)</h1><ul>
+<li>靖难之役</li>
+<li>迁都北京</li>
+<li>收复安南，攻打鞑靼和瓦剌</li>
+<li>郑和下西洋</li>
+<li>永乐大典</li>
+<li>东厂</li>
+</ul>
+<h1 id="朱高炽-明仁宗"><a href="#朱高炽-明仁宗" class="headerlink" title="朱高炽(明仁宗)"></a>朱高炽(明仁宗)</h1><ul>
+<li>三杨(杨士奇，杨荣，杨溥(<code>pǔ</code>))</li>
+</ul>
+<h1 id="朱瞻基-明宣宗"><a href="#朱瞻基-明宣宗" class="headerlink" title="朱瞻基(明宣宗)"></a>朱瞻基(明宣宗)</h1><ul>
+<li>平叛朱高煦</li>
+<li>设立内书堂教宦官读书</li>
+</ul>
+<h1 id="朱祁镇-明英宗"><a href="#朱祁镇-明英宗" class="headerlink" title="朱祁镇(明英宗)"></a>朱祁镇(明英宗)</h1><ul>
+<li>土木堡之变</li>
+</ul>
+<h1 id="朱祁钰-明代宗"><a href="#朱祁钰-明代宗" class="headerlink" title="朱祁钰(明代宗)"></a>朱祁钰(明代宗)</h1><ul>
+<li>于谦北京保卫战</li>
+</ul>
+
+	
+	</div>
+  <a type="button" href="/2017/10/21/ming_dynasty/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/10/20/httpbin中的奇技淫巧/" >httpbin中的奇技淫巧</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-20 11:31:18  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>kennethreitz大神写的，<a href="https://github.com/kennethreitz/httpbin" target="_blank" rel="external">项目地址</a></p>
+<h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
+<p>它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">d = MultiDict([(&apos;a&apos;, &apos;b&apos;), (&apos;a&apos;, &apos;c&apos;)])</div><div class="line">d.getlist(&apos;a&apos;)</div><div class="line"># [&apos;b&apos;, &apos;c&apos;]</div><div class="line">&apos;a&apos; in d</div><div class="line"># True</div><div class="line">d[&apos;a&apos;]</div><div class="line"># &apos;b&apos;</div></pre></td></tr></table></figure>
+<p>KeyError也是BadRequest的子类，因此当被捕获的时候会渲染<code>400 BAD REQUEST</code>。</p>
+<p>所以说白了，就是一个key对应了一个list，然后一般返回的只是key和list[0]，然后实现了一系列的方法。</p>
+<h1 id="CaseInsensitiveDict"><a href="#CaseInsensitiveDict" class="headerlink" title="CaseInsensitiveDict"></a><code>CaseInsensitiveDict</code></h1><p>比如<code>headers[&#39;content-encoding&#39;]</code>将会被返回<code>headers[&#39;Content-Encoding&#39;]</code>的值。实现也很简单，就是读取的时候将键都转换成小写就行了。源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class CaseInsensitiveDict(dict):</div><div class="line">    def _lower_keys(self):</div><div class="line">        # 将字典的key都转换成小写</div><div class="line">        return [k.lower() for k in self.keys()]</div><div class="line"></div><div class="line">    def __contains__(self, key):</div><div class="line">        # 判断某个key(转换成小写)是否存在于字典中(key都转换成小写)</div><div class="line">        return key.lower() in self._lower_keys()</div><div class="line"></div><div class="line">    def __getitem__(self, key):</div><div class="line">        # 这里有个问题就是key如果是None，这里就会报错，所以应该</div><div class="line">        # if key is None:</div><div class="line">        #     return</div><div class="line"></div><div class="line">        if key in self:</div><div class="line">            # 先找到目标key在keys中的位置，然后取出来一个元组，第二个值就是value</div><div class="line">            return list(self.items())[self._lower_keys().index(key.lower())][1]</div></pre></td></tr></table></figure>
+<p>这里涉及到一个知识点，就是Python字典中的<code>keys()</code>, <code>values()</code>和<code>items()</code>方法返回的是view对象。它基于字典的实体提供了动态的view，意味着当字典改变的时候，view会表现这个改变。</p>
+<p>字典views会被迭代并且生成它们各自的数据，并且支持成员测试。</p>
+<p>keys和values会被以任意的顺序迭代，但是这个顺序不是随机的，而是基于不同的Python实现而不同，并且基于字典的插入和删除历史。如果keys，values和items views迭代过程中没有改变字典的话，它们之间的顺序将是一致的。因此可以使用<code>pair = zip(d.values(), d.keys())</code>，另外一种创建相同的列表的方法是<code>pair = [(v, k) for (k, v) in d.items()]</code></p>
+
+	
+	</div>
+  <a type="button" href="/2017/10/20/httpbin中的奇技淫巧/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/10/19/mysql_interview_1/" >MySQL面试题集锦</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-19 12:30:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自：</p>
+<ul>
+<li><a href="https://www.tecmint.com/10-mysql-database-interview-questions-for-beginners-and-intermediates/" target="_blank" rel="external">10 MySQL Database Interview Questions for Beginners and Intermediates</a></li>
+<li><a href="http://www.careerride.com/MySQL-Interview-Questions.aspx" target="_blank" rel="external">MySql Interview Questions and Answers</a></li>
+</ul>
 <ol>
-<li>Shell: 这个单路由的socket允许从前端来的多个连接，这也是实现通过前端来对kernel来做代码运行请求，对象信息，提示符等功能的套接字。在这个套接字上的通信是一系列从每个前端到kernel的请求/回应的动作。</li>
-<li>IOPub: 这个套接字是<code>broadcast channel</code>广播频道，kernel用来发布所有的副作用比如(stdout, stderr等)，同时也会发布从任何客户端使用shell socket来的请求和它自己使用stdin socket的请求。在Python中有许多方式可以产生副作用，比如向<code>sys.stdout</code>写入的<code>print()</code>函数，错误产生的tracebacks等等。另外，在多客户端的情景下，我们希望所有的前端能够知道彼此发送给kernel的内容，这样在合作场景中非常有用。这个套接字可以使得一个客户端通信中发生的副作用和通信信息可以被所有的客户端以一种标准规范的格式获取到。</li>
-<li>stdin: 这个路由socket会连接到所有的前端，它允许kernel在<code>raw_inpunt()</code>被调用的时候去动态前端请求输入。执行代码的前端会有一个DEALER socket会在通信发生的时候表现为虚拟键盘(图中黑色的外框的键盘)。在实践中，前端可能会使用一个特别的输入控件来展现kernel的输入请求或者是指示用户去输入而不是前端中普通的命令。所有的消息都会被附加足够的信息，这样客户端就知道哪个消息是自己与kernel的交互，那些是其他客户端的，因此它们可以合适的展现输入。</li>
-<li>Control: 这个频道和Shell是等同的，但是在单独的socket运作，用来允许重要的消息避免在请求执行队列排队。比如shutdown或者abort</li>
-<li>Heartbeat: 这个socket允许单字节字符串信息在前端和kernel中传递用来保证它们仍然在连接中。</li>
+<li><p>如何定义SQL？</p>
+<p> SQL代表的是结构化查询语言(Structured Query Language)。SQL是一门专门在关系型数据库管理系统中管理数据的编程语言。</p>
+</li>
+<li><p>什么是RDBMS？解释其特性？</p>
+<p> Relational Database Management System(RDBMS)是在关系数据库模型中最广泛使用的数据库管理系统。</p>
+<p> RDBMS的特性：</p>
+<ul>
+<li>在表中存储数据</li>
+<li>表中含有行和列</li>
+<li>可以通过SQL创建和检索表</li>
+</ul>
+</li>
+<li><p>什么是数据挖掘？</p>
+<p> 数据挖掘是计算机科学的子分类，其目的是从数据集中提取信息，并且将其转换成人类友好的结构在以后使用。</p>
+</li>
+<li><p>什么是ERD？</p>
+<p> ERD代表实体关系模型(Entity Relationship Diagram)，其中图形代表了表，它们之间是它们的关系。</p>
+</li>
+<li><p>Primary Key主键和Unique Key有什么区别？</p>
+<p> Primary和Unique都是实现了列值的唯一性。主键为列创建了聚集索引，而Unique key创建了非聚集索引。并且主键不允许NULL值，而Unique key允许NULL值。</p>
+</li>
+<li><p>如何在数据库中存储图片文件。使用了哪种对象类型？</p>
+<p> 在数据库存储图片不是个好主意。为了在数据库中存储图片，Blob对象类型是被推荐的。BLOB是一个二进制大对象，可以容纳可变数量的数据。而TEXT列被视为非二进制字符串(字符字符串)。</p>
+</li>
+<li><p>什么是数据仓库？</p>
+<p> 数据仓库一般是指企业数据仓库，是一个集中数据仓库，使用不同数据源来创建的。</p>
+</li>
+<li><p>数据库中的索引是什么，索引有哪几种类型？</p>
+<p> 索引是在数据库进行数据快速索引的快速引用。有两种不同的索引类型：</p>
+<ul>
+<li>聚集索引<ul>
+<li>在一个表中只有一个</li>
+<li>查询的时候比非聚集索引要快，因为数据是按照索引顺序存储</li>
+</ul>
+</li>
+<li><p>非聚集索引</p>
+<ul>
+<li>可以在一个表中使用多次</li>
+<li>比聚集索引可以更快的插入和更新</li>
+</ul>
+<p>聚集索引，该索引中键值的逻辑顺序决定了表中相应行的物理顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引）。聚集索引对于那些经常要搜索范围值的列特别有效。使用聚集索引找到包含第一个值的行后，便可以确保包含后续索引值的行在物理相邻。如果对从表中检索的数据进行排序时经常要用到某一列，则可以将该表在该列上聚集（物理排序），避免每次查询该列时都进行排序，从而节省成本。当索引值唯一时，使用聚集索引查找特定的行也很有效率。例如，使用唯一雇员 ID 列<code>emp_id</code>查找特定雇员的最快速的方法，是在<code>emp_id</code>列上创建聚集索引或<code>PRIMARY KEY</code>约束。</p>
+<p>非聚集索引，该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。索引是通过二叉树的数据结构来描述的，我们可以这么理解聚集索引：索引的叶节点就是数据节点。而非聚簇索引的叶节点仍然是索引节点，只不过有一个指针指向对应的数据块。因为聚集索引的数据的逻辑顺序和物理顺序是一致的，而非聚集索引的逻辑顺序和数据的物理顺序不同，所以最后的叶节点是一个指向对应数据块的。</p>
+<p>一个例子就是字典中按拼音查询和按部首查询。也就是说部首的目录纯粹是目录，正文纯粹是正文的排序方式是非聚集索引，两个不相关联，因此一个表中可以有多个非聚合索引。每个表只有一个聚集索引，因为一个数据集只有一种物理存放顺序。</p>
+<p>那么何时使用聚集索引，何时使用非聚集索引呢</p>
+</li>
+<li><p>返回某范围内的数据：应该使用聚集索引，而不应该使用非聚集索引，因为非聚集索引即使逻辑顺序对了，但是物理顺序仍然不对，所以没用。</p>
+</li>
+<li><p>频繁更新的列：不应该使用聚集索引，而应该使用非聚集索引，因为如果使用聚集索引，就会导致物理结构的变化，不好。</p>
+<p>所以聚集索引一般可以加快查询的速度，但是更新就不行了</p>
+</li>
+</ul>
+</li>
+<li><p>在MySQL中有多少可能的Triggers?</p>
+<ul>
+<li>Before Insert</li>
+<li>After Insert</li>
+<li>Before Update</li>
+<li>After Update</li>
+<li>Before Delete</li>
+<li><p>After Delete</p>
+<p>一个示例,<code>CREATE TRIGGER ins_sum BEFORE INSERT ON account FOR EACH ROW SET @SUM=@SUM+NEW.amount;</code></p>
+</li>
+</ul>
+</li>
+<li><p>什么是堆表(Heap table)?</p>
+<p>存在内存中的表叫做Heap tables。这些表是内存表，这些内存表没有像BLOB或者TEXT的数据类型。没有<code>AUTO_INCREMENT</code>。他们可以使用索引使得它们更快，索引是针对少量特定字段的值拿出来进行排序存储，并记录在表中的位置, 而因为索引是有序的, 所以就会很容易通过索引查询到具体的记录位置, 然后再根据记录位置直接从表中读取该记录。数据存储没有任何的顺序，插入数据也没顺序。由于数据没有任何顺序，查询数据会非常慢，但是写入操作会比较快。还有就是上面介绍的表Index-Organized table，直接就是索引表，表中数据本身就是有序的, 这样查询表的时候就可以快速的找到符合条件的记录位置。</p>
+</li>
+<li><p>如何控制HEAP表的最大大小？</p>
+<p>可以使用MySQL配置<code>max_heap_table_size</code>来控制HEAP表的大小</p>
+</li>
+<li><p>FLOAT和DOUBLE的区别？</p>
+<p>FLOAT存储了8位精度的浮点数，并且有4字节。DOUBLE存储了18位精度的浮点数，有8字节。MySQL 浮点型和定点型可以用类型名称后加（M，D）来表示，M表示该值的总共长度，D表示小数点后面的长度。</p>
+</li>
+<li><p>什么是BLOB？</p>
+<p>表示binary large object，二进制大对象，可以存储可变数量的数据。有4种不同类型的BLOB，基于可以存储的最大数量</p>
+<ul>
+<li>TINYBLOB</li>
+<li>BLOB</li>
+<li>MEDIUMBLOB</li>
+<li>LONGBLOB</li>
+</ul>
+</li>
+<li><p>什么是TEXT？</p>
+<p>TEXT是大小写不敏感的BLOB，有4种类型</p>
+<ul>
+<li>TINYTEXT</li>
+<li>TEXT</li>
+<li>MEDIUMTEXT</li>
+<li>LONGTEXT</li>
+</ul>
+</li>
+<li><p>BLOB和TEXT的区别是什么？</p>
+<p>在BLOB中，排序和比较是大小写敏感的，在TEXT中排序和比较是大小写不敏感的。</p>
+</li>
+<li><p>MyISAM表是怎么存储的？</p>
+<p>MyISAM表在磁盘上以三种方式存储</p>
+<ul>
+<li><code>.frm</code>文件，存储了表的定义</li>
+<li><code>.MYD</code>(MYData) 数据文件</li>
+<li><code>.MYI</code>(MYIndex) 索引文件</li>
+</ul>
+</li>
+<li><p>解释MyISAM相对于InnoDB的优点？</p>
+<p>MyISAM在磁盘管理中遵循了更保守的方法，将每个MyISAM表存储在了单独的文件中，如果需要可以进行更进一步的压缩。而InnoDB将表存储在tablespace，进一步的优化比较困难，但是InnoDB支持事务和外键。MyISAM读能快点，Innodb写快点。</p>
+</li>
+<li><p>如果在MySQL中连接字符串？</p>
+<p><code>select concat(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;);</code></p>
+</li>
+<li><p>如果在MySQL中获取当前日期？</p>
+<p><code>select current_date();</code></p>
+</li>
 </ol>
-<p>这些频道实际允许的消息格式在下面指定了。消息是字典字典，字符串作为键，值是采用JSON支持的格式。</p>
-<h1 id="General-Message-Format"><a href="#General-Message-Format" class="headerlink" title="General Message Format"></a>General Message Format</h1><p>一个消息是由下面4个字典结构组成的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    # 消息头为起源session和实际的消息id包含了一对独一无二的标识符，另外还有生成消息的程序使用的username。这在合作设置中很有用，因为可能有多个用户来和同一个kernel交互，这样前端可以以一种有意义的方式标识不同的消息。</div><div class="line">    &apos;header&apos; : &#123;</div><div class="line">                &apos;msg_id&apos; : str, # 通常是uuid，每个消息有不同的msg_id</div><div class="line">                &apos;username&apos; : str,</div><div class="line">                &apos;session&apos; : str, # 通常是uuid，每个session都不同</div><div class="line">                &apos;date&apos;: str, # 每个消息生成时候的ISO 8601 时间戳</div><div class="line">                &apos;msg_type&apos; : str, # 所有可以识别的消息类型字符串将会在下面罗列</div><div class="line">                &apos;version&apos; : &apos;5.0&apos;, # 消息协议的版本</div><div class="line">    &#125;,</div><div class="line">    # 在一系列的消息中，从parent来的消息将会被复制到这里，这样客户端就能知道消息是从哪里来的</div><div class="line">    &apos;parent_header&apos; : dict,</div><div class="line"></div><div class="line">    # 绑定到消息上的元信息</div><div class="line">    &apos;metadata&apos; : dict,</div><div class="line"></div><div class="line">    # 消息实际内容是一个字典，其实际结构将取决于消息类型</div><div class="line">    &apos;content&apos; : dict,</div><div class="line"></div><div class="line">    # 可选的，是一个二进制数据buffers列表，为了支持二进制扩展的协议实现</div><div class="line">    &apos;buffers&apos;: list,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="Compatibility"><a href="#Compatibility" class="headerlink" title="Compatibility"></a>Compatibility</h1><p>内核必须实现<code>execute</code>和<code>kernel info</code>消息，这样内核才是可用的。其他的消息类型都是可选的，尽管我们建议如果可能的话实现<code>completion</code>。内核不需要对它们不处理的消息做出任何回应。前端应该对没有回应到达的情况提供合理的行为，除了<code>excute</code>和<code>kernel info</code>消息。</p>
-<p><code>stdin</code>消息是在从kernel来的请求中独一无二的，回应是从前端发出。前端没有被强制去支持，但是如果前端不支持的话，需要在<code>execute</code>请求中设置<code>&#39;allow_stdin&#39;: False</code>，这样kernel就不会发送<code>stdin</code>请求了。如果那个字段是True，kernel就会发送stdin请求，然后阻塞等待回应，因此前端必须去回应。</p>
-<p>kernel和前端应该允许不期望的消息类型和在已知的消息类型中有额外的字段。这样额外添加到协议的字段不会让现在的代码崩溃。</p>
-<h1 id="The-Wire-Protocol"><a href="#The-Wire-Protocol" class="headerlink" title="The Wire Protocol"></a>The Wire Protocol</h1><p>消息格式存在于高层次，但是没有描述实际在zeromq中的低层次的实现。权威的消息规范实现是我们的<code>Session</code>累</p>
-<p>这一节内容只与协议的非Python消费者有关。Python消费者只需要简单的导入和使用<code>jupyter_client.session.Session</code>就可以了。</p>
-<p>每一个消息将会被序列化至下面至少6个二进制对象列表</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">  b&apos;u-u-i-d&apos;,         # zmq identity(ies)</div><div class="line">  b&apos;&lt;IDS|MSG&gt;&apos;,       # 定界符</div><div class="line">  b&apos;baddad42&apos;,        # HMAC signature</div><div class="line">  b&apos;&#123;header&#125;&apos;,        # serialized header dict</div><div class="line">  b&apos;&#123;parent_header&#125;&apos;, # serialized parent header dict</div><div class="line">  b&apos;&#123;metadata&#125;&apos;,      # serialized metadata dict</div><div class="line">  b&apos;&#123;content&#125;&apos;,       # serialized content dict</div><div class="line">  b&apos;\xf0\x9f\x90\xb1&apos; # extra raw data buffer(s)</div><div class="line">  ...</div><div class="line">]</div></pre></td></tr></table></figure>
-<p>消息开头是ZeroMQ的路由前缀，可以是0或者是更多的socket标识符。这是在定界符前面的消息的每一部分。在IOPub的情况下，只应该有一个前缀组件，就是IOPub订阅者的主题，比如是<code>execute_result</code>, <code>display_data</code></p>
-<p>在大多数情况下，IOPub主题都是不相关的而且是完全忽略的，因为前端订阅了所有主题。在IPython内核中使用<code>msg_type</code>作为主题，可能是关于消息的额外的信息，<code>kernel.{u-u-i-d}.execute_result</code>或者是<code>stream.stdout</code></p>
-<p>在定界符之后是消息的HMAC(Hash-based message authentication code)签名，用来做数据鉴定。如果数据鉴定禁用，这个应该是空字符串。默认的，计算这些签名的哈希函数是sha256。</p>
-<p>在签名之后是实际的消息，这四个字典构成了一个消息，它们是单独序列化的，以header, parent header, metadata, content的顺序进行。可以被任意一种序列化函数将字典转换成bytes。默认并且通用的序列化方法是JSON，msgpack和pickle是通用的替代方案。</p>
-<p>在序列化字典之后是0到多个的原始数据buffers，可以在支持二进制数据的消息类型中使用，可以在自定义的消息中使用，比如comms和协议的扩展。</p>
-<h1 id="Python-API"><a href="#Python-API" class="headerlink" title="Python API"></a>Python API</h1><p>因为消息是字典形式，因此自然的映射到了<code>func(**kw)</code>调用形式。我们应该在几个关键点上开发以这种方式接收参数的函数，然后将其转换成必要的字典，然后发送之。</p>
-<p>另外，消息规范的Python实现在反序列化扩展为下面形式的消息提供了方便。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &apos;header&apos; : dict,</div><div class="line">  &apos;msg_id&apos; : str, # 消息的标识符和类型是在header中存储的，但是Python实现将其拿到了顶层</div><div class="line">  &apos;msg_type&apos; : str,</div><div class="line">  &apos;parent_header&apos; : dict,</div><div class="line">  &apos;content&apos; : dict,</div><div class="line">  &apos;metadata&apos; : dict,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>所有的从任何IPython进程中发送或者接收都应该使用这种扩展形式。</p>
-<h1 id="Messages-on-the-shell-ROUTER-DEALER-channel"><a href="#Messages-on-the-shell-ROUTER-DEALER-channel" class="headerlink" title="Messages on the shell (ROUTER/DEALER) channel"></a>Messages on the shell (ROUTER/DEALER) channel</h1><h2 id="Request-Reply"><a href="#Request-Reply" class="headerlink" title="Request-Reply"></a>Request-Reply</h2><p>一般的，ROUTER/DEALER 套接字遵循下面的请求-相应模式：</p>
-<p>客户端发送一个<code>&lt;action&gt;_request</code>消息，比如<code>execute_request</code>在它的shell(DEALER)套接字。内核收到这个请求然后很快的发布一个<code>status: busy</code>消息在IOPub上。内核然后处理这个请求，然后发送一个合适的<code>&lt;action&gt;_reply</code>消息，比如<code>execute_reply</code>。在处理完请求和发布相应的IOPub消息之后，内核会发布一个<code>status: idle</code>消息。这个idle状态表明对于一个给定请求相应的IOPub消息已经被接收到了。</p>
-<p>所有的回应消息都有一个<code>status</code>字段，可能会有以下值：</p>
-<ul>
-<li><code>status=&#39;ok&#39;</code> 请求被成功的处理，回应剩余内容在下面合适的部分指定。</li>
-<li><p><code>status=&#39;error&#39;</code> 请求因为一个错误而失败</p>
-<p>  当状态是error的时候，通常成功回应的内容应该被忽略，下面的内容字段应该被呈现</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"> &#123;</div><div class="line">&apos;status&apos; : &apos;error&apos;,</div><div class="line">&apos;ename&apos; : str,   # Exception name, as a string</div><div class="line">&apos;evalue&apos; : str,  # Exception value, as a string</div><div class="line">&apos;traceback&apos; : list(str), # traceback frames  as strings</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>status=&#39;abort&#39;</code> 和<code>status=&#39;error&#39;</code>相同，但是没有错误的相关信息。除了status不应该显示其他字段。</p>
-</li>
-</ul>
-<h2 id="Execute"><a href="#Execute" class="headerlink" title="Execute"></a>Execute</h2><p>这个信息类型用来前端请求内核去代表用户执行代码，在保留用户变量的命名空间中(因此和内核自己的内部代码和变量相互独立)</p>
-<p>消息类型：<code>execute_request</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line"># 被内核执行的源代码，一行或者多行字符串</div><div class="line">&apos;code&apos; : str,</div><div class="line"></div><div class="line"># 布尔类型，如果是True，内核会尽可能安静的执行代码，而且会使得store_history变成False</div><div class="line"># 不会在IOPub上广播输出，不会有execute_result回应</div><div class="line"># 默认是False</div><div class="line">&apos;silent&apos; : bool,</div><div class="line"></div><div class="line"># bool类型，如果是True，会使得内核来记录history</div><div class="line"># 默认如果silent是False就是True，如果silent是True，该选项强制为False</div><div class="line">&apos;store_history&apos; : bool,</div><div class="line"></div><div class="line"># 在用户字典中执行的名字到表达式的映射，在执行之后会对每个富显示数据表示进行求值</div><div class="line">&apos;user_expressions&apos; : dict,</div><div class="line"></div><div class="line"># 一些前端不支持stdin请求，</div><div class="line">&apos;allow_stdin&apos; : True,</div><div class="line"></div><div class="line"># 如果是True，如果异常发生，则不会退出执行队列，这允许多个进入队列`execute_requests`的执行，即使发生了异常。</div><div class="line">&apos;stop_on_error&apos; : False,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>user_expressions</code>字段需要详细的解释。在过去IPython有提示符概念来允许任意的代码来执行，这被很多在创建提示符来展示系统状态，路径信息甚至是更加难以使用比如远程设备状态等良好的使用。现在IPython在内核和客户端之间有清晰的界限，kernel没有提示符，提示符是前端特性。甚至对于不同的前端应该有不同的提示符，即使连接的是一个内核。<code>user_expressions</code>可以用来恢复这一信息。</p>
-<p>任何在<code>user_expression</code>中发生的错误会导致包含这个key的标准错误信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &apos;status&apos; : &apos;error&apos;,</div><div class="line">    &apos;ename&apos; : &apos;NameError&apos;,</div><div class="line">    &apos;evalue&apos; : &apos;foo&apos;,</div><div class="line">    &apos;traceback&apos; : ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>执行请求完成之后，内核总会发送一个响应，其中有一个状态码来表明什么发生了，并且包含有关结果的额外数据，下面是可能的返回状态码和相关数据。</p>
-<h2 id="Execution-counter-prompt-number"><a href="#Execution-counter-prompt-number" class="headerlink" title="Execution counter(prompt number)"></a>Execution counter(prompt number)</h2><p>内核应该有一个单独的，单调增长的计数器对于所有的执行请求，当<code>store_history=True</code>的时候。这个计数器是用来填充<code>In[n]</code>和<code>Out[n]</code>提示符的。这个计数器的值将会被以<code>execution_count</code>字段返回，在所有的<code>execute_reply</code>和<code>execute_input</code>信息。</p>
-<h2 id="Execution-results"><a href="#Execution-results" class="headerlink" title="Execution results"></a>Execution results</h2><p>消息类型：<code>execute_reply</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">  # One of: &apos;ok&apos; OR &apos;error&apos; OR &apos;abort&apos;</div><div class="line">  &apos;status&apos; : str,</div><div class="line"></div><div class="line">  &apos;execution_count&apos; : int,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>当状态为<code>ok</code>，会有以下额外的字段</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  # 每个payload字典应该有一个source键，用来区分每个payload字典</div><div class="line">  &apos;payload&apos; : list(dict),</div><div class="line"></div><div class="line">  # Results for the user_expressions.</div><div class="line">  &apos;user_expressions&apos; : dict,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="Payloads-DEPRECATED"><a href="#Payloads-DEPRECATED" class="headerlink" title="Payloads (DEPRECATED)"></a>Payloads (DEPRECATED)</h2><p>payloads是一种从内核来触发前端动作。目前的payloads：</p>
-<ul>
-<li><p>page: 以分页的形式展现数据</p>
-<p>  分页输出用来解析，或者其他不被认为是输出的显示信息。分页载荷一般被在单独的面板中展示，可以在代码旁边看到，而且不包括在notebook文档里。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;page&quot;,</div><div class="line"># 必须包括text/plain.</div><div class="line">&quot;data&quot;: mimebundle,</div><div class="line">&quot;start&quot;: int,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>set_next_input</code>: 创建一个新的输出</p>
-<p>  用来在notebook中创建一个新的单元，或者在控制台界面中设置下一个输入。最主要的例子是<code>%load</code></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;set_next_input&quot;,</div><div class="line">&quot;text&quot;: &quot;some cell content&quot;,</div><div class="line"># 如果是True，替换当前单元的内容，而不是创建一个新的</div><div class="line">&quot;replace&quot;: bool,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>edit: 打开一个文件用来编辑</p>
-<p>  通过<code>%edit</code>出发，只有QtConsole支持edit载荷。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;edit&quot;,</div><div class="line">&quot;filename&quot;: &quot;/path/to/file.py&quot;, # the file to edit</div><div class="line">&quot;line_number&quot;: int, # the line number to start with</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>ask_exit</code> 用来指示前端提示用户退出</p>
-<p>  允许内核去请求退出，在IPython里通过<code>%exit</code>来进行。只能在控制前端中使用。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;ask_exit&quot;,</div><div class="line"># 是否保留内核继续运行，只关闭客户端</div><div class="line">&quot;keepkernel&quot;: bool,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Introspection"><a href="#Introspection" class="headerlink" title="Introspection"></a>Introspection</h2><p>代码可以被检查用来给用户展示有用的信息。由内核决定哪些信息应该被展示，而且还有它的格式</p>
-<p>信息类型：<code>inspect_request</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # 解析被请求的代码上下文</div><div class="line">    &apos;code&apos; : str,</div><div class="line"></div><div class="line">    &apos;cursor_pos&apos; : int,</div><div class="line"></div><div class="line">    &apos;detail_level&apos; : 0 or 1,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="Connect"><a href="#Connect" class="headerlink" title="Connect"></a>Connect</h2><p>当一个客户端连接一个内核的request/reply套接字时候，它可以发起一个连接请求来获取内核的基本信息，比如其他ZeroMQ监听的端口。这样允许客户端仅仅需要知道一个连接到kernel的端口(sehll channel)就行了。其他的内核监听的channels都应该包含了响应中。如果有被忽略的端口，表明这个channel没有运行。</p>
-<p>消息类型：<code>connect_request</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">content = &#123;&#125;</div></pre></td></tr></table></figure>
-<p>一个例子，运行所有频道的内核：</p>
-<p>消息类型：<code>connect_reply</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    &apos;shell_port&apos; : int,   # The port the shell ROUTER socket is listening on.</div><div class="line">    &apos;iopub_port&apos; : int,   # The port the PUB socket is listening on.</div><div class="line">    &apos;stdin_port&apos; : int,   # The port the stdin ROUTER socket is listening on.</div><div class="line">    &apos;hb_port&apos; : int,      # The port the heartbeat socket is listening on.</div><div class="line">    &apos;control_port&apos; : int,      # The port the control ROUTER socket is listening on.</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="Comm-info"><a href="#Comm-info" class="headerlink" title="Comm info"></a>Comm info</h2><p>如果一个客户端需要现在在内核上打开通信，它可以发起一个现在打开通信的请求。当可选参数<code>target_name</code>指定的时候，相应只包含现在为目标打开的通信。</p>
-<p>消息类型：<code>comm_info_request</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # Optional, the target name</div><div class="line">    &apos;target_name&apos;: str,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>消息类型：<code>comm_info_reply</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # A dictionary of the comms, indexed by uuids.</div><div class="line">    &apos;comms&apos;: &#123;</div><div class="line">        comm_id: &#123;</div><div class="line">            &apos;target_name&apos;: str,</div><div class="line">        &#125;,</div><div class="line">    &#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="Messages-on-the-IOPub-PUB-SUB-channel"><a href="#Messages-on-the-IOPub-PUB-SUB-channel" class="headerlink" title="Messages on the IOPub (PUB/SUB) channel"></a>Messages on the IOPub (PUB/SUB) channel</h1><h2 id="Streams-stdout-stderr-etc"><a href="#Streams-stdout-stderr-etc" class="headerlink" title="Streams (stdout, stderr, etc)"></a>Streams (stdout, stderr, etc)</h2><p>消息类型：<code>stream</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # stdout或者stderr之一</div><div class="line">    &apos;name&apos; : str,</div><div class="line"></div><div class="line">    # 任意写入该流的字符串</div><div class="line">    &apos;text&apos; : str,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="Display-Data"><a href="#Display-Data" class="headerlink" title="Display Data"></a>Display Data</h2><p>这条消息是用来将要在前端展示的数据数据带回来，比如text, html。这个数据是发布给所有前端的，每一个消息可以有不同的数据表现。它视前端决定如何使用来定的。单个消息应该包含对同样信息的所有可能的展示。每一个展示都应该是JSON数据结构，也应该是一个有效的MIME类型。</p>
-<p>消息类型：<code>display_data</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line"></div><div class="line">    # 数据字典，key是MIME类型，值是以这种类型展现的原始数据</div><div class="line">    &apos;data&apos; : dict,</div><div class="line"></div><div class="line">    # 描述这个数据的所有元信息</div><div class="line">    &apos;metadata&apos; : dict,</div><div class="line"></div><div class="line">    # 临时数据</div><div class="line">    &apos;transient&apos;: dict,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>还有很多消息和消息类型，不过也都大同小异，等到真正要用到的时候再去看看吧。基本上前端和内核的通信原理和消息规范就是这样。</p>
 
 	
 	</div>
-  <a type="button" href="/2017/12/07/messaging_in_jupyter/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/10/19/mysql_interview_1/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -259,11 +462,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/11/12/mysql_技术内幕_note/" >笔记 - MySQL技术内幕(一)</a>
+			<a href="/2017/10/17/music_1/" >最是人间留不住</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-11-12 21:22:14  </div>
+		<div class="date">post @ 2017-10-17 22:53:46  </div>
 		</div>
 	</div>
 	
@@ -273,230 +476,195 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h1 id="MySQL服务器的SQL模式"><a href="#MySQL服务器的SQL模式" class="headerlink" title="MySQL服务器的SQL模式"></a>MySQL服务器的SQL模式</h1><p>影响的行为包括在数据录入阶段如何处理非法数据，如何引用各种标识符等。</p>
-<p>查询一个数据库的会话级或者全局级的SQL模式的当前值：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">select @@SESSION.sql_mode;</div><div class="line">select @@global.sql_mode;</div></pre></td></tr></table></figure>
-<p>在我本机上输出是(两者一致)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">| @@SESSION.sql_mode </div><div class="line">| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |</div><div class="line">1 row in set (0.00 sec)</div></pre></td></tr></table></figure>
-<h1 id="SQL语句中的字母大小问题"><a href="#SQL语句中的字母大小问题" class="headerlink" title="SQL语句中的字母大小问题"></a>SQL语句中的字母大小问题</h1><ul>
-<li>SQL关键字和函数名不区分字母的大小写。</li>
-<li>数据库，数据表和视图的名字在Windows和MAC中不区分大小写，但是在Unix系统是区分大小写的。</li>
-<li>存储函数，存储过程和事件的名字不区分字母大小写。触发器的名字区分大小写。</li>
-<li>数据列和索引的名字不区分大小写。</li>
-</ul>
-<p>统一使用小写字母，这样InnoDB数据表也有好处，其引擎内部是把数据库和数据表的名字作为小写字母存储的。</p>
-<p>而且查询的时候最好使用一致的大小写组合来引用它。这样具有更高的可读性。</p>
-<h1 id="数据库选定，创建，删除和变更"><a href="#数据库选定，创建，删除和变更" class="headerlink" title="数据库选定，创建，删除和变更"></a>数据库选定，创建，删除和变更</h1><ul>
-<li><code>USE db_name;</code></li>
-<li><p><code>CREATE DATABASE db_name</code></p>
-<p>  创建数据库的时候，MySQL服务器会在数据目录里创建一个与该数据库同名的子目录，这个新目录称为数据库子目录。服务器还会在数据库目录里创建一个db.opt文件来保存数据库的属性，比如字符集和排序方式等属性。</p>
-<p>  <code>CREATE DATABASE [IF NOT EXISTS] db_name [CHARACTER SET charset] [COLLATE collation]</code></p>
-<p>  后面一个是设置数据库的默认字符集，一个是排序方式。比如<code>CREATE DATABASE mydb CHARACTER SET utf8 COLLATE utf8_icelandic_ci;</code></p>
-</li>
-<li><p><code>SHOW CREATE DATABASE mydb\G</code> 查看现有的数据库的定义。<code>\G</code>每列打印单独的行，后面不需要再加分号。</p>
-</li>
-<li><p><code>DROP DATABASE db_name;</code></p>
-<p>  一个数据库就是MySQL数据目录里的一个子目录，这个子目录用于存放数据表视图和触发器等。如果该语句失效，则需要手动删除该数据库子目录里的遗留文件和子目录本身，然后再发出该语句。</p>
-</li>
-<li><p><code>ALTER DATABASE [db_name] [CHARACTER SET charset] [COLLATE collation];</code></p>
-<p>  改变数据库的全局特性，也就是默认字符集和排序规则。这里SCHEMA是DATABASE的同义词。</p>
-</li>
-</ul>
-<h1 id="数据表的创建，删除，索引和变更"><a href="#数据表的创建，删除，索引和变更" class="headerlink" title="数据表的创建，删除，索引和变更"></a>数据表的创建，删除，索引和变更</h1><p>MySQL为管理不同类型的数据表而支持几种不同的存储引擎(数据表处理器)。由同一个存储引擎所实现的数据表具有一些共同的属性或者特征。</p>
-<table>
-<thead>
-<tr>
-<th>引擎</th>
-<th style="text-align:center">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ARCHIVE</td>
-<td style="text-align:center">数据存档，不能修改</td>
-</tr>
-<tr>
-<td>CSV</td>
-<td style="text-align:center">存储CSV</td>
-</tr>
-<tr>
-<td>InnoDB</td>
-<td style="text-align:center">具备外键支持功能的事务处理引擎</td>
-</tr>
-<tr>
-<td>MyISAM</td>
-<td style="text-align:center">默认的存储引擎</td>
-</tr>
-<tr>
-<td>MEMORY</td>
-<td style="text-align:center">内存里的数据表</td>
-</tr>
-</tbody>
-</table>
+		<p>再推荐一首歌，最近单曲循环中。。有意境，有感觉，有情怀</p>
+<blockquote>
+<p>帘卷细雨，付一阕别离<br>楼上依稀和旧曲<br>是你当时，弦上生《金缕》<br>牵我今时几思忆 </p>
+<p>竹伞微倾，遮半面涟漪<br>怕听取，他年词笔<br>可知别后，五弦疏云泥<br>江郎才已为谁尽 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>只往事还如，青丝缠梳<br>无端把韶光负 </p>
+<p>三千红尘路，寥寥九州土<br>长安于我意何如？<br>无关青云路，无关诗书<br>无你处，无江湖 </p>
+<p>仲夏正半，你留书落款<br>写「别矣，吾乡长安」<br>流音未挽，只湿我罗衫<br>经年憔悴总相关 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>只往事还如，青丝缠梳<br>无端把韶光负 </p>
+<p>三千红尘路，寥寥九州土<br>长安于我意何如?<br>无关青云路，无关诗书<br>无你处，无江湖 </p>
+<p>梦也阑珊，梦也清寒<br>载你归程，偿我悲欢 </p>
+<p>岁月不堪数，故人不知处<br>最是人间留不住<br>三千红尘路，长安故土<br>最忆处，最难诉<br>无关青云路，无关诗书<br>无你处，无江湖</p>
+</blockquote>
+<p>嗯，长夜总会过去。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/10/17/music_1/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/10/17/cross_origin_resources_sharing/" >跨域资源共享</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-17 16:12:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="同源政策"><a href="#同源政策" class="headerlink" title="同源政策"></a>同源政策</h1><p>浏览器安全的基石是”<a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">同源政策</a>“</p>
+<p>在计算机科学中，同源政策是web应用安全模型中非常重要的概念，一个web浏览器允许第一个web页面的程序可以获取在第二个页面的数据，当且仅当两个web页面是同源的。源被定义为URI scheme，域名和端口号。这个政策阻止了一个页面的恶意程序通过页面的Document Object模型去另外一个web页面获取敏感数据的权限。</p>
+<p>这个机制对广大的基于HTTP cookies的现代web应用意义重大，cookies维护了认证的用户sessions，而服务器是基于HTTP cookie信息来传递敏感信息或者完成状态改变的行为。不相关的站点之间的严格分离必须在客户端方来维护，来阻止数据的机密性或者完整性下降。</p>
+<p>通俗的讲，A网页设置的 Cookie，B网页不能打开，除非这两个网页”同源”。</p>
+<p>所谓”同源”指的是”三个相同”:</p>
 <ul>
-<li><p><code>SHOW ENGINES</code>查出服务器都知道哪些存储引擎。</p>
-<p>  <code>Transactions</code>表明存储引擎是否支持事务，<code>XA</code>表明存储引擎是否支持分布式事务处理，<code>Savepoints</code>是否支持部分事务回滚。</p>
-<p>  另外一种方式是<code>SELECT ENGINE FROM INFORMATION_SCHEMA.ENGINES;</code>也可以查出所有的存储引擎。</p>
+<li>协议相同</li>
+<li>域名相同</li>
+<li>端口相同</li>
+</ul>
+<p>比如<code>http://www.example.com/dir/page.html</code>和<code>http://example.com/dir/other.html</code>就不同源，因为域名不同，而和<code>http://www.example.com/dir2/other.html</code>同源，因为协议相同，域名相同，端口也相同。</p>
+<p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据。</p>
+<p>目前，如果非同源，共有三种行为受到限制：</p>
+<ul>
+<li>Cookie、LocalStorage 和 IndexDB 无法读取。</li>
+<li>DOM 无法获得。</li>
+<li>AJAX 请求不能发送。</li>
+</ul>
+<p>其中Cookie，iframe，LocalStorage等当不同源的时候的解决办法不涉及后端，因此暂时不做介绍。</p>
+<p>同源政策规定，AJAX请求只能发给同源的网址，否则就报错。除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制。</p>
+<ul>
+<li>JSONP</li>
+<li>WebSocket</li>
+<li>CORS</li>
+</ul>
+<p>其中WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。</p>
+<p>WebSocket的请求头中有一个Origin字段，表示该请求的请求源（origin），即发自哪个域名。正是因为有了Origin这个字段，所以WebSocket才没有实行同源政策。因为服务器可以根据这个字段，判断是否许可本次通信。如果该域名在白名单内，服务器就会做出如下回应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 101 Switching Protocols</div><div class="line">Upgrade: websocket</div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=</div><div class="line">Sec-WebSocket-Protocol: chat</div></pre></td></tr></table></figure>
+<h1 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h1><p>CORS是跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</p>
+<p>CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能。整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
+<p>实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。</p>
+<p>其中浏览器将CORS请求分成两类：简单请求（simple request）和非简单请求（not-so-simple request）。</p>
+<h2 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h2><ol>
+<li>请求方法是以下三种方法之一：<ul>
+<li>HEAD</li>
+<li>GET</li>
+<li>POST</li>
+</ul>
+</li>
+<li>HTTP的头信息不超出以下几种字段：<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+<li>Last-Event-ID</li>
+<li>Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain</li>
+</ul>
+</li>
+</ol>
+<p>对于简单请求，浏览器直接发出CORS请求。具体来说，浏览器发现这次跨源AJAX请求是简单请求，就在头信息之中自动增加一个Origin字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GET /cors HTTP/1.1</div><div class="line">Origin: http://api.bob.com</div><div class="line">Host: api.alice.com</div><div class="line">Accept-Language: en-US</div><div class="line">Connection: keep-alive</div><div class="line">User-Agent: Mozilla/5.0...</div></pre></td></tr></table></figure>
+<p>Origin字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。</p>
+<p>如果Origin指定的源，不在许可范围内，服务器会返回一个正常的HTTP回应。浏览器发现，这个回应的头信息没有包含<code>Access-Control-Allow-Origin</code>字段，就知道出错了，从而抛出一个错误，被XMLHttpRequest的onerror回调函数捕获。注意，这种错误无法通过状态码识别，因为HTTP回应的状态码有可能是200。</p>
+<p>如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Access-Control-Allow-Origin: http://api.bob.com</div><div class="line">Access-Control-Allow-Credentials: true</div><div class="line">Access-Control-Expose-Headers: FooBar Content-Type: text/html; charset=utf-8</div></pre></td></tr></table></figure>
+<ul>
+<li>Access-Control-Allow-Origin: 它的值要么是请求时Origin字段的值，要么是一个<code>*</code>，表示接受任意域名的请求。</li>
+<li>Access-Control-Allow-Credentials: 它的值是一个布尔值，表示是否允许发送Cookie。如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。</li>
+<li>Access-Control-Expose-Headers: CORS请求时，XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定。</li>
+</ul>
+<p>其中，如果有Cookie，则Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。</p>
+<h2 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h2><p>除了简单请求之外的都是非简单请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。</p>
+<ul>
+<li>预检请求</li>
+</ul>
+<p>非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为”预检”请求（preflight）。浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">OPTIONS /cors HTTP/1.1</div><div class="line">Origin: http://api.bob.com</div><div class="line">Access-Control-Request-Method: PUT</div><div class="line">Access-Control-Request-Headers: X-Custom-Header</div><div class="line">Host: api.alice.com</div><div class="line">Accept-Language: en-US</div><div class="line">Connection: keep-alive</div><div class="line">User-Agent: Mozilla/5.0...</div></pre></td></tr></table></figure>
+<p>“预检”请求用的请求方法是OPTIONS，表示这个请求是用来询问的。头信息里面，关键字段是Origin，表示请求来自哪个源。</p>
+<ul>
+<li>Access-Control-Request-Method: 列出浏览器的CORS请求会用到哪些HTTP方法</li>
+<li><p>Access-Control-Request-Headers: 指定浏览器CORS请求会额外发送的头信息字段</p>
+</li>
+<li><p>预检请求回应</p>
 </li>
 </ul>
-<p>每创建一个数据表，MySQL就会创建一个硬盘文件来保存该数据表的格式(定义)，<code>.frm</code>，存储在相应database名的目录下。然后不同的存储引擎会为特定数据表创建几个特定的文件。</p>
-<table>
-<thead>
-<tr>
-<th>引擎</th>
-<th style="text-align:center">文件</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MyISAM</td>
-<td style="text-align:center">.MYD(数据), .MYI(索引)</td>
-</tr>
-<tr>
-<td>InnoDB</td>
-<td style="text-align:center">.ibd(数据和索引)</td>
-</tr>
-<tr>
-<td>CSV</td>
-<td style="text-align:center">.CSV(数据), .CSM(元数据)</td>
-</tr>
-<tr>
-<td>ARCHIVE</td>
-<td style="text-align:center">.ARZ(数据), .ARM(元数据)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="MyISAM存储引擎"><a href="#MyISAM存储引擎" class="headerlink" title="MyISAM存储引擎"></a>MyISAM存储引擎</h2><ul>
-<li><p>提供了索引压缩功能</p>
-<p>  MyISAM使用前缀压缩来减少索引的大小，从而让更多的索引可以放入内存中，默认只压缩字符串，但通过参数配置也可以对整数做压缩，myisam压缩每个索引块的方法是，先完全保存索引块中的第一个值，然后将其他值和第一个值进行比较得到相同前缀的字节数（长度）和剩余的不同后缀部分（即把相同部分去掉），把这部分存储起来即可（相同前缀长度和不同后缀部分字符串）。如：索引块中的第一个值是perform，第二个是performance，那么第二个值的前缀压缩后存储的是类似7,ance，这样的形式，myisam对行指针也采用类似的前缀压缩方式。</p>
-<p>  　　压缩块使用更少的空间，代价是某些操作可能更慢，因为每个值的压缩前缀都依赖于前面的值，所以myisam查找时无法在索引块使用二分查找而只能从头开始扫描，正序的扫描速度还不错，但如果是倒序扫描，如：order by desc就不是很好了，所有在块中查找某一行的操作平均都需要扫描半个索引块。</p>
-<p>  测试表明，对于CPU密集型应用，因为扫描需要随机查找，压缩索引使得myisam在索引查找上要慢好几倍，压缩索引的倒序扫描就更慢了，压缩索引需要在CPU内存资源与磁盘之间做权衡，压缩索引可能只需要十分之一大小的磁盘，如果是IO密集型应用，对于某些查询带来的好处会比成本多很多。即压缩索引适合IO密集型应用，不太适合CPU密集型应用。</p>
-<p>  可以在create table语句中指定pack_keys参数来控制myisam表的索引压缩方式：</p>
-<p>  <code>PACK_KEYS [=] {0 | 1 | DEFAULT}</code></p>
-<p>  0：　　表示关闭索引压缩</p>
-<p>  1：　　表示开启数字和字符串压缩</p>
-<p>  default：表示只压缩超长字符串char和varchar列</p>
-<p>  如果建表时不指定这个选项，那么默认只压缩字符串，不压缩数字</p>
-</li>
-<li><p>为<code>AUTO_INCREMENT</code>数据列提供了更多的功能</p>
-</li>
-<li>有一个标志来说明数据表是否需要进行修复</li>
-<li>支持全文检索，需要通过FULLTEXT索引实现</li>
-<li>支持空间数据类型和SPATIAL索引</li>
+<p>服务器收到”预检”请求以后，检查了Origin、Access-Control-Request-Method和Access-Control-Request-Headers字段以后，确认允许跨源请求，就可以做出回应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 200 OK</div><div class="line">Date: Mon, 01 Dec 2008 01:15:39 GMT</div><div class="line">Server: Apache/2.0.61 (Unix)</div><div class="line">Access-Control-Allow-Origin: http://api.bob.com</div><div class="line">Access-Control-Allow-Methods: GET, POST, PUT</div><div class="line">Access-Control-Allow-Headers: X-Custom-Header</div><div class="line">Content-Type: text/html; charset=utf-8</div><div class="line">Content-Encoding: gzip</div><div class="line">Content-Length: 0</div><div class="line">Keep-Alive: timeout=2, max=100</div><div class="line">Connection: Keep-Alive</div><div class="line">Content-Type: text/plain</div></pre></td></tr></table></figure>
+<ul>
+<li>Access-Control-Allow-Origin: 表示<a href="http://api.bob.com可以请求数据。该字段也可以设为星号，表示同意任意跨源请求。" target="_blank" rel="external">http://api.bob.com可以请求数据。该字段也可以设为星号，表示同意任意跨源请求。</a></li>
+<li>Access-Control-Allow-Methods: 表明服务器支持的所有跨域请求的方法</li>
+<li>Access-Control-Allow-Headers: 表明服务器支持的所有头信息字段，不限于浏览器在”预检”中请求的字段。</li>
+<li>Access-Control-Max-Age: 用来指定本次预检请求的有效期</li>
 </ul>
-<h2 id="MEMORY存储引擎"><a href="#MEMORY存储引擎" class="headerlink" title="MEMORY存储引擎"></a>MEMORY存储引擎</h2><ul>
-<li>散列索引，因此不太适合排序，范围比较</li>
-<li>数据行使用的长度固定不变的格式</li>
-<li>可以加入BTREE索引来加快范围比较的速度</li>
-</ul>
-<h2 id="InnoDB的存储引擎"><a href="#InnoDB的存储引擎" class="headerlink" title="InnoDB的存储引擎"></a>InnoDB的存储引擎</h2><ul>
-<li>支持提交和回滚操作</li>
-<li>系统崩溃，自动恢复</li>
-<li>外键和引用完整性支持，递归式删除和更新</li>
-<li>数据行级别的锁定</li>
-<li>数据表集中存储在一个共享的表空间里，也可以为每一个数据表分别创建一个表空间。这时，数据表在它的数据库子目录里有一个对应的ibd文件。</li>
-</ul>
-<h2 id="存储引擎的可移植性"><a href="#存储引擎的可移植性" class="headerlink" title="存储引擎的可移植性"></a>存储引擎的可移植性</h2><ul>
-<li>使用mysqldump工具备份，然后在另一台服务器上载入备份</li>
-<li>二进制可移植性</li>
-</ul>
-<p>MyISAM和InnoDB数据表存储格式和机器无关，具备二进制可移植性。但是有一个前提条件，被移植的数据表不含有任何浮点数据列，或者两台机器使用的浮点数存储格式是一样的。另外对于InnoDB数据库和数据表的名字应该是小写字母。</p>
-<p>MAC中的mysql数据在: <code>/usr/local/mysql/data/</code>，下面每一个文件夹都是一个数据库，再往里就是每个数据库的数据表文件了，InnoDB就有frm和ibd文件</p>
-<h2 id="创建数据表"><a href="#创建数据表" class="headerlink" title="创建数据表"></a>创建数据表</h2><p>创建数据表需要给出数据表名字和数据列，其中包含各个数据列的定义，也可以指定如何创建索引。另一种方法是先创建一个不带索引的数据表，然后再加上索引，这种方式在查询之前填充大量数据的时候比较好，比每次插入数据都要刷新索引要好。</p>
+<p>如果浏览器否定了”预检”请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被XMLHttpRequest对象的onerror回调函数捕获。</p>
+<h1 id="flask-cors"><a href="#flask-cors" class="headerlink" title="flask-cors"></a><code>flask-cors</code></h1><p>搞懂了原理，下来看这个库就非常容易了。</p>
+<p>这个库提供了一个Flask扩展，其默认在所有路由上开启了CORS支持，支持所有源和方法。它参数化了所有单独的CORS头。这个包同时包含了一个装饰器。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>这是推荐的开启CORS的方式，默认的配置将在大部分情况下工作正常。</p>
+<p><code>class flask_cors.CORS(app=None, **kwargs)</code></p>
+<p>为这个应用初始化跨域资源共享。参数和<code>cross_origin()</code>是一致的，多了一个资源参数。资源参数定义了一系列的去匹配的资源路径的正则表达式，其他的可选参数将在这些路径(路由)上起作用。可选参数和<code>cross_origin()</code>是一致的。</p>
+<p>CORS的设置是以下列顺序决定的：</p>
 <ol>
-<li><p>数据表选项</p>
-<p> <code>CREATE TABLE mytbl (...) ENGINE=InnoDB;</code>创建一个使用InnoDB引擎的数据表。</p>
-<p> <code>SHOW CREATE TABLE t \G</code>查询数据表使用的什么引擎。</p>
-<p> <code>SHOW TABLE STATUS</code>查询该数据库中所有数据表的状态。</p>
-<p> <code>ALTER TABLE mytbl ENGINE=InnoDB;</code>改变某一个数据表选项。</p>
-<ul>
-<li><code>AUTO_INCREMENT=n</code>为数据表设定一个起始编号值</li>
-<li><code>[DEFAULT] CHARACTER SET=charset</code>为数据表指定一个默认字符集，(<code>CHARACTER SET==CHARSET</code>)，如果字符串数据列没有明确表示它使用哪个字符集，那么就会使用这个选项指定的字符集。</li>
-</ul>
-</li>
-<li><p><code>CREATE TABLE IF NOT EXIST</code>创建原本没有的数据表。<code>DROP TABLE IF EXIST</code></p>
-</li>
-<li><code>CREATE TEMPORARY TABLE tab_name</code>将创建一个临时数据表，在与服务器断开时候自动消失。<code>DROP TEMPORARY TABLE</code></li>
-<li><p>从其他数据表或者查询结果创建数据表</p>
-<ul>
-<li><code>CREATE TABLE ... LIKE</code>会将原始表结构全部复制过来，包括索引，但是内容是空的。后面可以<code>INSERT INTO new_tbl_name SELECT * FROM tbl_name</code></li>
-<li><code>CREATE TABLE ... SELECT</code>从任意一条select语句的查询结果创建新的数据表。但是不会复制数据列属性和索引。</li>
-</ul>
-</li>
-<li><p>使用MERGE数据表</p>
-<p> MERGE存储引擎把一组MyISAM表当成一个逻辑单元来对待，可以对它们同时进行查询。这组表必须有完全一样的结构。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE log_CCYY</div><div class="line">&#123;</div><div class="line">    dt DATETIME NOT NULL,</div><div class="line">    info VARCHAR(100) NOT NULL,</div><div class="line">    INDEX (dt)</div><div class="line">&#125; ENGINE = MyISAM;</div><div class="line"></div><div class="line">CREATE TABLE log_merge</div><div class="line">&#123;</div><div class="line">    dt DATETIME NOT NULL,</div><div class="line">    info VARCHAR(100) NOT NULL,</div><div class="line">    INDEX (dt)</div><div class="line">&#125; ENGINE = MERGE UNION = &#123;log_2004, log_2005&#125;</div></pre></td></tr></table></figure>
-</li>
+<li>资源层级的设置（当传递进去一个字典）</li>
+<li>关键字参数设置</li>
+<li>应用级别的配置参数(比如. <code>CORS_*</code>)</li>
+<li>默认参数</li>
 </ol>
-<h2 id="删除数据表"><a href="#删除数据表" class="headerlink" title="删除数据表"></a>删除数据表</h2><ul>
-<li><code>DROP TABLE tbl_name;</code></li>
-<li>也可以删除多个表：<code>DROP TABLE tbl_name1, tbl_name2;</code></li>
-<li><code>DROP TABLE IF EXISTS tbl_name;</code></li>
-<li><code>DROP TEMPORARY TABLE tbl_name;</code></li>
-</ul>
-<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><p>索引是加快对数据表内容的访问速度的手段，特别是多个数据表的关联查询中。</p>
+<p>因为有可能多个正则表达式会匹配到一个资源路径上，所以正则表达式首先会通过长度来排序，最长到最短，试图匹配一个最特定的正则表达式。这样做的好处是，首先匹配特定的资源，然后使用通配符匹配其他的资源。</p>
 <ul>
-<li>可以为单个数据列进行索引，也可以根据多个数据列构建复合索引</li>
-<li>索引可以包含独一无二的值，也可以包含重复的值</li>
-<li>可以为一个数据表建立多个索引</li>
-<li>可以为数据列的一个前缀创建索引，这样使得索引更小并且加快访问速度。</li>
+<li><code>resources(dict, iterable or string)</code></li>
 </ul>
-<p>只有MyISAM支持FULLTEXT或者SAPTIAL索引。当然可以对数据表进行转换以支持相应的索引。<code>ALTER TABLE tbl_name ENGINE=InnoDB;</code></p>
+<p>一系列正则表达式和应用于给定的资源路径的可选的CORS选项</p>
+<p>如果是字典的话，key是正则表达式，值是和这个方法一样的关键字参数。</p>
+<p>如果是列表的话，就是一系列的正则表达式。会应用app层级的配置。</p>
+<p>如果是字符串的话，就是一个正则表达式。会应用app层级的参数。</p>
+<p>默认会匹配所有的并且应用app层级的配置。</p>
 <ul>
-<li>唯一索引，单列则数据不能重复，多列则组合不能重复</li>
-<li>普通索引，允许索引值重复</li>
-<li>FULLTEXT索引，全文检索，MyISAM数据表</li>
-<li>SPATIAL索引，MyISAM数据表和空间数据类型</li>
-<li>HASH索引，MEMORY数据表的默认索引，可以改用BTREE索引代替这个索引。</li>
+<li><code>origins(list, string or regex)</code></li>
 </ul>
-<p><code>ALTER TABLE tbl_name ADD INDEX index_name (index_columns);</code></p>
-<p>其中<code>index_name</code>是可选的，是索引的名字。<code>index_columns</code>是想加索引的一个或者多个数据列。还有其他索引是<code>UNIQUE</code>, <code>PRIMARY KEY</code>, <code>FULLTEXT</code>, <code>SPATIAL</code>。另外，如果是<code>PRIMARY KEY</code>和<code>SPATIAL</code>索引，必须是<code>NOT NULL</code>属性。</p>
-<p>每个数据表只能有一个<code>PRIMARY KEY</code>，因为<code>PRIMARY KEY</code>的索引名字总是PRIMARY，而同一个数据表不能有两个同名索引。</p>
-<p><code>PRIMARY KEY</code>不能有NULL值，而UNIQUE可以，因为索引的多个NULL值被认为代表多个不同的东西。</p>
-<p>可以使用<code>CREATE INDEX</code>添加索引：<code>CREATE INDEX index_name ON tbl_name (index_columns);</code>，这里<code>index_name</code>是必须给定的。</p>
-<p>在CREATE表的时候可以为它创建索引，索引名字是可选的。可以在每一列定义后面进行，也可以在建表语句后面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE tbl_name(</div><div class="line">    i INT NOT NULL PRIMARY KEY,</div><div class="line">    j CHAR(10) NOT NULL UNIQUE,</div><div class="line">    ... column definitions...</div><div class="line">    INDEX index_name (index_columns),</div><div class="line">    UNIQUE index_name (index_columns),</div><div class="line">)</div></pre></td></tr></table></figure>
-<p>MEMORY表默认是HASH索引，可以加上<code>USING BTREE</code>来建立BTREE索引</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE tbl_name(</div><div class="line">    id INT NOT NULL,</div><div class="line">    name CHAR(100),</div><div class="line">    ... column definitions...</div><div class="line">    INDEX USING BTREE (id)</div><div class="line">) ENGINE = MEMORY;</div></pre></td></tr></table></figure>
-<p>使用前缀索引：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE tbl_name(</div><div class="line">    name CHAR(30) NOT NULL,</div><div class="line">    INDEX (name(10))</div><div class="line">);</div></pre></td></tr></table></figure>
-<h2 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h2><ul>
-<li><code>DROP INDEX index_name on tbl_name;</code>，必须指定<code>index_name</code></li>
-<li>删除<code>PRIMARY KEY</code>: <code>index_name</code>是PRIMARY，而且两边加上反引号。因为一个数据表只有一个PRIMARY KEY，而且名字总是PRIMARY</li>
-<li><code>ALTER TABLE tbl_name DROP INDEX index_name;</code></li>
-<li><code>ALTER TABLE tbl_name DROP PRIMARY KEY;</code></li>
-<li><code>SHOW CREATE TABLE</code>或者<code>SHOW INDEX FROM tbl_name</code>显示索引。</li>
+<p>源，或者是一个列表的允许源。可能是正则表达式，大小写敏感的字符串，或者是一个星号。</p>
+<ul>
+<li><code>methods(list or string)</code></li>
 </ul>
-<h2 id="改变数据表的结构"><a href="#改变数据表的结构" class="headerlink" title="改变数据表的结构"></a>改变数据表的结构</h2><p><code>ALTER TABLE tbl_name action...</code></p>
+<p>默认是 [GET, HEAD, POST, OPTIONS, PUT, PATCH, DELETE]</p>
+<ul>
+<li><code>expose_headers (list or string)</code></li>
+<li><code>allow_headers (list, string or regex)</code></li>
+<li><code>supports_credentials (bool)</code> </li>
+</ul>
+<p>允许用户发起认证的请求，即允许cookie。如果是true，将会在回应中加入<code>Access-Control-Allow-Credentials</code>头。不可以与<code>*</code>域一起使用。</p>
+<ul>
+<li><code>max_age (timedelta, integer, string or None)</code></li>
+<li><code>send_wildcard (bool)</code></li>
+</ul>
+<p>如果为True，并且源参数是<code>*</code>，那么一个通配符<code>Access-Control-Allow-Origin</code>头将会被发送，而不是请求的源头。</p>
+<ul>
+<li><code>vary_header (bool)</code></li>
+</ul>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p><code>flask_cors.cross_origin(*args, **kwargs)</code></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><ul>
+<li>CORS</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask, session</div><div class="line">from flask_cors import CORS</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line">CORS(app, supports_credentials=True)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def helloWorld():</div><div class="line">  return &quot;Hello, %s&quot; % session[&apos;username&apos;]</div></pre></td></tr></table></figure>
+<ul>
+<li><code>cross_origin()</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@app.route(&quot;/&quot;, methods=[&apos;GET&apos;])</div><div class="line">@cross_origin()</div><div class="line">def helloWorld():</div><div class="line">    return &apos;&apos;&apos;&lt;h1&gt;Hello CORS!&lt;/h1&gt; Read about my spec at the</div><div class="line">&lt;a href=&quot;http://www.w3.org/TR/cors/&quot;&gt;W3&lt;/a&gt; Or, checkout my documentation</div><div class="line">on &lt;a href=&quot;https://github.com/corydolphin/flask-cors&quot;&gt;Github&lt;/a&gt;&apos;&apos;&apos;</div></pre></td></tr></table></figure>
+<h2 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h2><p>当然可以自己来实现这个CORS，主要就是加上一些头信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@app.after_request</div><div class="line">def set_cors_headers(response):</div><div class="line">    # 不论预检响应还是正常响应都会有的头</div><div class="line">    response.headers[&apos;Access-Control-Allow-Origin&apos;] = request.headers.get(&apos;Origin&apos;, &apos;*&apos;)</div><div class="line">    response.headers[&apos;Access-Control-Allow-Credentials&apos;] = &apos;true&apos;</div><div class="line"></div><div class="line">    if request.method == &apos;OPTIONS&apos;:</div><div class="line">        # 只会在预检响应中出现的</div><div class="line">        # http://www.w3.org/TR/cors/#access-control-allow-methods-response-header</div><div class="line">        response.headers[&apos;Access-Control-Allow-Methods&apos;] = &apos;GET, POST, PUT, DELETE, PATCH, OPTIONS&apos;</div><div class="line">        response.headers[&apos;Access-Control-Max-Age&apos;] = &apos;3600&apos;  # 1 hour cache</div><div class="line">        if request.headers.get(&apos;Access-Control-Request-Headers&apos;) is not None:</div><div class="line">            response.headers[&apos;Access-Control-Allow-Headers&apos;] = request.headers[&apos;Access-Control-Request-Headers&apos;]</div><div class="line">    return response</div></pre></td></tr></table></figure>
+<p>参考：</p>
 <ol>
-<li><p>改变数据列的数据类型</p>
-<ul>
-<li><code>ALTER TABLE mytbl MODIFY i MEDIUMINT UNSIGNED;</code></li>
-<li><code>ALTER TABLE mytbl CHANGE i i MEDIUMINT UNSIGNED;</code>，CHANGE可以改变i数据列的名字，因此需要输入两遍，因此可以修改数据列的名字(保持原有定义不变)</li>
-<li><code>ALTER TABLE t MODIFY c CHAR(20) CHARSET utf8;</code></li>
-</ul>
-</li>
-<li><p>数据表改用另一种存储引擎</p>
-<p> <code>ALTER TABLE tbl_name ENGINE = engine_name</code></p>
-</li>
-<li><p>重新命名一个数据表</p>
-<ul>
-<li><code>ALTER TABLE tbl_name RENAME TO new_tbl_name;</code></li>
-<li><code>RENAME TABLE old_name TO new_name;</code></li>
-<li><code>RENAME TABLE old_name1 TO new_name, old_name2 TO new_name2;</code></li>
-<li><code>RENAME TABLE db.t TO test.t;</code></li>
-</ul>
-</li>
-</ol>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li>MySQL技术内幕 第四版 (Paul Dubois)</li>
-<li><a href="https://www.cnblogs.com/xiaoboluo768/p/5166939.html" target="_blank" rel="external">myisam压缩（前缀压缩）索引
-</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">浏览器同源政策及其规避方法</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">Wiki - Same-origin policy</a></li>
+<li><a href="https://www.w3.org/TR/cors" target="_blank" rel="external">Cross-Origin Resource Sharing</a></li>
+<li><a href="http://flask-cors.corydolphin.com/en/latest/api.html" target="_blank" rel="external">flask-cors API doc</a></li>
 </ol>
 
 	
 	</div>
-  <a type="button" href="/2017/11/12/mysql_技术内幕_note/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/10/17/cross_origin_resources_sharing/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -506,11 +674,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/11/11/session_and_cookie/" >session和数据存储</a>
+			<a href="/2017/10/07/IO模型/" >IO模型</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-11-11 19:51:14  </div>
+		<div class="date">post @ 2017-10-07 11:11:11  </div>
 		</div>
 	</div>
 	
@@ -520,36 +688,144 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>web中一个重要部分就是如何做好用户的整个浏览过程的控制，因为HTTP是无状态的，因此确定哪些连接与用户有关，经典的解决方案是cookie和session。cookie是客户端机制，将用户数据保存在客户端，而session机制是服务器端机制，服务器使用类似于散列表的结构来保存信息。每一个访客都有一个唯一的标志符，即sessionID。要么经过url传递，要么保存在客户端的cookies里。也可以将session保存在数据库里。</p>
-<p>由于HTTP的无状态性，一次登陆后的请求并不能知道以前已经登陆过了，但是也不能每次请求都携带登陆账号和密码，所以需要采用cookie和session机制，来在服务器或者客户端保存一些类似的可以代表身份的信息。</p>
-<p>cookie，在本地计算机保存一些用户操作的历史信息(比如登陆信息)，用户再次访问时候浏览器通过HTTP协议将本地cookie内容发送给服务器，从而完成验证或者上一步操作。</p>
-<p>session，是服务器上保存用户操作的历史信息，服务器使用sessionID来标识session。sessionID由服务器产生，随机而且唯一。但是仍然需要将发送请求的客户端和session对应，因此可以借助cookie机制来获取客户端的标识(sessionID)，也可以通过get方式将id发送给服务器。</p>
-<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p>用户每次访问站点的时候，web应用程序都可以读取cookie包含的信息。cookie是有时间限制的，有两种，会话cookie和持久cookie。</p>
-<h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>session指用来在客户端和服务器端之间保持状态的解决方案。也可以指这种方案的存储结构。</p>
-<p>首先程序需要为某个客户端请求创建一个session时候，服务器首先检查这个客户端的请求里是否包含了一个sessionID，如果有，则说明已经创建过session，服务器就按照sessionID将session检索出来使用，如果检索不到，就创建一个。如果没有也创建一个。这个sessionID会在本次响应中返回给客户端保存。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>session通过cookie，在客户端保存sessionID。而降用户其他会话消息保存在服务端的session对象中。cookie需要将所有信息保存在客户端。但是cookie可能有安全隐患，比如cookie中的用户名密码被破译，或者cookie被其他应用获取。</p>
-<h1 id="使用session"><a href="#使用session" class="headerlink" title="使用session"></a>使用session</h1><h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><p>服务器为每个会话维护一份信息数据，客户端和服务器依靠一个全局唯一标识来访问数据。</p>
+		<p>最近对IO模型做了深入的学习，参考书籍的章节如下：</p>
+<blockquote>
+<p>Unix系统编程手册 上 2.5节，4，5章<br>Unix系统编程手册 下 63章<br>Unix环境高级编程 3，5，14章</p>
+</blockquote>
+<p>首先最基本的是文件IO模型，在这里引出了文件描述符的概念，常用的文件IO函数以及相关的操作文件描述符的函数，比较重要的就是<code>fcntl</code>。基本的文件IO模型都是阻塞型的并且是不带缓冲的，后面就介绍了标准IO模型，即带缓冲的IO模型，也就是在内核进行系统调用再封装了一层缓冲区，并且引入了流的概念。在后面引入了非阻塞型IO模型，以及IO多路复用，比如select，poll，epoll，最后介绍了异步IO模型。</p>
+<h1 id="文件IO模型"><a href="#文件IO模型" class="headerlink" title="文件IO模型"></a>文件IO模型</h1><p>基本的文件IO函数是不带缓冲的IO，即每个read和write都调用内核中的一个系统调用，即直接在内核中运行。</p>
+<p>常用的文件IO函数有<code>open()</code>, <code>close()</code>, <code>lseek()</code>, <code>read()</code>, <code>write()</code></p>
+<h2 id="read系统调用"><a href="#read系统调用" class="headerlink" title="read系统调用"></a>read系统调用</h2><p><code>ssize_t read(int fd, void *buf, size_t nbytes)</code></p>
+<p>如果read成功，则返回读到的字节数，如果已经到达文件的尾端，则返回0。这里的buf是应用程序自己的buffer，实际对文件进行写操作的时候，都会写到内核的缓冲存储器中，然后延迟写。基本上这里的buf和缓冲不是一个概念，这里只是规定了从哪里读或者从哪里写，本质上就是一块存放数据的内存区域。写的时候还是直接对内核的缓冲区进行操作，但是标准IO模型就是在系统调用的上层多了一个缓冲区，所以不带缓冲的IO是对文件描述符进行操作，而带缓冲的标准IO是针对流的。</p>
+<p>系统调用不会分配内存缓冲区用以返回信息给调用者，必须预先分配大小合适的缓冲区并且将缓冲区指针传递给系统调用。比如<code>char buf[BUF_SIZE];</code></p>
+<h2 id="write系统调用"><a href="#write系统调用" class="headerlink" title="write系统调用"></a>write系统调用</h2><p><code>ssize_t write(int fd, const void *buf, size_t nbytes)</code></p>
+<p>其返回值通常与参数nbytes的值相同，否则表示出错。出错的一个常见原因就是磁盘已经写满，或者超过了一个给定进程的文件长度限制。</p>
+<h2 id="IO预读与延迟写"><a href="#IO预读与延迟写" class="headerlink" title="IO预读与延迟写"></a>IO预读与延迟写</h2><p>预读：当检测到正进行顺序读取时候，系统就试图读入比应用所要求的更多数据，并且假想应用会很快读取这些数据。</p>
+<p>延迟写：内核中设有缓冲区高速缓存或者页高速缓存，大多数磁盘IO都通过缓冲区进行，向文件中写入数据的时候，内核通常先将数据复制到缓冲区中，然后排入队列，晚些时候再写入磁盘。当内核需要重用缓冲区来存放其他磁盘块数据时候，就会将所有延迟写的数据写入磁盘。</p>
 <ul>
-<li>生成一个sessionID</li>
-<li>开辟数据存储空间，一般是内存中创建数据结构，但是为了持久化，也可以在数据库中</li>
-<li>将sessionID发送给客户端。</li>
+<li><code>sync</code>: 将所有修改过的块缓冲区排入写队列，然后就返回，并不等待实际写磁盘操作结束。</li>
+<li><code>fsync</code>: 支队由文件描述符fd指定的一个文件起作用，并且等待写磁盘操作结束后才返回</li>
+<li><code>fdatasync</code>: 和fsync一样，但是只影响文件的数据部分，但是fsync还会影响文件的属性。</li>
 </ul>
-<p>发送给客户端有两种方式：</p>
+<h2 id="内核中IO的数据结构"><a href="#内核中IO的数据结构" class="headerlink" title="内核中IO的数据结构"></a>内核中IO的数据结构</h2><p>内核使用3种数据结构来表示打开文件。</p>
+<p>首先进程表中每个进程表项表示一个进程，其中每个进程表项里面包含了一张打开文件描述符表，这个文件描述符表记录了所有打开的文件描述符。</p>
+<p>文件描述符表中每一项包含了文件描述符标志和指向文件表项的指针。</p>
+<p>文件表项是存在于内核中的文件表中的，内核为所有打开的文件维护了一个文件表。每个文件表项包含了 <strong>文件状态标志(读，写，同步，非阻塞等)</strong>，<strong>当前文件偏移量</strong>，<strong>指向该文件v节点表项的指针</strong>。</p>
+<p>每个打开文件都有一个v节点结构，v节点包含了 <strong>文件类型</strong> 以及对此文件进行 <strong>各种操作函数的指针</strong>。v节点还包含了该文件的i节点，即索引节点。这些信息是打开文件时候从磁盘上读入内存的，所以文件的所有信息都是随时可用的。比如i节点包含了文件所有者，文件长度，指向文件实际数据块在磁盘上所在位置的指针。</p>
+<p><img src="/img/WechatIMG44.jpeg" alt=""></p>
+<p>如果两个进程同时打开了一个文件，那么这两个进程分别有不同的文件表项，但是对一个给定的文件只有一个v节点表项，之所以每个进程获得自己的文件表项，因为这可以使得每个进程都有它自己的对该文件的偏移量。那么lseek这样的函数，修改的是文件表项中的文件偏移量。但是对于写入，修改的是i节点中的当前文件长度信息。</p>
+<p>可能有多个文件描述符项指向同一个文件表项，比如dup函数(复制一个文件描述符)，fork之后父进程，子进程各自的每一个打开文件描述符共享同一个文件表项。</p>
+<p>文件描述符标志，当前只定义了一个文件描述符标志<code>FD_CLOEXEC</code>，设置则表示当程序执行exec函数的时候，fd将被系统自动关闭。设置文件描述符标志只会影响一个文件描述符。</p>
+<p>文件状态标志，比如<code>O_RDONLY</code>表示只读打开。可以使用<code>fcntl</code>进行设置，应用于指向该给定文件表项的任何进程中的所有描述符。</p>
+<h2 id="复制一个文件描述符"><a href="#复制一个文件描述符" class="headerlink" title="复制一个文件描述符"></a>复制一个文件描述符</h2><p><code>int dup(int fd)</code></p>
+<p>由dup返回的新文件描述符是当前可用文件描述符的最小值。</p>
+<p><code>int dup2(int fd, int fd2)</code></p>
+<p>fd2参数是指定新描述符的值，如果fd2已经打开，则先将其关闭。如果fd等于fd2，那么直接返回fd2，不会关闭。</p>
+<p>返回的新文件描述符与参数fd共享同一个文件表项，所以共享同一个文件状态标志与偏移量。但是每一个文件描述符都由其特有的文件描述符标志，新描述符的执行时关闭<code>FD_CLOEXEC</code>会被dup函数清除。</p>
+<h2 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h2><p><code>int fcntl(int fd, int cmd, ...)</code></p>
+<p>其中fcntl有以下5中功能：</p>
+<ol>
+<li>复制一个已有的描述符，使用cmd为<code>F_DUPFD</code>或者<code>F_DUPFD_CLOSEXEC</code>，前者返回的文件描述符值是大于或者等于第三个参数的最小的值，与fd共享一套文件表项，但是其<code>FD_CLOEXEC</code>会被清除。后者可以设置<code>FD_CLOEXEC</code>的值，然后返回一个文件描述符值。</li>
+<li>获取/设置文件描述符标志，使用cmd为<code>F_GETFD</code>或者<code>F_SETFD</code>，也就是<code>FD_CLOEXEC</code></li>
+<li>获取/设置文件状态标志，使用cmd为<code>F_GETFL</code>或者<code>F_SETFL</code>，比如<code>O_RDONLY</code>之类的参数，但是设置的范围要比获取范围要小</li>
+<li>获取/设置异步IO所有权，使用cmd为<code>F_GETOWN</code>或者<code>F_SETOWN</code>，前者获取当前接收SIGIO和SIGURG信号的进程ID或者进程组ID，后者设置接收SIGIO和SIGURG信号的进程ID或者进程组ID</li>
+<li>获取/设置记录锁，使用cmd为<code>F_GETLK</code>, <code>F_SETLK</code>或者<code>F_SETLKW</code></li>
+</ol>
+<p>所以在使用fcntl，只要知道打开文件的描述符，就可以修改描述符的属性。</p>
+<h1 id="标准IO"><a href="#标准IO" class="headerlink" title="标准IO"></a>标准IO</h1><p>标准IO处理了很多细节，比如缓冲区分配，以优化的块长度执行IO等。</p>
+<h2 id="流和FILE对象"><a href="#流和FILE对象" class="headerlink" title="流和FILE对象"></a>流和FILE对象</h2><p>前面的IO函数是围绕文件描述符的，打开一个文件返回一个文件描述符，然后该文件描述符就用于后面的IO操作。但是标准IO里面，都是围绕流的，使用标准IO库打开或者创建一个文件，就会使得一个流与一个文件相关联。</p>
+<p>打开一个流的时候，标准IO函数fopen返回一个指向FILE对象的指针，该对象是一个结构，包含了标准IO库为管理该流需要的所有信息，包括用于实际IO的文件描述符，指向用于该流缓冲区的指针，缓冲区的长度，当前在缓冲区的字符数以及出错标志等。为了引用一个流，需要将FILE指针作为参数传递给每个标准IO函数。</p>
+<h2 id="缓冲"><a href="#缓冲" class="headerlink" title="缓冲"></a>缓冲</h2><p>提供缓冲的目的是减少read和write系统调用的次数，毕竟在内核中进行系统调用是一个比较耗费资源的事情，必须切换上下文等等。它也对每个IO流自动的进行缓冲管理。分为以下缓冲类型：</p>
+<p>输入和输出的缓冲区是在一起</p>
 <ul>
-<li><code>Set-cookie</code>就可以将session的标识发送给客户端</li>
-<li>url重写，这种方式在客户端禁用cookie的时候有用。</li>
+<li>全缓冲：在填满标准IO缓冲区后才进行实际的IO操作，磁盘上的文件使用的是全缓冲。</li>
+<li>行缓冲：当输入和输出中遇到换行符的时候，进行IO操作。当流涉及一个终端的时候，使用的是行缓冲。但是只要填满了缓冲区，那么也会进行IO操作。如果要输入数据(从内核)，那么会先冲洗所有行缓冲输出流。</li>
+<li>不带缓冲：标准错误流stdeer通常是不带缓冲的，这样可以使得出错信息可以尽快显示出来。</li>
 </ul>
-<h2 id="预防session劫持"><a href="#预防session劫持" class="headerlink" title="预防session劫持"></a>预防session劫持</h2><p>客户端和服务器通过sessionID来维护会话，但是这个标识符很容易被劫持并被攻击。</p>
-<p>解决方案：</p>
+<p><code>int fflush(FILE *fp);</code></p>
+<p>此函数使得该流所有未写的数据都被传送至内核，如果fp是NULL，则此函数会导致所有输出被清洗。</p>
+<h1 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h1><h2 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h2><p>非阻塞IO可以使我们发出open，read和write这样的IO操作，并且使得这些操作不会永远阻塞，如果这种操作不能完成，则调用立即出错返回，表示该操作如继续将会被阻塞。</p>
+<p>有两种方法指定一个描述符为非阻塞IO</p>
+<ol>
+<li>调用open获得描述符的时候，指定<code>O_NONBLOCK</code>标志</li>
+<li>对于已经打开的描述符，使用<code>fcntl</code>，由该函数打开<code>O_NONBLOCK</code>文件状态标志</li>
+</ol>
+<p>出错对应的标志为<code>EAGAIN</code>，使用这种非阻塞IO进行IO操作，一种方式就是轮询，每次去调用，如果报错则继续询问，直到可以进行IO，所以就有可能进行了很多次系统调用(read, write等)，只有少数真正的输出了数据。</p>
+<p>这种方式非常消耗以及浪费CPU时间，因此一般会用到基于非阻塞描述符的IO多路复用，也就是对一大堆描述符进行轮询的方式。</p>
+<p>当然可以使用阻塞型描述符+多线程的方式来进行，但是线程同步的开销有时会增加复杂性，当然如果每个描述符之间没有什么关系，是可以使用多线程的模式的，这样还简化了程序设计。</p>
+<p>IO多路复用，先构造一张感兴趣的描述符列表，然后调用一个函数，直到这些描述符中的一个已经准备好进行IO时候，函数才返回。函数返回的时候，进程会被告知哪些描述符已经准备好可以进行IO。</p>
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p><code>int select(int maxfdp1, fd_set *restrict readfds, fd_set *restrict writefds, fd_set *restrict exceptfds, struct timeval *restrict tvptr)</code></p>
 <ul>
-<li>sessionID只允许cookie设置，而不能通过url重写方式，同时设置cookie的httponly为true，这个属性设置是否可以通过客户端脚本访问这个cookie，防止被XSS劫持。</li>
-<li>在每个请求中加入token，即每次收到请求都会验证这个token，保证用户请求是唯一的。</li>
+<li>maxfdp1 指定最大文件描述符编号加1，最大容量限制由常量<code>FD_SETSIZE</code>决定，Linux上，该值是1024</li>
+<li>readfds 用来检测输入是否就绪的文件描述符集合</li>
+<li>writefds 用来检测输出是否就绪的文件描述符集合</li>
+<li>exceptfds 用来检测异常情况是否就绪的文件描述符集合</li>
+<li><p>tvptr 愿意等待的时间长度，NULL为永远等待</p>
+</li>
+<li><p>返回值-1表示出错，比如在没有描述符准备好的时候返回，这样不会修改描述符集合。</p>
+</li>
+<li>返回值0表示没有描述符准备好但是超时了。所有描述符集合都会置为0.</li>
+<li>返回正值表示已经准备好的描述符数目。内核会修改相应的描述符集合，就绪的描述符仍旧为1，未就绪的是0.</li>
 </ul>
-<p>另外一种方案是，间隔生成新的sessionID。</p>
+<p>每次select调用的时候，都需要初始化，将要检查的描述符集合都置为1，传给内核，然后内核检查从0-maxfdp1+1的描述符集合，看是否在readfds，writefds和exceptfds中，是否完成了这些事件，如果完成，则将相应的位置为1，否则为0，直到所有的检查完。检查完之后，将所有描述符集合又传回去，应用程序再检查一遍传回来的描述符集合，已经为1的进行IO操作。然后循环这一过程直到结束。</p>
+<p>使用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">int main()</div><div class="line">    &#123;</div><div class="line">        int sock;</div><div class="line">        FILE* fp;</div><div class="line">        struct fd_set fds;</div><div class="line">        struct timeval timeout = &#123;3, 0&#125;; // select 等待 3 秒，3 秒轮询， 要非阻塞就置 0</div><div class="line">        char buffer[256] = &#123;0&#125;;             // 256 字节的接收缓冲区</div><div class="line">        /* 假设已经建立 UDP 连接，具体过程不写，简单，当然 TCP 也同理，主机 IP 和 port 都已经给定，要写的文件已经打开 */</div><div class="line">        sock = socket(...);</div><div class="line">        bind(...);</div><div class="line">        fp = fopen(...); */</div><div class="line">        while(1)</div><div class="line">        &#123;</div><div class="line">            FD_ZERO(&amp;fds);        // 每次循环都要清空，否则不能检测描述符变化</div><div class="line">            FD_SET(sock, &amp;fds); // 添加套接字描述符</div><div class="line">            FD_SET(fp, &amp;fds);     // 添加文件描述符</div><div class="line">            maxfdp = sock&gt;fp ? sock+1 : fp+1;  //描述符最大值加1</div><div class="line">            switch(select(maxfdp, &amp;fds, &amp;fds, NULL, &amp;timeout)) // select 使用</div><div class="line">            &#123;</div><div class="line">                case SOCKET_ERROR: exit(-1); break; //select 错误，退出程序</div><div class="line">                case 0: break; //再次轮询</div><div class="line">                default:</div><div class="line">                    if(FD_ISSET(sock, &amp;fds)) // 测试sock是否可读，即是否网络上有数据</div><div class="line">                    &#123;</div><div class="line">                        recvfrom(sock, buffer, 256, .... ); //接受网络数据</div><div class="line">                        if(FD_ISSET(fp, &amp;fds)) //测试文件是否可写</div><div class="line">                        fwrite(fp, buffer...); //写入文件</div><div class="line">                        // buffer清空；</div><div class="line">                    &#125; //end if break</div><div class="line">            &#125; //end switch</div><div class="line">        &#125; //end while</div><div class="line">    &#125; //end main</div></pre></td></tr></table></figure>
+<h2 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h2><p><code>int poll(struct pollfd fdarray[], nfds_t nfds, int timeout)</code></p>
+<p>poll是构造了一个pollfd的数组，每个数组元素可以指定一个描述符编号以及对描述符感兴趣的条件。pollfd结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">struct pollfd&#123;</div><div class="line">  int fd;</div><div class="line">  short events;</div><div class="line">  short revents;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中events是描述符感兴趣的事件，revents是内核设置的，每个描述符实际发生了什么事件。</p>
+<p>nfds是fdarray数组中的元素数目。</p>
+<p>所以同样，poll系统调用也需要将感兴趣的描述符集合传给内核，然后内核检查后修改revents后传回来，然后应用程序去检查。和select不同的是，select每次调用前都需要初始化，并且在检查上select必须检查0-maxfdp1+1的描述符集合，而poll只需要检查感兴趣的描述符集合就行了。</p>
+<p>在有大量的描述符集合中，select和poll的效率就变得非常低了，所以出现了在Linux上特有的epoll。</p>
+<p>libevent库提供了检查文件描述符I/O事件的抽象，移植到了多个Unix系统中，其底层机制可以任意一种I/O技术，select(), poll(), 信号驱动I/O或者epoll</p>
+<h2 id="边缘触发和水平触发"><a href="#边缘触发和水平触发" class="headerlink" title="边缘触发和水平触发"></a>边缘触发和水平触发</h2><ul>
+<li>水平触发通知: 文件描述符上可以非阻塞地执行I/O系统调用，则就绪时候发送通知</li>
+<li>边缘触发通知：文件描述符自从上次状态检查以来有了新的I/O活动，则触发通知</li>
+</ul>
+<p>select，poll支持水平触发，信号驱动IO支持边缘触发，epoll两者都支持。</p>
+<p>水平触发模式允许在任意时刻重复检查I/O状态，没有必要在就绪后尽可能多的执行IO，因为可以随时检查状态。</p>
+<p>但是边缘触发是当I/O事件发生的时候才会收到通知，在另一个I/O事件到来之前是不会收到任何新的通知，而且文件描述符收到I/O事件通知的时候，通常并不知道要处理多少I/O。所以</p>
+<ol>
+<li>在文件描述符接受到I/O事件通知的时候，应该尽可能多的执行I/O，要不然等待下一个I/O事件到来都不知道什么时候了。这样却又会导致其他文件描述符处于饥饿状态。</li>
+<li>如果程序用循环对文件描述符执行尽可能多的I/O，那么每个被检查的文件描述符都应该被设置为非阻塞模式，在得到I/O事件通知后重复执行I/O操作，直到相应的系统调用失败。</li>
+</ol>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>event poll的缩写，也可以检查多个文件描述符上的I/O就绪状态。epoll的核心数据结构为epoll实例，它和一个打开的文件描述符相关联，这个文件描述符是内核数据结构的句柄，实现了两个目的。</p>
+<ul>
+<li>记录了进程中声明过的感兴趣的文件描述符列表</li>
+<li>维护了处于I/O就绪态的文件描述符列表</li>
+</ul>
+<p>epoll API主要有以下三个系统调用：<code>epoll_create()</code>，<code>epoll_ctl()</code>和<code>epoll_wait()</code></p>
+<ul>
+<li><code>int epoll_create(int size);</code></li>
+</ul>
+<p>创建一个新epoll，对应的兴趣列表为空，size是想要epoll检查的文件描述符的个数。返回值就是创建好的epoll实例的文件描述符。如果这个文件描述符不在需要的时候，使用close()关闭。多个文件描述符可能引用到相同的epoll实例，比如调用了fork()函数或者dup函数，就会导致不同的文件描述符指向同一个文件表项，因此引用到相同的epoll实例。</p>
+<ul>
+<li><code>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *ev);</code></li>
+</ul>
+<p>修改epoll的兴趣列表:</p>
+<ul>
+<li>epfd 是epoll实例</li>
+<li>op 用来指定要执行的操作，有<code>EPOLL_CTL_ADD</code>, <code>EPOLL_CTL_MOD</code>和<code>EPOLL_CTL_DEL</code></li>
+<li>fd 表示要修改兴趣列表中哪一个文件描述符的设定，也可以是一个epoll实例，这样就形成了一种层次关系</li>
+<li>ev 是指向结构体<code>epoll_event</code>的指针，其中结构体包含了events和data，events是一个位掩码，指定了为待检查的描述符fd上所感兴趣的事件集合。data是一个联合体，当描述符fd成为就绪态的时候，联合体成员可用来指定传回给调用进程的信息。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">int epfd;</div><div class="line">struct epoll_event ev;</div><div class="line"></div><div class="line">epfd = epoll_create(5);</div><div class="line">if (epfd == -1)</div><div class="line">    errExit(&quot;epoll_create&quot;);</div><div class="line">ev.data.fd = fd;</div><div class="line">ev.events = EPOLLIN;</div><div class="line">if (epoll_ctl(epfd, EPOLL_CTL_ADD, fd, ev) == -1)</div><div class="line">    errExit(&quot;epoll_ctl&quot;)</div></pre></td></tr></table></figure>
+<ul>
+<li><code>int epoll_wait(int epfd, struct epoll_event *evlist, int maxevents, int timeout)</code></li>
+</ul>
+<p>系统调用<code>epoll_wait()</code>返回epoll实例中处于就绪态的文件描述符信息，单个<code>epoll_wait()</code>调用能返回多个就绪态文件描述符的信息。返回就绪的文件描述符的个数，0表示超时，-1表示错误</p>
+<p>evlist指向的结构体数组中返回的是有关就绪态文件描述符的信息。所包含的元素个数为maxevents。evlist中，每个元素返回的都是单个就绪态文件描述符的信息。events字段返回了在该描述符上发生的事件掩码。Data字段返回的是在描述符使用<code>epoll_ctl()</code>注册感兴趣事件时候在ev.data中指定的值。data字段是唯一可以获知同这个事件相关的文件描述符的途径。</p>
+<p>多线程程序中，可以在一个线程中使用<code>epoll_ctl()</code>将文件描述符添加到另一个线程中由<code>epoll_wait()</code>所监视的epoll实例的兴趣列表中去。这些对兴趣列表的修改将立刻得到处理，而<code>epoll_wait()</code>调用将返回有关新添加文件描述符的就绪信息。</p>
+<p>通过<code>epoll_ctl</code>指定了需要监视的文件描述符时候，内核会在与打开的文件描述上下文相关联的列表中记录该描述符。之后每当执行I/O操作使得文件描述符成为就绪态时候，内核就在epoll描述符的就绪列表中添加一个元素。单个打开的文件描述上下文的一次I/O事件可能导致与之相关的多个文件描述符成为就绪态。这样<code>epoll_wait()</code>调用从就绪列表中简单的取出这些元素。epoll在内核空间创建了一个数据结构，该数据结构会将待监视的文件描述符都记录下来。</p>
+<p>因此epoll的性能在大规模的文件描述符检查情况下，效率远高于select和poll，常见的能高效使用epoll的应用场景就是需要同时处理许多客户端的服务器，需要监视大量的文件描述符，但大部分处于空闲状态，只有少数文件描述符处于就绪状态。</p>
+<h1 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h1><p>发起IO操作后不阻塞，用户得递一个回调函数待IO结束后被调用。进程请求内核执行一次I/O操作，内核启动该操作之后立即将控制权还给调用进程，稍后当I/O操作完成或者有错误发生的时候，该进程会得到通知。一般是使用信号来实现的。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>linux一般使用non-blocking IO提高IO并发度。当IO并发度很低时，non-blocking IO不一定比blocking IO更高效，因为后者完全由内核负责，而read/write这类系统调用已高度优化，效率显然高于一般得多个线程协作的non-blocking IO。</p>
+<p>但当IO并发度愈发提高时，blocking IO阻塞一个线程的弊端便显露出来：内核得不停地在线程间切换才能完成有效的工作，一个cpu core上可能只做了一点点事情，就马上又换成了另一个线程，cpu cache没得到充分利用，程序整体性能往往也会随之下降。</p>
+<p>而non-blocking IO一般由少量event dispatching线程和一些运行用户逻辑的worker线程组成，这些线程往往会被复用（换句话说调度工作转移到了用户态），event dispatching和worker可以同时在不同的核运行（流水线化），内核不用频繁的切换就能完成有效的工作。线程总量也不用很多，所以对thread-local的使用也比较充分。这时候non-blocking IO就往往比blocking IO快了。不过non-blocking IO也有自己的问题，它需要调用更多系统调用，比如<code>epoll_ctl</code>，由于epoll实现为一棵红黑树，<code>epoll_ctl</code>并不是一个很快的操作，特别在多核环境下，依赖<code>epoll_ctl</code>的实现往往会面临棘手的扩展性问题。non-blocking需要更大的缓冲，否则就会触发更多的事件而影响效率。non-blocking还得解决不少多线程问题，代码比blocking复杂很多。</p>
 
 	
 	</div>
-  <a type="button" href="/2017/11/11/session_and_cookie/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/10/07/IO模型/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -559,11 +835,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/11/05/python_cookbook_1/" >笔记 - 元编程</a>
+			<a href="/2017/10/02/Python中的单例模式/" >Python中的单例模式</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-11-05 17:22:14  </div>
+		<div class="date">post @ 2017-10-02 10:07:35  </div>
 		</div>
 	</div>
 	
@@ -573,65 +849,22 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h1 id="实现单例的另一种方法"><a href="#实现单例的另一种方法" class="headerlink" title="实现单例的另一种方法"></a>实现单例的另一种方法</h1><p>上次实现单例用到了<code>__new__</code>，在创建实例的时候检测是否已经有创建过实例，如果有，则将其拿过来直接使用。这次是使用元类来实现，在之前的 <a href="http://skyrover.me/2017/10/28/%E7%B1%BB%E5%85%83%E7%BC%96%E7%A8%8B/">类元编程</a> 中提到过类是元类的实例，而type类是大部分类的元类，因此元类的<code>__call__</code>方法，就会在调用指定类(元类的实例)的实例化方法的时候被调用。</p>
-<p>比如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class NoInstances(type):</div><div class="line">    def __call__(self, *args, **kwargs):</div><div class="line">        raise TypeError(&quot;Can&apos;t instantiate directly&quot;)</div><div class="line"></div><div class="line"># Example</div><div class="line"># Spam是NoInstances的实例，所以Spam()会调用NoInstances的__call__方法</div><div class="line">class Spam(metaclass=NoInstances):</div><div class="line">    @staticmethod</div><div class="line">    def grok(x):</div><div class="line">        print(&apos;Spam.grok&apos;)</div></pre></td></tr></table></figure>
-<p>这样，用户只能调用这个类的静态方法或者类方法，而不能创建它的实例。</p>
-<p>如果是创建单例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class Singleton(type):</div><div class="line">    def __init__(self, *args, **kwargs):</div><div class="line">        self.__instance = None</div><div class="line">        super().__init__(*args, **kwargs)</div><div class="line"></div><div class="line">    def __call__(self, *args, **kwargs):</div><div class="line">        if self.__instance is None:</div><div class="line">            self.__instance = super().__call__(*args, **kwargs)</div><div class="line">            return self.__instance</div><div class="line">        else:</div><div class="line">            return self.__instance</div><div class="line"></div><div class="line"># Example</div><div class="line">class Spam(metaclass=Singleton):</div><div class="line">    def __init__(self):</div><div class="line">        print(&apos;Creating Spam&apos;)</div></pre></td></tr></table></figure>
-<p>也可以根据不同的参数创建缓存实例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import weakref</div><div class="line"></div><div class="line">class Cached(type):</div><div class="line">    def __init__(self, *args, **kwargs):</div><div class="line">        super().__init__(*args, **kwargs)</div><div class="line">        self.__cache = weakref.WeakValueDictionary()</div><div class="line"></div><div class="line">    def __call__(self, *args):</div><div class="line">        if args in self.__cache:</div><div class="line">            return self.__cache[args]</div><div class="line">        else:</div><div class="line">            obj = super().__call__(*args)</div><div class="line">            self.__cache[args] = obj</div><div class="line">            return obj</div><div class="line"></div><div class="line"># Example</div><div class="line">class Spam(metaclass=Cached):</div><div class="line">    def __init__(self, name):</div><div class="line">        print(&apos;Creating Spam(&#123;!r&#125;)&apos;.format(name))</div><div class="line">        self.name = name</div></pre></td></tr></table></figure>
-<h2 id="缓存实例"><a href="#缓存实例" class="headerlink" title="缓存实例"></a>缓存实例</h2><p>如果有同样的参数，那么返回的是同一个对象，即它的缓存引用。比如logging模块，相同参数创建的对象是单例的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import logging</div><div class="line">&gt;&gt;&gt; a = logging.getLogger(&apos;foo&apos;)</div><div class="line">&gt;&gt;&gt; b = logging.getLogger(&apos;bar&apos;)</div><div class="line">&gt;&gt;&gt; a is b</div><div class="line">False</div><div class="line">&gt;&gt;&gt; c = logging.getLogger(&apos;foo&apos;)</div><div class="line">&gt;&gt;&gt; a is c</div><div class="line">True</div></pre></td></tr></table></figure>
-<p>只需要使用一个和类本身分开的工厂函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># The class in question</div><div class="line">class Spam:</div><div class="line">    def __init__(self, name):</div><div class="line">        self.name = name</div><div class="line"></div><div class="line"># Caching support</div><div class="line">import weakref</div><div class="line">_spam_cache = weakref.WeakValueDictionary()</div><div class="line">def get_spam(name):</div><div class="line">    if name not in _spam_cache:</div><div class="line">        s = Spam(name)</div><div class="line">        _spam_cache[name] = s</div><div class="line">    else:</div><div class="line">        s = _spam_cache[name]</div><div class="line">    return s</div></pre></td></tr></table></figure>
-<p>这里使用弱引用技术是因为，保存缓存实例的时候，只需在程序使用到它的时候才保存，也就是只有在其他地方还在使用的时候才会保存这个实例，比如上面实例化的logger，如果删除这个logger，<code>del a</code>，那么字典中就会移除这个实例。如果是普通字典的话，就不会删除这个key对应的实例。也就是说，创建的这个弱引用字典，在垃圾回收的时候不计算引用。</p>
-<h1 id="捕获类的属性定义顺序"><a href="#捕获类的属性定义顺序" class="headerlink" title="捕获类的属性定义顺序"></a>捕获类的属性定义顺序</h1><p>自动记录一个类中属性和方法定义的顺序，使用元类来捕获类的定义信息。使用这个元类来创建类，通过在元类生成类对象之前，将类的属性字典变成有序字典，这样在<code>__new__</code>方法中就可以获取属性定义的顺序了。如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># Metaclass that uses an OrderedDict for class body</div><div class="line">class OrderedMeta(type):</div><div class="line">    def __new__(cls, clsname, bases, clsdict):</div><div class="line">        # 通过clsname，bases，clsdict，创建一个类</div><div class="line">        d = dict(clsdict)</div><div class="line">        order = []</div><div class="line">        for name, value in clsdict.items():</div><div class="line">            if isinstance(value, Typed):</div><div class="line">                value._name = name</div><div class="line">                order.append(name)</div><div class="line">        # 属性的顺序记录在类属性_order中</div><div class="line">        d[&apos;_order&apos;] = order</div><div class="line">        # 必须使用正确的dict实例，因此用d而不是clsdict</div><div class="line">        return type.__new__(cls, clsname, bases, d)</div><div class="line"></div><div class="line">    @classmethod</div><div class="line">    def __prepare__(cls, clsname, bases):</div><div class="line">        return OrderedDict()</div></pre></td></tr></table></figure>
-<p>prepare方法只能在元类中使用，必须声明为类方法，在调用<code>__new__</code>之前会先调用<code>__prepare__</code>方法，使用类定义体中的属性创建映射。</p>
-<p>下面是用法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"># A set of descriptors for various types</div><div class="line">class Typed:</div><div class="line">    _expected_type = type(None)</div><div class="line">    def __init__(self, name=None):</div><div class="line">        self._name = name</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        if not isinstance(value, self._expected_type):</div><div class="line">            raise TypeError(&apos;Expected &apos; + str(self._expected_type))</div><div class="line">        instance.__dict__[self._name] = value</div><div class="line"></div><div class="line">class Integer(Typed):</div><div class="line">    _expected_type = int</div><div class="line"></div><div class="line">class Float(Typed):</div><div class="line">    _expected_type = float</div><div class="line"></div><div class="line">class String(Typed):</div><div class="line">    _expected_type = str</div><div class="line"></div><div class="line">class Structure(metaclass=OrderedMeta):</div><div class="line">    def as_csv(self):</div><div class="line">        return &apos;,&apos;.join(str(getattr(self,name)) for name in self._order</div><div class="line"></div><div class="line"># Example use</div><div class="line">class Stock(Structure):</div><div class="line">    name = String()</div><div class="line">    shares = Integer()</div><div class="line">    price = Float()</div><div class="line"></div><div class="line">    def __init__(self, name, shares, price):</div><div class="line">        self.name = name</div><div class="line">        self.shares = shares</div><div class="line">        self.price = price</div></pre></td></tr></table></figure>
-<h1 id="定义有可选参数的元类"><a href="#定义有可选参数的元类" class="headerlink" title="定义有可选参数的元类"></a>定义有可选参数的元类</h1><p>创建一个抽象基类：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from abc import ABCMeta, abstractmethod</div><div class="line">class IStream(metaclass=ABCMeta):</div><div class="line">    @abstractmethod</div><div class="line">    def read(self, maxsize=None):</div><div class="line">        pass</div><div class="line"></div><div class="line">    @abstractmethod</div><div class="line">    def write(self, data):</div><div class="line">        pass</div></pre></td></tr></table></figure>
-<p>除了metaclass也可以提供其他的关键字参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class Spam(metaclass=MyMeta, debug=True, synchronize=True):</div><div class="line">    pass</div></pre></td></tr></table></figure>
-<p>要实现这种效果，即元类支持这些关键字参数，必须在<code>__prepare__()</code>，<code>__new__()</code>和<code>__init__()</code>方法中都强制使用关键字参数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class MyMeta(type):</div><div class="line">    # Optional</div><div class="line">    @classmethod</div><div class="line">    def __prepare__(cls, name, bases, *, debug=False, synchronize=False):</div><div class="line">        # Custom processing</div><div class="line">        pass</div><div class="line">        return super().__prepare__(name, bases)</div><div class="line"></div><div class="line">    # Required</div><div class="line">    def __new__(cls, name, bases, ns, *, debug=False, synchronize=False):</div><div class="line">        # Custom processing</div><div class="line">        pass</div><div class="line">        return super().__new__(cls, name, bases, ns)</div><div class="line"></div><div class="line">    # Required</div><div class="line">    def __init__(self, name, bases, ns, *, debug=False, synchronize=False):</div><div class="line">        # Custom processing</div><div class="line">        pass</div><div class="line">        super().__init__(name, bases, ns)</div></pre></td></tr></table></figure>
-<p>额外的这些关键字参数会传递给上面每一个方法，<code>__prepare__()</code>会在所有类定义开始之前执行，用来创建类命名空间，一般是一个字典，然后所有的类定义完成之后，会调用<code>__new__()</code>方法，用来实例化最终的类对象。最后调用<code>__init__()</code>方法，用来执行其他的初始化工作。</p>
-<p>使用关键字配置一个元类是对类变量的一种替代方式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">class Spam(metaclass=MyMeta):</div><div class="line">    debug = True</div><div class="line">    synchronize = True</div><div class="line">    pass</div></pre></td></tr></table></figure>
-<p>使用元类是不会污染类的名称空间，因为这些属性仅仅是在类创建阶段使用，而不是类中的语句执行阶段。而且在元类中，这些参数可以在<code>__prepare__()</code>方法中访问，而类变量不可以。</p>
-<h1 id="args和-kwargs的强制参数签名"><a href="#args和-kwargs的强制参数签名" class="headerlink" title="*args和**kwargs的强制参数签名"></a><code>*args</code>和<code>**kwargs</code>的强制参数签名</h1><p>对涉及到操作函数调用签名的问题，应该使用<code>inspect</code>模块中的签名特性。主要是<code>Signature</code>和<code>Parameter</code></p>
-<p>将一个签名对象和<code>*args</code>和<code>**kwargs</code>绑定起来，这样既能有<code>*</code>的通配性，也能对传递进来的参数进行检查。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from inspect import Signature, Parameter</div><div class="line"># Make a signature for a func(x, y=42, *, z=None)</div><div class="line">parms = [ Parameter(&apos;x&apos;, Parameter.POSITIONAL_OR_KEYWORD), Parameter(&apos;y&apos;, Parameter.POSITIONAL_OR_KEYWORD, default=42), Parameter(&apos;z&apos;, Parameter.KEYWORD_ONLY, default=None) ]</div><div class="line">sig = Signature(parms)</div><div class="line"></div><div class="line">def func(*args, **kwargs):</div><div class="line">    bound_values = sig.bind(*args, **kwargs)</div><div class="line">    for name, value in bound_values.arguments.items():</div><div class="line">        print(name,value)</div></pre></td></tr></table></figure>
-<p>这样可以强制函数调用遵循特定的规则，比如必填，默认，重复等。比如下面的例子，强制所有的子类必须提供一个特定的参数签名。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">from inspect import Signature, Parameter</div><div class="line"></div><div class="line">def make_sig(*names):</div><div class="line">    parms = [Parameter(name, Parameter.POSITIONAL_OR_KEYWORD)</div><div class="line">            for name in names]</div><div class="line">    return Signature(parms)</div><div class="line"></div><div class="line">class Structure:</div><div class="line">    __signature__ = make_sig()</div><div class="line">    def __init__(self, *args, **kwargs):</div><div class="line">        bound_values = self.__signature__.bind(*args, **kwargs)</div><div class="line">        for name, value in bound_values.arguments.items():</div><div class="line">            setattr(self, name, value)</div><div class="line"></div><div class="line"># Example use</div><div class="line">class Stock(Structure):</div><div class="line">    __signature__ = make_sig(&apos;name&apos;, &apos;shares&apos;, &apos;price&apos;)</div><div class="line"></div><div class="line">class Point(Structure):</div><div class="line">    __signature__ = make_sig(&apos;x&apos;, &apos;y&apos;)</div></pre></td></tr></table></figure>
-<p>通过元类来创建签名对象：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">from inspect import Signature, Parameter</div><div class="line"></div><div class="line">def make_sig(*names):</div><div class="line">    parms = [Parameter(name, Parameter.POSITIONAL_OR_KEYWORD)</div><div class="line">            for name in names]</div><div class="line">    return Signature(parms)</div><div class="line"></div><div class="line">class StructureMeta(type):</div><div class="line">    def __new__(cls, clsname, bases, clsdict):</div><div class="line">        clsdict[&apos;__signature__&apos;] = make_sig(*clsdict.get(&apos;_fields&apos;,[]))</div><div class="line">        return super().__new__(cls, clsname, bases, clsdict)</div><div class="line"></div><div class="line">class Structure(metaclass=StructureMeta):</div><div class="line">    _fields = []</div><div class="line">    def __init__(self, *args, **kwargs):</div><div class="line">        bound_values = self.__signature__.bind(*args, **kwargs)</div><div class="line">        for name, value in bound_values.arguments.items():</div><div class="line">            setattr(self, name, value)</div><div class="line"></div><div class="line"># Example</div><div class="line">class Stock(Structure):</div><div class="line">    _fields = [&apos;name&apos;, &apos;shares&apos;, &apos;price&apos;]</div><div class="line"></div><div class="line">class Point(Structure):</div><div class="line">    _fields = [&apos;x&apos;, &apos;y&apos;]</div></pre></td></tr></table></figure>
-<h1 id="在类上强制使用编程规约"><a href="#在类上强制使用编程规约" class="headerlink" title="在类上强制使用编程规约"></a>在类上强制使用编程规约</h1><p>可以通过元类来监控类的定义过程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class MyMeta(type):</div><div class="line">    def __new__(self, clsname, bases, clsdict):</div><div class="line">        # clsname是要定义的类名</div><div class="line">        # bases是这个类的基类</div><div class="line">        # clsdict是类字典</div><div class="line">        return super().__new__(cls, clsname, bases, clsdict)</div><div class="line"># 或者是init方法</div><div class="line">class MyMeta(type):</div><div class="line">    def __init__(self, clsname, bases, clsdict):</div><div class="line">        super().__init__(clsname, bases, clsdict)</div><div class="line"></div><div class="line">class Root(metaclass=MyMeta):</div><div class="line">    pass</div><div class="line"></div><div class="line">class A(Root):</div><div class="line">    pass</div><div class="line"></div><div class="line">class B(Root):</div><div class="line">    pass</div></pre></td></tr></table></figure>
-<p>这样就可以在定义类的时候检查类的内容，比如类字典，父类等。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">from inspect import signature</div><div class="line">import logging</div><div class="line"></div><div class="line">class MatchSignaturesMeta(type):</div><div class="line"></div><div class="line">    def __init__(self, clsname, bases, clsdict):</div><div class="line">        super().__init__(clsname, bases, clsdict)</div><div class="line">        # 这里的self，就是类，因为类是元类的实例，因此self就是类对象</div><div class="line">        sup = super(self, self)</div><div class="line">        for name, value in clsdict.items():</div><div class="line">            if name.startswith(&apos;_&apos;) or not callable(value):</div><div class="line">                continue</div><div class="line">            # 获取当前类可调用的对象，即方法</div><div class="line">            # 这里获取父类中相同方法的定义，有可能是None</div><div class="line">            prev_dfn = getattr(sup,name,None)</div><div class="line">            # 如果父类有该方法，即表示当前方法是继承方法</div><div class="line">            # 去判断函数签名是否一致</div><div class="line">            if prev_dfn:</div><div class="line">                prev_sig = signature(prev_dfn)</div><div class="line">                val_sig = signature(value)</div><div class="line">                if prev_sig != val_sig:</div><div class="line">                    logging.warning(&apos;Signature mismatch in %s. %s != %s&apos;,</div><div class="line">                                    value.__qualname__, prev_sig, val_sig)</div><div class="line"></div><div class="line"># Example</div><div class="line">class Root(metaclass=MatchSignaturesMeta):</div><div class="line">    pass</div><div class="line"></div><div class="line">class A(Root):</div><div class="line">    def foo(self, x, y):</div><div class="line">        pass</div><div class="line"></div><div class="line">    def spam(self, x, *, z):</div><div class="line">        pass</div><div class="line"></div><div class="line"># Class with redefined methods, but slightly different signatures</div><div class="line">class B(A):</div><div class="line">    def foo(self, a, b):</div><div class="line">        pass</div><div class="line"></div><div class="line">    def spam(self,x,z):</div><div class="line">        pass</div></pre></td></tr></table></figure>
-<p>在大型面向对象的程序中，通常将类的定义放在元类中控制是很有用的。 元类可以监控类的定义，警告编程人员某些没有注意到的可能出现的问题。<code>__new__()</code> 方法在类创建之前被调用，通常用于通过某种方式（比如通过改变类字典的内容）修改类的定义。 而 <code>__init__()</code> 方法是在类被创建之后被调用，当你需要完整构建类对象的时候会很有用。 </p>
-<h1 id="以编程方式定义类"><a href="#以编程方式定义类" class="headerlink" title="以编程方式定义类"></a>以编程方式定义类</h1><p>可以将类的定义源代码以字符串的形式发布出去，然后用<code>exec()</code>来执行它。比如<code>namedtuple</code>的实现。其核心如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># _class_template是一段类定义的字符串，使用下面进行渲染</div><div class="line">class_definition = _class_template.format(</div><div class="line">        typename = typename,</div><div class="line">        field_names = tuple(field_names),</div><div class="line">        num_fields = len(field_names),</div><div class="line">        arg_list = repr(tuple(field_names)).replace(&quot;&apos;&quot;, &quot;&quot;)[1:-1],</div><div class="line">        repr_fmt = &apos;, &apos;.join(_repr_template.format(name=name)</div><div class="line">                             for name in field_names),</div><div class="line">        field_defs = &apos;\n&apos;.join(_field_template.format(index=index, name=name)</div><div class="line">                               for index, name in enumerate(field_names))</div><div class="line">    )</div><div class="line"># 这里的namespance当然也可以是&#123;&#125;</div><div class="line"># 但是必须给，要不然就会使用当前的作用域</div><div class="line"># 给定了__name__参数，其实就是默认的当前模块名，为了防止后面没法获取到模块名(_getframe(1)调用失败)</div><div class="line">namespace = dict(__name__=&apos;namedtuple_%s&apos; % typename)</div><div class="line"># 通过exec将类定义加载出来，namespace就是所在的模块，即命名空间</div><div class="line">exec(class_definition, namespace)</div><div class="line"># result就是在这个命名空间下的类</div><div class="line">result = namespace[typename]</div><div class="line"># 后面需要将定义的类的module改变成调用的module</div><div class="line"># 如果是被调用，则module名是模块名，如果是直接在本模块执行则module名是__main__</div><div class="line">if module is None:</div><div class="line">    try:</div><div class="line">        module = _sys._getframe(1).f_globals.get(&apos;__name__&apos;, &apos;__main__&apos;)</div><div class="line">    except (AttributeError, ValueError):</div><div class="line">        pass</div><div class="line">if module is not None:</div><div class="line">    result.__module__ = module</div></pre></td></tr></table></figure>
-<p><code>sys._getframe(1)</code>返回调用者的栈帧，可以从中访问属性<code>f_locals</code>来获得局部变量，<code>f_globals</code>来获得全局变量。<code>f_locals</code> 是一个复制调用函数的本地变量的字典。 尽管你可以改变 <code>f_locals</code> 的内容，但是这个修改对于后面的变量访问没有任何影响。所以，虽说访问一个栈帧看上去很邪恶，但是对它的任何操作不会覆盖和改变调用者本地变量的值。</p>
-<h2 id="exec-object-globals-locals"><a href="#exec-object-globals-locals" class="headerlink" title="exec(object[, globals[, locals]])"></a><code>exec(object[, globals[, locals]])</code></h2><p>这个函数支持动态的执行Python代码。<code>object</code>必须是string或者是一个代码对象。如果是string，string会被解析成一系列的Python语句去执行。如果是一个代码对象(code object)，那么就会简单的执行。在所有情况，要执行的code都会被期望是一个有效的文件输入。要注意本函数不会返回任何值，不管函数或语句有任何的返回值语句，比如return或yield语句。该函数返回值是None。</p>
-<p>在所有的情况中，如果可选的参数被忽略，那么代码将会在当前作用域中执行。如果只有globals参数给定，它必须是一个字典，将会被同时用作global和local变量。如果globals和locals同时给定，那么它们将会对应的用作global变量和local变量。如果给定的话，locals可以是任何的mapping对象。记住在模块层级，globals和locals是同样的字典。如果exec得到了两个不同的对象作为globals和locals，代码将会被当作好像它被嵌入到一个类定义中一样执行。</p>
-<p>如果globals字典没有包含key <code>__builtins__</code>，那么一个内置模块<code>builtins</code>的字典引用将会置为这个key的值。这样你可以通过插入自己的<code>__builtins__</code>字典到globals中来控制要执行的代码中哪些builtins是可用的。</p>
-<p>内置函数<code>globals()</code>和<code>locals()</code>返回当前的global和local字典，可以传递到exec函数作为第二个和第三个参数。</p>
-<p>locals的默认行为：不应该修改默认的locals字典。传递一个显式的locals字典，如果你需要在exec函数返回后看到locals字典的变化。</p>
-<h2 id="使用types-new-class-来初始化新的类对象"><a href="#使用types-new-class-来初始化新的类对象" class="headerlink" title="使用types.new_class()来初始化新的类对象"></a>使用<code>types.new_class()</code>来初始化新的类对象</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">def __init__(self, name, shares, price):</div><div class="line">    self.name = name</div><div class="line">    self.shares = shares</div><div class="line">    self.price = price</div><div class="line">def cost(self):</div><div class="line">    return self.shares * self.price</div><div class="line"></div><div class="line">cls_dict = &#123;</div><div class="line">    &apos;__init__&apos; : __init__,</div><div class="line">    &apos;cost&apos; : cost,</div><div class="line">&#125;</div><div class="line"></div><div class="line"># Make a class</div><div class="line">import types</div><div class="line"></div><div class="line"># 类名，基类元组，关键字参数（元类），用成员变量填充类字典的回调函数</div><div class="line"># 用来接受类命名空间的映射对象的函数, 实际上是__prepare__() 方法返回的任意对象，也就是这个函数接收__prepare__()方法返回的映射对象</div><div class="line">Stock = types.new_class(&apos;Stock&apos;, (), &#123;&#125;, lambda ns: ns.update(cls_dict))</div><div class="line"># 类所在的module为当前模块</div><div class="line">Stock.__module__ = __name__</div><div class="line"></div><div class="line"># 使用元类参数</div><div class="line">Stock = types.new_class(&apos;Stock&apos;, (), &#123;&apos;metaclass&apos;: abc.ABCMeta&#125;,</div><div class="line">                        lambda ns: ns.update(cls_dict))</div></pre></td></tr></table></figure>
-<p>使用元类技术实现namedtuple</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">import operator</div><div class="line">import types</div><div class="line">import sys</div><div class="line"></div><div class="line">def named_tuple(classname, fieldnames):</div><div class="line">    # Populate a dictionary of field property accessors</div><div class="line">    cls_dict = &#123; name: property(operator.itemgetter(n))</div><div class="line">                for n, name in enumerate(fieldnames) &#125;</div><div class="line"></div><div class="line">    # Make a __new__ function and add to the class dict</div><div class="line">    def __new__(cls, *args):</div><div class="line">        if len(args) != len(fieldnames):</div><div class="line">            raise TypeError(&apos;Expected &#123;&#125; arguments&apos;.format(len(fieldnames)))</div><div class="line">        return tuple.__new__(cls, args)</div><div class="line"></div><div class="line">    cls_dict[&apos;__new__&apos;] = __new__</div><div class="line"></div><div class="line">    # Make the class</div><div class="line">    cls = types.new_class(classname, (tuple,), &#123;&#125;,</div><div class="line">                        lambda ns: ns.update(cls_dict))</div><div class="line"></div><div class="line">    # Set the module to that of the caller</div><div class="line">    cls.__module__ = sys._getframe(1).f_globals[&apos;__name__&apos;]</div><div class="line">    return cls</div></pre></td></tr></table></figure>
-<p>也可以通过直接实例化一个元类来创建一个类,<code>Stock = type(&#39;Stock&#39;, (), cls_dict)</code></p>
-<h1 id="在定义的时候初始化类的成员"><a href="#在定义的时候初始化类的成员" class="headerlink" title="在定义的时候初始化类的成员"></a>在定义的时候初始化类的成员</h1><p>元类会在定义的时候被触发，这时候可以做一些额外操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import operator</div><div class="line"></div><div class="line">class StructTupleMeta(type):</div><div class="line">    def __init__(cls, *args, **kwargs):</div><div class="line">        super().__init__(*args, **kwargs)</div><div class="line">        # 在类定义的时候设置属性</div><div class="line">        for n, name in enumerate(cls._fields):</div><div class="line">            setattr(cls, name, property(operator.itemgetter(n)))</div><div class="line"></div><div class="line">class StructTuple(tuple, metaclass=StructTupleMeta):</div><div class="line">    _fields = []</div><div class="line">    def __new__(cls, *args):</div><div class="line">        if len(args) != len(cls._fields):</div><div class="line">            raise ValueError(&apos;&#123;&#125; arguments required&apos;.format(len(cls._fields)))</div><div class="line">        return super().__new__(cls,args)</div><div class="line">class Stock(StructTuple):</div><div class="line">    _fields = [&apos;name&apos;, &apos;shares&apos;, &apos;price&apos;]</div><div class="line"></div><div class="line">class Point(StructTuple):</div><div class="line">    _fields = [&apos;x&apos;, &apos;y&apos;]</div></pre></td></tr></table></figure>
-<p>这样就形成了一个具名元组，函数 operator.itemgetter() 创建一个访问器函数， 然后 property() 函数将其转换成一个属性。</p>
-
+		<p>单例模式其实在实际的程序开发中使用过，比如数据库连接池等，但是仍然需要抽象到一定高度来理解它。</p>
+<p>单例模式：保证一个类仅有一个实例，并提供一个访问他的全局访问点。目的就是令到单个进程中只存在一个类的实例，从而可以实现数据的共享，节省系统开销，防止io阻塞等等。方法就是让类自身保存他的唯一实例，这个类可以保证没有其他实例可以被创建。</p>
+<p>多线程时的单例模式：加锁-双重锁定</p>
+<ul>
+<li>饿汉式单例类：在类被加载时就将自己实例化（静态初始化）。其优点是躲避了多线程访问的安全性问题，缺点是提前占用系统资源。</li>
+<li>懒汉式单例类：在第一次被引用时，才将自己实例化。避免开始时占用系统资源，但是有多线程访问安全性问题。</li>
+</ul>
+<h2 id="简单粗暴-模块实现"><a href="#简单粗暴-模块实现" class="headerlink" title="简单粗暴-模块实现"></a>简单粗暴-模块实现</h2><p>直接导入某个模块下创建好的实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># some module.py</div><div class="line">class SingletonClass:</div><div class="line">    pass</div><div class="line"></div><div class="line"># 在别处我们想用这个实例都直接使用 module.single_instance 这个实例就好。</div><div class="line"># 这是最简单也是最直观的一种方式,嗯，直接导入这个实例用，而不是导入class，简单粗暴</div><div class="line">single_instance = SingletonClass()</div></pre></td></tr></table></figure>
+<h2 id="静态方法实现"><a href="#静态方法实现" class="headerlink" title="静态方法实现"></a>静态方法实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">#encoding=utf-8</div><div class="line">#单例模式</div><div class="line">def print_info(info):</div><div class="line">    print(info)</div><div class="line"></div><div class="line">import threading</div><div class="line">#单例类</div><div class="line">class Singleton:</div><div class="line">    instance = None</div><div class="line">    mutex = threading.Lock()</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        pass</div><div class="line"></div><div class="line">    @staticmethod</div><div class="line">    def get_instance():</div><div class="line">        if Singleton.instance is None:</div><div class="line">            Singleton.mutex.acquire()</div><div class="line">            if Singleton.instance is None:</div><div class="line">                print_info(&apos;初始化实例&apos;)</div><div class="line">                Singleton.instance = Singleton()</div><div class="line">            else:</div><div class="line">                print_info(&apos;单例已经实例化&apos;)</div><div class="line">            Singleton.mutex.release()</div><div class="line">        else:</div><div class="line">            print_info(&apos;单例已经实例化&apos;)</div><div class="line"></div><div class="line">        return Singleton.instance</div><div class="line"></div><div class="line">def clientUI():</div><div class="line">    Singleton.get_instance()</div><div class="line">    Singleton.get_instance()</div><div class="line">    Singleton.get_instance()</div><div class="line"></div><div class="line">if __name__==&apos;__main__&apos;:</div><div class="line">    clientUI();</div></pre></td></tr></table></figure>
+<h2 id="元类实现"><a href="#元类实现" class="headerlink" title="元类实现"></a>元类实现</h2><p>也可以使用<code>__new__</code>来实现单例模式，但是如果需要做到线程安全就必须加锁。<code>__new__</code>必须返回一个类的实例，所以可以在对象创建之前或者之后修改类。如果它返回的不是<code>cls</code>的实例，那么<code>__init__</code>方法是不会调用的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class Singleton(object):</div><div class="line">    __instance = None</div><div class="line"></div><div class="line">    def__new__(cls, *args, **kwd):</div><div class="line">        if Singleton.__instance is None:</div><div class="line">            Singleton.__instance = object.__new__(cls, *args, **kwd)</div><div class="line">        return Singleton.__instance</div><div class="line"></div><div class="line">class MyClass(metaclass=Singleton):</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<h2 id="装饰器实现"><a href="#装饰器实现" class="headerlink" title="装饰器实现"></a>装饰器实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class BaseClass:</div><div class="line">    pass</div><div class="line"></div><div class="line"></div><div class="line"># 装饰器实现</div><div class="line">def singleton(class_):</div><div class="line">    instances = &#123;&#125;</div><div class="line">    def getinstance(*args, **kwargs):</div><div class="line">        if class_ not in instances:</div><div class="line">            instances[class_] = class_(*args, **kwargs)</div><div class="line">        return instances[class_]</div><div class="line">    return getinstance</div><div class="line"></div><div class="line"></div><div class="line">@singleton</div><div class="line">class MyClass(BaseClass):</div><div class="line">    pass</div></pre></td></tr></table></figure>
 	
 	</div>
-  <a type="button" href="/2017/11/05/python_cookbook_1/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/10/02/Python中的单例模式/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -641,11 +874,11 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/11/05/flask_user_session_security/" >翻译 - How Secure Is The Flask User Session?</a>
+			<a href="/2017/09/30/Python程序性能分析/" >Python程序性能分析</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2017-11-05 09:46:35  </div>
+		<div class="date">post @ 2017-09-30 12:14:53  </div>
 		</div>
 	</div>
 	
@@ -655,24 +888,109 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/how-secure-is-the-flask-user-session" target="_blank" rel="external">How Secure Is The Flask User Session?</a></p>
-<p>我已经很多次听过人们说在Flask中的用户session是加密过的，因此在里面写入隐私信息也是安全的。这是一个误解，而且可能会在应用中导致灾难性的后果，最重要的是，对你的用户。不相信我吗？下面你可以看到我数秒之内解析一个Flask用户session，根本不需要应用的secret key.</p>
-<p><a href="https://youtu.be/mhcnBTDLxCI" target="_blank" rel="external">Video</a></p>
-<p>因此绝对不要在Flask session cookie中存储密码。当然，你可以存储不是密码的东西，但是仍然需要安全的存储。我希望这个视频可以澄清在用户session中的数据是非常容易获取的，有非常好的保护来对抗这个篡改，只要服务器的secret key不会妥协。</p>
-<h1 id="The-Example-Application"><a href="#The-Example-Application" class="headerlink" title="The Example Application"></a>The Example Application</h1><p>下面就是视频中的服务器的代码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">import os</div><div class="line">import random</div><div class="line">from flask import Flask, session, redirect, url_for, request, render_template</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line">app.config[&apos;SECRET_KEY&apos;] = os.getenv(&apos;SECRET_KEY&apos;) or \</div><div class="line">    &apos;e5ac358c-f0bf-11e5-9e39-d3b532c10a28&apos;</div><div class="line"></div><div class="line">@app.route(&apos;/&apos;)</div><div class="line">def index():</div><div class="line">    # answer值不能在用户session中存储</div><div class="line">    # 因为session会被在cookie中发送到客户端，而cookie是没有被加密的</div><div class="line">    session[&apos;answer&apos;] = random.randint(1, 10)</div><div class="line">    session[&apos;try_number&apos;] = 1</div><div class="line">    return redirect(url_for(&apos;guess&apos;))</div><div class="line"></div><div class="line">@app.route(&apos;/guess&apos;)</div><div class="line">def guess():</div><div class="line">    guess = int(request.args[&apos;guess&apos;]) if &apos;guess&apos; in request.args else None</div><div class="line">    if request.args.get(&apos;guess&apos;):</div><div class="line">        if guess == session[&apos;answer&apos;]:</div><div class="line">            return render_template(&apos;win.html&apos;)</div><div class="line">        else:</div><div class="line">            session[&apos;try_number&apos;] += 1</div><div class="line">            if session[&apos;try_number&apos;] &gt; 3:</div><div class="line">                return render_template(&apos;lose.html&apos;, guess=guess)</div><div class="line">    return render_template(&apos;guess.html&apos;, try_number=session[&apos;try_number&apos;],</div><div class="line">                           guess=guess)</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    app.run()</div></pre></td></tr></table></figure>
-<p>下面是在<code>templates</code>子文件夹中存储的3个模版文件，第一个是<code>guess.html</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;Guess the number!&lt;/title&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;Guess the number!&lt;/h1&gt;</div><div class="line">        &#123;% if try_number == 1 %&#125;</div><div class="line">        &lt;p&gt;I thought of a number from 1 to 10. Can you guess it?&lt;/p&gt;</div><div class="line">        &#123;% else %&#125;</div><div class="line">        &lt;p&gt;Sorry, &#123;&#123; guess &#125;&#125; is incorrect. Try again!&lt;/p&gt;</div><div class="line">        &#123;% endif %&#125;</div><div class="line">        &lt;form action=&quot;&quot;&gt;</div><div class="line">            Try #&#123;&#123; try_number &#125;&#125;: &lt;input type=&quot;text&quot; name=&quot;guess&quot;&gt;</div><div class="line">            &lt;input type=&quot;submit&quot;&gt;</div><div class="line">        &lt;/form&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>第二个是<code>win.html</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;Guess the number: You win!&lt;/title&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;Guess the number!&lt;/h1&gt;</div><div class="line">        &lt;p&gt;Congratulations, &#123;&#123; session[&apos;answer&apos;] &#125;&#125; is the correct number.&lt;/p&gt;</div><div class="line">        &lt;p&gt;&lt;a href=&quot;&#123;&#123; url_for(&apos;index&apos;) &#125;&#125;&quot;&gt;Play again&lt;/a&gt;&lt;/p&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>最后一个是<code>lose.html</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;Guess the number: You lose!&lt;/title&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;Guess the number!&lt;/h1&gt;</div><div class="line">        &lt;p&gt;Sorry, &#123;&#123; guess &#125;&#125; is incorrect. My guess was &#123;&#123; session[&apos;answer&apos;] &#125;&#125;.&lt;/p&gt;</div><div class="line">        &lt;p&gt;&lt;a href=&quot;&#123;&#123; url_for(&apos;index&apos;) &#125;&#125;&quot;&gt;Play again&lt;/a&gt;&lt;/p&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<h1 id="If-Sessions-Aren’t-Secure-Enough-Then-What-Is"><a href="#If-Sessions-Aren’t-Secure-Enough-Then-What-Is" class="headerlink" title="If Sessions Aren’t Secure Enough, Then What Is?"></a>If Sessions Aren’t Secure Enough, Then What Is?</h1><p>现在你知道了Flask用户session不是一个存储敏感信息的地方，那么如果你需要存储私密信息，但是使用数据库看起来有点过分。</p>
-<p>一个好的方式是使用不同的用户session实现。Flask默认使用的是基于cookie的session，但是仍然有在其他地方存储数据的自定义session。特别的,<code>Flask-Session</code>扩展非常有意思，它将用户session数据存储在服务器，给你了不同的存储选项：文件，Redis，关系型数据库等等。当session数据在服务器中存储的时候，你可以确保你存储的数据和你的服务器一样安全。</p>
+		<p>今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。</p>
+<h1 id="cProfile"><a href="#cProfile" class="headerlink" title="cProfile"></a>cProfile</h1><p>使用工具cProfile，在一个脚本中写好要测试的程序，然后在终端中运行<code>python -m cProfile -s tottime calc_efficiency.py</code>表示对单个函数的运行总时间进行统计，这样就会在终端上打印出来性能分析结果，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1723 function calls (1578 primitive calls) in 0.004 seconds</div><div class="line"></div><div class="line">Ordered by: internal time</div><div class="line"></div><div class="line">ncalls  tottime  percall  cumtime  percall filename:lineno(function)</div><div class="line">   4    0.000    0.000    0.000    0.000 _methods.py:86(_var)</div><div class="line">  13    0.000    0.000    0.000    0.000 calculators.py:18(nan2zero)</div><div class="line">   2    0.000    0.000    0.000    0.000 financial.py:25(_adjust_returns)</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;cumprod&apos; of &apos;numpy.ndarray&apos; objects&#125;</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;accumulate&apos; of &apos;numpy.ufunc&apos; objects&#125;</div></pre></td></tr></table></figure>
+<p>表示1723个函数调用被监控，其中1578是原生调用，即不涉及递归调用，总共执行时间是0.004秒，结果列表是按照函数内部调用时间来排序，即不包括他自己调用的其他函数的时间。</p>
+<ul>
+<li>ncalls 表示调用次数，如果是4/3 表示4次总调用次数，3表示原生调用次数</li>
+<li>tottime 表示函数内部调用时间</li>
+<li>percall 是tottime/ncalls</li>
+<li>cumtime 累计时间，包含了自己内部调用函数的时间</li>
+<li>最后一列，文件名，行号，函数名</li>
+</ul>
+<p>cProfile除了可以在终端上使用，还有编程接口<code>cProfile.run(&#39;re.compile(&quot;foo|bar&quot;)&#39;)</code></p>
+<p>具体cProfile的使用方法请戳<a href="https://docs.python.org/3.6/library/profile.html" target="_blank" rel="external">这里</a></p>
+<p>另外官方给出的使用pstats模块的Stats类来读取和操作stats文件，Analysis of the profiler data is done using the Stats class.</p>
+<p>一个使用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import cProfile</div><div class="line">import pstats</div><div class="line">from ability import WholeAbility</div><div class="line">import time</div><div class="line"></div><div class="line">profile = cProfile.Profile()</div><div class="line">profile.enable()</div><div class="line">t0 = time.time()</div><div class="line">fundId = &quot;test&quot;</div><div class="line">start = &quot;20151021&quot;</div><div class="line">end = &quot;20151023&quot;</div><div class="line">wa = WholeAbility(fundId, start, end, assets, flows, stocks)</div><div class="line">ability_data, positions, trades = wa.calc_ability()</div><div class="line">summary_data = wa.summary()</div><div class="line">print(&quot;using &#123;&#125;&quot;.format(time.time()-t0))</div><div class="line">profile.disable()</div><div class="line">profile.print_stats(sort=&apos;tottime&apos;)</div><div class="line">sortby = &quot;tottime&quot;</div><div class="line">ps = pstats.Stats(profile).sort_stats(sortby)</div><div class="line">ps.dump_stats(&quot;./eff.txt&quot;)</div></pre></td></tr></table></figure>
+<p>使用<code>dump_stats</code>可以把当前性能分析结果写入文件，这个结果可以在后面进行可视化分析。</p>
+<h1 id="gprof2dot-分析结果可视化"><a href="#gprof2dot-分析结果可视化" class="headerlink" title="gprof2dot 分析结果可视化"></a>gprof2dot 分析结果可视化</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>Mac: <code>brew install graphviz</code></li>
+<li>Ubuntu: <code>apt-get install python graphviz</code></li>
+</ul>
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
+<p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
+<p><img src="/img/mkm_run.png" alt=""></p>
+<p>其中每个node的信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------------------------------+</div><div class="line">|        function name         |</div><div class="line">| total time % ( self time % ) |</div><div class="line">|         total calls          |</div><div class="line">+------------------------------+</div></pre></td></tr></table></figure>
+<p>每个edge的信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">total time %</div><div class="line">   calls</div><div class="line">parent --------------------&gt; children</div></pre></td></tr></table></figure>
+<h1 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h1><ol>
+<li>尽量不要使用deepcopy，很慢，详见这篇文章<a href="http://news.hiapk.com/internet/s5937a1ded022.html" target="_blank" rel="external">蜗牛般的 Python 深拷贝</a></li>
+<li>优化算法，不要在循环里面进行耗时操作</li>
+</ol>
 
 	
 	</div>
-  <a type="button" href="/2017/11/05/flask_user_session_security/#more" class="btn btn-default more">阅读此文</a>
+  <a type="button" href="/2017/09/30/Python程序性能分析/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/09/28/heapq/" >翻译 - heapq — Heap queue algorithm</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-28 12:01:46  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自<a href="https://docs.python.org/3/library/heapq.html" target="_blank" rel="external">heapq — Heap queue algorithm</a></p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>这个模块实现了堆队列算法，也被称为优先队列算法。</p>
+<p>堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有<code>heap[k] &lt;= heap[2*k+1]</code>和<code>heap[k] &lt;= heap[2*k+2]</code>，对于第n层树，其有<code>2^(n-1)</code>个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素将会被认为是无穷大的。堆中有意思的特性是最小的元素总是在树的根部，即heap[0]。</p>
+<p>下面的API有两点不同于教科书上的堆算法：</p>
+<ul>
+<li>我们的索引从0开始，这样使得父节点和其子节点的关系有所不同，但是这样在Python里更加合适，因为Python里就是索引从0开始。</li>
+<li>我们的pop方法会返回最小的元素，而不是最大的，也就是最小堆，最大堆通常在原地排序很有用</li>
+</ul>
+<p>这两个使得可以在普通的Python列表中获取堆中元素，heap[0]就是最小的元素，heap.sort()维护堆。</p>
+<p>为了创建一个堆，使用列表将其初始化为<code>[]</code>，或者你也可以通过<code>heapify()</code>将一个列表转换成堆。</p>
+<p>提供下面的方法</p>
+<ul>
+<li><code>heappush(heap, item)</code></li>
+<li><code>heappop(heap)</code></li>
+<li><code>heappushpop(heap, item)</code></li>
+</ul>
+<p>将item push到堆里，并且pop出最小的元素，比先执行heappush()然后执行heappop()更有效率</p>
+<ul>
+<li><code>heapify(x)</code></li>
+<li><code>heapreplace(heap, item)</code></li>
+</ul>
+<p>pop并且返回最小的元素，并且push一个新的元素，堆的大小不会改变。这个步骤比先执行heappop()然后执行heappush()更有效率，并且在使用一个固定大小的堆会比较合适。这个函数总会返回一个元素，并且以item替换。</p>
+<p>返回的元素可能比插入的元素要大，使用heappushpop将会返回一个比插入元素小或者等于的元素。</p>
+<ul>
+<li><code>merge(*iterables, key=None, reverse=False)</code></li>
+</ul>
+<p>将多个排序的输入转换成一个排序后的输出，返回一个排序后的迭代器。和<code>sorted(itertools.chain(*iterables))</code>类似，但是它会返回迭代对象，而不是将数据一次性放入内存。</p>
+<p>两个可选参数必须使用成关键字参数。</p>
+<p>key指定了如何进行排序，reverse如果是True就会反转。</p>
+<ul>
+<li><code>nlargest(n, iterable, key=None)</code></li>
+</ul>
+<p>返回一个迭代器的前n个大的元素列表，key如果提供，指定进行比较的函数。</p>
+<ul>
+<li><code>nsmallest(n, iterable, key=None)</code></li>
+</ul>
+<p>对于n比较小的时候比较高效。如果比较大，使用<code>sorted()</code>函数更加高效，当n等于1的时候，使用min和max更高效。如果要重复使用这几个函数，那么考虑将其转换成heap。</p>
+<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>堆排序可以通过向堆里push元素，然后每次pop出最小的元素来实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def heapsort(iterable):</div><div class="line">...     h = []</div><div class="line">...     for value in iterable:</div><div class="line">...         heappush(h, value)</div><div class="line">...     return [heappop(h) for i in range(len(h))]</div></pre></td></tr></table></figure>
+
+	
+	</div>
+  <a type="button" href="/2017/09/28/heapq/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -740,27 +1058,27 @@ var _hmt = _hmt || [];
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/源码/">源码<span>6</span></a></li>
+			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
 			<li><a href="/tags/Python/">Python<span>56</span></a></li>
 		
-			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
+			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
 			<li><a href="/tags/Database/">Database<span>5</span></a></li>
 		
 			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
-		
 			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
+			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
-			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
-		
 			<li><a href="/tags/interview/">interview<span>0</span></a></li>
+		
+			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
 		
 			<li><a href="/tags/日记/">日记<span>0</span></a></li>
 		
@@ -776,9 +1094,9 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/算法/">算法<span>15</span></a></li>
 		
-			<li><a href="/tags/LeetCode/">LeetCode<span>6</span></a></li>
-		
 			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
+		
+			<li><a href="/tags/设计模式/">设计模式<span>4</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>46</span></a></li>
