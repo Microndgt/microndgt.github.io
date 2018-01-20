@@ -138,64 +138,6 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/05/25/贪心算法/" >贪心算法</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-05-25 18:38:55  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>贪心算法是一种短视的算法，所做的每个选择都是独立的，并且是在当时环境下所能采取的最佳决策。</p>
-<p>贪心算法由一系列选择组成，贪心体现在每一个基于当时信息所做的选择中，在不考虑整体或者将来的情况，做出最好的选择。但是必须确保每个选择的安全。主要在于如何确保这种安全性。贪心算法的问题解决方案都是逐步形成的，可以先分别取得一组方案片段，然后将其合并成最终的解决方案。</p>
-<p>总体来讲，过程如下：首先形成局部解决方案，然后检查分段式解决方案是否有效或者可行。</p>
-<p>舞伴的配对，将各个配对集看成片段，将每一个配对集看做一个局部解决方案。只有当同一个人只会存在在至多一个配对集中，其对应的局部解决方案才是有效的。</p>
-<h2 id="分数背包问题"><a href="#分数背包问题" class="headerlink" title="分数背包问题"></a>分数背包问题</h2><p>贪心算法，始终优先选择最好的东西，将这些东西按照价值排一个序，然后按这个顺序一个个装包。</p>
-<h2 id="整数背包问题"><a href="#整数背包问题" class="headerlink" title="整数背包问题"></a>整数背包问题</h2><p>给特有的价值。每个类别增加一个总数值，每个类别的对象都有固定质量，以及一个特有价值。整数背包问题分为无边界和有边界。有边界情况下，每个类别中的对象数量是固定的。无边界情况下，对象的数量是无限的。贪心策略无法求解。但是动态规划可以设计出伪多项式级时间的解决方案。</p>
-<h2 id="哈夫曼算法"><a href="#哈夫曼算法" class="headerlink" title="哈夫曼算法"></a>哈夫曼算法</h2><p>使用可变长度的编码来表示文本，这样达到压缩。文本中每个字符都有出现频率，根据这样频率信息为其分配不同长度的字符编码，从而实现文本长度的最小化。用最少的一个比特位来表示字符。都可以用二叉树的结构的叶节点路径来表示。</p>
-<p>最明显的贪心策略就是从出现概率最大的字符开始，一个个添加字符（叶节点），或者先形成分段式解决方案，以形成若干个树结构分段，然后把这些分段反复合并起来。两个树合并的时候，添加一个新的共享根节点，赋予所有子节点之和相等的加权值。</p>
-<p>在下面这种哈夫曼算法实现方式中，维护着一个局部解决方案，形成了一个森林结构。只要森林中还存在着两个彼此独立的树结构，就从中选取两个分量最轻的树，然后合并后放回原处，赋予根节点新的加权值（加权和）。使用了堆这种数据结构来维护分量最少的节点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">from heapq import heapify, heappush, heappop</div><div class="line">from itertools import count</div><div class="line">def huffman(seq, frq):</div><div class="line">    num = count()</div><div class="line">    trees = list(zip(frq, num, seq))</div><div class="line">    heapify(trees)</div><div class="line">    while len(trees) &gt; 1:</div><div class="line">        # 取出两个最小的</div><div class="line">        fa, _, a = heappop(trees)</div><div class="line">        fb, _, b = heappop(trees)</div><div class="line">        n = next(num)</div><div class="line">        heappush(trees, (fa+fb, n, [a, b]))</div><div class="line">    return trees[0][-1]</div></pre></td></tr></table></figure>
-<p>考虑这些节点从单个节点到整个树的过程。最后的结果就是，在权值和深度最小的情况下，遍历完每个叶节点。使用堆结构将反复选取，合并两个最小无序列表项的平方操作，化简成了线性对数级操作。如果森林结构中的两棵树概率相同时，堆结构需要找出较小的那棵树，所以使用到了计数器。</p>
-<p>要进行压缩的话，需要预处理和后期加工，首先对字符出现的概率进行计数，然后构建哈夫曼树，然后找到所有字符的<strong>编码</strong>。</p>
-<p>提取哈夫曼编码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def codes(tree, prefix=&quot;&quot;):</div><div class="line">  if len(tree) == 1:</div><div class="line">true  yield (tree, prefix)</div><div class="line">truetruereturn</div><div class="line">truefor bit, child in zip(&quot;01&quot;, tree):</div><div class="line">true  for pair in codes(child, prefix+bit):</div><div class="line">truetrue  yield pair</div></pre></td></tr></table></figure>
-<p>每次拿出最小的两个，使用最小堆实现，然后将其合并，节点值也是概率值的和，创建出了新的值，然后再添到树中。这样下去，就可以创建出一个树。那么为什么这种贪心策略就可以将该结构到达任何一个叶节点的预期深度实现为最小。</p>
-<p>贪心选择性，每次都通过贪心选择得到了一个最优解决方案的一部分。最优子结构，作出选择之后剩下的子问题和原有的问题有着同样的解决方案。如果可以找到子问题的最佳解决方案，就可以用贪心选择将其合并成整个问题的解决方案。一个问题的最佳解决方案由其子问题的最佳解决方案构建而成。</p>
-<h2 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h2><p>一个连通无向图G的生成树T，她的节点集和G相同，边集是G的子集。最小生成树问题中，找出一种权重最小，但是能够覆盖整个G的生成树。最小生成树可以用递增步骤构建，使用贪心策略。通过一次增加一条边线的方式来逐步构建树结构。每一步中，都会选择当前构建过程中能允许加入的值最低的边。最优选择，不可撤销。主要任务就是当下部分的最优选择是全局的最优解决方案。</p>
-<p>最小生成树一定会包含最短边。</p>
-<h2 id="Kruskal算法"><a href="#Kruskal算法" class="headerlink" title="Kruskal算法"></a>Kruskal算法</h2><p>先对图中的边进行排序，然后进行选取，因为寻找短边，所有按照权重递增顺序排序。检查导致解决方案无效的边，也就是回路，对于每一个要加入的边，检测目前所在的树结构上是否存在从u到v的路径，如果存在，就丢弃这个边。</p>
-<p>通过标记解决方案中的每个节点来了解它们的所属树结构。可以在算法产生的每个独立部分来选择一个节点当作代表节点，让该部分的所有节点指向它。这样就是各部分的合并操作，直到所有节点要变成指向同一个代表，这就完成了各个部分的归并，这样的合并过程就是一个线性级操作。</p>
-<p>另外一种方法就是让每一个节点都指向某个别的节点，然后顺着其方向一路链接下去，直到到达我们之前设定的代表节点，它会指向其本身。刚开始的时候，每个节点都是其所在部分的代表，然后会按照从小到达的顺序反复地用新的边把各个部分连接起来。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def naive_kruskal(G):</div><div class="line">  # 找出所有的 边的权重，节点</div><div class="line">  E = [(G[u][v], u, v) for u in G for v in G[u]]</div><div class="line">  T = set()</div><div class="line">  # 初始化 各个节点指向的字典，都指向自己</div><div class="line">  C = &#123;u:u for u in G&#125;</div><div class="line">  for _, u, v in sorted(E):</div><div class="line">    # 最终的节点指向如果不是一个的话</div><div class="line">    # 说明没在一个树里面，将两个节点的这条边加入结果集中</div><div class="line">    # 并且将一个节点指向另外一个节点</div><div class="line">    if naive_find(C, u) != naive_find(C, v):</div><div class="line">      T.add((u, v))</div><div class="line">      naive_union(C, u, v)</div><div class="line">  return T</div></pre></td></tr></table></figure>
-<p>找到某个节点最终指向的元素，最终的元素会指向自己，因为是按权重从小到大排序的，所以首先会找到最小边然后加入的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def naive_find(C, u):</div><div class="line">  while C[u] != u:</div><div class="line">    u = C[u]</div><div class="line">  return u</div><div class="line">def naive_union(C, u, v):</div><div class="line">  # 将一个元素的代表节点指向另外一个元素的代表节点</div><div class="line">  u = naive_find(C, u)</div><div class="line">  v = naive_find(C, v)</div><div class="line">  C[u] = v</div></pre></td></tr></table></figure>
-<p>另外一种优化的思路就是在将元素指向另外一个元素的时候，让较小的指向较大的那个，这样来获得平衡。所以可以给节点赋予高度，这样从等级低的代表节点指向等级高的节点的代表，时间为O(mlgn)</p>
-<p>路径压缩，确保探索路径的所有节点可以直接指向代表节点。这样指向的查询就可以更快一点。之前的查找就是一个接一个的去查找。这里就直接把最后一个代表节点赋值给C[u]了，所以在寻找的时候，直接经历一个函数递归就可以找到代表节点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">def find(C, u):</div><div class="line">  if C[u] != u:</div><div class="line">    C[u] = find(C, C[u])</div><div class="line">  return C[u]</div><div class="line">def union(C, R, u, v):</div><div class="line">  u, v = find(C, u), find(C, v)</div><div class="line">  # 小节点指向大的,这块减少了查询次数</div><div class="line">  # 这里经过仔细研究，发现最后一个部分的节点都指向了同一个代表节点</div><div class="line">  # 代表节点的深度都是最大的</div><div class="line">  if R[u] &gt; R[v]:</div><div class="line">    C[v] = u</div><div class="line">  else:</div><div class="line">    C[u] = v</div><div class="line">  # u指向v，因此v的高度增加1</div><div class="line">  if R[u] == R[v]:</div><div class="line">    R[v] += 1</div><div class="line">def kruskal(G):</div><div class="line">  E = [(G[u][v], u, v) for u in G for v in G[u]]</div><div class="line">  T = set()</div><div class="line">  C, R = &#123;u:u for u in G&#125;, &#123;u:0 for u in G&#125;</div><div class="line">  for _, u, v in sorted(E):</div><div class="line">    if find(C, u) != find(C, v):</div><div class="line">      T.add((u, v))</div><div class="line">      union(C, R, u, v)</div><div class="line">  return T</div></pre></td></tr></table></figure>
-<h2 id="Prim算法"><a href="#Prim算法" class="headerlink" title="Prim算法"></a>Prim算法</h2><p>Prim算法从某个起始节点开始对目标图结构进行遍历，并且始终将最短的连接边加入到树结构中。Prim算法是遍历型算法，遍历型算法之间主要区别在于待定列表中的顺序。Prim中将使用堆结构实现优先级队列。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">from heapq import heappop, heappush</div><div class="line">def prim(G, s):</div><div class="line">  P, Q = &#123;&#125;, [(0, None, s)]</div><div class="line">  while Q:</div><div class="line">    _, p, u = heappop(Q)</div><div class="line">    # 如果已经在遍历树中，跳过</div><div class="line">    if u in P: continue</div><div class="line">    P[u] = p</div><div class="line">    # 将u节点连接的所有边加入队列</div><div class="line">    for v, w in G[u].items():</div><div class="line">      heappush(Q, (w, u, v))</div><div class="line">  return P</div></pre></td></tr></table></figure>
-<p>多次添加节点的时候，每次移除的时候肯定是权值最低的那一个。并且在遍历树中不会重复添加节点。</p>
-<p>贪心算法在逐步构建某解决方案的过程中，坚持每一步都选择添加当下最合适的元素，而不去管之前或者之后会发生什么情况。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/05/25/贪心算法/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
 			<a href="/2017/05/22/分治法/" >分治法</a>
 		</h3>
 		</div>
@@ -1090,6 +1032,45 @@ var _hmt = _hmt || [];
 </div>
 
 		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2017/04/12/Python函数信息/" >Python函数信息</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-04-12 15:22:53  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>最近在搞<code>pyExcelerator</code>这个库，希望能对其进行更新，并且适配到Python3上来，其实这个库开发了很久了，也挺好用的，所以fork下来学习一下。</p>
+<p>项目地址：<a href="https://github.com/Microndgt/py3Excelerator" target="_blank" rel="external">https://github.com/Microndgt/py3Excelerator</a></p>
+<p>然后看到一段代码是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"># 多个位置参数</div><div class="line">def accepts(*types):</div><div class="line">    def check_accepts(f):</div><div class="line">truetruetruetrue# 检测被装饰函数的函数参数个数是否与装饰器传递参数个数相同</div><div class="line">        assert len(types) == f.func_code.co_argcount</div><div class="line">        def new_f(*args, **kwds):</div><div class="line">            for (a, t) in zip(args, types):</div><div class="line">truetruetruetruetruetrue    # 检测被装饰的函数的位置参数类型是不是accepts指定的类型</div><div class="line">                assert isinstance(a, t), \</div><div class="line">                       &quot;arg %r does not match %s&quot; % (a,t)</div><div class="line">            return f(*args, **kwds)</div><div class="line">truetruetruetrue# 这里将名字改过来主要原因是以后还有可能需要调用被装饰的函数</div><div class="line">truetruetruetrue# 但是装饰器装饰后相当于返回变成了new_f这个函数</div><div class="line">truetruetruetrue# 带参数的装饰器，第一层函数先将参数传递进去然后返回一个函数</div><div class="line">truetruetruetrue# 返回的这个函数才真正装饰 定义的函数</div><div class="line">        new_f.func_name = f.func_name</div><div class="line">        return new_f</div><div class="line">    return check_accepts</div><div class="line">def returns(rtype):</div><div class="line">    def check_returns(f):</div><div class="line">        def new_f(*args, **kwds):</div><div class="line">            result = f(*args, **kwds)</div><div class="line">truetruetruetruetruetrue# 如果为假，则会raise AssertError并且包含错误信息</div><div class="line">            assert isinstance(result, rtype), \</div><div class="line">                   &quot;return value %r does not match %s&quot; % (result,rtype)</div><div class="line">            return result</div><div class="line">        new_f.func_name = f.func_name</div><div class="line">truetruetruetrue# 返回之后相当于new_f代替了func，所以也就相当于new_f(*args, **kwargs)了</div><div class="line">        return new_f</div><div class="line">    return check_returns</div><div class="line"># returns装饰的其实是accepts装饰后的new_f函数</div><div class="line">@returns(int)</div><div class="line">@accepts(int, (int, float))</div><div class="line">def func(arg1, arg2):</div><div class="line">    return arg1 * arg2</div></pre></td></tr></table></figure>
+<p>其中<code>f.func_code.co_argcount</code>这里是Python2中函数众多属性的一个，这里值的意义是函数位置参数的个数，在Python3中是这样的<code>f.__code__.argcount</code>，借此下面就深入探索一下Python函数信息，当然都是基于Python3。</p>
+<h2 id="查看函数属性"><a href="#查看函数属性" class="headerlink" title="查看函数属性"></a>查看函数属性</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def yes(): pass  # 统一定义这个函数</div><div class="line">yes.__dir__()</div><div class="line">dir(yes)</div><div class="line">yes.__name__ # 函数名称</div></pre></td></tr></table></figure>
+<h2 id="函数编码信息-code-属性"><a href="#函数编码信息-code-属性" class="headerlink" title="函数编码信息__code__(属性)"></a>函数编码信息<code>__code__</code>(属性)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"># 位置参数个数</div><div class="line">yes.__code__.co_argcount</div><div class="line"># 被其他嵌套函数引用了的yes的函数的局部变量</div><div class="line">yes.__code__.co_cellvars</div><div class="line"># 编译后的字节码</div><div class="line">yes.__code__.co_code</div><div class="line"># 函数中所有常量</div><div class="line">yes.__code__.co_consts</div><div class="line"># 函数定义所在的源文件路径</div><div class="line">yes.__code__.co_filename</div><div class="line"># 函数定义在其源文件的第一行的行号</div><div class="line">yes.__code__.co_firstlineno</div><div class="line"># 函数参数传递方式的编码</div><div class="line">yes.__code__.co_flags</div><div class="line"># 函数中所有自由变量的名称</div><div class="line">yes.__code__.co_freevars</div><div class="line"># 函数的名称</div><div class="line">yes.__code__.co_name</div><div class="line"># 函数中所有的被字节码使用到的名称，比如模块名，方法名</div><div class="line">yes.__code__.co_names</div><div class="line"># 函数用到的局部变量的数目</div><div class="line">yes.__code__.co_nlocals</div><div class="line"># 函数中所有使用的局部变量的名称，参数按顺序在最前面</div><div class="line">yes.__code__.co_varnames</div></pre></td></tr></table></figure>
+<h2 id="默认信息-defaults-属性"><a href="#默认信息-defaults-属性" class="headerlink" title="默认信息__defaults__(属性)"></a>默认信息<code>__defaults__</code>(属性)</h2><p><code>yes.__defaults__</code>表示函数的参数中所有默认值</p>
+<h2 id="文档字符串-doc-属性"><a href="#文档字符串-doc-属性" class="headerlink" title="文档字符串__doc__(属性)"></a>文档字符串<code>__doc__</code>(属性)</h2><p><code>yes.__doc__</code>表示函数的文档字符串</p>
+<h2 id="全局环境-globals-属性"><a href="#全局环境-globals-属性" class="headerlink" title="全局环境__globals__(属性)"></a>全局环境<code>__globals__</code>(属性)</h2><p><code>yes.__globals__</code>函数的全局环境</p>
+<p>基本就这些，详细的可以查看Python文档</p>
+<h2 id="Python3的代码"><a href="#Python3的代码" class="headerlink" title="Python3的代码"></a>Python3的代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">from functools import wraps</div><div class="line">def accepts(*types):</div><div class="line">    def check_accepts(f):</div><div class="line">        assert len(types) == f.__code__.co_argcount</div><div class="line">        @wraps(f)</div><div class="line">        def new_f(*args, **kwargs):</div><div class="line">            for a, t in zip(args, types):</div><div class="line">                assert isinstance(a, t), &quot;arg %r does not match %s&quot; %(a, t)</div><div class="line">            return f(*args, **kwargs)</div><div class="line">        return new_f</div><div class="line">    return check_accepts</div><div class="line">def returns(rtype):</div><div class="line">    def check_returns(f):</div><div class="line">        @wraps(f)</div><div class="line">        def new_f(*args, **kwargs):</div><div class="line">            result = f(*args, **kwargs)</div><div class="line">            assert isinstance(result, rtype), &apos;return value %r does not match %s&apos; % (result, rtype)</div><div class="line">            return result</div><div class="line">        return new_f</div><div class="line">    return check_returns</div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    @returns(int)</div><div class="line">    @accepts(int, (int, float))</div><div class="line">    def func(arg1, arg2):</div><div class="line">        return arg1 * arg2</div><div class="line">    print(func(1, 1.1))</div></pre></td></tr></table></figure>
+
+	
+	</div>
+  <a type="button" href="/2017/04/12/Python函数信息/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
 
 		</div>
 
@@ -1143,7 +1124,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>73</span></a></li>
+			<li><a href="/categories/编程/">编程<span>72</span></a></li>
 		
 		</ul>
 	</div>
@@ -1156,15 +1137,15 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
-			<li><a href="/tags/Python/">Python<span>56</span></a></li>
+			<li><a href="/tags/Python/">Python<span>54</span></a></li>
 		
 			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
-			<li><a href="/tags/Database/">Database<span>5</span></a></li>
+			<li><a href="/tags/Database/">Database<span>4</span></a></li>
 		
 			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
 		
-			<li><a href="/tags/读书笔记/">读书笔记<span>4</span></a></li>
+			<li><a href="/tags/读书笔记/">读书笔记<span>5</span></a></li>
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
@@ -1188,7 +1169,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
 		
-			<li><a href="/tags/算法/">算法<span>15</span></a></li>
+			<li><a href="/tags/算法/">算法<span>13</span></a></li>
 		
 			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
 		
@@ -1208,15 +1189,11 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2018/01/12/leetcode_algorithm_go_and_python_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Algorithm篇</a>
+        <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
       </li>
     
       <li>
         <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/06/leetcode_database_1/" ><i class="fa fa-file-o"></i>LeetCode刷题 - Database篇</a>
       </li>
     
       <li>
@@ -1225,6 +1202,10 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
+      </li>
+    
+      <li>
+        <a href="/2017/12/17/git_usage_summary/" ><i class="fa fa-file-o"></i>git使用总结</a>
       </li>
     
   </ul>
