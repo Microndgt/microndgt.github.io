@@ -138,6 +138,40 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/09/03/LeetCode刷题(3)/" >LeetCode刷题(3)</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-03 17:33:01  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
+<h1 id="Combination-Sum-III"><a href="#Combination-Sum-III" class="headerlink" title="Combination Sum III"></a><a href="https://leetcode.com/problems/combination-sum-iii/discuss/" target="_blank" rel="external">Combination Sum III</a></h1><p>想了半天，最后使用了递归形式的回溯法来解决，其实本质还是一种遍历吧，每一个元素位上去找可能成立的元素，后一个元素位上的元素肯定比前一个大，然后有一些限制条件，就可以得出来结果。回溯法从这里看来就是一种dfs，找到最后一个元素上。然后再回到上一层元素去找。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def combinationSum3(self, k, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type k: int</div><div class="line">        :type n: int</div><div class="line">        :rtype: List[List[int]]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def backtrack(result, ans, start, k, target):</div><div class="line">            if target == 0 and k == 0:</div><div class="line">                # 当结果和最终的定位都是0，说明是一个结果</div><div class="line">                result.append(list(ans))</div><div class="line">                return</div><div class="line">            # 在这里进行遍历可能的组合</div><div class="line">            for i in range(start, target+1):</div><div class="line">                if i &gt; 10 - k:</div><div class="line">                    break</div><div class="line">                ans.append(i)</div><div class="line">                # 查看下一个元素是否可以完成任务,如果可以则会将ans添加到结果集，</div><div class="line">                backtrack(result, ans, i+1, k-1, target-i)</div><div class="line">                ans.pop()</div><div class="line">        result = []</div><div class="line">        ans = []</div><div class="line">        backtrack(result, ans, 1, k, n)</div><div class="line">        return result</div></pre></td></tr></table></figure>
+<p>Runtime: 39 ms Your runtime beats 42.64 % of python submissions.</p>
+<h1 id="Magical-String"><a href="#Magical-String" class="headerlink" title="Magical String"></a><a href="https://leetcode.com/problems/magical-string/description/" target="_blank" rel="external">Magical String</a></h1><p>这道题主要是要发现规律，根据规律行事，通过观察可以得出这个字符串从第三位开始生成，比如1221121，第三位是2，所以后面生成2个1，现在结果是12211, 然后第四位是1，所以后面加一个2（要和目前最后一位的值不一样，所以是2），现在结果是122112，第五位是1，所以后面加一个1，结果是1221121，哈哈，这样直到规律，就开始编码吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def magicalString(self, n):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type n: int</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        start = &quot;122&quot;</div><div class="line">        if n == 0:</div><div class="line">            return 0</div><div class="line">        elif n &lt;= 3:</div><div class="line">            return start.count(&apos;1&apos;)</div><div class="line">        else:</div><div class="line">            # 在这里生成</div><div class="line">            res = start</div><div class="line">            pos = 2</div><div class="line">            while len(res) &lt;= n:</div><div class="line">                if res[pos] == &quot;2&quot;:</div><div class="line">                    res += &apos;1&apos; * 2 if res[-1] == &apos;2&apos; else &apos;2&apos; * 2</div><div class="line">                elif res[pos] == &apos;1&apos;:</div><div class="line">                    res += &apos;2&apos; if res[-1] == &apos;1&apos; else &apos;1&apos;</div><div class="line">                pos += 1</div><div class="line">            return res[:n].count(&apos;1&apos;)</div></pre></td></tr></table></figure>
+<p>结果也是相当高效的，Runtime: 145 ms Your runtime beats 94.27 % of python submissions.</p>
+
+	
+	</div>
+  <a type="button" href="/2017/09/03/LeetCode刷题(3)/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/09/03/进程间通信/" >进程间通信</a>
 		</h3>
 		</div>
@@ -824,53 +858,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/" >翻译 - Testing (asyncio) coroutines with pytest</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-16 10:14:27  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>写的aiossdb库，需要对协程进行测试，但是pytest会默认将定义的函数就当成普通函数来测试，当然可以在一个测试函数里面定义要测试的部分，但是比较麻烦吧，每次都得写loop之类。这篇文章介绍了一种使用pytest对协程进行测试的优雅方法。</p>
-<p>翻译自：<a href="https://stefan.sofa-rockers.org/2015/04/22/testing-coroutines/" target="_blank" rel="external">Testing (asyncio) coroutines with pytest</a></p>
-<p>pytest是一个非常棒的Python测试库，并且也是我最喜欢的Python库之一。它使得写测试很简单，并且它在测试失败的时候的报告能力也非常棒。</p>
-<p>但是，它不能在测试协程上给你太大帮助，所以一个简单的测试协程的程序可能会是这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line"></div><div class="line">def test_coro():</div><div class="line">    loop = asyncio.get_event_loop()</div><div class="line"></div><div class="line">    @asyncio.coroutine</div><div class="line">    def do_test():</div><div class="line">        yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">        assert 0  # onoes!</div><div class="line"></div><div class="line">    loop.run_until_complete(do_test())</div></pre></td></tr></table></figure>
-<p>这种方法有些许问题，并且很冗余，我们真正感兴趣的代码只有包含<code>yield from</code>和<code>assert</code>的那几行。</p>
-<p>如果每个测试用例都有自己的事件循环实例，并且在测试通过或者失败的时候自动正确关闭那会更好。</p>
-<p>我们也不能简单的在测试用例里<code>yield</code>，因为pytest会认为我们的测试用例会产生不在这里的新的测试用例。所以我们必须创建一个独立的协程来包含我们真实的测试，并且放到事件循环里去运行它。</p>
-<p>如果我们可以像下面这么做，我们的测试将会看起来更加整洁，并且会表现更好</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@asyncio.coroutine</div><div class="line">def test_coro(loop):</div><div class="line">    yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">    assert 0</div></pre></td></tr></table></figure>
-<p>幸亏pytest的灵活的插件系统，使得可以实现我们期望的操作。但是，大多数需要的hooks都没有非常好的形成文档，这使得找出以需要实现的hooks以及如何实现相当难。</p>
-<p>我们创建一个本地每个目录的插件，因为这样比创建一个真正的外部插件要容易一些。pytest会查看每一个测试目录去寻找一个<code>conftest.py</code>文件，然后对这个目录下的所有测试应用这里定义的fixtures和hooks。</p>
-<p>让我们开始从写一个会给每一个测试用例创建新的事件循环实例，并且会在测试完成后关闭的fixture开始吧</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import pytest</div><div class="line"></div><div class="line"># yield_fixture 已经弃用，统一使用fixture</div><div class="line">@pytest.fixture</div><div class="line">def loop():</div><div class="line">    # Set-up</div><div class="line">    loop = asyncio.new_event_loop()</div><div class="line">    asyncio.set_event_loop(loop)</div><div class="line">    yield loop</div><div class="line"></div><div class="line">    # Clean-up</div><div class="line">    loop.close()</div><div class="line"></div><div class="line"></div><div class="line"># tests/test_coros.py</div><div class="line"></div><div class="line">def test_coro(loop):</div><div class="line">    @asyncio.coroutine</div><div class="line">    def do_test():</div><div class="line">        yield from asyncio.sleep(0.1, loop=loop)</div><div class="line">        assert 0  # onoes!</div><div class="line"></div><div class="line">    loop.run_until_complete(do_test())</div></pre></td></tr></table></figure>
-<p>在每一个测试之前，pytest执行loop fixture直到第一个<code>yield</code>语句，yielded获得的值将会传递给我们的测试用例作为loop参数。当测试完成，无论成功与否，pytest会结束loop fixture的运行，因此会合适的关闭loop。同样的你可以写一个fixture来创建一个socket，并且在每个测试完成之后关闭。你的socket fixture可以依赖loop fixture，就和我们的测试做的一样。很不错，不是吗？</p>
-<p>但是我们还没有完成，让我们教pytest怎样去执行我们的测试协程吧。因此，我们需要去改变asyncio协程被收集的行为，它们应该像普通测试函数一样收集，而不是测试生成器。还有要改变它们被执行的方式，通过<code>loop.run_until_complete()</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"># tests/conftest.py</div><div class="line"></div><div class="line">def pytest_pycollect_makeitem(collector, name, obj):</div><div class="line">    &quot;&quot;&quot;收集asyncio协程作为普通函数，而不是生成器</div><div class="line">    collector 是收集器实例</div><div class="line">    name 应该是收集到的函数名字</div><div class="line">    obj 是函数对象&quot;&quot;&quot;</div><div class="line">    if collector.funcnamefilter(name) and asyncio.iscoroutinefunction(obj):</div><div class="line">        # 我们返回测试函数对象的list，依赖于fixtures，一个测试函数可能会导致多个测试项</div><div class="line">        # 也就是它被 pytest.mark.parametrize()装饰器装饰的时候</div><div class="line">        # 将其生成为普通函数，也就是说，这些协程会被当成普通函数收集，但是它还是协程</div><div class="line">        return list(collector._genfunctions(name, obj))</div><div class="line">    # else:</div><div class="line">    # 我们返回None，pytest的默认行为会将其应用到obj</div><div class="line"></div><div class="line"></div><div class="line">def pytest_pyfunc_call(pyfuncitem):</div><div class="line">    &quot;&quot;&quot;如果 pyfuncitem.obj 是一个asyncio的协程函数，通过在时间循环中执行它而不是直接调用&quot;&quot;&quot;</div><div class="line">    testfunction = pyfuncitem.obj</div><div class="line"></div><div class="line">    if not asyncio.iscoroutinefunction(testfunction):</div><div class="line">        # 如果不是协程的话直接返回，pytest会通过正常方式去处理它</div><div class="line">        return</div><div class="line"></div><div class="line">    # 从所有可用的fixtures中抽取需要的参数</div><div class="line">    funcargs = pyfuncitem.funcargs  # 所有fixtures的字典</div><div class="line">    argnames = pyfuncitem._fixtureinfo.argnames  # 这个测试的参数名字</div><div class="line">    # 也就是从fixtures字典中来找出所需要的fixture对象，fixture对象可能直接返回值yield return</div><div class="line">    # 也可能是返回一个函数对象，所以需要调用</div><div class="line">    testargs = &#123;arg: funcargs[arg] for arg in argnames&#125;</div><div class="line"></div><div class="line">    # 为这个测试创建生成器对象，测试这时候将不会被执行</div><div class="line">    coro = testfunction(**testargs)</div><div class="line"></div><div class="line">    # 在事件循环中执行这个协程并且开始测试</div><div class="line">    loop = testargs[&apos;loop&apos;] if loop in testargs else asyncio.get_event_loop()</div><div class="line">    loop.run_until_complete(coro)</div><div class="line"></div><div class="line">    return True  # 我们执行完测试后的信号</div></pre></td></tr></table></figure>
-<p>这一个插件应该在pytest 2.4或者更新中运行。</p>
-<p>看起来pytest dev正在试着清理并且重构pytest的插件系统。也许，将来的版本将会包含和我们的插件相同的函数。如果pytest支持即时可用的(out-of-the-box)协程测试方法那将会非常棒，因为协程正在在不同的框架中变得非常广泛。</p>
-<p>另外：<a href="https://github.com/pytest-dev/pytest-asyncio" target="_blank" rel="external">pytest-asyncio</a>正是pytest support for asyncio，可以拿来用！</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -989,6 +976,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
       </li>
     
@@ -1002,10 +993,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
       </li>
     
   </ul>

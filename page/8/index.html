@@ -138,6 +138,76 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/04/13/遍历/" >遍历</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-04-13 11:22:46  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>对图中所有节点的探索及访问操作就是遍历，这是很多问题的万能钥匙。图中有两种基本的遍历策略：深度优先搜索和广度优先搜索。</p>
+<p>图中任意两点都是连通的，那么图就被称为连通图，连通也有可能是通过另外的节点连通。连通分量就是指的目标图中最大而且独立的连通子图。找出这种连通分量的方法之一就是从图中的某个部分开始，逐步的扩大其连通子图的确认范围，直到再也无法向外连通为止。</p>
+<p>有下面一个证明，对于任何一个连通图，总是能够找到节点的一个排序，对于任何i=1,…,n，其子图节点也都是连通的。也就是说，按照这个顺序，可以将所有节点都一一访问到。主要思想如下：需要从i-1中推导出i的情况，因为图前i-1个节点所组成的子图是连通的，然后在前i-1中选择一个节点u，在剩余节点中选出v，在u到v的路径中，可以找到最后一个在目前连通分量的节点x和在剩余节点的第一个节点y，这样将y加入连通分量中，这样就可以使得连通分量进行扩张，直到全部加入为止。</p>
+<p>按照这种方式持续的向连通分量中添加新节点，最终会构建出一个树结构，这种树结构就是遍历树，正在遍历的连通分量的生成树。</p>
+<p>向外扩展的时候，新访问到的节点的邻居节点就会称为边沿节点，所以需要维护边沿节点的集合，反复在该集合中排除掉访问过的节点，并且向其中加入它们的邻居节点，这样就构成了一个想要访问但是未完成访问的节点列表。下面的代码就是这样的思想实现的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">def walk(G, s, S=set()):</div><div class="line">    P, Q = dict(), set()</div><div class="line">    P[s] = None  # 起始节点没有上一级节点</div><div class="line">    Q.add(s)  # Q表示目前访问的前趋节点，边沿节点的集合</div><div class="line">    while Q:</div><div class="line">        u = Q.pop()</div><div class="line">truetruetruetrue# G[u]与已经访问的节点还有不允许访问的节点的差集,</div><div class="line">truetruetruetrue# 这里也就是在边沿节点中排除已经访问过的节点，只向边沿节点集合中加入未访问的节点</div><div class="line">        for v in G[u].difference(P, S):  </div><div class="line">            Q.add(v)  # 将每一个u可以访问到的节点加入Q,然后进行遍历</div><div class="line">            P[v] = u # 这里就是一个生成树，已经访问过的节点</div><div class="line">    return P</div><div class="line">a, b, c, d, e, f, g = range(7)</div><div class="line">N = &#123;</div><div class="line">    e: &#123;f&#125;,</div><div class="line">    b: &#123;f, c&#125;,</div><div class="line">    a: &#123;b, f&#125;,</div><div class="line">    d: &#123;e, f&#125;,</div><div class="line">    c: &#123;d&#125;,</div><div class="line">    f: &#123;b&#125;,</div><div class="line">    g: &#123;c&#125;</div><div class="line">&#125;</div><div class="line">p = walk(N, a)</div></pre></td></tr></table></figure>
+<p>如果要找出图中所有的连通分量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def components(G):</div><div class="line">  comp = []</div><div class="line">trueseen = set()</div><div class="line">truefor u in G:</div><div class="line">true  if u in seen: continue # 跳过已经访问过的节点</div><div class="line">truetrueP = walk(G, u)</div><div class="line">truetrueseen.update(P)</div><div class="line">truetruecomp.append(P)</div><div class="line">  return comp # 存储了每一个独立的连通分量</div></pre></td></tr></table></figure>
+<p>找出图中连通分量应该是一个Θ(V+E)时间的操作，因为图中的边和节点都是必须要探索的，几乎所有的遍历算法运行时间都是如此。</p>
+<h1 id="迷宫问题"><a href="#迷宫问题" class="headerlink" title="迷宫问题"></a>迷宫问题</h1><p>一直向左走的策略，其实是因为这个迷宫没有环路，迷宫始终只有一面内墙。所以顺着这种遍历策略，就可以探索到所有节点，每条通道经过两次，两个方向各一次。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def tree_walk(T, r):</div><div class="line">  for u in T[r]:</div><div class="line">true  tree_walk(T, u)</div></pre></td></tr></table></figure>
+<p>一种递归思想，可以用一种比喻来形容就是，在某个丁字路口，可以向左也可以向右，如果向左，那么就相当于递归调用，一直向左，直到走到尽头，然后就会回溯，走到最近的丁字路口，然后向右走。所以回溯这个操作通常被隐藏在递归操作中。每次当递归调用返回的时候，其实都会自动返回到调用发起的那个点上。</p>
+<h2 id="停止循环遍历"><a href="#停止循环遍历" class="headerlink" title="停止循环遍历"></a>停止循环遍历</h2><p>其实核心在于，避免访问之前走过的路径，无论朝哪个方向走，如果走到了一个走到的路口，那么就应该回溯回来。所以这个算法主要就是要纪录哪些节点已经访问过了，防止再次进入这个节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def rec_dfs(G, s, S=None):</div><div class="line">  # S是已经访问过的节点</div><div class="line">trueif S is None: S = set()</div><div class="line">trueS.add(s)</div><div class="line">truefor u in G[s]:</div><div class="line">true  if u in S: continue # 已经访问过的就不再去访问了</div><div class="line">truetruerec_dfs(G, u, S)</div></pre></td></tr></table></figure>
+<h1 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h1><p>任何递归函数都是可以用迭代操作来重写的，一种做法是用自己的栈来模拟调用栈，也就是对于即将访问的节点列表形成一个栈，后进先出即可。下面是一个迭代版的深度优先搜索：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def iter_dfs(G, s):</div><div class="line">  S, Q = set(), []</div><div class="line">true# S纪录已经访问的节点</div><div class="line">trueQ.append(s)</div><div class="line">true# Q记录将要访问的节点</div><div class="line">truewhile Q:</div><div class="line">true  u = Q.pop() # 弹出最后一个元素</div><div class="line">truetrueif u in S: continue</div><div class="line">truetrueS.add(u)</div><div class="line">truetrueQ.extend(G[u])</div><div class="line">truetrueyield u</div></pre></td></tr></table></figure>
+<p>之前的walk函数使用set作为队列类型，可以通过差集来排除对相同节点的多次访问，但是如果像现在这样使用队列，那么就可以允许多次出现相同的节点。这样的问题通过<code>if u is S: continue</code>来解决。这样的深度优先搜索无法探索到一个完整的连通分量，因为这个算法适用于有向图，所以一个节点没有入度的话，就无法遍历到。下面是一个通用性的图遍历函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def traverse(G, s, qtype=set):</div><div class="line">  S, Q = set(), qtype()</div><div class="line">trueQ.add(s)</div><div class="line">truewhile Q:</div><div class="line">true  u = Q.pop()</div><div class="line">truetrueif u in S: continue</div><div class="line">truetrueS.add(u)</div><div class="line">truetruefor v in G[u]:</div><div class="line">truetrue  Q.add(v)</div><div class="line">true  yield u</div></pre></td></tr></table></figure>
+<p>这个函数比上面的迭代版更加通用，可以指定自己的队列类型，可以借助队列中的append和pop方法，来实现一个栈。</p>
+<h2 id="深度优先的时间戳"><a href="#深度优先的时间戳" class="headerlink" title="深度优先的时间戳"></a>深度优先的时间戳</h2><p>DFS中，形成的生成树被称为深度优先树，DFS树的结构也取决于其中节点被访问的顺序。而且在这类树结构中，任意节点u下所有的后代节点都将会在u开始被探索到完成回溯操作之间这段时间被处理。<code>for s in G[u]</code>根据u下面多个分支可能会有多次节点的回溯，最终探索完u后返回。再在上一层节点中，也就是u的兄弟节点进行遍历。</p>
+<p>该算法的具体回溯时间，为每个节点添加时间戳即可，一种是代表这个节点被探索的时间，一个是代表这个节点完成探索的时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def dfs(G, s, d, f, S=None, t=0):</div><div class="line">  if S is None: S = set()</div><div class="line">true# 开始探索的时间</div><div class="line">trued[s] = t; t += 1</div><div class="line">trueS.add(s)</div><div class="line">truefor u in G[s]:</div><div class="line">true  if u in S: continue</div><div class="line">truetrue# t在根据遍历的每一个节点而改变时间</div><div class="line">truetruet = dfs(G, u, d, f, S, t)</div><div class="line">truef[s] = t; t += 1</div><div class="line">truereturn t</div></pre></td></tr></table></figure>
+<p>根据DFS的属性，每个节点在DFS树中该节点的各个后代节点被探索之前发现，以及它们处理之后被完成，显而易见。</p>
+<h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><p>如果在DAG有向非环路图中执行DFS算法，就可以简单的根据完成时间递减来对节点排序，完成时间越晚，说明这个节点更加重要，被大部分节点所依赖，这种排序就是拓扑排序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def dfs_topsort(G):</div><div class="line">  S, res = set(), []</div><div class="line">truedef recurse(u):</div><div class="line">true  if u is S: return</div><div class="line">truetrueS.add(u)</div><div class="line">truetruefor v in G[u]:</div><div class="line">truetrue  recurse(v)</div><div class="line">truetrue# 越早append进res列表的，说明其拓扑排序越在后面</div><div class="line">truetrue# 所以最后要进行逆序</div><div class="line">truetrueres.append(u)</div><div class="line">  for u in G:</div><div class="line">true  recurse(u)</div><div class="line">trueres.reverse()</div><div class="line">truereturn res</div></pre></td></tr></table></figure>
+<p>现在发现学的越多，忘的越多，需要好好深入体会理解了。</p>
+<h1 id="无限迷宫和最短路径问题"><a href="#无限迷宫和最短路径问题" class="headerlink" title="无限迷宫和最短路径问题"></a>无限迷宫和最短路径问题</h1><p>DFS的问题在于可能没法直接快速找到迷宫口，因为第一次在路口选择的时候选择错了，所以需要走很远等待回溯回来。因此这个问题就是在一个既定状态空间内寻找解决方案。所以这个算法基本思想就是先是一步能访问到的所有节点，然后再去找两步能够访问到的所有节点。</p>
+<p>下面是一个迭代深度的深度优先算法，IDDFS，是一种运行深度受限制，有限深度递增的DFS。其中的yielded的全局性集合，由第一时间被探索过的以及因此被递交的节点组成。主循环会从0到len(G)-1(可能的最大深度)的每个深度限制，遍历这些深度的所有节点，将新的没有访问过的节点加入yielded中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">def iddfs(G, s):</div><div class="line">    yielded = set()</div><div class="line">    def recurse(G, s, d, S=None):</div><div class="line">        print(&quot;inner s:&quot;, s)</div><div class="line">        print(&quot;yielded:&quot;, yielded)</div><div class="line">        print(&quot;S:&quot;, S)</div><div class="line">        if s not in yielded:</div><div class="line">            # 在这里返回之前没有访问过的节点,所以已经在yielded的节点就不会再返回了</div><div class="line">            yield s</div><div class="line">            # 将s加入已经遍历过的节点</div><div class="line">            yielded.add(s)</div><div class="line">        if d == 0: return</div><div class="line">        if S is None: S = set()</div><div class="line">        S.add(s)</div><div class="line">        for u in G[s]:</div><div class="line">            # 对于s周围的节点,继续迭代,直到d=1</div><div class="line">            print(&apos;inner u:&apos;, u)</div><div class="line">            if u is S:</div><div class="line">                print(&quot;inner seen u:&quot;, u)</div><div class="line">                continue</div><div class="line">            # 每一级都会打印</div><div class="line">            for v in recurse(G, u, d-1, S):</div><div class="line">                print(&quot;inner d:&quot;, d)</div><div class="line">                print(&quot;inner v:&quot;, v)</div><div class="line">                yield v</div><div class="line">    n = len(G)</div><div class="line">    # 对每一层都进行遍历,每一次遍历都是独立的,S会被清空</div><div class="line">    # 但是yielded就是持续保存的,每一次遍历就把当前每一层的就加入了</div><div class="line">    # 怎么感觉这就是广度优先遍历啊</div><div class="line">    for d in range(n):</div><div class="line">        # 如果都已经遍历过了</div><div class="line">        print(&quot;layer:&quot;, d)</div><div class="line">        if len(yielded) == n: break</div><div class="line">        for u in recurse(G, s, d):</div><div class="line">            print(&quot;outer u:&quot;, u)</div><div class="line">            yield u</div><div class="line">        print(&apos;-----------&apos;)</div><div class="line">a, b, c, d, e, f, g = range(7)</div><div class="line">N = &#123;</div><div class="line">    e: &#123;f&#125;,</div><div class="line">    b: &#123;f, c&#125;,</div><div class="line">    a: &#123;b, f&#125;,</div><div class="line">    d: &#123;e, f&#125;,</div><div class="line">    c: &#123;d&#125;,</div><div class="line">    f: &#123;b&#125;,</div><div class="line">    g: &#123;c&#125;</div><div class="line">&#125;</div><div class="line">for ele in iddfs(N, a):</div><div class="line">    # print(ele)</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<p>仔细体会，如果在探索无边界图结构，要寻找到某一个特定节点，需要持续尝试更大的深度限制，直到找到。如果图结构本身是一条路径，从一个端点开始执行IDDFS的话，运行时间是平方级的。但是大部分节点在树的底层的话，运行时间就应该是线性级或者接近于线性级的。</p>
+<h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><p>其实主要就是在DFS算法中将栈数据结构变成先进先出即队列数据结构，也就是最先搜索到的节点，最先遍历。这样就可以对图结构进行逐层搜索了。代码也简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def bfs(G, s):</div><div class="line">  P, Q = &#123;s: None&#125;, deque([s])</div><div class="line">truewhile Q:</div><div class="line">true  # 先进先出，保证逐层搜索</div><div class="line">true  u = Q.popleft()</div><div class="line">truetruefor v in G[u]:</div><div class="line">truetrue  if v in P: continue</div><div class="line">truetruetrueP[v] = u # 记录父节点</div><div class="line">truetruetrueQ.append(v)</div><div class="line">truereturn P</div></pre></td></tr></table></figure>
+<p>如果要获取从a到u的路径，就可以从u开始，寻找其父节点，直到找到a为止</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">path = [u]</div><div class="line">while P[u] is not None:</div><div class="line">  path.append(P[u])</div><div class="line">trueu = P[u]</div><div class="line">path.reverse()</div></pre></td></tr></table></figure>
+<p>在一种情况下，IDDFS的情况是好于BFS的，当搜索目标是一个巨大的树结构，IDDFS因此不需要存储自己访问过的节点，只需要存储从起点出发的单条路径就可以了。但是BFS要在内存中存储全体的前沿节点。所以说IDDFS的内存用量会更少。</p>
+<h2 id="deque双端队列"><a href="#deque双端队列" class="headerlink" title="deque双端队列"></a>deque双端队列</h2><p>BFS算法中，使用的是双端队列，这种队列使用链表，前后端的追加和pop都属于常数级操作。deque类的实现是一个块空间的双向链表，每个独立元素都是一个数组。</p>
+<h1 id="强连通分量"><a href="#强连通分量" class="headerlink" title="强连通分量"></a>强连通分量</h1><p>强连通分量或者强分量，是有向化的连通分量，一个图结构的连通分量是让里面所有节点彼此到达的最大子图。强连通分量的话就需要对其中的边的方向进行跟踪。所有强连通分量应该是让有向路径上所有节点彼此到达的最大子图。</p>
+<p>一般情况下，如果只要任何一个强分量X有一条边通往另外一个强分量Y，X中最后完成遍历的时间就一定会晚于Y中最后完成的时间。另外一张有向图中可能有多个强连通分量，但是有一点就是这些强连通分量之间应该是没有环路的，要不然就会合并成一个强连通分量，另外将每一个强连通分量作为一个整体的话，那么这些强连通分量就会组成一个DAG，即有向无环路图。</p>
+<p>这样要找到所有的强连通分量的话，就需要首先找到原图结构中没有任何入边的强连通分量，也就是翻转链接每个强连通分量的有向边后没有出度的强连通分量。也就是查找的是强连通分量图的拓扑排序的第一个强连通分量，然后查找第二个等。翻转边之后使得我们一次只能探索一个强连通分量。下面是算法代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">&apos;&apos;&apos;strongly connected components&apos;&apos;&apos;</div><div class="line">def tr(G):</div><div class="line">    &apos;&apos;&apos;翻转G中的边线关系,其目的是为了一次只遍历一个scc&apos;&apos;&apos;</div><div class="line">    GT = &#123;&#125;</div><div class="line">    for u in G: GT[u] = set()</div><div class="line">    for u in G:</div><div class="line">        for v in G[u]:</div><div class="line">            GT[v].add(u)</div><div class="line">    return GT</div><div class="line">def dfs_topsort(G):</div><div class="line">    # 首先将每个节点的入度找出来</div><div class="line">    count = dict((u, 0) for u in G)</div><div class="line">    for u in G:</div><div class="line">        for v in G[u]:</div><div class="line">            count[v] += 1</div><div class="line">    # 从入度为0的点开始遍历,入度为0的点肯定是先开始的</div><div class="line">    Q = [u for u in G if count[u] == 0]</div><div class="line">    S = []</div><div class="line">    while Q:</div><div class="line">        u = Q.pop()</div><div class="line">        S.append(u)</div><div class="line">        # 去掉u之后,u指向的节点入度都减1</div><div class="line">        for v in G[u]:</div><div class="line">            print(v)</div><div class="line">            count[v] -= 1</div><div class="line">            if count[v] == 0:</div><div class="line">                Q.append(v)</div><div class="line">    return S</div><div class="line">def walk(G, s, S=set()):</div><div class="line">    P, Q = dict(), set()</div><div class="line">    P[s] = None</div><div class="line">    Q.add(s)</div><div class="line">    while Q:</div><div class="line">        # 后加入的后访问,所以就是dfs</div><div class="line">        u = Q.pop()</div><div class="line">        # Q是即将访问的节点,也就是前沿节点</div><div class="line">        # u是v的父节点</div><div class="line">        for v in G[u].difference(P, S):</div><div class="line">            Q.add(v)</div><div class="line">            P[v] = u</div><div class="line">    return P</div><div class="line">def scc(G):</div><div class="line">    GT = tr(G)</div><div class="line">    # sccs 将记录每个连通分量的生成树</div><div class="line">    sccs, seen = [], set()</div><div class="line">    # 返回拓扑排序的节点顺序</div><div class="line">    for u in dfs_topsort(G):</div><div class="line">        # 跳过已经遍历过的节点,然后从u节点开始遍历翻转后的图</div><div class="line">        if u in seen: continue</div><div class="line">        # 翻转后的图,一次就只会遍历一个强分量了</div><div class="line">        # 这里返回一个图遍历的生成树</div><div class="line">        C = walk(GT, u, seen)</div><div class="line">        seen.update(C)</div><div class="line">        sccs.append(C)</div><div class="line">    return sccs</div><div class="line">a, b, c, d, e, f = range(6)</div><div class="line">N = &#123;</div><div class="line">    e: &#123;f&#125;,</div><div class="line">    b: &#123;c&#125;,</div><div class="line">    a: &#123;b, f&#125;,</div><div class="line">    d: &#123;e, f&#125;,</div><div class="line">    c: &#123;d&#125;,</div><div class="line">    f: set()</div><div class="line">&#125;</div><div class="line">print(scc(N))</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>一个图结构的遍历过程主要包括：维护一个用来存放待探索节点的to-do列表，一种队列，并从中去除已经访问的节点，最初，列表只有遍历的起点，在之后的每一步，都会访问其中一个节点，从列表中去除它，然后将其邻居节点加入列表中。在列表中，项目的调度顺序决定了实现的遍历类型。如果使用stack，那么实现的就是深度优先搜索，如果使用队列，FIFO实现的就是广度优先搜索。</p>
+<p>广度优先搜索用来在一个节点到另外一个节点之间寻找未加权的最短路径，还有一种，迭代深度的DFS，也具有BFS的作用，但是在大型树结构的搜索中所起到的作用会跟大一些。</p>
+<p><strong><em>参考自：Python 算法教程 – Magnus Lie Hetland</em></strong></p>
+
+	
+	</div>
+  <a type="button" href="/2017/04/13/遍历/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/04/12/Python函数信息/" >Python函数信息</a>
 		</h3>
 		</div>
@@ -836,42 +906,6 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2017/01/22/come_back_to_pycharm/" >弃坑VSCode 拥抱PyCharm</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-01-22 07:47:05  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>因为新鲜使用了一段VSCode，可是觉得还是有很多不如人意的地方，还是觉得PyCharm好用，失去了才知道珍惜么 = =! 哈哈，总结一下，VSCode有下面的一些问题：</p>
-<ol>
-<li>Git diff功能支持的不好，像PyCharm上可以查看某个Commit甚至多个Commit的diff，但是VSCode上装什么插件好像都没法这样看，只能一个文件一个文件的看，很麻烦，或许是我没找到怎么弄，但是毕竟我也读了一些git diff插件的文档，但是还没有找到，所以说明也不好用。</li>
-<li>Git插件已经add或者提交了，目录树上还是绿的黄的一片，不更新。。这个很蛋疼，强迫症的我总以为有东西还没提交。</li>
-<li>在大量debug模式下，有时候就没法跳转函数定义啦，自动补全也失效了，这个也很蛋疼，只能重新打开这个项目。</li>
-<li>没法Debug Celery的tasks，只能用rdb一行一行的看，效率很低。</li>
-</ol>
-<p>基于上面原因，VSCode实在没法继续用了，不过转投PyCharm有个硬伤，快捷键。。哎，只好苦练了。下面就是Mac下的P yCharm 快捷键总结。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-cb058dde6f3580de6589eedc8193acee_hd.jpg" alt=""></p>
-
-	
-	</div>
-  <a type="button" href="/2017/01/22/come_back_to_pycharm/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
 			<a href="/2017/01/05/群体性孤独/" >群体性孤独</a>
 		</h3>
 		</div>
@@ -1032,6 +1066,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
       </li>
     
@@ -1045,10 +1083,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
       </li>
     
   </ul>

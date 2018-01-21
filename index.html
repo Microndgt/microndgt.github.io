@@ -138,6 +138,42 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2018/01/22/come_back_to_pycharm/" >弃坑VSCode 拥抱PyCharm</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2018-01-22 07:47:05  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>因为新鲜使用了一段VSCode，可是觉得还是有很多不如人意的地方，还是觉得PyCharm好用，失去了才知道珍惜么 = =! 哈哈，总结一下，VSCode有下面的一些问题：</p>
+<ol>
+<li>Git diff功能支持的不好，像PyCharm上可以查看某个Commit甚至多个Commit的diff，但是VSCode上装什么插件好像都没法这样看，只能一个文件一个文件的看，很麻烦，或许是我没找到怎么弄，但是毕竟我也读了一些git diff插件的文档，但是还没有找到，所以说明也不好用。</li>
+<li>Git插件已经add或者提交了，目录树上还是绿的黄的一片，不更新。。这个很蛋疼，强迫症的我总以为有东西还没提交。</li>
+<li>在大量debug模式下，有时候就没法跳转函数定义啦，自动补全也失效了，这个也很蛋疼，只能重新打开这个项目。</li>
+<li>没法Debug Celery的tasks，只能用rdb一行一行的看，效率很低。</li>
+</ol>
+<p>基于上面原因，VSCode实在没法继续用了，不过转投PyCharm有个硬伤，快捷键。。哎，只好苦练了。下面就是Mac下的PyCharm 快捷键总结。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-cb058dde6f3580de6589eedc8193acee_hd.jpg" alt=""></p>
+
+	
+	</div>
+  <a type="button" href="/2018/01/22/come_back_to_pycharm/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2018/01/21/go语言圣经_note_method/" >Go语言圣经 - 读书笔记 - 方法</a>
 		</h3>
 		</div>
@@ -857,119 +893,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/12/07/making_kernels_for_jupyter/" >翻译 - Making kernels for Jupyter</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-12-07 15:01:35  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>翻译自: <a href="http://jupyter-client.readthedocs.io/en/latest/kernels.html" target="_blank" rel="external">Making kernels for Jupyter</a></p>
-<h1 id="Making-kernels-for-Jupyter"><a href="#Making-kernels-for-Jupyter" class="headerlink" title="Making kernels for Jupyter"></a>Making kernels for Jupyter</h1><p>一个内核是运行和解析用户代码的程序。IPython包含了一个运行和解析Python代码的内核，而且人们已经写了多种语言的内核。</p>
-<p>当Jupyter开始一个内核的时候，它会传递它一个连接文件。它指定了如何与前端开始通信。</p>
-<p>关于写一个内核有两个选项：</p>
-<ul>
-<li>你可以重用IPython内核机制来处理通信，只需要描述如何运行你的代码就行了。如果你的目标语言可以被Python驱动的话，这种方式就比较简单。请查看<a href="http://jupyter-client.readthedocs.io/en/latest/wrapperkernels.html" target="_blank" rel="external">Making simple Python wrapper kernels</a>以获得详细细节。</li>
-<li>你可以使用目标语言了实现这个内核。开始这个工作会很多，但是后面如果有人开始用你的内核，就会有人来贡献代码。</li>
-</ul>
-<h2 id="Connection-files"><a href="#Connection-files" class="headerlink" title="Connection files"></a>Connection files</h2><p>当内核开始的时候将会传入一个连接文件的路径(查看Kernel Specs 如何为你的内核指定命令行参数)。这个文件，只对当前用户可用，会包含类似下面的一个JSON字典。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;control_port&quot;: 50160,</div><div class="line">  &quot;shell_port&quot;: 57503,</div><div class="line">  &quot;transport&quot;: &quot;tcp&quot;,</div><div class="line">  &quot;signature_scheme&quot;: &quot;hmac-sha256&quot;,</div><div class="line">  &quot;stdin_port&quot;: 52597,</div><div class="line">  &quot;hb_port&quot;: 42540,</div><div class="line">  &quot;ip&quot;: &quot;127.0.0.1&quot;,</div><div class="line">  &quot;iopub_port&quot;: 40885,</div><div class="line">  &quot;key&quot;: &quot;a0436f6c-1916-498b-8eb9-e81ab9368e84&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>transport</code>, <code>ip</code>和制定了内核应该使用ZeroMQ绑定的五个<code>_port</code>。比如shell套接字的地址应该是：<code>tcp://127.0.0.1:57503</code></p>
-<p>在每个内核开始的时候会指定随意的端口。<code>signature_scheme</code>和<code>key</code>用来加密信息，因此系统的其他用户不能发送代码来运行内核。</p>
-<h2 id="Handling-messages"><a href="#Handling-messages" class="headerlink" title="Handling messages"></a>Handling messages</h2><p>在读取连接文件后和绑定必须的套接字之后，内核应该进入一个事件循环，监听hb(heartbeat)，control和shell套接字。</p>
-<p>Heartbeat消息应该在同样的套接字上立即返回，前端使用这个消息来检查内核是否在线。</p>
-<p>control和shell套接字的消息应该被解析，而且它们的签名应该是有效的。</p>
-<p>内核会在iopub套接字上发送消息以展示输出，在stdin套接字上提示用户来输入。</p>
-<h2 id="Kernel-specs"><a href="#Kernel-specs" class="headerlink" title="Kernel specs"></a>Kernel specs</h2><p>通过创建一个目录来让IPython识别一个内核，名字就是内核的标识符。目录可能在不同的位置</p>
-<ul>
-<li><p>System:</p>
-<ul>
-<li><code>/usr/share/jupyter/kernels</code></li>
-<li><code>/usr/local/share/jupyter/kernels</code></li>
-</ul>
-</li>
-<li><p>Env:</p>
-<ul>
-<li><code>{sys.prefix}/share/jupyter/kernels</code></li>
-</ul>
-</li>
-<li><p>User:</p>
-<ul>
-<li><code>~/.local/share/jupyter/kernels</code> (Linux)</li>
-<li><code>~/Library/Jupyter/kernels</code> (Mac)</li>
-</ul>
-</li>
-</ul>
-<p>用户位置的优先级高于系统级别的，忽略名字的大小写。因此不论系统是否大小写敏感，都可以以同样的烦噶事来获取内核。因为内核名字会在URL出现，因此内核名字需要是一个简单的，只使用ASCII字母，数字和简单的分隔符<code>-</code>, <code>.</code>, <code>_</code></p>
-<p>如果设置了<code>JUPYTER_PATH</code>环境变量的话，也会搜索其他位置。</p>
-<p>在内核文件夹下，现在会使用三种类型的文件。<code>kernel.json</code>, <code>kernel.js</code>和log图片文件。目前，没有使用其他文件，但是将来可能会改变。</p>
-<p>最重要的文件是<code>kernel.json</code>，应该是一个json序列化的字典包含以下字段</p>
-<ul>
-<li><code>argv</code>: 用来启动内核的命令行参数列表。<code>{connection_file}</code>将会被实际的连接文件的路径替换。</li>
-<li><code>display_name</code>: 在UI上展示的内核名字。不像在API中使用的内核名字，这里的名字可以包含任意字符。</li>
-<li><code>language</code>: 内核的语言名字。当载入notebook的时候，如果没有找到匹配的内核，那么匹配相应语言的内核将会被启动。这样允许一个写了任何Python或者julia内核的notebook可以与用户的Python或者julia内核合适的联系起来，即使它们没有在与用户内核同样的名字下。</li>
-<li><code>interrupt_mode</code>：可能是signal或者message指定了客户端如何在这个内核中停止单元运行。是通过发送一个信号呢，还是发送一个<code>interrupt_request</code>消息在control channel。如果没有指定，将默认使用signal模式。</li>
-<li><code>env</code>：为内核设置的环境变量。在内核启动前，会添加到当前的环境变量里。</li>
-<li><code>metadata</code>：关于这个内核的其他相关属性。帮助客户端选择内核。</li>
-</ul>
-<p>比如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"> &quot;argv&quot;: [&quot;python3&quot;, &quot;-m&quot;, &quot;IPython.kernel&quot;,</div><div class="line">          &quot;-f&quot;, &quot;&#123;connection_file&#125;&quot;],</div><div class="line"> &quot;display_name&quot;: &quot;Python 3&quot;,</div><div class="line"> &quot;language&quot;: &quot;python&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>查看有多少可用内核:<code>jupyter kernelspec list</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Available kernels:</div><div class="line">  python3    /Users/kevin/anaconda/lib/python3.5/site-packages/ipykernel/resources</div><div class="line">  ir         /Users/kevin/Library/Jupyter/kernels/ir</div></pre></td></tr></table></figure>
-<h1 id="Making-simple-Python-wrapper-kernels"><a href="#Making-simple-Python-wrapper-kernels" class="headerlink" title="Making simple Python wrapper kernels"></a>Making simple Python wrapper kernels</h1><p>你可以重用IPython的内核机制来非常容易的创建新内核。这对于Python绑定的语言来说非常有用。或者可以用pexpect来控制REPL的语言，比如bash</p>
-<h2 id="Required-steps"><a href="#Required-steps" class="headerlink" title="Required steps"></a>Required steps</h2><p>子类化<code>ipykernel.kernelbase.Kernel</code>，然后实现下面的方法和属性</p>
-<ul>
-<li><p><code>class MyKernel</code></p>
-<ul>
-<li><code>implementation</code></li>
-<li><code>implementation_version</code></li>
-<li><p><code>banner</code></p>
-<p>  Kernel info会返回的信息。<code>Implementation</code>指的是内核而不是语言，比如IPython而不是Python。<code>banner</code>是在控制UI上显示第一个提示符之前的东西。这些都是字符串</p>
-</li>
-<li><p><code>language_info</code></p>
-<p>  Kernel info会返回的信息字典。应该包含<code>mimetype</code>键，值是目标语言的mimetype，比如<code>text/x-python</code>。name键是实现的语言比如<code>python</code>，<code>file_extension</code>比如<code>.py</code>，而且也可能根据不同语言包含<code>codemirror_mode</code>和<code>pygments_lexer</code></p>
-</li>
-<li><p><code>do_execute(code, silent, store_history=True, user_expressions=None, allow_stdin=False)</code></p>
-<p>  执行用户代码</p>
-<ul>
-<li>code：要执行的代码</li>
-<li>silent：是否展示输出</li>
-<li><code>store_history</code>: 是否在历史里记录代码，并且增加执行次数。</li>
-<li><code>user_expressions</code>：在代码被执行后对这些表达式求值</li>
-<li><p><code>allow_stdin</code>：前端是否提供输入请求</p>
-<p>你的方法应该返回一个字典，包含在<code>Execution results</code>规定的字典。为了展现输出，它可以使用<code>send_response()</code>来发送消息。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>为了启动你的内核，在模块后面加上：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    from ipykernel.kernelapp import IPKernelApp</div><div class="line">    IPKernelApp.launch_instance(kernel_class=MyKernel)</div></pre></td></tr></table></figure>
-<p>现在创建一个JSON的内核说明文件，然后通过<code>jupyter kernelspec install &lt;/path/to/kernel&gt;</code>。将你的内核模块放在Python可以导入的地方，一般是当前目录(做测试)。最后，你可以使用<code>jupyter console --kernel &lt;mykernelname&gt;</code>来运行你的内核。</p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><code>echokernel.py</code>会简单的将输入输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">from ipykernel.kernelbase import Kernel</div><div class="line"></div><div class="line">class EchoKernel(Kernel):</div><div class="line">    implementation = &apos;Echo&apos;</div><div class="line">    implementation_version = &apos;1.0&apos;</div><div class="line">    language = &apos;no-op&apos;</div><div class="line">    language_version = &apos;0.1&apos;</div><div class="line">    language_info = &#123;</div><div class="line">        &apos;name&apos;: &apos;Any text&apos;,</div><div class="line">        &apos;mimetype&apos;: &apos;text/plain&apos;,</div><div class="line">        &apos;file_extension&apos;: &apos;.txt&apos;,</div><div class="line">    &#125;</div><div class="line">    banner = &quot;Echo kernel - as useful as a parrot&quot;</div><div class="line"></div><div class="line">    def do_execute(self, code, silent, store_history=True, user_expressions=None,</div><div class="line">                   allow_stdin=False):</div><div class="line">        if not silent:</div><div class="line">            stream_content = &#123;&apos;name&apos;: &apos;stdout&apos;, &apos;text&apos;: code&#125;</div><div class="line">            self.send_response(self.iopub_socket, &apos;stream&apos;, stream_content)</div><div class="line"></div><div class="line">        return &#123;&apos;status&apos;: &apos;ok&apos;,</div><div class="line">                # The base class increments the execution count</div><div class="line">                &apos;execution_count&apos;: self.execution_count,</div><div class="line">                &apos;payload&apos;: [],</div><div class="line">                &apos;user_expressions&apos;: &#123;&#125;,</div><div class="line">               &#125;</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    from ipykernel.kernelapp import IPKernelApp</div><div class="line">    IPKernelApp.launch_instance(kernel_class=EchoKernel)</div></pre></td></tr></table></figure>
-<p>下面是内核说明文件<code>kernel.json</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;argv&quot;:[&quot;python&quot;,&quot;-m&quot;,&quot;echokernel&quot;, &quot;-f&quot;, &quot;&#123;connection_file&#125;&quot;],</div><div class="line"> &quot;display_name&quot;:&quot;Echo&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2017/12/07/making_kernels_for_jupyter/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -1088,6 +1011,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
       </li>
     
@@ -1101,10 +1028,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
       </li>
     
   </ul>
