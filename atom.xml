@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-01-20T03:26:33.000Z</updated>
+  <updated>2018-01-21T07:45:13.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go语言圣经 - 读书笔记 - 方法</title>
+    <link href="http://skyrover.me/2018/01/21/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_method/"/>
+    <id>http://skyrover.me/2018/01/21/go语言圣经_note_method/</id>
+    <published>2018-01-21T03:00:46.000Z</published>
+    <updated>2018-01-21T07:45:13.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>一个面向对象的程序会用方法来表达其属性和对应的操作，使用这个对象的用户就不需要直接去操作对象，而是借助方法来完成这些事情。</p>
+<p>OOP编程的关键点：封装和组合。</p>
+<h1 id="方法声明"><a href="#方法声明" class="headerlink" title="方法声明"></a>方法声明</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p Point)</span> <span class="title">Distance</span><span class="params">(q Point)</span> <span class="title">float64</span></span> &#123;</div><div class="line">     <span class="keyword">return</span> math.Hypot(q.X-p.X, q.Y-p.Y)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>函数名称之前的附加参数会将函数附加到这种类型上，即为该类型定义了一个独占方法。附加的参数p，是方法的接收器。</p>
+<p>Go中可以给任意类型定义方法，所以可以给字符串，数值等定义一些附加行为。方法可以被声明到任意类型，只要不是一个指针或者一个interface。</p>
+<p>为一个类型定义一个方法，比定义一个函数来的简便，因为从包外去调函数要写的代码要多点。。</p>
+<h1 id="基于指针对象的方法"><a href="#基于指针对象的方法" class="headerlink" title="基于指针对象的方法"></a>基于指针对象的方法</h1><p>调用一个函数的时候，会对其每一个参数值进行拷贝。所以Go语言中是按值传参的，但是对于切片，map这种是引用类型的，即使按值来传，它也是传的引用，而引用可以等同于指针。</p>
+<p>对应于方法的接收器来说，如果接受者变量本身比较大的时候，就可以用指针来声明方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Point)</span> <span class="title">ScaleBy</span><span class="params">(factor <span class="keyword">float64</span>)</span></span> &#123;</div><div class="line">    p.X *= factor</div><div class="line">    p.Y *= factor</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一般实践中，只要这个类型有一个指针作为接收器的方法，其他的方法都应该使用指针接收器。如果类型本身是一个指针的话，是不允许出现在接收器中的。</p>
+<p>在调用的时候，即使用该类型变量来调用使用指针作为接收器的方法时候，也是可以的，因为编译器会隐式的去取变量的地址，然后用指针调用这个方法。</p>
+<p>而且如果接收器不是指针，那么通过指针调用方法，编译器会默认的解引用，然后去调用方法。</p>
+<h2 id="nil也是合法的接收器类型"><a href="#nil也是合法的接收器类型" class="headerlink" title="nil也是合法的接收器类型"></a>nil也是合法的接收器类型</h2><p>如果nil是对象来说是合法的零值的时候，比如map或者slice。</p>
+<p>IntList是一个结构体。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(list *IntList)</span> <span class="title">Sum</span><span class="params">()</span> <span class="title">int</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> list == <span class="literal">nil</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> list.Value + list.Tail.Sum()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="通过嵌入结构体来扩展类型"><a href="#通过嵌入结构体来扩展类型" class="headerlink" title="通过嵌入结构体来扩展类型"></a>通过嵌入结构体来扩展类型</h1><p>内嵌字段会指导编译器去生成额外的包装方法来委托已经声明好的方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p ColoredPoint)</span> <span class="title">Distance</span><span class="params">(q Point)</span> <span class="title">float64</span></span> &#123;</div><div class="line">     <span class="keyword">return</span> p.Point.Distance(q)</div><div class="line">&#125;</div><div class="line"> <span class="function"><span class="keyword">func</span> <span class="params">(p *ColoredPoint)</span> <span class="title">ScaleBy</span><span class="params">(factor <span class="keyword">float64</span>)</span></span> &#123;</div><div class="line">     p.Point.ScaleBy(factor)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面这种实现就是利用了嵌入结构体的方法访问机制</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> cache = <span class="keyword">struct</span> &#123;</div><div class="line">    sync.Mutex</div><div class="line">    mapping <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></div><div class="line"> &#125;&#123;</div><div class="line">    mapping: <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>),</div><div class="line">&#125;</div><div class="line"> <span class="function"><span class="keyword">func</span> <span class="title">Lookup</span><span class="params">(key <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</div><div class="line">    cache.Lock()</div><div class="line">    v := cache.mapping[key]</div><div class="line">    cache.Unlock()</div><div class="line">    <span class="keyword">return</span> v</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> 方法值和方法表达式</div><div class="line"> ===</div></pre></td></tr></table></figure>
+<p> distanceFromP := p.Distance<br> fmt.Println(distanceFromP(q))<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">方法值就是一个绑定对象的函数。</div><div class="line"></div><div class="line">方法表达式，调用方法的时候，需要用选择器来指定方法的接收器。T是一个类型的时候，方法表达式可能会写作`T.f`或者`(*T).f`，这样会返回一个函数值，这种函数会将其第一个参数用作接收器，因此可以用普通函数的形式调用它。</div></pre></td></tr></table></figure></p>
+<p>distance := Point.Distance<br>fmt.Println(distance(p, q))<br>```</p>
+<p>哎函数是第一类公民嘛，说了这么多。。。</p>
+<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>一个对象的变量或者方法如果对调用方是不可见的话，就定义为封装。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一个面向对象的程序会用方法来表达其属性和对应的操作，使用这个对象的用户就不需要直接去操作对象，而是借助方法来完成这些事情。&lt;/p&gt;
+&lt;p&gt;OOP编程的关键点：封装和组合。&lt;/p&gt;
+&lt;h1 id=&quot;方法声明&quot;&gt;&lt;a href=&quot;#方法声明&quot; class=&quot;headerlink
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>Go语言圣经 - 读书笔记 - 接口</title>

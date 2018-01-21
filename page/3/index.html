@@ -138,6 +138,86 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/10/21/python_decorator/" >Python的decorator模块</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-21 15:59:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>在httpbin源代码中遇到这么一个路由：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/gzip&apos;)</div><div class="line">@filters.gzip</div><div class="line">def view_gzip_encoded_content():</div><div class="line">    &quot;&quot;&quot;Returns GZip-Encoded Data.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    return jsonify(get_dict(</div><div class="line">        &apos;origin&apos;, &apos;headers&apos;, method=request.method, gzipped=True))</div></pre></td></tr></table></figure>
+<p>其中gzip是这么实现的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">@decorator</div><div class="line">def gzip(f, *args, **kwargs):</div><div class="line">    &quot;&quot;&quot;GZip Flask Response Decorator.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    data = f(*args, **kwargs)</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        content = data.data</div><div class="line">    else:</div><div class="line">        content = data</div><div class="line"></div><div class="line">    gzip_buffer = BytesIO()</div><div class="line">    gzip_file = gzip2.GzipFile(</div><div class="line">        mode=&apos;wb&apos;,</div><div class="line">        compresslevel=4,</div><div class="line">        fileobj=gzip_buffer</div><div class="line">    )</div><div class="line">    gzip_file.write(content)</div><div class="line">    gzip_file.close()</div><div class="line"></div><div class="line">    gzip_data = gzip_buffer.getvalue()</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        data.data = gzip_data</div><div class="line">        data.headers[&apos;Content-Encoding&apos;] = &apos;gzip&apos;</div><div class="line">        data.headers[&apos;Content-Length&apos;] = str(len(data.data))</div><div class="line"></div><div class="line">        return data</div><div class="line"></div><div class="line">    return gzip_data</div></pre></td></tr></table></figure>
+<p>从这个函数来看，gzip函数做的工作就是将路由函数执行一遍，取的结果后，将回应压缩，然后再返回发送响应。然后gzip函数是作为装饰器使用的。那么上面那个decorator装饰器做了什么工作呢，可以看出gzip目前的功能和普通的装饰器函数中内层函数功能基本上是一致的，所以调用这个<code>view_gzip_encoded_content</code>这个视图函数就相当于调用gzip函数。</p>
+<p>那么decorator到底做了什么呢，怎么做的呢？在这里详细拆解一番。</p>
+<p>以下内容部分翻译自<a href="http://decorator.readthedocs.io/en/stable/tests.documentation.html" target="_blank" rel="external">decorator document</a></p>
+<p>文档上说，如果你想以在Python版本中以一致性的方式保存被装饰函数的签名，这是你最好的选择。</p>
+<h1 id="装饰器的用处"><a href="#装饰器的用处" class="headerlink" title="装饰器的用处"></a>装饰器的用处</h1><p>Python中的装饰器是一个为什么语法糖很重要的有趣的例子。装饰器做到了以下的事情：</p>
+<ul>
+<li>装饰器减少了样板代码</li>
+<li>装饰器帮助分离关注点(模块化开发就起到了分离关注点的作用)</li>
+<li>装饰器增强了可读性和可维护性</li>
+<li>装饰器很明显</li>
+</ul>
+<p>但是经典的装饰器实现需要嵌套函数，但是我们知道扁平是比嵌套要好得多。</p>
+<p>所以<code>decorator</code>模块的目标是简化装饰器的使用，当然对于所有的技术，都有可能被滥用，你不应该在解决任何问题的时候都试图使用装饰器，虽然你可以这么做。</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>一般来说，任何可以被以一个参数调用的Python对象都可以被用作装饰器。然而，这种定义太大以至于没太多用。将装饰器这个一般的类分成两种子类会更加方便：</p>
+<ul>
+<li><p>保留签名的装饰器</p>
+<p>  接受一个函数作为参数的可调用对象会返回一个函数作为输出，并且有相同的签名</p>
+</li>
+<li><p>改变签名的装饰器</p>
+<p>  装饰器会改变给它们输入的函数的签名，或者装饰器会返回一个非调用对象</p>
+</li>
+</ul>
+<p>签名改变的装饰器有它们自己的用处：比如，内置的<code>staticmethod</code>和<code>classmethod</code>就是这种，它们接受函数然后返回描述符对象，既不是函数，也不是可调用对象。</p>
+<p>当然，保留签名的装饰器更加普遍，更加容易去实现。特别的，它们可以组合在一起，但是其他装饰器一般不可以。</p>
+<p>直接写一个保留签名的装饰器并不是那么显而易见，比如想定义一个合适的装饰器，接受有任意签名的函数作为输入。一个简单的例子将会澄清这个问题。</p>
+<h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>一个装饰器通常的使用例子是将一个函数进行缓存。一个<code>memorize</code>装饰器通过将函数的返回结果存储在字典中起到缓存的作用。</p>
+<p>这里有很多<code>memorize</code>的实现例子，但是它们都不保留签名。在最近的Python版本中你可以找到一个复杂的<code>lru_cache</code>装饰器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def memoize_uw(func):</div><div class="line">    func.cache = &#123;&#125;</div><div class="line"></div><div class="line">    def memoize(*args, **kw):</div><div class="line">        if kw:  # frozenset is used to ensure hashability</div><div class="line">            key = args, frozenset(kw.items())</div><div class="line">        else:</div><div class="line">            key = args</div><div class="line">        if key not in func.cache:</div><div class="line">            func.cache[key] = func(*args, **kw)</div><div class="line">        return func.cache[key]</div><div class="line">    return functools.update_wrapper(memoize, func)</div></pre></td></tr></table></figure>
+<p>这里使用了<code>functools.update_wrapper</code>，这样你就不用从原来函数复制<code>__name__</code>, <code>__doc__</code>, <code>__module__</code>和<code>__dict__</code>等属性了，等同于调用<code>functools.wraps(func)</code>装饰器</p>
+<p>这是一个使用例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@memoize_uw</div><div class="line">def f1(x):</div><div class="line">    &quot;Simulate some long computation&quot;</div><div class="line">    time.sleep(1)</div><div class="line">    return x</div></pre></td></tr></table></figure>
+<p>但是这个不是一个保留签名的装饰器，因为<code>memoize_uw</code>返回了一个和原始函数签名不同的函数。原先的函数只有一个参数x，但是装饰后的函数可以获得任意个参数和关键字参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from decorator import getargspec  # akin to inspect.getargspec</div><div class="line">&gt;&gt;&gt; print(getargspec(f1))</div><div class="line">ArgSpec(args=[], varargs=&apos;args&apos;, varkw=&apos;kw&apos;, defaults=None)</div></pre></td></tr></table></figure>
+<p>这就意味着内省工具，比如<code>pydoc</code>会提供关于f1签名的错误信息-除非你是用Python3.5。这样会非常不好，<code>pydoc</code>说你可以接收一般的签名<code>*args, **kw</code>，但是这样调用就会出错。因为它真的只接收一个参数。</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>解决方式就是提供一个一般的生成器工厂，其隐藏了生成一个保留签名的装饰器的复杂性。<code>decorator</code>函数在<code>decorator</code>模块就是这样一个工厂函数<code>from decorator import decorate</code></p>
+<p><code>decorator</code>接受两个参数</p>
+<ul>
+<li>一个函数描述了装饰器的功能的调用者</li>
+<li>被装饰的函数</li>
+</ul>
+<p>调用者必须有<code>(f, *args, **kw)</code>这样的签名，而且它必须使用<code>args</code>和<code>kw</code>来调用原始函数<code>f</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def _memoize(func, *args, **kw):</div><div class="line">    if kw:  # frozenset is used to ensure hashability</div><div class="line">        key = args, frozenset(kw.items())</div><div class="line">    else:</div><div class="line">        key = args</div><div class="line">    cache = func.cache  # attribute added by memoize</div><div class="line">    if key not in cache:</div><div class="line">        cache[key] = func(*args, **kw)</div><div class="line">    return cache[key]</div></pre></td></tr></table></figure>
+<p>这样你就可以像下面这样定义你的装饰器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def memoize(f):</div><div class="line">    f.cache = &#123;&#125;</div><div class="line">    return decorate(f, _memoize)</div></pre></td></tr></table></figure>
+<p>和嵌套函数的方式不同的地方在于decorator模块强制让你将内层函数放在了上一层。而且，你也必须明确的传递你想装饰的函数，没有闭包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; @memoize</div><div class="line">... def heavy_computation():</div><div class="line">...     time.sleep(2)</div><div class="line">...     return &quot;done&quot;</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the first time it will take 2 seconds</div><div class="line">done</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the second time it will be instantaneous</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>这样函数的签名是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; print(getargspec(heavy_computation))</div><div class="line">ArgSpec(args=[], varargs=None, varkw=None, defaults=None)</div></pre></td></tr></table></figure>
+<p>所以一开始那个例子，就是这样的，先由<code>decorator</code>装饰了gzip，那么<code>def decorator(caller, _func=None)</code>中的caller就是gzip，在<code>decorator</code>中最后返回了<code>FunctionMaker.create</code>创建的一个对象，这个就是<code>gzip</code>的真正面目(在这个过程中，就处理了签名以及装饰器等问题)，然后再由<code>gzip</code>去装饰视图函数，那么视图函数执行后的结果就会在gzip中处理，然后返回。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/10/21/python_decorator/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/10/21/ming_dynasty/" >大明王朝</a>
 		</h3>
 		</div>
@@ -914,42 +994,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/09/21/lowest_common_ancestor_of_a_tree/" >最低共同祖先</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-09-21 15:58:32  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>听朋友说去小米二面的题是找到二叉树中两个节点的最低共同祖先，搜了下leetcode，发现果然有这道题，leetcode中有两道，一道是在BST中寻找，而另一道是在普通的二叉树中。听说剑指offer中的题要求是一般的树，难度更大。</p>
-<p>先就做这两道题吧，总体感觉很容易，基本上提交一次就accepted了，哎，突然想去面试下，说不定还可以去小米= =!</p>
-<p>其实我觉得寻找最低公共祖先，你得摸清情况，比如在BST中，有这么几种情况，当要搜寻的节点比p,q值都大，说明共同祖先应该在这个节点左侧，反之则在右侧，然后如果在这两个值中间，那就说明这个节点就是最低公共祖先了。</p>
-<p>如果是普通的二叉树，递归的进行查找，首先来看查看的这个节点如果是p或者q，则返回，然后去这个节点左侧找，直到为None或者找到p，接下来去这个节点的右侧找，直到找到None或者找到p，如果一个找到p，一个找到q，则说明这个节点就是最低公共祖先。如果有一个是None，说明一个p在q上面，或者q在p上面。</p>
-<p>总之吧，就是递归地处理这些情况，考虑清楚就好了。</p>
-<h1 id="BST"><a href="#BST" class="headerlink" title="BST"></a>BST</h1><p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/" target="_blank" rel="external">原题链接</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line"></div><div class="line">class Solution(object):</div><div class="line">    def lowestCommonAncestor(self, root, p, q):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :type p: TreeNode</div><div class="line">        :type q: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        if not root:</div><div class="line">            return</div><div class="line">        if p == q:</div><div class="line">            return p</div><div class="line">        a, b = sorted([p.val, q.val])</div><div class="line">        def find_ancestor(node):</div><div class="line">            if not node:</div><div class="line">                return</div><div class="line">            elif node.val &gt; a and node.val &gt; b:</div><div class="line">                return find_ancestor(node.left)</div><div class="line">            elif node.val &lt; a and node.val &lt; b:</div><div class="line">                return find_ancestor(node.right)</div><div class="line">            else:</div><div class="line">                return node</div><div class="line">        res = find_ancestor(root)</div><div class="line">        return res</div></pre></td></tr></table></figure>
-<h1 id="Binary-Tree"><a href="#Binary-Tree" class="headerlink" title="Binary Tree"></a>Binary Tree</h1><p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/" target="_blank" rel="external">原题链接</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># Definition for a binary tree node.</div><div class="line"># class TreeNode(object):</div><div class="line">#     def __init__(self, x):</div><div class="line">#         self.val = x</div><div class="line">#         self.left = None</div><div class="line">#         self.right = None</div><div class="line"></div><div class="line">class Solution(object):</div><div class="line">    def lowestCommonAncestor(self, root, p, q):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type root: TreeNode</div><div class="line">        :type p: TreeNode</div><div class="line">        :type q: TreeNode</div><div class="line">        :rtype: TreeNode</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def find_ancestor(node):</div><div class="line">            if not node:</div><div class="line">                return</div><div class="line">            if node == p or node == q:</div><div class="line">                return node</div><div class="line">            l = find_ancestor(node.left)</div><div class="line">            r = find_ancestor(node.right)</div><div class="line">            if l and r:</div><div class="line">                return node</div><div class="line">            return l or r</div><div class="line">        return find_ancestor(root)</div></pre></td></tr></table></figure>
-
-	
-	</div>
-  <a type="button" href="/2017/09/21/lowest_common_ancestor_of_a_tree/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -1003,7 +1047,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>72</span></a></li>
+			<li><a href="/categories/编程/">编程<span>73</span></a></li>
 		
 		</ul>
 	</div>
@@ -1024,7 +1068,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
 		
-			<li><a href="/tags/读书笔记/">读书笔记<span>5</span></a></li>
+			<li><a href="/tags/读书笔记/">读书笔记<span>6</span></a></li>
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
@@ -1068,6 +1112,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
       </li>
     
@@ -1081,10 +1129,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/17/git_usage_summary/" ><i class="fa fa-file-o"></i>git使用总结</a>
       </li>
     
   </ul>

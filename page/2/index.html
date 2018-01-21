@@ -138,6 +138,127 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/12/07/messaging_in_jupyter/" >翻译 - Messaging in Jupyter</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-12-07 09:46:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自：<a href="http://jupyter-client.readthedocs.io/en/latest/messaging.html" target="_blank" rel="external">Messaging in Jupyter</a></p>
+<p>这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>基本的设计可以用下图来解释：</p>
+<p><img src="/img/messaging_in_jupyter.png" alt=""></p>
+<p>一个kernel可能同时连接一个或者多个前端。kernel有专注于以下功能的sockets:</p>
+<ol>
+<li>Shell: 这个单路由的socket允许从前端来的多个连接，这也是实现通过前端来对kernel来做代码运行请求，对象信息，提示符等功能的套接字。在这个套接字上的通信是一系列从每个前端到kernel的请求/回应的动作。</li>
+<li>IOPub: 这个套接字是<code>broadcast channel</code>广播频道，kernel用来发布所有的副作用比如(stdout, stderr等)，同时也会发布从任何客户端使用shell socket来的请求和它自己使用stdin socket的请求。在Python中有许多方式可以产生副作用，比如向<code>sys.stdout</code>写入的<code>print()</code>函数，错误产生的tracebacks等等。另外，在多客户端的情景下，我们希望所有的前端能够知道彼此发送给kernel的内容，这样在合作场景中非常有用。这个套接字可以使得一个客户端通信中发生的副作用和通信信息可以被所有的客户端以一种标准规范的格式获取到。</li>
+<li>stdin: 这个路由socket会连接到所有的前端，它允许kernel在<code>raw_inpunt()</code>被调用的时候去动态前端请求输入。执行代码的前端会有一个DEALER socket会在通信发生的时候表现为虚拟键盘(图中黑色的外框的键盘)。在实践中，前端可能会使用一个特别的输入控件来展现kernel的输入请求或者是指示用户去输入而不是前端中普通的命令。所有的消息都会被附加足够的信息，这样客户端就知道哪个消息是自己与kernel的交互，那些是其他客户端的，因此它们可以合适的展现输入。</li>
+<li>Control: 这个频道和Shell是等同的，但是在单独的socket运作，用来允许重要的消息避免在请求执行队列排队。比如shutdown或者abort</li>
+<li>Heartbeat: 这个socket允许单字节字符串信息在前端和kernel中传递用来保证它们仍然在连接中。</li>
+</ol>
+<p>这些频道实际允许的消息格式在下面指定了。消息是字典字典，字符串作为键，值是采用JSON支持的格式。</p>
+<h1 id="General-Message-Format"><a href="#General-Message-Format" class="headerlink" title="General Message Format"></a>General Message Format</h1><p>一个消息是由下面4个字典结构组成的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    # 消息头为起源session和实际的消息id包含了一对独一无二的标识符，另外还有生成消息的程序使用的username。这在合作设置中很有用，因为可能有多个用户来和同一个kernel交互，这样前端可以以一种有意义的方式标识不同的消息。</div><div class="line">    &apos;header&apos; : &#123;</div><div class="line">                &apos;msg_id&apos; : str, # 通常是uuid，每个消息有不同的msg_id</div><div class="line">                &apos;username&apos; : str,</div><div class="line">                &apos;session&apos; : str, # 通常是uuid，每个session都不同</div><div class="line">                &apos;date&apos;: str, # 每个消息生成时候的ISO 8601 时间戳</div><div class="line">                &apos;msg_type&apos; : str, # 所有可以识别的消息类型字符串将会在下面罗列</div><div class="line">                &apos;version&apos; : &apos;5.0&apos;, # 消息协议的版本</div><div class="line">    &#125;,</div><div class="line">    # 在一系列的消息中，从parent来的消息将会被复制到这里，这样客户端就能知道消息是从哪里来的</div><div class="line">    &apos;parent_header&apos; : dict,</div><div class="line"></div><div class="line">    # 绑定到消息上的元信息</div><div class="line">    &apos;metadata&apos; : dict,</div><div class="line"></div><div class="line">    # 消息实际内容是一个字典，其实际结构将取决于消息类型</div><div class="line">    &apos;content&apos; : dict,</div><div class="line"></div><div class="line">    # 可选的，是一个二进制数据buffers列表，为了支持二进制扩展的协议实现</div><div class="line">    &apos;buffers&apos;: list,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="Compatibility"><a href="#Compatibility" class="headerlink" title="Compatibility"></a>Compatibility</h1><p>内核必须实现<code>execute</code>和<code>kernel info</code>消息，这样内核才是可用的。其他的消息类型都是可选的，尽管我们建议如果可能的话实现<code>completion</code>。内核不需要对它们不处理的消息做出任何回应。前端应该对没有回应到达的情况提供合理的行为，除了<code>excute</code>和<code>kernel info</code>消息。</p>
+<p><code>stdin</code>消息是在从kernel来的请求中独一无二的，回应是从前端发出。前端没有被强制去支持，但是如果前端不支持的话，需要在<code>execute</code>请求中设置<code>&#39;allow_stdin&#39;: False</code>，这样kernel就不会发送<code>stdin</code>请求了。如果那个字段是True，kernel就会发送stdin请求，然后阻塞等待回应，因此前端必须去回应。</p>
+<p>kernel和前端应该允许不期望的消息类型和在已知的消息类型中有额外的字段。这样额外添加到协议的字段不会让现在的代码崩溃。</p>
+<h1 id="The-Wire-Protocol"><a href="#The-Wire-Protocol" class="headerlink" title="The Wire Protocol"></a>The Wire Protocol</h1><p>消息格式存在于高层次，但是没有描述实际在zeromq中的低层次的实现。权威的消息规范实现是我们的<code>Session</code>累</p>
+<p>这一节内容只与协议的非Python消费者有关。Python消费者只需要简单的导入和使用<code>jupyter_client.session.Session</code>就可以了。</p>
+<p>每一个消息将会被序列化至下面至少6个二进制对象列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">  b&apos;u-u-i-d&apos;,         # zmq identity(ies)</div><div class="line">  b&apos;&lt;IDS|MSG&gt;&apos;,       # 定界符</div><div class="line">  b&apos;baddad42&apos;,        # HMAC signature</div><div class="line">  b&apos;&#123;header&#125;&apos;,        # serialized header dict</div><div class="line">  b&apos;&#123;parent_header&#125;&apos;, # serialized parent header dict</div><div class="line">  b&apos;&#123;metadata&#125;&apos;,      # serialized metadata dict</div><div class="line">  b&apos;&#123;content&#125;&apos;,       # serialized content dict</div><div class="line">  b&apos;\xf0\x9f\x90\xb1&apos; # extra raw data buffer(s)</div><div class="line">  ...</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>消息开头是ZeroMQ的路由前缀，可以是0或者是更多的socket标识符。这是在定界符前面的消息的每一部分。在IOPub的情况下，只应该有一个前缀组件，就是IOPub订阅者的主题，比如是<code>execute_result</code>, <code>display_data</code></p>
+<p>在大多数情况下，IOPub主题都是不相关的而且是完全忽略的，因为前端订阅了所有主题。在IPython内核中使用<code>msg_type</code>作为主题，可能是关于消息的额外的信息，<code>kernel.{u-u-i-d}.execute_result</code>或者是<code>stream.stdout</code></p>
+<p>在定界符之后是消息的HMAC(Hash-based message authentication code)签名，用来做数据鉴定。如果数据鉴定禁用，这个应该是空字符串。默认的，计算这些签名的哈希函数是sha256。</p>
+<p>在签名之后是实际的消息，这四个字典构成了一个消息，它们是单独序列化的，以header, parent header, metadata, content的顺序进行。可以被任意一种序列化函数将字典转换成bytes。默认并且通用的序列化方法是JSON，msgpack和pickle是通用的替代方案。</p>
+<p>在序列化字典之后是0到多个的原始数据buffers，可以在支持二进制数据的消息类型中使用，可以在自定义的消息中使用，比如comms和协议的扩展。</p>
+<h1 id="Python-API"><a href="#Python-API" class="headerlink" title="Python API"></a>Python API</h1><p>因为消息是字典形式，因此自然的映射到了<code>func(**kw)</code>调用形式。我们应该在几个关键点上开发以这种方式接收参数的函数，然后将其转换成必要的字典，然后发送之。</p>
+<p>另外，消息规范的Python实现在反序列化扩展为下面形式的消息提供了方便。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &apos;header&apos; : dict,</div><div class="line">  &apos;msg_id&apos; : str, # 消息的标识符和类型是在header中存储的，但是Python实现将其拿到了顶层</div><div class="line">  &apos;msg_type&apos; : str,</div><div class="line">  &apos;parent_header&apos; : dict,</div><div class="line">  &apos;content&apos; : dict,</div><div class="line">  &apos;metadata&apos; : dict,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所有的从任何IPython进程中发送或者接收都应该使用这种扩展形式。</p>
+<h1 id="Messages-on-the-shell-ROUTER-DEALER-channel"><a href="#Messages-on-the-shell-ROUTER-DEALER-channel" class="headerlink" title="Messages on the shell (ROUTER/DEALER) channel"></a>Messages on the shell (ROUTER/DEALER) channel</h1><h2 id="Request-Reply"><a href="#Request-Reply" class="headerlink" title="Request-Reply"></a>Request-Reply</h2><p>一般的，ROUTER/DEALER 套接字遵循下面的请求-相应模式：</p>
+<p>客户端发送一个<code>&lt;action&gt;_request</code>消息，比如<code>execute_request</code>在它的shell(DEALER)套接字。内核收到这个请求然后很快的发布一个<code>status: busy</code>消息在IOPub上。内核然后处理这个请求，然后发送一个合适的<code>&lt;action&gt;_reply</code>消息，比如<code>execute_reply</code>。在处理完请求和发布相应的IOPub消息之后，内核会发布一个<code>status: idle</code>消息。这个idle状态表明对于一个给定请求相应的IOPub消息已经被接收到了。</p>
+<p>所有的回应消息都有一个<code>status</code>字段，可能会有以下值：</p>
+<ul>
+<li><code>status=&#39;ok&#39;</code> 请求被成功的处理，回应剩余内容在下面合适的部分指定。</li>
+<li><p><code>status=&#39;error&#39;</code> 请求因为一个错误而失败</p>
+<p>  当状态是error的时候，通常成功回应的内容应该被忽略，下面的内容字段应该被呈现</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"> &#123;</div><div class="line">&apos;status&apos; : &apos;error&apos;,</div><div class="line">&apos;ename&apos; : str,   # Exception name, as a string</div><div class="line">&apos;evalue&apos; : str,  # Exception value, as a string</div><div class="line">&apos;traceback&apos; : list(str), # traceback frames  as strings</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>status=&#39;abort&#39;</code> 和<code>status=&#39;error&#39;</code>相同，但是没有错误的相关信息。除了status不应该显示其他字段。</p>
+</li>
+</ul>
+<h2 id="Execute"><a href="#Execute" class="headerlink" title="Execute"></a>Execute</h2><p>这个信息类型用来前端请求内核去代表用户执行代码，在保留用户变量的命名空间中(因此和内核自己的内部代码和变量相互独立)</p>
+<p>消息类型：<code>execute_request</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line"># 被内核执行的源代码，一行或者多行字符串</div><div class="line">&apos;code&apos; : str,</div><div class="line"></div><div class="line"># 布尔类型，如果是True，内核会尽可能安静的执行代码，而且会使得store_history变成False</div><div class="line"># 不会在IOPub上广播输出，不会有execute_result回应</div><div class="line"># 默认是False</div><div class="line">&apos;silent&apos; : bool,</div><div class="line"></div><div class="line"># bool类型，如果是True，会使得内核来记录history</div><div class="line"># 默认如果silent是False就是True，如果silent是True，该选项强制为False</div><div class="line">&apos;store_history&apos; : bool,</div><div class="line"></div><div class="line"># 在用户字典中执行的名字到表达式的映射，在执行之后会对每个富显示数据表示进行求值</div><div class="line">&apos;user_expressions&apos; : dict,</div><div class="line"></div><div class="line"># 一些前端不支持stdin请求，</div><div class="line">&apos;allow_stdin&apos; : True,</div><div class="line"></div><div class="line"># 如果是True，如果异常发生，则不会退出执行队列，这允许多个进入队列`execute_requests`的执行，即使发生了异常。</div><div class="line">&apos;stop_on_error&apos; : False,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>user_expressions</code>字段需要详细的解释。在过去IPython有提示符概念来允许任意的代码来执行，这被很多在创建提示符来展示系统状态，路径信息甚至是更加难以使用比如远程设备状态等良好的使用。现在IPython在内核和客户端之间有清晰的界限，kernel没有提示符，提示符是前端特性。甚至对于不同的前端应该有不同的提示符，即使连接的是一个内核。<code>user_expressions</code>可以用来恢复这一信息。</p>
+<p>任何在<code>user_expression</code>中发生的错误会导致包含这个key的标准错误信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &apos;status&apos; : &apos;error&apos;,</div><div class="line">    &apos;ename&apos; : &apos;NameError&apos;,</div><div class="line">    &apos;evalue&apos; : &apos;foo&apos;,</div><div class="line">    &apos;traceback&apos; : ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>执行请求完成之后，内核总会发送一个响应，其中有一个状态码来表明什么发生了，并且包含有关结果的额外数据，下面是可能的返回状态码和相关数据。</p>
+<h2 id="Execution-counter-prompt-number"><a href="#Execution-counter-prompt-number" class="headerlink" title="Execution counter(prompt number)"></a>Execution counter(prompt number)</h2><p>内核应该有一个单独的，单调增长的计数器对于所有的执行请求，当<code>store_history=True</code>的时候。这个计数器是用来填充<code>In[n]</code>和<code>Out[n]</code>提示符的。这个计数器的值将会被以<code>execution_count</code>字段返回，在所有的<code>execute_reply</code>和<code>execute_input</code>信息。</p>
+<h2 id="Execution-results"><a href="#Execution-results" class="headerlink" title="Execution results"></a>Execution results</h2><p>消息类型：<code>execute_reply</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">  # One of: &apos;ok&apos; OR &apos;error&apos; OR &apos;abort&apos;</div><div class="line">  &apos;status&apos; : str,</div><div class="line"></div><div class="line">  &apos;execution_count&apos; : int,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当状态为<code>ok</code>，会有以下额外的字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  # 每个payload字典应该有一个source键，用来区分每个payload字典</div><div class="line">  &apos;payload&apos; : list(dict),</div><div class="line"></div><div class="line">  # Results for the user_expressions.</div><div class="line">  &apos;user_expressions&apos; : dict,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Payloads-DEPRECATED"><a href="#Payloads-DEPRECATED" class="headerlink" title="Payloads (DEPRECATED)"></a>Payloads (DEPRECATED)</h2><p>payloads是一种从内核来触发前端动作。目前的payloads：</p>
+<ul>
+<li><p>page: 以分页的形式展现数据</p>
+<p>  分页输出用来解析，或者其他不被认为是输出的显示信息。分页载荷一般被在单独的面板中展示，可以在代码旁边看到，而且不包括在notebook文档里。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;page&quot;,</div><div class="line"># 必须包括text/plain.</div><div class="line">&quot;data&quot;: mimebundle,</div><div class="line">&quot;start&quot;: int,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>set_next_input</code>: 创建一个新的输出</p>
+<p>  用来在notebook中创建一个新的单元，或者在控制台界面中设置下一个输入。最主要的例子是<code>%load</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;set_next_input&quot;,</div><div class="line">&quot;text&quot;: &quot;some cell content&quot;,</div><div class="line"># 如果是True，替换当前单元的内容，而不是创建一个新的</div><div class="line">&quot;replace&quot;: bool,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>edit: 打开一个文件用来编辑</p>
+<p>  通过<code>%edit</code>出发，只有QtConsole支持edit载荷。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;edit&quot;,</div><div class="line">&quot;filename&quot;: &quot;/path/to/file.py&quot;, # the file to edit</div><div class="line">&quot;line_number&quot;: int, # the line number to start with</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>ask_exit</code> 用来指示前端提示用户退出</p>
+<p>  允许内核去请求退出，在IPython里通过<code>%exit</code>来进行。只能在控制前端中使用。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;source&quot;: &quot;ask_exit&quot;,</div><div class="line"># 是否保留内核继续运行，只关闭客户端</div><div class="line">&quot;keepkernel&quot;: bool,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Introspection"><a href="#Introspection" class="headerlink" title="Introspection"></a>Introspection</h2><p>代码可以被检查用来给用户展示有用的信息。由内核决定哪些信息应该被展示，而且还有它的格式</p>
+<p>信息类型：<code>inspect_request</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # 解析被请求的代码上下文</div><div class="line">    &apos;code&apos; : str,</div><div class="line"></div><div class="line">    &apos;cursor_pos&apos; : int,</div><div class="line"></div><div class="line">    &apos;detail_level&apos; : 0 or 1,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Connect"><a href="#Connect" class="headerlink" title="Connect"></a>Connect</h2><p>当一个客户端连接一个内核的request/reply套接字时候，它可以发起一个连接请求来获取内核的基本信息，比如其他ZeroMQ监听的端口。这样允许客户端仅仅需要知道一个连接到kernel的端口(sehll channel)就行了。其他的内核监听的channels都应该包含了响应中。如果有被忽略的端口，表明这个channel没有运行。</p>
+<p>消息类型：<code>connect_request</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">content = &#123;&#125;</div></pre></td></tr></table></figure>
+<p>一个例子，运行所有频道的内核：</p>
+<p>消息类型：<code>connect_reply</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    &apos;shell_port&apos; : int,   # The port the shell ROUTER socket is listening on.</div><div class="line">    &apos;iopub_port&apos; : int,   # The port the PUB socket is listening on.</div><div class="line">    &apos;stdin_port&apos; : int,   # The port the stdin ROUTER socket is listening on.</div><div class="line">    &apos;hb_port&apos; : int,      # The port the heartbeat socket is listening on.</div><div class="line">    &apos;control_port&apos; : int,      # The port the control ROUTER socket is listening on.</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Comm-info"><a href="#Comm-info" class="headerlink" title="Comm info"></a>Comm info</h2><p>如果一个客户端需要现在在内核上打开通信，它可以发起一个现在打开通信的请求。当可选参数<code>target_name</code>指定的时候，相应只包含现在为目标打开的通信。</p>
+<p>消息类型：<code>comm_info_request</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # Optional, the target name</div><div class="line">    &apos;target_name&apos;: str,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>消息类型：<code>comm_info_reply</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # A dictionary of the comms, indexed by uuids.</div><div class="line">    &apos;comms&apos;: &#123;</div><div class="line">        comm_id: &#123;</div><div class="line">            &apos;target_name&apos;: str,</div><div class="line">        &#125;,</div><div class="line">    &#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="Messages-on-the-IOPub-PUB-SUB-channel"><a href="#Messages-on-the-IOPub-PUB-SUB-channel" class="headerlink" title="Messages on the IOPub (PUB/SUB) channel"></a>Messages on the IOPub (PUB/SUB) channel</h1><h2 id="Streams-stdout-stderr-etc"><a href="#Streams-stdout-stderr-etc" class="headerlink" title="Streams (stdout, stderr, etc)"></a>Streams (stdout, stderr, etc)</h2><p>消息类型：<code>stream</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line">    # stdout或者stderr之一</div><div class="line">    &apos;name&apos; : str,</div><div class="line"></div><div class="line">    # 任意写入该流的字符串</div><div class="line">    &apos;text&apos; : str,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Display-Data"><a href="#Display-Data" class="headerlink" title="Display Data"></a>Display Data</h2><p>这条消息是用来将要在前端展示的数据数据带回来，比如text, html。这个数据是发布给所有前端的，每一个消息可以有不同的数据表现。它视前端决定如何使用来定的。单个消息应该包含对同样信息的所有可能的展示。每一个展示都应该是JSON数据结构，也应该是一个有效的MIME类型。</p>
+<p>消息类型：<code>display_data</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line"></div><div class="line">    # 数据字典，key是MIME类型，值是以这种类型展现的原始数据</div><div class="line">    &apos;data&apos; : dict,</div><div class="line"></div><div class="line">    # 描述这个数据的所有元信息</div><div class="line">    &apos;metadata&apos; : dict,</div><div class="line"></div><div class="line">    # 临时数据</div><div class="line">    &apos;transient&apos;: dict,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>还有很多消息和消息类型，不过也都大同小异，等到真正要用到的时候再去看看吧。基本上前端和内核的通信原理和消息规范就是这样。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/12/07/messaging_in_jupyter/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/11/12/mysql_技术内幕_note/" >笔记 - MySQL技术内幕(一)</a>
 		</h3>
 		</div>
@@ -894,86 +1015,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/10/21/python_decorator/" >Python的decorator模块</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-10-21 15:59:35  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>在httpbin源代码中遇到这么一个路由：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@app.route(&apos;/gzip&apos;)</div><div class="line">@filters.gzip</div><div class="line">def view_gzip_encoded_content():</div><div class="line">    &quot;&quot;&quot;Returns GZip-Encoded Data.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    return jsonify(get_dict(</div><div class="line">        &apos;origin&apos;, &apos;headers&apos;, method=request.method, gzipped=True))</div></pre></td></tr></table></figure>
-<p>其中gzip是这么实现的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">@decorator</div><div class="line">def gzip(f, *args, **kwargs):</div><div class="line">    &quot;&quot;&quot;GZip Flask Response Decorator.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    data = f(*args, **kwargs)</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        content = data.data</div><div class="line">    else:</div><div class="line">        content = data</div><div class="line"></div><div class="line">    gzip_buffer = BytesIO()</div><div class="line">    gzip_file = gzip2.GzipFile(</div><div class="line">        mode=&apos;wb&apos;,</div><div class="line">        compresslevel=4,</div><div class="line">        fileobj=gzip_buffer</div><div class="line">    )</div><div class="line">    gzip_file.write(content)</div><div class="line">    gzip_file.close()</div><div class="line"></div><div class="line">    gzip_data = gzip_buffer.getvalue()</div><div class="line"></div><div class="line">    if isinstance(data, Response):</div><div class="line">        data.data = gzip_data</div><div class="line">        data.headers[&apos;Content-Encoding&apos;] = &apos;gzip&apos;</div><div class="line">        data.headers[&apos;Content-Length&apos;] = str(len(data.data))</div><div class="line"></div><div class="line">        return data</div><div class="line"></div><div class="line">    return gzip_data</div></pre></td></tr></table></figure>
-<p>从这个函数来看，gzip函数做的工作就是将路由函数执行一遍，取的结果后，将回应压缩，然后再返回发送响应。然后gzip函数是作为装饰器使用的。那么上面那个decorator装饰器做了什么工作呢，可以看出gzip目前的功能和普通的装饰器函数中内层函数功能基本上是一致的，所以调用这个<code>view_gzip_encoded_content</code>这个视图函数就相当于调用gzip函数。</p>
-<p>那么decorator到底做了什么呢，怎么做的呢？在这里详细拆解一番。</p>
-<p>以下内容部分翻译自<a href="http://decorator.readthedocs.io/en/stable/tests.documentation.html" target="_blank" rel="external">decorator document</a></p>
-<p>文档上说，如果你想以在Python版本中以一致性的方式保存被装饰函数的签名，这是你最好的选择。</p>
-<h1 id="装饰器的用处"><a href="#装饰器的用处" class="headerlink" title="装饰器的用处"></a>装饰器的用处</h1><p>Python中的装饰器是一个为什么语法糖很重要的有趣的例子。装饰器做到了以下的事情：</p>
-<ul>
-<li>装饰器减少了样板代码</li>
-<li>装饰器帮助分离关注点(模块化开发就起到了分离关注点的作用)</li>
-<li>装饰器增强了可读性和可维护性</li>
-<li>装饰器很明显</li>
-</ul>
-<p>但是经典的装饰器实现需要嵌套函数，但是我们知道扁平是比嵌套要好得多。</p>
-<p>所以<code>decorator</code>模块的目标是简化装饰器的使用，当然对于所有的技术，都有可能被滥用，你不应该在解决任何问题的时候都试图使用装饰器，虽然你可以这么做。</p>
-<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>一般来说，任何可以被以一个参数调用的Python对象都可以被用作装饰器。然而，这种定义太大以至于没太多用。将装饰器这个一般的类分成两种子类会更加方便：</p>
-<ul>
-<li><p>保留签名的装饰器</p>
-<p>  接受一个函数作为参数的可调用对象会返回一个函数作为输出，并且有相同的签名</p>
-</li>
-<li><p>改变签名的装饰器</p>
-<p>  装饰器会改变给它们输入的函数的签名，或者装饰器会返回一个非调用对象</p>
-</li>
-</ul>
-<p>签名改变的装饰器有它们自己的用处：比如，内置的<code>staticmethod</code>和<code>classmethod</code>就是这种，它们接受函数然后返回描述符对象，既不是函数，也不是可调用对象。</p>
-<p>当然，保留签名的装饰器更加普遍，更加容易去实现。特别的，它们可以组合在一起，但是其他装饰器一般不可以。</p>
-<p>直接写一个保留签名的装饰器并不是那么显而易见，比如想定义一个合适的装饰器，接受有任意签名的函数作为输入。一个简单的例子将会澄清这个问题。</p>
-<h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>一个装饰器通常的使用例子是将一个函数进行缓存。一个<code>memorize</code>装饰器通过将函数的返回结果存储在字典中起到缓存的作用。</p>
-<p>这里有很多<code>memorize</code>的实现例子，但是它们都不保留签名。在最近的Python版本中你可以找到一个复杂的<code>lru_cache</code>装饰器。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def memoize_uw(func):</div><div class="line">    func.cache = &#123;&#125;</div><div class="line"></div><div class="line">    def memoize(*args, **kw):</div><div class="line">        if kw:  # frozenset is used to ensure hashability</div><div class="line">            key = args, frozenset(kw.items())</div><div class="line">        else:</div><div class="line">            key = args</div><div class="line">        if key not in func.cache:</div><div class="line">            func.cache[key] = func(*args, **kw)</div><div class="line">        return func.cache[key]</div><div class="line">    return functools.update_wrapper(memoize, func)</div></pre></td></tr></table></figure>
-<p>这里使用了<code>functools.update_wrapper</code>，这样你就不用从原来函数复制<code>__name__</code>, <code>__doc__</code>, <code>__module__</code>和<code>__dict__</code>等属性了，等同于调用<code>functools.wraps(func)</code>装饰器</p>
-<p>这是一个使用例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@memoize_uw</div><div class="line">def f1(x):</div><div class="line">    &quot;Simulate some long computation&quot;</div><div class="line">    time.sleep(1)</div><div class="line">    return x</div></pre></td></tr></table></figure>
-<p>但是这个不是一个保留签名的装饰器，因为<code>memoize_uw</code>返回了一个和原始函数签名不同的函数。原先的函数只有一个参数x，但是装饰后的函数可以获得任意个参数和关键字参数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from decorator import getargspec  # akin to inspect.getargspec</div><div class="line">&gt;&gt;&gt; print(getargspec(f1))</div><div class="line">ArgSpec(args=[], varargs=&apos;args&apos;, varkw=&apos;kw&apos;, defaults=None)</div></pre></td></tr></table></figure>
-<p>这就意味着内省工具，比如<code>pydoc</code>会提供关于f1签名的错误信息-除非你是用Python3.5。这样会非常不好，<code>pydoc</code>说你可以接收一般的签名<code>*args, **kw</code>，但是这样调用就会出错。因为它真的只接收一个参数。</p>
-<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>解决方式就是提供一个一般的生成器工厂，其隐藏了生成一个保留签名的装饰器的复杂性。<code>decorator</code>函数在<code>decorator</code>模块就是这样一个工厂函数<code>from decorator import decorate</code></p>
-<p><code>decorator</code>接受两个参数</p>
-<ul>
-<li>一个函数描述了装饰器的功能的调用者</li>
-<li>被装饰的函数</li>
-</ul>
-<p>调用者必须有<code>(f, *args, **kw)</code>这样的签名，而且它必须使用<code>args</code>和<code>kw</code>来调用原始函数<code>f</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def _memoize(func, *args, **kw):</div><div class="line">    if kw:  # frozenset is used to ensure hashability</div><div class="line">        key = args, frozenset(kw.items())</div><div class="line">    else:</div><div class="line">        key = args</div><div class="line">    cache = func.cache  # attribute added by memoize</div><div class="line">    if key not in cache:</div><div class="line">        cache[key] = func(*args, **kw)</div><div class="line">    return cache[key]</div></pre></td></tr></table></figure>
-<p>这样你就可以像下面这样定义你的装饰器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def memoize(f):</div><div class="line">    f.cache = &#123;&#125;</div><div class="line">    return decorate(f, _memoize)</div></pre></td></tr></table></figure>
-<p>和嵌套函数的方式不同的地方在于decorator模块强制让你将内层函数放在了上一层。而且，你也必须明确的传递你想装饰的函数，没有闭包。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; @memoize</div><div class="line">... def heavy_computation():</div><div class="line">...     time.sleep(2)</div><div class="line">...     return &quot;done&quot;</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the first time it will take 2 seconds</div><div class="line">done</div><div class="line"></div><div class="line">&gt;&gt;&gt; print(heavy_computation()) # the second time it will be instantaneous</div><div class="line">done</div></pre></td></tr></table></figure>
-<p>这样函数的签名是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; print(getargspec(heavy_computation))</div><div class="line">ArgSpec(args=[], varargs=None, varkw=None, defaults=None)</div></pre></td></tr></table></figure>
-<p>所以一开始那个例子，就是这样的，先由<code>decorator</code>装饰了gzip，那么<code>def decorator(caller, _func=None)</code>中的caller就是gzip，在<code>decorator</code>中最后返回了<code>FunctionMaker.create</code>创建的一个对象，这个就是<code>gzip</code>的真正面目(在这个过程中，就处理了签名以及装饰器等问题)，然后再由<code>gzip</code>去装饰视图函数，那么视图函数执行后的结果就会在gzip中处理，然后返回。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/10/21/python_decorator/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -1027,7 +1068,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>72</span></a></li>
+			<li><a href="/categories/编程/">编程<span>73</span></a></li>
 		
 		</ul>
 	</div>
@@ -1048,7 +1089,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
 		
-			<li><a href="/tags/读书笔记/">读书笔记<span>5</span></a></li>
+			<li><a href="/tags/读书笔记/">读书笔记<span>6</span></a></li>
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
@@ -1092,6 +1133,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
       </li>
     
@@ -1105,10 +1150,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/01/learning_sql_note_1/" ><i class="fa fa-file-o"></i>笔记 - SQL学习指南</a>
-      </li>
-    
-      <li>
-        <a href="/2017/12/17/git_usage_summary/" ><i class="fa fa-file-o"></i>git使用总结</a>
       </li>
     
   </ul>
