@@ -836,6 +836,42 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/01/22/come_back_to_pycharm/" >弃坑VSCode 拥抱PyCharm</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-01-22 07:47:05  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>因为新鲜使用了一段VSCode，可是觉得还是有很多不如人意的地方，还是觉得PyCharm好用，失去了才知道珍惜么 = =! 哈哈，总结一下，VSCode有下面的一些问题：</p>
+<ol>
+<li>Git diff功能支持的不好，像PyCharm上可以查看某个Commit甚至多个Commit的diff，但是VSCode上装什么插件好像都没法这样看，只能一个文件一个文件的看，很麻烦，或许是我没找到怎么弄，但是毕竟我也读了一些git diff插件的文档，但是还没有找到，所以说明也不好用。</li>
+<li>Git插件已经add或者提交了，目录树上还是绿的黄的一片，不更新。。这个很蛋疼，强迫症的我总以为有东西还没提交。</li>
+<li>在大量debug模式下，有时候就没法跳转函数定义啦，自动补全也失效了，这个也很蛋疼，只能重新打开这个项目。</li>
+<li>没法Debug Celery的tasks，只能用rdb一行一行的看，效率很低。</li>
+</ol>
+<p>基于上面原因，VSCode实在没法继续用了，不过转投PyCharm有个硬伤，快捷键。。哎，只好苦练了。下面就是Mac下的P yCharm 快捷键总结。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-cb058dde6f3580de6589eedc8193acee_hd.jpg" alt=""></p>
+
+	
+	</div>
+  <a type="button" href="/2017/01/22/come_back_to_pycharm/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/01/05/群体性孤独/" >群体性孤独</a>
 		</h3>
 		</div>
@@ -875,144 +911,6 @@ var _hmt = _hmt || [];
 	
 	</div>
   <a type="button" href="/2017/01/05/群体性孤独/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2016/12/08/Pandas使用笔记/" >Pandas使用笔记</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2016-12-08 15:18:35  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>看来工作上需要什么，才有驱动力去学习什么～</p>
-<p><code>import pandas as pd</code></p>
-<h1 id="读写csv数据"><a href="#读写csv数据" class="headerlink" title="读写csv数据"></a>读写csv数据</h1><h2 id="read-csv"><a href="#read-csv" class="headerlink" title="read_csv()"></a>read_csv()</h2><p><code>df = pd.read_csv(path)</code></p>
-<p>读入csv文件，形成一个数据框，data.frame</p>
-<p>不要把第一行作为header</p>
-<p><code>df = pd.read_csv(path, header=None)</code></p>
-<h2 id="to-csv"><a href="#to-csv" class="headerlink" title="to_csv()"></a>to_csv()</h2><p>注意，默认会将第一行作为header，并且默认会添加index，所以不需要的话需要手动禁用</p>
-<p><code>df.to_csv(path, header=False, index=False)</code></p>
-<h1 id="数据框操作"><a href="#数据框操作" class="headerlink" title="数据框操作"></a>数据框操作</h1><p><code>df.head(1)</code> 读取头几条数据</p>
-<p><code>df.tail(1)</code> 读取后几条数据</p>
-<p><code>df[&#39;date&#39;]</code> 获取数据框的date列</p>
-<p><code>df.head(1)[&#39;date&#39;]</code> 获取第一行的date列</p>
-<p><code>df.head(1)[&#39;date&#39;][0]</code> 获取第一行的date列的元素值</p>
-<p><code>sum(df[&#39;ability&#39;])</code> 计算整个列的和</p>
-<p><code>df[df[&#39;date&#39;] == &#39;20161111&#39;]</code> 获取符合这个条件的行</p>
-<p><code>df[df[&#39;date&#39;] == &#39;20161111&#39;].index[0]</code> 获取符合这个条件的行的行索引的值</p>
-<p><code>df.iloc[1]</code> 获取第二行</p>
-<p><code>df.iloc[1][&#39;test2&#39;]</code> 获取第二行的test2值</p>
-<h1 id="10-mins-to-pandas"><a href="#10-mins-to-pandas" class="headerlink" title="10 mins to pandas"></a>10 mins to pandas</h1><p><code>df.index</code> 获取行的索引</p>
-<p><code>df.index[0]</code> 获取第一个行索引</p>
-<p><code>df.index[-1]</code> 获取最后一个行索引,只是获取索引值</p>
-<p><code>df.columns</code> 获取列标签</p>
-<p><code>df[0:2]</code> 获取第1到第2行，从0开始，不包含末端</p>
-<p><code>df.loc[1]</code> 获取第二行</p>
-<p><code>df.loc[:,&#39;test1&#39;]</code> 获取test1的那一列,这个冒号的意思是所有行，逗号表示行与列的区分</p>
-<p><code>df.loc[:,[&#39;test1&#39;,&#39;test2&#39;]]</code> 获取test1列和test2列的数据</p>
-<p><code>df.loc[1,[&#39;test1&#39;,&#39;test2&#39;]]</code> 获取第二行的test1和test2列的数据</p>
-<p><code>df.at[1,&#39;test1&#39;]</code> 表示取第二行，test1列的数据，和上面的方法类似</p>
-<p><code>df.iloc[0]</code> 获取第一行</p>
-<p><code>df.iloc[0:2,0:2]</code> 获取前两行前两列的数据</p>
-<p><code>df.iloc[[1,2,4],[0,2]]</code> 获取第1，2，4行中的0，2列的数据</p>
-<p><code>(df[2] &gt; 1).any()</code> 对于Series应用any()方法来判断是否有符合条件的</p>
-<blockquote>
-<p>2016-12-8 15:46</p>
-</blockquote>
-<h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><p><code>DataFrame.sort(columns=None, axis=0, ascending=True, inplace=False, kind=&#39;quicksort&#39; na_position=&#39;last&#39;)</code></p>
-<ul>
-<li>columns是要排序的列名称</li>
-<li>axis为排序的轴，0表示index，1表示columns,对数据列进行升序时，axis必须为0</li>
-<li>ascending表示排序方式，true是升序，false为降序</li>
-<li>inplace表示对数据进行排序，不创建新实例</li>
-<li>kind为排序方式，快速排序</li>
-<li>na_position是NaN处理方式，first放在排序开头，last放在排序结尾</li>
-</ul>
-<h2 id="对单列数据进行排序"><a href="#对单列数据进行排序" class="headerlink" title="对单列数据进行排序"></a>对单列数据进行排序</h2><p><code>df.sort([&quot;date&quot;])</code></p>
-<p>升序：<code>df.sort([&#39;date&#39;], ascending=True)</code></p>
-<h2 id="对多列数据进行排序"><a href="#对多列数据进行排序" class="headerlink" title="对多列数据进行排序"></a>对多列数据进行排序</h2><p>降序：<code>df.sort([&#39;date&#39;, &#39;fundId&#39;], ascending=False)</code></p>
-<h2 id="获得最小的前10项"><a href="#获得最小的前10项" class="headerlink" title="获得最小的前10项"></a>获得最小的前10项</h2><p><code>df.sort([&#39;date&#39;], ascending=True).head(10)</code></p>
-<h2 id="获得最大的前10项"><a href="#获得最大的前10项" class="headerlink" title="获得最大的前10项"></a>获得最大的前10项</h2><p><code>df.sort([&#39;date&#39;], ascending=True).tail(10)</code></p>
-<h1 id="筛选"><a href="#筛选" class="headerlink" title="筛选"></a>筛选</h1><p><code>DataFrame.loc</code></p>
-<h2 id="单列数据筛选并且排序"><a href="#单列数据筛选并且排序" class="headerlink" title="单列数据筛选并且排序"></a>单列数据筛选并且排序</h2><p><code>df.loc[df[&#39;date&#39;] == 20160101].head()</code></p>
-<p>或者可以</p>
-<p><code>df[df[&#39;date&#39;] == 20160101].head()</code></p>
-<p>但是loc可以显示指定的列显示</p>
-<p><code>df[df[&#39;date&#39;] == 20160101, [&#39;date&#39;, &#39;id&#39;, &#39;type&#39;]].head()</code></p>
-<p>使用sort</p>
-<p><code>df[df[&#39;date&#39;] == 20160101, [&#39;date&#39;, &#39;id&#39;, &#39;type&#39;]].sort([&#39;id&#39;]).head()</code></p>
-<h2 id="多列数据筛选并且排序"><a href="#多列数据筛选并且排序" class="headerlink" title="多列数据筛选并且排序"></a>多列数据筛选并且排序</h2><p>与</p>
-<p><code>lc.loc[(lc[&quot;grade&quot;] == &quot;B&quot;) &amp; (lc[&quot;loan_amnt&quot;]&gt;5000), [&quot;member_id&quot;, &quot;term&quot; , &quot;loan_amnt&quot;, &quot;grade&quot;,&quot;sub_grade&quot;, &quot;int_rate&quot;]].head()</code></p>
-<p>或</p>
-<p><code>lc.loc[(lc[&quot;grade&quot;] == &quot;B&quot;) | (lc[&quot;loan_amnt&quot;] &gt; 5000), [&quot;member_id&quot;, &quot;term&quot; , &quot;loan_amnt&quot;, &quot;grade&quot;,&quot;sub_grade&quot;, &quot;int_rate&quot;]].head()</code></p>
-<p>排序</p>
-<p><code>lc.loc[(lc[&quot;grade&quot;] == &quot;B&quot;) &amp; (lc[&quot;loan_amnt&quot;] &gt; 5000), [&quot;member_id&quot;, &quot;term&quot; , &quot;loan_amnt&quot;, &quot;grade&quot;,&quot;sub_grade&quot;, &quot;int_rate&quot;]].sort([&quot;loan_amnt&quot;])</code></p>
-<h2 id="按筛选条件求和"><a href="#按筛选条件求和" class="headerlink" title="按筛选条件求和"></a>按筛选条件求和</h2><p><code>lc.loc[lc[&quot;grade&quot;] == &quot;B&quot;,].loan_amnt.sum()</code></p>
-<h2 id="按筛选条件计数"><a href="#按筛选条件计数" class="headerlink" title="按筛选条件计数"></a>按筛选条件计数</h2><p><code>lc.loc[lc[&quot;grade&quot;] == &quot;B&quot;].loan_amnt.count()</code></p>
-<h2 id="按筛选条件计算均值"><a href="#按筛选条件计算均值" class="headerlink" title="按筛选条件计算均值"></a>按筛选条件计算均值</h2><p><code>lc.loc[lc[&quot;grade&quot;] == &quot;B&quot;].loan_amnt.mean()</code></p>
-<h2 id="按筛选条件获取最大值和最小值"><a href="#按筛选条件获取最大值和最小值" class="headerlink" title="按筛选条件获取最大值和最小值"></a>按筛选条件获取最大值和最小值</h2><p><code>lc.loc[lc[&quot;grade&quot;] ==  &quot;B&quot;].loan_amnt.max()</code></p>
-<h1 id="loc-ix-iloc区别"><a href="#loc-ix-iloc区别" class="headerlink" title="loc ix iloc区别"></a>loc ix iloc区别</h1><h2 id="loc-通过行标签索引行数据"><a href="#loc-通过行标签索引行数据" class="headerlink" title="loc-通过行标签索引行数据"></a>loc-通过行标签索引行数据</h2><ul>
-<li>loc[1]表示索引的是第一行</li>
-<li>loc[‘d’]表示索引的是第’d’行</li>
-<li>loc可以获取多行数据 <code>df.loc[&#39;d&#39;:]</code></li>
-<li>索引某行某列 <code>df.loc[1, [2, 3]]</code></li>
-<li>索引某列 <code>df.loc[:, [&#39;c&#39;]]</code></li>
-</ul>
-<p>注意：<code>df.loc[1:2]</code>是第一行和第二行</p>
-<h2 id="iloc-通过行号获取行数据"><a href="#iloc-通过行号获取行数据" class="headerlink" title="iloc-通过行号获取行数据"></a>iloc-通过行号获取行数据</h2><p>要获取哪一行就输入该行数字,<code>df.iloc[1]</code>会返回一个Series，但是<code>df.iloc[1:2]</code>会返回一个只包含第一行的数据框</p>
-<p>通过iloc索引列数据,<code>df.iloc[:, [1]]</code></p>
-<h2 id="ix-前两种的混合索引"><a href="#ix-前两种的混合索引" class="headerlink" title="ix-前两种的混合索引"></a>ix-前两种的混合索引</h2><ul>
-<li>通过行号索引 <code>df.ix[1]</code>返回Series, <code>df.ix[1:2]</code>返回第一行和第二行的数据框</li>
-<li>使用行标签索引 <code>df.ix[&#39;a&#39;]</code></li>
-</ul>
-<h1 id="Ipython"><a href="#Ipython" class="headerlink" title="Ipython"></a>Ipython</h1><ul>
-<li>table键自动补全</li>
-<li>内省？</li>
-<li>％run命令运行脚本 <code>%run test.py</code></li>
-<li>中断正在执行的代码</li>
-<li>执行剪贴板的代码 <code>%paste</code> or <code>%cpaste</code></li>
-<li><code>%timeit</code> 检测执行时间</li>
-</ul>
-<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><ul>
-<li>ctrl+a 移动到行首</li>
-<li>ctrl+e 移动到行尾</li>
-<li>ctrl+k 从光标处删除到命令行尾</li>
-<li>ctrl+u 从光标处删除到命令行首</li>
-</ul>
-<h2 id="交互式调试器"><a href="#交互式调试器" class="headerlink" title="交互式调试器"></a>交互式调试器</h2><p><code>%debug</code> 在发生后马上输入，将会调用事后调试器，并且直接跳转到引发异常的那个栈帧，使用u或者d在栈跟踪的各个级别之间切换</p>
-<p><code>%pdb</code>命令可以在Ipython出现异常后自动调用调试器</p>
-<p>设置断点对函数进行单步调试查看各条语句的执行情况</p>
-<p>使用<code>-d</code>选项的<code>%run</code>命令，在执行脚本文件的代码之前先打开调试器，立即输入s才进入脚本，c使脚本一直运行下去直到该断点，n直接执行到下一行，调试器命令优先变量名，在变量名中加入！查看其内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">b number 在number行设置断点</div><div class="line">s 单步进入函数调用</div><div class="line">n 执行当前行</div><div class="line">a 打印当前函数的参数</div><div class="line">debug statement 在新的递归调试器中调用语句statement</div><div class="line">q 退出调试器</div></pre></td></tr></table></figure>
-<h2 id="测试代码执行时间-time和-timeit"><a href="#测试代码执行时间-time和-timeit" class="headerlink" title="测试代码执行时间%time和%timeit"></a>测试代码执行时间<code>%time</code>和<code>%timeit</code></h2><p><code>%time</code> 一次执行一条语句，报告总体执行时间</p>
-<p><code>%timeit</code> 自动多次执行以产生一个精确的平均执行时间</p>
-<h2 id="基本性能分析-prun和-run-p"><a href="#基本性能分析-prun和-run-p" class="headerlink" title="基本性能分析%prun和%run -p"></a>基本性能分析<code>%prun</code>和<code>%run -p</code></h2><p>cProfile模块，在执行一个程序或者代码块的时候，会记录各函数所耗费的时间</p>
-<p>将执行整个程序然后输出各函数的执行时间</p>
-<p><code>python -m cProfile test.py</code></p>
-<p>增加<code>-s</code>指定排序规则</p>
-<p><code>python -m cProfile -s cumulative test.py</code></p>
-<p>cumtime列发现各函数所耗费的总时间</p>
-<p>使用Ipython <code>%run -p -s cumulative test.py</code></p>
-<p>使用<code>%lprun</code>对一个或者多个函数进行逐行性能分析</p>
-<p><code>%prun</code>宏观性能分析，<code>%lprun</code>微观性能分析</p>
-
-	
-	</div>
-  <a type="button" href="/2016/12/08/Pandas使用笔记/#more" class="btn btn-default more">阅读此文</a>
 </div>
 
 		
@@ -1069,7 +967,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>73</span></a></li>
+			<li><a href="/categories/编程/">编程<span>74</span></a></li>
 		
 		</ul>
 	</div>
@@ -1082,7 +980,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
-			<li><a href="/tags/Python/">Python<span>54</span></a></li>
+			<li><a href="/tags/Python/">Python<span>55</span></a></li>
 		
 			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
@@ -1121,7 +1019,7 @@ var _hmt = _hmt || [];
 			<li><a href="/tags/设计模式/">设计模式<span>4</span></a></li>
 		
 		
-		   <li><a href="/tags">...<span>46</span></a></li>
+		   <li><a href="/tags">...<span>47</span></a></li>
 		 
 		</ul>
 	</div>
