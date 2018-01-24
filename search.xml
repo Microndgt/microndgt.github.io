@@ -19,9 +19,11 @@
 <li>使用48bit(6字节)的源地址 - 硬件地址，ARP和RARP协议对32bit的IP地址和48bit的硬件地址进行映射。</li>
 <li>2字节的类型：定义了后续数据的类型</li>
 <li>数据字节：46到1500字节不等，最低46字节，不足的空间插入填充字节，最大受限于MTU</li>
-<li>CRC：用于帧内后续字节差错的循环冗余检验</li>
+<li>CRC：用于帧内后续字节差错的循环冗余检验 4字节</li>
 </ul>
-<h1 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h1><p>以太网对数据帧的长度有一个限制，最大值是1500和1492字节，链路层的这个特性称作MTU，最大传输单元。</p>
+<h2 id="为何是46字节"><a href="#为何是46字节" class="headerlink" title="为何是46字节"></a>为何是46字节</h2><p>最初协议标志定义的Ethernet Frame的最小值：Preamble + SFD + MAC destination + MAC source +  Ethertype + Payload + CRC = 7 + 1 + 6 + 6 + 2 + 46 + 4 = 72 Bytes = 576 bit</p>
+<p>576bit就是72字节，减去前导符和帧开始符，剩下64字节，再减去目的地址和源地址和类型以及CRC，就剩46字节。</p>
+<h1 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h1><p>以太网对数据帧的长度有一个限制，最大值是1500和1492字节，链路层的这个特性称作MTU，最大传输单元。(标准以太网接口缺省的MTU为1500，而现在的以太网接口普遍可以通过配置使得MTU远远大于1500。)</p>
 <p>如果IP层有一个数据报要传，而且数据的长度比链路层的MTU还大，那么IP层就要进行分片(fragmentation)。</p>
 <p>可以在系统上执行<code>netstat -in</code>查看本机的MTU</p>
 <p><img src="/img/mtu.png" alt=""></p>
@@ -30,6 +32,9 @@
 <p>一般在传输层检测到目的端地址是环回地址的时候就可以省略部分传输层和所有网络层的逻辑。但是目前大部分还是完成传输层和网络层的过程，在IP数据报在离开网路层的时候把它返回给自己。</p>
 <p>传回环回地址的数据都会被作为IP输入，放入IP输入队列中。环回接口可以看作网络层下面的另一个链路层，网络层将一份数据报传送给环回接口，就像传给其他链路层一样，只不过环回接口把它返回到IP的输入队列中。</p>
 <p>而且任何传给该主机IP地址的数据均送到环回接口。</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><ol>
+<li><a href="https://zhuanlan.zhihu.com/p/21318925" target="_blank" rel="external">车小胖谈网络：Ethernet Frame</a></li>
+</ol>
 ]]></content>
       
         <categories>
