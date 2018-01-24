@@ -138,6 +138,66 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/09/30/Python程序性能分析/" >Python程序性能分析</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-30 12:14:53  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>今天着手对战斗力程序的性能做了一个分析和优化，利用下面将要介绍的工具，一步一步的调优，减少了很多性能上的黑洞。</p>
+<h1 id="cProfile"><a href="#cProfile" class="headerlink" title="cProfile"></a>cProfile</h1><p>使用工具cProfile，在一个脚本中写好要测试的程序，然后在终端中运行<code>python -m cProfile -s tottime calc_efficiency.py</code>表示对单个函数的运行总时间进行统计，这样就会在终端上打印出来性能分析结果，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1723 function calls (1578 primitive calls) in 0.004 seconds</div><div class="line"></div><div class="line">Ordered by: internal time</div><div class="line"></div><div class="line">ncalls  tottime  percall  cumtime  percall filename:lineno(function)</div><div class="line">   4    0.000    0.000    0.000    0.000 _methods.py:86(_var)</div><div class="line">  13    0.000    0.000    0.000    0.000 calculators.py:18(nan2zero)</div><div class="line">   2    0.000    0.000    0.000    0.000 financial.py:25(_adjust_returns)</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;cumprod&apos; of &apos;numpy.ndarray&apos; objects&#125;</div><div class="line">   2    0.000    0.000    0.000    0.000 &#123;method &apos;accumulate&apos; of &apos;numpy.ufunc&apos; objects&#125;</div></pre></td></tr></table></figure>
+<p>表示1723个函数调用被监控，其中1578是原生调用，即不涉及递归调用，总共执行时间是0.004秒，结果列表是按照函数内部调用时间来排序，即不包括他自己调用的其他函数的时间。</p>
+<ul>
+<li>ncalls 表示调用次数，如果是4/3 表示4次总调用次数，3表示原生调用次数</li>
+<li>tottime 表示函数内部调用时间</li>
+<li>percall 是tottime/ncalls</li>
+<li>cumtime 累计时间，包含了自己内部调用函数的时间</li>
+<li>最后一列，文件名，行号，函数名</li>
+</ul>
+<p>cProfile除了可以在终端上使用，还有编程接口<code>cProfile.run(&#39;re.compile(&quot;foo|bar&quot;)&#39;)</code></p>
+<p>具体cProfile的使用方法请戳<a href="https://docs.python.org/3.6/library/profile.html" target="_blank" rel="external">这里</a></p>
+<p>另外官方给出的使用pstats模块的Stats类来读取和操作stats文件，Analysis of the profiler data is done using the Stats class.</p>
+<p>一个使用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import cProfile</div><div class="line">import pstats</div><div class="line">from ability import WholeAbility</div><div class="line">import time</div><div class="line"></div><div class="line">profile = cProfile.Profile()</div><div class="line">profile.enable()</div><div class="line">t0 = time.time()</div><div class="line">fundId = &quot;test&quot;</div><div class="line">start = &quot;20151021&quot;</div><div class="line">end = &quot;20151023&quot;</div><div class="line">wa = WholeAbility(fundId, start, end, assets, flows, stocks)</div><div class="line">ability_data, positions, trades = wa.calc_ability()</div><div class="line">summary_data = wa.summary()</div><div class="line">print(&quot;using &#123;&#125;&quot;.format(time.time()-t0))</div><div class="line">profile.disable()</div><div class="line">profile.print_stats(sort=&apos;tottime&apos;)</div><div class="line">sortby = &quot;tottime&quot;</div><div class="line">ps = pstats.Stats(profile).sort_stats(sortby)</div><div class="line">ps.dump_stats(&quot;./eff.txt&quot;)</div></pre></td></tr></table></figure>
+<p>使用<code>dump_stats</code>可以把当前性能分析结果写入文件，这个结果可以在后面进行可视化分析。</p>
+<h1 id="gprof2dot-分析结果可视化"><a href="#gprof2dot-分析结果可视化" class="headerlink" title="gprof2dot 分析结果可视化"></a>gprof2dot 分析结果可视化</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>Mac: <code>brew install graphviz</code></li>
+<li>Ubuntu: <code>apt-get install python graphviz</code></li>
+</ul>
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
+<p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
+<p><img src="/img/mkm_run.png" alt=""></p>
+<p>其中每个node的信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------------------------------+</div><div class="line">|        function name         |</div><div class="line">| total time % ( self time % ) |</div><div class="line">|         total calls          |</div><div class="line">+------------------------------+</div></pre></td></tr></table></figure>
+<p>每个edge的信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">total time %</div><div class="line">   calls</div><div class="line">parent --------------------&gt; children</div></pre></td></tr></table></figure>
+<h1 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h1><ol>
+<li>尽量不要使用deepcopy，很慢，详见这篇文章<a href="http://news.hiapk.com/internet/s5937a1ded022.html" target="_blank" rel="external">蜗牛般的 Python 深拷贝</a></li>
+<li>优化算法，不要在循环里面进行耗时操作</li>
+</ol>
+
+	
+	</div>
+  <a type="button" href="/2017/09/30/Python程序性能分析/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/09/28/heapq/" >翻译 - heapq — Heap queue algorithm</a>
 		</h3>
 		</div>
@@ -691,38 +751,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/09/04/Bye Bye Bye/" >Bye Bye Bye</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-09-04 08:53:46  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>无意间发现很好听的歌，单曲循环中。。。</p>
-<blockquote>
-<p>When I see you<br>looking back at me<br>watching these eyes still<br>through your fingers<br>and your eyes<br>have told a thousand lights<br>but I cant tell this time<br>what you really mean it<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>I can sing another broken song<br>trying to hold on to your picture<br>out of face<br>you hide behind your face<br>it’s more than I can take<br>I know you run deeper<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>you left me handing on the light<br>why you stealing all my time<br>you take a piss me<br>you’ve been driving too slow<br>so I gotta let you go<br>before you break me em~ yeah~<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>Bye Bye</p>
-</blockquote>
-<p><img src="/img/byebyebye.jpeg" alt=""></p>
-
-	
-	</div>
-  <a type="button" href="/2017/09/04/Bye Bye Bye/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -776,7 +804,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>74</span></a></li>
+			<li><a href="/categories/编程/">编程<span>75</span></a></li>
 		
 		</ul>
 	</div>
@@ -801,7 +829,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>4</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -841,6 +869,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
       </li>
     
@@ -854,10 +886,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
       </li>
     
   </ul>

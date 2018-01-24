@@ -138,6 +138,48 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/08/01/翻译 - Easy in-place file rewriting/" >翻译 - Easy in-place file rewriting</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-01 18:20:18  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>原文：<a href="http://www.zopatista.com/python/2013/11/26/inplace-file-rewriting/" target="_blank" rel="external">http://www.zopatista.com/python/2013/11/26/inplace-file-rewriting/</a></p>
+<p>使用上下文管理器进行无痛的文件重写。</p>
+<p>如果你需要就地处理文件，修改其内容并且重新输出在同一个位置，你可以使用<code>fileinput</code>模块使用<code>inplace</code>选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import fileinput</div><div class="line"></div><div class="line">for line in fileinput.input(somefilename, inplace=True):</div><div class="line">    line = &apos;additional information &apos; + line.rstrip(&apos;\n&apos;)</div><div class="line">    print line</div></pre></td></tr></table></figure>
+<p><code>fileinput</code>模块有一些问题，我觉得最大的就是模块非常依赖于全局变量。比如<code>fileinput.input()</code>创建了一个全局的<code>fileinput.FileInput()</code>对象，在这个模块的其他函数就可以使用它。你当然可以忽略这些并且直接去使用<code>fileinput.FileInput()</code>构造器，但是<code>fileinput.input()</code>却是主的API入口。</p>
+<p>其他的问题在于<code>in-place</code>方法劫持了<code>sys.stdout</code>，作为写回替换文件的方法。显然这可以方便的使用<code>print</code>语句来写回，但是你必须记得从以前的文件中读取的数据行中移除新的数据行。</p>
+<p>最后，也是很重要的，<code>fileinput</code>在Python3中的版本不支持指定编码方式，错误模式或者处理新数据行。你可以在二进制模式下打开文件，但是输出总是在文本模式下的。这些问题极大的降低了这个库的可用性。</p>
+<p>因此我写了一个替代方案，使用了非常棒的<code>@contextlib.contextmanager</code>装饰器，这个在Python2和Python3都可以使用，依赖于<code>io.open()</code>来在不同的Python版本中保持兼容性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">from contextlib import contextmanager</div><div class="line">import io</div><div class="line">import os</div><div class="line"></div><div class="line"></div><div class="line">@contextmanager</div><div class="line">def inplace(filename, mode=&apos;r&apos;, buffering=-1, encoding=None, errors=None,</div><div class="line">            newline=None, backup_extension=None):</div><div class="line">    &quot;&quot;&quot;允许使用新的内容来替换一个文件</div><div class="line">truetrue产生一个(readable, writable)文件对象元组，writable会替换readable</div><div class="line">truetrue异常发生的时候，原始文件会被重新保存，移除写入的数据</div><div class="line">truetrue模式不应该使用w a 或者 + 只支持只读模式</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    # move existing file to backup, create new file with same permissions</div><div class="line">    # borrowed extensively from the fileinput module</div><div class="line">    if set(mode).intersection(&apos;wa+&apos;):</div><div class="line">        raise ValueError(&apos;Only read-only file modes can be used&apos;)</div><div class="line"></div><div class="line">    backupfilename = filename + (backup_extension or os.extsep + &apos;bak&apos;)</div><div class="line">    try:</div><div class="line">truetruetruetrue# 删除文件</div><div class="line">        os.unlink(backupfilename)</div><div class="line">    except os.error:</div><div class="line">        pass</div><div class="line">    os.rename(filename, backupfilename)</div><div class="line">    readable = io.open(backupfilename, mode, buffering=buffering,</div><div class="line">                       encoding=encoding, errors=errors, newline=newline)</div><div class="line">    try:</div><div class="line">truetruetruetrue# 返回文件描述符fd的状态, st_mode文件信息的掩码，包含了文件的权限信息，文件的类型信息</div><div class="line">        perm = os.fstat(readable.fileno()).st_mode</div><div class="line">    except OSError:</div><div class="line">        writable = open(filename, &apos;w&apos; + mode.replace(&apos;r&apos;, &apos;&apos;),</div><div class="line">                        buffering=buffering, encoding=encoding, errors=errors,</div><div class="line">                        newline=newline)</div><div class="line">    else:</div><div class="line">        os_mode = os.O_CREAT | os.O_WRONLY | os.O_TRUNC</div><div class="line">        if hasattr(os, &apos;O_BINARY&apos;):</div><div class="line">            os_mode |= os.O_BINARY</div><div class="line">        fd = os.open(filename, os_mode, perm)</div><div class="line">        writable = io.open(fd, &quot;w&quot; + mode.replace(&apos;r&apos;, &apos;&apos;), buffering=buffering,</div><div class="line">                           encoding=encoding, errors=errors, newline=newline)</div><div class="line">        try:</div><div class="line">            if hasattr(os, &apos;chmod&apos;):</div><div class="line">                os.chmod(filename, perm)</div><div class="line">        except OSError:</div><div class="line">            pass</div><div class="line">    try:</div><div class="line">        yield readable, writable</div><div class="line">    except Exception:</div><div class="line">        # move backup back</div><div class="line">        try:</div><div class="line">            os.unlink(filename)</div><div class="line">        except os.error:</div><div class="line">            pass</div><div class="line">        os.rename(backupfilename, filename)</div><div class="line">        raise</div><div class="line">    finally:</div><div class="line">        readable.close()</div><div class="line">        writable.close()</div><div class="line">        try:</div><div class="line">            os.unlink(backupfilename)</div><div class="line">        except os.error:</div><div class="line">            pass</div></pre></td></tr></table></figure>
+<p>译者注：首先将原文件备份，然后<code>readable</code>是从备份文件中读取的，<code>writable</code>是读取了一个与原文件名相同的空文件，在<code>yield readable, writable</code>处相当于<code>__enter__</code>方法返回了一个元组，之后如果在上下文管理器中产生了异常就会删除已经写入的文件，然后将备份文件重命名为原文件名，即相当于执行了<code>__exit__</code>方法</p>
+<p>这个上下文管理器只关注于一个文件，并且忽略了<code>sys.stdin</code>，不像<code>fileinput</code>模块。它的目标就是只将一个文件原地替换。</p>
+<p>使用的例子，Python2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import csv</div><div class="line"></div><div class="line">with inplace(csvfilename, &apos;rb&apos;) as (infh, outfh):</div><div class="line">    reader = csv.reader(infh)</div><div class="line">    writer = csv.writer(outfh)</div><div class="line"></div><div class="line">    for row in reader:</div><div class="line">        row += [&apos;new&apos;, &apos;columns&apos;]</div><div class="line">        writer.writerow(row)</div></pre></td></tr></table></figure>
+<p>Python3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import csv</div><div class="line"></div><div class="line">with inplace(csvfilename, &apos;r&apos;, newline=&apos;&apos;) as (infh, outfh):</div><div class="line">    reader = csv.reader(infh)</div><div class="line">    writer = csv.writer(outfh)</div><div class="line"></div><div class="line">    for row in reader:</div><div class="line">        row += [&apos;new&apos;, &apos;columns&apos;]</div><div class="line">        writer.writerow(row)</div></pre></td></tr></table></figure>
+
+	
+	</div>
+  <a type="button" href="/2017/08/01/翻译 - Easy in-place file rewriting/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/07/13/LRUCache在Python中的实现/" >LRU Cache在Python中的实现</a>
 		</h3>
 		</div>
@@ -1011,71 +1053,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/04/22/信号在Flask中的使用/" >信号在Flask中的使用</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-04-22 16:41:56  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>Blinker提供了信号支持，信号就是在框架核心功能或者一些Flask扩展发生动作时所发送的通知，用于解耦应用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from blinker import signal</div><div class="line">started = signal(&apos;test-started&apos;)</div><div class="line">def each(round):</div><div class="line">  print(&quot;round &#123;&#125;&quot;.format(round))</div><div class="line">started.connect(each)</div><div class="line">started.send(1)</div></pre></td></tr></table></figure>
-<p>connect和send方法不再一个文件中的时候，通过started作为桥梁达到解耦的作用。</p>
-<p>Flask可以发送9种信号，第三方扩展中也会有额外的信号，需要做的是添加对应的信号订阅。</p>
-<ul>
-<li>flask.template_rendered</li>
-</ul>
-<p>模版渲染成功的时候发送，这个信号和模版实例template，上下文的字典一起调用。刚才有一个想法，就是可以用这些信号订阅来实现一个日志系统，将相应信号发生时候的参数都记录下来，这样方便调试和记录。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def log_template_renders(sender, template, context, **extra):</div><div class="line">    pass</div><div class="line">from flask import template_rendered</div><div class="line">template_rendered.connect(log_template_renders, app)</div></pre></td></tr></table></figure>
-<ul>
-<li>flask.request_started</li>
-</ul>
-<p>建立请求上下文后，在请求处理开始之前发送，订阅者可以使用request之类的标准全局代理访问请求。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from flask import request_started</div><div class="line">request_started.connect(log_request, app)</div></pre></td></tr></table></figure>
-<ul>
-<li>flask.request_finished</li>
-<li>flask.got_request_exception 在请求处理中抛出异常时候发送，异常本身会通过exception传递到订阅函数</li>
-<li>flask.request_tearing_down</li>
-<li>flask.appcontext_tearing_down</li>
-</ul>
-<h1 id="自定义信号"><a href="#自定义信号" class="headerlink" title="自定义信号"></a>自定义信号</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from blinker import Namespace</div><div class="line">web_signals = Namespace()</div><div class="line">large_file_saved = web_signals.singal(&apos;large-file-saved&apos;)</div></pre></td></tr></table></figure>
-<p>当上传文件大于某个值，就可以使用send方法来发送这个信号。</p>
-<h1 id="信号订阅的高级用法"><a href="#信号订阅的高级用法" class="headerlink" title="信号订阅的高级用法"></a>信号订阅的高级用法</h1><p>可以使用connect_via()装饰器订阅信号了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@appcontext_tearing_down.connect_via(app)</div><div class="line">def close_db_connection(sender, **extra):</div><div class="line">  session.close()</div></pre></td></tr></table></figure>
-<p>装饰器来使用connect方法，和上面的是一个作用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@started.connect</div><div class="line">def each(round):</div><div class="line">  print(&quot;round &#123;&#125;&quot;.format(round))</div></pre></td></tr></table></figure>
-<h1 id="flask-login中的信号"><a href="#flask-login中的信号" class="headerlink" title="flask-login中的信号"></a>flask-login中的信号</h1><p>中有6种信号，可以基于其中信号做一些额外的工作，比如使用user_logged_in来记录用户的登录次数和登录IP</p>
-<p>其中flask-login中发送信号的代码是：<code>user_logged_in.send(current_app._get_current_object(), user=_get_user())</code></p>
-<p>所以只要订阅这个信号，每次登录的时候就会触发订阅这个信号的函数，然后就执行这个函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@flask_login.user_logged_in.connect_via(app)</div><div class="line">def _track_logins(sender, user, **extra):</div><div class="line">  user.login_count += 1</div><div class="line">trueuser.last_login_ip = request.remote_addr</div><div class="line">truedb.session.add(user)</div><div class="line">truedb.session.commit()</div></pre></td></tr></table></figure>
-<h1 id="实战应用"><a href="#实战应用" class="headerlink" title="实战应用"></a>实战应用</h1><p>大概是这样的，每次在我发表新文章或者更新了一篇文章后，或者是更新了网站历史，发布了新版本的时候，都会连接新浪微博，然后发一条微博。这个机制中就用到了信号，实现了不同业务之间的解耦。很好用！</p>
-<p>其中使用到了微博的API，或者你也可以直接通过模拟登录的方式。需要使用到一个第三方的包weibo，你可以<a href="https://github.com/lxyu/weibo" target="_blank" rel="external">点击这里</a>找到它。</p>
-<p>发送微博的代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">from .weibo import Client</div><div class="line">import random</div><div class="line">APP_KEY = &apos;&apos;</div><div class="line">APP_SECRET = &apos;&apos;</div><div class="line">CALLBACK_URL = &apos;https://api.weibo.com/oauth2/default.html&apos;  # callback url</div><div class="line">USERNAME = &apos;&apos;</div><div class="line">PASSWORD = &apos;&apos;</div><div class="line">def gen_location():</div><div class="line">    # -90 - +90</div><div class="line">    # -180 - +180</div><div class="line">    lat = random.randrange(-9000, 9000) / 100</div><div class="line">    long = random.randrange(-18000, 18000) / 100</div><div class="line">    return lat, long</div><div class="line">def post_new(status):</div><div class="line">    c = Client(APP_KEY, APP_SECRET, CALLBACK_URL, username=USERNAME, password=PASSWORD)</div><div class="line">    location = gen_location()</div><div class="line">    # f = open(filename, &apos;rb&apos;)</div><div class="line">    c.post(&apos;statuses/update&apos;, status=status, lat=location[0], long=location[1])</div><div class="line">    # f.close()</div></pre></td></tr></table></figure>
-<p>接下来参考上面讲的信号理论内容来实践啦，首先创建signal，然后在发表新文章，更新文章或者历史的时候，来一句这个<code>new_post.send(p)</code></p>
-<p>signal定义和函数绑定如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from blinker import signal</div><div class="line">from weiboRobot import post_new</div><div class="line">new_post = signal(&apos;new_post&apos;)</div><div class="line">update_post = signal(&apos;update_post&apos;)</div><div class="line">new_history = signal(&apos;new_history&apos;)</div><div class="line">@new_post.connect</div><div class="line">def new_post_weibo(post):</div><div class="line">    status = &quot;SkyRover 发表了新的文章《&#123;&#125;》, 快来围观吧! http://skyrover.me/post/&#123;&#125;&quot;.format(post.title, post.id)</div><div class="line">    post_new(status)</div><div class="line">@update_post.connect</div><div class="line">def update_post_weibo(post):</div><div class="line">    status = &quot;SkyRover 更新文章《&#123;&#125;》, 快来围观吧! http://skyrover.me/post/&#123;&#125;&quot;.format(post.title, post.id)</div><div class="line">    post_new(status)</div><div class="line">@new_history.connect</div><div class="line">def new_history_weibo(history):</div><div class="line">    status = &apos;SkyRover 发布了新版本&lt;&#123;&#125;&gt;\n&#123;&#125;\n快来围观吧! http://skyrover.me&apos;.format(history.title, history.body)</div><div class="line">    post_new(status)</div></pre></td></tr></table></figure>
-<p><strong><em>参考自：Python Web 开发实战 – 董伟明</em></strong></p>
-
-	
-	</div>
-  <a type="button" href="/2017/04/22/信号在Flask中的使用/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -1129,7 +1106,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>74</span></a></li>
+			<li><a href="/categories/编程/">编程<span>75</span></a></li>
 		
 		</ul>
 	</div>
@@ -1154,7 +1131,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>3</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>4</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -1194,6 +1171,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
       </li>
     
@@ -1207,10 +1188,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/03/term_git_strong/" ><i class="fa fa-file-o"></i>终端中好看的git增强</a>
       </li>
     
   </ul>
