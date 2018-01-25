@@ -138,6 +138,75 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/08/21/翻译 - unittest.mock — mock object library/" >翻译 - unittest.mock — mock object library</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-21 11:18:30  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><code>unittest.mock</code> - mock object library</p>
+<p>翻译自<a href="https://docs.python.org/3/library/unittest.mock.html#" target="_blank" rel="external">unittest.mock — mock object library</a></p>
+<p><code>unittest.mock</code>是一个在Python中做测试的库，它允许你使用mock对象在测试中替换系统的的某些部分，并且假定它们是怎样使用的。</p>
+<p><code>unittest.mock</code>提供了一个核心<code>Mock</code>类来在测试中移除创建众多基础构件的需要。在使用之后，你可以假定哪些方法属性被使用以及调用的时候使用哪些参数。你也可以指定返回值并且以普通的方式设置需要的属性。</p>
+<p>另外，mock提供了<code>patch()</code>装饰器用来在测试中对模块级和类级属性进行补丁，协同使用sentinel来创建一个独一无二的对象。</p>
+<p>Mock非常容易使用并且是设计与unittest一起使用的。Mock是基于<code>action -&gt; assertion</code>模式而不是很多mocking测试框架使用的<code>record -&gt; replay</code></p>
+<h1 id="Quick-Guide"><a href="#Quick-Guide" class="headerlink" title="Quick Guide"></a>Quick Guide</h1><p><code>Mock</code>和<code>MagicMock</code>对象创建了所有的属性和方法，这样你可以获取它们并且储存关于它们如何被使用的细节。你可以配置它们，去指定返回值或者限制哪些属性是可用的，然后做出关于它们如何被使用的假定。</p>
+<h2 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import MagicMock</div><div class="line">thing = ProductionClass()</div><div class="line">thing.method = MagicMock(return_value=3)</div><div class="line">thing.method(3, 4, 5, key=&apos;value&apos;)  # 3</div><div class="line">thing.method.assert_called_with(3, 4, 5, key=&apos;value&apos;)</div></pre></td></tr></table></figure>
+<h2 id="side-effect"><a href="#side-effect" class="headerlink" title="side_effect"></a><code>side_effect</code></h2><p><code>side_effect</code>允许你配置side effects，包括当mock被调用的时候引发一个异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mock = Mock(side_effect=KeyError(&apos;foo&apos;))</div><div class="line">mock()  # raise KeyError Exception</div><div class="line">values = &#123;&apos;a&apos;: 1, &apos;b&apos;: 2, &apos;c&apos;: 3&#125;</div><div class="line">def side_effect(arg):</div><div class="line">    return values[arg]</div><div class="line">mock.side_effect = side_effect</div><div class="line">mock(&apos;a&apos;), mock(&apos;b&apos;), mock(&apos;c&apos;)  # (1,2,3)</div><div class="line">mock.side_effect = [5, 4, 3, 2, 1]</div><div class="line">mock(), mock(), mock()  # (5, 4, 3)</div></pre></td></tr></table></figure>
+<p>当mock调用的时候<code>side_effect</code>可以是一个函数也可以是一个可迭代对象或者一个异常</p>
+<p>Mock有其他多种方式来配置并且控制其行为，比如<code>spec</code>参数配置mock通过其它对象去设定其指定值。尝试获取在<code>spec</code>中不存在的属性和方法会导致失败并且引发<code>AttributeError</code></p>
+<p>如果你传递进去一个函数，它将会和mock同样的参数调用。除非函数返回了<code>DEFAULT</code>单例，mock调用将会返回这个函数返回的值。如果这个函数返回了<code>DEFAULT</code>，mock就会返回其正常值，<code>return_value</code>。返回None应该也是返回正常值。</p>
+<p><code>DEFAULT</code>是一个提前创建的值，它被<code>side_effect</code>用来指示应该使用正常的返回值</p>
+<p>如果传递了一个可迭代对象，它将会被用来恢复一个迭代器，然后每次调用的时候产生一个值。这个值可以是一个异常实例，或者从调用mock中返回的一个值。</p>
+<p>一个mock使用示例来产生一个异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.side_effect = Exception(&apos;Boom!&apos;)</div><div class="line">mock()</div></pre></td></tr></table></figure>
+<p>使用<code>side_effect</code>来返回一个value的序列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.side_effect = [3, 2, 1]</div><div class="line">mock(), mock(), mock()</div></pre></td></tr></table></figure>
+<p>使用一个可调用对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mock = Mock(return_value=3)</div><div class="line">def side_effect(*args, **kwargs):</div><div class="line">    return DEFAULT</div><div class="line">mock.side_effect = side_effect</div><div class="line">mock()</div></pre></td></tr></table></figure>
+<p><code>side_effect</code>可以在构造器中使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">side_effect = lambda value: value + 1</div><div class="line">mock = Mock(side_effect=side_effect)</div><div class="line">mock(3)</div><div class="line">mock(-8)</div></pre></td></tr></table></figure>
+<p>将<code>side_effect</code>置为None来清除它</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">m = Mock(side_effect=KeyError, return_value=3)</div><div class="line">m()  # raise Exception</div><div class="line">m.side_effect = None</div><div class="line">m()</div></pre></td></tr></table></figure>
+<h2 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h2><p><code>patch()</code>装饰器/上下文管理器使得mock测试中某个模块的类或者对象非常容易。你指定的对象将被在测试中的mock对象替换，然后在测试结束时候重新载入原来的对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import patch</div><div class="line">@patch(&apos;module.ClassName2&apos;)</div><div class="line">@patch(&apos;module.ClassName1&apos;)</div><div class="line">def test(MockClass1, MockClass2):</div><div class="line">    module.ClassName1()</div><div class="line">    module.ClassName2()</div><div class="line">    assert MockClass1 is module.ClassName1</div><div class="line">    assert MockClass2 is module.ClassName2</div><div class="line">    assert MockClass1.called</div><div class="line">    assert MockClass2.called</div><div class="line">test()</div></pre></td></tr></table></figure>
+<p>装饰器的顺序就是传入的参数的顺序，装饰器顺序是从下往上，参数就是从左往右。</p>
+<p><code>patch()</code>关键的是要patch的对象查找的命名空间，通常是非常直接的。</p>
+<p>同样<code>patch()</code>可以被用作成为一个上下文管理器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">with patch.object(ProductionClass, &apos;method&apos;, return_value=None) as mock_method:</div><div class="line">    thing = ProductionClass()</div><div class="line">    # 返回值是None</div><div class="line">    thing.method(1, 2, 3)</div><div class="line">mock_method.assert_called_once_with(1, 2, 3)</div></pre></td></tr></table></figure>
+<p><code>patch.dict()</code>可以用来在字典中在某个作用域中设置值，并且在测试完成后重新载入之前的字典</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">foo = &#123;&apos;key&apos;: &apos;value&apos;&#125;</div><div class="line">original = foo.copy()</div><div class="line">with patch.dict(foo, &#123;&apos;newkey&apos;: &apos;newvalue&apos;&#125;, clear=True):</div><div class="line">    assert foo == &#123;&apos;newkey&apos;: &apos;newvalue&apos;&#125;</div><div class="line">assert foo == original</div></pre></td></tr></table></figure>
+<h2 id="magic-method"><a href="#magic-method" class="headerlink" title="magic method"></a><code>magic method</code></h2><p>Mock支持模拟Python魔法方法，最简单的使用魔法方法是使用<code>MagicMock</code>类，它允许你这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mock = MagicMock()</div><div class="line">mock.__str__.return_value = &apos;foobarbaz&apos;</div><div class="line">str(mock)</div><div class="line">mock.__str__.assert_called_with()</div></pre></td></tr></table></figure>
+<p>Mock允许你将函数赋值给魔法方法，然后它们就会被调用。<code>MagicMock</code>类只是一个Mock变体，拥有所有的预先创建的魔法方法。</p>
+<p>下面是使用普通的Mock类来使用魔法方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mock = Mock()</div><div class="line">mock.__str__ = Mock(return_value=&apos;wheeeeee&apos;)</div><div class="line">str(mock)</div></pre></td></tr></table></figure>
+<h2 id="auto-speccing"><a href="#auto-speccing" class="headerlink" title="auto-speccing"></a><code>auto-speccing</code></h2><p>为了确保在你的测试中的mock对象有和要替换的对象相同的api，你可以使用<code>auto-speccing</code>,<code>auto-speccing</code>可以通过<code>autospec</code>参数改变完成，或者<code>create_autospec()</code>函数。<code>auto-speccing</code>创建了和要替换的对象相同的属性和方法的mock对象，任意的函数和方法都将有和真实对象一样的签名。</p>
+<p>如果使用错误，将会产生和生产代码一样的错误方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import create_autospec</div><div class="line">def function(a, b, c):</div><div class="line">    pass</div><div class="line">mock_function = create_autospec(function, return_value=&apos;fishy&apos;)</div><div class="line">mock_function(1, 2, 3)  # &apos;fishy&apos;</div><div class="line">mock_function.assert_called_once_with(1, 2, 3)</div><div class="line">mock_function(&apos;wrong arguments&apos;)  # 异常TypeError</div></pre></td></tr></table></figure>
+<p><code>create_autospec</code>也可以使用在类中，它会赋值<code>__init__</code>方法的签名，在可调用对象中将会复制<code>__call__</code>方法的签名。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/21/翻译 - unittest.mock — mock object library/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/08/20/后会无期/" >后会无期</a>
 		</h3>
 		</div>
@@ -672,54 +741,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/02/thriftpy_1_introduction/" >thriftpy源码解析(一) - 综述</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-02 10:58:28  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>本文使用的工具是饿了么开发的<a href="https://github.com/eleme/thriftpy" target="_blank" rel="external">thriftpy</a>和<a href="https://github.com/eleme/gunicorn_thrift" target="_blank" rel="external">gunicorn_thrift</a></p>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h2><p>首先thrift是啥呢？thrift是一个软件框架，用来进行可扩展且跨语言的服务的开发。它结合了功能强大的软件堆栈和代码生成引擎，以构建在 C++, Java, Go,Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, JavaScript, Node.js, Smalltalk, and OCaml 这些编程语言间无缝结合的、高效的服务。</p>
-<h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>说thrift不得不提的是RPC, RPC(Remote Procedure Call Protocol) 远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。</p>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>其实thrift是一种开源的跨语言的RPC服务框架，可以基于它进行RPC请求等的处理，而不用进行HTTP请求，减少资源消耗，提高效率。用于微服务是极好的，特别是数据量大的请求。</p>
-<h2 id="与HTTP的性能比较"><a href="#与HTTP的性能比较" class="headerlink" title="与HTTP的性能比较"></a>与HTTP的性能比较</h2><p>thrift 体积超小，使用起来比较麻烦，不如json容易，但是对于1.高并发、2.数据传输量大、3.多语言环境 比较适合。</p>
-<p>假定需要传输相同的内容，但使用不同的方式从 1、传输内容所产生的大小 2、传输过程中服务端和客户端所产生的开销，这2个方面进行比较，如下：</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt=""></p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt=""></p>
-<h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><h2 id="thrift文件"><a href="#thrift文件" class="headerlink" title="thrift文件"></a>thrift文件</h2><p>首先定义thrift文件，这个文件相当于一个协议，在客户端和服务器都应该包含这个文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring tdx_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue),</div><div class="line">truestring tdx_ability_status(),</div><div class="line">truestring tdx_increment(),</div><div class="line">truestring signal_ability(),</div><div class="line"></div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div><div class="line"></div><div class="line">service Read &#123;</div><div class="line">truestring summary(),</div><div class="line">truestring prices(),</div><div class="line">truestring ability()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其中Calc和Read定义为两个服务，服务底下有多个函数，函数定义为返回值类型，函数名，函数参数</p>
-<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><p>下来创建一个服务器，这里有多个服务，因此需要创建多个服务处理器，同时需要指定视情况而需要的协议和传输类型，最后选择需要的服务器。</p>
-<p>我们这里选择了<code>TJSONProtocolFactory()</code>和<code>TBufferedTransportFactory()</code>，服务器使用了<code>gunicorn_thrift</code>，后面会详细介绍这些东西。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">import os</div><div class="line">from thriftpy.transport import TServerSocket</div><div class="line">from thriftpy.thrift import TMultiplexedProcessor</div><div class="line">from thriftpy.rpc import TProcessor</div><div class="line">from config import THRIFT_HOST, THRIFT_PORT</div><div class="line">from .calc_ability import CalcAbility</div><div class="line">from .read_ability import ReadAbility</div><div class="line">dir_path = os.path.abspath(os.path.dirname(__file__))</div><div class="line">thrift_path = os.path.join(dir_path, &apos;ability.thrift&apos;)</div><div class="line"></div><div class="line"># 导入thrift文件</div><div class="line">ability_thrift = thriftpy.load(thrift_path, module_name=&quot;ability_thrift&quot;)</div><div class="line"># 创建socket</div><div class="line">server_socket = TServerSocket(host=THRIFT_HOST, port=THRIFT_PORT, client_timeout=None)</div><div class="line"># 创建thrift的主应用，这里的应用可以为多个服务注册多个处理器</div><div class="line">thrift_app = TMultiplexedProcessor()</div><div class="line"></div><div class="line"># 为每个服务创建处理器</div><div class="line">calc_processor = TProcessor(ability_thrift.Calc, CalcAbility())</div><div class="line">read_processor = TProcessor(ability_thrift.Read, ReadAbility())</div><div class="line"></div><div class="line"># 在thrift主应用中注册这些处理器</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Calc&apos;, calc_processor)</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Read&apos;, read_processor)</div></pre></td></tr></table></figure>
-<p>这样就创建了一个thrift应用，然后需要指定服务器，这里我们使用<code>gunicorn_thrift</code>，其实thriftpy里面有许多简单的服务器，比如单线程服务器，多线程服务器，但是这些服务器并不能满足生产需要。</p>
-<p>启动gunicorn服务器：<code>gunicorn_thrift thrift_abi:thrift_app -k thriftpy_sync --thrift-protocol-factory thriftpy.protocol:TJSONProtocolFactory --thrift-transport-factory thriftpy.transport:TBufferedTransportFactory</code></p>
-<p><code>-k</code>参数指定是同步还是异步，另外需要指定协议和传输方式</p>
-<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>客户端就比较容易了，只需要导入thrift文件，并且根据协议和传输方式创建客户端就行了，然后客户端就可以远程调用服务器的方法函数了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">from thriftpy.protocol import TJSONProtocolFactory, TMultiplexedProtocolFactory</div><div class="line">from thriftpy.transport import TBufferedTransportFactory</div><div class="line">from thriftpy.rpc import make_client</div><div class="line"></div><div class="line"></div><div class="line">ability_thrift = thriftpy.load(&quot;ability.thrift&quot;, module_name=&quot;ability_thrift&quot;)</div><div class="line">client = make_client(ability_thrift.Calc, &apos;127.0.0.1&apos;, 5004, proto_factory=TMultiplexedProtocolFactory(TJSONProtocolFactory(), &apos;ability_thrift.Calc&apos;), trans_factory=TBufferedTransportFactory())</div><div class="line">client.tdx_ability()</div></pre></td></tr></table></figure>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>thrift的使用是比直接HTTP请求要麻烦一点，并且如果服务器要改动函数签名，就需要更改thrift文件，并且客户端也需要同步，并且修改签名，但是这样的方式在微服务架构中带来的性能提升是很大的，值得作出这样的改变。</p>
-<h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节将对thriftpy中的核心组件进行解析。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/02/thriftpy_1_introduction/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -773,7 +794,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>75</span></a></li>
+			<li><a href="/categories/编程/">编程<span>76</span></a></li>
 		
 		</ul>
 	</div>
@@ -798,7 +819,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>4</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>5</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -838,6 +859,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
       </li>
     
@@ -851,10 +876,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
       </li>
     
   </ul>

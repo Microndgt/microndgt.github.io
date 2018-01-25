@@ -138,6 +138,45 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/10/02/Python中的单例模式/" >Python中的单例模式</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-02 10:07:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>单例模式其实在实际的程序开发中使用过，比如数据库连接池等，但是仍然需要抽象到一定高度来理解它。</p>
+<p>单例模式：保证一个类仅有一个实例，并提供一个访问他的全局访问点。目的就是令到单个进程中只存在一个类的实例，从而可以实现数据的共享，节省系统开销，防止io阻塞等等。方法就是让类自身保存他的唯一实例，这个类可以保证没有其他实例可以被创建。</p>
+<p>多线程时的单例模式：加锁-双重锁定</p>
+<ul>
+<li>饿汉式单例类：在类被加载时就将自己实例化（静态初始化）。其优点是躲避了多线程访问的安全性问题，缺点是提前占用系统资源。</li>
+<li>懒汉式单例类：在第一次被引用时，才将自己实例化。避免开始时占用系统资源，但是有多线程访问安全性问题。</li>
+</ul>
+<h2 id="简单粗暴-模块实现"><a href="#简单粗暴-模块实现" class="headerlink" title="简单粗暴-模块实现"></a>简单粗暴-模块实现</h2><p>直接导入某个模块下创建好的实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># some module.py</div><div class="line">class SingletonClass:</div><div class="line">    pass</div><div class="line"></div><div class="line"># 在别处我们想用这个实例都直接使用 module.single_instance 这个实例就好。</div><div class="line"># 这是最简单也是最直观的一种方式,嗯，直接导入这个实例用，而不是导入class，简单粗暴</div><div class="line">single_instance = SingletonClass()</div></pre></td></tr></table></figure>
+<h2 id="静态方法实现"><a href="#静态方法实现" class="headerlink" title="静态方法实现"></a>静态方法实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">#encoding=utf-8</div><div class="line">#单例模式</div><div class="line">def print_info(info):</div><div class="line">    print(info)</div><div class="line"></div><div class="line">import threading</div><div class="line">#单例类</div><div class="line">class Singleton:</div><div class="line">    instance = None</div><div class="line">    mutex = threading.Lock()</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        pass</div><div class="line"></div><div class="line">    @staticmethod</div><div class="line">    def get_instance():</div><div class="line">        if Singleton.instance is None:</div><div class="line">            Singleton.mutex.acquire()</div><div class="line">            if Singleton.instance is None:</div><div class="line">                print_info(&apos;初始化实例&apos;)</div><div class="line">                Singleton.instance = Singleton()</div><div class="line">            else:</div><div class="line">                print_info(&apos;单例已经实例化&apos;)</div><div class="line">            Singleton.mutex.release()</div><div class="line">        else:</div><div class="line">            print_info(&apos;单例已经实例化&apos;)</div><div class="line"></div><div class="line">        return Singleton.instance</div><div class="line"></div><div class="line">def clientUI():</div><div class="line">    Singleton.get_instance()</div><div class="line">    Singleton.get_instance()</div><div class="line">    Singleton.get_instance()</div><div class="line"></div><div class="line">if __name__==&apos;__main__&apos;:</div><div class="line">    clientUI();</div></pre></td></tr></table></figure>
+<h2 id="元类实现"><a href="#元类实现" class="headerlink" title="元类实现"></a>元类实现</h2><p>也可以使用<code>__new__</code>来实现单例模式，但是如果需要做到线程安全就必须加锁。<code>__new__</code>必须返回一个类的实例，所以可以在对象创建之前或者之后修改类。如果它返回的不是<code>cls</code>的实例，那么<code>__init__</code>方法是不会调用的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class Singleton(object):</div><div class="line">    __instance = None</div><div class="line"></div><div class="line">    def__new__(cls, *args, **kwd):</div><div class="line">        if Singleton.__instance is None:</div><div class="line">            Singleton.__instance = object.__new__(cls, *args, **kwd)</div><div class="line">        return Singleton.__instance</div><div class="line"></div><div class="line">class MyClass(metaclass=Singleton):</div><div class="line">    pass</div></pre></td></tr></table></figure>
+<h2 id="装饰器实现"><a href="#装饰器实现" class="headerlink" title="装饰器实现"></a>装饰器实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class BaseClass:</div><div class="line">    pass</div><div class="line"></div><div class="line"></div><div class="line"># 装饰器实现</div><div class="line">def singleton(class_):</div><div class="line">    instances = &#123;&#125;</div><div class="line">    def getinstance(*args, **kwargs):</div><div class="line">        if class_ not in instances:</div><div class="line">            instances[class_] = class_(*args, **kwargs)</div><div class="line">        return instances[class_]</div><div class="line">    return getinstance</div><div class="line"></div><div class="line"></div><div class="line">@singleton</div><div class="line">class MyClass(BaseClass):</div><div class="line">    pass</div></pre></td></tr></table></figure>
+	
+	</div>
+  <a type="button" href="/2017/10/02/Python中的单例模式/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/09/30/Python程序性能分析/" >Python程序性能分析</a>
 		</h3>
 		</div>
@@ -666,91 +705,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/09/04/特性属性和特殊方法/" >特性，属性和特殊方法</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-09-04 18:21:46  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>From <strong>流畅的Python 人民邮电出版社 19章动态属性和特性</strong></p>
-</blockquote>
-<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>数据的属性和处理数据的方法统称为属性，其实方法只是可调用的属性。然后还有特性：<code>property(fget=None, fset=None, fdel=None, doc=None)</code></p>
-<h2 id="经典的使用方法"><a href="#经典的使用方法" class="headerlink" title="经典的使用方法"></a>经典的使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class LineItem:</div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">    def get_weight(self):</div><div class="line">        return self.__weight</div><div class="line"></div><div class="line">    def set_weight(self, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            self.__weight = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">    # 构建property对象，然后赋值给公开的类属性 self.weight</div><div class="line">    weight = property(get_weight, set_weight)</div></pre></td></tr></table></figure>
-<h2 id="新式使用方法"><a href="#新式使用方法" class="headerlink" title="新式使用方法"></a>新式使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class LineItem:</div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div><div class="line"></div><div class="line">    @property</div><div class="line">    def weight(self):</div><div class="line">        return self.__weight</div><div class="line"></div><div class="line">    @weight.setter</div><div class="line">    def weight(self, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            self.__weight = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div></pre></td></tr></table></figure>
-<p>特性都是类属性，但是特性管理的是实例属性的存取。特性是一种描述符，所以肯定是类属性，管理的是实例属性。</p>
-<p>实例属性会遮盖类的数据属性，但是实例属性不会遮盖类特性，就是即使存在同样的实例属性名和特性属性名，再访问，也只会访问特性，而不会访问实例属性。如果删除这个类的特性，再去访问，就会是实例属性了。这种特性是覆盖型描述符：<code>obj.attr</code>会首先从<code>obj.__class__</code>开始，当类中没有名为attr的特性时候，Python才会在obj实例中寻找。</p>
-<p>特性的doc是在<code>@property</code>装饰的函数上的，经典的特性是doc参数<code>property(fget=None, fset=None, fdel=None, doc=None)</code></p>
-<h1 id="特性工厂函数"><a href="#特性工厂函数" class="headerlink" title="特性工厂函数"></a>特性工厂函数</h1><p>赋值语句的右边先计算</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">def quantity(storage_name):</div><div class="line">    # 获取属性的方法</div><div class="line">    def qty_getter(instance):</div><div class="line">        # 跳过特性，直接访问实例属性</div><div class="line">        return instance.__dict__[storage_name]</div><div class="line">    # 设置属性的方法</div><div class="line">    def qty_setter(instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">    # 返回一个特性，这样类中的一个属性就变成了特性</div><div class="line">    return property(qty_getter, qty_setter)</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    # weight类属性，现在是一个特性</div><div class="line">    weight = quantity(&apos;weight&apos;)</div><div class="line">    price = quantity(&apos;price&apos;)</div><div class="line"></div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line">    def subtotal(self):</div><div class="line">        # 特性会覆盖实例属性</div><div class="line">        return self.weight * self.price</div></pre></td></tr></table></figure>
-<p>特性会覆盖实例属性，所以可以直接存取<code>__dict__</code>属性来跳过特性的处理逻辑</p>
-<h1 id="处理属性的重要属性和函数"><a href="#处理属性的重要属性和函数" class="headerlink" title="处理属性的重要属性和函数"></a>处理属性的重要属性和函数</h1><ul>
-<li><code>__class__</code> 对象所属类的引用,<code>obj.__class__</code>和<code>type(obj)</code>，以及特殊方法只在对象的类中寻找，而不在实例中寻找</li>
-<li><code>__dict__</code> 存储对象或者类的可写属性，有<code>__dict__</code>的对象，可以随意设置新属性</li>
-<li><code>__slots__</code>限制实例能有哪些属性，定义了类中所有的实例属性，让解释器在元组中存储实例属性，而不用字典，节约内存！</li>
-</ul>
-<h2 id="处理属性的内置函数"><a href="#处理属性的内置函数" class="headerlink" title="处理属性的内置函数"></a>处理属性的内置函数</h2><ul>
-<li><code>dir(obj)</code> 列出对象的大多数属性，可以在有<code>__dict__</code>和没有<code>__dict__</code>属性的对象上使用</li>
-<li><code>getattr(object, name)</code> 从object对象中获取name字符串对应的属性</li>
-<li><code>hasattr(object, name)</code> 如果object中存在指定的属性，则返回True</li>
-<li><code>setattr(object, name, value)</code> 把object对象指定属性的值设为value</li>
-<li><code>vars([object])</code> 返回object对象的<code>__dict__</code>属性，如果没有参数，返回表示本地作用域的字典，如果没有<code>__dict__</code>属性，返回TypeError</li>
-</ul>
-<h2 id="处理属性的特殊方法"><a href="#处理属性的特殊方法" class="headerlink" title="处理属性的特殊方法"></a>处理属性的特殊方法</h2><p>直接访问实例的<code>__dict__</code>属性，就不会触发这些特殊方法</p>
-<ul>
-<li><code>__setattr__(self, name, value)</code></li>
-</ul>
-<p>尝试设置指定的属性时候总会调用这个方法。这种方式被成为代替正常机制（也就是在实例字典种存储值）。name是属性名字，值就是要设置的值。</p>
-<p>如果<code>__setattr__()</code>尝试给实例属性赋值，它应该调用基类方法，比如<code>object.__setattr__(self, name, value)</code>，object已经实现了这个方法</p>
-<ul>
-<li><code>__delattr__(self, name)</code></li>
-</ul>
-<p>删除属性会调用这个，如果<code>del obj.name</code>对象是有意义的才会去实现这个方法</p>
-<ul>
-<li><code>__dir__(self)</code></li>
-</ul>
-<p>在对象上调用dir函数时候被调用，返回一个列表。dir()转换并且返回一个排序的列表</p>
-<ul>
-<li><code>__getattribute__(self, name)</code></li>
-</ul>
-<p>无条件调用来实现类中实例的属性获取。如果类中同时定义了<code>__getattr__</code>，后者将会在<code>__getattribute__</code>显示调用的时候或者引发了一个<code>AttributeError</code>时候被调用。</p>
-<p>这个方法应该返回一个计算后的属性值或者引发一个<code>AttributeError</code>异常。为了防止在这个方法中无限循环，它的实现应该总是调用基类方法来获取它需要的任何属性，比如<code>object.__getattribute__(self, name)</code></p>
-<p>这个方法还是可能被忽略的，当查询一些特殊方法的时候。因为它们会被语法或者内置函数隐式调用。比如<code>__len__</code>方法(len函数)</p>
-<ul>
-<li><code>__getattr__(self, name)</code></li>
-</ul>
-<p>在获取指定的属性失败时候调用，在obj, Class和超类查找之后调用。</p>
-<p>如果正常机制可以找到属性的话，就不会调用这个方法。这个方法和<code>setattr</code>是不对称的。一方面是效率原因，另一方面因为要不然的话<code>__getattr__</code>就没法去获取实例的其他属性了。</p>
-<h1 id="查询特殊方法"><a href="#查询特殊方法" class="headerlink" title="查询特殊方法"></a>查询特殊方法</h1><p>对于自定义类，特殊方法的隐式调用只有在定义在object的类中才会保证正确，而不是在对象的实例字典中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class C:</div><div class="line">...     pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; c = C()</div><div class="line">&gt;&gt;&gt; c.__len__ = lambda: 5</div><div class="line">&gt;&gt;&gt; len(c)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">TypeError: object of type &apos;C&apos; has no len()</div></pre></td></tr></table></figure>
-<p>这种行为后面的基本原理在于几个特殊方法，比如被所有对象都实现的<code>__hash__()</code>和<code>__repr__()</code>，包括type对象。如果这些方法的隐式查询使用传统的查询过程，那么在type对象上调用这些方法的时候就会失败。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; 1 .__hash__() == hash(1)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; int.__hash__() == hash(int)</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">TypeError: descriptor &apos;__hash__&apos; of &apos;int&apos; object needs an argument</div></pre></td></tr></table></figure>
-<p>使用这种不正确的调用未绑定方法的方式有时被称为<code>metaclass confusion</code>，并在查询特殊方法的时候忽略实例来避免这种情况。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; type(1).__hash__(1) == hash(1)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; type(int).__hash__(int) == hash(int)</div><div class="line">True</div></pre></td></tr></table></figure>
-<p>除了绕过任何实例属性，隐式的特殊方法查询一般也会忽略<code>__getattribute__()</code>方法即使对象是元类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Meta(type):</div><div class="line">...     def __getattribute__(*args):</div><div class="line">...         print(&quot;Metaclass getattribute invoked&quot;)</div><div class="line">...         return type.__getattribute__(*args)</div><div class="line">...</div><div class="line">&gt;&gt;&gt; class C(object, metaclass=Meta):</div><div class="line">...     def __len__(self):</div><div class="line">...         return 10</div><div class="line">...     def __getattribute__(*args):</div><div class="line">...         print(&quot;Class getattribute invoked&quot;)</div><div class="line">...         return object.__getattribute__(*args)</div><div class="line">...</div><div class="line">&gt;&gt;&gt; c = C()</div><div class="line">&gt;&gt;&gt; c.__len__()                 # Explicit lookup via instance</div><div class="line">Class getattribute invoked</div><div class="line">10</div><div class="line">&gt;&gt;&gt; type(c).__len__(c)          # Explicit lookup via type</div><div class="line">Metaclass getattribute invoked</div><div class="line">10</div><div class="line">&gt;&gt;&gt; len(c)                      # Implicit lookup</div><div class="line">10</div></pre></td></tr></table></figure>
-<p>绕过<code>__getattribute__()</code>机制在解释器中提供了意义重大的速度提升，当然在处理一些特殊方法上失去了灵活性(为了能够被解释器一致的调用，特殊方法必须在类中设置)</p>
-
-	
-	</div>
-  <a type="button" href="/2017/09/04/特性属性和特殊方法/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -804,7 +758,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>75</span></a></li>
+			<li><a href="/categories/编程/">编程<span>76</span></a></li>
 		
 		</ul>
 	</div>
@@ -829,7 +783,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>4</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>5</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -869,6 +823,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
       </li>
     
@@ -882,10 +840,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
       </li>
     
   </ul>

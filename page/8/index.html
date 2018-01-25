@@ -138,6 +138,95 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/04/25/docker安装和使用/" >Docker安装和使用</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-04-25 12:07:19  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="Ubuntu安装Docker"><a href="#Ubuntu安装Docker" class="headerlink" title="Ubuntu安装Docker"></a>Ubuntu安装Docker</h1><ol>
+<li><code>sudo apt-get install docker</code></li>
+<li><code>sudo apt-get install docker.io</code></li>
+<li><p>将当前用户加入到docker用户组中</p>
+<ul>
+<li><code>sudo gpasswd -a ${User} docker</code></li>
+<li>重新登陆shell，就可以使用docker了</li>
+</ul>
+</li>
+</ol>
+<h1 id="MacBook安装Docker"><a href="#MacBook安装Docker" class="headerlink" title="MacBook安装Docker"></a>MacBook安装Docker</h1><ol>
+<li><code>brew install docker</code></li>
+<li><code>brew install docker-machine</code></li>
+<li>下载安装<code>virtual box</code>，<a href="http://sw.bos.baidu.com/sw-search-sp/software/b727d97ca62/VirtualBox_mac_5.0.24.dmg" target="_blank" rel="external">下载地址</a></li>
+<li>初始化 Virtual Box 的 default 虚拟机 <code>docker-machine create --driver virtualbox default</code></li>
+<li>下载最新的boot2docker，<a href="https://github.com/boot2docker/boot2docker/releases" target="_blank" rel="external">下载地址</a>。上一步会自动下载，但是可能比较慢。</li>
+<li>将boot2docker.iso 放在<code>/Users/kevin/.docker/machine/cache</code>目录下，然后执行第四步的命令就会自动使用cache进行安装了。</li>
+<li>初始化环境变量：显示宿主机需要为 default 虚拟机设置的环境变量的指令 <code>docker-machine env default</code>，然后将在宿主机中设置相应的环境变量。<code>eval $(docker-machine env default)</code></li>
+</ol>
+<h1 id="使用Docker"><a href="#使用Docker" class="headerlink" title="使用Docker"></a>使用Docker</h1><p>docker内时区不对：<code>sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</code></p>
+<p>Docker可以支持把一个宿主机上的目录挂载到镜像里。通过<code>-v</code>参数，冒号前为宿主机目录，必须为绝对路径，冒号后为镜像内挂载的路径。</p>
+<p><code>docker run -it -v /home/dock/Downloads:/usr/Downloads ubuntu64 /bin/bash</code></p>
+<p>对于战斗力：<code>docker run -d --name=ability_t0_citic --net=host -p 5001:5001 -v /home/lindyang/ability/data:/opt/ability/data -it ability:170425</code></p>
+<p>打包<code>tar -czf small.tar.gz small</code> (目录名), 压缩并打包目录</p>
+<p>解压<code>tar -xzvf ***.tar.gz</code></p>
+<p>向docker内部传递文件：<code>cat posi_data_source.tar.gz | docker exec -i ability_citic bash -c &quot;cat &gt; /opt/ability/posi_data_source.tar.gz&quot;</code></p>
+<ul>
+<li>查看镜像： <code>docker images</code></li>
+<li>进入docker <code>docker run -it somebox bash</code></li>
+<li>查看docker运行状态：<code>docker ps -a</code></li>
+</ul>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>一个简单的dockerfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">FROM</div><div class="line"> ubuntu:14.04</div><div class="line">USER</div><div class="line"> root</div><div class="line">RUN</div><div class="line"> apt-get install-y</div><div class="line"> apache2</div><div class="line">EXPOSE</div><div class="line"> 80</div></pre></td></tr></table></figure>
+<ul>
+<li>FROM 基于哪个镜像</li>
+<li>RUN 安装软件使用</li>
+<li>MAINTAINER 镜像创建者</li>
+<li>CMD container启动时候执行的命令，dockerfile只能有一个cmd命令，多条就执行最后一条</li>
+<li>USER 使用哪个用户跑container</li>
+<li>EXPOSE container内部服务开启的端口，主机要用的时候要做端口映射，即-p参数</li>
+<li>ENV 用于设置环境变量</li>
+<li>ADD 将文件拷贝到container的文件系统对应的路径</li>
+<li>WORKDIR 切换目录</li>
+</ul>
+<p>一个dockerfile示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">FROM ubuntu:16.04</div><div class="line">MAINTAINER DongWeiming &lt;ciici123@gmail.com&gt;</div><div class="line">ENV DEBIAN_FRONTEND noninteractive</div><div class="line">RUN echo &apos;deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse&apos; &gt; /etc/apt/sources.list</div><div class="line">RUN apt-get update</div><div class="line">RUN apt-get install python curl git zsh sudo vim -yq</div><div class="line">RUN useradd -ms /bin/bash ubuntu</div><div class="line">RUN echo &quot;ubuntu ALL=(ALL) NOPASSWD: ALL&quot;  &gt;&gt; /etc/sudoers</div><div class="line">RUN echo &quot;ubuntu:ubuntu&quot; | chpasswd</div><div class="line">USER ubuntu</div><div class="line">workdir /home/ubuntu</div><div class="line">RUN git clone https://github.com/dongweiming/web_develop</div><div class="line">RUN cd /home/ubuntu/web_develop</div><div class="line">EXPOSE 9000 3141 22 5000</div></pre></td></tr></table></figure>
+<p>从dockerfile构建镜像：<code>docker build -t ability:170423 ./</code></p>
+<h2 id="加载镜像，启动容器"><a href="#加载镜像，启动容器" class="headerlink" title="加载镜像，启动容器"></a>加载镜像，启动容器</h2><p>运行参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-P 默认匹配docker容器的5000端口号到宿主机的49153 to 65535端口，相当于随机分配端口号，</div><div class="line">-p就是绑定特定端口号, 5001:5001指的是default虚拟机到容器的端口映射，相当于外部和容器都使用5001端口，在linux上，就是linux系统到容器的端口映射</div><div class="line">-d 以守护进行方式运行，后台</div><div class="line">-D 开启Debug模式</div></pre></td></tr></table></figure>
+<p>示例： <code>docker run -d --name=ability -p 5001:5001 --net=host -it ability:170324</code></p>
+<h2 id="将修改了的container提交成新的image"><a href="#将修改了的container提交成新的image" class="headerlink" title="将修改了的container提交成新的image"></a>将修改了的container提交成新的image</h2><p><code>docker commit container repository:tag</code>，然后就可以将新的image导出放在其他地方使用。commit命令仅是一个临时创建Imange的辅助命令。不过最好是应该修复image的问题之后，修改源码的问题，也就是应该写一个新的Dockerfile文件来维护此Image。</p>
+<h2 id="将容器内的文件复制到host主机上"><a href="#将容器内的文件复制到host主机上" class="headerlink" title="将容器内的文件复制到host主机上"></a>将容器内的文件复制到host主机上</h2><p>示例：<code>docker cp container:path hostpath</code></p>
+<h2 id="加载导出镜像"><a href="#加载导出镜像" class="headerlink" title="加载导出镜像"></a>加载导出镜像</h2><p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker save -o some.image some:latest</div><div class="line">docker load -i ./some.image</div></pre></td></tr></table></figure>
+<h2 id="导入导出镜像"><a href="#导入导出镜像" class="headerlink" title="导入导出镜像"></a>导入导出镜像</h2><p>如果要导出本地某个容器，可以使用 docker export 命令，导出容器快照到本地文件<code>docker export container &gt; ubuntu.tar</code></p>
+<p>可以使用 docker import 从容器快照文件中再导入为镜像<code>cat ubuntu.tar | sudo docker import - test/ubuntu:v1.0</code></p>
+<p>也可以通过指定 URL 或者某个目录来导入<code>docker import http://example.com/exampleimage.tgz example/imagerepo</code></p>
+<p>用户既可以使用 docker load 来导入镜像存储文件到本地镜像库，也可以使用 docker import 来导入一个容器快照到本地镜像库。这两者的区别在于容器快照文件将丢弃所有的历史记录和元数据信息（即仅保存容器当时的快照状态），而镜像存储文件将保存完整记录，体积也要大。此外，从容器快照文件导入时可以重新指定标签等元数据信息。</p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>删除指定容器：<code>docker rm container</code></p>
+<p>删除指定的镜像: <code>docker rmi image</code></p>
+<h2 id="运行日志"><a href="#运行日志" class="headerlink" title="运行日志"></a>运行日志</h2><p><code>docker logs --tail=200 container</code></p>
+<p>image中每一层image命令行的历史记录<code>docker history image</code></p>
+
+	
+	</div>
+  <a type="button" href="/2017/04/25/docker安装和使用/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/04/22/信号在Flask中的使用/" >信号在Flask中的使用</a>
 		</h3>
 		</div>
@@ -918,53 +1007,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/02/19/BAIDU的DNS解析/" >BAIDU的DNS解析</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-02-19 17:31:18  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>今天用<code>nslookup</code>命令解析查看了<code>www.baidu.com</code>的IP地址，却意外发现百度的<code>CNAME</code>居然是<code>www.a.shifen.com</code></p>
-<h1 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">nslookup www.baidu.com</div><div class="line">&gt;&gt;&gt;</div><div class="line">Server:		119.29.29.29</div><div class="line">Address:	119.29.29.29#53</div><div class="line"></div><div class="line">Non-authoritative answer:</div><div class="line">www.baidu.com	canonical name = www.a.shifen.com.</div><div class="line">Name:	www.a.shifen.com</div><div class="line">Address: 220.181.111.188</div><div class="line">Name:	www.a.shifen.com</div><div class="line">Address: 220.181.112.244</div></pre></td></tr></table></figure>
-<p>接下来看看一个详细的baidu的dns解析过程</p>
-<p>理论上，目前我的电脑通过ISP接入互联网，ISP就会分配一个本地DNS服务器（非权威服务器），然后我的电脑向这个ISP DNS服务器发起请求，查询<code>www.baidu.com</code>的IP地址。</p>
-<p>首先DNS会检查自己的缓存里面有没有这个地址，如果有的话直接返回，没有的话，ISP会把请求发送给根DNS服务器（13台），然后根DNS服务器发现是<code>.com</code>结尾，是<code>.com</code>这个顶级域名下的，就告诉请求者负责解析<code>.com</code>的DNS服务器，ISP DNS再次向baidu.com这个域的权威服务器发起请求，服务器收到之后，查一下www这台主机，然后把IP返回给IPS DNS，然后把地址返回给PC，并且存入缓存中，以便再次访问。</p>
-<p>使用dig命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">+trace 表示将显示从根域逐级查询的过程，追踪dns解析中的问题</div><div class="line">+tcp dig默认使用udp协议，使用tcp方式</div></pre></td></tr></table></figure>
-<p><code>dig www.baidu.com</code>的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">kevin:~ $ dig www.baidu.com</div><div class="line"># 版本信息和全局设置选项</div><div class="line">; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; www.baidu.com</div><div class="line">;; global options: +cmd</div><div class="line"># DNS返回的技术信息</div><div class="line">;; Got answer:</div><div class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 20158</div><div class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 0</div><div class="line"># 问题，查询的名字和类型字段，A记录</div><div class="line">;; QUESTION SECTION:</div><div class="line">;www.baidu.com.			IN	A</div><div class="line"># 回答，对查询的响应中的RR</div><div class="line">;; ANSWER SECTION:</div><div class="line">www.baidu.com.		1014	IN	CNAME	www.a.shifen.com.</div><div class="line">www.a.shifen.com.	114	IN	A	220.181.111.188</div><div class="line">www.a.shifen.com.	114	IN	A	220.181.112.244</div><div class="line"># 查询的统计数据</div><div class="line">;; Query time: 60 msec</div><div class="line">;; SERVER: 119.29.29.29#53(119.29.29.29)</div><div class="line">;; WHEN: Sun Feb 19 15:07:00 2017</div><div class="line">;; MSG SIZE  rcvd: 90</div></pre></td></tr></table></figure>
-<p>然后使用trace功能，从头显示dns解析过程：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">kevin@duguangtingdeMacBook-Pro:~ $ dig +trace www.baidu.com</div><div class="line"># 查询根DNS服务器</div><div class="line">; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; +trace www.baidu.com</div><div class="line">;; global options: +cmd</div><div class="line">.			335103	IN	NS	m.root-servers.net.</div><div class="line">.			335103	IN	NS	a.root-servers.net.</div><div class="line">.			335103	IN	NS	j.root-servers.net.</div><div class="line">.			335103	IN	NS	e.root-servers.net.</div><div class="line">.			335103	IN	NS	c.root-servers.net.</div><div class="line">.			335103	IN	NS	i.root-servers.net.</div><div class="line">.			335103	IN	NS	b.root-servers.net.</div><div class="line">.			335103	IN	NS	g.root-servers.net.</div><div class="line">.			335103	IN	NS	h.root-servers.net.</div><div class="line">.			335103	IN	NS	k.root-servers.net.</div><div class="line">.			335103	IN	NS	l.root-servers.net.</div><div class="line">.			335103	IN	NS	d.root-servers.net.</div><div class="line">.			335103	IN	NS	f.root-servers.net.</div><div class="line">;; Received 228 bytes from 119.29.29.29#53(119.29.29.29) in 3126 ms</div><div class="line"># 查询到的com顶级域dns服务器</div><div class="line">com.			172800	IN	NS	e.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	b.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	j.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	m.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	i.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	f.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	a.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	g.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	h.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	l.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	k.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	c.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	d.gtld-servers.net.</div><div class="line">;; Received 503 bytes from 198.41.0.4#53(198.41.0.4) in 5139 ms</div><div class="line"># 查询到的baidu.com权威dns服务器</div><div class="line">baidu.com.		172800	IN	NS	dns.baidu.com.</div><div class="line">baidu.com.		172800	IN	NS	ns2.baidu.com.</div><div class="line">baidu.com.		172800	IN	NS	ns3.baidu.com.</div><div class="line">baidu.com.		172800	IN	NS	ns4.baidu.com.</div><div class="line">baidu.com.		172800	IN	NS	ns7.baidu.com.</div><div class="line">;; Received 201 bytes from 192.52.178.30#53(192.52.178.30) in 1697 ms</div><div class="line"># 查询到的别名</div><div class="line">www.baidu.com.		1200	IN	CNAME	www.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns1.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns3.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns5.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns4.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns2.a.shifen.com.</div><div class="line">;; Received 228 bytes from 61.135.165.235#53(61.135.165.235) in 123 ms</div></pre></td></tr></table></figure>
-<p>首先获取13个根服务器的13个IP和主机名，然后向其中一个<code>198.41.0.4</code>发送<code>www.baidu.com</code>请求，返回<code>.com</code>顶级域的服务器IP，接着向<code>.com</code>域的一台服务器<code>192.52.178.30</code>请求，返回<code>baidu.com</code>域名服务器IP和名称，向百度的顶级域名服务器<code>dns.baidu.com</code>请求<code>www.baidu.com</code>，他发现这个www有别名叫<code>www.a.shifen.com</code>。</p>
-<p>一般来讲，dns请求到别名的时候，查询就会终止，然后重新发起查询别名的请求，所以应该返回<code>www.a.shifen.com</code>，但是其实它返回了<code>a.shifen.com</code>的NS</p>
-<p>再使用dig工具来查询一下<code>shifen.com</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">kevin@duguangtingdeMacBook-Pro:~ $ dig +trace shifen.com</div><div class="line"># 查询的根DNS服务器</div><div class="line">; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; +trace shifen.com</div><div class="line">;; global options: +cmd</div><div class="line">.			188674	IN	NS	a.root-servers.net.</div><div class="line">.			188674	IN	NS	b.root-servers.net.</div><div class="line">.			188674	IN	NS	h.root-servers.net.</div><div class="line">.			188674	IN	NS	d.root-servers.net.</div><div class="line">.			188674	IN	NS	g.root-servers.net.</div><div class="line">.			188674	IN	NS	l.root-servers.net.</div><div class="line">.			188674	IN	NS	m.root-servers.net.</div><div class="line">.			188674	IN	NS	f.root-servers.net.</div><div class="line">.			188674	IN	NS	j.root-servers.net.</div><div class="line">.			188674	IN	NS	c.root-servers.net.</div><div class="line">.			188674	IN	NS	i.root-servers.net.</div><div class="line">.			188674	IN	NS	e.root-servers.net.</div><div class="line">.			188674	IN	NS	k.root-servers.net.</div><div class="line">;; Received 228 bytes from 119.29.29.29#53(119.29.29.29) in 1573 ms</div><div class="line"># com顶级域dns服务器</div><div class="line">com.			172800	IN	NS	g.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	a.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	c.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	f.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	e.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	l.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	m.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	i.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	b.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	j.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	h.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	d.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	k.gtld-servers.net.</div><div class="line">;; Received 488 bytes from 192.33.4.12#53(192.33.4.12) in 2454 ms</div><div class="line"># shifen.com 权威dns服务器</div><div class="line">shifen.com.		172800	IN	NS	dns.baidu.com.</div><div class="line">shifen.com.		172800	IN	NS	ns2.baidu.com.</div><div class="line">shifen.com.		172800	IN	NS	ns3.baidu.com.</div><div class="line">shifen.com.		172800	IN	NS	ns4.baidu.com.</div><div class="line">;; Received 170 bytes from 192.33.14.30#53(192.33.14.30) in 430 ms</div><div class="line"># 最终的A记录和NS记录</div><div class="line">shifen.com.		7200	IN	A	202.108.250.218</div><div class="line">shifen.com.		86400	IN	NS	ns4.baidu.com.</div><div class="line">shifen.com.		86400	IN	NS	ns3.baidu.com.</div><div class="line">shifen.com.		86400	IN	NS	ns2.baidu.com.</div><div class="line">shifen.com.		86400	IN	NS	ns1.baidu.com.</div><div class="line">;; Received 186 bytes from 61.135.165.235#53(61.135.165.235) in 24 ms</div></pre></td></tr></table></figure>
-<p>从这里可以看出来<code>shifen.com</code>和<code>baidu.com</code>的域名服务器是同一台，当拿到别名<code>www.a.shifen.com</code>的时候，本来要重新到com域查找<code>shifen.com</code>的NS，又因为两个域在同一台NS上，所以直接本机发起了<code>shifen.com</code>请求，发现<code>www.a.shifen.com</code>是属于<code>a.shifen.com</code>这个域的，所以直接访问<code>shifen.com</code>所返回的IP地址，结果是<code>403 Forbidden</code>，所以应该去到<code>a.shifen.com</code>这个域获取，于是把<code>a.shifen.com</code>这个NS和IP返回，然后在<code>a.shifen.com</code>这个域的域名服务器上查询<code>www.a.shifen.com</code>，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">kevin@duguangtingdeMacBook-Pro:~/Desktop/work/capacity $ dig www.a.shifen.com +trace</div><div class="line"># 根dns服务器</div><div class="line">; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; www.a.shifen.com +trace</div><div class="line">;; global options: +cmd</div><div class="line">.			174188	IN	NS	a.root-servers.net.</div><div class="line">.			174188	IN	NS	b.root-servers.net.</div><div class="line">.			174188	IN	NS	h.root-servers.net.</div><div class="line">.			174188	IN	NS	d.root-servers.net.</div><div class="line">.			174188	IN	NS	g.root-servers.net.</div><div class="line">.			174188	IN	NS	l.root-servers.net.</div><div class="line">.			174188	IN	NS	m.root-servers.net.</div><div class="line">.			174188	IN	NS	f.root-servers.net.</div><div class="line">.			174188	IN	NS	j.root-servers.net.</div><div class="line">.			174188	IN	NS	c.root-servers.net.</div><div class="line">.			174188	IN	NS	i.root-servers.net.</div><div class="line">.			174188	IN	NS	e.root-servers.net.</div><div class="line">.			174188	IN	NS	k.root-servers.net.</div><div class="line">;; Received 228 bytes from 119.29.29.29#53(119.29.29.29) in 39 ms</div><div class="line"># com域</div><div class="line">com.			172800	IN	NS	c.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	d.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	m.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	j.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	f.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	e.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	b.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	h.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	a.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	k.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	i.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	l.gtld-servers.net.</div><div class="line">com.			172800	IN	NS	g.gtld-servers.net.</div><div class="line">;; Received 494 bytes from 192.203.230.10#53(192.203.230.10) in 523 ms</div><div class="line"># 先查的是shifen.com</div><div class="line">shifen.com.		172800	IN	NS	dns.baidu.com.</div><div class="line">shifen.com.		172800	IN	NS	ns2.baidu.com.</div><div class="line">shifen.com.		172800	IN	NS	ns3.baidu.com.</div><div class="line">shifen.com.		172800	IN	NS	ns4.baidu.com.</div><div class="line">;; Received 176 bytes from 192.33.14.30#53(192.33.14.30) in 27 ms</div><div class="line"># 发现是属于 a.shifen.com这个域的</div><div class="line">a.shifen.com.		1200	IN	NS	ns5.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns4.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns2.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns1.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns3.a.shifen.com.</div><div class="line">;; Received 204 bytes from 61.135.165.235#53(61.135.165.235) in 82 ms</div><div class="line"># 在a.shifen.com这个域上查找</div><div class="line">www.a.shifen.com.	300	IN	A	61.135.169.125</div><div class="line">www.a.shifen.com.	300	IN	A	61.135.169.121</div><div class="line">a.shifen.com.		1200	IN	NS	ns3.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns4.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns5.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns1.a.shifen.com.</div><div class="line">a.shifen.com.		1200	IN	NS	ns2.a.shifen.com.</div><div class="line">;; Received 236 bytes from 61.135.162.215#53(61.135.162.215) in 38 ms</div></pre></td></tr></table></figure>
-<p>直接访问之，正是百度的页面。</p>
-<h1 id="彩蛋-shifen-com由来"><a href="#彩蛋-shifen-com由来" class="headerlink" title="彩蛋-shifen.com由来"></a><code>彩蛋-shifen.com由来</code></h1><p><code>http://shifen.com</code>是百度当年为了竞价排名这个广告系统注册的，这个后台系统被命名为Shifen竞价排名，以前的销售系统现在还叫shifen销售系统。因为当年百度那个广告最低点击10分起价。为什么有这么一个奇怪的名字呢？在《相信中国》中，梁冬先生这样写道：“这个将来成就了百度80%收入的商业模式，最初的管理平台是由一个叫刘子正的实习生主持开发的。这也是唯一一个除<code>http://baidu.com</code>以外，外人所知的百度公司所拥有的国际域名。</p>
-<p>另外：大公司都跟“十分”有关系啊，比如腾讯——TenCent⋯⋯</p>
-
-	
-	</div>
-  <a type="button" href="/2017/02/19/BAIDU的DNS解析/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -1018,7 +1060,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>75</span></a></li>
+			<li><a href="/categories/编程/">编程<span>76</span></a></li>
 		
 		</ul>
 	</div>
@@ -1043,7 +1085,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>4</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>5</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -1083,6 +1125,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
       </li>
     
@@ -1096,10 +1142,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
       </li>
     
   </ul>

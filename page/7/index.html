@@ -138,6 +138,54 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/08/02/thriftpy_1_introduction/" >thriftpy源码解析(一) - 综述</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-02 10:58:28  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>本文使用的工具是饿了么开发的<a href="https://github.com/eleme/thriftpy" target="_blank" rel="external">thriftpy</a>和<a href="https://github.com/eleme/gunicorn_thrift" target="_blank" rel="external">gunicorn_thrift</a></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h2><p>首先thrift是啥呢？thrift是一个软件框架，用来进行可扩展且跨语言的服务的开发。它结合了功能强大的软件堆栈和代码生成引擎，以构建在 C++, Java, Go,Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, JavaScript, Node.js, Smalltalk, and OCaml 这些编程语言间无缝结合的、高效的服务。</p>
+<h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>说thrift不得不提的是RPC, RPC(Remote Procedure Call Protocol) 远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>其实thrift是一种开源的跨语言的RPC服务框架，可以基于它进行RPC请求等的处理，而不用进行HTTP请求，减少资源消耗，提高效率。用于微服务是极好的，特别是数据量大的请求。</p>
+<h2 id="与HTTP的性能比较"><a href="#与HTTP的性能比较" class="headerlink" title="与HTTP的性能比较"></a>与HTTP的性能比较</h2><p>thrift 体积超小，使用起来比较麻烦，不如json容易，但是对于1.高并发、2.数据传输量大、3.多语言环境 比较适合。</p>
+<p>假定需要传输相同的内容，但使用不同的方式从 1、传输内容所产生的大小 2、传输过程中服务端和客户端所产生的开销，这2个方面进行比较，如下：</p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt=""></p>
+<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt=""></p>
+<h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><h2 id="thrift文件"><a href="#thrift文件" class="headerlink" title="thrift文件"></a>thrift文件</h2><p>首先定义thrift文件，这个文件相当于一个协议，在客户端和服务器都应该包含这个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring tdx_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue),</div><div class="line">truestring tdx_ability_status(),</div><div class="line">truestring tdx_increment(),</div><div class="line">truestring signal_ability(),</div><div class="line"></div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div><div class="line"></div><div class="line">service Read &#123;</div><div class="line">truestring summary(),</div><div class="line">truestring prices(),</div><div class="line">truestring ability()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中Calc和Read定义为两个服务，服务底下有多个函数，函数定义为返回值类型，函数名，函数参数</p>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><p>下来创建一个服务器，这里有多个服务，因此需要创建多个服务处理器，同时需要指定视情况而需要的协议和传输类型，最后选择需要的服务器。</p>
+<p>我们这里选择了<code>TJSONProtocolFactory()</code>和<code>TBufferedTransportFactory()</code>，服务器使用了<code>gunicorn_thrift</code>，后面会详细介绍这些东西。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">import os</div><div class="line">from thriftpy.transport import TServerSocket</div><div class="line">from thriftpy.thrift import TMultiplexedProcessor</div><div class="line">from thriftpy.rpc import TProcessor</div><div class="line">from config import THRIFT_HOST, THRIFT_PORT</div><div class="line">from .calc_ability import CalcAbility</div><div class="line">from .read_ability import ReadAbility</div><div class="line">dir_path = os.path.abspath(os.path.dirname(__file__))</div><div class="line">thrift_path = os.path.join(dir_path, &apos;ability.thrift&apos;)</div><div class="line"></div><div class="line"># 导入thrift文件</div><div class="line">ability_thrift = thriftpy.load(thrift_path, module_name=&quot;ability_thrift&quot;)</div><div class="line"># 创建socket</div><div class="line">server_socket = TServerSocket(host=THRIFT_HOST, port=THRIFT_PORT, client_timeout=None)</div><div class="line"># 创建thrift的主应用，这里的应用可以为多个服务注册多个处理器</div><div class="line">thrift_app = TMultiplexedProcessor()</div><div class="line"></div><div class="line"># 为每个服务创建处理器</div><div class="line">calc_processor = TProcessor(ability_thrift.Calc, CalcAbility())</div><div class="line">read_processor = TProcessor(ability_thrift.Read, ReadAbility())</div><div class="line"></div><div class="line"># 在thrift主应用中注册这些处理器</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Calc&apos;, calc_processor)</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Read&apos;, read_processor)</div></pre></td></tr></table></figure>
+<p>这样就创建了一个thrift应用，然后需要指定服务器，这里我们使用<code>gunicorn_thrift</code>，其实thriftpy里面有许多简单的服务器，比如单线程服务器，多线程服务器，但是这些服务器并不能满足生产需要。</p>
+<p>启动gunicorn服务器：<code>gunicorn_thrift thrift_abi:thrift_app -k thriftpy_sync --thrift-protocol-factory thriftpy.protocol:TJSONProtocolFactory --thrift-transport-factory thriftpy.transport:TBufferedTransportFactory</code></p>
+<p><code>-k</code>参数指定是同步还是异步，另外需要指定协议和传输方式</p>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>客户端就比较容易了，只需要导入thrift文件，并且根据协议和传输方式创建客户端就行了，然后客户端就可以远程调用服务器的方法函数了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">from thriftpy.protocol import TJSONProtocolFactory, TMultiplexedProtocolFactory</div><div class="line">from thriftpy.transport import TBufferedTransportFactory</div><div class="line">from thriftpy.rpc import make_client</div><div class="line"></div><div class="line"></div><div class="line">ability_thrift = thriftpy.load(&quot;ability.thrift&quot;, module_name=&quot;ability_thrift&quot;)</div><div class="line">client = make_client(ability_thrift.Calc, &apos;127.0.0.1&apos;, 5004, proto_factory=TMultiplexedProtocolFactory(TJSONProtocolFactory(), &apos;ability_thrift.Calc&apos;), trans_factory=TBufferedTransportFactory())</div><div class="line">client.tdx_ability()</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>thrift的使用是比直接HTTP请求要麻烦一点，并且如果服务器要改动函数签名，就需要更改thrift文件，并且客户端也需要同步，并且修改签名，但是这样的方式在微服务架构中带来的性能提升是很大的，值得作出这样的改变。</p>
+<h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节将对thriftpy中的核心组件进行解析。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/02/thriftpy_1_introduction/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/08/01/翻译 - Easy in-place file rewriting/" >翻译 - Easy in-place file rewriting</a>
 		</h3>
 		</div>
@@ -964,95 +1012,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/04/25/docker安装和使用/" >Docker安装和使用</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-04-25 12:07:19  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="Ubuntu安装Docker"><a href="#Ubuntu安装Docker" class="headerlink" title="Ubuntu安装Docker"></a>Ubuntu安装Docker</h1><ol>
-<li><code>sudo apt-get install docker</code></li>
-<li><code>sudo apt-get install docker.io</code></li>
-<li><p>将当前用户加入到docker用户组中</p>
-<ul>
-<li><code>sudo gpasswd -a ${User} docker</code></li>
-<li>重新登陆shell，就可以使用docker了</li>
-</ul>
-</li>
-</ol>
-<h1 id="MacBook安装Docker"><a href="#MacBook安装Docker" class="headerlink" title="MacBook安装Docker"></a>MacBook安装Docker</h1><ol>
-<li><code>brew install docker</code></li>
-<li><code>brew install docker-machine</code></li>
-<li>下载安装<code>virtual box</code>，<a href="http://sw.bos.baidu.com/sw-search-sp/software/b727d97ca62/VirtualBox_mac_5.0.24.dmg" target="_blank" rel="external">下载地址</a></li>
-<li>初始化 Virtual Box 的 default 虚拟机 <code>docker-machine create --driver virtualbox default</code></li>
-<li>下载最新的boot2docker，<a href="https://github.com/boot2docker/boot2docker/releases" target="_blank" rel="external">下载地址</a>。上一步会自动下载，但是可能比较慢。</li>
-<li>将boot2docker.iso 放在<code>/Users/kevin/.docker/machine/cache</code>目录下，然后执行第四步的命令就会自动使用cache进行安装了。</li>
-<li>初始化环境变量：显示宿主机需要为 default 虚拟机设置的环境变量的指令 <code>docker-machine env default</code>，然后将在宿主机中设置相应的环境变量。<code>eval $(docker-machine env default)</code></li>
-</ol>
-<h1 id="使用Docker"><a href="#使用Docker" class="headerlink" title="使用Docker"></a>使用Docker</h1><p>docker内时区不对：<code>sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</code></p>
-<p>Docker可以支持把一个宿主机上的目录挂载到镜像里。通过<code>-v</code>参数，冒号前为宿主机目录，必须为绝对路径，冒号后为镜像内挂载的路径。</p>
-<p><code>docker run -it -v /home/dock/Downloads:/usr/Downloads ubuntu64 /bin/bash</code></p>
-<p>对于战斗力：<code>docker run -d --name=ability_t0_citic --net=host -p 5001:5001 -v /home/lindyang/ability/data:/opt/ability/data -it ability:170425</code></p>
-<p>打包<code>tar -czf small.tar.gz small</code> (目录名), 压缩并打包目录</p>
-<p>解压<code>tar -xzvf ***.tar.gz</code></p>
-<p>向docker内部传递文件：<code>cat posi_data_source.tar.gz | docker exec -i ability_citic bash -c &quot;cat &gt; /opt/ability/posi_data_source.tar.gz&quot;</code></p>
-<ul>
-<li>查看镜像： <code>docker images</code></li>
-<li>进入docker <code>docker run -it somebox bash</code></li>
-<li>查看docker运行状态：<code>docker ps -a</code></li>
-</ul>
-<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>一个简单的dockerfile</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">FROM</div><div class="line"> ubuntu:14.04</div><div class="line">USER</div><div class="line"> root</div><div class="line">RUN</div><div class="line"> apt-get install-y</div><div class="line"> apache2</div><div class="line">EXPOSE</div><div class="line"> 80</div></pre></td></tr></table></figure>
-<ul>
-<li>FROM 基于哪个镜像</li>
-<li>RUN 安装软件使用</li>
-<li>MAINTAINER 镜像创建者</li>
-<li>CMD container启动时候执行的命令，dockerfile只能有一个cmd命令，多条就执行最后一条</li>
-<li>USER 使用哪个用户跑container</li>
-<li>EXPOSE container内部服务开启的端口，主机要用的时候要做端口映射，即-p参数</li>
-<li>ENV 用于设置环境变量</li>
-<li>ADD 将文件拷贝到container的文件系统对应的路径</li>
-<li>WORKDIR 切换目录</li>
-</ul>
-<p>一个dockerfile示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">FROM ubuntu:16.04</div><div class="line">MAINTAINER DongWeiming &lt;ciici123@gmail.com&gt;</div><div class="line">ENV DEBIAN_FRONTEND noninteractive</div><div class="line">RUN echo &apos;deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse&apos; &gt; /etc/apt/sources.list</div><div class="line">RUN apt-get update</div><div class="line">RUN apt-get install python curl git zsh sudo vim -yq</div><div class="line">RUN useradd -ms /bin/bash ubuntu</div><div class="line">RUN echo &quot;ubuntu ALL=(ALL) NOPASSWD: ALL&quot;  &gt;&gt; /etc/sudoers</div><div class="line">RUN echo &quot;ubuntu:ubuntu&quot; | chpasswd</div><div class="line">USER ubuntu</div><div class="line">workdir /home/ubuntu</div><div class="line">RUN git clone https://github.com/dongweiming/web_develop</div><div class="line">RUN cd /home/ubuntu/web_develop</div><div class="line">EXPOSE 9000 3141 22 5000</div></pre></td></tr></table></figure>
-<p>从dockerfile构建镜像：<code>docker build -t ability:170423 ./</code></p>
-<h2 id="加载镜像，启动容器"><a href="#加载镜像，启动容器" class="headerlink" title="加载镜像，启动容器"></a>加载镜像，启动容器</h2><p>运行参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-P 默认匹配docker容器的5000端口号到宿主机的49153 to 65535端口，相当于随机分配端口号，</div><div class="line">-p就是绑定特定端口号, 5001:5001指的是default虚拟机到容器的端口映射，相当于外部和容器都使用5001端口，在linux上，就是linux系统到容器的端口映射</div><div class="line">-d 以守护进行方式运行，后台</div><div class="line">-D 开启Debug模式</div></pre></td></tr></table></figure>
-<p>示例： <code>docker run -d --name=ability -p 5001:5001 --net=host -it ability:170324</code></p>
-<h2 id="将修改了的container提交成新的image"><a href="#将修改了的container提交成新的image" class="headerlink" title="将修改了的container提交成新的image"></a>将修改了的container提交成新的image</h2><p><code>docker commit container repository:tag</code>，然后就可以将新的image导出放在其他地方使用。commit命令仅是一个临时创建Imange的辅助命令。不过最好是应该修复image的问题之后，修改源码的问题，也就是应该写一个新的Dockerfile文件来维护此Image。</p>
-<h2 id="将容器内的文件复制到host主机上"><a href="#将容器内的文件复制到host主机上" class="headerlink" title="将容器内的文件复制到host主机上"></a>将容器内的文件复制到host主机上</h2><p>示例：<code>docker cp container:path hostpath</code></p>
-<h2 id="加载导出镜像"><a href="#加载导出镜像" class="headerlink" title="加载导出镜像"></a>加载导出镜像</h2><p>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker save -o some.image some:latest</div><div class="line">docker load -i ./some.image</div></pre></td></tr></table></figure>
-<h2 id="导入导出镜像"><a href="#导入导出镜像" class="headerlink" title="导入导出镜像"></a>导入导出镜像</h2><p>如果要导出本地某个容器，可以使用 docker export 命令，导出容器快照到本地文件<code>docker export container &gt; ubuntu.tar</code></p>
-<p>可以使用 docker import 从容器快照文件中再导入为镜像<code>cat ubuntu.tar | sudo docker import - test/ubuntu:v1.0</code></p>
-<p>也可以通过指定 URL 或者某个目录来导入<code>docker import http://example.com/exampleimage.tgz example/imagerepo</code></p>
-<p>用户既可以使用 docker load 来导入镜像存储文件到本地镜像库，也可以使用 docker import 来导入一个容器快照到本地镜像库。这两者的区别在于容器快照文件将丢弃所有的历史记录和元数据信息（即仅保存容器当时的快照状态），而镜像存储文件将保存完整记录，体积也要大。此外，从容器快照文件导入时可以重新指定标签等元数据信息。</p>
-<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>删除指定容器：<code>docker rm container</code></p>
-<p>删除指定的镜像: <code>docker rmi image</code></p>
-<h2 id="运行日志"><a href="#运行日志" class="headerlink" title="运行日志"></a>运行日志</h2><p><code>docker logs --tail=200 container</code></p>
-<p>image中每一层image命令行的历史记录<code>docker history image</code></p>
-
-	
-	</div>
-  <a type="button" href="/2017/04/25/docker安装和使用/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -1106,7 +1065,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>75</span></a></li>
+			<li><a href="/categories/编程/">编程<span>76</span></a></li>
 		
 		</ul>
 	</div>
@@ -1131,7 +1090,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>4</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>5</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -1171,6 +1130,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
       </li>
     
@@ -1184,10 +1147,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/12/go语言圣经_note_1/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记(1)</a>
       </li>
     
   </ul>
