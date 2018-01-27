@@ -138,6 +138,70 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/" >翻译 - use pytest-asyncio to test your coroutines</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-22 11:15:14  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自 <a href="https://stefan.sofa-rockers.org/2016/03/10/advanced-asyncio-testing/" target="_blank" rel="external">Advanced asyncio testing</a></p>
+<p>其实就是这个库的使用:<a href="https://github.com/pytest-dev/pytest-asyncio" target="_blank" rel="external">pytest-asyncio</a></p>
+<p>参考使用例子：<a href="https://github.com/Microndgt/aiossdb/tree/master/tests" target="_blank" rel="external">aiossdb</a></p>
+<p>上篇文章中，我展示了如何使用pytest的fixture系统和插件结构来帮助你写出更简洁和更好的测试。fixture允许你为每一个测试用例创建一个更清晰的事件循环实例。插件系统允许你将异步的协程作为测试用例。但是还有更方便的<code>pytest-asyncio</code>可以用来写测试用例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import time</div><div class="line"></div><div class="line">import pytest</div><div class="line"></div><div class="line">@pytest.mark.asyncio</div><div class="line">async def test_coro(event_loop):</div><div class="line">    before = time.monotonic()</div><div class="line">    await asyncio.sleep(0.1, loop=event_loop)</div><div class="line">    after = time.monotonic()</div><div class="line">    assert after - before &gt;= 0.1</div></pre></td></tr></table></figure>
+<p><code>event_loop</code>是内置的fixture，因此可以直接使用</p>
+<p>因此使用<code>pytest-asyncio</code>很好的提高了你的测试，并且还有更好用的</p>
+<p>其包含以下特性：</p>
+<ul>
+<li>创建和注入asyncio的事件循环的fixture</li>
+<li>注入未使用的tcp端口的fixture</li>
+<li>可以将测试用例标记为协程的markers</li>
+<li>非常容易的测试非默认事件循环</li>
+<li>支持定义异步fixture和异步生成器fixture</li>
+</ul>
+<h1 id="Fixtures"><a href="#Fixtures" class="headerlink" title="Fixtures"></a>Fixtures</h1><h2 id="event-loop"><a href="#event-loop" class="headerlink" title="event_loop"></a><code>event_loop</code></h2><p>创建并且注入一个默认异步事件循环的新实例，默认情况下，这个循环将在测试结束后关闭，也就是说默认的fixture范围是function级别的</p>
+<p>只用<code>event_loop</code>fixture是不会使得你的测试函数变成协程的，你必须和<code>event_loop</code>进行交互，使用<code>event_loop.run_until_complete</code>方法。</p>
+<p>或者使用<code>pytest.mark.asyncio</code>将测试函数变成协程，查看<code>pytest.mark.asyncio</code>是如何将测试函数当成协程来处理的。</p>
+<p>只是简单的使用这个<code>event_loop</code>不会将其变成全局的loop，必须使用<code>pytest.mark.asyncio</code>才可以，这样其他的fixture以及pytest来测试的事件循环就使用的是同一个全局loop，在一个测试中可能有多个fixture，这些fixture可能也使用loop，所以这样可以确保其fixtures都是使用的一个loop.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def test_http_client(event_loop):</div><div class="line">    url = &apos;http://httpbin.org/get&apos;</div><div class="line">    resp = event_loop.run_until_complete(http_client(url))</div><div class="line">    assert b&apos;HTTP/1.1 200 OK&apos; in resp</div></pre></td></tr></table></figure>
+<p>这个fixture可以在标准的pytest测试文件中被覆盖，比如直接在测试文件里，或者是<code>conftest.py</code>，定义一个自定义的事件循环。这样自定义的<code>event_loop</code>在测试中就会生效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@pytest.fixture()</div><div class="line">def event_loop():</div><div class="line">    loop = MyCustomLoop()</div><div class="line">    yield loop</div><div class="line">    loop.close()</div></pre></td></tr></table></figure>
+<p>如果使用了<code>pytest.mark.asyncio</code>，pytest的hook就会确保产生的loop会被作为默认的全局loop。依赖于<code>event_loop</code>的fixture就可以在运行的时候期望它们的loop被合适的修改为自定义的loop。</p>
+<h2 id="event-loop-process-pool"><a href="#event-loop-process-pool" class="headerlink" title="event_loop_process_pool"></a><code>event_loop_process_pool</code></h2><p><code>event_loop_process_pool</code>几乎和<code>event_loop</code>是一直的，除了创建的事件循环会将<code>concurrent.futures.ProcessPoolExecutor</code>作为默认的处理器。</p>
+<h2 id="unused-tcp-port"><a href="#unused-tcp-port" class="headerlink" title="unused_tcp_port"></a><code>unused_tcp_port</code></h2><p>查找并且产生一个没有用过的tcp端口，对于绑定一个临时的测试服务器是比较有用的。</p>
+<h2 id="unused-tcp-port-factory"><a href="#unused-tcp-port-factory" class="headerlink" title="unused_tcp_port_factory"></a><code>unused_tcp_port_factory</code></h2><p>在每次调用时候都会产生一个没有使用的tcp端口，在一个测试中要使用多个端口的情况比较有用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def a_test(unused_tcp_port_factory):</div><div class="line">    port1, port2 = unused_tcp_port_factory(), unused_tcp_port_factory()</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<h2 id="Async-fixtures"><a href="#Async-fixtures" class="headerlink" title="Async fixtures"></a><code>Async fixtures</code></h2><p>异步的fixture就和普通的pytest fixture一样定义，除了它们应该是协程或者异步的生成器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@pytest.fixture</div><div class="line">async def async_gen_fixture():</div><div class="line">    await asyncio.sleep(0.1)</div><div class="line">    # 同样，生成一个值，作为调用fixture结果</div><div class="line">    yield &apos;a value&apos;</div><div class="line"></div><div class="line">@pytest.fixture(scope=&apos;module&apos;)</div><div class="line">async def async_fixture():</div><div class="line">    return await asyncio.sleep(0.1)</div></pre></td></tr></table></figure>
+<p>所有的范围都支持，如果你需要使用一个不是函数级别的范围的话，你需要重新定义<code>event_loop</code>来获取更大的范围，异步的fixture需要事件循环，因此必须定义和<code>event_loop</code>一个一样的或者更窄的范围</p>
+<p>如果你想在Python 3.5中使用，<code>yield</code>语句必须用<code>await yield_()</code>来替换，并且协程函数必须使用<code>@async_generator</code>来替换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from async_generator import yield_, async_generator</div><div class="line"></div><div class="line">@pytest.fixture</div><div class="line">@async_generator</div><div class="line">async def async_gen_fixture():</div><div class="line">    await asyncio.sleep(0.1)</div><div class="line">    await yield_(&apos;a value&apos;)</div></pre></td></tr></table></figure>
+<h1 id="Markers"><a href="#Markers" class="headerlink" title="Markers"></a>Markers</h1><h2 id="pytest-mark-asyncio"><a href="#pytest-mark-asyncio" class="headerlink" title="pytest.mark.asyncio"></a><code>pytest.mark.asyncio</code></h2><p>使用这个marker来标记你的测试协程，然后pytest就会使用<code>event_loop</code>提供的事件循环来运行你的异步测试函数。</p>
+<p>可以将<code>event_loop</code>覆盖来使用新的事件循环（参考上面）</p>
+<p>为了让你的测试代码更加简洁，<code>pytestmark</code>特性可以用来将整个的模块或者类来使用这个标记。只有测试协程会被影响，默认的协程应该以<code>test_</code>为前缀，因此，fixtures是可以安全定义的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import asyncio</div><div class="line">import pytest</div><div class="line"></div><div class="line"># All test coroutines will be treated as marked.</div><div class="line">pytestmark = pytest.mark.asyncio</div><div class="line"></div><div class="line">async def test_example(event_loop):</div><div class="line">    &quot;&quot;&quot;No marker!&quot;&quot;&quot;</div><div class="line">    await asyncio.sleep(0, loop=event_loop)</div></pre></td></tr></table></figure>
+<h2 id="pytest-mark-asyncio-process-pool"><a href="#pytest-mark-asyncio-process-pool" class="headerlink" title="pytest.mark.asyncio_process_pool"></a><code>pytest.mark.asyncio_process_pool</code></h2><p><code>asyncio_process_pool</code>和<code>asyncio</code> marker是基本一致的，除了事件循环会使用<code>concurrent.futures.ProcessPoolExecutor</code>作为默认的处理器。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/08/21/翻译 - unittest.mock — mock object library/" >翻译 - unittest.mock — mock object library</a>
 		</h3>
 		</div>
@@ -708,39 +772,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/03/Flask应用在Celery中使用current_app的思考/" >Flask应用在Celery中使用current_app的思考</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-03 16:29:40  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>写应用的时候遇到这样的一个问题，定义的celery task中无法使用<code>current_app</code>，并且有时候会出现pop wrong app context。</p>
-<p>这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的时候，根本就没有app这一系列东西，所以上下文栈就是空的，因此就不能使用app，以及<code>app.logger</code>了。</p>
-<p>知道这一点之后，就在celery的task调用的时候加上了<code>with app.app_context():</code>，但是有时候task执行出错的时候，或者运行完成的时候就会出现，<code>AssertionError(&#39;Popped wrong app context.  (&lt;flask.ctx.AppContext object at 0x7f4e1ed56d30&gt; instead of &lt;flask.ctx.AppContext object at 0x7f4e1f02c7f0&gt;)&#39;,)</code>，这个问题后来找到可能的原因是，多个celery worker执行的时候会创建多个app实例，并且对于一个进程的上下文栈进行了多次的上下文进栈，在发生错误的时候，就会导致出栈的上下文混乱。</p>
-<p>最后的解决方案是，给celery的Task类做猴子补丁，在调用task的时候，只使用唯一的app实例（对于每个进程来讲，上下文栈是不同的）进行上下文切换。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def make_celery(app):</div><div class="line">    celery = Celery(&apos;backend&apos;, broker=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB),</div><div class="line">                    backend=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB))</div><div class="line">    TaskBase = celery.Task</div><div class="line"></div><div class="line">    class ContextTask(TaskBase):</div><div class="line">        abstract = True</div><div class="line"></div><div class="line">        def __call__(self, *args, **kwargs):</div><div class="line">            with app.app_context():</div><div class="line">                return TaskBase.__call__(self, *args, **kwargs)</div><div class="line"></div><div class="line">    celery.Task = ContextTask</div><div class="line">    return celery</div></pre></td></tr></table></figure>
-<p>这样就可以开心的在celery的task里面使用<code>current_app</code>了</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/03/Flask应用在Celery中使用current_app的思考/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -794,7 +825,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>76</span></a></li>
+			<li><a href="/categories/编程/">编程<span>77</span></a></li>
 		
 		</ul>
 	</div>
@@ -819,7 +850,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>5</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>6</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -859,6 +890,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
       </li>
     
@@ -872,10 +907,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
       </li>
     
   </ul>

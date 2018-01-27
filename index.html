@@ -138,6 +138,62 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2018/01/27/arp地址解析协议/" >ARP 地址解析协议</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2018-01-27 08:59:30  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>当传送一个数据报的时候，会通过目的IP地址在IP路由表中进行选路，选择下一站的IP地址，但是在IP数据报中真正的目的IP地址不会变化，选出来的下一站IP地址只是会将数据报暂时的发送到这一站，而如何通过这个IP地址来发送数据呢。这就需要ARP地址解析协议了，通过ARP地址解析协议，就可以知道该IP地址对应的物理地址，这样就可以将IP数据报封装在一个以太网帧中，进而发送到下一站。</p>
+<p>所以地址解析为这两种不同的地址形式提供映射：32bit的IP地址和数据链路层使用的任何类型的地址(物理地址)。ARP为IP地址到对应的硬件地址之间提供了动态映射。因为内核(以太网驱动程序)必须知道目的端的硬件地址才能发送数据。</p>
+<h1 id="ARP高速缓存"><a href="#ARP高速缓存" class="headerlink" title="ARP高速缓存"></a>ARP高速缓存</h1><p>每个主机上都有一个ARP高速缓存，这个缓存存放了最近Internet地址到硬件地址之间的映射记录，每一项的生存时间一般是20分钟。执行<code>arp -a</code>查看所有的缓存记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">? (192.168.1.1) at 6c:e8:73:ae:d0:1a on en0 ifscope [ethernet]</div><div class="line">? (224.0.0.251) at 1:0:5e:0:0:fb on en0 ifscope permanent [ethernet]</div></pre></td></tr></table></figure>
+<h1 id="ARP分组格式"><a href="#ARP分组格式" class="headerlink" title="ARP分组格式"></a>ARP分组格式</h1><ul>
+<li>以太网目的地址：一般是全1，表示广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
+<li>以太网源地址：</li>
+<li>以太网帧类型：表示后面数据的类型，是ARP还是RARP</li>
+<li>硬件类型：表示硬件地址的类型，1表示以太网地址</li>
+<li>协议类型：表示要映射的协议地址类型，比如IP地址</li>
+<li>硬件地址长度：以太网地址是6</li>
+<li>协议地址长度：IP地址是4 字节</li>
+<li>操作字段：1 ARP, 2 ARP应答, 3 RARP, 4 RARP应答</li>
+<li>发送端以太网地址：</li>
+<li>发送端IP地址</li>
+<li>目的以太网地址：发送请求时该字段没有值，当发送ARP应答的时候，这里是ARP请求中的发送端以太网地址，而发送端就是本机的以太网地址</li>
+<li>目的IP地址</li>
+</ul>
+<h1 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h1><p>如果ARP请求是从一个网络的主机发送到另一个网络的主机，那么链接这两个网络的路由器就可以回答这个请求，这个过程称为委托ARP或者ARP代理，路由器的功能就相当于目的主机的代理，把分组从其他主机转发给它。</p>
+<p>通过两个物理网络之间的路由器可以互相隐藏物理网络，在这种情况下，两个物理网络可以使用相同的网络号，只要把中间的路由器设置为一个ARP代理，以响应一个网络到另一个网络主机的ARP请求。</p>
+<h1 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h1><p>主机发送ARP查询自己的IP地址，发生在系统引导期间进行接口配置的时候。</p>
+<p>两个作用：</p>
+<ol>
+<li>可以通过它来确定另一个主机是否设置了相同的IP地址</li>
+<li>如果发送免费ARP的主机正好改变了硬件地址，那么这样的ARP请求可以使得其他主机上的高速缓存得以更新。</li>
+</ol>
+<h1 id="RARP-逆地址解析协议"><a href="#RARP-逆地址解析协议" class="headerlink" title="RARP 逆地址解析协议"></a>RARP 逆地址解析协议</h1><p>无盘系统的RAPR实现是从接口卡中读取硬件地址，然后发送一份RARP请求，请求某个RARP服务器来响应该无盘系统的IP地址。</p>
+<p>RARP请求是以广播方式发送，RARP应答是以单播方式发送。在请求的时候表明发送端的硬件地址，以请求IP地址的响应。因为RARP使用的是链路层广播，所以阻止了大多数路由器转发RARP请求，只返回很少的信息，只是系统的IP地址。</p>
+<h2 id="RARP服务器"><a href="#RARP服务器" class="headerlink" title="RARP服务器"></a>RARP服务器</h2><p>一个RARP服务器要为多个主机提供从硬件地址到IP地址的映射，映射一般存放在磁盘文件中，但是内核一般不读取和分析磁盘文件，因此RARP服务器的功能就由用户进程来实现，而不是作为内核的TCP/IP一部分。而且RARP请求是作为一个特殊类型的以太网数据帧来传送的，说明RARP服务器必须能够发送和接收这种类型的以太网数据帧。</p>
+
+	
+	</div>
+  <a type="button" href="/2018/01/27/arp地址解析协议/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2018/01/25/IP网际协议/" >IP 网际协议</a>
 		</h3>
 		</div>
@@ -817,137 +873,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/12/15/shortcut/" >快捷键大全 - Mac</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-12-15 23:57:57  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>仅列出自己觉得有用并且常用的快捷键</p>
-<h1 id="Mac中的快捷键"><a href="#Mac中的快捷键" class="headerlink" title="Mac中的快捷键"></a>Mac中的快捷键</h1><h2 id="常用"><a href="#常用" class="headerlink" title="常用"></a>常用</h2><ul>
-<li><code>command + q</code> 退出程序</li>
-<li><code>command + ,</code> 程序的偏好设置</li>
-<li><code>shift + command + 3</code> 全部截屏</li>
-<li><code>shift + command + 4</code> 选取截屏</li>
-<li><code>shift + command + 4 + space</code> 截取选择窗口</li>
-<li><code>command + r</code> 刷新</li>
-<li><code>ctrl + tab</code> 在应用程序标签页中切换</li>
-<li><code>command + 1/2/3</code> 在有标签页的程序中都可以用</li>
-<li><code>command + d</code> 收藏页面</li>
-<li><p><code>command + delete</code> 删除文件</p>
-</li>
-<li><p><code>command + h</code> 隐藏最前面应用的窗口</p>
-</li>
-<li><code>command + option + h</code> 隐藏后面应用窗口</li>
-<li><code>command + m</code> 将目前窗口最小化</li>
-<li><code>command + shift + s</code>另存为</li>
-<li><code>command + control + 空格</code> 调出emoji表情</li>
-<li><code>command + shift + delete</code> 清空回收站，这个还是慎重!</li>
-</ul>
-<h2 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h2><ul>
-<li><code>command + k</code> 清屏</li>
-<li><code>command + d</code> 垂直分割，一样的内容</li>
-<li><code>shift + command + d</code> 关闭垂直分页</li>
-<li><code>ctrl + u</code> 向前全部删除</li>
-<li><code>ctrl + k</code> 向后全部删除</li>
-<li><code>ctrl + d</code> 向后删除一个字符</li>
-<li><code>ctrl + p</code> 调出历史的前一条记录</li>
-<li><code>ctrl + n</code> 调出历史的下一条记录</li>
-<li><code>ctrl + r</code> 递归搜索</li>
-</ul>
-<h1 id="VSCode"><a href="#VSCode" class="headerlink" title="VSCode"></a>VSCode</h1><h2 id="基本控制"><a href="#基本控制" class="headerlink" title="基本控制"></a>基本控制</h2><ul>
-<li><code>shift + command + p</code> 打开命令面板</li>
-<li><code>command + p</code> 快速打开，在其中输入<code>&gt;</code>就可以到命令面板</li>
-<li><code>shift + command + n</code> 新建窗口</li>
-<li><code>command + w</code> 关闭文件窗口</li>
-<li><code>shift + command + w</code> 关闭窗口</li>
-<li><code>shift + command + c</code> 打开外部shell</li>
-<li><code>ctrl + r</code> 切换工作区(项目)</li>
-<li><code>command + k + commad + s</code> 打开键盘快捷方式设置</li>
-</ul>
-<h2 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h2><ul>
-<li><code>alt + 上/下</code> 移动一行</li>
-<li><code>shift + alt + 上/下</code> 复制一行</li>
-<li><code>shift + command + k</code> 删除当前行</li>
-<li><code>command + enter</code> 下一行插入</li>
-<li><code>shift + command + enter</code> 上一行插入</li>
-<li><code>command + [/]</code> 缩进，反缩进</li>
-<li><code>command + 上/下</code> 文档首，尾</li>
-<li><code>command + 左/右</code> 行首，尾</li>
-<li><code>shift + command + 左/右</code> 选择光标左边或者右边的文本</li>
-<li><code>shift + command + 上/下</code> 选择光标上面或者下面的文本</li>
-<li><code>shift + alt + 左/右</code> 选择光标左边或者右边的单词</li>
-<li><code>command + /</code> 行注释</li>
-<li><code>shift + alt + a</code> 块注释，这个挺有用的</li>
-<li><code>command + I</code> 选择当前行</li>
-<li><code>ctrl + d</code> 向后删除一个字符</li>
-<li><code>ctrl + k</code> 删除右面所有内容 </li>
-<li><code>ctrl + u</code> 删除左面所有内容</li>
-<li><code>ctrl + a</code> 行首</li>
-<li><code>ctrl + e</code> 行尾</li>
-<li><code>command + k + command + 0</code> 全部折叠</li>
-<li><code>command + k + command + j</code> 全部展开</li>
-<li><code>command + k + command + ]</code> 递归的局部展开</li>
-<li><code>command + k + command + [</code> 递归的局部折叠</li>
-</ul>
-<h2 id="多选"><a href="#多选" class="headerlink" title="多选"></a>多选</h2><ul>
-<li><code>alt + click</code> 插入光标，有选择性的多选光标</li>
-<li><code>alt + command + 上/下</code> 在上面或者下面增加光标</li>
-<li><code>command + d</code> 同样的单词多选，一个个选中</li>
-<li><code>shift + command + l</code> 所有的匹配项都选中</li>
-</ul>
-<h2 id="搜索替换"><a href="#搜索替换" class="headerlink" title="搜索替换"></a>搜索替换</h2><ul>
-<li><code>alt + command + f</code> 替换</li>
-<li><code>command + g</code> 下一个</li>
-<li><code>shift + command + g</code> 上一个</li>
-<li><code>alt + enter</code> 选择所有查找项</li>
-</ul>
-<h2 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h2><ul>
-<li><code>control + g</code> 跳到第几行</li>
-<li><code>control + -</code> 后退</li>
-<li><code>shift + control + -</code> 前进</li>
-</ul>
-<h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><ul>
-<li><code>command + \</code> 切分窗口</li>
-<li><code>ctrl + tab</code> 文件窗口切换</li>
-<li><code>shift + command + [/]</code> 切换文件选项卡</li>
-<li><code>command + 2/1/3</code> 开始或者切换第二个(同样)文件窗口</li>
-</ul>
-<h2 id="显示"><a href="#显示" class="headerlink" title="显示"></a>显示</h2><ul>
-<li><code>control + command + F</code> 全屏</li>
-<li><code>command + b</code> 显示或者不显示侧边栏</li>
-<li><code>shift + command + e</code> 显示资源管理器</li>
-<li><code>command + enter</code> 在文件上敲击这个，会打开文件，直接enter修改名字</li>
-<li><code>shift + command + x</code> 显示扩展</li>
-<li><code>shift + command + d</code> 显示调试</li>
-<li><code>ctrl + shift + g</code> 显示git</li>
-<li><code>shift + command + U</code> 显示输出 再次按就消失</li>
-<li><code>shift + command + f</code> 显示全局搜索</li>
-<li><code>control + ·</code> 打开集成终端 再次按就消失</li>
-</ul>
-<h1 id="VSCode的Python配置"><a href="#VSCode的Python配置" class="headerlink" title="VSCode的Python配置"></a>VSCode的Python配置</h1><p>配合conda来进行环境的管理，比如一个项目cat, 可以<code>conda create -n cat python=3.6</code>创建虚拟环境，然后<code>shift+command+p</code>，输入<code>python: select interpreter</code>来选择刚才配置的虚拟环境，这样就会在项目下面生成一个<code>.vscode</code>，不过这个需要加入<code>.gitignore</code>。</p>
-<p>这样<code>f5</code>就可以开始调试了, <code>shift+command+d</code>开启调试页面，可以看到调试变量。另外在终端也可以键入<code>source activate cat</code>启动虚拟环境，进行<code>pip</code>等管理或者运行。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/12/15/shortcut/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -1001,7 +926,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>76</span></a></li>
+			<li><a href="/categories/编程/">编程<span>77</span></a></li>
 		
 		</ul>
 	</div>
@@ -1026,7 +951,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>5</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>6</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -1066,6 +991,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
       </li>
     
@@ -1079,10 +1008,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
       </li>
     
   </ul>

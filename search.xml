@@ -3,6 +3,55 @@
   
     
     <entry>
+      <title><![CDATA[ARP 地址解析协议]]></title>
+      <url>/2018/01/27/arp%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE/</url>
+      <content type="html"><![CDATA[<p>当传送一个数据报的时候，会通过目的IP地址在IP路由表中进行选路，选择下一站的IP地址，但是在IP数据报中真正的目的IP地址不会变化，选出来的下一站IP地址只是会将数据报暂时的发送到这一站，而如何通过这个IP地址来发送数据呢。这就需要ARP地址解析协议了，通过ARP地址解析协议，就可以知道该IP地址对应的物理地址，这样就可以将IP数据报封装在一个以太网帧中，进而发送到下一站。</p>
+<p>所以地址解析为这两种不同的地址形式提供映射：32bit的IP地址和数据链路层使用的任何类型的地址(物理地址)。ARP为IP地址到对应的硬件地址之间提供了动态映射。因为内核(以太网驱动程序)必须知道目的端的硬件地址才能发送数据。</p>
+<h1 id="ARP高速缓存"><a href="#ARP高速缓存" class="headerlink" title="ARP高速缓存"></a>ARP高速缓存</h1><p>每个主机上都有一个ARP高速缓存，这个缓存存放了最近Internet地址到硬件地址之间的映射记录，每一项的生存时间一般是20分钟。执行<code>arp -a</code>查看所有的缓存记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">? (192.168.1.1) at 6c:e8:73:ae:d0:1a on en0 ifscope [ethernet]</div><div class="line">? (224.0.0.251) at 1:0:5e:0:0:fb on en0 ifscope permanent [ethernet]</div></pre></td></tr></table></figure>
+<h1 id="ARP分组格式"><a href="#ARP分组格式" class="headerlink" title="ARP分组格式"></a>ARP分组格式</h1><ul>
+<li>以太网目的地址：一般是全1，表示广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
+<li>以太网源地址：</li>
+<li>以太网帧类型：表示后面数据的类型，是ARP还是RARP</li>
+<li>硬件类型：表示硬件地址的类型，1表示以太网地址</li>
+<li>协议类型：表示要映射的协议地址类型，比如IP地址</li>
+<li>硬件地址长度：以太网地址是6</li>
+<li>协议地址长度：IP地址是4 字节</li>
+<li>操作字段：1 ARP, 2 ARP应答, 3 RARP, 4 RARP应答</li>
+<li>发送端以太网地址：</li>
+<li>发送端IP地址</li>
+<li>目的以太网地址：发送请求时该字段没有值，当发送ARP应答的时候，这里是ARP请求中的发送端以太网地址，而发送端就是本机的以太网地址</li>
+<li>目的IP地址</li>
+</ul>
+<h1 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h1><p>如果ARP请求是从一个网络的主机发送到另一个网络的主机，那么链接这两个网络的路由器就可以回答这个请求，这个过程称为委托ARP或者ARP代理，路由器的功能就相当于目的主机的代理，把分组从其他主机转发给它。</p>
+<p>通过两个物理网络之间的路由器可以互相隐藏物理网络，在这种情况下，两个物理网络可以使用相同的网络号，只要把中间的路由器设置为一个ARP代理，以响应一个网络到另一个网络主机的ARP请求。</p>
+<h1 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h1><p>主机发送ARP查询自己的IP地址，发生在系统引导期间进行接口配置的时候。</p>
+<p>两个作用：</p>
+<ol>
+<li>可以通过它来确定另一个主机是否设置了相同的IP地址</li>
+<li>如果发送免费ARP的主机正好改变了硬件地址，那么这样的ARP请求可以使得其他主机上的高速缓存得以更新。</li>
+</ol>
+<h1 id="RARP-逆地址解析协议"><a href="#RARP-逆地址解析协议" class="headerlink" title="RARP 逆地址解析协议"></a>RARP 逆地址解析协议</h1><p>无盘系统的RAPR实现是从接口卡中读取硬件地址，然后发送一份RARP请求，请求某个RARP服务器来响应该无盘系统的IP地址。</p>
+<p>RARP请求是以广播方式发送，RARP应答是以单播方式发送。在请求的时候表明发送端的硬件地址，以请求IP地址的响应。因为RARP使用的是链路层广播，所以阻止了大多数路由器转发RARP请求，只返回很少的信息，只是系统的IP地址。</p>
+<h2 id="RARP服务器"><a href="#RARP服务器" class="headerlink" title="RARP服务器"></a>RARP服务器</h2><p>一个RARP服务器要为多个主机提供从硬件地址到IP地址的映射，映射一般存放在磁盘文件中，但是内核一般不读取和分析磁盘文件，因此RARP服务器的功能就由用户进程来实现，而不是作为内核的TCP/IP一部分。而且RARP请求是作为一个特殊类型的以太网数据帧来传送的，说明RARP服务器必须能够发送和接收这种类型的以太网数据帧。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 计算机网络 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[IP 网际协议]]></title>
       <url>/2018/01/25/IP%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE/</url>
       <content type="html"><![CDATA[<h1 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h1><p>首先说一说IP地址，IP地址由4字节32bit构成，可以分为5类，A,B,C,D,E</p>
@@ -820,6 +869,11 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">from traitlets import HasTraits, TraitError, Int, Bool, validate</div><div class="line"></div><div class="line">class Parity(HasTraits):</div><div class="line">    value = Int()</div><div class="line">    parity = Int()</div><div class="line"></div><div class="line">    @validate(&apos;value&apos;)</div><div class="line">    def _valid_value(self, proposal):</div><div class="line">        # 期望的值</div><div class="line">        if proposal[&apos;value&apos;] % 2 != self.parity:</div><div class="line">            raise TraitError(&apos;value and parity should be consistent&apos;)</div><div class="line">        return proposal[&apos;value&apos;]</div><div class="line"></div><div class="line">    @validate(&apos;parity&apos;)</div><div class="line">    def _valid_parity(self, proposal):</div><div class="line">        parity = proposal[&apos;value&apos;]</div><div class="line">        if parity not in [0, 1]:</div><div class="line">            raise TraitError(&apos;parity should be 0 or 1&apos;)</div><div class="line">        if self.value % 2 != parity:</div><div class="line">            raise TraitError(&apos;value and parity should be consistent&apos;)</div><div class="line">        return proposal[&apos;value&apos;]</div><div class="line"></div><div class="line">parity_check = Parity(value=2)</div><div class="line">with parity_check.hold_trait_notifications():</div><div class="line">    parity_check.value = 1</div><div class="line">    parity_check.parity = 1</div></pre></td></tr></table></figure>
 <p>当<code>hold_trait_notifications</code>上下文管理器被释放的时候，如果有验证错误发生，那么改变就会恢复到最初的状态。</p>
 <p>最后，trait类型可以有除了trait改变之外其他的事件。在一个类中如果有值的改变那么就可以触发通知。</p>
+<h1 id="Instance"><a href="#Instance" class="headerlink" title="Instance"></a>Instance</h1><p><code>class traitlets.Instance(klass=None, args=None, kw=None, **kwargs)</code></p>
+<p>A trait whose value must be an instance of a specified class.</p>
+<p>The value can also be an instance of a subclass of the specified class.</p>
+<p>Subclasses can declare default classes by overriding the klass attribute</p>
+<h1 id="Config"><a href="#Config" class="headerlink" title="Config"></a>Config</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class Config(dict):</div><div class="line">    &quot;&quot;&quot;An attribute based dict that can do smart merges.&quot;&quot;&quot;</div></pre></td></tr></table></figure>
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>关于Traitlets就先总结于此，若有更深入的再补充。</p>
 ]]></content>
       

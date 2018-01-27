@@ -138,6 +138,167 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/10/07/IO模型/" >IO模型</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-07 11:11:11  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>最近对IO模型做了深入的学习，参考书籍的章节如下：</p>
+<blockquote>
+<p>Unix系统编程手册 上 2.5节，4，5章<br>Unix系统编程手册 下 63章<br>Unix环境高级编程 3，5，14章</p>
+</blockquote>
+<p>首先最基本的是文件IO模型，在这里引出了文件描述符的概念，常用的文件IO函数以及相关的操作文件描述符的函数，比较重要的就是<code>fcntl</code>。基本的文件IO模型都是阻塞型的并且是不带缓冲的，后面就介绍了标准IO模型，即带缓冲的IO模型，也就是在内核进行系统调用再封装了一层缓冲区，并且引入了流的概念。在后面引入了非阻塞型IO模型，以及IO多路复用，比如select，poll，epoll，最后介绍了异步IO模型。</p>
+<h1 id="文件IO模型"><a href="#文件IO模型" class="headerlink" title="文件IO模型"></a>文件IO模型</h1><p>基本的文件IO函数是不带缓冲的IO，即每个read和write都调用内核中的一个系统调用，即直接在内核中运行。</p>
+<p>常用的文件IO函数有<code>open()</code>, <code>close()</code>, <code>lseek()</code>, <code>read()</code>, <code>write()</code></p>
+<h2 id="read系统调用"><a href="#read系统调用" class="headerlink" title="read系统调用"></a>read系统调用</h2><p><code>ssize_t read(int fd, void *buf, size_t nbytes)</code></p>
+<p>如果read成功，则返回读到的字节数，如果已经到达文件的尾端，则返回0。这里的buf是应用程序自己的buffer，实际对文件进行写操作的时候，都会写到内核的缓冲存储器中，然后延迟写。基本上这里的buf和缓冲不是一个概念，这里只是规定了从哪里读或者从哪里写，本质上就是一块存放数据的内存区域。写的时候还是直接对内核的缓冲区进行操作，但是标准IO模型就是在系统调用的上层多了一个缓冲区，所以不带缓冲的IO是对文件描述符进行操作，而带缓冲的标准IO是针对流的。</p>
+<p>系统调用不会分配内存缓冲区用以返回信息给调用者，必须预先分配大小合适的缓冲区并且将缓冲区指针传递给系统调用。比如<code>char buf[BUF_SIZE];</code></p>
+<h2 id="write系统调用"><a href="#write系统调用" class="headerlink" title="write系统调用"></a>write系统调用</h2><p><code>ssize_t write(int fd, const void *buf, size_t nbytes)</code></p>
+<p>其返回值通常与参数nbytes的值相同，否则表示出错。出错的一个常见原因就是磁盘已经写满，或者超过了一个给定进程的文件长度限制。</p>
+<h2 id="IO预读与延迟写"><a href="#IO预读与延迟写" class="headerlink" title="IO预读与延迟写"></a>IO预读与延迟写</h2><p>预读：当检测到正进行顺序读取时候，系统就试图读入比应用所要求的更多数据，并且假想应用会很快读取这些数据。</p>
+<p>延迟写：内核中设有缓冲区高速缓存或者页高速缓存，大多数磁盘IO都通过缓冲区进行，向文件中写入数据的时候，内核通常先将数据复制到缓冲区中，然后排入队列，晚些时候再写入磁盘。当内核需要重用缓冲区来存放其他磁盘块数据时候，就会将所有延迟写的数据写入磁盘。</p>
+<ul>
+<li><code>sync</code>: 将所有修改过的块缓冲区排入写队列，然后就返回，并不等待实际写磁盘操作结束。</li>
+<li><code>fsync</code>: 支队由文件描述符fd指定的一个文件起作用，并且等待写磁盘操作结束后才返回</li>
+<li><code>fdatasync</code>: 和fsync一样，但是只影响文件的数据部分，但是fsync还会影响文件的属性。</li>
+</ul>
+<h2 id="内核中IO的数据结构"><a href="#内核中IO的数据结构" class="headerlink" title="内核中IO的数据结构"></a>内核中IO的数据结构</h2><p>内核使用3种数据结构来表示打开文件。</p>
+<p>首先进程表中每个进程表项表示一个进程，其中每个进程表项里面包含了一张打开文件描述符表，这个文件描述符表记录了所有打开的文件描述符。</p>
+<p>文件描述符表中每一项包含了文件描述符标志和指向文件表项的指针。</p>
+<p>文件表项是存在于内核中的文件表中的，内核为所有打开的文件维护了一个文件表。每个文件表项包含了 <strong>文件状态标志(读，写，同步，非阻塞等)</strong>，<strong>当前文件偏移量</strong>，<strong>指向该文件v节点表项的指针</strong>。</p>
+<p>每个打开文件都有一个v节点结构，v节点包含了 <strong>文件类型</strong> 以及对此文件进行 <strong>各种操作函数的指针</strong>。v节点还包含了该文件的i节点，即索引节点。这些信息是打开文件时候从磁盘上读入内存的，所以文件的所有信息都是随时可用的。比如i节点包含了文件所有者，文件长度，指向文件实际数据块在磁盘上所在位置的指针。</p>
+<p><img src="/img/WechatIMG44.jpeg" alt=""></p>
+<p>如果两个进程同时打开了一个文件，那么这两个进程分别有不同的文件表项，但是对一个给定的文件只有一个v节点表项，之所以每个进程获得自己的文件表项，因为这可以使得每个进程都有它自己的对该文件的偏移量。那么lseek这样的函数，修改的是文件表项中的文件偏移量。但是对于写入，修改的是i节点中的当前文件长度信息。</p>
+<p>可能有多个文件描述符项指向同一个文件表项，比如dup函数(复制一个文件描述符)，fork之后父进程，子进程各自的每一个打开文件描述符共享同一个文件表项。</p>
+<p>文件描述符标志，当前只定义了一个文件描述符标志<code>FD_CLOEXEC</code>，设置则表示当程序执行exec函数的时候，fd将被系统自动关闭。设置文件描述符标志只会影响一个文件描述符。</p>
+<p>文件状态标志，比如<code>O_RDONLY</code>表示只读打开。可以使用<code>fcntl</code>进行设置，应用于指向该给定文件表项的任何进程中的所有描述符。</p>
+<h2 id="复制一个文件描述符"><a href="#复制一个文件描述符" class="headerlink" title="复制一个文件描述符"></a>复制一个文件描述符</h2><p><code>int dup(int fd)</code></p>
+<p>由dup返回的新文件描述符是当前可用文件描述符的最小值。</p>
+<p><code>int dup2(int fd, int fd2)</code></p>
+<p>fd2参数是指定新描述符的值，如果fd2已经打开，则先将其关闭。如果fd等于fd2，那么直接返回fd2，不会关闭。</p>
+<p>返回的新文件描述符与参数fd共享同一个文件表项，所以共享同一个文件状态标志与偏移量。但是每一个文件描述符都由其特有的文件描述符标志，新描述符的执行时关闭<code>FD_CLOEXEC</code>会被dup函数清除。</p>
+<h2 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h2><p><code>int fcntl(int fd, int cmd, ...)</code></p>
+<p>其中fcntl有以下5中功能：</p>
+<ol>
+<li>复制一个已有的描述符，使用cmd为<code>F_DUPFD</code>或者<code>F_DUPFD_CLOSEXEC</code>，前者返回的文件描述符值是大于或者等于第三个参数的最小的值，与fd共享一套文件表项，但是其<code>FD_CLOEXEC</code>会被清除。后者可以设置<code>FD_CLOEXEC</code>的值，然后返回一个文件描述符值。</li>
+<li>获取/设置文件描述符标志，使用cmd为<code>F_GETFD</code>或者<code>F_SETFD</code>，也就是<code>FD_CLOEXEC</code></li>
+<li>获取/设置文件状态标志，使用cmd为<code>F_GETFL</code>或者<code>F_SETFL</code>，比如<code>O_RDONLY</code>之类的参数，但是设置的范围要比获取范围要小</li>
+<li>获取/设置异步IO所有权，使用cmd为<code>F_GETOWN</code>或者<code>F_SETOWN</code>，前者获取当前接收SIGIO和SIGURG信号的进程ID或者进程组ID，后者设置接收SIGIO和SIGURG信号的进程ID或者进程组ID</li>
+<li>获取/设置记录锁，使用cmd为<code>F_GETLK</code>, <code>F_SETLK</code>或者<code>F_SETLKW</code></li>
+</ol>
+<p>所以在使用fcntl，只要知道打开文件的描述符，就可以修改描述符的属性。</p>
+<h1 id="标准IO"><a href="#标准IO" class="headerlink" title="标准IO"></a>标准IO</h1><p>标准IO处理了很多细节，比如缓冲区分配，以优化的块长度执行IO等。</p>
+<h2 id="流和FILE对象"><a href="#流和FILE对象" class="headerlink" title="流和FILE对象"></a>流和FILE对象</h2><p>前面的IO函数是围绕文件描述符的，打开一个文件返回一个文件描述符，然后该文件描述符就用于后面的IO操作。但是标准IO里面，都是围绕流的，使用标准IO库打开或者创建一个文件，就会使得一个流与一个文件相关联。</p>
+<p>打开一个流的时候，标准IO函数fopen返回一个指向FILE对象的指针，该对象是一个结构，包含了标准IO库为管理该流需要的所有信息，包括用于实际IO的文件描述符，指向用于该流缓冲区的指针，缓冲区的长度，当前在缓冲区的字符数以及出错标志等。为了引用一个流，需要将FILE指针作为参数传递给每个标准IO函数。</p>
+<h2 id="缓冲"><a href="#缓冲" class="headerlink" title="缓冲"></a>缓冲</h2><p>提供缓冲的目的是减少read和write系统调用的次数，毕竟在内核中进行系统调用是一个比较耗费资源的事情，必须切换上下文等等。它也对每个IO流自动的进行缓冲管理。分为以下缓冲类型：</p>
+<p>输入和输出的缓冲区是在一起</p>
+<ul>
+<li>全缓冲：在填满标准IO缓冲区后才进行实际的IO操作，磁盘上的文件使用的是全缓冲。</li>
+<li>行缓冲：当输入和输出中遇到换行符的时候，进行IO操作。当流涉及一个终端的时候，使用的是行缓冲。但是只要填满了缓冲区，那么也会进行IO操作。如果要输入数据(从内核)，那么会先冲洗所有行缓冲输出流。</li>
+<li>不带缓冲：标准错误流stdeer通常是不带缓冲的，这样可以使得出错信息可以尽快显示出来。</li>
+</ul>
+<p><code>int fflush(FILE *fp);</code></p>
+<p>此函数使得该流所有未写的数据都被传送至内核，如果fp是NULL，则此函数会导致所有输出被清洗。</p>
+<h1 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h1><h2 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h2><p>非阻塞IO可以使我们发出open，read和write这样的IO操作，并且使得这些操作不会永远阻塞，如果这种操作不能完成，则调用立即出错返回，表示该操作如继续将会被阻塞。</p>
+<p>有两种方法指定一个描述符为非阻塞IO</p>
+<ol>
+<li>调用open获得描述符的时候，指定<code>O_NONBLOCK</code>标志</li>
+<li>对于已经打开的描述符，使用<code>fcntl</code>，由该函数打开<code>O_NONBLOCK</code>文件状态标志</li>
+</ol>
+<p>出错对应的标志为<code>EAGAIN</code>，使用这种非阻塞IO进行IO操作，一种方式就是轮询，每次去调用，如果报错则继续询问，直到可以进行IO，所以就有可能进行了很多次系统调用(read, write等)，只有少数真正的输出了数据。</p>
+<p>这种方式非常消耗以及浪费CPU时间，因此一般会用到基于非阻塞描述符的IO多路复用，也就是对一大堆描述符进行轮询的方式。</p>
+<p>当然可以使用阻塞型描述符+多线程的方式来进行，但是线程同步的开销有时会增加复杂性，当然如果每个描述符之间没有什么关系，是可以使用多线程的模式的，这样还简化了程序设计。</p>
+<p>IO多路复用，先构造一张感兴趣的描述符列表，然后调用一个函数，直到这些描述符中的一个已经准备好进行IO时候，函数才返回。函数返回的时候，进程会被告知哪些描述符已经准备好可以进行IO。</p>
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p><code>int select(int maxfdp1, fd_set *restrict readfds, fd_set *restrict writefds, fd_set *restrict exceptfds, struct timeval *restrict tvptr)</code></p>
+<ul>
+<li>maxfdp1 指定最大文件描述符编号加1，最大容量限制由常量<code>FD_SETSIZE</code>决定，Linux上，该值是1024</li>
+<li>readfds 用来检测输入是否就绪的文件描述符集合</li>
+<li>writefds 用来检测输出是否就绪的文件描述符集合</li>
+<li>exceptfds 用来检测异常情况是否就绪的文件描述符集合</li>
+<li><p>tvptr 愿意等待的时间长度，NULL为永远等待</p>
+</li>
+<li><p>返回值-1表示出错，比如在没有描述符准备好的时候返回，这样不会修改描述符集合。</p>
+</li>
+<li>返回值0表示没有描述符准备好但是超时了。所有描述符集合都会置为0.</li>
+<li>返回正值表示已经准备好的描述符数目。内核会修改相应的描述符集合，就绪的描述符仍旧为1，未就绪的是0.</li>
+</ul>
+<p>每次select调用的时候，都需要初始化，将要检查的描述符集合都置为1，传给内核，然后内核检查从0-maxfdp1+1的描述符集合，看是否在readfds，writefds和exceptfds中，是否完成了这些事件，如果完成，则将相应的位置为1，否则为0，直到所有的检查完。检查完之后，将所有描述符集合又传回去，应用程序再检查一遍传回来的描述符集合，已经为1的进行IO操作。然后循环这一过程直到结束。</p>
+<p>使用示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">int main()</div><div class="line">    &#123;</div><div class="line">        int sock;</div><div class="line">        FILE* fp;</div><div class="line">        struct fd_set fds;</div><div class="line">        struct timeval timeout = &#123;3, 0&#125;; // select 等待 3 秒，3 秒轮询， 要非阻塞就置 0</div><div class="line">        char buffer[256] = &#123;0&#125;;             // 256 字节的接收缓冲区</div><div class="line">        /* 假设已经建立 UDP 连接，具体过程不写，简单，当然 TCP 也同理，主机 IP 和 port 都已经给定，要写的文件已经打开 */</div><div class="line">        sock = socket(...);</div><div class="line">        bind(...);</div><div class="line">        fp = fopen(...); */</div><div class="line">        while(1)</div><div class="line">        &#123;</div><div class="line">            FD_ZERO(&amp;fds);        // 每次循环都要清空，否则不能检测描述符变化</div><div class="line">            FD_SET(sock, &amp;fds); // 添加套接字描述符</div><div class="line">            FD_SET(fp, &amp;fds);     // 添加文件描述符</div><div class="line">            maxfdp = sock&gt;fp ? sock+1 : fp+1;  //描述符最大值加1</div><div class="line">            switch(select(maxfdp, &amp;fds, &amp;fds, NULL, &amp;timeout)) // select 使用</div><div class="line">            &#123;</div><div class="line">                case SOCKET_ERROR: exit(-1); break; //select 错误，退出程序</div><div class="line">                case 0: break; //再次轮询</div><div class="line">                default:</div><div class="line">                    if(FD_ISSET(sock, &amp;fds)) // 测试sock是否可读，即是否网络上有数据</div><div class="line">                    &#123;</div><div class="line">                        recvfrom(sock, buffer, 256, .... ); //接受网络数据</div><div class="line">                        if(FD_ISSET(fp, &amp;fds)) //测试文件是否可写</div><div class="line">                        fwrite(fp, buffer...); //写入文件</div><div class="line">                        // buffer清空；</div><div class="line">                    &#125; //end if break</div><div class="line">            &#125; //end switch</div><div class="line">        &#125; //end while</div><div class="line">    &#125; //end main</div></pre></td></tr></table></figure>
+<h2 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h2><p><code>int poll(struct pollfd fdarray[], nfds_t nfds, int timeout)</code></p>
+<p>poll是构造了一个pollfd的数组，每个数组元素可以指定一个描述符编号以及对描述符感兴趣的条件。pollfd结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">struct pollfd&#123;</div><div class="line">  int fd;</div><div class="line">  short events;</div><div class="line">  short revents;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中events是描述符感兴趣的事件，revents是内核设置的，每个描述符实际发生了什么事件。</p>
+<p>nfds是fdarray数组中的元素数目。</p>
+<p>所以同样，poll系统调用也需要将感兴趣的描述符集合传给内核，然后内核检查后修改revents后传回来，然后应用程序去检查。和select不同的是，select每次调用前都需要初始化，并且在检查上select必须检查0-maxfdp1+1的描述符集合，而poll只需要检查感兴趣的描述符集合就行了。</p>
+<p>在有大量的描述符集合中，select和poll的效率就变得非常低了，所以出现了在Linux上特有的epoll。</p>
+<p>libevent库提供了检查文件描述符I/O事件的抽象，移植到了多个Unix系统中，其底层机制可以任意一种I/O技术，select(), poll(), 信号驱动I/O或者epoll</p>
+<h2 id="边缘触发和水平触发"><a href="#边缘触发和水平触发" class="headerlink" title="边缘触发和水平触发"></a>边缘触发和水平触发</h2><ul>
+<li>水平触发通知: 文件描述符上可以非阻塞地执行I/O系统调用，则就绪时候发送通知</li>
+<li>边缘触发通知：文件描述符自从上次状态检查以来有了新的I/O活动，则触发通知</li>
+</ul>
+<p>select，poll支持水平触发，信号驱动IO支持边缘触发，epoll两者都支持。</p>
+<p>水平触发模式允许在任意时刻重复检查I/O状态，没有必要在就绪后尽可能多的执行IO，因为可以随时检查状态。</p>
+<p>但是边缘触发是当I/O事件发生的时候才会收到通知，在另一个I/O事件到来之前是不会收到任何新的通知，而且文件描述符收到I/O事件通知的时候，通常并不知道要处理多少I/O。所以</p>
+<ol>
+<li>在文件描述符接受到I/O事件通知的时候，应该尽可能多的执行I/O，要不然等待下一个I/O事件到来都不知道什么时候了。这样却又会导致其他文件描述符处于饥饿状态。</li>
+<li>如果程序用循环对文件描述符执行尽可能多的I/O，那么每个被检查的文件描述符都应该被设置为非阻塞模式，在得到I/O事件通知后重复执行I/O操作，直到相应的系统调用失败。</li>
+</ol>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>event poll的缩写，也可以检查多个文件描述符上的I/O就绪状态。epoll的核心数据结构为epoll实例，它和一个打开的文件描述符相关联，这个文件描述符是内核数据结构的句柄，实现了两个目的。</p>
+<ul>
+<li>记录了进程中声明过的感兴趣的文件描述符列表</li>
+<li>维护了处于I/O就绪态的文件描述符列表</li>
+</ul>
+<p>epoll API主要有以下三个系统调用：<code>epoll_create()</code>，<code>epoll_ctl()</code>和<code>epoll_wait()</code></p>
+<ul>
+<li><code>int epoll_create(int size);</code></li>
+</ul>
+<p>创建一个新epoll，对应的兴趣列表为空，size是想要epoll检查的文件描述符的个数。返回值就是创建好的epoll实例的文件描述符。如果这个文件描述符不在需要的时候，使用close()关闭。多个文件描述符可能引用到相同的epoll实例，比如调用了fork()函数或者dup函数，就会导致不同的文件描述符指向同一个文件表项，因此引用到相同的epoll实例。</p>
+<ul>
+<li><code>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *ev);</code></li>
+</ul>
+<p>修改epoll的兴趣列表:</p>
+<ul>
+<li>epfd 是epoll实例</li>
+<li>op 用来指定要执行的操作，有<code>EPOLL_CTL_ADD</code>, <code>EPOLL_CTL_MOD</code>和<code>EPOLL_CTL_DEL</code></li>
+<li>fd 表示要修改兴趣列表中哪一个文件描述符的设定，也可以是一个epoll实例，这样就形成了一种层次关系</li>
+<li>ev 是指向结构体<code>epoll_event</code>的指针，其中结构体包含了events和data，events是一个位掩码，指定了为待检查的描述符fd上所感兴趣的事件集合。data是一个联合体，当描述符fd成为就绪态的时候，联合体成员可用来指定传回给调用进程的信息。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">int epfd;</div><div class="line">struct epoll_event ev;</div><div class="line"></div><div class="line">epfd = epoll_create(5);</div><div class="line">if (epfd == -1)</div><div class="line">    errExit(&quot;epoll_create&quot;);</div><div class="line">ev.data.fd = fd;</div><div class="line">ev.events = EPOLLIN;</div><div class="line">if (epoll_ctl(epfd, EPOLL_CTL_ADD, fd, ev) == -1)</div><div class="line">    errExit(&quot;epoll_ctl&quot;)</div></pre></td></tr></table></figure>
+<ul>
+<li><code>int epoll_wait(int epfd, struct epoll_event *evlist, int maxevents, int timeout)</code></li>
+</ul>
+<p>系统调用<code>epoll_wait()</code>返回epoll实例中处于就绪态的文件描述符信息，单个<code>epoll_wait()</code>调用能返回多个就绪态文件描述符的信息。返回就绪的文件描述符的个数，0表示超时，-1表示错误</p>
+<p>evlist指向的结构体数组中返回的是有关就绪态文件描述符的信息。所包含的元素个数为maxevents。evlist中，每个元素返回的都是单个就绪态文件描述符的信息。events字段返回了在该描述符上发生的事件掩码。Data字段返回的是在描述符使用<code>epoll_ctl()</code>注册感兴趣事件时候在ev.data中指定的值。data字段是唯一可以获知同这个事件相关的文件描述符的途径。</p>
+<p>多线程程序中，可以在一个线程中使用<code>epoll_ctl()</code>将文件描述符添加到另一个线程中由<code>epoll_wait()</code>所监视的epoll实例的兴趣列表中去。这些对兴趣列表的修改将立刻得到处理，而<code>epoll_wait()</code>调用将返回有关新添加文件描述符的就绪信息。</p>
+<p>通过<code>epoll_ctl</code>指定了需要监视的文件描述符时候，内核会在与打开的文件描述上下文相关联的列表中记录该描述符。之后每当执行I/O操作使得文件描述符成为就绪态时候，内核就在epoll描述符的就绪列表中添加一个元素。单个打开的文件描述上下文的一次I/O事件可能导致与之相关的多个文件描述符成为就绪态。这样<code>epoll_wait()</code>调用从就绪列表中简单的取出这些元素。epoll在内核空间创建了一个数据结构，该数据结构会将待监视的文件描述符都记录下来。</p>
+<p>因此epoll的性能在大规模的文件描述符检查情况下，效率远高于select和poll，常见的能高效使用epoll的应用场景就是需要同时处理许多客户端的服务器，需要监视大量的文件描述符，但大部分处于空闲状态，只有少数文件描述符处于就绪状态。</p>
+<h1 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h1><p>发起IO操作后不阻塞，用户得递一个回调函数待IO结束后被调用。进程请求内核执行一次I/O操作，内核启动该操作之后立即将控制权还给调用进程，稍后当I/O操作完成或者有错误发生的时候，该进程会得到通知。一般是使用信号来实现的。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>linux一般使用non-blocking IO提高IO并发度。当IO并发度很低时，non-blocking IO不一定比blocking IO更高效，因为后者完全由内核负责，而read/write这类系统调用已高度优化，效率显然高于一般得多个线程协作的non-blocking IO。</p>
+<p>但当IO并发度愈发提高时，blocking IO阻塞一个线程的弊端便显露出来：内核得不停地在线程间切换才能完成有效的工作，一个cpu core上可能只做了一点点事情，就马上又换成了另一个线程，cpu cache没得到充分利用，程序整体性能往往也会随之下降。</p>
+<p>而non-blocking IO一般由少量event dispatching线程和一些运行用户逻辑的worker线程组成，这些线程往往会被复用（换句话说调度工作转移到了用户态），event dispatching和worker可以同时在不同的核运行（流水线化），内核不用频繁的切换就能完成有效的工作。线程总量也不用很多，所以对thread-local的使用也比较充分。这时候non-blocking IO就往往比blocking IO快了。不过non-blocking IO也有自己的问题，它需要调用更多系统调用，比如<code>epoll_ctl</code>，由于epoll实现为一棵红黑树，<code>epoll_ctl</code>并不是一个很快的操作，特别在多核环境下，依赖<code>epoll_ctl</code>的实现往往会面临棘手的扩展性问题。non-blocking需要更大的缓冲，否则就会触发更多的事件而影响效率。non-blocking还得解决不少多线程问题，代码比blocking复杂很多。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/10/07/IO模型/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/10/02/Python中的单例模式/" >Python中的单例模式</a>
 		</h3>
 		</div>
@@ -638,73 +799,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/09/05/属性描述符/" >属性描述符</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-09-05 21:40:46  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>From <strong>流畅的Python 人民邮电出版社 20章属性描述符</strong></p>
-</blockquote>
-<p>描述符是对多个属性运用相同存取逻辑的一种方式，比如特性就是一种描述符，将特性的读取和设置代理到了描述符相应的<code>__get__</code>和<code>__set__</code>方法上，因此可以对属性的读取和设置进行控制。描述符的实例能用作托管类的属性，通过子类共享代码，构件具有部分相同功能的专用描述符。</p>
-<p>描述符是实现了特定协议的类，这个协议包括<code>__get__</code>, <code>__set__</code>和<code>__delete__</code>方法。使用描述符的Python功能还有方法以及classmethod和staticmethod装饰器。</p>
-<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>描述符的用法是，创建一个描述符实例，作为另外一个类的类属性，这样就会托管该类实例的同名属性，所以实例的属性和使用描述符的类属性是分离的。描述符属性通过将属性存储到相应实例的字典中来区分不同实例。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Quantity:</div><div class="line"></div><div class="line">    def __init__(self, storage_name):</div><div class="line">       self.storage_name = storage_name</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        if value &gt; 0:</div><div class="line">            instance.__dict__[self.storage_name] = value</div><div class="line">        else:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        return instance.__dict__[self.storage_name]</div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    weight = Quantity(&apos;weight&apos;)</div><div class="line"></div><div class="line">    def __init__(self, weight):</div><div class="line">        self.weight = weight</div></pre></td></tr></table></figure>
-<p>这里设置实例的属性的时候，会将设置代理到描述符的<code>__set__</code>，这样就将其设置到了实例的属性字典里，<code>__set__</code>中self是描述符实例，而instance是托管类的实例，应该将属性放在实例中，这样可以区分不同实例的同名属性。对于<code>__get__</code>方法，owner是instance对应的托管类，必须通过实例字典的方式拿出属性，这样才不会无限循环。</p>
-<p>如果通过类来访问托管属性，instance就是None，然后就会产生<code>AttributeError</code>异常，所以可以进行判断，让<code>__get__</code>方法返回描述符实例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def __get__(self, instance, owner):</div><div class="line">    if instance is None:</div><div class="line">        # self是描述符实例</div><div class="line">        return self</div><div class="line">    else:</div><div class="line">        return instance.__dict__[self.storage_name]</div></pre></td></tr></table></figure>
-<h1 id="利用继承扩展描述符"><a href="#利用继承扩展描述符" class="headerlink" title="利用继承扩展描述符"></a>利用继承扩展描述符</h1><p>通常描述符会作为一个工具来控制很多类的属性管理，而且基于面向对象的设计，可以利用继承来重用代码创建新的描述符。比如下面的描述符：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class AutoStorage:</div><div class="line">    __counter = 0</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        cls = self.__class__</div><div class="line">        prefix = cls.__name__</div><div class="line">        index = cls.__counter</div><div class="line">        self.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(prefix, index)</div><div class="line">        cls.__counter += 1</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        if instance is None:</div><div class="line">            return self</div><div class="line">        else:</div><div class="line">            return getattr(instance, self.storage_name)</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        setattr(instance, self.storage_name, value)</div></pre></td></tr></table></figure>
-<p>这个描述符实现了属性的存取，并且可以实现多个属性的托管而不用传递任何参数，因为内部已经做好名称处理了，所以也可以直接使用getattr以及setattr来对属性进行存取。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class Validated(abc.ABC, AutoStorage):</div><div class="line">    def __set__(self, instance, value):</div><div class="line">        value = self.validate(instance, value)</div><div class="line">        # super的使用方法</div><div class="line">        super().__set__(instance, value)</div><div class="line"></div><div class="line">    @abc.abstractmethod</div><div class="line">    def validate(self, instance, value):</div><div class="line"></div><div class="line">class Quantity(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        if value &lt;= 0:</div><div class="line">            raise ValueError(&apos;value must be &gt; 0&apos;)</div><div class="line">        return value</div><div class="line"></div><div class="line">class NonBlank(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        value = value.strip()</div><div class="line">        if len(value) == 0:</div><div class="line">            raise ValueError(&apos;value cannot be empty or blank&apos;)</div><div class="line">        return value</div></pre></td></tr></table></figure>
-<p>通过继承基础的AutoStorage，Validated会在set的时候进行检查，具体怎么检查，委托给validate的子类实现，这样就形成了代码复用，然后制造一堆描述符。</p>
-<h1 id="覆盖型描述符和非覆盖型描述符"><a href="#覆盖型描述符和非覆盖型描述符" class="headerlink" title="覆盖型描述符和非覆盖型描述符"></a>覆盖型描述符和非覆盖型描述符</h1><p>实现<code>__set__</code>方法的描述符是覆盖型描述符，因为这样会覆盖对实例属性的赋值操作。比如特性如果没有提供设值的函数，那么就会引发<code>AttributeError</code>。</p>
-<p>如果只实现了<code>__set__</code>，写操作是由描述符处理，如果通过实例读取描述符会返回描述符对象本身。但是如果设置了实例的同名实例属性(通过<code>__dict__</code>实现)的话，再读取的话，就会直接从实例中返回<code>__dict__</code>的属性值。而写仍然会被描述符覆盖。</p>
-<p>没有实现<code>__set__</code>的描述符是非覆盖型描述符，如果设置了同名实例属性，那么描述符会被覆盖。类中的方法就是非覆盖型描述符实现的，如果重新设置就会被覆盖。</p>
-<p>对类属性赋值都能覆盖描述符。如果想控制类属性的操作，要把描述符依附在类的类上，即依附在元类上。</p>
-<h1 id="方法是描述符"><a href="#方法是描述符" class="headerlink" title="方法是描述符"></a>方法是描述符</h1><p>用户在类中定义的函数都有<code>__get__</code>方法，所以依附在类上，就是描述符，而且是非覆盖型描述符，可以被实例属性重新覆盖。</p>
-<p>比如<code>obj.test</code>就是绑定方法，即函数的<code>__get__</code>方法会返回绑定方法对象，相当于<code>functools.partial</code>将obj绑定给了函数第一个参数，就是self。</p>
-<p>但是<code>Test.test</code>就是一个函数，即函数的<code>__get__</code>方法会返回自身的引用。</p>
-<p><code>Test.test.__get__(obj)</code>就是一个绑定方法对象，而<code>Test.test.__get__(None, Test)</code>就是一个函数对象，返回函数自身的引用。</p>
-<p>绑定方法对象有一个<code>__call__</code>方法，来处理真正的调用过程，会调用<code>__func__</code>属性引用的原始函数，把函数的第一个参数设为绑定方法的<code>__self__</code>属性，这就是self的隐式绑定。所以函数会变成绑定方法。</p>
-<h1 id="描述符的使用"><a href="#描述符的使用" class="headerlink" title="描述符的使用"></a>描述符的使用</h1><ul>
-<li>只读描述符必须有<code>__set__</code>方法</li>
-</ul>
-<p>这样才可以控制属性的赋值，要不然实例的同名属性会覆盖描述符。在<code>__set__</code>方法只需要跑出<code>AttributeError</code>异常就可以了。</p>
-<ul>
-<li>验证的描述符可以只实现<code>__set__</code>方法</li>
-</ul>
-<p>这是一种覆盖型描述符，在set的时候检查属性值，设置在实例的<code>__dict__</code>，然后get的时候，就会从实例中拿值，比较快。因为设置了实例属性，就会将get给覆盖掉，而set不会被覆盖。</p>
-<ul>
-<li>只实现<code>__get__</code>可以实现缓存</li>
-</ul>
-<p>在第一次的时候调用<code>__get__</code>进行计算，然后给实例<code>__dict__</code>设置同名的值，此后实例同名属性就会将描述符给覆盖了，所以就不用计算了。</p>
-<ul>
-<li>非特殊方法可以被实例属性覆盖</li>
-</ul>
-<p>因为解释器会在类中寻找特殊方法，所以就不会受到描述符的影响，也不会因为实例中设置了相同的方法而影响。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/09/05/属性描述符/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -758,7 +852,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>76</span></a></li>
+			<li><a href="/categories/编程/">编程<span>77</span></a></li>
 		
 		</ul>
 	</div>
@@ -783,7 +877,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
 		
-			<li><a href="/tags/计算机网络/">计算机网络<span>5</span></a></li>
+			<li><a href="/tags/计算机网络/">计算机网络<span>6</span></a></li>
 		
 			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
 		
@@ -823,6 +917,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
       </li>
     
@@ -836,10 +934,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/20/go语言圣经_note_interface/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 接口</a>
       </li>
     
   </ul>

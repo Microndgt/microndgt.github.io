@@ -6,7 +6,7 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>httpbin中的奇技淫巧 | SkyRover</title>
+  <title>ARP 地址解析协议 | SkyRover</title>
   <meta name="author" content="Kevin Du">
   
   <meta name="description" content="仲夏夜之梦">
@@ -14,7 +14,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="httpbin中的奇技淫巧"/>
+  <meta property="og:title" content="ARP 地址解析协议"/>
   <meta property="og:site_name" content="SkyRover"/>
 
   
@@ -118,7 +118,7 @@ var _hmt = _hmt || [];
 
 	
 		<div class="page-header">
-			<h1> httpbin中的奇技淫巧</h1>
+			<h1> ARP 地址解析协议</h1>
 		</div>
 	
 
@@ -135,17 +135,35 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <p>kennethreitz大神写的，<a href="https://github.com/kennethreitz/httpbin" target="_blank" rel="external">项目地址</a></p>
-<h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
-<p>它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">d = MultiDict([(&apos;a&apos;, &apos;b&apos;), (&apos;a&apos;, &apos;c&apos;)])</div><div class="line">d.getlist(&apos;a&apos;)</div><div class="line"># [&apos;b&apos;, &apos;c&apos;]</div><div class="line">&apos;a&apos; in d</div><div class="line"># True</div><div class="line">d[&apos;a&apos;]</div><div class="line"># &apos;b&apos;</div></pre></td></tr></table></figure>
-<p>KeyError也是BadRequest的子类，因此当被捕获的时候会渲染<code>400 BAD REQUEST</code>。</p>
-<p>所以说白了，就是一个key对应了一个list，然后一般返回的只是key和list[0]，然后实现了一系列的方法。</p>
-<h1 id="CaseInsensitiveDict"><a href="#CaseInsensitiveDict" class="headerlink" title="CaseInsensitiveDict"></a><code>CaseInsensitiveDict</code></h1><p>比如<code>headers[&#39;content-encoding&#39;]</code>将会被返回<code>headers[&#39;Content-Encoding&#39;]</code>的值。实现也很简单，就是读取的时候将键都转换成小写就行了。源码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class CaseInsensitiveDict(dict):</div><div class="line">    def _lower_keys(self):</div><div class="line">        # 将字典的key都转换成小写</div><div class="line">        return [k.lower() for k in self.keys()]</div><div class="line"></div><div class="line">    def __contains__(self, key):</div><div class="line">        # 判断某个key(转换成小写)是否存在于字典中(key都转换成小写)</div><div class="line">        return key.lower() in self._lower_keys()</div><div class="line"></div><div class="line">    def __getitem__(self, key):</div><div class="line">        # 这里有个问题就是key如果是None，这里就会报错，所以应该</div><div class="line">        # if key is None:</div><div class="line">        #     return</div><div class="line"></div><div class="line">        if key in self:</div><div class="line">            # 先找到目标key在keys中的位置，然后取出来一个元组，第二个值就是value</div><div class="line">            return list(self.items())[self._lower_keys().index(key.lower())][1]</div></pre></td></tr></table></figure>
-<p>这里涉及到一个知识点，就是Python字典中的<code>keys()</code>, <code>values()</code>和<code>items()</code>方法返回的是view对象。它基于字典的实体提供了动态的view，意味着当字典改变的时候，view会表现这个改变。</p>
-<p>字典views会被迭代并且生成它们各自的数据，并且支持成员测试。</p>
-<p>keys和values会被以任意的顺序迭代，但是这个顺序不是随机的，而是基于不同的Python实现而不同，并且基于字典的插入和删除历史。如果keys，values和items views迭代过程中没有改变字典的话，它们之间的顺序将是一致的。因此可以使用<code>pair = zip(d.values(), d.keys())</code>，另外一种创建相同的列表的方法是<code>pair = [(v, k) for (k, v) in d.items()]</code></p>
+	  <p>当传送一个数据报的时候，会通过目的IP地址在IP路由表中进行选路，选择下一站的IP地址，但是在IP数据报中真正的目的IP地址不会变化，选出来的下一站IP地址只是会将数据报暂时的发送到这一站，而如何通过这个IP地址来发送数据呢。这就需要ARP地址解析协议了，通过ARP地址解析协议，就可以知道该IP地址对应的物理地址，这样就可以将IP数据报封装在一个以太网帧中，进而发送到下一站。</p>
+<p>所以地址解析为这两种不同的地址形式提供映射：32bit的IP地址和数据链路层使用的任何类型的地址(物理地址)。ARP为IP地址到对应的硬件地址之间提供了动态映射。因为内核(以太网驱动程序)必须知道目的端的硬件地址才能发送数据。</p>
+<h1 id="ARP高速缓存"><a href="#ARP高速缓存" class="headerlink" title="ARP高速缓存"></a>ARP高速缓存</h1><p>每个主机上都有一个ARP高速缓存，这个缓存存放了最近Internet地址到硬件地址之间的映射记录，每一项的生存时间一般是20分钟。执行<code>arp -a</code>查看所有的缓存记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">? (192.168.1.1) at 6c:e8:73:ae:d0:1a on en0 ifscope [ethernet]</div><div class="line">? (224.0.0.251) at 1:0:5e:0:0:fb on en0 ifscope permanent [ethernet]</div></pre></td></tr></table></figure>
+<h1 id="ARP分组格式"><a href="#ARP分组格式" class="headerlink" title="ARP分组格式"></a>ARP分组格式</h1><ul>
+<li>以太网目的地址：一般是全1，表示广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
+<li>以太网源地址：</li>
+<li>以太网帧类型：表示后面数据的类型，是ARP还是RARP</li>
+<li>硬件类型：表示硬件地址的类型，1表示以太网地址</li>
+<li>协议类型：表示要映射的协议地址类型，比如IP地址</li>
+<li>硬件地址长度：以太网地址是6</li>
+<li>协议地址长度：IP地址是4 字节</li>
+<li>操作字段：1 ARP, 2 ARP应答, 3 RARP, 4 RARP应答</li>
+<li>发送端以太网地址：</li>
+<li>发送端IP地址</li>
+<li>目的以太网地址：发送请求时该字段没有值，当发送ARP应答的时候，这里是ARP请求中的发送端以太网地址，而发送端就是本机的以太网地址</li>
+<li>目的IP地址</li>
+</ul>
+<h1 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h1><p>如果ARP请求是从一个网络的主机发送到另一个网络的主机，那么链接这两个网络的路由器就可以回答这个请求，这个过程称为委托ARP或者ARP代理，路由器的功能就相当于目的主机的代理，把分组从其他主机转发给它。</p>
+<p>通过两个物理网络之间的路由器可以互相隐藏物理网络，在这种情况下，两个物理网络可以使用相同的网络号，只要把中间的路由器设置为一个ARP代理，以响应一个网络到另一个网络主机的ARP请求。</p>
+<h1 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h1><p>主机发送ARP查询自己的IP地址，发生在系统引导期间进行接口配置的时候。</p>
+<p>两个作用：</p>
+<ol>
+<li>可以通过它来确定另一个主机是否设置了相同的IP地址</li>
+<li>如果发送免费ARP的主机正好改变了硬件地址，那么这样的ARP请求可以使得其他主机上的高速缓存得以更新。</li>
+</ol>
+<h1 id="RARP-逆地址解析协议"><a href="#RARP-逆地址解析协议" class="headerlink" title="RARP 逆地址解析协议"></a>RARP 逆地址解析协议</h1><p>无盘系统的RAPR实现是从接口卡中读取硬件地址，然后发送一份RARP请求，请求某个RARP服务器来响应该无盘系统的IP地址。</p>
+<p>RARP请求是以广播方式发送，RARP应答是以单播方式发送。在请求的时候表明发送端的硬件地址，以请求IP地址的响应。因为RARP使用的是链路层广播，所以阻止了大多数路由器转发RARP请求，只返回很少的信息，只是系统的IP地址。</p>
+<h2 id="RARP服务器"><a href="#RARP服务器" class="headerlink" title="RARP服务器"></a>RARP服务器</h2><p>一个RARP服务器要为多个主机提供从硬件地址到IP地址的映射，映射一般存放在磁盘文件中，但是内核一般不读取和分析磁盘文件，因此RARP服务器的功能就由用户进程来实现，而不是作为内核的TCP/IP一部分。而且RARP请求是作为一个特殊类型的以太网数据帧来传送的，说明RARP服务器必须能够发送和接收这种类型的以太网数据帧。</p>
 	  
 	</div>
 
@@ -155,13 +173,12 @@ var _hmt = _hmt || [];
 
     
     
-    <a href="/2017/10/21/ming_dynasty/" type="button" class="btn btn-default"><i
-                class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>上一页</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2017/10/19/mysql_interview_1/" type="button" class="btn btn-default ">下一页<i
+    <a href="/2018/01/25/IP网际协议/" type="button" class="btn btn-default ">下一页<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
@@ -207,7 +224,7 @@ var _hmt = _hmt || [];
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2017-10-20 11:31:18 
+	2018-01-27 08:59:30 
 	</div>
 	
 
@@ -231,7 +248,7 @@ var _hmt = _hmt || [];
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/Python/">Python<span>55</span></a></li> <li><a href="/tags/Flask/">Flask<span>8</span></a></li>
+  <li><a href="/tags/计算机网络/">计算机网络<span>6</span></a></li>
     </ul>
 	</div>
 		
@@ -241,7 +258,7 @@ var _hmt = _hmt || [];
 	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
 	   <div id="toc" class="toc collapse in">
 		   <span class="toc-title">Contents</span>
-			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#MultiDict"><span class="toc-article-text">MultiDict</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#CaseInsensitiveDict"><span class="toc-article-text">CaseInsensitiveDict</span></a></li></ol>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#ARP高速缓存"><span class="toc-article-text">ARP高速缓存</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#ARP分组格式"><span class="toc-article-text">ARP分组格式</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#ARP代理"><span class="toc-article-text">ARP代理</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#免费ARP"><span class="toc-article-text">免费ARP</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#RARP-逆地址解析协议"><span class="toc-article-text">RARP 逆地址解析协议</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#RARP服务器"><span class="toc-article-text">RARP服务器</span></a></li></ol></li></ol>
 		</div>
 	</div>
 	
