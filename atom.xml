@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-01-27T01:29:24.000Z</updated>
+  <updated>2018-02-02T03:05:46.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mac系统下matplotlib中文显示方块问题</title>
+    <link href="http://skyrover.me/2018/02/02/matplotlib_issue_solution/"/>
+    <id>http://skyrover.me/2018/02/02/matplotlib_issue_solution/</id>
+    <published>2018-02-02T03:00:35.000Z</published>
+    <updated>2018-02-02T03:05:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="下载SimHei-ttf字体"><a href="#下载SimHei-ttf字体" class="headerlink" title="下载SimHei.ttf字体"></a>下载<code>SimHei.ttf</code>字体</h1><p>Mac需要先下载<code>SimHei.ttf</code>字体并安装，之后将<code>SimHei.ttf</code>拷贝到python安装路径<code>/site-packages/matplotlib/mpl-data/fonts/ttf</code>目录中</p>
+<h1 id="修改matplotlibrc"><a href="#修改matplotlibrc" class="headerlink" title="修改matplotlibrc"></a>修改<code>matplotlibrc</code></h1><p>修改~python安装路径<code>/site-packages/matplotlib/mpl-data/matplotlibrc</code>文件。根据实际情况修改，找到如下两项，去掉前面的#，并在font.sans-serif冒号后面加上SimHei，保存退出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">font.family         : sans-serif       </div><div class="line"></div><div class="line">font.sans-serif     : SimHei, Bitstream Vera Sans, Lucida Grande,Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif</div></pre></td></tr></table></figure>
+<p>同时将找到<code>axes.unicode_minus</code>，将True改为False，作用就是解决负号’-‘显示为方块的问题</p>
+<h1 id="代码加入"><a href="#代码加入" class="headerlink" title="代码加入"></a>代码加入</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#matplotlib不会每次启动时都重新扫描所有的字体文件并创建字体索引列表，</div><div class="line"># 因此在复制完字体文件之后，需要运行下面的语句以重新创建字体索引列表</div><div class="line">import matplotlib as mpl</div><div class="line">from matplotlib.font_manager import _rebuild</div><div class="line">_rebuild()</div><div class="line">#防止中文乱码问题</div><div class="line">mpl.rcParams[&apos;font.sans-serif&apos;]=[u&apos;SimHei&apos;]</div><div class="line">mpl.rcParams[&apos;axes.unicode_minus&apos;]=False</div></pre></td></tr></table></figure>
+<p>在mac中的/Library/Fonts文件夹中，有很多种不同的字体，但是没有能够正确显示中文的SimHei.ttf，所以需要进行安装，那么需要按照上述方法下载后，就可以使得显示中文不会出现方格了。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;下载SimHei-ttf字体&quot;&gt;&lt;a href=&quot;#下载SimHei-ttf字体&quot; class=&quot;headerlink&quot; title=&quot;下载SimHei.ttf字体&quot;&gt;&lt;/a&gt;下载&lt;code&gt;SimHei.ttf&lt;/code&gt;字体&lt;/h1&gt;&lt;p&gt;Mac需要先下载&lt;
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="Jupyter" scheme="http://skyrover.me/tags/Jupyter/"/>
+    
+  </entry>
   
   <entry>
     <title>ARP 地址解析协议</title>

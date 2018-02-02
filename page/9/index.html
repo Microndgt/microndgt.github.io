@@ -138,6 +138,100 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/03/10/环境以及部署问题汇总/" >环境以及部署问题汇总</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-03-10 17:10:18  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="virtualenv"><a href="#virtualenv" class="headerlink" title="virtualenv"></a>virtualenv</h1><p>创建virtualenv时候遇到这个问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">kevin@duguangtingdeMacBook-Pro:~ $ virtualenv myblog_env --python=python3</div><div class="line">Running virtualenv with interpreter /Users/kevin/anaconda/bin/python3</div><div class="line">Using base prefix &apos;/Users/kevin/anaconda&apos;</div><div class="line">New python executable in /Users/kevin/myblog_env/bin/python3</div><div class="line">Not overwriting existing python script /Users/kevin/myblog_env/bin/python (you must use /Users/kevin/myblog_env/bin/python3)</div><div class="line">ERROR: The executable /Users/kevin/myblog_env/bin/python3 is not functioning</div><div class="line">ERROR: It thinks sys.prefix is &apos;/Users/kevin&apos; (should be &apos;/Users/kevin/myblog_env&apos;)</div><div class="line">ERROR: virtualenv is not compatible with this system or executable</div></pre></td></tr></table></figure>
+<p>这个问题的原因是没有用系统级的Python，建立virtualenv的时候指定<code>-p</code>参数：<code>virtualenv -p python3 myblog_env</code></p>
+<p>还是用PyCharm建立虚拟环境比较方便。。。</p>
+<h1 id="flask-migrate数据库迁移"><a href="#flask-migrate数据库迁移" class="headerlink" title="flask-migrate数据库迁移"></a>flask-migrate数据库迁移</h1><p>终于算是弄明白了数据库迁移是怎么做到的，使用<code>flask-migrate</code>先init形成迁移数据库吧，然后检测到数据模型有改变，这时候使用<code>python manage.py db migrate</code>形成迁移脚本，然后<code>python manage.py db upgrade</code>或者<code>python manage.py db downgrade</code></p>
+<p>另外有一点sqlite3貌似不支持删除列，所以要在migrations文件夹下修改env.py文件，加上<code>render_as_batch=True</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">def run_migrations_online():</div><div class="line">    &quot;&quot;&quot;Run migrations in &apos;online&apos; mode.</div><div class="line">    In this scenario we need to create an Engine</div><div class="line">    and associate a connection with the context.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    # this callback is used to prevent an auto-migration from being generated</div><div class="line">    # when there are no changes to the schema</div><div class="line">    # reference: http://alembic.readthedocs.org/en/latest/cookbook.html</div><div class="line">    def process_revision_directives(context, revision, directives):</div><div class="line">        if getattr(config.cmd_opts, &apos;autogenerate&apos;, False):</div><div class="line">            script = directives[0]</div><div class="line">            if script.upgrade_ops.is_empty():</div><div class="line">                directives[:] = []</div><div class="line">                logger.info(&apos;No changes in schema detected.&apos;)</div><div class="line">    engine = engine_from_config(config.get_section(config.config_ini_section),</div><div class="line">                                prefix=&apos;sqlalchemy.&apos;,</div><div class="line">                                poolclass=pool.NullPool)</div><div class="line">    connection = engine.connect()</div><div class="line">    context.configure(connection=connection,</div><div class="line">                      target_metadata=target_metadata,</div><div class="line">                      process_revision_directives=process_revision_directives,</div><div class="line">                      render_as_batch=True,# this is new feature</div><div class="line">                      **current_app.extensions[&apos;migrate&apos;].configure_args)</div><div class="line">    try:</div><div class="line">        with context.begin_transaction():</div><div class="line">            context.run_migrations()</div><div class="line">    finally:</div><div class="line">        connection.close()</div></pre></td></tr></table></figure>
+<h1 id="解决终端ssh时间久了卡掉的问题"><a href="#解决终端ssh时间久了卡掉的问题" class="headerlink" title="解决终端ssh时间久了卡掉的问题"></a>解决终端ssh时间久了卡掉的问题</h1><p>/etc/ssh/ssh_config加上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ServerAliveInterval 60</div><div class="line">ServerAliveCountMax 2</div></pre></td></tr></table></figure>
+<h1 id="创建virtualenv不包含全局Python的包"><a href="#创建virtualenv不包含全局Python的包" class="headerlink" title="创建virtualenv不包含全局Python的包"></a>创建virtualenv不包含全局Python的包</h1><p><code>virtualenv --no-site-packages -p python3 flask_env</code></p>
+<h1 id="配置服务器环境"><a href="#配置服务器环境" class="headerlink" title="配置服务器环境"></a>配置服务器环境</h1><p>Flask + uwsgi + nginx</p>
+<h1 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h1><p><code>vim /etc/nginx/sites-enabled/default</code>这个是加入自己的配置，然后nginx的配置其实已经写好了，并且会引入这个自定义的配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name 120.25.229.101;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        include uwsgi_params;</div><div class="line">        uwsgi_pass 127.0.0.1:8001;</div><div class="line">        uwsgi_param UWSGI_PYHOME /user/bin;</div><div class="line">        uwsgi_param UWSGI_CHDIR /root/skyrover;</div><div class="line">        uwsgi_param UWSGI_SCRIPT manage:app;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>监听80端口，公网IP是这个，也可以使用域名。然后反向代理到uwsgi的127.0.0.1:8001上，uwsgi启动了这个app应用</p>
+<p><code>vim /etc/nginx/nginx.conf</code>这个是nginx的全局配置</p>
+<h1 id="uwsgi配置"><a href="#uwsgi配置" class="headerlink" title="uwsgi配置"></a>uwsgi配置</h1><p>使用<code>pip3 install uwsgi</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[uwsgi]</div><div class="line">socket = 127.0.0.1:8001</div><div class="line">chdir = /root/skyrover</div><div class="line">wsgi-file = manage.py</div><div class="line">callable = app</div><div class="line">processes = 4</div><div class="line">threads = 2</div><div class="line">stats = 127.0.0.1:9191</div></pre></td></tr></table></figure>
+<p>启动的话：<code>uwsgi config.ini</code></p>
+<h1 id="supervisor"><a href="#supervisor" class="headerlink" title="supervisor"></a>supervisor</h1><p>这个应用可以启动应用，并且可以自动重启，安装好，配置如下,<code>vim /etc/supervisor/conf.d/skyrover_supervisor.conf</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[program:skyrover]</div><div class="line">command=uwsgi /root/config.ini</div><div class="line">directory=/root/skyrover</div><div class="line">user=root</div><div class="line">autostart=true</div><div class="line">autorestart=true</div><div class="line">stdout_logfile=/root/uwsgi_supervisor.log</div></pre></td></tr></table></figure>
+<p>每次更新代码之后<code>service supervisor restart</code>, <code>service nginx restart</code>, <code>service uwsgi restart</code></p>
+<h1 id="pip安装慢的情况"><a href="#pip安装慢的情况" class="headerlink" title="pip安装慢的情况"></a>pip安装慢的情况</h1><p>添加<code>~/.pip/pip.conf</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">timeout = 6000</div><div class="line">index-url = http://pypi.douban.com/simple/</div><div class="line">[install]</div><div class="line">use-mirrors = true</div><div class="line">mirrors = http://pypi.douban.com/simple/</div><div class="line">trusted-host = pypi.douban.com</div></pre></td></tr></table></figure>
+<p>将本地的CSV文件插入到MySQL的方法以及遇到的问题~</p>
+<h1 id="load-csv"><a href="#load-csv" class="headerlink" title="load csv"></a>load csv</h1><p><code>LOAD DATA INFILE &#39;/data/output.csv&#39; INTO TABLE ability CHARACTER SET utf8 FIELDS TERMINATED BY &#39;,&#39;;</code></p>
+<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><ol>
+<li>使用<code>utf8</code>，而不是<code>utf-8</code></li>
+<li>插入的时候报错，<code>ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement</code></li>
+<li>在load csv的时候出现表中有主键，但是csv数据没有那一列，会报错，<code>doesn&#39;t contain data for all columns</code>,于是用Python将每一行的行数加在csv文件的第一列。</li>
+</ol>
+<p>这里要注意的是primary_key是从1开始，而不是0.</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>secure_file_priv设置了指定目录，需要在指定的目录下进行数据导出</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p><code>mysql&gt; show variables like &#39;%secure%&#39;;</code></p>
+<p>有一项是：<code>secure_file_priv         | /var/lib/mysql-files/ |</code></p>
+<p>在这个文件夹下进行文件的读取与上传。</p>
+<h1 id="分割文件"><a href="#分割文件" class="headerlink" title="分割文件"></a>分割文件</h1><p>在load的时候又出现了一个问题，这个文件夹所挂载的硬盘容量太小，文件copy不过来，于是采取了一种方法，将文件分割，命令:<code>split</code>,生成文件名为xaa,xab什么的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">＃ 以文件行数分割,每个文件行数为1000行</div><div class="line">split mylog -l 1000</div><div class="line"># 以每个文件20M分割</div><div class="line">split -b 20M logdata</div><div class="line"># 以每个文件50MB指定前缀分割</div><div class="line">split --bytes=50M logdata mydatafile</div></pre></td></tr></table></figure>
+<h1 id="修改字段"><a href="#修改字段" class="headerlink" title="修改字段"></a>修改字段</h1><p>load数据的时候遇到了这个问题，就是说out of range，于是修改为double(40,15)还是不行，后来发现此数据为2e+100,完全表示不下，于是使用字符串</p>
+<p><code>alter table ability modify column shape_rate varchar(50)</code></p>
+<h1 id="合并表"><a href="#合并表" class="headerlink" title="合并表"></a>合并表</h1><p>由于有两台计算机上的数据，id标号不是连续的，先后插入的时候就会出现主键重复，现在准备采用分两个表插入，然后进行合并的方式：</p>
+<p><code>insert into ability(fundId,ability_gain,ability_long,ability_medium,ability_risk,ability_short,ability_total,daily_profit,daily_profit_rate,date,fundbal,max_retracement,period_profit_rate,position_rate,shape_ratio,stk_maktval,ttimes_long,ttimes_medium,ttimes_short) select fundId,ability_gain,ability_long,ability_medium,ability_risk,ability_short,ability_total,daily_profit,daily_profit_rate,date,fundbal,max_retracement,period_profit_rate,position_rate,shape_ratio,stk_maktval,ttimes_long,ttimes_medium,ttimes_short from ability1;</code></p>
+<p>另外一种解决方法是将第二个文件的第一个字段按照之前插入的最后一条的数字，相应进行更改，使用awk命令：</p>
+<p><code>awk &#39;BEGIN{FS=&quot;,&quot;;OFS=&quot;,&quot;;ORS=&quot;\n&quot;;}{$1=NR+43146621;print $0}&#39; datatest.txt &gt; newdatatest.txt</code></p>
+<p>FS：输入字段分隔符</p>
+<p>RS：出入行分隔符</p>
+<p>OFS：输出字段分隔符</p>
+<p>ORS：表示输出行分隔符</p>
+<p>整合一下，自动化：</p>
+<p><code>lineNum=$(tail -1 /app/all_output_45/all_output.csv | awk -F &#39;,&#39; &#39;{print $1}&#39;)</code></p>
+<p><code>awk -v lineNum=&quot;$lineNum&quot; &#39;BEGIN{FS=&quot;,&quot;;OFS=&quot;,&quot;;ORS=&quot;\n&quot;;}{$1=NR+lineNum;print $0}&#39; all_output.csv &gt; new_all_output.csv</code></p>
+<p>所以要记录第一个文件的插入总条数，也就是插入后id值最后一个是什么</p>
+<p>xaa:</p>
+<p>xab:</p>
+<p>xac:</p>
+<h1 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h1><p>最后插入了很多数据后发现数据是21列，建的表是20列，晕，删除表，重新建表～</p>
+<p>又出现一个问题，之前按照文件大小将文件分割，插入数据库的时候发现，文件最后一行完整性被损坏了，所以一定要按照行来分割数据文件～</p>
+<p><code>split all_output.csv -l 46000000</code></p>
+<p>VIM所有行替换：</p>
+<p><code>:%s/fundid/fundId/gc</code></p>
+<p>远程连接MySQL的时候，报错：</p>
+<p>Can’t connect to MySQL server (10060)</p>
+<p>这时候解决办法如下：</p>
+<p>配置防火墙，开启3306端口，端口视情况而定</p>
+<p><code>vi /etc/sysconfig/iptables</code></p>
+<p><code>-A INPUT -m state –state NEW -m tcp -p tcp –dport 3306 -j ACCEPT（允许3306端口通过防火墙）</code></p>
+<p><code>/etc/init.d/iptables restart（重启防火墙使配置生效）</code></p>
+<p>检测方法，<code>telnet 10.234.0.45 32768</code>，如果进入界面，则说明链接成功，否则失败</p>
+
+	
+	</div>
+  <a type="button" href="/2017/03/10/环境以及部署问题汇总/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/03/01/Using-Celery-With-Flask/" >Using Celery With Flask</a>
 		</h3>
 		</div>
@@ -594,7 +688,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>77</span></a></li>
+			<li><a href="/categories/编程/">编程<span>78</span></a></li>
 		
 		</ul>
 	</div>
@@ -607,7 +701,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
-			<li><a href="/tags/Python/">Python<span>55</span></a></li>
+			<li><a href="/tags/Python/">Python<span>56</span></a></li>
 		
 			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
@@ -659,6 +753,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/02/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib中文显示方块问题</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
       </li>
     
@@ -672,10 +770,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
       </li>
     
   </ul>

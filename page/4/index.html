@@ -138,6 +138,178 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/10/17/cross_origin_resources_sharing/" >跨域资源共享</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-17 16:12:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="同源政策"><a href="#同源政策" class="headerlink" title="同源政策"></a>同源政策</h1><p>浏览器安全的基石是”<a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">同源政策</a>“</p>
+<p>在计算机科学中，同源政策是web应用安全模型中非常重要的概念，一个web浏览器允许第一个web页面的程序可以获取在第二个页面的数据，当且仅当两个web页面是同源的。源被定义为URI scheme，域名和端口号。这个政策阻止了一个页面的恶意程序通过页面的Document Object模型去另外一个web页面获取敏感数据的权限。</p>
+<p>这个机制对广大的基于HTTP cookies的现代web应用意义重大，cookies维护了认证的用户sessions，而服务器是基于HTTP cookie信息来传递敏感信息或者完成状态改变的行为。不相关的站点之间的严格分离必须在客户端方来维护，来阻止数据的机密性或者完整性下降。</p>
+<p>通俗的讲，A网页设置的 Cookie，B网页不能打开，除非这两个网页”同源”。</p>
+<p>所谓”同源”指的是”三个相同”:</p>
+<ul>
+<li>协议相同</li>
+<li>域名相同</li>
+<li>端口相同</li>
+</ul>
+<p>比如<code>http://www.example.com/dir/page.html</code>和<code>http://example.com/dir/other.html</code>就不同源，因为域名不同，而和<code>http://www.example.com/dir2/other.html</code>同源，因为协议相同，域名相同，端口也相同。</p>
+<p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据。</p>
+<p>目前，如果非同源，共有三种行为受到限制：</p>
+<ul>
+<li>Cookie、LocalStorage 和 IndexDB 无法读取。</li>
+<li>DOM 无法获得。</li>
+<li>AJAX 请求不能发送。</li>
+</ul>
+<p>其中Cookie，iframe，LocalStorage等当不同源的时候的解决办法不涉及后端，因此暂时不做介绍。</p>
+<p>同源政策规定，AJAX请求只能发给同源的网址，否则就报错。除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制。</p>
+<ul>
+<li>JSONP</li>
+<li>WebSocket</li>
+<li>CORS</li>
+</ul>
+<p>其中WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。</p>
+<p>WebSocket的请求头中有一个Origin字段，表示该请求的请求源（origin），即发自哪个域名。正是因为有了Origin这个字段，所以WebSocket才没有实行同源政策。因为服务器可以根据这个字段，判断是否许可本次通信。如果该域名在白名单内，服务器就会做出如下回应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 101 Switching Protocols</div><div class="line">Upgrade: websocket</div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=</div><div class="line">Sec-WebSocket-Protocol: chat</div></pre></td></tr></table></figure>
+<h1 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h1><p>CORS是跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</p>
+<p>CORS需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能。整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
+<p>实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。</p>
+<p>其中浏览器将CORS请求分成两类：简单请求（simple request）和非简单请求（not-so-simple request）。</p>
+<h2 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h2><ol>
+<li>请求方法是以下三种方法之一：<ul>
+<li>HEAD</li>
+<li>GET</li>
+<li>POST</li>
+</ul>
+</li>
+<li>HTTP的头信息不超出以下几种字段：<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+<li>Last-Event-ID</li>
+<li>Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain</li>
+</ul>
+</li>
+</ol>
+<p>对于简单请求，浏览器直接发出CORS请求。具体来说，浏览器发现这次跨源AJAX请求是简单请求，就在头信息之中自动增加一个Origin字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GET /cors HTTP/1.1</div><div class="line">Origin: http://api.bob.com</div><div class="line">Host: api.alice.com</div><div class="line">Accept-Language: en-US</div><div class="line">Connection: keep-alive</div><div class="line">User-Agent: Mozilla/5.0...</div></pre></td></tr></table></figure>
+<p>Origin字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。</p>
+<p>如果Origin指定的源，不在许可范围内，服务器会返回一个正常的HTTP回应。浏览器发现，这个回应的头信息没有包含<code>Access-Control-Allow-Origin</code>字段，就知道出错了，从而抛出一个错误，被XMLHttpRequest的onerror回调函数捕获。注意，这种错误无法通过状态码识别，因为HTTP回应的状态码有可能是200。</p>
+<p>如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Access-Control-Allow-Origin: http://api.bob.com</div><div class="line">Access-Control-Allow-Credentials: true</div><div class="line">Access-Control-Expose-Headers: FooBar Content-Type: text/html; charset=utf-8</div></pre></td></tr></table></figure>
+<ul>
+<li>Access-Control-Allow-Origin: 它的值要么是请求时Origin字段的值，要么是一个<code>*</code>，表示接受任意域名的请求。</li>
+<li>Access-Control-Allow-Credentials: 它的值是一个布尔值，表示是否允许发送Cookie。如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。</li>
+<li>Access-Control-Expose-Headers: CORS请求时，XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定。</li>
+</ul>
+<p>其中，如果有Cookie，则Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。</p>
+<h2 id="非简单请求"><a href="#非简单请求" class="headerlink" title="非简单请求"></a>非简单请求</h2><p>除了简单请求之外的都是非简单请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。</p>
+<ul>
+<li>预检请求</li>
+</ul>
+<p>非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为”预检”请求（preflight）。浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">OPTIONS /cors HTTP/1.1</div><div class="line">Origin: http://api.bob.com</div><div class="line">Access-Control-Request-Method: PUT</div><div class="line">Access-Control-Request-Headers: X-Custom-Header</div><div class="line">Host: api.alice.com</div><div class="line">Accept-Language: en-US</div><div class="line">Connection: keep-alive</div><div class="line">User-Agent: Mozilla/5.0...</div></pre></td></tr></table></figure>
+<p>“预检”请求用的请求方法是OPTIONS，表示这个请求是用来询问的。头信息里面，关键字段是Origin，表示请求来自哪个源。</p>
+<ul>
+<li>Access-Control-Request-Method: 列出浏览器的CORS请求会用到哪些HTTP方法</li>
+<li><p>Access-Control-Request-Headers: 指定浏览器CORS请求会额外发送的头信息字段</p>
+</li>
+<li><p>预检请求回应</p>
+</li>
+</ul>
+<p>服务器收到”预检”请求以后，检查了Origin、Access-Control-Request-Method和Access-Control-Request-Headers字段以后，确认允许跨源请求，就可以做出回应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 200 OK</div><div class="line">Date: Mon, 01 Dec 2008 01:15:39 GMT</div><div class="line">Server: Apache/2.0.61 (Unix)</div><div class="line">Access-Control-Allow-Origin: http://api.bob.com</div><div class="line">Access-Control-Allow-Methods: GET, POST, PUT</div><div class="line">Access-Control-Allow-Headers: X-Custom-Header</div><div class="line">Content-Type: text/html; charset=utf-8</div><div class="line">Content-Encoding: gzip</div><div class="line">Content-Length: 0</div><div class="line">Keep-Alive: timeout=2, max=100</div><div class="line">Connection: Keep-Alive</div><div class="line">Content-Type: text/plain</div></pre></td></tr></table></figure>
+<ul>
+<li>Access-Control-Allow-Origin: 表示<a href="http://api.bob.com可以请求数据。该字段也可以设为星号，表示同意任意跨源请求。" target="_blank" rel="external">http://api.bob.com可以请求数据。该字段也可以设为星号，表示同意任意跨源请求。</a></li>
+<li>Access-Control-Allow-Methods: 表明服务器支持的所有跨域请求的方法</li>
+<li>Access-Control-Allow-Headers: 表明服务器支持的所有头信息字段，不限于浏览器在”预检”中请求的字段。</li>
+<li>Access-Control-Max-Age: 用来指定本次预检请求的有效期</li>
+</ul>
+<p>如果浏览器否定了”预检”请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被XMLHttpRequest对象的onerror回调函数捕获。</p>
+<h1 id="flask-cors"><a href="#flask-cors" class="headerlink" title="flask-cors"></a><code>flask-cors</code></h1><p>搞懂了原理，下来看这个库就非常容易了。</p>
+<p>这个库提供了一个Flask扩展，其默认在所有路由上开启了CORS支持，支持所有源和方法。它参数化了所有单独的CORS头。这个包同时包含了一个装饰器。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>这是推荐的开启CORS的方式，默认的配置将在大部分情况下工作正常。</p>
+<p><code>class flask_cors.CORS(app=None, **kwargs)</code></p>
+<p>为这个应用初始化跨域资源共享。参数和<code>cross_origin()</code>是一致的，多了一个资源参数。资源参数定义了一系列的去匹配的资源路径的正则表达式，其他的可选参数将在这些路径(路由)上起作用。可选参数和<code>cross_origin()</code>是一致的。</p>
+<p>CORS的设置是以下列顺序决定的：</p>
+<ol>
+<li>资源层级的设置（当传递进去一个字典）</li>
+<li>关键字参数设置</li>
+<li>应用级别的配置参数(比如. <code>CORS_*</code>)</li>
+<li>默认参数</li>
+</ol>
+<p>因为有可能多个正则表达式会匹配到一个资源路径上，所以正则表达式首先会通过长度来排序，最长到最短，试图匹配一个最特定的正则表达式。这样做的好处是，首先匹配特定的资源，然后使用通配符匹配其他的资源。</p>
+<ul>
+<li><code>resources(dict, iterable or string)</code></li>
+</ul>
+<p>一系列正则表达式和应用于给定的资源路径的可选的CORS选项</p>
+<p>如果是字典的话，key是正则表达式，值是和这个方法一样的关键字参数。</p>
+<p>如果是列表的话，就是一系列的正则表达式。会应用app层级的配置。</p>
+<p>如果是字符串的话，就是一个正则表达式。会应用app层级的参数。</p>
+<p>默认会匹配所有的并且应用app层级的配置。</p>
+<ul>
+<li><code>origins(list, string or regex)</code></li>
+</ul>
+<p>源，或者是一个列表的允许源。可能是正则表达式，大小写敏感的字符串，或者是一个星号。</p>
+<ul>
+<li><code>methods(list or string)</code></li>
+</ul>
+<p>默认是 [GET, HEAD, POST, OPTIONS, PUT, PATCH, DELETE]</p>
+<ul>
+<li><code>expose_headers (list or string)</code></li>
+<li><code>allow_headers (list, string or regex)</code></li>
+<li><code>supports_credentials (bool)</code> </li>
+</ul>
+<p>允许用户发起认证的请求，即允许cookie。如果是true，将会在回应中加入<code>Access-Control-Allow-Credentials</code>头。不可以与<code>*</code>域一起使用。</p>
+<ul>
+<li><code>max_age (timedelta, integer, string or None)</code></li>
+<li><code>send_wildcard (bool)</code></li>
+</ul>
+<p>如果为True，并且源参数是<code>*</code>，那么一个通配符<code>Access-Control-Allow-Origin</code>头将会被发送，而不是请求的源头。</p>
+<ul>
+<li><code>vary_header (bool)</code></li>
+</ul>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p><code>flask_cors.cross_origin(*args, **kwargs)</code></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><ul>
+<li>CORS</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask, session</div><div class="line">from flask_cors import CORS</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line">CORS(app, supports_credentials=True)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def helloWorld():</div><div class="line">  return &quot;Hello, %s&quot; % session[&apos;username&apos;]</div></pre></td></tr></table></figure>
+<ul>
+<li><code>cross_origin()</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@app.route(&quot;/&quot;, methods=[&apos;GET&apos;])</div><div class="line">@cross_origin()</div><div class="line">def helloWorld():</div><div class="line">    return &apos;&apos;&apos;&lt;h1&gt;Hello CORS!&lt;/h1&gt; Read about my spec at the</div><div class="line">&lt;a href=&quot;http://www.w3.org/TR/cors/&quot;&gt;W3&lt;/a&gt; Or, checkout my documentation</div><div class="line">on &lt;a href=&quot;https://github.com/corydolphin/flask-cors&quot;&gt;Github&lt;/a&gt;&apos;&apos;&apos;</div></pre></td></tr></table></figure>
+<h2 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h2><p>当然可以自己来实现这个CORS，主要就是加上一些头信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@app.after_request</div><div class="line">def set_cors_headers(response):</div><div class="line">    # 不论预检响应还是正常响应都会有的头</div><div class="line">    response.headers[&apos;Access-Control-Allow-Origin&apos;] = request.headers.get(&apos;Origin&apos;, &apos;*&apos;)</div><div class="line">    response.headers[&apos;Access-Control-Allow-Credentials&apos;] = &apos;true&apos;</div><div class="line"></div><div class="line">    if request.method == &apos;OPTIONS&apos;:</div><div class="line">        # 只会在预检响应中出现的</div><div class="line">        # http://www.w3.org/TR/cors/#access-control-allow-methods-response-header</div><div class="line">        response.headers[&apos;Access-Control-Allow-Methods&apos;] = &apos;GET, POST, PUT, DELETE, PATCH, OPTIONS&apos;</div><div class="line">        response.headers[&apos;Access-Control-Max-Age&apos;] = &apos;3600&apos;  # 1 hour cache</div><div class="line">        if request.headers.get(&apos;Access-Control-Request-Headers&apos;) is not None:</div><div class="line">            response.headers[&apos;Access-Control-Allow-Headers&apos;] = request.headers[&apos;Access-Control-Request-Headers&apos;]</div><div class="line">    return response</div></pre></td></tr></table></figure>
+<p>参考：</p>
+<ol>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">浏览器同源政策及其规避方法</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="external">Wiki - Same-origin policy</a></li>
+<li><a href="https://www.w3.org/TR/cors" target="_blank" rel="external">Cross-Origin Resource Sharing</a></li>
+<li><a href="http://flask-cors.corydolphin.com/en/latest/api.html" target="_blank" rel="external">flask-cors API doc</a></li>
+</ol>
+
+	
+	</div>
+  <a type="button" href="/2017/10/17/cross_origin_resources_sharing/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/10/07/IO模型/" >IO模型</a>
 		</h3>
 		</div>
@@ -736,69 +908,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/09/12/subprocess管理/" >翻译 - subprocess — Subprocess management</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-09-12 09:00:35  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如<code>os.system</code>和<code>os.spawn*</code></p>
-<h1 id="使用subprocess模块"><a href="#使用subprocess模块" class="headerlink" title="使用subprocess模块"></a>使用subprocess模块</h1><h2 id="run函数"><a href="#run函数" class="headerlink" title="run函数"></a>run函数</h2><p>推荐的调用子进程的方式是使用<code>run()</code>函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的<code>Popen</code>接口。</p>
-<p><code>subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, shell=False, timeout=None, check=False)</code></p>
-<p>args是你要运行的命令，然后等待命令运行结束，然后返回一个<code>CompletedProcess</code>实例</p>
-<p>上面显示的参数是最常使用的，在下面的<code>Frequently Used Arguments</code>有详细介绍。它默认不会捕获stdout或者stderr，为了捕获这些信息，给stdout或者stderr参数传递<code>PIPE</code>。</p>
-<p>timeout参数会被传递给<code>Popen.communicate()</code>，如果到了timeout，子进程会被kill掉，在子进程被杀死之后会重新引发<code>TimeoutExpired</code>异常</p>
-<p>输入参数会被传递给<code>Popen.communicate()</code>，然后会被作为子进程的输入。如果要使用这个参数，传递的必须是一个二进制序列，或者当<code>universal_newlines=True</code>的时候可以传递一个字符串。当使用这个参数的时候，内部的Popen对象会自动的加入<code>stdin=PIPE</code>创建对象，同时stdin参数将不会被使用。</p>
-<p>如果check参数为True，如果子进程以非0状态码退出的话，一个<code>CalledProcessError</code>异常将会被引发。异常会保持参数，退出码，stdout以及stderr，如果能捕获的话。</p>
-<p>例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;])  # doesn&apos;t capture output</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;], returncode=0)</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run(&quot;exit 1&quot;, shell=True, check=True)</div><div class="line">Traceback (most recent call last):</div><div class="line">  ...</div><div class="line">subprocess.CalledProcessError: Command &apos;exit 1&apos; returned non-zero exit status 1</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;, &quot;/dev/null&quot;], stdout=subprocess.PIPE)</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;, &apos;/dev/null&apos;], returncode=0,</div><div class="line">stdout=b&apos;crw-rw-rw- 1 root root 1, 3 Jan 23 16:23 /dev/null\n&apos;)</div></pre></td></tr></table></figure>
-<p>基本上最简单的用法就是<code>check=True</code>，然后<code>stdout=PIPE</code>直接调用run函数就好了</p>
-<h2 id="CompletedProcess"><a href="#CompletedProcess" class="headerlink" title="CompletedProcess"></a>CompletedProcess</h2><p>从run函数的返回值，表示一个进程已经结束</p>
-<ul>
-<li>args: 用来启动进程的参数，会是一个列表或者字符串</li>
-<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
-<li>stdout: 从子进程中捕获stdout，二进制序列，如果run函数加上<code>universal_newlines=True</code>调用就是一个字符串，如果什么都没捕获的话就是一个None</li>
-<li>stderr: 跟上面一样</li>
-<li><code>check_returncode()</code>: 如果returncode不是0，则引发一个<code>CalledProcessError</code></li>
-</ul>
-<h2 id="DEVNULL"><a href="#DEVNULL" class="headerlink" title="DEVNULL"></a>DEVNULL</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示<code>os.devnull</code>文件将会被使用</p>
-<h2 id="PIPE"><a href="#PIPE" class="headerlink" title="PIPE"></a>PIPE</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示标准流的管道应该被打开。</p>
-<h2 id="STDOUT"><a href="#STDOUT" class="headerlink" title="STDOUT"></a>STDOUT</h2><p>用在Popen的stderr参数，用来指示标准错误应该和标准输出一同处理</p>
-<h2 id="CalledProcessError"><a href="#CalledProcessError" class="headerlink" title="CalledProcessError"></a>CalledProcessError</h2><ul>
-<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
-<li>cmd: 用来启动进程的命令</li>
-<li>output: 如果被run或者<code>check_output</code>捕获就是子进程的输出，否则是None</li>
-<li>stdout:</li>
-<li>stderr</li>
-</ul>
-<h2 id="Frequently-Used-Arguments"><a href="#Frequently-Used-Arguments" class="headerlink" title="Frequently Used Arguments"></a>Frequently Used Arguments</h2><p>为了支持更广泛的使用，Popen构造器和一些有用的函数，接受大量的可选参数。对于大部分典型使用来说，这些参数中的大部分都可以使用其默认值。经常需要使用的参数是这些：</p>
-<ul>
-<li><code>args</code> 每一次调用都需要这个参数，应该是一个字符串或者是程序的参数序列。通常建议传递参数序列，因为这样可以允许模块更好的处理转义和参数引用，比如在文件名中允许空格。<strong>如果传递了单个的字符串，shell参数应该为True或者是程序调用的时候不需要额外参数</strong></li>
-<li><code>stdin, stdout, stderr</code> 分别指定了程序的标准输入，标准输出和标准错误的文件处理器。有效的值是<code>PIPE</code>，<code>DEVNULL</code>，一个存在的文件描述符，一个存在的文件对象和None。<code>PIPE</code>指定了一个连接到子进程的管道应该被创建。<code>DEVNULL</code>指定了这个特殊的文件<code>os.devnull</code>会被使用。默认值None说明没有重定向发生。子进程的文件处理器会继承父进程的。另外，<code>stderr</code>将会是<code>STDOUT</code>，表明子进程的stderr数据会和stdout一块捕获。</li>
-<li><code>universal_newlines</code> 如果为False，stdin, stdout, stderr将会以二进制流的方式打开，并且没有行结束符。如果为True，将会以文本模式打开，并且使用<code>locale.getpreferredencoding(False)</code>返回的编码方式。对于stdin，<code>\n</code>将会被转换成默认的行分隔符<code>os.linesep</code>。对于stderr和stdout，所有的行结束都会被转换成<code>\n</code>。</li>
-<li><code>shell</code> 如果为True，指定的命令将会通过shell来执行，在你主要用Python来做控制，但是又想有shell的便利性的时候很有用，比如shell管道，文件名通配符，环境变量扩展，<code>~</code>用户家目录的扩展。然而，Python自己也实现了很多shell特性的东西，比如<code>glob</code>, <code>fnmatch</code>, <code>os.walk()</code>, <code>os.path.expandvars()</code>, <code>os.path.expanduser()</code>和<code>shutil</code></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2017/09/12/subprocess管理/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -852,7 +961,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>77</span></a></li>
+			<li><a href="/categories/编程/">编程<span>78</span></a></li>
 		
 		</ul>
 	</div>
@@ -865,7 +974,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
-			<li><a href="/tags/Python/">Python<span>55</span></a></li>
+			<li><a href="/tags/Python/">Python<span>56</span></a></li>
 		
 			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
@@ -917,6 +1026,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/02/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib中文显示方块问题</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
       </li>
     
@@ -930,10 +1043,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
       </li>
     
   </ul>

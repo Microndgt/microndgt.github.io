@@ -138,6 +138,53 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/08/23/翻译 - How to close a SQLAlchemy session/" >翻译 - How to close a SQLAlchemy session</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-23 14:29:33  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>在StackOverFlow中看到这个问题，比较有意思<a href="https://stackoverflow.com/questions/21738944/how-to-close-a-sqlalchemy-session" target="_blank" rel="external">How to close a SQLAlchemy session?</a></p>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>继续我们在<a href="https://stackoverflow.com/questions/8645250/how-to-close-sqlalchemy-connection-in-mysql/8705750?noredirect=1#comment32872652_8705750" target="_blank" rel="external">How to close sqlalchemy connection in MySQL</a>的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python</p>
+<p>如果我在python控制台中运行这一段程序，它将会保持session打开一直到我退出Python</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy.orm import sessionmaker</div><div class="line">from models import OneTable, get_engine</div><div class="line"></div><div class="line">engine = get_engine(database=&quot;mydb&quot;)</div><div class="line">session = sessionmaker(bind=engine)()</div><div class="line"></div><div class="line">results = session.query(OneTable.company_name).all()</div><div class="line"></div><div class="line"># some work with the data #</div><div class="line"></div><div class="line">session.close()</div></pre></td></tr></table></figure>
+<p>唯一我发现的解决方式是<code>engine.dispose()</code></p>
+<p>按照我给出连接的讨论，我的问题是：</p>
+<ul>
+<li>为什么<code>engine.dispose()</code>是关闭session所必须的</li>
+<li><code>session.close()</code>不够吗</li>
+</ul>
+<h1 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h1><p>高票回答：</p>
+<p>这主要是对<code>session</code>这个词有混淆。你可能混淆了<code>SQLAlchemy Session</code>和<code>MySQL session</code>，后者指的是当你第一次连接到MySQL和断开连接之间这一段范围。</p>
+<p>这两个概念是不同的，SQLAlchemy Session指的是一个或者多个transactions的范围，在一个特定的数据库连接之上。</p>
+<p>因此，就你所问的答案应该是调用<code>session.close()</code>，也就是，如何正确的关闭SQLAlchemy Session</p>
+<p>然后，剩下的问题说明你想凭借一些功能性的东西，当特定的Session关闭时候，而且真实的DBAPI连接也要关闭</p>
+<p>也就是说你希望禁止connection pooling连接池，就像其他答案一样，非常容易，使用NullPool，<code>poolclass=NullPool</code></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>最近在应用中出现了这个问题<code>Too many open files:/sqlalchemy/dialects</code></p>
+<p>首先这个<code>too many open files</code>原因是因为程序打开的文件/socket连接数量超过系统设定值，然后又是sqlalchemy报错的，因此很大可能性是因为sqlalchemy建立的连接过多。</p>
+<p>然后给所有使用<code>db.session.commit()</code>的后面加入一行<code>db.session.close()</code>用来关闭连接会话。</p>
+<p>看来涉及数据库连接等连接问题时候还是得谨慎啊。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/23/翻译 - How to close a SQLAlchemy session/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/" >翻译 - use pytest-asyncio to test your coroutines</a>
 		</h3>
 		</div>
@@ -709,69 +756,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/03/thriftpy_2_processor/" >thriftpy源码解析(二) - 处理器</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-03 17:14:25  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="从make-server入手"><a href="#从make-server入手" class="headerlink" title="从make_server入手"></a>从<code>make_server</code>入手</h1><p>首先来看看官方给的服务器demo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">pingpong_thrift = thriftpy.load(&quot;pingpong.thrift&quot;, module_name=&quot;pingpong_thrift&quot;)</div><div class="line"></div><div class="line">from thriftpy.rpc import make_server</div><div class="line"></div><div class="line">class Dispatcher(object):</div><div class="line">    def ping(self):</div><div class="line">        return &quot;pong&quot;</div><div class="line"></div><div class="line">server = make_server(pingpong_thrift.PingPong, Dispatcher(), &apos;127.0.0.1&apos;, 6000)</div><div class="line">server.serve()</div></pre></td></tr></table></figure>
-<p>首先载入thrift文件没话说，下来是创建服务器，它是直接用里面的一个函数<code>make_server</code> ，这个函数会接收thrift导入协议中定义的服务和处理这个服务的处理对象，以及host和port作为参数，然后调用<code>serve()</code>方法，来创建一个服务器。</p>
-<p>那么关键就在<code>make_server</code>函数上了，进入查看源码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">def make_server(service, handler, host=&quot;localhost&quot;, port=9090, unix_socket=None, proto_factory=TBinaryProtocolFactory(), trans_factory=TBufferedTransportFactory(), client_timeout=3000, certfile=None):</div><div class="line">truetrue# 为传入的服务和处理方法创建处理器</div><div class="line">    processor = TProcessor(service, handler)</div><div class="line"></div><div class="line">truetrue# 如果是Unix_socket</div><div class="line">    if unix_socket:</div><div class="line">        server_socket = TServerSocket(unix_socket=unix_socket)</div><div class="line">        if certfile:</div><div class="line">            warnings.warn(&quot;SSL only works with host:port, not unix_socket.&quot;)</div><div class="line">    elif host and port:</div><div class="line">        if certfile:</div><div class="line">            server_socket = TSSLServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout,</div><div class="line">                certfile=certfile)</div><div class="line">        else:</div><div class="line">            server_socket = TServerSocket(</div><div class="line">                host=host, port=port, client_timeout=client_timeout)</div><div class="line">    else:</div><div class="line">        raise ValueError(&quot;Either host/port or unix_socket must be provided.&quot;)</div><div class="line"></div><div class="line">    server = TThreadedServer(processor, server_socket,</div><div class="line">                             iprot_factory=proto_factory,</div><div class="line">                             itrans_factory=trans_factory)</div><div class="line">    return server</div></pre></td></tr></table></figure>
-<p>可以看到，创建一个服务器其实过程非常简单，首先创建一个处理器Processor，然后创建一个Socket，接下来创建服务器，这里使用的是<code>TThreadedServer</code>，顾名思义是多线程的服务器了。</p>
-<p>其中有进行判断<code>unix_socket</code>和SSL的，SSL不多解释了。但是<code>unix_socket</code>是什么呢，UNIX 域套接字（UNIX domain socket），即通过文件系统（而非网络地址）进行寻址和访问的套接字。因此其不需要host和port。其实是进程间通信的一种方式吧，在一台电脑上进程间通信也可以使用TCP套接字或者UDP套接字，但它们的效率都没有域套接字高，另外域套接字使用的库函数和TCP套接字使用的库函数一样，这样操作比较简单。</p>
-<p>那么不管这些<code>unix_socket</code>还有SSL这些东西，我们抽象一下就可以发现，其实只有5个东西：</p>
-<ul>
-<li>处理器 Processor 默认使用的是<code>TProcessor</code></li>
-<li>套接字 socket 默认使用的是<code>TServerSocket</code></li>
-<li>协议 默认使用的是<code>TBinaryProtocolFactory()</code></li>
-<li>传输类型 默认使用的是<code>TBufferedTransportFactory()</code></li>
-<li>服务器类型 默认使用的是<code>TThreadedServer</code></li>
-</ul>
-<p>那么要自定义一个自己的服务器，那么只要自定义这些就行了，比如我不想用多线程的服务器，我想用基于协程的服务器，自己写一个就好了<code>= = !</code></p>
-<p>下面一系列文章，将对这些内容进行分析讲解，使得大家可以轻松的自定义的使用thriftpy</p>
-<h1 id="处理器-Processor"><a href="#处理器-Processor" class="headerlink" title="处理器 Processor"></a>处理器 Processor</h1><p>目前在源码中看到的有2个Processor，一个是<code>TProcessor</code>，一个是<code>TMultiplexedProcessor</code>，另外还有一个Processor工厂<code>TProcessorFactory</code>。所以处理器总共就两个，一个是单服务处理器，一个是多服务处理器。</p>
-<p>处理器中<code>process</code>方法是外部比如服务器调用的方法，而<code>process_in</code>是处理器内部调用的处理逻辑</p>
-<h2 id="TProcessor"><a href="#TProcessor" class="headerlink" title="TProcessor"></a><code>TProcessor</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line">class TProcessor(object):</div><div class="line">    &quot;&quot;&quot;Base class for procsessor, which works on two streams.&quot;&quot;&quot;</div><div class="line"></div><div class="line">    def __init__(self, service, handler):</div><div class="line">        self._service = service</div><div class="line">        self._handler = handler</div><div class="line"></div><div class="line">    def process_in(self, iprot):</div><div class="line">        api, type, seqid = iprot.read_message_begin()</div><div class="line">        if api not in self._service.thrift_services:</div><div class="line">            iprot.skip(TType.STRUCT)</div><div class="line">            iprot.read_message_end()</div><div class="line">            return api, seqid, TApplicationException(TApplicationException.UNKNOWN_METHOD), None  # noqa</div><div class="line"></div><div class="line">        args = getattr(self._service, api + &quot;_args&quot;)()</div><div class="line">        args.read(iprot)</div><div class="line">        iprot.read_message_end()</div><div class="line">        result = getattr(self._service, api + &quot;_result&quot;)()</div><div class="line"></div><div class="line">        # convert kwargs to args</div><div class="line">        api_args = [args.thrift_spec[k][1] for k in sorted(args.thrift_spec)]</div><div class="line"></div><div class="line">        def call():</div><div class="line">            f = getattr(self._handler, api)</div><div class="line">            return f(*(args.__dict__[k] for k in api_args))</div><div class="line"></div><div class="line">        return api, seqid, result, call</div><div class="line"></div><div class="line">    def send_exception(self, oprot, api, exc, seqid):</div><div class="line">        oprot.write_message_begin(api, TMessageType.EXCEPTION, seqid)</div><div class="line">        exc.write(oprot)</div><div class="line">        oprot.write_message_end()</div><div class="line">        oprot.trans.flush()</div><div class="line"></div><div class="line">    def send_result(self, oprot, api, result, seqid):</div><div class="line">        oprot.write_message_begin(api, TMessageType.REPLY, seqid)</div><div class="line">        result.write(oprot)</div><div class="line">        oprot.write_message_end()</div><div class="line">        oprot.trans.flush()</div><div class="line"></div><div class="line">    def handle_exception(self, e, result):</div><div class="line">        for k in sorted(result.thrift_spec):</div><div class="line">            if result.thrift_spec[k][1] == &quot;success&quot;:</div><div class="line">                continue</div><div class="line"></div><div class="line">            _, exc_name, exc_cls, _ = result.thrift_spec[k]</div><div class="line">            if isinstance(e, exc_cls):</div><div class="line">                setattr(result, exc_name, e)</div><div class="line">                break</div><div class="line">        else:</div><div class="line">            raise</div><div class="line"></div><div class="line">    def process(self, iprot, oprot):</div><div class="line">        api, seqid, result, call = self.process_in(iprot)</div><div class="line"></div><div class="line">        if isinstance(result, TApplicationException):</div><div class="line">            return self.send_exception(oprot, api, result, seqid)</div><div class="line"></div><div class="line">        try:</div><div class="line">            result.success = call()</div><div class="line">        except Exception as e:</div><div class="line">            # raise if api don&apos;t have throws</div><div class="line">            self.handle_exception(e, result)</div><div class="line"></div><div class="line">        if not result.oneway:</div><div class="line">            self.send_result(oprot, api, result, seqid)</div></pre></td></tr></table></figure>
-<p>具体的就不讲解了，主要的东西就是这个处理器可以将一个服务和一个处理方法对应起来，这个处理方法一般是类的实例，然后服务里定义的的函数一般就是这个类的方法，在<code>process_in</code>方法里面定义了call函数，它其实就是调用handler的具体方法，其中api就是thrift中定义的服务的api。</p>
-<p>另外需要根据不同的协议来确定返回的值，比如下面的例子，返回的是字典，我就需要使用<code>TJSONProtocolFactory</code>，还有其他的一些协议，后面再讲。</p>
-<p>handler的话比如这样，实例方法也ok，我这里函数都是独立的，所以使用静态方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class CalcAbility(object):</div><div class="line">    @staticmethod</div><div class="line">    def sync_ability(fundId, assets, flows, stocks, start, stop, calc_type):</div><div class="line">        try:</div><div class="line">            assert fundId and assets and start and stop, &quot;fundId or assets or start or end not found - testing&quot;</div><div class="line">            start_date = strpdate(start)</div><div class="line">            stop_date = strpdate(stop)</div><div class="line">            calc_type = calc_type or DEFAULT_CALC_TYPE</div><div class="line">            res = is_continuous_trade_day(start, stop, assets)</div><div class="line">            assert res[0], res[1]</div><div class="line">        except Exception as e:</div><div class="line">            sentry_logger.exception(e)</div><div class="line">            return gen_response(data=None, msg=str(e), errorcode=1)</div><div class="line">        return assets</div></pre></td></tr></table></figure>
-<p>thrift文件定义如下，thrift文件定义花样比较多，后面再说。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="TMultiplexedProcessor"><a href="#TMultiplexedProcessor" class="headerlink" title="TMultiplexedProcessor"></a><code>TMultiplexedProcessor</code></h2><p>这个处理器支持多个服务分别对应不同的处理方法，其实是一堆<code>TProcessor</code>和处理方法的集合，使用字典实现，其中<code>service_name</code>对应<code>processor</code>，所以定义<code>TMultiplexedProcessor</code>后，必须进行注册：<code>register_processor</code></p>
-<p>源码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">class TMultiplexedProcessor(TProcessor):</div><div class="line">    SEPARATOR = &quot;:&quot;</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        self.processors = &#123;&#125;</div><div class="line"></div><div class="line">    def register_processor(self, service_name, processor):</div><div class="line">        if service_name in self.processors:</div><div class="line">            raise TApplicationException(</div><div class="line">                type=TApplicationException.INTERNAL_ERROR,</div><div class="line">                message=&apos;processor for `&#123;0&#125;` already registered&apos;</div><div class="line">                .format(service_name))</div><div class="line">        self.processors[service_name] = processor</div><div class="line"></div><div class="line">    def process_in(self, iprot):</div><div class="line">        api, type, seqid = iprot.read_message_begin()</div><div class="line">        if type not in (TMessageType.CALL, TMessageType.ONEWAY):</div><div class="line">            raise TException(&quot;TMultiplex protocol only supports CALL &amp; ONEWAY&quot;)</div><div class="line">        if TMultiplexedProcessor.SEPARATOR not in api:</div><div class="line">            raise TException(&quot;Service name not found in message. &quot;</div><div class="line">                             &quot;You should use TMultiplexedProtocol in client.&quot;)</div><div class="line"></div><div class="line">        service_name, api = api.split(TMultiplexedProcessor.SEPARATOR)</div><div class="line">        if service_name not in self.processors:</div><div class="line">            iprot.skip(TType.STRUCT)</div><div class="line">            iprot.read_message_end()</div><div class="line">            e = TApplicationException(TApplicationException.UNKNOWN_METHOD)</div><div class="line">            return api, seqid, e, None</div><div class="line"></div><div class="line">        proc = self.processors[service_name]</div><div class="line">        args = getattr(proc._service, api + &quot;_args&quot;)()</div><div class="line">        args.read(iprot)</div><div class="line">        iprot.read_message_end()</div><div class="line">        result = getattr(proc._service, api + &quot;_result&quot;)()</div><div class="line"></div><div class="line">        # convert kwargs to args</div><div class="line">        api_args = [args.thrift_spec[k][1] for k in sorted(args.thrift_spec)]</div><div class="line"></div><div class="line">        def call():</div><div class="line">            f = getattr(proc._handler, api)</div><div class="line">            return f(*(args.__dict__[k] for k in api_args))</div><div class="line"></div><div class="line">        return api, seqid, result, call</div></pre></td></tr></table></figure>
-<p>使用<code>TMultiplexedProcessor</code>来注册几个服务和处理器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">thrift_app = TMultiplexedProcessor()</div><div class="line"></div><div class="line">calc_processor = TProcessor(ability_thrift.Calc, CalcAbility())</div><div class="line">read_processor = TProcessor(ability_thrift.Read, ReadAbility())</div><div class="line"></div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Calc&apos;, calc_processor)</div><div class="line">thrift_app.register_processor(&apos;ability_thrift.Read&apos;, read_processor)</div></pre></td></tr></table></figure>
-<p>其中Read服务在thrift文件中定义，然后处理方法<code>ReadAbility</code>根据thrift协议来定，其实就是通过<code>service_name</code>找到对应的处理器，其他的就和<code>TProcessor</code>一样了</p>
-<h2 id="TProcessorFactory"><a href="#TProcessorFactory" class="headerlink" title="TProcessorFactory"></a><code>TProcessorFactory</code></h2><p>处理器工厂，感觉其实没什么卵用，源码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class TProcessorFactory(object):</div><div class="line"></div><div class="line">    def __init__(self, processor_class, *args, **kwargs):</div><div class="line">        self.args = args</div><div class="line">        self.kwargs = kwargs</div><div class="line"></div><div class="line">        self.processor_class = processor_class</div><div class="line"></div><div class="line">    def get_processor(self):</div><div class="line">        return self.processor_class(*self.args, **self.kwargs)</div></pre></td></tr></table></figure>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这一节对常用的<code>Processor</code>做了一个介绍，当然深入的实现细节没有讲到，毕竟太复杂，现在的目标只是做个介绍罢了。</p>
-<h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节我们将了解下<code>TServerSocket</code></p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/03/thriftpy_2_processor/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -825,7 +809,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>77</span></a></li>
+			<li><a href="/categories/编程/">编程<span>78</span></a></li>
 		
 		</ul>
 	</div>
@@ -838,7 +822,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
-			<li><a href="/tags/Python/">Python<span>55</span></a></li>
+			<li><a href="/tags/Python/">Python<span>56</span></a></li>
 		
 			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
@@ -890,6 +874,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/02/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib中文显示方块问题</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
       </li>
     
@@ -903,10 +891,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
       </li>
     
   </ul>

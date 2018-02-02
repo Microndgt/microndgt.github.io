@@ -138,6 +138,69 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/09/12/subprocess管理/" >翻译 - subprocess — Subprocess management</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-12 09:00:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如<code>os.system</code>和<code>os.spawn*</code></p>
+<h1 id="使用subprocess模块"><a href="#使用subprocess模块" class="headerlink" title="使用subprocess模块"></a>使用subprocess模块</h1><h2 id="run函数"><a href="#run函数" class="headerlink" title="run函数"></a>run函数</h2><p>推荐的调用子进程的方式是使用<code>run()</code>函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的<code>Popen</code>接口。</p>
+<p><code>subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, shell=False, timeout=None, check=False)</code></p>
+<p>args是你要运行的命令，然后等待命令运行结束，然后返回一个<code>CompletedProcess</code>实例</p>
+<p>上面显示的参数是最常使用的，在下面的<code>Frequently Used Arguments</code>有详细介绍。它默认不会捕获stdout或者stderr，为了捕获这些信息，给stdout或者stderr参数传递<code>PIPE</code>。</p>
+<p>timeout参数会被传递给<code>Popen.communicate()</code>，如果到了timeout，子进程会被kill掉，在子进程被杀死之后会重新引发<code>TimeoutExpired</code>异常</p>
+<p>输入参数会被传递给<code>Popen.communicate()</code>，然后会被作为子进程的输入。如果要使用这个参数，传递的必须是一个二进制序列，或者当<code>universal_newlines=True</code>的时候可以传递一个字符串。当使用这个参数的时候，内部的Popen对象会自动的加入<code>stdin=PIPE</code>创建对象，同时stdin参数将不会被使用。</p>
+<p>如果check参数为True，如果子进程以非0状态码退出的话，一个<code>CalledProcessError</code>异常将会被引发。异常会保持参数，退出码，stdout以及stderr，如果能捕获的话。</p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;])  # doesn&apos;t capture output</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;], returncode=0)</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run(&quot;exit 1&quot;, shell=True, check=True)</div><div class="line">Traceback (most recent call last):</div><div class="line">  ...</div><div class="line">subprocess.CalledProcessError: Command &apos;exit 1&apos; returned non-zero exit status 1</div><div class="line"></div><div class="line">&gt;&gt;&gt; subprocess.run([&quot;ls&quot;, &quot;-l&quot;, &quot;/dev/null&quot;], stdout=subprocess.PIPE)</div><div class="line">CompletedProcess(args=[&apos;ls&apos;, &apos;-l&apos;, &apos;/dev/null&apos;], returncode=0,</div><div class="line">stdout=b&apos;crw-rw-rw- 1 root root 1, 3 Jan 23 16:23 /dev/null\n&apos;)</div></pre></td></tr></table></figure>
+<p>基本上最简单的用法就是<code>check=True</code>，然后<code>stdout=PIPE</code>直接调用run函数就好了</p>
+<h2 id="CompletedProcess"><a href="#CompletedProcess" class="headerlink" title="CompletedProcess"></a>CompletedProcess</h2><p>从run函数的返回值，表示一个进程已经结束</p>
+<ul>
+<li>args: 用来启动进程的参数，会是一个列表或者字符串</li>
+<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
+<li>stdout: 从子进程中捕获stdout，二进制序列，如果run函数加上<code>universal_newlines=True</code>调用就是一个字符串，如果什么都没捕获的话就是一个None</li>
+<li>stderr: 跟上面一样</li>
+<li><code>check_returncode()</code>: 如果returncode不是0，则引发一个<code>CalledProcessError</code></li>
+</ul>
+<h2 id="DEVNULL"><a href="#DEVNULL" class="headerlink" title="DEVNULL"></a>DEVNULL</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示<code>os.devnull</code>文件将会被使用</p>
+<h2 id="PIPE"><a href="#PIPE" class="headerlink" title="PIPE"></a>PIPE</h2><p>可以在stdin, stdout或者stderr中作为Popen的参数，用来指示标准流的管道应该被打开。</p>
+<h2 id="STDOUT"><a href="#STDOUT" class="headerlink" title="STDOUT"></a>STDOUT</h2><p>用在Popen的stderr参数，用来指示标准错误应该和标准输出一同处理</p>
+<h2 id="CalledProcessError"><a href="#CalledProcessError" class="headerlink" title="CalledProcessError"></a>CalledProcessError</h2><ul>
+<li>returncode: 子进程的退出码，如果是0表示运行成功，负数-N表示子进程被信号N终止了</li>
+<li>cmd: 用来启动进程的命令</li>
+<li>output: 如果被run或者<code>check_output</code>捕获就是子进程的输出，否则是None</li>
+<li>stdout:</li>
+<li>stderr</li>
+</ul>
+<h2 id="Frequently-Used-Arguments"><a href="#Frequently-Used-Arguments" class="headerlink" title="Frequently Used Arguments"></a>Frequently Used Arguments</h2><p>为了支持更广泛的使用，Popen构造器和一些有用的函数，接受大量的可选参数。对于大部分典型使用来说，这些参数中的大部分都可以使用其默认值。经常需要使用的参数是这些：</p>
+<ul>
+<li><code>args</code> 每一次调用都需要这个参数，应该是一个字符串或者是程序的参数序列。通常建议传递参数序列，因为这样可以允许模块更好的处理转义和参数引用，比如在文件名中允许空格。<strong>如果传递了单个的字符串，shell参数应该为True或者是程序调用的时候不需要额外参数</strong></li>
+<li><code>stdin, stdout, stderr</code> 分别指定了程序的标准输入，标准输出和标准错误的文件处理器。有效的值是<code>PIPE</code>，<code>DEVNULL</code>，一个存在的文件描述符，一个存在的文件对象和None。<code>PIPE</code>指定了一个连接到子进程的管道应该被创建。<code>DEVNULL</code>指定了这个特殊的文件<code>os.devnull</code>会被使用。默认值None说明没有重定向发生。子进程的文件处理器会继承父进程的。另外，<code>stderr</code>将会是<code>STDOUT</code>，表明子进程的stderr数据会和stdout一块捕获。</li>
+<li><code>universal_newlines</code> 如果为False，stdin, stdout, stderr将会以二进制流的方式打开，并且没有行结束符。如果为True，将会以文本模式打开，并且使用<code>locale.getpreferredencoding(False)</code>返回的编码方式。对于stdin，<code>\n</code>将会被转换成默认的行分隔符<code>os.linesep</code>。对于stderr和stdout，所有的行结束都会被转换成<code>\n</code>。</li>
+<li><code>shell</code> 如果为True，指定的命令将会通过shell来执行，在你主要用Python来做控制，但是又想有shell的便利性的时候很有用，比如shell管道，文件名通配符，环境变量扩展，<code>~</code>用户家目录的扩展。然而，Python自己也实现了很多shell特性的东西，比如<code>glob</code>, <code>fnmatch</code>, <code>os.walk()</code>, <code>os.path.expandvars()</code>, <code>os.path.expanduser()</code>和<code>shutil</code></li>
+</ul>
+
+	
+	</div>
+  <a type="button" href="/2017/09/12/subprocess管理/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/09/05/属性描述符/" >属性描述符</a>
 		</h3>
 		</div>
@@ -828,53 +891,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/23/翻译 - How to close a SQLAlchemy session/" >翻译 - How to close a SQLAlchemy session</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-23 14:29:33  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>在StackOverFlow中看到这个问题，比较有意思<a href="https://stackoverflow.com/questions/21738944/how-to-close-a-sqlalchemy-session" target="_blank" rel="external">How to close a SQLAlchemy session?</a></p>
-<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>继续我们在<a href="https://stackoverflow.com/questions/8645250/how-to-close-sqlalchemy-connection-in-mysql/8705750?noredirect=1#comment32872652_8705750" target="_blank" rel="external">How to close sqlalchemy connection in MySQL</a>的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python</p>
-<p>如果我在python控制台中运行这一段程序，它将会保持session打开一直到我退出Python</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy.orm import sessionmaker</div><div class="line">from models import OneTable, get_engine</div><div class="line"></div><div class="line">engine = get_engine(database=&quot;mydb&quot;)</div><div class="line">session = sessionmaker(bind=engine)()</div><div class="line"></div><div class="line">results = session.query(OneTable.company_name).all()</div><div class="line"></div><div class="line"># some work with the data #</div><div class="line"></div><div class="line">session.close()</div></pre></td></tr></table></figure>
-<p>唯一我发现的解决方式是<code>engine.dispose()</code></p>
-<p>按照我给出连接的讨论，我的问题是：</p>
-<ul>
-<li>为什么<code>engine.dispose()</code>是关闭session所必须的</li>
-<li><code>session.close()</code>不够吗</li>
-</ul>
-<h1 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h1><p>高票回答：</p>
-<p>这主要是对<code>session</code>这个词有混淆。你可能混淆了<code>SQLAlchemy Session</code>和<code>MySQL session</code>，后者指的是当你第一次连接到MySQL和断开连接之间这一段范围。</p>
-<p>这两个概念是不同的，SQLAlchemy Session指的是一个或者多个transactions的范围，在一个特定的数据库连接之上。</p>
-<p>因此，就你所问的答案应该是调用<code>session.close()</code>，也就是，如何正确的关闭SQLAlchemy Session</p>
-<p>然后，剩下的问题说明你想凭借一些功能性的东西，当特定的Session关闭时候，而且真实的DBAPI连接也要关闭</p>
-<p>也就是说你希望禁止connection pooling连接池，就像其他答案一样，非常容易，使用NullPool，<code>poolclass=NullPool</code></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>最近在应用中出现了这个问题<code>Too many open files:/sqlalchemy/dialects</code></p>
-<p>首先这个<code>too many open files</code>原因是因为程序打开的文件/socket连接数量超过系统设定值，然后又是sqlalchemy报错的，因此很大可能性是因为sqlalchemy建立的连接过多。</p>
-<p>然后给所有使用<code>db.session.commit()</code>的后面加入一行<code>db.session.close()</code>用来关闭连接会话。</p>
-<p>看来涉及数据库连接等连接问题时候还是得谨慎啊。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/23/翻译 - How to close a SQLAlchemy session/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -928,7 +944,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>77</span></a></li>
+			<li><a href="/categories/编程/">编程<span>78</span></a></li>
 		
 		</ul>
 	</div>
@@ -941,7 +957,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
 		
-			<li><a href="/tags/Python/">Python<span>55</span></a></li>
+			<li><a href="/tags/Python/">Python<span>56</span></a></li>
 		
 			<li><a href="/tags/源码/">源码<span>6</span></a></li>
 		
@@ -993,6 +1009,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/02/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib中文显示方块问题</a>
+      </li>
+    
+      <li>
         <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
       </li>
     
@@ -1006,10 +1026,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/21/go语言圣经_note_method/" ><i class="fa fa-file-o"></i>Go语言圣经 - 读书笔记 - 方法</a>
       </li>
     
   </ul>
