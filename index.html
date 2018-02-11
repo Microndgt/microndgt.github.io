@@ -138,6 +138,68 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2018/02/11/graph_in_golang/" >Golang 实现有向图</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2018-02-11 14:09:46  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>之前在项目中用 Golang 实现了一个图的数据结构，并且实现了相关的一些算法，比如 BFS, DFS以及检测是否有环等等。在这里就将实现的代码，过程和算法原理做一个总结。</p>
+<h1 id="基本数据结构"><a href="#基本数据结构" class="headerlink" title="基本数据结构"></a>基本数据结构</h1><p>有好几种数据结构可以实现图，比如邻接矩阵，邻接表和十字链表等，我这里使用的就是最常见的邻接矩阵的方法。</p>
+<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p>定义一个图需要定义图中节点(Node)的结构，节点是保存数据的最小部分，节点的定义基本上是需要根据实际情况来定，这里我定义的Node如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Node <span class="keyword">struct</span> &#123;</div><div class="line">trueData       <span class="keyword">interface</span>&#123;&#125;</div><div class="line">trueInputTags  <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></div><div class="line">trueOutputTags <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中Data是任意的数据类型，而InputTags和OutputTags是一个map对象，定义了该节点输入和输出信息，使用map而不是使用数组的原因是我需要查找某一个tag是否存在，因此map效率更高点。</p>
+<h2 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h2><p>在Graph数据结构中需要包含以下信息：Node节点列表，邻接矩阵，图的大小以及目前拥有的节点数量。定义的结构如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Graph <span class="keyword">struct</span> &#123;</div><div class="line">trueNodeCount <span class="keyword">int</span></div><div class="line">trueSize      <span class="keyword">int</span></div><div class="line">trueNodeArray []Node</div><div class="line">trueMatrix    []<span class="keyword">int</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>邻接矩阵使用int数组实现，如果需要第row行，第col列的矩阵值(row和col从0开始，因此row=1，即第二行)，则<code>g.Matrix[row*g.Size+col]</code>即可获得。</p>
+<h1 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h1><p>图的常用方法有以下：</p>
+<ul>
+<li>创建一个图</li>
+<li>向图中添加节点</li>
+<li>设置邻接矩阵</li>
+<li>深度优先遍历</li>
+<li>广度优先遍历</li>
+<li>判断是否有环</li>
+</ul>
+<h2 id="创建图"><a href="#创建图" class="headerlink" title="创建图"></a>创建图</h2><p>创建图即为图数据结构的各个元素进行初始化，设定其size：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">MakeGraph</span><span class="params">(size <span class="keyword">int</span>)</span> <span class="title">Graph</span></span> &#123;</div><div class="line">trueg := Graph&#123;Size: size&#125;</div><div class="line">trueg.NodeArray = <span class="built_in">make</span>([]Node, size)</div><div class="line">trueg.Matrix = <span class="built_in">make</span>([]<span class="keyword">int</span>, size*size)</div><div class="line">true<span class="keyword">return</span> g</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h2><p>添加节点这里也比较简单，因为并没有在添加节点的时候定义各个节点的关系(即设置邻接矩阵)，当然也可以在添加节点的时候做。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Graph)</span> <span class="title">AddNode</span><span class="params">(node Node)</span></span> &#123;</div><div class="line">true<span class="keyword">if</span> g.NodeCount &gt;= g.Size &#123;</div><div class="line">truetrue<span class="keyword">return</span></div><div class="line">true&#125;</div><div class="line">trueg.NodeArray[g.NodeCount] = node</div><div class="line">trueg.NodeCount++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里只是简单的判断了是否超过图的size，然后将该节点放入图的节点数组里，然后节点总数值加一。</p>
+<h2 id="设置邻接矩阵"><a href="#设置邻接矩阵" class="headerlink" title="设置邻接矩阵"></a>设置邻接矩阵</h2><p>具体到不同情况，如何设置邻接矩阵也不同，这主要依赖的是图中各个节点之间的关系。我这里是等到将所有节点添加到图中之后，对图的所有节点进行一次遍历，可以想象就是迭代邻接矩阵的每一行(一个节点)，然后去找对应其他节点的关系(可以包含当前节点，也可以不包含，看具体情况。我这里是包含的，因为如果有自身节点到自身的关系，则说明有环，那么这个节点就是非法的)。</p>
+<p>具体代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Graph)</span> <span class="title">SetValueToMatrixFromTags</span><span class="params">()</span> <span class="title">bool</span></span> &#123;</div><div class="line">true<span class="keyword">if</span> <span class="built_in">len</span>(g.NodeArray) != g.Size &#123;</div><div class="line">truetrue<span class="keyword">return</span> <span class="literal">false</span></div><div class="line">true&#125;</div><div class="line">true<span class="keyword">for</span> row := <span class="number">0</span>; row &lt; <span class="built_in">len</span>(g.NodeArray); row++ &#123;</div><div class="line">truetrue<span class="keyword">for</span> col := <span class="number">0</span>; col &lt; <span class="built_in">len</span>(g.NodeArray); col++ &#123;</div><div class="line">truetruetrueoutputTagsRow := g.NodeArray[row].OutputTags</div><div class="line">truetruetrueinputTagsCol := g.NodeArray[col].InputTags</div><div class="line">truetruetrue<span class="keyword">for</span> tag, _ := <span class="keyword">range</span> outputTagsRow &#123;</div><div class="line">truetruetruetrue<span class="keyword">if</span> _, ok := inputTagsCol[tag]; ok &#123;</div><div class="line">truetruetruetruetrueg.Matrix[row*g.Size+col] = <span class="number">1</span></div><div class="line">truetruetruetruetrue<span class="keyword">break</span></div><div class="line">truetruetruetrue&#125;</div><div class="line">truetruetrue&#125;</div><div class="line"></div><div class="line">truetrue&#125;</div><div class="line">true&#125;</div><div class="line">true<span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在我这个场景里就是判断当前节点的输出tag，是哪个节点的输入tag，如果有一个是，则将矩阵对应的值设为1。当然也可以设为其他值，表示有权重的，是具体情况而定，我这里只需要有向图就行了。</p>
+<h2 id="深度优先遍历"><a href="#深度优先遍历" class="headerlink" title="深度优先遍历"></a>深度优先遍历</h2><p>深度优先遍历可以按照递归的方法，也可以按照迭代的方法实现。递归的话本身就有一个栈，这样可以获取到相关的信息，迭代放啊就得自己模拟一个栈，实现难度是高于递归方法的。</p>
+<p>主要思想就是比如从一个节点a出发，找到了下一个节点b的路径，那么会继续从b去搜索下一层路径，直到最后无路可走。无路可走的时候就会返回上一层，以此类推就遍历完了。而且这里还涉及到一个检查是否有环的关键点，就是记录目前的路径上的节点，如果接下来搜索的下一个节点已经记录过了，那就说明有环。</p>
+<p>下面的代码将深度优先和检测有环结合在一起：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Graph)</span> <span class="title">Dfs</span><span class="params">(stack *list.List, onStack <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">bool</span>, visited <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">bool</span>)</span> <span class="title">error</span></span> &#123;</div><div class="line">trueindexEle := stack.Back()</div><div class="line">truenodePos := indexEle.Value.(<span class="keyword">int</span>)</div><div class="line">trueonStack[nodePos] = <span class="literal">true</span></div><div class="line">truevisited[nodePos] = <span class="literal">true</span></div><div class="line">true<span class="keyword">for</span> col := <span class="number">0</span>; col &lt; g.NodeCount; col++ &#123;</div><div class="line">truetrue<span class="keyword">if</span> g.Matrix[nodePos*g.Size+col] != <span class="number">0</span> &#123;</div><div class="line">truetruetruevisit, ok := visited[col]</div><div class="line">truetruetrue<span class="keyword">if</span> !ok || !visit &#123;</div><div class="line">truetruetruetrueele := stack.PushBack(col)</div><div class="line">truetruetruetrueerr := g.Dfs(stack, onStack, visited)</div><div class="line">truetruetruetrue<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">truetruetruetruetrue<span class="keyword">return</span> err</div><div class="line">truetruetruetrue&#125;</div><div class="line">truetruetruetruestack.Remove(ele)</div><div class="line">truetruetrue&#125; <span class="keyword">else</span> <span class="keyword">if</span> nodeOnStack, ok := onStack[col]; ok &amp;&amp; nodeOnStack &#123;</div><div class="line">truetruetruetrue<span class="keyword">return</span> errors.New(<span class="string">"have Cycle"</span>)</div><div class="line">truetruetrue&#125;</div><div class="line">truetrue&#125;</div><div class="line"></div><div class="line">true&#125;</div><div class="line">trueonStack[nodePos] = <span class="literal">false</span></div><div class="line">true<span class="keyword">return</span> <span class="literal">nil</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里stack是模拟出来的一个栈，用于记录目前遍历的路径上有哪些节点加入进来了，其实和onStack的意义是一样，但是List是有顺序的，因此代表的是调用节点的一个顺序。而onStack是一个map，更多的是判断某个节点是否存在于这个路径上。Golang是比较麻烦，如果对于Python，直接一个List即可，不过这样分开，效率也能高一点。visited表示的是对于全局来说有没有遍历过这个节点，如果遍历过，就不用再遍历了，要不然递归不完了。</p>
+<p>下来就是一个循环，用于找下一个要遍历的节点，然后再调用DFS，同时这里还对onStack进行了判断，如果已经存在，说明有环，则返回一个error，之后这个error会递归的返回，那么就会返回一个error栈。同时stack这个链表也记录了当前出现环的路径。</p>
+<h2 id="检测是否有环"><a href="#检测是否有环" class="headerlink" title="检测是否有环"></a>检测是否有环</h2><p>对于一个图，检测其是否有环，就需要从每个节点出发去DFS，因为图中可能会有子图是不联通的。代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Graph)</span> <span class="title">CheckCycle</span><span class="params">(checkEnd <span class="keyword">int</span>)</span> <span class="params">(<span class="keyword">bool</span>, []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">truevisited := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">bool</span>)</div><div class="line">trueonStack := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">bool</span>)</div><div class="line">true<span class="keyword">var</span> processIds []<span class="keyword">int</span></div><div class="line"></div><div class="line">true<span class="keyword">for</span> index := <span class="number">0</span>; index &lt; checkEnd; index++ &#123;</div><div class="line">truetruestack := list.New()</div><div class="line">truetrueele := stack.PushBack(index)</div><div class="line">truetrueerr := g.Dfs(stack, onStack, visited)</div><div class="line">truetrue<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">truetruetrue<span class="keyword">for</span> e := stack.Front(); e != <span class="literal">nil</span>; e = e.Next() &#123;</div><div class="line">truetruetruetruenodePos := e.Value.(<span class="keyword">int</span>)</div><div class="line">truetruetruetrueprocess := g.NodeArray[nodePos].Data.(Process)</div><div class="line">truetruetruetrueprocessIds = <span class="built_in">append</span>(processIds, process.ID)</div><div class="line">truetruetrue&#125;</div><div class="line">truetruetrue<span class="keyword">return</span> <span class="literal">true</span>, processIds</div><div class="line">truetrue&#125;</div><div class="line">truetruestack.Remove(ele)</div><div class="line">true&#125;</div><div class="line">true<span class="keyword">return</span> <span class="literal">false</span>, <span class="literal">nil</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>其实根据上面这个简单的图定义可以解决很多问题，稳定而又效率高。</p>
+
+	
+	</div>
+  <a type="button" href="/2018/02/11/graph_in_golang/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2018/02/02/matplotlib_issue_solution/" >Mac系统下matplotlib中文显示方块问题</a>
 		</h3>
 		</div>
@@ -668,84 +730,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/01/01/learning_sql_note_1/" >笔记 - SQL学习指南</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-01-01 12:11:14  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>这段时间将SQL学习指南这本书翻完了，买这本书的时候是2016年9月21日，时隔一年多啊，终于读完了。不过觉得也正常的，以当时的水平以及工作内容，似乎就算当时看完，也是看的稀里糊涂吧。现在看完，可能不是说学习新知识，毕竟这本书的确是比较入门的书，而更多的是系统性的掌握SQL，以及对相关方面体会更加深刻吧。下面就记录下看这本书得到的一些体会和有意思的东西。</p>
-<h1 id="日期时间数据"><a href="#日期时间数据" class="headerlink" title="日期时间数据"></a>日期时间数据</h1><p>在数据库中存储时间数据，究竟存储哪种格式比较好呢。MySQL中有<code>date</code>, <code>datetime</code>, <code>timestamp</code>, <code>year</code>, <code>time</code>这几种类型，同时也还可以以字符串，数字的格式进行存储，那么究竟该如何选择呢。以前我是直接都用字符串，现在看来就有点太low了。这里就对这方面的东西做一个总结。</p>
-<h2 id="各类型的意义"><a href="#各类型的意义" class="headerlink" title="各类型的意义"></a>各类型的意义</h2><ul>
-<li><code>date</code>: 存储日期，不包含分秒等时间数据，可以用来存储生日之类日期数据</li>
-<li><code>datetime</code>: 包含日期和时间</li>
-<li><code>timestamp</code>: 包含日期和时间数据，MySQL可以在向表中增加或者修改数据行时候自动为timestamp列产生当前的日期时间</li>
-<li><code>year</code>: 只需要年份数据的列</li>
-<li><code>time</code>: 某项任务消耗的时间可以用这个类型，一般是两个datetime，记录开始和结束时间，这样可以算出来。</li>
-</ul>
-<p>对于只存储日期或者时间或者年份的数据，一般来说没什么问题，这里主要探讨的对象是日期和时间数据一起存储。那么可以选择的就是<code>datetime</code>, <code>timestamp</code>或者<code>int</code>，字符串。</p>
-<p>字符串是首先要排除的，因为第一个占用空间大，第二个检索慢，效率是最低的，在这几个选择中是最不应该采用的。</p>
-<h2 id="int"><a href="#int" class="headerlink" title="int"></a>int</h2><ol>
-<li>占用4个字节</li>
-<li>建立索引之后，查询速度快</li>
-<li>条件范围搜索可以使用使用between</li>
-<li>不能使用mysql提供的时间函数</li>
-<li>适合需要进行大量时间范围查询的数据表</li>
-</ol>
-<p>缺陷是，不包含时区信息。</p>
-<h2 id="datetime"><a href="#datetime" class="headerlink" title="datetime"></a>datetime</h2><ol>
-<li>占用8个字节</li>
-<li>允许为空值，可以自定义值，系统不会自动修改其值。</li>
-<li>实际格式储存，以存储时候的格式存储，取出来也是存储的格式</li>
-<li>与时区无关</li>
-<li>不可以设定默认值，所以在不允许为空值的情况下，必须手动指定datetime字段的值才可以成功插入数据。</li>
-<li>可以在指定datetime字段的值的时候使用now()变量来自动插入系统的当前时间。</li>
-</ol>
-<p>结论：datetime类型适合用来记录数据的原始的创建时间，因为无论你怎么更改记录中其他字段的值，datetime字段的值都不会改变，除非你手动更改它。查询出来都是UTC时间，查询时候可以根据需要进行改变处理。</p>
-<h2 id="timestamp"><a href="#timestamp" class="headerlink" title="timestamp"></a>timestamp</h2><ol>
-<li>占用4个字节</li>
-<li>允许为空值，但是不可以自定义值，所以为空值时没有任何意义。</li>
-<li>TIMESTAMP值不能早于1970或晚于2037。这说明一个日期，例如’1968-01-01’，虽然对于DATETIME或DATE值是有效的，但对于TIMESTAMP值却无效，如果分配给这样一个对象将被转换为0。</li>
-<li>值以UTC格式保存</li>
-<li>时区转化，存储时对当前的时区进行转换，检索时再转换回当前的时区。</li>
-<li>默认值为CURRENT_TIMESTAMP()，其实也就是当前的系统时间。</li>
-<li>数据库会自动修改其值，所以在插入记录时不需要指定timestamp字段的名称和timestamp字段的值，你只需要在设计表的时候添加一个timestamp字段即可，插入后该字段的值会自动变为当前系统时间。</li>
-<li>以后任何时间修改表中的记录时，对应记录的timestamp值会自动被更新为当前的系统时间。</li>
-</ol>
-<p>结论：timestamp类型适合用来记录数据的最后修改时间，因为只要你更改了记录中其他字段的值，timestamp字段的值都会被自动更新。<strong><em>它把客户端插入的时间从当前时区转化为UTC（世界标准时间）进行存储。查询时，将其又转化为客户端当前时区进行返回。</em></strong></p>
-<p>一般项目上用timestamp，因为包含时区信息。<code>show variables like &#39;%time_zone%&#39;;</code>查看时区信息，<code>set time_zone=&#39;+1:00&#39;;</code>修改时区信息。因此不论存储的时候时区是怎么设置的，MySQL中存储的都是UTC，因此只要改变时区设置，就可以得到正确的时间。</p>
-<p>注: 在PostgreSQL中，对应有<code>timestamp</code>和<code>timestamptz</code>两种类型，前者是不带时区信息的，也就是即使修改服务器的时区信息，该类型字段查出的值都是一样的。而后者会根据时区设置不同，查出来的值不同，类似于MySQL的timestamp`，不同的是，在存储的时候可以指定时区，postgresql会进行转换成UTC时间进行存储。</p>
-<h1 id="分组和聚集"><a href="#分组和聚集" class="headerlink" title="分组和聚集"></a>分组和聚集</h1><p>使用<code>group by</code>对数据进行分组，比如<code>SELECT open_emp_id FROM account GROUP BY open_emp_id;</code>，并且可以使用聚集函数对分组进行统计，<code>SELECT open_emp_id, COUNT(*) how_many FROM account GROUP BY open_emp_id;</code></p>
-<p>对于过滤条件，如果是对于分组数据进行过滤，那么不能用WHERE，因为WHERE先于GROUP BY执行，所以执行WHERE的时候还没有创建好分组，因此需要使用HAVING，<code>SELECT open_emp_id, COUNT(*) how_many FROM account GROUP BY open_emp_id HAVING COUNT(*) &gt; 4;</code></p>
-<h2 id="聚集函数"><a href="#聚集函数" class="headerlink" title="聚集函数"></a>聚集函数</h2><ul>
-<li><code>MAX()</code></li>
-<li><code>MIN()</code></li>
-<li><code>SUM()</code></li>
-<li><code>AVG()</code></li>
-<li><code>COUNT()</code></li>
-</ul>
-<h2 id="隐式分组和显式分组"><a href="#隐式分组和显式分组" class="headerlink" title="隐式分组和显式分组"></a>隐式分组和显式分组</h2><p>查询返回的每个值都是由聚集函数产生的，这样可以不用group by子句，因为是对所有行进行的，是一个隐式分组。比如<code>SELECT COUNT(*), MAX(user_id) FROM users</code>。但是如果除了聚集函数产生的列之外，还想获取额外的列，就需要显式分组，明确的表达按照哪些列进行分组。比如<code>SELECT user_id, COUNT(*) FROM users group by user_id</code></p>
-
-	
-	</div>
-  <a type="button" href="/2018/01/01/learning_sql_note_1/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -799,7 +783,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>78</span></a></li>
+			<li><a href="/categories/编程/">编程<span>79</span></a></li>
 		
 		</ul>
 	</div>
@@ -844,7 +828,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
 		
-			<li><a href="/tags/算法/">算法<span>13</span></a></li>
+			<li><a href="/tags/算法/">算法<span>14</span></a></li>
 		
 			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
 		
@@ -864,6 +848,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/11/graph_in_golang/" ><i class="fa fa-file-o"></i>Golang 实现有向图</a>
+      </li>
+    
+      <li>
         <a href="/2018/02/02/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib中文显示方块问题</a>
       </li>
     
@@ -877,10 +865,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
       </li>
     
   </ul>

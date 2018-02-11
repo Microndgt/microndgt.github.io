@@ -138,6 +138,69 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/08/07/grequests 详解/" >grequests 详解</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-07 17:03:59  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>前段时间看到这个grequests库，感觉还是蛮有意思的，所以今天来对这个库拆解拆解。这个库是崇拜的大神kennethreitz写的。Github地址：<a href="https://github.com/kennethreitz/grequests" target="_blank" rel="external">https://github.com/kennethreitz/grequests</a></p>
+<p>首先看到文档上给的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">import grequests</div><div class="line"></div><div class="line">urls = [</div><div class="line">    &apos;http://www.heroku.com&apos;,</div><div class="line">    &apos;http://python-tablib.org&apos;,</div><div class="line">    &apos;http://httpbin.org&apos;,</div><div class="line">    &apos;http://python-requests.org&apos;,</div><div class="line">    &apos;http://fakedomain/&apos;,</div><div class="line">    &apos;http://kennethreitz.com&apos;</div><div class="line">]</div><div class="line"># 创建没有发送的request集合</div><div class="line">rs = (grequests.get(u) for u in urls)</div><div class="line"># 发送</div><div class="line">grequests.map(rs)</div><div class="line"></div><div class="line"># 为了防止超时和异常发生，可以指定一个异常处理器</div><div class="line">def exception_handler(request, exception):</div><div class="line">    print(&quot;Request failed&quot;)</div><div class="line"></div><div class="line">reqs = [</div><div class="line">   grequests.get(&apos;http://httpbin.org/delay/1&apos;, timeout=0.001),</div><div class="line">   grequests.get(&apos;http://fakedomain/&apos;),</div><div class="line">   grequests.get(&apos;http://httpbin.org/status/500&apos;)]</div><div class="line"></div><div class="line">grequests.map(reqs, exception_handler=exception_handler)</div><div class="line"></div><div class="line">另外，可以使用imap来提高性能</div></pre></td></tr></table></figure>
+<p>根据这个示例，我们来看看源代码</p>
+<h1 id="AsyncRequest"><a href="#AsyncRequest" class="headerlink" title="AsyncRequest"></a>AsyncRequest</h1><p>首先来看<code>grequests.get</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">get = partial(AsyncRequest, &apos;GET&apos;)</div><div class="line">options = partial(AsyncRequest, &apos;OPTIONS&apos;)</div></pre></td></tr></table></figure>
+<p>它和其他诸多HTTP方法一样，只是一个快捷方式，其本质是调用了AsyncRequest，看到这个名字就应该知道是异步的Request，所以应该是对普通的Request做了封装和修改:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class AsyncRequest(object):</div><div class="line">    &quot;&quot;&quot; 异步的Request，接收和Session.request相同的参数，还有一些额外的参数</div><div class="line">    session： 发送请求的session</div><div class="line">    callback： 在返回对象上的回调函数，和传递hooks=&#123;&apos;response&apos;: callback&#125;一样</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    def __init__(self, method, url, **kwargs):</div><div class="line">        #: Request method</div><div class="line">        self.method = method</div><div class="line">        #: URL to request</div><div class="line">        self.url = url</div><div class="line">        #: Associated ``Session``</div><div class="line">        self.session = kwargs.pop(&apos;session&apos;, None)</div><div class="line">        if self.session is None:</div><div class="line">            # requests里的Session对象</div><div class="line">            self.session = Session()</div><div class="line"></div><div class="line">        callback = kwargs.pop(&apos;callback&apos;, None)</div><div class="line">        if callback:</div><div class="line">            kwargs[&apos;hooks&apos;] = &#123;&apos;response&apos;: callback&#125;</div><div class="line"></div><div class="line">        #: The rest arguments for ``Session.request``</div><div class="line">        self.kwargs = kwargs</div><div class="line">        #: Resulting ``Response``</div><div class="line">        self.response = None</div></pre></td></tr></table></figure>
+<p>可以看到使用<code>partial(AsyncRequest, &#39;GET&#39;)</code>会使得method默认为<code>GET</code>，然后再<code>rs = (grequests.get(u) for u in urls)</code>会形成一个生成器，里面生成AsyncRequest对象。下面来看看这些request是如何发送的：</p>
+<h1 id="map"><a href="#map" class="headerlink" title="map"></a>map</h1><p>之后程序会调用<code>grequests.map(rs)</code>，那么我们来看看map:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">def map(requests, stream=False, size=None, exception_handler=None, gtimeout=None):</div><div class="line">    &quot;&quot;&quot;并发的将Requests列表转换成响应</div><div class="line">    requests: Request对象的集合</div><div class="line">    stream: 如果为True，那么响应内容不会立即下载</div><div class="line">    size: 指定同时发起的请求数目，如果为None，就不会有限制</div><div class="line">    exception_handler: 回调函数，当异常发生的时候调用,参数是Request和Exception</div><div class="line">    gtimeout: Gevent合并所有的超时时间，单位为秒(与每个request的超时时间无关)</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    # 将生成器直接转换成list</div><div class="line">    requests = list(requests)</div><div class="line"></div><div class="line">    # gevent的Pool对象，是时候研究一波gevent了</div><div class="line">    pool = Pool(size) if size else None</div><div class="line">    # 调用send函数来发送请求</div><div class="line">    jobs = [send(r, pool, stream=stream) for r in requests]</div><div class="line">    # 等待所有的greenlet处理单元结束运行</div><div class="line">    gevent.joinall(jobs, timeout=gtimeout)</div><div class="line"></div><div class="line">    ret = []</div><div class="line"></div><div class="line">    # 处理所有的请求响应，并且处理异常</div><div class="line">    for request in requests:</div><div class="line">        if request.response is not None:</div><div class="line">            ret.append(request.response)</div><div class="line">        # 如果有异常处理器并且request有异常进行处理</div><div class="line">        elif exception_handler and hasattr(request, &apos;exception&apos;):</div><div class="line">            ret.append(exception_handler(request, request.exception))</div><div class="line">        else:</div><div class="line">            # 否则结果置为None</div><div class="line">            ret.append(None)</div><div class="line"></div><div class="line">    return ret</div></pre></td></tr></table></figure>
+<p>可以看到map函数很简单，大体流程就是建立了greenlet处理器池，然后对每个request进行调用，然后等待结束，最后得到响应并且处理响应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 如果给定size则创建greenlet池，否则为None</div><div class="line">pool = Pool(size) if size else None</div><div class="line">jobs = [send(r, pool, stream=stream) for r in requests]</div><div class="line">gevent.joinall(jobs, timeout=gtimeout)</div></pre></td></tr></table></figure>
+<p>所以问题的关键还是在于gevent那几行的调用，创建管理greenlet的池，用来限制并发，创建好了之后，调用这个pool然后去发送请求，最后等待所有的greenlet结束。</p>
+<h1 id="Gevent的并发"><a href="#Gevent的并发" class="headerlink" title="Gevent的并发"></a>Gevent的并发</h1><p>无论创建还是没有创建池，最终是要调用send方法的，来看看这个函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def send(r, pool=None, stream=False):</div><div class="line">    &quot;&quot;&quot;使用指定的pool发送request对象，如果pool没有指定，这个方法就会阻塞，Pools很有用，因为你可以指定并发限制&quot;&quot;&quot;</div><div class="line">    if pool is not None:</div><div class="line">        return pool.spawn(r.send, stream=stream)</div><div class="line"></div><div class="line">    return gevent.spawn(r.send, stream=stream)</div></pre></td></tr></table></figure>
+<h2 id="gevent-spawn"><a href="#gevent-spawn" class="headerlink" title="gevent.spawn"></a><code>gevent.spawn</code></h2><p><code>gevent.spawn</code>创建一个新的Greenlet对象，并且排定运行调用<code>function(*args, **kwargs)</code>，这个可以使用<code>gevent.spawn</code>或者是<code>Greenlet.spawn</code>,其实<code>gevent.spawn</code>就是<code>Greenlet.spawn</code>，并且最后会调用Greenlet的类方法，首先实例化一个对象，然后调用start方法，所以也相当于调用<code>Greenlet(*args, **kwargs)</code></p>
+<p>这也是类方法的一个用法，另外的实例化对象的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@classmethod</div><div class="line">def spawn(cls, *args, **kwargs):</div><div class="line">    g = cls(*args, **kwargs)</div><div class="line">    g.start()</div><div class="line">    return g</div></pre></td></tr></table></figure>
+<h2 id="pool-spawn"><a href="#pool-spawn" class="headerlink" title="pool.spawn"></a><code>pool.spawn</code></h2><p>这个方法使用给定的参数开始一个新的greenlet，通常是传递给Greenlet构造函数，并且将其加入这个pool管理的greenlets集合</p>
+<p>Pool是Group的子类，提供了限制并发的方法，其spawn方法在greenlets数目达到上限的时候阻塞，直到有一个可用的greenlet。</p>
+<p>这个方法也是使用pool实例为Greenlet创建一个实例，然后start it</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def spawn(self, *args, **kwargs):</div><div class="line">    greenlet = self.greenlet_class(*args, **kwargs)</div><div class="line">    self.start(greenlet)</div><div class="line">    return greenlet</div></pre></td></tr></table></figure>
+<h2 id="r-send"><a href="#r-send" class="headerlink" title="r.send"></a>r.send</h2><p>这个是<code>AsyncRequest</code>的send方法，比较简单，就是发送请求，等待响应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def send(self, **kwargs):</div><div class="line">    merged_kwargs = &#123;&#125;</div><div class="line">    merged_kwargs.update(self.kwargs)</div><div class="line">    merged_kwargs.update(kwargs)</div><div class="line">    try:</div><div class="line">        self.response = self.session.request(self.method, self.url, **merged_kwargs)</div><div class="line">    except Exception as e:</div><div class="line">        self.exception = e</div><div class="line">        self.traceback = traceback.format_exc()</div><div class="line">    return self</div></pre></td></tr></table></figure>
+<h1 id="imap"><a href="#imap" class="headerlink" title="imap"></a>imap</h1><p>imap据说可以提高性能，快来看看吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">def imap(requests, stream=False, size=2, exception_handler=None):</div><div class="line">    &quot;&quot;&quot;并发的将Request对象的生成器转换成响应的生成器。</div><div class="line">    requests: Request对象的生成器</div><div class="line">    stream: 如果为True，则不会立即自动下载</div><div class="line">    size: 同时发起的请求数，默认为2</div><div class="line">    exception_handler: 当发生异常时候回调</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    pool = Pool(size)</div><div class="line"></div><div class="line">    def send(r):</div><div class="line">        return r.send(stream=stream)</div><div class="line"></div><div class="line">    for request in pool.imap_unordered(send, requests):</div><div class="line">        if request.response is not None:</div><div class="line">            yield request.response</div><div class="line">        elif exception_handler:</div><div class="line">            exception_handler(request, request.exception)</div><div class="line"></div><div class="line">    pool.join()</div></pre></td></tr></table></figure>
+<p>可以看到这个函数主要是使用了<code>pool.imap_unordered</code>，其实pool还有一个方法是<code>imap</code></p>
+<h2 id="pool-imap"><a href="#pool-imap" class="headerlink" title="pool.imap"></a><code>pool.imap</code></h2><p>和<code>itertools.imap()</code>是一致的，<code>itertools.imap()</code>可以用于迭代无穷序列，比如<code>itertools.imap(lambda x, y: x * y, [10, 20, 30], itertools.count(1))</code>，如果两个序列长短不一致，以短的为准，并且imap实现了惰性计算，类似生成器。</p>
+<p><code>pool.imap</code>可以并行运行，按顺序从迭代对象中取出元素迭代，应用在函数上，然后收集结果。</p>
+<p>如果限制了可以同时进行的greenlets数量，那么最多只有这么多个任务同时进行。</p>
+<h2 id="pool-imap-unordered"><a href="#pool-imap-unordered" class="headerlink" title="pool.imap_unordered"></a><code>pool.imap_unordered</code></h2><p>和imap一样，返回的结果顺序是随意的，比起imap更加轻量级，如果顺序不重要的话，首先应该选用这个。</p>
+<h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2><p>等待这个group的greenlets都运行完，如果这个group没有greenlet的话，立即返回</p>
+<p>可以看到，如果不要求顺序的话，<code>imap_unordered</code>会比imap更加高效，同时imap版本肯定比map版本性能好，因为map版本必须全部运行完才能拿数据，但是imap版本只要有greenlet有结果就可以取出来。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这个库就这么多内容，其实主要是使用gevent封装了一层requests，所以核心就是使用gevent，gevent怎么用，如何用，待我继续研究。</p>
+<p>不过通过看这个库，也了解到了简单的gevent的用法。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/08/07/grequests 详解/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/08/03/thriftpy_2_processor/" >thriftpy源码解析(二) - 处理器</a>
 		</h3>
 		</div>
@@ -761,43 +824,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/05/19/热血的少年/" >热血的少年，青涩的爱恋，死亡与梦之约</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-05-19 22:08:49  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>从建投回家后，直接把衣服脱个精光（当然不是全光了），突然快递员敲门，来不及更衣，开门取快递，快递员愣了一下，快递给我离开。我突然觉得自己有点2。然后健身，跟着keep已经落后两天的计划，累成狗，趴在地上不想起来。在想之前那个热血的少年去哪了？那青涩的爱恋去哪里了？在玉林路的那头，是否有你在等待？</p>
-<p>不想出差，而我却是公司出差最多的人，去年在北京呆了2个月，一次受伤让我对北京这座城市失去了感觉，那个午夜，想起来也都是醉了，遇到的不止是冷漠，佩服也庆幸自己坚持去了大医院，可即使到现在脚上还有些不适。</p>
-<p>前一段时间和官哥讲，突然有点想你了，官哥说，你不是想我了，你是在想过去。多长时间过去了，官哥依然是这么犀利。我是在怀念过去。讲真，大学的时光是我最开心的几年了。</p>
-<p>还记得高数老师的矫健身姿，记得6月份一个人在大教室复习高数的情景，当时一条说说是<code>借用官哥的说法：这是一个快速刷题的节奏～</code>，记得和官哥，健哥湖畔把酒，记得周至骑行130公里，记得骑行偶遇美景，记得秦岭野营看星星，记得秦岭河边烧烤，记得游戏开黑，记得看那本苏菲的世界，记得那一幕幕，在新校区的那两年真的，很美，很美好。</p>
-<p>还记得当时就对计算机有一种发自内心的兴趣，大一时候学C，学数据结构，学算法，看离散数学。可惜没有深入便止步于此！如果能坚持下来，就不是现在这个样子了。</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/sshuo.png" alt="当年的说说"></p>
-<p>我都可以嘲笑自己了。时间过的飞快，转眼就毕业了，真希望生活可以重来。<code>If I Had My Life to Live Over</code>。</p>
-<p>昨晚，我梦见自己又回到了曼陀丽庄园。恍惚中，我站在那扇通往车道的大铁门前，好一会儿被挡在门外进不去。铁门上挂着把大锁，还系了根铁链。我在梦里大声叫唤看门人，却没人答应。于是我就凑近身子，隔着门上生锈的铁条朝里张望，这才明白曼陀丽已是座阒寂无人的空宅。</p>
-<p>那时有激情，有理想，有对未来的期待，有梦，关于文学，关于爱情，关于穿越世界的旅行，如今深夜饮酒，杯子掉下去，都是梦破碎的声音。如今却仍在说：我们看海去。。。</p>
-<p>鸟一对，天空海阔分飞，酒一杯，各自天南地北～</p>
-
-	
-	</div>
-  <a type="button" href="/2017/05/19/热血的少年/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -851,7 +877,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>78</span></a></li>
+			<li><a href="/categories/编程/">编程<span>79</span></a></li>
 		
 		</ul>
 	</div>
@@ -896,7 +922,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
 		
-			<li><a href="/tags/算法/">算法<span>13</span></a></li>
+			<li><a href="/tags/算法/">算法<span>14</span></a></li>
 		
 			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
 		
@@ -916,6 +942,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/11/graph_in_golang/" ><i class="fa fa-file-o"></i>Golang 实现有向图</a>
+      </li>
+    
+      <li>
         <a href="/2018/02/02/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib中文显示方块问题</a>
       </li>
     
@@ -929,10 +959,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
       </li>
     
   </ul>

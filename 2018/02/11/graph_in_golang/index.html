@@ -1,0 +1,330 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Golang 实现有向图 | SkyRover</title>
+  <meta name="author" content="Kevin Du">
+  
+  <meta name="description" content="仲夏夜之梦">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Golang 实现有向图"/>
+  <meta property="og:site_name" content="SkyRover"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-70812759-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+</head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">SkyRover</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class=""></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class=""></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class=""></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class=""></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/atom.xml" title="Subscribe me.">
+			  <i class=""></i>RSS
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Golang 实现有向图</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>之前在项目中用 Golang 实现了一个图的数据结构，并且实现了相关的一些算法，比如 BFS, DFS以及检测是否有环等等。在这里就将实现的代码，过程和算法原理做一个总结。</p>
+<h1 id="基本数据结构"><a href="#基本数据结构" class="headerlink" title="基本数据结构"></a>基本数据结构</h1><p>有好几种数据结构可以实现图，比如邻接矩阵，邻接表和十字链表等，我这里使用的就是最常见的邻接矩阵的方法。</p>
+<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p>定义一个图需要定义图中节点(Node)的结构，节点是保存数据的最小部分，节点的定义基本上是需要根据实际情况来定，这里我定义的Node如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Node <span class="keyword">struct</span> &#123;</div><div class="line">trueData       <span class="keyword">interface</span>&#123;&#125;</div><div class="line">trueInputTags  <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></div><div class="line">trueOutputTags <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中Data是任意的数据类型，而InputTags和OutputTags是一个map对象，定义了该节点输入和输出信息，使用map而不是使用数组的原因是我需要查找某一个tag是否存在，因此map效率更高点。</p>
+<h2 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h2><p>在Graph数据结构中需要包含以下信息：Node节点列表，邻接矩阵，图的大小以及目前拥有的节点数量。定义的结构如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> Graph <span class="keyword">struct</span> &#123;</div><div class="line">trueNodeCount <span class="keyword">int</span></div><div class="line">trueSize      <span class="keyword">int</span></div><div class="line">trueNodeArray []Node</div><div class="line">trueMatrix    []<span class="keyword">int</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>邻接矩阵使用int数组实现，如果需要第row行，第col列的矩阵值(row和col从0开始，因此row=1，即第二行)，则<code>g.Matrix[row*g.Size+col]</code>即可获得。</p>
+<h1 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h1><p>图的常用方法有以下：</p>
+<ul>
+<li>创建一个图</li>
+<li>向图中添加节点</li>
+<li>设置邻接矩阵</li>
+<li>深度优先遍历</li>
+<li>广度优先遍历</li>
+<li>判断是否有环</li>
+</ul>
+<h2 id="创建图"><a href="#创建图" class="headerlink" title="创建图"></a>创建图</h2><p>创建图即为图数据结构的各个元素进行初始化，设定其size：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">MakeGraph</span><span class="params">(size <span class="keyword">int</span>)</span> <span class="title">Graph</span></span> &#123;</div><div class="line">trueg := Graph&#123;Size: size&#125;</div><div class="line">trueg.NodeArray = <span class="built_in">make</span>([]Node, size)</div><div class="line">trueg.Matrix = <span class="built_in">make</span>([]<span class="keyword">int</span>, size*size)</div><div class="line">true<span class="keyword">return</span> g</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h2><p>添加节点这里也比较简单，因为并没有在添加节点的时候定义各个节点的关系(即设置邻接矩阵)，当然也可以在添加节点的时候做。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Graph)</span> <span class="title">AddNode</span><span class="params">(node Node)</span></span> &#123;</div><div class="line">true<span class="keyword">if</span> g.NodeCount &gt;= g.Size &#123;</div><div class="line">truetrue<span class="keyword">return</span></div><div class="line">true&#125;</div><div class="line">trueg.NodeArray[g.NodeCount] = node</div><div class="line">trueg.NodeCount++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里只是简单的判断了是否超过图的size，然后将该节点放入图的节点数组里，然后节点总数值加一。</p>
+<h2 id="设置邻接矩阵"><a href="#设置邻接矩阵" class="headerlink" title="设置邻接矩阵"></a>设置邻接矩阵</h2><p>具体到不同情况，如何设置邻接矩阵也不同，这主要依赖的是图中各个节点之间的关系。我这里是等到将所有节点添加到图中之后，对图的所有节点进行一次遍历，可以想象就是迭代邻接矩阵的每一行(一个节点)，然后去找对应其他节点的关系(可以包含当前节点，也可以不包含，看具体情况。我这里是包含的，因为如果有自身节点到自身的关系，则说明有环，那么这个节点就是非法的)。</p>
+<p>具体代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Graph)</span> <span class="title">SetValueToMatrixFromTags</span><span class="params">()</span> <span class="title">bool</span></span> &#123;</div><div class="line">true<span class="keyword">if</span> <span class="built_in">len</span>(g.NodeArray) != g.Size &#123;</div><div class="line">truetrue<span class="keyword">return</span> <span class="literal">false</span></div><div class="line">true&#125;</div><div class="line">true<span class="keyword">for</span> row := <span class="number">0</span>; row &lt; <span class="built_in">len</span>(g.NodeArray); row++ &#123;</div><div class="line">truetrue<span class="keyword">for</span> col := <span class="number">0</span>; col &lt; <span class="built_in">len</span>(g.NodeArray); col++ &#123;</div><div class="line">truetruetrueoutputTagsRow := g.NodeArray[row].OutputTags</div><div class="line">truetruetrueinputTagsCol := g.NodeArray[col].InputTags</div><div class="line">truetruetrue<span class="keyword">for</span> tag, _ := <span class="keyword">range</span> outputTagsRow &#123;</div><div class="line">truetruetruetrue<span class="keyword">if</span> _, ok := inputTagsCol[tag]; ok &#123;</div><div class="line">truetruetruetruetrueg.Matrix[row*g.Size+col] = <span class="number">1</span></div><div class="line">truetruetruetruetrue<span class="keyword">break</span></div><div class="line">truetruetruetrue&#125;</div><div class="line">truetruetrue&#125;</div><div class="line"></div><div class="line">truetrue&#125;</div><div class="line">true&#125;</div><div class="line">true<span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在我这个场景里就是判断当前节点的输出tag，是哪个节点的输入tag，如果有一个是，则将矩阵对应的值设为1。当然也可以设为其他值，表示有权重的，是具体情况而定，我这里只需要有向图就行了。</p>
+<h2 id="深度优先遍历"><a href="#深度优先遍历" class="headerlink" title="深度优先遍历"></a>深度优先遍历</h2><p>深度优先遍历可以按照递归的方法，也可以按照迭代的方法实现。递归的话本身就有一个栈，这样可以获取到相关的信息，迭代放啊就得自己模拟一个栈，实现难度是高于递归方法的。</p>
+<p>主要思想就是比如从一个节点a出发，找到了下一个节点b的路径，那么会继续从b去搜索下一层路径，直到最后无路可走。无路可走的时候就会返回上一层，以此类推就遍历完了。而且这里还涉及到一个检查是否有环的关键点，就是记录目前的路径上的节点，如果接下来搜索的下一个节点已经记录过了，那就说明有环。</p>
+<p>下面的代码将深度优先和检测有环结合在一起：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Graph)</span> <span class="title">Dfs</span><span class="params">(stack *list.List, onStack <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">bool</span>, visited <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">bool</span>)</span> <span class="title">error</span></span> &#123;</div><div class="line">trueindexEle := stack.Back()</div><div class="line">truenodePos := indexEle.Value.(<span class="keyword">int</span>)</div><div class="line">trueonStack[nodePos] = <span class="literal">true</span></div><div class="line">truevisited[nodePos] = <span class="literal">true</span></div><div class="line">true<span class="keyword">for</span> col := <span class="number">0</span>; col &lt; g.NodeCount; col++ &#123;</div><div class="line">truetrue<span class="keyword">if</span> g.Matrix[nodePos*g.Size+col] != <span class="number">0</span> &#123;</div><div class="line">truetruetruevisit, ok := visited[col]</div><div class="line">truetruetrue<span class="keyword">if</span> !ok || !visit &#123;</div><div class="line">truetruetruetrueele := stack.PushBack(col)</div><div class="line">truetruetruetrueerr := g.Dfs(stack, onStack, visited)</div><div class="line">truetruetruetrue<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">truetruetruetruetrue<span class="keyword">return</span> err</div><div class="line">truetruetruetrue&#125;</div><div class="line">truetruetruetruestack.Remove(ele)</div><div class="line">truetruetrue&#125; <span class="keyword">else</span> <span class="keyword">if</span> nodeOnStack, ok := onStack[col]; ok &amp;&amp; nodeOnStack &#123;</div><div class="line">truetruetruetrue<span class="keyword">return</span> errors.New(<span class="string">"have Cycle"</span>)</div><div class="line">truetruetrue&#125;</div><div class="line">truetrue&#125;</div><div class="line"></div><div class="line">true&#125;</div><div class="line">trueonStack[nodePos] = <span class="literal">false</span></div><div class="line">true<span class="keyword">return</span> <span class="literal">nil</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里stack是模拟出来的一个栈，用于记录目前遍历的路径上有哪些节点加入进来了，其实和onStack的意义是一样，但是List是有顺序的，因此代表的是调用节点的一个顺序。而onStack是一个map，更多的是判断某个节点是否存在于这个路径上。Golang是比较麻烦，如果对于Python，直接一个List即可，不过这样分开，效率也能高一点。visited表示的是对于全局来说有没有遍历过这个节点，如果遍历过，就不用再遍历了，要不然递归不完了。</p>
+<p>下来就是一个循环，用于找下一个要遍历的节点，然后再调用DFS，同时这里还对onStack进行了判断，如果已经存在，说明有环，则返回一个error，之后这个error会递归的返回，那么就会返回一个error栈。同时stack这个链表也记录了当前出现环的路径。</p>
+<h2 id="检测是否有环"><a href="#检测是否有环" class="headerlink" title="检测是否有环"></a>检测是否有环</h2><p>对于一个图，检测其是否有环，就需要从每个节点出发去DFS，因为图中可能会有子图是不联通的。代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *Graph)</span> <span class="title">CheckCycle</span><span class="params">(checkEnd <span class="keyword">int</span>)</span> <span class="params">(<span class="keyword">bool</span>, []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">truevisited := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">bool</span>)</div><div class="line">trueonStack := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">bool</span>)</div><div class="line">true<span class="keyword">var</span> processIds []<span class="keyword">int</span></div><div class="line"></div><div class="line">true<span class="keyword">for</span> index := <span class="number">0</span>; index &lt; checkEnd; index++ &#123;</div><div class="line">truetruestack := list.New()</div><div class="line">truetrueele := stack.PushBack(index)</div><div class="line">truetrueerr := g.Dfs(stack, onStack, visited)</div><div class="line">truetrue<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</div><div class="line">truetruetrue<span class="keyword">for</span> e := stack.Front(); e != <span class="literal">nil</span>; e = e.Next() &#123;</div><div class="line">truetruetruetruenodePos := e.Value.(<span class="keyword">int</span>)</div><div class="line">truetruetruetrueprocess := g.NodeArray[nodePos].Data.(Process)</div><div class="line">truetruetruetrueprocessIds = <span class="built_in">append</span>(processIds, process.ID)</div><div class="line">truetruetrue&#125;</div><div class="line">truetruetrue<span class="keyword">return</span> <span class="literal">true</span>, processIds</div><div class="line">truetrue&#125;</div><div class="line">truetruestack.Remove(ele)</div><div class="line">true&#125;</div><div class="line">true<span class="keyword">return</span> <span class="literal">false</span>, <span class="literal">nil</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>其实根据上面这个简单的图定义可以解决很多问题，稳定而又效率高。</p>
+	  
+	</div>
+
+	<div>
+  	<center>
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>上一页</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2018/02/02/matplotlib_issue_solution/" type="button" class="btn btn-default ">下一页<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+    <h2 class="title">留言</h2>
+
+    
+        <section class="comments" id="comments">
+                <div id="gitment_thread"></div>
+                <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+                <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+                <script>
+                    var gitment = new Gitment({
+                        owner: 'Microndgt',
+                        repo: 'microndgt.github.io',
+                        oauth: {
+                            client_id: 'f54490fb6635a5c3c3ba',
+                            client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+                        },
+                    })
+                    gitment.render('comments')
+                </script>
+            </section>
+    
+</section>
+
+
+	</div> <!-- col-md-9/col-md-12 -->
+		
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2018-02-11 14:09:46 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/编程/">编程<span>79</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/算法/">算法<span>14</span></a></li> <li><a href="/tags/Go/">Go<span>4</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#基本数据结构"><span class="toc-article-text">基本数据结构</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Node"><span class="toc-article-text">Node</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Graph"><span class="toc-article-text">Graph</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#常用方法"><span class="toc-article-text">常用方法</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#创建图"><span class="toc-article-text">创建图</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#添加节点"><span class="toc-article-text">添加节点</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#设置邻接矩阵"><span class="toc-article-text">设置邻接矩阵</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#深度优先遍历"><span class="toc-article-text">深度优先遍历</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#检测是否有环"><span class="toc-article-text">检测是否有环</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#小结"><span class="toc-article-text">小结</span></a></li></ol>
+		</div>
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+	</div>
+		
+
+</div><!-- row -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  2016-2018
+  
+  &copy;  Kevin Du
+  
+    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

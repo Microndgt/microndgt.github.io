@@ -138,6 +138,84 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2018/01/01/learning_sql_note_1/" >笔记 - SQL学习指南</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2018-01-01 12:11:14  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>这段时间将SQL学习指南这本书翻完了，买这本书的时候是2016年9月21日，时隔一年多啊，终于读完了。不过觉得也正常的，以当时的水平以及工作内容，似乎就算当时看完，也是看的稀里糊涂吧。现在看完，可能不是说学习新知识，毕竟这本书的确是比较入门的书，而更多的是系统性的掌握SQL，以及对相关方面体会更加深刻吧。下面就记录下看这本书得到的一些体会和有意思的东西。</p>
+<h1 id="日期时间数据"><a href="#日期时间数据" class="headerlink" title="日期时间数据"></a>日期时间数据</h1><p>在数据库中存储时间数据，究竟存储哪种格式比较好呢。MySQL中有<code>date</code>, <code>datetime</code>, <code>timestamp</code>, <code>year</code>, <code>time</code>这几种类型，同时也还可以以字符串，数字的格式进行存储，那么究竟该如何选择呢。以前我是直接都用字符串，现在看来就有点太low了。这里就对这方面的东西做一个总结。</p>
+<h2 id="各类型的意义"><a href="#各类型的意义" class="headerlink" title="各类型的意义"></a>各类型的意义</h2><ul>
+<li><code>date</code>: 存储日期，不包含分秒等时间数据，可以用来存储生日之类日期数据</li>
+<li><code>datetime</code>: 包含日期和时间</li>
+<li><code>timestamp</code>: 包含日期和时间数据，MySQL可以在向表中增加或者修改数据行时候自动为timestamp列产生当前的日期时间</li>
+<li><code>year</code>: 只需要年份数据的列</li>
+<li><code>time</code>: 某项任务消耗的时间可以用这个类型，一般是两个datetime，记录开始和结束时间，这样可以算出来。</li>
+</ul>
+<p>对于只存储日期或者时间或者年份的数据，一般来说没什么问题，这里主要探讨的对象是日期和时间数据一起存储。那么可以选择的就是<code>datetime</code>, <code>timestamp</code>或者<code>int</code>，字符串。</p>
+<p>字符串是首先要排除的，因为第一个占用空间大，第二个检索慢，效率是最低的，在这几个选择中是最不应该采用的。</p>
+<h2 id="int"><a href="#int" class="headerlink" title="int"></a>int</h2><ol>
+<li>占用4个字节</li>
+<li>建立索引之后，查询速度快</li>
+<li>条件范围搜索可以使用使用between</li>
+<li>不能使用mysql提供的时间函数</li>
+<li>适合需要进行大量时间范围查询的数据表</li>
+</ol>
+<p>缺陷是，不包含时区信息。</p>
+<h2 id="datetime"><a href="#datetime" class="headerlink" title="datetime"></a>datetime</h2><ol>
+<li>占用8个字节</li>
+<li>允许为空值，可以自定义值，系统不会自动修改其值。</li>
+<li>实际格式储存，以存储时候的格式存储，取出来也是存储的格式</li>
+<li>与时区无关</li>
+<li>不可以设定默认值，所以在不允许为空值的情况下，必须手动指定datetime字段的值才可以成功插入数据。</li>
+<li>可以在指定datetime字段的值的时候使用now()变量来自动插入系统的当前时间。</li>
+</ol>
+<p>结论：datetime类型适合用来记录数据的原始的创建时间，因为无论你怎么更改记录中其他字段的值，datetime字段的值都不会改变，除非你手动更改它。查询出来都是UTC时间，查询时候可以根据需要进行改变处理。</p>
+<h2 id="timestamp"><a href="#timestamp" class="headerlink" title="timestamp"></a>timestamp</h2><ol>
+<li>占用4个字节</li>
+<li>允许为空值，但是不可以自定义值，所以为空值时没有任何意义。</li>
+<li>TIMESTAMP值不能早于1970或晚于2037。这说明一个日期，例如’1968-01-01’，虽然对于DATETIME或DATE值是有效的，但对于TIMESTAMP值却无效，如果分配给这样一个对象将被转换为0。</li>
+<li>值以UTC格式保存</li>
+<li>时区转化，存储时对当前的时区进行转换，检索时再转换回当前的时区。</li>
+<li>默认值为CURRENT_TIMESTAMP()，其实也就是当前的系统时间。</li>
+<li>数据库会自动修改其值，所以在插入记录时不需要指定timestamp字段的名称和timestamp字段的值，你只需要在设计表的时候添加一个timestamp字段即可，插入后该字段的值会自动变为当前系统时间。</li>
+<li>以后任何时间修改表中的记录时，对应记录的timestamp值会自动被更新为当前的系统时间。</li>
+</ol>
+<p>结论：timestamp类型适合用来记录数据的最后修改时间，因为只要你更改了记录中其他字段的值，timestamp字段的值都会被自动更新。<strong><em>它把客户端插入的时间从当前时区转化为UTC（世界标准时间）进行存储。查询时，将其又转化为客户端当前时区进行返回。</em></strong></p>
+<p>一般项目上用timestamp，因为包含时区信息。<code>show variables like &#39;%time_zone%&#39;;</code>查看时区信息，<code>set time_zone=&#39;+1:00&#39;;</code>修改时区信息。因此不论存储的时候时区是怎么设置的，MySQL中存储的都是UTC，因此只要改变时区设置，就可以得到正确的时间。</p>
+<p>注: 在PostgreSQL中，对应有<code>timestamp</code>和<code>timestamptz</code>两种类型，前者是不带时区信息的，也就是即使修改服务器的时区信息，该类型字段查出的值都是一样的。而后者会根据时区设置不同，查出来的值不同，类似于MySQL的timestamp`，不同的是，在存储的时候可以指定时区，postgresql会进行转换成UTC时间进行存储。</p>
+<h1 id="分组和聚集"><a href="#分组和聚集" class="headerlink" title="分组和聚集"></a>分组和聚集</h1><p>使用<code>group by</code>对数据进行分组，比如<code>SELECT open_emp_id FROM account GROUP BY open_emp_id;</code>，并且可以使用聚集函数对分组进行统计，<code>SELECT open_emp_id, COUNT(*) how_many FROM account GROUP BY open_emp_id;</code></p>
+<p>对于过滤条件，如果是对于分组数据进行过滤，那么不能用WHERE，因为WHERE先于GROUP BY执行，所以执行WHERE的时候还没有创建好分组，因此需要使用HAVING，<code>SELECT open_emp_id, COUNT(*) how_many FROM account GROUP BY open_emp_id HAVING COUNT(*) &gt; 4;</code></p>
+<h2 id="聚集函数"><a href="#聚集函数" class="headerlink" title="聚集函数"></a>聚集函数</h2><ul>
+<li><code>MAX()</code></li>
+<li><code>MIN()</code></li>
+<li><code>SUM()</code></li>
+<li><code>AVG()</code></li>
+<li><code>COUNT()</code></li>
+</ul>
+<h2 id="隐式分组和显式分组"><a href="#隐式分组和显式分组" class="headerlink" title="隐式分组和显式分组"></a>隐式分组和显式分组</h2><p>查询返回的每个值都是由聚集函数产生的，这样可以不用group by子句，因为是对所有行进行的，是一个隐式分组。比如<code>SELECT COUNT(*), MAX(user_id) FROM users</code>。但是如果除了聚集函数产生的列之外，还想获取额外的列，就需要显式分组，明确的表达按照哪些列进行分组。比如<code>SELECT user_id, COUNT(*) FROM users group by user_id</code></p>
+
+	
+	</div>
+  <a type="button" href="/2018/01/01/learning_sql_note_1/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/12/17/git_usage_summary/" >git使用总结</a>
 		</h3>
 		</div>
@@ -1132,47 +1210,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/11/05/flask_user_session_security/" >翻译 - How Secure Is The Flask User Session?</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-11-05 09:46:35  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/how-secure-is-the-flask-user-session" target="_blank" rel="external">How Secure Is The Flask User Session?</a></p>
-<p>我已经很多次听过人们说在Flask中的用户session是加密过的，因此在里面写入隐私信息也是安全的。这是一个误解，而且可能会在应用中导致灾难性的后果，最重要的是，对你的用户。不相信我吗？下面你可以看到我数秒之内解析一个Flask用户session，根本不需要应用的secret key.</p>
-<p><a href="https://youtu.be/mhcnBTDLxCI" target="_blank" rel="external">Video</a></p>
-<p>因此绝对不要在Flask session cookie中存储密码。当然，你可以存储不是密码的东西，但是仍然需要安全的存储。我希望这个视频可以澄清在用户session中的数据是非常容易获取的，有非常好的保护来对抗这个篡改，只要服务器的secret key不会妥协。</p>
-<h1 id="The-Example-Application"><a href="#The-Example-Application" class="headerlink" title="The Example Application"></a>The Example Application</h1><p>下面就是视频中的服务器的代码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">import os</div><div class="line">import random</div><div class="line">from flask import Flask, session, redirect, url_for, request, render_template</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line">app.config[&apos;SECRET_KEY&apos;] = os.getenv(&apos;SECRET_KEY&apos;) or \</div><div class="line">    &apos;e5ac358c-f0bf-11e5-9e39-d3b532c10a28&apos;</div><div class="line"></div><div class="line">@app.route(&apos;/&apos;)</div><div class="line">def index():</div><div class="line">    # answer值不能在用户session中存储</div><div class="line">    # 因为session会被在cookie中发送到客户端，而cookie是没有被加密的</div><div class="line">    session[&apos;answer&apos;] = random.randint(1, 10)</div><div class="line">    session[&apos;try_number&apos;] = 1</div><div class="line">    return redirect(url_for(&apos;guess&apos;))</div><div class="line"></div><div class="line">@app.route(&apos;/guess&apos;)</div><div class="line">def guess():</div><div class="line">    guess = int(request.args[&apos;guess&apos;]) if &apos;guess&apos; in request.args else None</div><div class="line">    if request.args.get(&apos;guess&apos;):</div><div class="line">        if guess == session[&apos;answer&apos;]:</div><div class="line">            return render_template(&apos;win.html&apos;)</div><div class="line">        else:</div><div class="line">            session[&apos;try_number&apos;] += 1</div><div class="line">            if session[&apos;try_number&apos;] &gt; 3:</div><div class="line">                return render_template(&apos;lose.html&apos;, guess=guess)</div><div class="line">    return render_template(&apos;guess.html&apos;, try_number=session[&apos;try_number&apos;],</div><div class="line">                           guess=guess)</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    app.run()</div></pre></td></tr></table></figure>
-<p>下面是在<code>templates</code>子文件夹中存储的3个模版文件，第一个是<code>guess.html</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;Guess the number!&lt;/title&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;Guess the number!&lt;/h1&gt;</div><div class="line">        &#123;% if try_number == 1 %&#125;</div><div class="line">        &lt;p&gt;I thought of a number from 1 to 10. Can you guess it?&lt;/p&gt;</div><div class="line">        &#123;% else %&#125;</div><div class="line">        &lt;p&gt;Sorry, &#123;&#123; guess &#125;&#125; is incorrect. Try again!&lt;/p&gt;</div><div class="line">        &#123;% endif %&#125;</div><div class="line">        &lt;form action=&quot;&quot;&gt;</div><div class="line">            Try #&#123;&#123; try_number &#125;&#125;: &lt;input type=&quot;text&quot; name=&quot;guess&quot;&gt;</div><div class="line">            &lt;input type=&quot;submit&quot;&gt;</div><div class="line">        &lt;/form&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>第二个是<code>win.html</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;Guess the number: You win!&lt;/title&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;Guess the number!&lt;/h1&gt;</div><div class="line">        &lt;p&gt;Congratulations, &#123;&#123; session[&apos;answer&apos;] &#125;&#125; is the correct number.&lt;/p&gt;</div><div class="line">        &lt;p&gt;&lt;a href=&quot;&#123;&#123; url_for(&apos;index&apos;) &#125;&#125;&quot;&gt;Play again&lt;/a&gt;&lt;/p&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>最后一个是<code>lose.html</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;title&gt;Guess the number: You lose!&lt;/title&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;h1&gt;Guess the number!&lt;/h1&gt;</div><div class="line">        &lt;p&gt;Sorry, &#123;&#123; guess &#125;&#125; is incorrect. My guess was &#123;&#123; session[&apos;answer&apos;] &#125;&#125;.&lt;/p&gt;</div><div class="line">        &lt;p&gt;&lt;a href=&quot;&#123;&#123; url_for(&apos;index&apos;) &#125;&#125;&quot;&gt;Play again&lt;/a&gt;&lt;/p&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<h1 id="If-Sessions-Aren’t-Secure-Enough-Then-What-Is"><a href="#If-Sessions-Aren’t-Secure-Enough-Then-What-Is" class="headerlink" title="If Sessions Aren’t Secure Enough, Then What Is?"></a>If Sessions Aren’t Secure Enough, Then What Is?</h1><p>现在你知道了Flask用户session不是一个存储敏感信息的地方，那么如果你需要存储私密信息，但是使用数据库看起来有点过分。</p>
-<p>一个好的方式是使用不同的用户session实现。Flask默认使用的是基于cookie的session，但是仍然有在其他地方存储数据的自定义session。特别的,<code>Flask-Session</code>扩展非常有意思，它将用户session数据存储在服务器，给你了不同的存储选项：文件，Redis，关系型数据库等等。当session数据在服务器中存储的时候，你可以确保你存储的数据和你的服务器一样安全。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/11/05/flask_user_session_security/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -1226,7 +1263,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>78</span></a></li>
+			<li><a href="/categories/编程/">编程<span>79</span></a></li>
 		
 		</ul>
 	</div>
@@ -1271,7 +1308,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
 		
-			<li><a href="/tags/算法/">算法<span>13</span></a></li>
+			<li><a href="/tags/算法/">算法<span>14</span></a></li>
 		
 			<li><a href="/tags/Pandas/">Pandas<span>1</span></a></li>
 		
@@ -1291,6 +1328,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/11/graph_in_golang/" ><i class="fa fa-file-o"></i>Golang 实现有向图</a>
+      </li>
+    
+      <li>
         <a href="/2018/02/02/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib中文显示方块问题</a>
       </li>
     
@@ -1304,10 +1345,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/22/come_back_to_pycharm/" ><i class="fa fa-file-o"></i>弃坑VSCode 拥抱PyCharm</a>
       </li>
     
   </ul>
