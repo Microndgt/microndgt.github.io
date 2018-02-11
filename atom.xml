@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-02-11T06:56:10.000Z</updated>
+  <updated>2018-02-11T06:58:07.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://skyrover.me/2018/02/11/graph_in_golang/"/>
     <id>http://skyrover.me/2018/02/11/graph_in_golang/</id>
     <published>2018-02-11T06:09:46.000Z</published>
-    <updated>2018-02-11T06:56:10.000Z</updated>
+    <updated>2018-02-11T06:58:07.000Z</updated>
     
     <content type="html"><![CDATA[<p>之前在项目中用 Golang 实现了一个图的数据结构，并且实现了相关的一些算法，比如 BFS, DFS以及检测是否有环等等。在这里就将实现的代码，过程和算法原理做一个总结。</p>
 <h1 id="基本数据结构"><a href="#基本数据结构" class="headerlink" title="基本数据结构"></a>基本数据结构</h1><p>有好几种数据结构可以实现图，比如邻接矩阵，邻接表和十字链表等，我这里使用的就是最常见的邻接矩阵的方法。</p>
@@ -55,7 +55,7 @@
 <p>这里stack是模拟出来的一个栈，用于记录目前遍历的路径上有哪些节点加入进来了，其实和onStack的意义是一样，但是List是有顺序的，因此代表的是调用节点的一个顺序。而onStack是一个map，更多的是判断某个节点是否存在于这个路径上。Golang是比较麻烦，如果对于Python，直接一个List即可，不过这样分开，效率也能高一点。visited表示的是对于全局来说有没有遍历过这个节点，如果遍历过，就不用再遍历了，要不然递归不完了。</p>
 <p>下来就是一个循环，用于找下一个要遍历的节点，然后再调用DFS，同时这里还对onStack进行了判断，如果已经存在，说明有环，则返回一个error，之后这个error会递归的返回，那么就会返回一个error栈。同时stack这个链表也记录了当前出现环的路径。</p>
 <h2 id="检测是否有环"><a href="#检测是否有环" class="headerlink" title="检测是否有环"></a>检测是否有环</h2><p>对于一个图，检测其是否有环，就需要从每个节点出发去DFS，因为图中可能会有子图是不联通的。代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">func (g *Graph) CheckCycle(checkEnd int) (bool, []int) &#123;</div><div class="line">truevisited := make(map[int]bool)</div><div class="line">trueonStack := make(map[int]bool)</div><div class="line">truevar processIds []int</div><div class="line"></div><div class="line">truefor index := 0; index &lt; checkEnd; index++ &#123;</div><div class="line">truetruestack := list.New()</div><div class="line">truetrueele := stack.PushBack(index)</div><div class="line">truetrueerr := g.Dfs(stack, onStack, visited)</div><div class="line">truetrueif err != nil &#123;</div><div class="line">truetruetruefor e := stack.Front(); e != nil; e = e.Next() &#123;</div><div class="line">truetruetruetruenodePos := e.Value.(int)</div><div class="line">truetruetruetrueprocess := g.NodeArray[nodePos].Data.(Process)</div><div class="line">truetruetruetrueprocessIds = append(processIds, process.ID)</div><div class="line">truetruetrue&#125;</div><div class="line">truetruetruereturn true, processIds</div><div class="line">truetrue&#125;</div><div class="line">truetruestack.Remove(ele)</div><div class="line">true&#125;</div><div class="line">truereturn false, nil</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">func (g *Graph) CheckCycle(checkEnd int) (bool, []int) &#123;</div><div class="line">truevisited := make(map[int]bool)</div><div class="line">trueonStack := make(map[int]bool)</div><div class="line">truevar processIds []int</div><div class="line"></div><div class="line">truefor index := 0; index &lt; checkEnd; index++ &#123;</div><div class="line">truetruestack := list.New()</div><div class="line">truetrueele := stack.PushBack(index)</div><div class="line">truetrueerr := g.Dfs(stack, onStack, visited)</div><div class="line">truetrueif err != nil &#123;</div><div class="line">truetruetruefor e := stack.Front(); e != nil; e = e.Next() &#123;</div><div class="line">truetruetruetruenodePos := e.Value.(int)</div><div class="line">truetruetruetrueprocess := g.NodeArray[nodePos].Data.(Process)</div><div class="line">                processIds = append(processIds, process.ID)</div><div class="line">truetruetrue&#125;</div><div class="line">truetruetruereturn true, processIds</div><div class="line">truetrue&#125;</div><div class="line">truetruestack.Remove(ele)</div><div class="line">true&#125;</div><div class="line">truereturn false, nil</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>其实根据上面这个简单的图定义可以解决很多问题，稳定而又效率高。</p>
 ]]></content>
     
@@ -378,9 +378,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
       <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+    
+      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
@@ -389,7 +389,7 @@
     <link href="http://skyrover.me/2018/01/20/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_interface/"/>
     <id>http://skyrover.me/2018/01/20/go语言圣经_note_interface/</id>
     <published>2018-01-20T02:40:46.000Z</published>
-    <updated>2018-01-20T03:26:33.000Z</updated>
+    <updated>2018-01-21T02:58:42.000Z</updated>
     
     <content type="html"><![CDATA[<p>接口类型不会和特定实现细节绑定在一起，都是其他类型实现了接口，而且实现接口也很灵活，只要实现了接口定义的方法即可。这样可以创建一个新的接口类型满足已经存在的具体类型，但是不会改变这些类型的定义，因为只需要定义新的接口的方法符合已经存在的具体类型已经实现的方法就可以了。</p>
 <h1 id="接口约定"><a href="#接口约定" class="headerlink" title="接口约定"></a>接口约定</h1><p>具体类型可以通过它的方法提供额外的行为操作，当你得到一个具体类型就知道它是什么以及它可以干什么。</p>
@@ -424,9 +424,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
       <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+    
+      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
@@ -435,7 +435,7 @@
     <link href="http://skyrover.me/2018/01/12/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_1/"/>
     <id>http://skyrover.me/2018/01/12/go语言圣经_note_1/</id>
     <published>2018-01-11T23:59:46.000Z</published>
-    <updated>2018-01-12T07:21:00.000Z</updated>
+    <updated>2018-01-19T14:55:06.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><ul>
 <li><code>go run</code>编译一个或者多个以<code>.go</code>结尾的源文件，链接库文件，并运行最终生成的可执行文件。</li>
@@ -562,9 +562,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
       <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+    
+      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
@@ -2858,9 +2858,9 @@
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
       <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
   </entry>
   
@@ -2996,9 +2996,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -4288,9 +4288,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
   </entry>
   
@@ -4429,9 +4429,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
   </entry>
   
@@ -4489,9 +4489,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="gevent" scheme="http://skyrover.me/tags/gevent/"/>
     
@@ -4551,9 +4551,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -4631,9 +4631,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -5604,7 +5604,7 @@
     <link href="http://skyrover.me/2017/04/13/%E9%81%8D%E5%8E%86/"/>
     <id>http://skyrover.me/2017/04/13/遍历/</id>
     <published>2017-04-13T03:22:46.000Z</published>
-    <updated>2018-01-05T01:52:32.000Z</updated>
+    <updated>2018-01-16T10:24:25.000Z</updated>
     
     <content type="html"><![CDATA[<p>对图中所有节点的探索及访问操作就是遍历，这是很多问题的万能钥匙。图中有两种基本的遍历策略：深度优先搜索和广度优先搜索。</p>
 <p>图中任意两点都是连通的，那么图就被称为连通图，连通也有可能是通过另外的节点连通。连通分量就是指的目标图中最大而且独立的连通子图。找出这种连通分量的方法之一就是从图中的某个部分开始，逐步的扩大其连通子图的确认范围，直到再也无法向外连通为止。</p>
