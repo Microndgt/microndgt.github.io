@@ -3,6 +3,35 @@
   
     
     <entry>
+      <title><![CDATA[Mac系统下matplotlib相关问题和解决]]></title>
+      <url>/2018/02/13/matplotlib_issue_solution/</url>
+      <content type="html"><![CDATA[<h1 id="中文显示方块"><a href="#中文显示方块" class="headerlink" title="中文显示方块"></a>中文显示方块</h1><h2 id="下载SimHei-ttf字体"><a href="#下载SimHei-ttf字体" class="headerlink" title="下载SimHei.ttf字体"></a>下载<code>SimHei.ttf</code>字体</h2><p>Mac需要先下载<code>SimHei.ttf</code>字体并安装，之后将<code>SimHei.ttf</code>拷贝到python安装路径<code>/site-packages/matplotlib/mpl-data/fonts/ttf</code>目录中</p>
+<h2 id="修改matplotlibrc"><a href="#修改matplotlibrc" class="headerlink" title="修改matplotlibrc"></a>修改<code>matplotlibrc</code></h2><p>修改~python安装路径<code>/site-packages/matplotlib/mpl-data/matplotlibrc</code>文件。根据实际情况修改，找到如下两项，去掉前面的#，并在font.sans-serif冒号后面加上SimHei，保存退出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">font.family         : sans-serif       </div><div class="line"></div><div class="line">font.sans-serif     : SimHei, Bitstream Vera Sans, Lucida Grande,Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif</div></pre></td></tr></table></figure>
+<p>同时将找到<code>axes.unicode_minus</code>，将True改为False，作用就是解决负号’-‘显示为方块的问题</p>
+<h2 id="代码加入"><a href="#代码加入" class="headerlink" title="代码加入"></a>代码加入</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#matplotlib不会每次启动时都重新扫描所有的字体文件并创建字体索引列表，</div><div class="line"># 因此在复制完字体文件之后，需要运行下面的语句以重新创建字体索引列表</div><div class="line">import matplotlib as mpl</div><div class="line">from matplotlib.font_manager import _rebuild</div><div class="line">_rebuild()</div><div class="line">#防止中文乱码问题</div><div class="line">mpl.rcParams[&apos;font.sans-serif&apos;]=[u&apos;SimHei&apos;]</div><div class="line">mpl.rcParams[&apos;axes.unicode_minus&apos;]=False</div></pre></td></tr></table></figure>
+<p>在mac中的/Library/Fonts文件夹中，有很多种不同的字体，但是没有能够正确显示中文的SimHei.ttf，所以需要进行安装，那么需要按照上述方法下载后，就可以使得显示中文不会出现方格了。</p>
+<h1 id="RuntimeError-Python-is-not-installed-as-a-framework"><a href="#RuntimeError-Python-is-not-installed-as-a-framework" class="headerlink" title="RuntimeError: Python is not installed as a framework"></a>RuntimeError: Python is not installed as a framework</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">    from matplotlib.backends import _macosx  </div><div class="line">RuntimeError: Python is not installed as a framework. The Mac OS X backend will not be able to function correctly if Python is not installed as a framework. See the Python documentation for more information on installing Python as a framework on Mac OS X. Please either reinstall Python as a framework, or try one of the other backends. If you are using (Ana)Conda please install python.app and replace the use of &apos;python&apos; with &apos;pythonw&apos;. See &apos;Working with Matplotlib on OSX&apos; in the Matplotlib FAQ for more information.</div></pre></td></tr></table></figure>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vim ~/.matplotlib/matplotlibrc </div><div class="line"># 加入</div><div class="line">backend: TkAgg</div></pre></td></tr></table></figure>]]></content>
+      
+        <categories>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> matplotlib </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Golang 实现有向图]]></title>
       <url>/2018/02/11/graph_in_golang/</url>
       <content type="html"><![CDATA[<p>之前在项目中用 Golang 实现了一个图的数据结构，并且实现了相关的一些算法，比如 BFS, DFS以及检测是否有环等等。在这里就将实现的代码，过程和算法原理做一个总结。</p>
@@ -54,34 +83,6 @@
             <tag> 算法 </tag>
             
             <tag> Go </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Mac系统下matplotlib中文显示方块问题]]></title>
-      <url>/2018/02/02/matplotlib_issue_solution/</url>
-      <content type="html"><![CDATA[<h1 id="下载SimHei-ttf字体"><a href="#下载SimHei-ttf字体" class="headerlink" title="下载SimHei.ttf字体"></a>下载<code>SimHei.ttf</code>字体</h1><p>Mac需要先下载<code>SimHei.ttf</code>字体并安装，之后将<code>SimHei.ttf</code>拷贝到python安装路径<code>/site-packages/matplotlib/mpl-data/fonts/ttf</code>目录中</p>
-<h1 id="修改matplotlibrc"><a href="#修改matplotlibrc" class="headerlink" title="修改matplotlibrc"></a>修改<code>matplotlibrc</code></h1><p>修改~python安装路径<code>/site-packages/matplotlib/mpl-data/matplotlibrc</code>文件。根据实际情况修改，找到如下两项，去掉前面的#，并在font.sans-serif冒号后面加上SimHei，保存退出。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">font.family         : sans-serif       </div><div class="line"></div><div class="line">font.sans-serif     : SimHei, Bitstream Vera Sans, Lucida Grande,Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif</div></pre></td></tr></table></figure>
-<p>同时将找到<code>axes.unicode_minus</code>，将True改为False，作用就是解决负号’-‘显示为方块的问题</p>
-<h1 id="代码加入"><a href="#代码加入" class="headerlink" title="代码加入"></a>代码加入</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#matplotlib不会每次启动时都重新扫描所有的字体文件并创建字体索引列表，</div><div class="line"># 因此在复制完字体文件之后，需要运行下面的语句以重新创建字体索引列表</div><div class="line">import matplotlib as mpl</div><div class="line">from matplotlib.font_manager import _rebuild</div><div class="line">_rebuild()</div><div class="line">#防止中文乱码问题</div><div class="line">mpl.rcParams[&apos;font.sans-serif&apos;]=[u&apos;SimHei&apos;]</div><div class="line">mpl.rcParams[&apos;axes.unicode_minus&apos;]=False</div></pre></td></tr></table></figure>
-<p>在mac中的/Library/Fonts文件夹中，有很多种不同的字体，但是没有能够正确显示中文的SimHei.ttf，所以需要进行安装，那么需要按照上述方法下载后，就可以使得显示中文不会出现方格了。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 编程 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Python </tag>
-            
-            <tag> Jupyter </tag>
             
         </tags>
         
