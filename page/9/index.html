@@ -138,6 +138,143 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/04/02/算法/" >算法</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-04-02 16:43:47  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>程序设计不仅仅是软件架构以及面向对象设计方面的事情，算法设计问题也是它要解决的一个方面。</p>
+<p>算法指的是一个执行过程，包含了能够解决某个特定问题的有限步骤集。</p>
+<p>python中的list其实是一个数组，append操作通常会采用一种被称为动态数组或者向量的特定解决方案。</p>
+<h1 id="渐进记法"><a href="#渐进记法" class="headerlink" title="渐进记法"></a>渐进记法</h1><p>O(g)表示，存在自然数n0和c，对于所有的n&gt;=n0都有f(n)&lt;=cg(n)，也就是说O(g)表示的是一个函数集，它的增长速度不会快于g，表示渐进上界</p>
+<p>Ω(g)表示，存在自然数n0和c，对于所有的n&gt;=n0都有f(n)&gt;=cg(n)，也就是说Ω(g)表示的函数集，它的增长速度都快于g，表示渐进下界</p>
+<p>Θ(g)表示，存在自然数n0和c，对于所有的n&gt;=n0都有,c1g(n)&lt;=f(n)&lt;=c2g(n)，也就是说f和g有着相同程度的渐进式增长</p>
+<table>
+<thead>
+<tr>
+<th>时间复杂度</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:right">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Θ(1)</td>
+<td style="text-align:center">常数级</td>
+<td style="text-align:right">哈希表，表示这一集合函数的增长速度是常数级别</td>
+</tr>
+<tr>
+<td>Θ(lg n)</td>
+<td style="text-align:center">对数级</td>
+<td style="text-align:right">二分搜索</td>
+</tr>
+<tr>
+<td>Θ(n)</td>
+<td style="text-align:center">线性级</td>
+<td style="text-align:right">列表遍历</td>
+</tr>
+<tr>
+<td>Θ(nlg n)</td>
+<td style="text-align:center">线性对数级</td>
+<td style="text-align:right">序列的最优化排序</td>
+</tr>
+<tr>
+<td>Θ(n2)</td>
+<td style="text-align:center">平方级</td>
+<td style="text-align:right">n个对象互相比较</td>
+</tr>
+<tr>
+<td>Θ(n3)</td>
+<td style="text-align:center">立方级</td>
+<td style="text-align:right">不知道</td>
+</tr>
+<tr>
+<td>O(nk)</td>
+<td style="text-align:center">多项式级</td>
+<td style="text-align:right">基于n的k层循环</td>
+</tr>
+<tr>
+<td>Ω(kn)</td>
+<td style="text-align:center">指数级</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>Θ(n!)</td>
+<td style="text-align:center">阶乘级</td>
+<td style="text-align:right">n个值全排列</td>
+</tr>
+</tbody>
+</table>
+<p><code>Θ(f) + Θ(g) = Θ(f+g)</code></p>
+<p><code>Θ(g) * Θ(g) =  Θ(g)</code></p>
+<p>代码块的复杂度由其先后执行的语句累加而成，而嵌套循环的复杂度则在此基础上成倍增长。</p>
+<p>O(n)这就同时概括了最好的和最坏的情况。</p>
+<p>当没有把握的时候，就用蛮力试试</p>
+<h1 id="使用Python来分析性能"><a href="#使用Python来分析性能" class="headerlink" title="使用Python来分析性能"></a>使用Python来分析性能</h1><p>打印出程序中各个函数的计时结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import cProfile</div><div class="line">cProfile.run(&apos;main()&apos;)</div></pre></td></tr></table></figure>
+<h1 id="图与树的实现"><a href="#图与树的实现" class="headerlink" title="图与树的实现"></a>图与树的实现</h1><p>如果我们的问题可以诠释成图问题的话，那么该问题至少已经接近解决方案了，而我们的问题如果可以用树结构来诠释的话，那么问题已经拥有一个真正有效的解决方案了。</p>
+<p>散列常用于字典类型的实现，dict就是散列表，同样，集合类型set也是这种机制实现的，用散列值对其进行访问的平均时间是Θ(1)</p>
+<h2 id="邻接列表"><a href="#邻接列表" class="headerlink" title="邻接列表"></a>邻接列表</h2><p>邻接集的表示法，同样的还有邻接表的表示法，set是hash实现的，所以在成员检测中会快一点，但是邻接表在成员遍历上会更加快一点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 其实是一个有向图</div><div class="line">a, b, c, d, e, f, g, h = range(8)</div><div class="line">N = [</div><div class="line">true&#123;b, c, d, e, f&#125;,</div><div class="line">true&#123;c, e&#125;,</div><div class="line">true&#123;d&#125;,</div><div class="line">true&#123;e&#125;,</div><div class="line">true&#123;f&#125;,</div><div class="line">true&#123;c, g, h&#125;,</div><div class="line">true&#123;f, h&#125;,</div><div class="line">true&#123;f, g&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>另外实现一个加权邻接字典，可以使用字典类型来代替set或者list</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">a, b, c, d, e, f, g, h = range(8)</div><div class="line">N = [</div><div class="line">true&#123;b:2, c:3, d:4, e:5, f:9&#125;,</div><div class="line">true&#123;c:2, e:3&#125;,</div><div class="line">true&#123;d:8&#125;,</div><div class="line">true&#123;e:7&#125;,</div><div class="line">true&#123;f:2&#125;,</div><div class="line">true&#123;c:2, g:2, h:2&#125;,</div><div class="line">true&#123;f:1, h:6&#125;,</div><div class="line">true&#123;f:9, g8&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<h2 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h2><p>将每个节点可能的邻居位置排成一行，用某种值比如True或者False来表示相关节点是否为当前节点的邻居。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a, b, c, d, e, f, g, h = range(8)</div><div class="line">N = [[0,1,1,1,1,1,0,0], ...]</div></pre></td></tr></table></figure>
+<p>通过向现有表示法中加入双向边元素的方式来实现一个无向图，也就是无向图的邻接矩阵应该是一个对称矩阵。</p>
+<p>可以使用<code>float(&#39;inf&#39;)</code>来获取一个无穷大的值</p>
+<p>一些有意思的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sum(1 for w in W[a] if w &lt; inf) - 1</div><div class="line">N = [[0] * 10 for i in range(10)]</div></pre></td></tr></table></figure>
+<h2 id="树的实现"><a href="#树的实现" class="headerlink" title="树的实现"></a>树的实现</h2><p>可以将树表示成一个二维列表，但是这只是表示了叶子节点而已，<code>T = [[&quot;a&quot;, &quot;b&quot;], [&quot;c&quot;], [&quot;d&quot;, [&quot;e&quot;, &quot;f&quot;]]]</code>，每个列表表示的都是内部节点拥有的包含其所有子节点的列表。</p>
+<p>二叉树可以这样表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Tree:</div><div class="line">    def __init__(self, left, right):</div><div class="line">truetrue    self.left = left</div><div class="line">truetruetruetrueself.right = right</div><div class="line"># 其实就是用到了递归吧</div><div class="line">t = Tree(Tree(&quot;a&quot;, &quot;b&quot;), Tree(&quot;c&quot;, &quot;d&quot;))</div><div class="line">t.right.left # c</div></pre></td></tr></table></figure>
+<p>可以使用None来表示不存在的子节点</p>
+<p>还有一种树的实现方式是用 <code>先子节点，然后兄弟节点</code> 的表示法，这里的各个节点用到的是一个子节点的兄弟节点链表，并且这些兄弟节点又各自引用了属于它们自己的那个兄弟节点链表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Tree:</div><div class="line">    def __init__(self, kids, next=None):</div><div class="line">truetrue    self.kids = self.val = kids</div><div class="line">truetruetruetrueself.next = next</div><div class="line">t = Tree(Tree(&quot;a&quot;, Tree(&quot;b&quot;, Tree(&quot;c&quot;, Tree(&quot;d&quot;)))))</div></pre></td></tr></table></figure>
+<p>可以分析一下得，一个根节点下面a是其子节点，然后b是a的兄弟节点，c是b的兄弟节点，d是c的兄弟节点。也就是说，根节点下面有a,b,c,d四个子节点。</p>
+<h2 id="Bunch模式"><a href="#Bunch模式" class="headerlink" title="Bunch模式"></a>Bunch模式</h2><p>可以用命令行参数的形式来创建相关对象，并且设置属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Bunch(dict):</div><div class="line">    def __init__(self, *args, **kwargs):</div><div class="line">truetrue    super(Bunch, self).__init__(*args, **kwargs)</div><div class="line">truetruetruetrue# __dict__里面存的就是属性值，这样就可以使用对象的用法了</div><div class="line">truetruetruetrue# 使用dict集成，这样可以使用字典的方式，比如关键值属性值的遍历，查询属性是否存在</div><div class="line">truetruetruetrueself.__dict__ = self</div><div class="line">T = Bunch</div><div class="line">t = T(left=T(left=&quot;a&quot;, right=&quot;b&quot;), right=T(left=&quot;c&quot;))</div><div class="line">t.left # &#123;&apos;rigth&apos;: &apos;b&apos;, &apos;left&apos;: &apos;a&apos;&#125;</div><div class="line">t.left.right # &apos;b&apos;</div><div class="line">t[&apos;left&apos;][&apos;right&apos;] # &apos;b&apos;</div></pre></td></tr></table></figure>
+<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><p>子问题图：绝大部分问题应该都可以被分成若干个子问题，这些子问题在结构上往往都非常相似，因此，这些结构可以被看作相关子问题图中的节点，而它们之间的依赖关系(也就是这些子问题之间的依存关系)就成为该图的边。分治法和动态规划就出自这些分析。</p>
+<p>在一般情况下，程序越重要，就应当越去研究某些库或者包的细节，看看背后都隐藏了什么。</p>
+<ul>
+<li>当性能成为重点问题时，要着重于实际分析而不是直觉，一些性能瓶颈，可能隐藏于不是自己所认为的地方</li>
+<li>正确性至关重要的时候，最好的方法是不同的实现体对答案进行多次计算</li>
+</ul>
+<p>即使相关操作已经足够好了，但也有可能会由一个线性级操作变成一个平方级操作。</p>
+<h2 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h2><p>成员查询在list中是线性级的，在set中是常数级的，如果每次往集合中添加新值，然后检查值是否已经被添加，那么用list是平方级的，set就是线性级的。</p>
+<p>使用双向队列优于在某个list首端插入对象</p>
+<p>字符串的合并，使用<code>&#39;&#39;.join(list)</code>会比较好</p>
+<h2 id="浮点运算"><a href="#浮点运算" class="headerlink" title="浮点运算"></a>浮点运算</h2><ul>
+<li>不要对浮点数进行等值比较，可以检查它们是否接近于相等</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def almost_equal(x, y, places=7):</div><div class="line">    return round(abs(x-y), places) == 0</div></pre></td></tr></table></figure>
+<ul>
+<li>如果需要精确的十进制浮点数表示法，使用decimal模块，或者对一定数位的十进制数进行精确计算</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from decimal import *</div><div class="line">sum(Decimal(&quot;0.1&quot;) for i in range(10)) == Decimal(&quot;1.0&quot;)</div></pre></td></tr></table></figure>
+<p>如果将两个相近等值的子表达式相减，通常会丢失大量的有效数字。</p>
+<p>参考自：<em>Python 算法教程</em> – <em>Magnus Lie Hetland</em></p>
+
+	
+	</div>
+  <a type="button" href="/2017/04/02/算法/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/04/01/金融和R语言/" >金融和R语言</a>
 		</h3>
 		</div>
@@ -773,7 +910,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>79</span></a></li>
+			<li><a href="/categories/编程/">编程<span>80</span></a></li>
 		
 		</ul>
 	</div>
@@ -838,6 +975,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/14/mac_crontab/" ><i class="fa fa-file-o"></i>Mac 开启 Crontab</a>
+      </li>
+    
+      <li>
         <a href="/2018/02/13/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib相关问题和解决</a>
       </li>
     
@@ -851,10 +992,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
       </li>
     
   </ul>

@@ -138,6 +138,148 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/08/27/进程与线程/" >进程与线程</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-08-27 11:33:03  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>多道程序设计系统中，CPU由一个进程快速切换至另外一个进程。在一瞬间，CPU只能运行一个进程，在某一段时间，可能运行多个进程。</p>
+<p>一个进程就是一个正在执行程序的实例，包括程序计数器，寄存器和变量的当前值。每个进程由自己的逻辑程序计数器。实际上，只有一个物理程序计数器，在每个程序执行的时候，逻辑程序计数器被装入实际的程序计数器中。程序暂停执行的时候，物理程序计数器被保存在内存中该进程的逻辑程序计数器中。</p>
+<p>一个进程是某种类型的一个活动，它有程序，输入，输出以及状态。单个处理器可以被若干的进程共享。但是程序，通俗的讲是一些代码，所以操作系统可以使得不同的进程来共享代码，因此只有一个副本放在内存中。</p>
+<h2 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h2><ul>
+<li>系统初始化</li>
+</ul>
+<p>启动操作系统的时候，会创建新进程，前台进程(和人类交互的进程)和后台进程，后台进程又叫做守护进程<code>daemon</code></p>
+<ul>
+<li><p>运行的进程发出系统调用</p>
+</li>
+<li><p>用户请求创建一个新进程</p>
+</li>
+<li><p>批处理作业的初始化</p>
+</li>
+</ul>
+<p>其实本质上，新进程都是由于一个已经存在的进程执行了一个用于创建进程的系统调用，这个系统调用通知操作系统创建一个新进程，并且直接或者间接的指定在该进程中运行的程序。</p>
+<p>Unix系统中，使用fork来创建新进程，这个系统调用会创建一个与调用进程相同的副本，调用fork之后，两个进程拥有相同的存储映像，同样的环境字符串和同样的打开文件。然后子进程接着执行execve或者一个类似的系统调用，以修改其存储映射并且运行一个新的程序。在执行execve之前，子进程还可以处理文件描述符，以完成对标准输入，标准输出和标准出错的重定向。</p>
+<p>进程创建之后，父进程和子进程有各自不同的地址空间。子进程的初始地址空间是父进程的一个副本，但是是两个不同的地址空间，不可写的内存区是共享的，对于一个新创建的进程，可能共享创建者的其他资源，必须打开的文件。</p>
+<h2 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h2><ul>
+<li>正常退出</li>
+</ul>
+<p>完成工作后会执行一个系统调用，通知操作系统它的工作已经完成，Unix中是exit</p>
+<ul>
+<li><p>出错退出，文件不存在之类</p>
+</li>
+<li><p>进程引起的错误，程序错误，引用不存在内存之类</p>
+</li>
+<li><p>某个进程执行一个系统调用通知操作系统杀死某个进程。Unix中是kill</p>
+</li>
+</ul>
+<h2 id="进程的层次结构"><a href="#进程的层次结构" class="headerlink" title="进程的层次结构"></a>进程的层次结构</h2><p>进程只有一个父进程，但是可以有多个子进程。</p>
+<p>Unix中，进程和它的所有后代组成一个进程组，用户从键盘发出信号时候，信号被发送给当前与键盘相关的进程组中的所有成员，每个进程可以分别捕获该信号，忽略信号或者采取默认的动作，即被信号杀死。</p>
+<p>Unix启动时候会启动一个init进程，开始运行的时候，读入一个说明终端数量的文件，为每个终端创建一个新进程，这些进程等待用户登录，如果登陆成功，这个登陆进程就执行一个shell准备执行命令，所接收的命令会启动更多的进程。</p>
+<h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><ul>
+<li>运行态</li>
+<li>就绪态</li>
+<li>阻塞态</li>
+</ul>
+<p>等待输入时候，会进入阻塞态，出现有效输入会转入就绪态等待CPU。</p>
+<h2 id="进程的实现"><a href="#进程的实现" class="headerlink" title="进程的实现"></a>进程的实现</h2><p>操作系统维护这一张表格，进程表。每个进程占用一个进程表项，表项包含了进程状态的重要信息，包括程序计数器，堆栈指针，内存分配状况，打开文件的状态，账号和调度信息以及在由运行态转换到就绪态或者阻塞态必须保存的信息。</p>
+<h2 id="多道程序设计模型"><a href="#多道程序设计模型" class="headerlink" title="多道程序设计模型"></a>多道程序设计模型</h2><p>这样可以更好的去满负荷使用CPU，Very good.</p>
+<p>目前我的程序中IO时间大概占比在<code>25.5%</code>，那么对于8核处理器，如果是8个进程，那么同时在IO的概率为0.000017878103348，所以基本上已经达到很高的CPU占用率了。</p>
+<p>计算过程如下，一个进程等待IO的时间和其在内存中的时间比为p，内存中有n个进程，n个进程都在等待I/O的比率是<code>p^n</code>，那么CPU的利用率是<code>1-p^n</code></p>
+<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><p>每个进程有一个地址空间和一个控制线程，经常存在在同一个地址空间中准并行运行多个控制线程的情况，这些线程类似于分离的进程，但是又共享相同的地址空间。</p>
+<h2 id="线程的使用"><a href="#线程的使用" class="headerlink" title="线程的使用"></a>线程的使用</h2><ul>
+<li>多线程，并行实体共享同一个地址空间和所有可用数据</li>
+<li>线程更加轻量级，容易创建，容易撤销，切换消耗小</li>
+<li>多IO情况，会使得这些活动重叠进行，加快程序速度</li>
+</ul>
+<p>对于web服务器，既可以用多线程来处理IO操作，也可以使用read系统调用的非阻塞版本。对于非阻塞I/O来说，磁盘读取完毕后会以信号或者中断的形式出现。但是这种方法，从一个请求的工作状态切换到另外一个状态时候，需要显式的保存或者重新装入相应的计算状态。这样看来，这种异步形式也相当于一种线程，但是我们可以看成协程。在这里，每一个计算都有一个被保存的状态，存在一个会发生且使得相关状态发生改变的事件集合，比如中断，这类设计为有限状态机。</p>
+<h2 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h2><ul>
+<li>基本</li>
+</ul>
+<p>进程模型基于两种独立的概念：资源分组处理与执行，进程会将相关的资源集中在一起，进程有存放程序正文和数据以及其他资源的地址空间。</p>
+<p>进程有一个控制线程，线程中有一个程序计数器，记录接着要执行哪条指令，同时有寄存器，用来保存线程当前的工作变量，还有一个栈，用来记录执行历史，每一帧保存了一个已经调用但是还没有从中返回的过程。所以可以看出，进程用于将资源集中在一起，而线程是在CPU上被调度的实体。</p>
+<p>线程给进程模型增加了一项内容，在同一个进程中，可以有多个线程执行，在同一个进程中并行运行多个线程，是在一个机器上并行运行多个进程的模拟。多线程中，会共享一个进程的资源和地址空间，多进程中，共享物理内存，磁盘和其他资源。</p>
+<p>除了共享地址空间外，所有线程还共享一个打开文件集，子进程，报警以及相关信号，全局变量。</p>
+<p>一个线程打开了一个文件，那么其他线程也可以对该文件进行读写，资源管理的单位是进程。线程实现的是，共享一组资源的多个线程的执行能力，这样多个线程可以为完成一个任务而共同工作。</p>
+<p>所以多个线程是可以用一个数据库连接的，但是必须加锁使用。</p>
+<p>每个线程有自己的堆栈，每个线程的堆栈有一帧，供各个被调用但是还没有从中返回的过程使用。在该帧中存放了相应过程的局部变量以及过程调用完成之后使用的返回地址。每个线程会有不同的过程，从而有一个不同的执行历史，所以需要自己的堆栈。</p>
+<ul>
+<li>创建</li>
+</ul>
+<p>进程通常会从当前的单个线程开始，这个线程可以调用一个库函数(<code>thread_create</code>)来创建新线程，并且一般所有线程都是平等的，而不像进程那种，创建线程后会返回一个线程标识符，标识符就是新线程的名字。</p>
+<ul>
+<li>退出</li>
+</ul>
+<p><code>thread_exit</code>退出，或者调用<code>thread_join</code>等待另外一个线程退出，阻塞一直到那个线程退出。</p>
+<ul>
+<li><code>thread_yield</code></li>
+</ul>
+<p>允许线程自动放弃CPU从而让另一个线程运行，因为不同于进程，线程库没法使用时钟中断来强制线程让出CPU。所以得随时间推移自动交出CPU。</p>
+<p>加入线程后，在fork中可能出现问题，fork后子进程也包含父进程的线程。还有如果一个线程关闭了文件，另一个线程还在执行。所以多线程程序需要更多的努力。</p>
+<h2 id="POSIX线程"><a href="#POSIX线程" class="headerlink" title="POSIX线程"></a>POSIX线程</h2><p>线程包叫做<code>Pthread</code>。每个线程都含有一个标识符，一组寄存器(包括程序计数器)和一组存储在结构中的属性，这些属性包含堆栈大小，调度参数以及线程需要的其他项目。</p>
+<h2 id="用户空间实现线程"><a href="#用户空间实现线程" class="headerlink" title="用户空间实现线程"></a>用户空间实现线程</h2><p>将整个线程包放在用户空间中，从内核角度考虑，就是按单线程进程的方式来管理，优点是可以在不支持线程的操作系统上实现，所以可以使用函数库来实现线程。</p>
+<p>这些线程会在一个进程中运行，进程中保存了相应的线程表，用来跟踪该进程中的线程。线程表仅仅记录各个线程的属性，如每个线程的程序计数器，堆栈指针，寄存器和状态等。当一个线程转换到就绪状态或者阻塞状态时候，在该线程表中存放重新启动该线程所需要的信息。</p>
+<ul>
+<li>优点</li>
+</ul>
+<p>如果进行本地阻塞，也就是说和系统没有太大关系，比如等待进程中的另外一个线程完成某项工作。首先会调用一个运行时系统的过程，检查该线程是否必须进入阻塞状态，如果是，则在线程表中保存该线程的寄存器，查看表中可运行的就绪线程，把新线程的保存值重新装入机器的寄存器中。只要堆栈指针和程序计数器一被切换，新线程就开始运行。这样进行线程切换要比陷入内核至少快一个数量级。</p>
+<p>线程完成运行时候，比如调用<code>thread_yield</code>的时候，首先将该线程的信息保存在线程表中，然后调用线程调度程序来选择另一个要运行的线程，因为保存该线程状态和调度程序都只是本地过程，所以启动它们要比内核调用效率要高，不需要陷阱，不需要上下文切换，不需要对内存高速缓存进行刷新。</p>
+<p>另外，用户级线程允许每个进程有自己的调度算法，并且用户线程具有好的可扩展性，因为内核线程需要特定的空间来存储表格和堆栈，当线程数量特别大的时候，就有问题。</p>
+<blockquote>
+<p>综上，可以看出，用户级线程的优点的核心在于其不需要进行内核态的转换，所有过程本地进行，不论是切换，还是保存的数据位置，所以可以保证其高效。</p>
+</blockquote>
+<ul>
+<li>缺点</li>
+</ul>
+<p>如何实现阻塞系统调用，如果一个线程执行阻塞系统调用，系统因为并不知道这个线程的存在，所以会将整个进程阻塞！这样就会影响该进程的其他线程的运行。所以需要允许每个线程使用阻塞调用，但是还要避免被阻塞的线程影响其他线程。</p>
+<p>一种解决方案是，如果某个调用会阻塞，就提前通知，比如系统调用<code>select</code>允许调用者通知预期的<code>read</code>是否会阻塞。所以就可以先进行<code>select</code>调用，只有在安全的情形下才进行<code>read</code>掉哟哦那个，如果<code>read</code>调用会被阻塞，有关调用就不进行，代之运行另外一个线程。到下次有关运行系统取得控制权后，再去检查<code>read</code>调用是否安全。</p>
+<p>另一个问题是页面故障问题，因为程序不是一次性在内存中，如果某个程序调用或者跳转到了一条不在内存的指令上，就会发生页面故障。就需要去磁盘读取，这样就会阻塞相关进程直到磁盘<code>I/O</code>完成为止，因为内核不知道有线程的存在。</p>
+<p>另外一个问题是，在一个单独的进程内部，没有时钟中断，所以不可能用轮转调度方式调度进程。</p>
+<p>但是程序员在经常发生线程阻塞的应用中才希望使用多个线程。就得持续进行select系统调用，以便检查read系统调用是否安全。</p>
+<h2 id="内核中实现线程"><a href="#内核中实现线程" class="headerlink" title="内核中实现线程"></a>内核中实现线程</h2><p>现在在内核中记录系统中所有线程的线程表，某个线程希望创建一个新线程或者撤销一个已有线程时候，进行一个系统调用，这个系统调用通过对线程表的更新完成线程创建和撤销工作。与此同时，内核还维护了传统的进程表，以便跟踪进程的状态。</p>
+<p>所有能够阻塞线程的调用都以系统调用的形式实现，一个线程阻塞的时候，内核根据其选择，可以运行同一个进程的另一个线程或者另一个进程中的线程。</p>
+<p>回收线程的时候，将其标志为不可运行，但是内核数据结构没有受到影响，在创建一个线程的时候，就重新启动某个旧线程。所以节省了一些开销。</p>
+<p>内核级线程的主要缺点是系统调用的代价较大，如果有许多创建和终止，就会有很大的开销。线程切换由内核控制，切换的时候，要从用户态进入内核态，切换完毕要从内核态返回用户态</p>
+<p>还有以下这些问题，比如多线程进程创建新进程的线程管理。以及信号的处理，因为信号是发送给进程而不是线程的。内核级线程的速度慢。</p>
+<h2 id="混合实现"><a href="#混合实现" class="headerlink" title="混合实现"></a>混合实现</h2><p>使用内核级线程，然后将用户级线程与某些或者全部内核线程多路复用起来。内核只识别内核级线程，并对其进行调度，一些内核级线程会被多个用户级线程多路复用。每个内核级线程有一个可以轮流使用的用户级线程集合。</p>
+<p>线程创建完全在用户空间中完成，线程的调度和同步也在应用程序中进行. 一个应用程序中的多个用户级线程被映射到一些（小于或等于用户级线程的数目）内核级线程上。</p>
+<p>这样即使某些线程阻塞掉，也会切换到另外一个内核线程对应的用户线程里。</p>
+<h2 id="调度程序激活机制"><a href="#调度程序激活机制" class="headerlink" title="调度程序激活机制"></a>调度程序激活机制</h2><p>调度程序激活机制是模拟内核线程的功能，如果用户线程从事某种系统调用是安全的，那么就不应该进行专门的非阻塞调用或者进行提前性检查。如果线程阻塞在某个系统调用或者页面故障上，只要同一个进程有任何就绪的线程，就应该有可能运行其他的线程。</p>
+<p>使用调度程序激活机制时，内核给每个进程安排一定数量的虚拟处理器，让用户空间的运行时系统将线程分配到处理器上。当内核了解到一个线程被阻塞之后，内核通知该进程的运行时系统，并且在堆栈中以参数形式传递有问题的线程编号和所发生事件的描述。这个机制就是上行调用。</p>
+<p>这样激活之后，运行时系统重新调度线程，把当前线程标记为阻塞并从就绪表中取出另一个线程，设置其寄存器，然后再启动之。等到内核直到原来线程又可以运行时候，内核再次上行调用运行时系统，通知这个事件，运行时系统根据情况重启被阻塞的线程，或者放入就绪表稍后运行。</p>
+<p>上行调用是违反分层次系统内在结构的概念，通常，n层提供n+1层可调用的特定服务，但是n层不能调用n+1层中的过程。</p>
+<h2 id="弹出式线程"><a href="#弹出式线程" class="headerlink" title="弹出式线程"></a>弹出式线程</h2><p>分布式系统中经常使用线程。在处理服务请求中，传统的方法是将进程或者线程阻塞在一个<code>receive</code>系统调用上，瞪大系统到来，当消息到达时候，系统调用接收消息，并且打开消息检查内容，然后处理。</p>
+<p>弹出式线程中，一个消息的到达导致系统创建一个处理该消息的线程，这个线程是全新的，每个必须存储的寄存器，堆栈这些内容，可以快速创建这类线程，对该线程指定要处理的消息。</p>
+<p>可以在用户级创建这种线程，也可以在内核级，内核级更方便，可以访问所有的I/O设备，但是危害也更大。</p>
+<h2 id="使单线程代码多线程化"><a href="#使单线程代码多线程化" class="headerlink" title="使单线程代码多线程化"></a>使单线程代码多线程化</h2><ul>
+<li>全局变量的问题</li>
+</ul>
+<p>有可能在一个线程中写入会影响到另一个线程的读取。一种解决方案是给每个线程赋予其私有的全局变量。</p>
+<ul>
+<li>许多库过程并不是可重入的，在前面的调用没有结束之前，不能进行第二次调用。因为可能库内部使用一个固定的缓冲区进行消息组合。</li>
+</ul>
+
+	
+	</div>
+  <a type="button" href="/2017/08/27/进程与线程/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/08/25/Python内存管理和gc/" >Python内存管理和gc</a>
 		</h3>
 		</div>
@@ -741,52 +883,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/08/tqdm 详解/" >tqdm 详解</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-08 16:26:11  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>最近用到了一个库<a href="https://github.com/noamraph/tqdm" target="_blank" rel="external">tqdm</a>很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。</p>
-<p>以下是运行效果：</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" alt="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png"></p>
-<p>那么就来看看这个库吧</p>
-<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p>首先这个库的用法是这样的，很简单，这样运行后，就会有输出进度条了。简直丧心病狂的简单，那到底是怎么做到的呢！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from tqdm import tqdm</div><div class="line">for i in tqdm(range(10000)):</div><div class="line">    ...</div></pre></td></tr></table></figure>
-<h1 id="tqdm"><a href="#tqdm" class="headerlink" title="tqdm"></a><code>tqdm</code></h1><p>点击tqdm后进入源代码模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">def tqdm(iterable, desc=&apos;&apos;, total=None, leave=False, file=sys.stderr,</div><div class="line">         mininterval=0.5, miniters=1):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    给定一个可迭代对象，返回一个可以迭代的对象，但是会打印出进度条来，并且每当有一个元素被迭代的时候就可以更新运行时间和剩余时间以及进度条</div><div class="line">    desc: 包含一个简短的string，用来描述进度条，会在一行的最前面</div><div class="line">    total: 可以给定预期的迭代次数，如果没有给定，将会使用len(iterable)</div><div class="line">    如果leave为False，则tqdm在完成后删除屏幕上的进度条</div><div class="line">    如果少于mininterval秒或者miniters个迭代上次进度条更新的时候已经过了，将不会再次更新，也就是说，首先会检测是否到迭代个数了，然后才会检测时间</div><div class="line">    file:表示输出位置，默认是sys.stderr</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    if total is None:</div><div class="line">        try:</div><div class="line">            total = len(iterable)</div><div class="line">        except TypeError:</div><div class="line">            total = None</div><div class="line"></div><div class="line">    # 如果给定desc，才会有prefix</div><div class="line">    prefix = desc+&apos;: &apos; if desc else &apos;&apos;</div><div class="line"></div><div class="line">    sp = StatusPrinter(file)</div><div class="line">    sp.print_status(prefix + format_meter(0, total, 0))</div><div class="line"></div><div class="line">    start_t = last_print_t = time.time()</div><div class="line">    last_print_n = 0</div><div class="line">    n = 0</div><div class="line">    for obj in iterable:</div><div class="line">        # 居然是一个生成器函数，每次迭代会返回迭代元素</div><div class="line">        # 然后继续执行下面的逻辑，然后再在此处暂停</div><div class="line">        yield obj</div><div class="line">        # Now the object was created and processed, so we can print the meter.</div><div class="line">        n += 1</div><div class="line">        # 首先判断迭代次数</div><div class="line">        if n - last_print_n &gt;= miniters:</div><div class="line">            # We check the counter first, to reduce the overhead of time.time()</div><div class="line">            cur_t = time.time()</div><div class="line">            # 其次判断间隔时间</div><div class="line">            if cur_t - last_print_t &gt;= mininterval:</div><div class="line">                sp.print_status(prefix + format_meter(n, total, cur_t-start_t))</div><div class="line">                last_print_n = n</div><div class="line">                last_print_t = cur_t</div><div class="line">    # 如果leave为False，最后屏幕上就会清除进度条</div><div class="line">    if not leave:</div><div class="line">        sp.print_status(&apos;&apos;)</div><div class="line">        sys.stdout.write(&apos;\r&apos;)</div><div class="line">    else:</div><div class="line">        if last_print_n &lt; n:</div><div class="line">            cur_t = time.time()</div><div class="line">            # 将进度条输满</div><div class="line">            sp.print_status(prefix + format_meter(n, total, cur_t-start_t))</div><div class="line">        file.write(&apos;\n&apos;)</div></pre></td></tr></table></figure>
-<p>可以看到主逻辑还是很简单的，但是关键是在于这个<code>StatusPrinter</code>和<code>format_meter</code>是如何在终端上输出的</p>
-<h1 id="format-meter"><a href="#format-meter" class="headerlink" title="format_meter"></a><code>format_meter</code></h1><p>这个函数就是专门来控制进度条打印的，传入已经完成的迭代次数，总的迭代次数和已经耗费的时间</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">def format_meter(n, total, elapsed):</div><div class="line">    if n &gt; total:</div><div class="line">        total = None</div><div class="line"></div><div class="line">    elapsed_str = format_interval(elapsed)</div><div class="line">    # 一秒执行几个</div><div class="line">    rate = &apos;%5.2f&apos; % (n / elapsed) if elapsed else &apos;?&apos;</div><div class="line"></div><div class="line">    if total:</div><div class="line">        # 如果有总数，那么将输出进度条</div><div class="line"></div><div class="line">        # 目前进行的比例</div><div class="line">        frac = float(n) / total</div><div class="line"></div><div class="line">        N_BARS = 10</div><div class="line">        # 进度条的长度</div><div class="line">        bar_length = int(frac*N_BARS)</div><div class="line">        # 整个进度条</div><div class="line">        bar = &apos;#&apos;*bar_length + &apos;-&apos;*(N_BARS-bar_length)</div><div class="line"></div><div class="line">        # 进行的百分比 %%输出百分号</div><div class="line">        percentage = &apos;%3d%%&apos; % (frac * 100)</div><div class="line"></div><div class="line">        # 剩余时间</div><div class="line">        left_str = format_interval(elapsed / n * (total-n)) if n else &apos;?&apos;</div><div class="line"></div><div class="line">        # 返回进度条和时间</div><div class="line">        return &apos;|%s| %d/%d %s [elapsed: %s left: %s, %s iters/sec]&apos; % (</div><div class="line">            bar, n, total, percentage, elapsed_str, left_str, rate)</div><div class="line"></div><div class="line">    else:</div><div class="line">        # 如果没有total，则直接返回目前进行的，所花时间和速度字符串</div><div class="line">        return &apos;%d [elapsed: %s, %s iters/sec]&apos; % (n, elapsed_str, rate)</div></pre></td></tr></table></figure>
-<p>其中<code>format_interval</code>是用来将时间格式化的函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def format_interval(t):</div><div class="line">    # 首先求出时分秒，divmod输出分别是商和余数</div><div class="line">    mins, s = divmod(int(t), 60)</div><div class="line">    h, m = divmod(mins, 60)</div><div class="line">    if h:</div><div class="line">        return &apos;%d:%02d:%02d&apos; % (h, m, s)</div><div class="line">    else:</div><div class="line">        return &apos;%02d:%02d&apos; % (m, s)</div></pre></td></tr></table></figure>
-<p>可以看到，这里就是对进度条的长度之类做了控制，进度条总长一定，然后进行的长度和剩余的长度根据已经执行的进行控制，然后格式化时间以及剩余时间，返回一个字符串。</p>
-<h1 id="StatusPrinter"><a href="#StatusPrinter" class="headerlink" title="StatusPrinter"></a><code>StatusPrinter</code></h1><p>源代码很少，关键在于<code>self.file.write</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class StatusPrinter(object):</div><div class="line">    def __init__(self, file):</div><div class="line">        self.file = file</div><div class="line">        # 记录上次的打印长度</div><div class="line">        self.last_printed_len = 0</div><div class="line"></div><div class="line">    def print_status(self, s):</div><div class="line">        self.file.write(&apos;\r&apos;+s+&apos; &apos;*max(self.last_printed_len-len(s), 0))</div><div class="line">        self.file.flush()</div><div class="line">        self.last_printed_len = len(s)</div></pre></td></tr></table></figure>
-<p>这里涉及一个<code>\r</code>和<code>\n</code>的区分，<code>\r</code>是回车，就是回到这一行的开始，<code>\n</code>是走纸，会到下一行，但是位置还在目前的列，所以<code>\r\n</code>就是到下一行的行首，但是Linux只用<code>\n</code>来换行，所以这里用<code>\r</code>来回到开头进行打印</p>
-<p>然后后面的就很好理解了，比如这一次打印长度80，下一次是50，那么多余的30就要用空白符来覆盖掉。</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这就是tqdm库的主要部分了，看起来挺简单的，要是自己做，需要控制很多细节问题，不过真的是学到了。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/08/08/tqdm 详解/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -840,7 +936,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>79</span></a></li>
+			<li><a href="/categories/编程/">编程<span>80</span></a></li>
 		
 		</ul>
 	</div>
@@ -905,6 +1001,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/14/mac_crontab/" ><i class="fa fa-file-o"></i>Mac 开启 Crontab</a>
+      </li>
+    
+      <li>
         <a href="/2018/02/13/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib相关问题和解决</a>
       </li>
     
@@ -918,10 +1018,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
       </li>
     
   </ul>

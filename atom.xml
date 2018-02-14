@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-02-13T14:41:18.000Z</updated>
+  <updated>2018-02-14T01:25:36.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mac 开启 Crontab</title>
+    <link href="http://skyrover.me/2018/02/14/mac_crontab/"/>
+    <id>http://skyrover.me/2018/02/14/mac_crontab/</id>
+    <published>2018-02-14T01:19:39.000Z</published>
+    <updated>2018-02-14T01:25:36.000Z</updated>
+    
+    <content type="html"><![CDATA[<ul>
+<li><p>查看是否启动</p>
+<p>  <code>sudo launchctl list | grep cron</code></p>
+</li>
+<li><p>检查需要的文件</p>
+<p>  <code>ll /etc/crontab</code></p>
+</li>
+<li><p>没有的话，创建一个文件</p>
+<p>  <code>sudo touch /etc/crontab</code></p>
+</li>
+<li><p>crontab的参数</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">-u user：用来设定某个用户的crontab服务；</div><div class="line"></div><div class="line">file：file是命令文件的名字,表示将file做为crontab的任务列表文件并载入crontab。如果在命令行中没有指定这个文件，crontab命令将接受标准输入（键盘）上键入的命令，并将它们载入crontab。</div><div class="line"></div><div class="line">-e：编辑某个用户的crontab文件内容。如果不指定用户，则表示编辑当前用户的crontab文件。</div><div class="line"></div><div class="line">-l：显示某个用户的crontab文件内容，如果不指定用户，则表示显示当前用户的crontab文件内容。</div><div class="line"></div><div class="line">-r：从/var/spool/cron目录中删除某个用户的crontab文件，如果不指定用户，则默认删除当前用户的crontab文件。</div><div class="line"></div><div class="line">-i：在删除用户的crontab文件时给确认提示。</div></pre></td></tr></table></figure>
+</li>
+<li><p>crontab 格式</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">* 第1列分钟0～59</div><div class="line">* 第2列小时0～23（0表示子夜）</div><div class="line">* 第3列日1～31</div><div class="line">* 第4列月1～12</div><div class="line">* 第5列星期0～7（0和7表示星期天）</div><div class="line">* 第6列要运行的命令</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动和停止</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo /usr/sbin/cron start</div><div class="line">sudo /usr/sbin/cron restart</div><div class="line">sudo /usr/sbin/cron stop</div></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;查看是否启动&lt;/p&gt;
+&lt;p&gt;  &lt;code&gt;sudo launchctl list | grep cron&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;检查需要的文件&lt;/p&gt;
+&lt;p&gt;  &lt;code&gt;ll /etc/crontab&lt;/code&gt;&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Mac" scheme="http://skyrover.me/tags/Mac/"/>
+    
+  </entry>
   
   <entry>
     <title>Mac系统下matplotlib相关问题和解决</title>

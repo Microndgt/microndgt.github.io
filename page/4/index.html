@@ -138,6 +138,151 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/10/19/mysql_interview_1/" >MySQL面试题集锦</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-10-19 12:30:35  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自：</p>
+<ul>
+<li><a href="https://www.tecmint.com/10-mysql-database-interview-questions-for-beginners-and-intermediates/" target="_blank" rel="external">10 MySQL Database Interview Questions for Beginners and Intermediates</a></li>
+<li><a href="http://www.careerride.com/MySQL-Interview-Questions.aspx" target="_blank" rel="external">MySql Interview Questions and Answers</a></li>
+</ul>
+<ol>
+<li><p>如何定义SQL？</p>
+<p> SQL代表的是结构化查询语言(Structured Query Language)。SQL是一门专门在关系型数据库管理系统中管理数据的编程语言。</p>
+</li>
+<li><p>什么是RDBMS？解释其特性？</p>
+<p> Relational Database Management System(RDBMS)是在关系数据库模型中最广泛使用的数据库管理系统。</p>
+<p> RDBMS的特性：</p>
+<ul>
+<li>在表中存储数据</li>
+<li>表中含有行和列</li>
+<li>可以通过SQL创建和检索表</li>
+</ul>
+</li>
+<li><p>什么是数据挖掘？</p>
+<p> 数据挖掘是计算机科学的子分类，其目的是从数据集中提取信息，并且将其转换成人类友好的结构在以后使用。</p>
+</li>
+<li><p>什么是ERD？</p>
+<p> ERD代表实体关系模型(Entity Relationship Diagram)，其中图形代表了表，它们之间是它们的关系。</p>
+</li>
+<li><p>Primary Key主键和Unique Key有什么区别？</p>
+<p> Primary和Unique都是实现了列值的唯一性。主键为列创建了聚集索引，而Unique key创建了非聚集索引。并且主键不允许NULL值，而Unique key允许NULL值。</p>
+</li>
+<li><p>如何在数据库中存储图片文件。使用了哪种对象类型？</p>
+<p> 在数据库存储图片不是个好主意。为了在数据库中存储图片，Blob对象类型是被推荐的。BLOB是一个二进制大对象，可以容纳可变数量的数据。而TEXT列被视为非二进制字符串(字符字符串)。</p>
+</li>
+<li><p>什么是数据仓库？</p>
+<p> 数据仓库一般是指企业数据仓库，是一个集中数据仓库，使用不同数据源来创建的。</p>
+</li>
+<li><p>数据库中的索引是什么，索引有哪几种类型？</p>
+<p> 索引是在数据库进行数据快速索引的快速引用。有两种不同的索引类型：</p>
+<ul>
+<li>聚集索引<ul>
+<li>在一个表中只有一个</li>
+<li>查询的时候比非聚集索引要快，因为数据是按照索引顺序存储</li>
+</ul>
+</li>
+<li><p>非聚集索引</p>
+<ul>
+<li>可以在一个表中使用多次</li>
+<li>比聚集索引可以更快的插入和更新</li>
+</ul>
+<p>聚集索引，该索引中键值的逻辑顺序决定了表中相应行的物理顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引）。聚集索引对于那些经常要搜索范围值的列特别有效。使用聚集索引找到包含第一个值的行后，便可以确保包含后续索引值的行在物理相邻。如果对从表中检索的数据进行排序时经常要用到某一列，则可以将该表在该列上聚集（物理排序），避免每次查询该列时都进行排序，从而节省成本。当索引值唯一时，使用聚集索引查找特定的行也很有效率。例如，使用唯一雇员 ID 列<code>emp_id</code>查找特定雇员的最快速的方法，是在<code>emp_id</code>列上创建聚集索引或<code>PRIMARY KEY</code>约束。</p>
+<p>非聚集索引，该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。索引是通过二叉树的数据结构来描述的，我们可以这么理解聚集索引：索引的叶节点就是数据节点。而非聚簇索引的叶节点仍然是索引节点，只不过有一个指针指向对应的数据块。因为聚集索引的数据的逻辑顺序和物理顺序是一致的，而非聚集索引的逻辑顺序和数据的物理顺序不同，所以最后的叶节点是一个指向对应数据块的。</p>
+<p>一个例子就是字典中按拼音查询和按部首查询。也就是说部首的目录纯粹是目录，正文纯粹是正文的排序方式是非聚集索引，两个不相关联，因此一个表中可以有多个非聚合索引。每个表只有一个聚集索引，因为一个数据集只有一种物理存放顺序。</p>
+<p>那么何时使用聚集索引，何时使用非聚集索引呢</p>
+</li>
+<li><p>返回某范围内的数据：应该使用聚集索引，而不应该使用非聚集索引，因为非聚集索引即使逻辑顺序对了，但是物理顺序仍然不对，所以没用。</p>
+</li>
+<li><p>频繁更新的列：不应该使用聚集索引，而应该使用非聚集索引，因为如果使用聚集索引，就会导致物理结构的变化，不好。</p>
+<p>所以聚集索引一般可以加快查询的速度，但是更新就不行了</p>
+</li>
+</ul>
+</li>
+<li><p>在MySQL中有多少可能的Triggers?</p>
+<ul>
+<li>Before Insert</li>
+<li>After Insert</li>
+<li>Before Update</li>
+<li>After Update</li>
+<li>Before Delete</li>
+<li><p>After Delete</p>
+<p>一个示例,<code>CREATE TRIGGER ins_sum BEFORE INSERT ON account FOR EACH ROW SET @SUM=@SUM+NEW.amount;</code></p>
+</li>
+</ul>
+</li>
+<li><p>什么是堆表(Heap table)?</p>
+<p>存在内存中的表叫做Heap tables。这些表是内存表，这些内存表没有像BLOB或者TEXT的数据类型。没有<code>AUTO_INCREMENT</code>。他们可以使用索引使得它们更快，索引是针对少量特定字段的值拿出来进行排序存储，并记录在表中的位置, 而因为索引是有序的, 所以就会很容易通过索引查询到具体的记录位置, 然后再根据记录位置直接从表中读取该记录。数据存储没有任何的顺序，插入数据也没顺序。由于数据没有任何顺序，查询数据会非常慢，但是写入操作会比较快。还有就是上面介绍的表Index-Organized table，直接就是索引表，表中数据本身就是有序的, 这样查询表的时候就可以快速的找到符合条件的记录位置。</p>
+</li>
+<li><p>如何控制HEAP表的最大大小？</p>
+<p>可以使用MySQL配置<code>max_heap_table_size</code>来控制HEAP表的大小</p>
+</li>
+<li><p>FLOAT和DOUBLE的区别？</p>
+<p>FLOAT存储了8位精度的浮点数，并且有4字节。DOUBLE存储了18位精度的浮点数，有8字节。MySQL 浮点型和定点型可以用类型名称后加（M，D）来表示，M表示该值的总共长度，D表示小数点后面的长度。</p>
+</li>
+<li><p>什么是BLOB？</p>
+<p>表示binary large object，二进制大对象，可以存储可变数量的数据。有4种不同类型的BLOB，基于可以存储的最大数量</p>
+<ul>
+<li>TINYBLOB</li>
+<li>BLOB</li>
+<li>MEDIUMBLOB</li>
+<li>LONGBLOB</li>
+</ul>
+</li>
+<li><p>什么是TEXT？</p>
+<p>TEXT是大小写不敏感的BLOB，有4种类型</p>
+<ul>
+<li>TINYTEXT</li>
+<li>TEXT</li>
+<li>MEDIUMTEXT</li>
+<li>LONGTEXT</li>
+</ul>
+</li>
+<li><p>BLOB和TEXT的区别是什么？</p>
+<p>在BLOB中，排序和比较是大小写敏感的，在TEXT中排序和比较是大小写不敏感的。</p>
+</li>
+<li><p>MyISAM表是怎么存储的？</p>
+<p>MyISAM表在磁盘上以三种方式存储</p>
+<ul>
+<li><code>.frm</code>文件，存储了表的定义</li>
+<li><code>.MYD</code>(MYData) 数据文件</li>
+<li><code>.MYI</code>(MYIndex) 索引文件</li>
+</ul>
+</li>
+<li><p>解释MyISAM相对于InnoDB的优点？</p>
+<p>MyISAM在磁盘管理中遵循了更保守的方法，将每个MyISAM表存储在了单独的文件中，如果需要可以进行更进一步的压缩。而InnoDB将表存储在tablespace，进一步的优化比较困难，但是InnoDB支持事务和外键。MyISAM读能快点，Innodb写快点。</p>
+</li>
+<li><p>如果在MySQL中连接字符串？</p>
+<p><code>select concat(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;);</code></p>
+</li>
+<li><p>如果在MySQL中获取当前日期？</p>
+<p><code>select current_date();</code></p>
+</li>
+</ol>
+
+	
+	</div>
+  <a type="button" href="/2017/10/19/mysql_interview_1/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/10/17/music_1/" >最是人间留不住</a>
 		</h3>
 		</div>
@@ -810,78 +955,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/09/17/flask_https/" >翻译 - Running Your Flask Application Over HTTPS</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-09-17 09:31:30  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https" target="_blank" rel="external">Running Your Flask Application Over HTTPS</a></p>
-<p>当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。</p>
-<p>人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，从5秒钟就可以应用的方法，到一个非常健壮的解决方案，从而在<a href="https://www.ssllabs.com/ssltest/index.html" target="_blank" rel="external">SSL Server Test</a>上可以得到A+的分数</p>
-<h1 id="How-Does-HTTPS-Work"><a href="#How-Does-HTTPS-Work" class="headerlink" title="How Does HTTPS Work?"></a>How Does HTTPS Work?</h1><p>HTTP的加密和安全功能是通过Transport Layer Security(TLS 传输层安全协议) Protocol实现的。TLS定义了一种网络传输安全的标准方式。因为我不是一个安全专家，因此我不认为我能很好的给你解释TLS协议的详细内容，因此我只会给你一些我们对于配置一个安全和加密的Flask服务器中感兴趣的部分。</p>
-<p>当客户端创建一个到服务器的连接并且请求一个加密连接，服务器会使用其SSL(Secure Sockets Layer)证书进行响应。证书是作为服务器的身份证明，其包括了服务器名和域名。为了保证服务器提供的信息是正确的，证书是通过一个证书认证机构签名的。如果客户端知道并且信任(Certificate authority)CA的话，它就可以确认这个签名是从这个CA签发的，这样这个客户端就可以确定这个连接的服务器是合法的。</p>
-<p>在客户端验证证书之后，它为与服务器的通信创建了一个加密密钥。为了确保这个密钥被安全的送到服务器，它使用一个服务器证书上的公钥来加密。服务器拥有与证书上公钥对应的私钥，所以服务器是唯一能够解密的。这样从服务器接受到加密密钥之后，所有服务器和客户端之间的通信都是使用这个密钥加密的。</p>
-<p>从这个总结中，你大概可以知道实现一个TLS加密我们需要两个东西：服务器证书，包含一个公钥并且是CA签名的，还有一个与公钥对应的私钥。</p>
-<h1 id="The-Simplest-Way-To-Do-It"><a href="#The-Simplest-Way-To-Do-It" class="headerlink" title="The Simplest Way To Do It"></a>The Simplest Way To Do It</h1><p>Flask，更确切的说是Werkzeug，支持<code>on-the-fly</code>证书的使用，可以快速在HTTPS上服务应用并且不用处理证书。所有你需要做的是，在你的<code>app.run()</code>调用里添加<code>ssl_context=&#39;adhoc&#39;</code>。不幸的是，这个选项并不能通过Flask命令行接口使用。下面你可以看到官方文档上的一个hello world的Flask应用示例，添加了TLS加密。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=&apos;adhoc&apos;)</div></pre></td></tr></table></figure>
-<p>为了能够在Flask上使用ad hoc(点对点)证书，你需要在你的虚拟环境中安装一个额外的依赖:<code>pip install pyopenssl</code></p>
-<p>当你运行脚本的时候，你会注意到Flask正在运行一个<code>https://</code>服务器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python hello.py</div><div class="line"> * Running on https://127.0.0.1:5000/ (Press CTRL+C to quit)</div></pre></td></tr></table></figure>
-<p>很简单，是吧？问题是浏览器不喜欢这种类型的证书，因此它会在你可以访问网站之前显示一个很大的警告标志。一旦你允许浏览器连接之后，你将会得到一个加密的连接，就像你从一个服务器得到了有效证书一样，这样点对点的证书在快速测试中很方便，但是不会用于真实应用中。</p>
-<h1 id="Self-Signed-Certificates"><a href="#Self-Signed-Certificates" class="headerlink" title="Self-Signed Certificates"></a>Self-Signed Certificates</h1><p><code>self-signed</code>证书是签名通过私钥来生成的并且关联的证书。我上面提到了客户端需要知道并且信任CA签发的证书，因为正是信任关系才允许客户端去确认服务器证书。web浏览器和其他HTTP客户端会提前配置好一个已知的信任CAs列表，不过明显如果你使用一个<code>self-signed</code>证书，浏览器就不知道这个CA，因此验证也会失败。这也是我们之前使用的ad hoc证书时候发生的事情。如果浏览器不能验证服务器证书，它就会让你在存在问题的情况下运行和访问网站，但是它会确保你理解你正在有风险的访问。</p>
-<p>但是风险是什么？对于Flask服务器，你当然可以信任，并且是没有风险的。问题是用户如果连接了他们不知道的或者无法控制的服务器出现的。在那种情况，用户就不知道服务器是否是认证过的，因为任何人都可以为任何域名生成证书。</p>
-<p><code>self-signed</code>证书有时会比较有用，Flask的ad hoc证书就不是这样了，因为每次服务器运行的时候，通过pyOpenSSL就会生成一个不同的运行中证书。当你在使用一个<code>self-signed</code>证书的时候，在每次运行服务器的时候使用同样的证书是比较好的，因为你可以配置浏览器去信任它，这样就可以消除安全报警了。</p>
-<p>你可以很容易的从命令行中生成<code>self-signed</code>证书。所有你需要的是安装<code>openssl</code></p>
-<p><code>openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365</code></p>
-<p>命令生成了一个新的证书<code>cert.pem</code>以及对应的私钥在<code>key.pem</code>，有一个365天的有效周期。当你运行这个命令的时候，你将会被询问几个问题。下面是一个示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Generating a 4096 bit RSA private key</div><div class="line">......................++</div><div class="line">.............++</div><div class="line">writing new private key to &apos;key.pem&apos;</div><div class="line">-----</div><div class="line">You are about to be asked to enter information that will be incorporated</div><div class="line">into your certificate request.</div><div class="line">What you are about to enter is what is called a Distinguished Name or a DN.</div><div class="line">There are quite a few fields but you can leave some blank</div><div class="line">For some fields there will be a default value,</div><div class="line">If you enter &apos;.&apos;, the field will be left blank.</div><div class="line">-----</div><div class="line">Country Name (2 letter code) [AU]:US</div><div class="line">State or Province Name (full name) [Some-State]:Oregon</div><div class="line">Locality Name (eg, city) []:Portland</div><div class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:Miguel Grinberg Blog</div><div class="line">Organizational Unit Name (eg, section) []:</div><div class="line">Common Name (e.g. server FQDN or YOUR name) []:localhost</div><div class="line">Email Address []:</div></pre></td></tr></table></figure>
-<p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
-<p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
-<p><img src="/img/flask_https/flask-ssl-03.png" alt=""></p>
-<h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
-<p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
-<p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
-<p>如果你使用nginx作为反向代理，你可以在nginx中配置证书，然后nginx就会终止加密连接，也就是说它会接受外部的加密连接，然后使用正常的非加密连接和你的应用通信。这是一个非常有用的配置，使得你的应用不需要处理证书和加密。在nginx进行如下配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443 ssl;</div><div class="line">    server_name example.com;</div><div class="line">    ssl_certificate /path/to/cert.pem;</div><div class="line">    ssl_certificate_key /path/to/key.pem;</div><div class="line">    # ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>另外比较重要的是你需要考虑用户通过普通的HTTP连接的时候如何处理。最好的方式，在我看来，是给一个未加密请求一个基于HTTPS的相同url的重定向响应。对于Flask应用，你可以通过<code>Flask-SSLify</code>扩展来实现它。在nginx，你可以在另一个<code>server</code>块配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果用的是另外的web服务器，你可以参考文档找到类似的配置方法。</p>
-<h1 id="Using-“Real”-Certificates"><a href="#Using-“Real”-Certificates" class="headerlink" title="Using “Real” Certificates"></a>Using “Real” Certificates</h1><p>我们已经探索了关于<code>self-signed</code>证书所有的选项，但是在那些例子中，存在的限制是除非你告诉浏览器去信任这些证书，否则浏览器不会这么做。因此在生产环境中的网站的服务器证书最好是从那些浏览器自动信任的CAs获取。</p>
-<p>当你向一个CA请求证书的时候，CA会检查你是否有服务器和域名的控制权，但是至于检查怎么完成的是要取决于CA。如果服务器通过检查，CA会发行一个自己签名的网站证书然后给你去安装。证书通常的有效期是一年。大多数CA会收费，但是仍然有一些是免费的。最流行的免费CA是<code>Let&#39;s Encrypt</code></p>
-<p>从<code>Let&#39;s Encrypt</code>获取证书是非常容易的，整个的处理都是自动的。假设你使用的是Ubuntu服务器，你可以通过在你的服务器上安装<code>certbot</code>工具来开始</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install software-properties-common</div><div class="line">$ sudo add-apt-repository ppa:certbot/certbot</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install certbot</div></pre></td></tr></table></figure>
-<p>现在你就可以请求证书了。有几种核实网站的方法。<code>webroot</code>方法是最容易实现的。在这种方法下,<code>certbot</code>在你的web服务器的暴露出来的静态文件夹里添加一些文件，然后尝试通过HTTP使用你想来生成证书的域名来获取这些文件。如果测试成功，<code>certbot</code>就会知道服务器和域名是相对应的，然后它就会发行证书。请求证书的命令是这样的</p>
-<p><code>$ sudo certbot certonly --webroot -w /var/www/example -d example.com</code></p>
-<p>这个例子中，我们试图为<code>example.com</code>域名生成证书，使用了<code>/var/www/example</code>作为静态文件根目录。如果<code>certbot</code>可以核实域名，它就会写入证书文件<code>/etc/letsencrypt/live/example.com/fullchain.pem</code>和私钥文件<code>/etc/letsencrypt/live/example.com/privkey.pem</code>，有效期为90天。</p>
-<p>为了使用这些新获取的证书，你可以将在<code>self-signed</code>使用的文件替换掉，并且要使用上面提到的配置。当然你需要你的域名可以访问你的应用，这是唯一可以使浏览器接受并且作为有效证书的方法。</p>
-<p>如果你使用nginx作为反向代理，你可以充分使用它的映射功能，你可以在配置里创建并且给<code>certbot</code>一个私有目录，可以让它来写入核验文件。在下面的例子里，我扩展了HTTP server块来发送所有<code>Let&#39;s Encrypt</code>相关的请求到你指定的目录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location ~ /.well-known &#123;</div><div class="line">        root /path/to/letsencrypt/verification/directory;</div><div class="line">    &#125;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>certbot</code>也可以用在你更新证书的时候，你只需要下面这个命令</p>
-<p><code>$ sudo certbot renew</code></p>
-<p>如果系统中有任何即将过期的证书，上面的命令就可以更新它们，会在同样的地址留下新的证书。你只需要重启服务器就可以使用它们。</p>
-
-	
-	</div>
-  <a type="button" href="/2017/09/17/flask_https/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -935,7 +1008,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>79</span></a></li>
+			<li><a href="/categories/编程/">编程<span>80</span></a></li>
 		
 		</ul>
 	</div>
@@ -1000,6 +1073,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/14/mac_crontab/" ><i class="fa fa-file-o"></i>Mac 开启 Crontab</a>
+      </li>
+    
+      <li>
         <a href="/2018/02/13/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib相关问题和解决</a>
       </li>
     
@@ -1013,10 +1090,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
       </li>
     
   </ul>

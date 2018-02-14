@@ -6,7 +6,7 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>IP 网际协议 | SkyRover</title>
+  <title>Mac 开启 Crontab | SkyRover</title>
   <meta name="author" content="Kevin Du">
   
   <meta name="description" content="仲夏夜之梦">
@@ -14,7 +14,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="IP 网际协议"/>
+  <meta property="og:title" content="Mac 开启 Crontab"/>
   <meta property="og:site_name" content="SkyRover"/>
 
   
@@ -118,7 +118,7 @@ var _hmt = _hmt || [];
 
 	
 		<div class="page-header">
-			<h1> IP 网际协议</h1>
+			<h1> Mac 开启 Crontab</h1>
 		</div>
 	
 
@@ -135,63 +135,25 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h1 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h1><p>首先说一说IP地址，IP地址由4字节32bit构成，可以分为5类，A,B,C,D,E</p>
-<p>其中</p>
-<ul>
-<li>A类地址：0 + 7位网络号 + 24位主机号</li>
-<li>B类地址：10 + 14位网络号 + 16位主机号。也就是<code>2^7-(2^7+2^6)</code>开头的IP地址，128-191</li>
-<li>C类地址：110 + 21位网络号 + 8位主机号。也就是<code>(2^7+2^6)-(2^7+2^6+2^5)</code>开头的IP地址，192-223</li>
-<li>D类地址：1110 + 28位多播组号。也就是<code>(2^7+2^6+2^5)-(2^7+2^6+2^5+2^4)</code>开头的IP地址，224-239</li>
-<li>E类地址：11110 + 27位。也就是240以上的IP地址</li>
+	  <ul>
+<li><p>查看是否启动</p>
+<p>  <code>sudo launchctl list | grep cron</code></p>
+</li>
+<li><p>检查需要的文件</p>
+<p>  <code>ll /etc/crontab</code></p>
+</li>
+<li><p>没有的话，创建一个文件</p>
+<p>  <code>sudo touch /etc/crontab</code></p>
+</li>
+<li><p>crontab的参数</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">-u user：用来设定某个用户的crontab服务；</div><div class="line"></div><div class="line">file：file是命令文件的名字,表示将file做为crontab的任务列表文件并载入crontab。如果在命令行中没有指定这个文件，crontab命令将接受标准输入（键盘）上键入的命令，并将它们载入crontab。</div><div class="line"></div><div class="line">-e：编辑某个用户的crontab文件内容。如果不指定用户，则表示编辑当前用户的crontab文件。</div><div class="line"></div><div class="line">-l：显示某个用户的crontab文件内容，如果不指定用户，则表示显示当前用户的crontab文件内容。</div><div class="line"></div><div class="line">-r：从/var/spool/cron目录中删除某个用户的crontab文件，如果不指定用户，则默认删除当前用户的crontab文件。</div><div class="line"></div><div class="line">-i：在删除用户的crontab文件时给确认提示。</div></pre></td></tr></table></figure>
+</li>
+<li><p>crontab 格式</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">* 第1列分钟0～59</div><div class="line">* 第2列小时0～23（0表示子夜）</div><div class="line">* 第3列日1～31</div><div class="line">* 第4列月1～12</div><div class="line">* 第5列星期0～7（0和7表示星期天）</div><div class="line">* 第6列要运行的命令</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动和停止</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo /usr/sbin/cron start</div><div class="line">sudo /usr/sbin/cron restart</div><div class="line">sudo /usr/sbin/cron stop</div></pre></td></tr></table></figure></li>
 </ul>
-<h1 id="IP首部"><a href="#IP首部" class="headerlink" title="IP首部"></a>IP首部</h1><p>普通IP首部长为20个字节</p>
-<ul>
-<li><p>4位版本</p>
-<p>  网络字节序是以大端传输，即最高有效字节在前面的方式(10010000 01010001)</p>
-</li>
-<li><p>4位首部长度</p>
-<p>  指的是首部占32bit字的数目，所以首部最长是60个字节。普通IP数据报字段的值是5，即20字节。</p>
-</li>
-<li><p>8位服务类型(TOS)</p>
-<p>  3位的优先权子字段，4bit的TOS子字段和1bit未用位但是必须置于0</p>
-<p>  TOS字段分别代表最小时延，最大吞吐量，最高可靠性和最小费用</p>
-</li>
-<li><p>16位总长度(字节数)</p>
-<p>  所以IP数据报最长是65535字节，但是即使可以这么长，链路层也会对它进行分片，而且主机并不要求接收超过576字节的数据报。</p>
-</li>
-<li><p>16位标志字段</p>
-<p>  唯一的标识主机发送的每一份数据报，通常每发一份报文它的值就会加一</p>
-</li>
-<li><p>8位生存时间字段</p>
-<p>  设置了数据报可以经过的最多路由器数，每经过一个路由器，值就减一。如果值为0，报文就会被丢弃，并且发送ICMP报文通知源主机。</p>
-</li>
-<li><p>8位协议字段</p>
-</li>
-<li><p>16位首部检验和字段</p>
-<p>  根据IP首部计算的检验和，检验和字段首先置为全0，首部中每16bit进行二进制反码求和，存在检验和字段中。接收方同样对16bit进行二进制反码求和，如果结果是全1，说明没有问题，否则就丢弃。</p>
-<p>  路由器会修改TTL字段(减1)，因此路由器转发一次报文需要在检验和加1.</p>
-</li>
-<li><p>每一份IP数据报都包含32位源IP地址和32位目的IP地址。</p>
-</li>
-</ul>
-<h1 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h1><p>如果目的主机和源主机直接相连或者在一个共享网络上，那么IP数据报就直接送到目的主机上，因为已经知道了物理网卡地址。否则，主机将数据报发送到一个默认的路由器上，由路由器来转发该数据报。</p>
-<p>几乎所有的Unix系统，都可以配置成一个路由器。本质区别在于主机从不把数据报从一个接口转发到另一个接口，而路由器则要转发数据报。</p>
-<p>IP层可以从TCP, UDP, ICMP和IGMP来接收数据报并且进行发送，或者从一个网络接口来接收数据报并且进行发送。IP层在内存中有一个路由表，在收到一份数据报并且进行发送的时候，都要对该表搜索一次。</p>
-<p>路由表包含以下</p>
-<ul>
-<li>目的IP地址</li>
-<li>下一站路由器的IP地址，或者是直接连接的网络IP地址</li>
-<li>标志，指明目的IP地址是网络地址还是主机地址，另一个标志指明下一站路由器是否为真正的下一站路由器，还是一个直接相连的接口。</li>
-<li>为数据报传输指定一个网络接口</li>
-</ul>
-<p>所有IP路由选择只为数据报传输提供下一站路由器的IP地址。IP路由选择完成：</p>
-<ul>
-<li>搜索路由表，寻找能够与目的IP地址完全匹配的表目，网络号和主机号</li>
-<li>搜索路由表，寻找能够与目的网络号相匹配的表目</li>
-<li>寻找标为默认的表目</li>
-</ul>
-<p>子网寻址，IP地址会分成网络号，子网号和主机号。这样缩减了路由表的规模。</p>
-<p>子网掩码，值为1的比特留给网络号和子网号，为0的比特留给主机号。</p>
 	  
 	</div>
 
@@ -201,13 +163,12 @@ var _hmt = _hmt || [];
 
     
     
-    <a href="/2018/01/27/arp地址解析协议/" type="button" class="btn btn-default"><i
-                class="fa fa-arrow-circle-o-left"></i> 上一页</a>
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>上一页</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2018/01/24/链路层/" type="button" class="btn btn-default ">下一页<i
+    <a href="/2018/02/13/matplotlib_issue_solution/" type="button" class="btn btn-default ">下一页<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
@@ -253,7 +214,7 @@ var _hmt = _hmt || [];
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2018-01-25 21:03:30 
+	2018-02-14 09:19:39 
 	</div>
 	
 
@@ -277,7 +238,7 @@ var _hmt = _hmt || [];
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/计算机网络/">计算机网络<span>6</span></a></li>
+  <li><a href="/tags/Mac/">Mac<span>2</span></a></li>
     </ul>
 	</div>
 		
@@ -287,7 +248,7 @@ var _hmt = _hmt || [];
 	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
 	   <div id="toc" class="toc collapse in">
 		   <span class="toc-title">Contents</span>
-			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#IP地址"><span class="toc-article-text">IP地址</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#IP首部"><span class="toc-article-text">IP首部</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#IP路由选择"><span class="toc-article-text">IP路由选择</span></a></li></ol>
+			
 		</div>
 	</div>
 	

@@ -138,6 +138,78 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2017/09/17/flask_https/" >翻译 - Running Your Flask Application Over HTTPS</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2017-09-17 09:31:30  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https" target="_blank" rel="external">Running Your Flask Application Over HTTPS</a></p>
+<p>当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。</p>
+<p>人们总是在问我，如何基于HTTPS运行一个Flask服务器。在这篇文章中，我将介绍几种在Flask应用上添加加密的方式，从5秒钟就可以应用的方法，到一个非常健壮的解决方案，从而在<a href="https://www.ssllabs.com/ssltest/index.html" target="_blank" rel="external">SSL Server Test</a>上可以得到A+的分数</p>
+<h1 id="How-Does-HTTPS-Work"><a href="#How-Does-HTTPS-Work" class="headerlink" title="How Does HTTPS Work?"></a>How Does HTTPS Work?</h1><p>HTTP的加密和安全功能是通过Transport Layer Security(TLS 传输层安全协议) Protocol实现的。TLS定义了一种网络传输安全的标准方式。因为我不是一个安全专家，因此我不认为我能很好的给你解释TLS协议的详细内容，因此我只会给你一些我们对于配置一个安全和加密的Flask服务器中感兴趣的部分。</p>
+<p>当客户端创建一个到服务器的连接并且请求一个加密连接，服务器会使用其SSL(Secure Sockets Layer)证书进行响应。证书是作为服务器的身份证明，其包括了服务器名和域名。为了保证服务器提供的信息是正确的，证书是通过一个证书认证机构签名的。如果客户端知道并且信任(Certificate authority)CA的话，它就可以确认这个签名是从这个CA签发的，这样这个客户端就可以确定这个连接的服务器是合法的。</p>
+<p>在客户端验证证书之后，它为与服务器的通信创建了一个加密密钥。为了确保这个密钥被安全的送到服务器，它使用一个服务器证书上的公钥来加密。服务器拥有与证书上公钥对应的私钥，所以服务器是唯一能够解密的。这样从服务器接受到加密密钥之后，所有服务器和客户端之间的通信都是使用这个密钥加密的。</p>
+<p>从这个总结中，你大概可以知道实现一个TLS加密我们需要两个东西：服务器证书，包含一个公钥并且是CA签名的，还有一个与公钥对应的私钥。</p>
+<h1 id="The-Simplest-Way-To-Do-It"><a href="#The-Simplest-Way-To-Do-It" class="headerlink" title="The Simplest Way To Do It"></a>The Simplest Way To Do It</h1><p>Flask，更确切的说是Werkzeug，支持<code>on-the-fly</code>证书的使用，可以快速在HTTPS上服务应用并且不用处理证书。所有你需要做的是，在你的<code>app.run()</code>调用里添加<code>ssl_context=&#39;adhoc&#39;</code>。不幸的是，这个选项并不能通过Flask命令行接口使用。下面你可以看到官方文档上的一个hello world的Flask应用示例，添加了TLS加密。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=&apos;adhoc&apos;)</div></pre></td></tr></table></figure>
+<p>为了能够在Flask上使用ad hoc(点对点)证书，你需要在你的虚拟环境中安装一个额外的依赖:<code>pip install pyopenssl</code></p>
+<p>当你运行脚本的时候，你会注意到Flask正在运行一个<code>https://</code>服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python hello.py</div><div class="line"> * Running on https://127.0.0.1:5000/ (Press CTRL+C to quit)</div></pre></td></tr></table></figure>
+<p>很简单，是吧？问题是浏览器不喜欢这种类型的证书，因此它会在你可以访问网站之前显示一个很大的警告标志。一旦你允许浏览器连接之后，你将会得到一个加密的连接，就像你从一个服务器得到了有效证书一样，这样点对点的证书在快速测试中很方便，但是不会用于真实应用中。</p>
+<h1 id="Self-Signed-Certificates"><a href="#Self-Signed-Certificates" class="headerlink" title="Self-Signed Certificates"></a>Self-Signed Certificates</h1><p><code>self-signed</code>证书是签名通过私钥来生成的并且关联的证书。我上面提到了客户端需要知道并且信任CA签发的证书，因为正是信任关系才允许客户端去确认服务器证书。web浏览器和其他HTTP客户端会提前配置好一个已知的信任CAs列表，不过明显如果你使用一个<code>self-signed</code>证书，浏览器就不知道这个CA，因此验证也会失败。这也是我们之前使用的ad hoc证书时候发生的事情。如果浏览器不能验证服务器证书，它就会让你在存在问题的情况下运行和访问网站，但是它会确保你理解你正在有风险的访问。</p>
+<p>但是风险是什么？对于Flask服务器，你当然可以信任，并且是没有风险的。问题是用户如果连接了他们不知道的或者无法控制的服务器出现的。在那种情况，用户就不知道服务器是否是认证过的，因为任何人都可以为任何域名生成证书。</p>
+<p><code>self-signed</code>证书有时会比较有用，Flask的ad hoc证书就不是这样了，因为每次服务器运行的时候，通过pyOpenSSL就会生成一个不同的运行中证书。当你在使用一个<code>self-signed</code>证书的时候，在每次运行服务器的时候使用同样的证书是比较好的，因为你可以配置浏览器去信任它，这样就可以消除安全报警了。</p>
+<p>你可以很容易的从命令行中生成<code>self-signed</code>证书。所有你需要的是安装<code>openssl</code></p>
+<p><code>openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365</code></p>
+<p>命令生成了一个新的证书<code>cert.pem</code>以及对应的私钥在<code>key.pem</code>，有一个365天的有效周期。当你运行这个命令的时候，你将会被询问几个问题。下面是一个示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Generating a 4096 bit RSA private key</div><div class="line">......................++</div><div class="line">.............++</div><div class="line">writing new private key to &apos;key.pem&apos;</div><div class="line">-----</div><div class="line">You are about to be asked to enter information that will be incorporated</div><div class="line">into your certificate request.</div><div class="line">What you are about to enter is what is called a Distinguished Name or a DN.</div><div class="line">There are quite a few fields but you can leave some blank</div><div class="line">For some fields there will be a default value,</div><div class="line">If you enter &apos;.&apos;, the field will be left blank.</div><div class="line">-----</div><div class="line">Country Name (2 letter code) [AU]:US</div><div class="line">State or Province Name (full name) [Some-State]:Oregon</div><div class="line">Locality Name (eg, city) []:Portland</div><div class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:Miguel Grinberg Blog</div><div class="line">Organizational Unit Name (eg, section) []:</div><div class="line">Common Name (e.g. server FQDN or YOUR name) []:localhost</div><div class="line">Email Address []:</div></pre></td></tr></table></figure>
+<p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
+<p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
+<p><img src="/img/flask_https/flask-ssl-03.png" alt=""></p>
+<h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
+<p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
+<p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
+<p>如果你使用nginx作为反向代理，你可以在nginx中配置证书，然后nginx就会终止加密连接，也就是说它会接受外部的加密连接，然后使用正常的非加密连接和你的应用通信。这是一个非常有用的配置，使得你的应用不需要处理证书和加密。在nginx进行如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443 ssl;</div><div class="line">    server_name example.com;</div><div class="line">    ssl_certificate /path/to/cert.pem;</div><div class="line">    ssl_certificate_key /path/to/key.pem;</div><div class="line">    # ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另外比较重要的是你需要考虑用户通过普通的HTTP连接的时候如何处理。最好的方式，在我看来，是给一个未加密请求一个基于HTTPS的相同url的重定向响应。对于Flask应用，你可以通过<code>Flask-SSLify</code>扩展来实现它。在nginx，你可以在另一个<code>server</code>块配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果用的是另外的web服务器，你可以参考文档找到类似的配置方法。</p>
+<h1 id="Using-“Real”-Certificates"><a href="#Using-“Real”-Certificates" class="headerlink" title="Using “Real” Certificates"></a>Using “Real” Certificates</h1><p>我们已经探索了关于<code>self-signed</code>证书所有的选项，但是在那些例子中，存在的限制是除非你告诉浏览器去信任这些证书，否则浏览器不会这么做。因此在生产环境中的网站的服务器证书最好是从那些浏览器自动信任的CAs获取。</p>
+<p>当你向一个CA请求证书的时候，CA会检查你是否有服务器和域名的控制权，但是至于检查怎么完成的是要取决于CA。如果服务器通过检查，CA会发行一个自己签名的网站证书然后给你去安装。证书通常的有效期是一年。大多数CA会收费，但是仍然有一些是免费的。最流行的免费CA是<code>Let&#39;s Encrypt</code></p>
+<p>从<code>Let&#39;s Encrypt</code>获取证书是非常容易的，整个的处理都是自动的。假设你使用的是Ubuntu服务器，你可以通过在你的服务器上安装<code>certbot</code>工具来开始</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install software-properties-common</div><div class="line">$ sudo add-apt-repository ppa:certbot/certbot</div><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install certbot</div></pre></td></tr></table></figure>
+<p>现在你就可以请求证书了。有几种核实网站的方法。<code>webroot</code>方法是最容易实现的。在这种方法下,<code>certbot</code>在你的web服务器的暴露出来的静态文件夹里添加一些文件，然后尝试通过HTTP使用你想来生成证书的域名来获取这些文件。如果测试成功，<code>certbot</code>就会知道服务器和域名是相对应的，然后它就会发行证书。请求证书的命令是这样的</p>
+<p><code>$ sudo certbot certonly --webroot -w /var/www/example -d example.com</code></p>
+<p>这个例子中，我们试图为<code>example.com</code>域名生成证书，使用了<code>/var/www/example</code>作为静态文件根目录。如果<code>certbot</code>可以核实域名，它就会写入证书文件<code>/etc/letsencrypt/live/example.com/fullchain.pem</code>和私钥文件<code>/etc/letsencrypt/live/example.com/privkey.pem</code>，有效期为90天。</p>
+<p>为了使用这些新获取的证书，你可以将在<code>self-signed</code>使用的文件替换掉，并且要使用上面提到的配置。当然你需要你的域名可以访问你的应用，这是唯一可以使浏览器接受并且作为有效证书的方法。</p>
+<p>如果你使用nginx作为反向代理，你可以充分使用它的映射功能，你可以在配置里创建并且给<code>certbot</code>一个私有目录，可以让它来写入核验文件。在下面的例子里，我扩展了HTTP server块来发送所有<code>Let&#39;s Encrypt</code>相关的请求到你指定的目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name example.com;</div><div class="line">    location ~ /.well-known &#123;</div><div class="line">        root /path/to/letsencrypt/verification/directory;</div><div class="line">    &#125;</div><div class="line">    location / &#123;</div><div class="line">        return 301 https://$host$request_uri;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>certbot</code>也可以用在你更新证书的时候，你只需要下面这个命令</p>
+<p><code>$ sudo certbot renew</code></p>
+<p>如果系统中有任何即将过期的证书，上面的命令就可以更新它们，会在同样的地址留下新的证书。你只需要重启服务器就可以使用它们。</p>
+
+	
+	</div>
+  <a type="button" href="/2017/09/17/flask_https/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2017/09/14/进程的调度/" >进程的调度</a>
 		</h3>
 		</div>
@@ -721,148 +793,6 @@ var _hmt = _hmt || [];
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2017/08/27/进程与线程/" >进程与线程</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2017-08-27 11:33:03  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>多道程序设计系统中，CPU由一个进程快速切换至另外一个进程。在一瞬间，CPU只能运行一个进程，在某一段时间，可能运行多个进程。</p>
-<p>一个进程就是一个正在执行程序的实例，包括程序计数器，寄存器和变量的当前值。每个进程由自己的逻辑程序计数器。实际上，只有一个物理程序计数器，在每个程序执行的时候，逻辑程序计数器被装入实际的程序计数器中。程序暂停执行的时候，物理程序计数器被保存在内存中该进程的逻辑程序计数器中。</p>
-<p>一个进程是某种类型的一个活动，它有程序，输入，输出以及状态。单个处理器可以被若干的进程共享。但是程序，通俗的讲是一些代码，所以操作系统可以使得不同的进程来共享代码，因此只有一个副本放在内存中。</p>
-<h2 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h2><ul>
-<li>系统初始化</li>
-</ul>
-<p>启动操作系统的时候，会创建新进程，前台进程(和人类交互的进程)和后台进程，后台进程又叫做守护进程<code>daemon</code></p>
-<ul>
-<li><p>运行的进程发出系统调用</p>
-</li>
-<li><p>用户请求创建一个新进程</p>
-</li>
-<li><p>批处理作业的初始化</p>
-</li>
-</ul>
-<p>其实本质上，新进程都是由于一个已经存在的进程执行了一个用于创建进程的系统调用，这个系统调用通知操作系统创建一个新进程，并且直接或者间接的指定在该进程中运行的程序。</p>
-<p>Unix系统中，使用fork来创建新进程，这个系统调用会创建一个与调用进程相同的副本，调用fork之后，两个进程拥有相同的存储映像，同样的环境字符串和同样的打开文件。然后子进程接着执行execve或者一个类似的系统调用，以修改其存储映射并且运行一个新的程序。在执行execve之前，子进程还可以处理文件描述符，以完成对标准输入，标准输出和标准出错的重定向。</p>
-<p>进程创建之后，父进程和子进程有各自不同的地址空间。子进程的初始地址空间是父进程的一个副本，但是是两个不同的地址空间，不可写的内存区是共享的，对于一个新创建的进程，可能共享创建者的其他资源，必须打开的文件。</p>
-<h2 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h2><ul>
-<li>正常退出</li>
-</ul>
-<p>完成工作后会执行一个系统调用，通知操作系统它的工作已经完成，Unix中是exit</p>
-<ul>
-<li><p>出错退出，文件不存在之类</p>
-</li>
-<li><p>进程引起的错误，程序错误，引用不存在内存之类</p>
-</li>
-<li><p>某个进程执行一个系统调用通知操作系统杀死某个进程。Unix中是kill</p>
-</li>
-</ul>
-<h2 id="进程的层次结构"><a href="#进程的层次结构" class="headerlink" title="进程的层次结构"></a>进程的层次结构</h2><p>进程只有一个父进程，但是可以有多个子进程。</p>
-<p>Unix中，进程和它的所有后代组成一个进程组，用户从键盘发出信号时候，信号被发送给当前与键盘相关的进程组中的所有成员，每个进程可以分别捕获该信号，忽略信号或者采取默认的动作，即被信号杀死。</p>
-<p>Unix启动时候会启动一个init进程，开始运行的时候，读入一个说明终端数量的文件，为每个终端创建一个新进程，这些进程等待用户登录，如果登陆成功，这个登陆进程就执行一个shell准备执行命令，所接收的命令会启动更多的进程。</p>
-<h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><ul>
-<li>运行态</li>
-<li>就绪态</li>
-<li>阻塞态</li>
-</ul>
-<p>等待输入时候，会进入阻塞态，出现有效输入会转入就绪态等待CPU。</p>
-<h2 id="进程的实现"><a href="#进程的实现" class="headerlink" title="进程的实现"></a>进程的实现</h2><p>操作系统维护这一张表格，进程表。每个进程占用一个进程表项，表项包含了进程状态的重要信息，包括程序计数器，堆栈指针，内存分配状况，打开文件的状态，账号和调度信息以及在由运行态转换到就绪态或者阻塞态必须保存的信息。</p>
-<h2 id="多道程序设计模型"><a href="#多道程序设计模型" class="headerlink" title="多道程序设计模型"></a>多道程序设计模型</h2><p>这样可以更好的去满负荷使用CPU，Very good.</p>
-<p>目前我的程序中IO时间大概占比在<code>25.5%</code>，那么对于8核处理器，如果是8个进程，那么同时在IO的概率为0.000017878103348，所以基本上已经达到很高的CPU占用率了。</p>
-<p>计算过程如下，一个进程等待IO的时间和其在内存中的时间比为p，内存中有n个进程，n个进程都在等待I/O的比率是<code>p^n</code>，那么CPU的利用率是<code>1-p^n</code></p>
-<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><p>每个进程有一个地址空间和一个控制线程，经常存在在同一个地址空间中准并行运行多个控制线程的情况，这些线程类似于分离的进程，但是又共享相同的地址空间。</p>
-<h2 id="线程的使用"><a href="#线程的使用" class="headerlink" title="线程的使用"></a>线程的使用</h2><ul>
-<li>多线程，并行实体共享同一个地址空间和所有可用数据</li>
-<li>线程更加轻量级，容易创建，容易撤销，切换消耗小</li>
-<li>多IO情况，会使得这些活动重叠进行，加快程序速度</li>
-</ul>
-<p>对于web服务器，既可以用多线程来处理IO操作，也可以使用read系统调用的非阻塞版本。对于非阻塞I/O来说，磁盘读取完毕后会以信号或者中断的形式出现。但是这种方法，从一个请求的工作状态切换到另外一个状态时候，需要显式的保存或者重新装入相应的计算状态。这样看来，这种异步形式也相当于一种线程，但是我们可以看成协程。在这里，每一个计算都有一个被保存的状态，存在一个会发生且使得相关状态发生改变的事件集合，比如中断，这类设计为有限状态机。</p>
-<h2 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h2><ul>
-<li>基本</li>
-</ul>
-<p>进程模型基于两种独立的概念：资源分组处理与执行，进程会将相关的资源集中在一起，进程有存放程序正文和数据以及其他资源的地址空间。</p>
-<p>进程有一个控制线程，线程中有一个程序计数器，记录接着要执行哪条指令，同时有寄存器，用来保存线程当前的工作变量，还有一个栈，用来记录执行历史，每一帧保存了一个已经调用但是还没有从中返回的过程。所以可以看出，进程用于将资源集中在一起，而线程是在CPU上被调度的实体。</p>
-<p>线程给进程模型增加了一项内容，在同一个进程中，可以有多个线程执行，在同一个进程中并行运行多个线程，是在一个机器上并行运行多个进程的模拟。多线程中，会共享一个进程的资源和地址空间，多进程中，共享物理内存，磁盘和其他资源。</p>
-<p>除了共享地址空间外，所有线程还共享一个打开文件集，子进程，报警以及相关信号，全局变量。</p>
-<p>一个线程打开了一个文件，那么其他线程也可以对该文件进行读写，资源管理的单位是进程。线程实现的是，共享一组资源的多个线程的执行能力，这样多个线程可以为完成一个任务而共同工作。</p>
-<p>所以多个线程是可以用一个数据库连接的，但是必须加锁使用。</p>
-<p>每个线程有自己的堆栈，每个线程的堆栈有一帧，供各个被调用但是还没有从中返回的过程使用。在该帧中存放了相应过程的局部变量以及过程调用完成之后使用的返回地址。每个线程会有不同的过程，从而有一个不同的执行历史，所以需要自己的堆栈。</p>
-<ul>
-<li>创建</li>
-</ul>
-<p>进程通常会从当前的单个线程开始，这个线程可以调用一个库函数(<code>thread_create</code>)来创建新线程，并且一般所有线程都是平等的，而不像进程那种，创建线程后会返回一个线程标识符，标识符就是新线程的名字。</p>
-<ul>
-<li>退出</li>
-</ul>
-<p><code>thread_exit</code>退出，或者调用<code>thread_join</code>等待另外一个线程退出，阻塞一直到那个线程退出。</p>
-<ul>
-<li><code>thread_yield</code></li>
-</ul>
-<p>允许线程自动放弃CPU从而让另一个线程运行，因为不同于进程，线程库没法使用时钟中断来强制线程让出CPU。所以得随时间推移自动交出CPU。</p>
-<p>加入线程后，在fork中可能出现问题，fork后子进程也包含父进程的线程。还有如果一个线程关闭了文件，另一个线程还在执行。所以多线程程序需要更多的努力。</p>
-<h2 id="POSIX线程"><a href="#POSIX线程" class="headerlink" title="POSIX线程"></a>POSIX线程</h2><p>线程包叫做<code>Pthread</code>。每个线程都含有一个标识符，一组寄存器(包括程序计数器)和一组存储在结构中的属性，这些属性包含堆栈大小，调度参数以及线程需要的其他项目。</p>
-<h2 id="用户空间实现线程"><a href="#用户空间实现线程" class="headerlink" title="用户空间实现线程"></a>用户空间实现线程</h2><p>将整个线程包放在用户空间中，从内核角度考虑，就是按单线程进程的方式来管理，优点是可以在不支持线程的操作系统上实现，所以可以使用函数库来实现线程。</p>
-<p>这些线程会在一个进程中运行，进程中保存了相应的线程表，用来跟踪该进程中的线程。线程表仅仅记录各个线程的属性，如每个线程的程序计数器，堆栈指针，寄存器和状态等。当一个线程转换到就绪状态或者阻塞状态时候，在该线程表中存放重新启动该线程所需要的信息。</p>
-<ul>
-<li>优点</li>
-</ul>
-<p>如果进行本地阻塞，也就是说和系统没有太大关系，比如等待进程中的另外一个线程完成某项工作。首先会调用一个运行时系统的过程，检查该线程是否必须进入阻塞状态，如果是，则在线程表中保存该线程的寄存器，查看表中可运行的就绪线程，把新线程的保存值重新装入机器的寄存器中。只要堆栈指针和程序计数器一被切换，新线程就开始运行。这样进行线程切换要比陷入内核至少快一个数量级。</p>
-<p>线程完成运行时候，比如调用<code>thread_yield</code>的时候，首先将该线程的信息保存在线程表中，然后调用线程调度程序来选择另一个要运行的线程，因为保存该线程状态和调度程序都只是本地过程，所以启动它们要比内核调用效率要高，不需要陷阱，不需要上下文切换，不需要对内存高速缓存进行刷新。</p>
-<p>另外，用户级线程允许每个进程有自己的调度算法，并且用户线程具有好的可扩展性，因为内核线程需要特定的空间来存储表格和堆栈，当线程数量特别大的时候，就有问题。</p>
-<blockquote>
-<p>综上，可以看出，用户级线程的优点的核心在于其不需要进行内核态的转换，所有过程本地进行，不论是切换，还是保存的数据位置，所以可以保证其高效。</p>
-</blockquote>
-<ul>
-<li>缺点</li>
-</ul>
-<p>如何实现阻塞系统调用，如果一个线程执行阻塞系统调用，系统因为并不知道这个线程的存在，所以会将整个进程阻塞！这样就会影响该进程的其他线程的运行。所以需要允许每个线程使用阻塞调用，但是还要避免被阻塞的线程影响其他线程。</p>
-<p>一种解决方案是，如果某个调用会阻塞，就提前通知，比如系统调用<code>select</code>允许调用者通知预期的<code>read</code>是否会阻塞。所以就可以先进行<code>select</code>调用，只有在安全的情形下才进行<code>read</code>掉哟哦那个，如果<code>read</code>调用会被阻塞，有关调用就不进行，代之运行另外一个线程。到下次有关运行系统取得控制权后，再去检查<code>read</code>调用是否安全。</p>
-<p>另一个问题是页面故障问题，因为程序不是一次性在内存中，如果某个程序调用或者跳转到了一条不在内存的指令上，就会发生页面故障。就需要去磁盘读取，这样就会阻塞相关进程直到磁盘<code>I/O</code>完成为止，因为内核不知道有线程的存在。</p>
-<p>另外一个问题是，在一个单独的进程内部，没有时钟中断，所以不可能用轮转调度方式调度进程。</p>
-<p>但是程序员在经常发生线程阻塞的应用中才希望使用多个线程。就得持续进行select系统调用，以便检查read系统调用是否安全。</p>
-<h2 id="内核中实现线程"><a href="#内核中实现线程" class="headerlink" title="内核中实现线程"></a>内核中实现线程</h2><p>现在在内核中记录系统中所有线程的线程表，某个线程希望创建一个新线程或者撤销一个已有线程时候，进行一个系统调用，这个系统调用通过对线程表的更新完成线程创建和撤销工作。与此同时，内核还维护了传统的进程表，以便跟踪进程的状态。</p>
-<p>所有能够阻塞线程的调用都以系统调用的形式实现，一个线程阻塞的时候，内核根据其选择，可以运行同一个进程的另一个线程或者另一个进程中的线程。</p>
-<p>回收线程的时候，将其标志为不可运行，但是内核数据结构没有受到影响，在创建一个线程的时候，就重新启动某个旧线程。所以节省了一些开销。</p>
-<p>内核级线程的主要缺点是系统调用的代价较大，如果有许多创建和终止，就会有很大的开销。线程切换由内核控制，切换的时候，要从用户态进入内核态，切换完毕要从内核态返回用户态</p>
-<p>还有以下这些问题，比如多线程进程创建新进程的线程管理。以及信号的处理，因为信号是发送给进程而不是线程的。内核级线程的速度慢。</p>
-<h2 id="混合实现"><a href="#混合实现" class="headerlink" title="混合实现"></a>混合实现</h2><p>使用内核级线程，然后将用户级线程与某些或者全部内核线程多路复用起来。内核只识别内核级线程，并对其进行调度，一些内核级线程会被多个用户级线程多路复用。每个内核级线程有一个可以轮流使用的用户级线程集合。</p>
-<p>线程创建完全在用户空间中完成，线程的调度和同步也在应用程序中进行. 一个应用程序中的多个用户级线程被映射到一些（小于或等于用户级线程的数目）内核级线程上。</p>
-<p>这样即使某些线程阻塞掉，也会切换到另外一个内核线程对应的用户线程里。</p>
-<h2 id="调度程序激活机制"><a href="#调度程序激活机制" class="headerlink" title="调度程序激活机制"></a>调度程序激活机制</h2><p>调度程序激活机制是模拟内核线程的功能，如果用户线程从事某种系统调用是安全的，那么就不应该进行专门的非阻塞调用或者进行提前性检查。如果线程阻塞在某个系统调用或者页面故障上，只要同一个进程有任何就绪的线程，就应该有可能运行其他的线程。</p>
-<p>使用调度程序激活机制时，内核给每个进程安排一定数量的虚拟处理器，让用户空间的运行时系统将线程分配到处理器上。当内核了解到一个线程被阻塞之后，内核通知该进程的运行时系统，并且在堆栈中以参数形式传递有问题的线程编号和所发生事件的描述。这个机制就是上行调用。</p>
-<p>这样激活之后，运行时系统重新调度线程，把当前线程标记为阻塞并从就绪表中取出另一个线程，设置其寄存器，然后再启动之。等到内核直到原来线程又可以运行时候，内核再次上行调用运行时系统，通知这个事件，运行时系统根据情况重启被阻塞的线程，或者放入就绪表稍后运行。</p>
-<p>上行调用是违反分层次系统内在结构的概念，通常，n层提供n+1层可调用的特定服务，但是n层不能调用n+1层中的过程。</p>
-<h2 id="弹出式线程"><a href="#弹出式线程" class="headerlink" title="弹出式线程"></a>弹出式线程</h2><p>分布式系统中经常使用线程。在处理服务请求中，传统的方法是将进程或者线程阻塞在一个<code>receive</code>系统调用上，瞪大系统到来，当消息到达时候，系统调用接收消息，并且打开消息检查内容，然后处理。</p>
-<p>弹出式线程中，一个消息的到达导致系统创建一个处理该消息的线程，这个线程是全新的，每个必须存储的寄存器，堆栈这些内容，可以快速创建这类线程，对该线程指定要处理的消息。</p>
-<p>可以在用户级创建这种线程，也可以在内核级，内核级更方便，可以访问所有的I/O设备，但是危害也更大。</p>
-<h2 id="使单线程代码多线程化"><a href="#使单线程代码多线程化" class="headerlink" title="使单线程代码多线程化"></a>使单线程代码多线程化</h2><ul>
-<li>全局变量的问题</li>
-</ul>
-<p>有可能在一个线程中写入会影响到另一个线程的读取。一种解决方案是给每个线程赋予其私有的全局变量。</p>
-<ul>
-<li>许多库过程并不是可重入的，在前面的调用没有结束之前，不能进行第二次调用。因为可能库内部使用一个固定的缓冲区进行消息组合。</li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2017/08/27/进程与线程/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
 
 		</div>
 
@@ -916,7 +846,7 @@ var _hmt = _hmt || [];
 		
 			<li><a href="/categories/历史/">历史<span>1</span></a></li>
 		
-			<li><a href="/categories/编程/">编程<span>79</span></a></li>
+			<li><a href="/categories/编程/">编程<span>80</span></a></li>
 		
 		</ul>
 	</div>
@@ -981,6 +911,10 @@ var _hmt = _hmt || [];
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2018/02/14/mac_crontab/" ><i class="fa fa-file-o"></i>Mac 开启 Crontab</a>
+      </li>
+    
+      <li>
         <a href="/2018/02/13/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib相关问题和解决</a>
       </li>
     
@@ -994,10 +928,6 @@ var _hmt = _hmt || [];
     
       <li>
         <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/24/链路层/" ><i class="fa fa-file-o"></i>链路层</a>
       </li>
     
   </ul>
