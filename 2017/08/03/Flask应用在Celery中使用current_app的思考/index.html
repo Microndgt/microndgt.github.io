@@ -1,302 +1,514 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="pragma" content="no-cache">
-  <meta http-equiv="cache-control" content="no-cache">
-  <meta http-equiv="expires" content="0">
-  
-  <title>Flask应用在Celery中使用current_app的思考 | SkyRover</title>
-  <meta name="author" content="Kevin Du">
-  
-  <meta name="description" content="仲夏夜之梦">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  <meta property="og:title" content="Flask应用在Celery中使用current_app的思考"/>
-  <meta property="og:site_name" content="SkyRover"/>
+    
 
-  
-    <meta property="og:image" content=""/>
-  
-
-  
-  
-    <link href="/favicon.png" rel="icon">
-  
-  
-  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-
-  <script src="/js/jquery-2.0.3.min.js"></script>
-
-  <!-- analytics -->
-  
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-70812759-1', 'auto');
-  ga('send', 'pageview');
-</script>
+    
 
 
 
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Flask应用在Celery中使用current_app的思考 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,Celery,Flask">
+    <meta name="description" content="写应用的时候遇到这样的一个问题，定义的celery task中无法使用current_app，并且有时候会出现pop wrong app context。 这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的">
+<meta name="keywords" content="Python,Celery,Flask">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask应用在Celery中使用current_app的思考">
+<meta property="og:url" content="http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="写应用的时候遇到这样的一个问题，定义的celery task中无法使用current_app，并且有时候会出现pop wrong app context。 这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-01T06:32:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask应用在Celery中使用current_app的思考">
+<meta name="twitter:description" content="写应用的时候遇到这样的一个问题，定义的celery task中无法使用current_app，并且有时候会出现pop wrong app context。 这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
 
+    <!-- custom head -->
+    
 
 </head>
 
- <body>  
-  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		<span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-	  <a class="navbar-brand" href="/">SkyRover</a>
-      <div class="collapse navbar-collapse nav-menu">
-		<ul class="nav navbar-nav">
-		  
-		  <li>
-			<a href="/archives" title="All the articles.">
-			  <i class=""></i>Archives
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/categories" title="All the categories.">
-			  <i class=""></i>Categories
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/tags" title="All the tags.">
-			  <i class=""></i>Tags
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/about" title="About me.">
-			  <i class=""></i>About
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/atom.xml" title="Subscribe me.">
-			  <i class=""></i>RSS
-			</a>
-		  </li>
-		  
-		</ul>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
       </div>
-    </div> <!-- container -->
-</nav>
-<div class="clearfix"></div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
 
-  <div class="container">
-  	<div class="content">
-    	 
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Flask应用在Celery中使用current_app的思考</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Flask应用在Celery中使用current_app的思考</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-03T08:29:40.000Z" itemprop="datePublished" class="page-time">
+  2017-08-03 16:29:40
+</time>
 
 
-	
-		<div class="page-header">
-			<h1> Flask应用在Celery中使用current_app的思考</h1>
-		</div>
-	
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
 
 
+            
+        </h5>
+    </div>
 
-<div class="row post">
-	<!-- cols -->
-	
-	<div id="top_meta"></div>
-	<div class="col-md-9">
-	
+    
 
-	<!-- content -->
-	<div class="mypage">		
-	  		
 
-	  <p>写应用的时候遇到这样的一个问题，定义的celery task中无法使用<code>current_app</code>，并且有时候会出现pop wrong app context。</p>
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-Flask应用在Celery中使用current_app的思考"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Flask应用在Celery中使用current_app的思考</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-03 16:29:40 16:29:40" datetime="2017-08-03T08:29:40.000Z"  itemprop="datePublished">2017-08-03 16:29:40</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>写应用的时候遇到这样的一个问题，定义的celery task中无法使用<code>current_app</code>，并且有时候会出现pop wrong app context。</p>
 <p>这个问题是因为celery中执行task的work和正在运行的web应用app之间的进程是不一样的，虽然是在一个项目里面，但是app的进程数据是不可能什么都不做就和celery的worker进程进行共享的。也就是说，在worker执行task的时候，根本就没有app这一系列东西，所以上下文栈就是空的，因此就不能使用app，以及<code>app.logger</code>了。</p>
 <p>知道这一点之后，就在celery的task调用的时候加上了<code>with app.app_context():</code>，但是有时候task执行出错的时候，或者运行完成的时候就会出现，<code>AssertionError(&#39;Popped wrong app context.  (&lt;flask.ctx.AppContext object at 0x7f4e1ed56d30&gt; instead of &lt;flask.ctx.AppContext object at 0x7f4e1f02c7f0&gt;)&#39;,)</code>，这个问题后来找到可能的原因是，多个celery worker执行的时候会创建多个app实例，并且对于一个进程的上下文栈进行了多次的上下文进栈，在发生错误的时候，就会导致出栈的上下文混乱。</p>
 <p>最后的解决方案是，给celery的Task类做猴子补丁，在调用task的时候，只使用唯一的app实例（对于每个进程来讲，上下文栈是不同的）进行上下文切换。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def make_celery(app):</div><div class="line">    celery = Celery(&apos;backend&apos;, broker=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB),</div><div class="line">                    backend=&apos;redis://%s:%d/%d&apos; % (REDIS_HOST, REDIS_PORT, REDIS_DB))</div><div class="line">    TaskBase = celery.Task</div><div class="line"></div><div class="line">    class ContextTask(TaskBase):</div><div class="line">        abstract = True</div><div class="line"></div><div class="line">        def __call__(self, *args, **kwargs):</div><div class="line">            with app.app_context():</div><div class="line">                return TaskBase.__call__(self, *args, **kwargs)</div><div class="line"></div><div class="line">    celery.Task = ContextTask</div><div class="line">    return celery</div></pre></td></tr></table></figure>
 <p>这样就可以开心的在celery的task里面使用<code>current_app</code>了</p>
-	  
-	</div>
+     
+        </div>
 
-	<div>
-  	<center>
-	<div class="pagination">
+        <blockquote class="post-copyright">
+    <div class="content">
+        
 
-    
-    
-    <a href="/2017/08/03/thriftpy_2_processor/" type="button" class="btn btn-default"><i
-                class="fa fa-arrow-circle-o-left"></i> 上一页</a>
-    
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/08/03/Flask应用在Celery中使用current_app的思考/" target="_blank" rel="external">http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
 
-    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
-    
-    <a href="/2017/08/02/thriftpy_1_introduction/" type="button" class="btn btn-default ">下一页<i
-                class="fa fa-arrow-circle-o-right"></i></a>
-    
-
-    
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
 </div>
 
-    </center>
-	</div>
-	
-	<!-- comment -->
-	
-<section id="comment">
-    <h2 class="title">留言</h2>
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Celery/">Celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flask/">Flask</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/&title=《Flask应用在Celery中使用current_app的思考》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/&title=《Flask应用在Celery中使用current_app的思考》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Flask应用在Celery中使用current_app的思考》 — SkyRover&url=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
 
     
-        <section class="comments" id="comments">
-                <div id="gitment_thread"></div>
-                <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-                <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
-                <script>
-                    var gitment = new Gitment({
-                        owner: 'Microndgt',
-                        repo: 'microndgt.github.io',
-                        oauth: {
-                            client_id: 'f54490fb6635a5c3c3ba',
-                            client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
-                        },
-                    })
-                    gitment.render('comments')
-                </script>
-            </section>
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/03/thriftpy_2_processor/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">thriftpy源码解析(二) - 处理器</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/02/thriftpy_1_introduction/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">thriftpy源码解析(一) - 综述</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
     
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
 </section>
 
 
-	</div> <!-- col-md-9/col-md-12 -->
-		
-	
-	<div id="side_meta">
-		<div class="col-md-3" id="post_meta"> 
-
-	<!-- date -->
-	
-	<div class="meta-widget">
-	<i class="fa fa-clock-o"></i>
-	2017-08-03 16:29:40 
-	</div>
-	
-
-	<!-- categories -->
-    
-	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
-    <ul id="categorys" class="tag_box list-unstyled collapse in">
-          
-  <li>
-    <li><a href="/categories/编程/">编程<span>80</span></a></li>
-  </li>
-
-    </ul>
-	</div>
-	
-
-	<!-- tags -->
-	
-	<div class="meta-widget">
-	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
-    <ul id="tags" class="tag_box list-unstyled collapse in">	  
-	    
-  <li><a href="/tags/Python/">Python<span>56</span></a></li> <li><a href="/tags/Celery/">Celery<span>4</span></a></li> <li><a href="/tags/Flask/">Flask<span>8</span></a></li>
-    </ul>
-	</div>
-		
-
-	<!-- toc -->
-	<div class="meta-widget">
-	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
-	   <div id="toc" class="toc collapse in">
-		   <span class="toc-title">Contents</span>
-			
-		</div>
-	</div>
-	
-    <hr>
-	
-</div><!-- col-md-3 -->
-
-	</div>
-		
-
-</div><!-- row -->
 
 
 
-	</div>
-  </div>
-  <div class="container-narrow">
-  <footer> <p>
-  2016-2018
-  
-  &copy;  Kevin Du
-  
-    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
-    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
 </p>
- </footer>
-</div> <!-- container-narrow -->
-  
 
 
-  
-<a id="gotop" href="#">   
-  <span>⬆︎TOP</span>
-</a>
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
 
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/search.js"></script> 
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/&title=《Flask应用在Celery中使用current_app的思考》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/&title=《Flask应用在Celery中使用current_app的思考》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Flask应用在Celery中使用current_app的思考》 — SkyRover&url=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/08/03/Flask应用在Celery中使用current_app的思考/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACr0lEQVR42u3aQW7DQAgF0Nz/0um2VVTnA4MbVc+rqnFs3ixmCPB4xNfz2/X6/9d7Xq/rJ+dPe2xceHh4eIPQf3tc8mmyHMnbk08LS4mHh4e3xsu37A1A787rmPHw8PA+jZcvQb5A12/Bw8PD+x+8vFRxqoaAh4eH9zm8/HF5WbZ6PCSlh8VaCx4eHl6nG/Xotanu/3ulv4eHh4c37qpX09nJCEIvnjfR4uHh4S3w8nCrYVUPlV6yHsWJh4eHt8bLm0/XLf+kMJGXG3rvwsPDw9vj9bbmyeaehJvAotItHh4e3gIvb1nlI1N5cL0Rgfy7eHh4eBu8aom2unL5tl4tDUf34+Hh4a3xeuWDfJl6Q1qTJcPDw8Pb4/XKB70ZpyQRT5Lp6yUehY6Hh4dXjDBvOOXlg/zgqQJGFWs8PDy8Q7zkBZNDoloCTo6c6gLh4eHhzXnzF8839GpRo/AtPDw8vAVerwDRG4qaDFpVCxmjHhoeHh5e3Bua/9SvliEmowwREg8PD2+Nlw8HVMNKxgLyJc4Psx+/GPDw8PCO8nrtpWqbfxJi0jBrptd4eHh4Ld7ZJDghVQcRkmQdDw8P707eZKRpnubmifUomcbDw8Nb4FWLp70ib06qtuXe/AcPDw/vFl71x391+KDaNquOIODh4eHdw0s27mobLCf1irbRUuLh4eEt83rbcZ6aT1pl1bYcHh4e3javWiBItvLeUEL1mHlzPODh4eEd5T2LV/UFvXCbU2OTkwQPDw+vs6Mea//3Eu75/ZPjBA8PD6/K641Y5a2vXon2Oskul3Hx8PDwFniT5Dg/DCap9ihdxsPDw/sAXu/5eYurGtvhgwEPDw9vgde78nGB/Ft4eHh4f8WrNvLzT/MF7TW6ykNXeHh4eGPenQWLjcLxgUIGHh4eXhrbF+lmpkuTxoKDAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
 </script>
 
 
 
-   <script type="text/javascript">      
-     var search_path = "search.xml";
-	 if (search_path.length == 0) {
-	 	search_path = "search.xml";
-	 }
-	 var path = "/" + search_path;
-     searchFunc(path, 'local-search-input', 'local-search-result');
-   </script>
-
 </body>
-   </html>
+</html>

@@ -1,962 +1,821 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="pragma" content="no-cache">
-  <meta http-equiv="cache-control" content="no-cache">
-  <meta http-equiv="expires" content="0">
-  
-  <title>SkyRover</title>
-  <meta name="author" content="Kevin Du">
-  
-  <meta name="description" content="仲夏夜之梦">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,编程,算法,人生,博客">
+    <meta name="description" content="仲夏夜之梦">
+<meta name="keywords" content="Python,编程,算法,人生,博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SkyRover">
+<meta property="og:url" content="http://skyrover.me/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="仲夏夜之梦">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SkyRover">
+<meta name="twitter:description" content="仲夏夜之梦">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect active">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">SkyRover</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header index-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">SkyRover</h1>
+        <h5 class="subtitle">
+            
+                靡不有初 鲜克有终
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+<div class="container body-wrap">
+
+    <ul class="post-list">
+    
+        <li class="post-list-item fade">
+            <article id="post-mac_crontab"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-02-14 09:19:39 09:19:39" datetime="2018-02-14T01:19:39.000Z"  itemprop="datePublished">2018-02-14 09:19:39</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
 
   
-  <meta property="og:site_name" content="SkyRover"/>
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/02/14/mac_crontab/">Mac 开启 Crontab</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+查看是否启动
+  sudo launchctl list | grep cron
+
+检查需要的文件
+  ll /etc/crontab
+
+没有的话，创建一个文件
+  sudo touch /etc/crontab
+
+crontab的参数
+  1234567891011-u user：用来设定某个用户的crontab服务；file：file是命令文件的名字,表示将file做为crontab的...
+    
+
+        <a href="/2018/02/14/mac_crontab/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-matplotlib_issue_solution"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-02-13 11:00:35 11:00:35" datetime="2018-02-13T03:00:35.000Z"  itemprop="datePublished">2018-02-13 11:00:35</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
 
   
-    <meta property="og:image" content=""/>
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/02/13/matplotlib_issue_solution/">Mac系统下matplotlib相关问题和解决</a>
+    </h3>
   
 
-  
-  
-    <link href="/favicon.png" rel="icon">
-  
-  
-  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-  <script src="/js/jquery-2.0.3.min.js"></script>
 
-  <!-- analytics -->
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        中文显示方块下载SimHei.ttf字体Mac需要先下载SimHei.ttf字体并安装，之后将SimHei.ttf拷贝到python安装路径/site-packages/matplotlib/mpl-data/fonts/ttf目录中
+修改matplotlibrc修改~python安装路径/site-packages/matplotlib/mpl-data/matplotlibrc文件。根据...
+    
+
+        <a href="/2018/02/13/matplotlib_issue_solution/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/matplotlib/">matplotlib</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-graph_in_golang"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-02-11 14:09:46 14:09:46" datetime="2018-02-11T06:09:46.000Z"  itemprop="datePublished">2018-02-11 14:09:46</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
   
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/02/11/graph_in_golang/">Golang 实现有向图</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        之前在项目中用 Golang 实现了一个图的数据结构，并且实现了相关的一些算法，比如 BFS, DFS以及检测是否有环等等。在这里就将实现的代码，过程和算法原理做一个总结。
+基本数据结构有好几种数据结构可以实现图，比如邻接矩阵，邻接表和十字链表等，我这里使用的就是最常见的邻接矩阵的方法。
+Node定义一个图需要定义图中节点(Node)的结构，节点是保存数据的最小部分，节点的定义基本上是需要根...
+    
+
+        <a href="/2018/02/11/graph_in_golang/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-arp地址解析协议"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-27 08:59:30 08:59:30" datetime="2018-01-27T00:59:30.000Z"  itemprop="datePublished">2018-01-27 08:59:30</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/27/arp地址解析协议/">ARP 地址解析协议</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        当传送一个数据报的时候，会通过目的IP地址在IP路由表中进行选路，选择下一站的IP地址，但是在IP数据报中真正的目的IP地址不会变化，选出来的下一站IP地址只是会将数据报暂时的发送到这一站，而如何通过这个IP地址来发送数据呢。这就需要ARP地址解析协议了，通过ARP地址解析协议，就可以知道该IP地址对应的物理地址，这样就可以将IP数据报封装在一个以太网帧中，进而发送到下一站。
+所以地址解析为...
+    
+
+        <a href="/2018/01/27/arp地址解析协议/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-IP网际协议"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-25 21:03:30 21:03:30" datetime="2018-01-25T13:03:30.000Z"  itemprop="datePublished">2018-01-25 21:03:30</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/25/IP网际协议/">IP 网际协议</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        IP地址首先说一说IP地址，IP地址由4字节32bit构成，可以分为5类，A,B,C,D,E
+其中
+
+A类地址：0 + 7位网络号 + 24位主机号
+B类地址：10 + 14位网络号 + 16位主机号。也就是2^7-(2^7+2^6)开头的IP地址，128-191
+C类地址：110 + 21位网络号 + 8位主机号。也就是(2^7+2^6)-(2^7+2^6+2^5)开头的IP地址，192-...
+    
+
+        <a href="/2018/01/25/IP网际协议/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-链路层"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-24 23:03:30 23:03:30" datetime="2018-01-24T15:03:30.000Z"  itemprop="datePublished">2018-01-24 23:03:30</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/24/链路层/">链路层</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        链路层主要有三个目的：
+
+为IP模块发送和接收IP数据报
+为ARP模块发送ARP请求和接收ARP应答
+为RARP发送RARP请求和接收RARP应答
+
+TCP/IP常用的链路层协议有：以太网，令牌环网等。并且大多数都实现了环回(loopback)驱动程序。
+以太网以太网是TCP/IP采用的主要局域网技术，采用称作CSMA/CD的媒体接入方法，意思是带冲突检测的载波侦听多路接入。
+以太网的封装格...
+    
+
+        <a href="/2018/01/24/链路层/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机网络/">计算机网络</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-come_back_to_pycharm"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-22 07:47:05 07:47:05" datetime="2018-01-21T23:47:05.000Z"  itemprop="datePublished">2018-01-22 07:47:05</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/22/come_back_to_pycharm/">弃坑VSCode 拥抱PyCharm</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        因为新鲜使用了一段VSCode，可是觉得还是有很多不如人意的地方，还是觉得PyCharm好用，失去了才知道珍惜么 = =! 哈哈，总结一下，VSCode有下面的一些问题：
+
+Git diff功能支持的不好，像PyCharm上可以查看某个Commit甚至多个Commit的diff，但是VSCode上装什么插件好像都没法这样看，只能一个文件一个文件的看，很麻烦，或许是我没找到怎么弄，但是毕竟我也...
+    
+
+        <a href="/2018/01/22/come_back_to_pycharm/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PyCharm/">PyCharm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-go语言圣经_note_method"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-21 11:00:46 11:00:46" datetime="2018-01-21T03:00:46.000Z"  itemprop="datePublished">2018-01-21 11:00:46</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/21/go语言圣经_note_method/">Go语言圣经 - 读书笔记 - 方法</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        一个面向对象的程序会用方法来表达其属性和对应的操作，使用这个对象的用户就不需要直接去操作对象，而是借助方法来完成这些事情。
+OOP编程的关键点：封装和组合。
+方法声明123func (p Point) Distance(q Point) float64 &#123;     return math.Hypot(q.X-p.X, q.Y-p.Y)&#125;
+函数名称之前的附加参数会将函数附加...
+    
+
+        <a href="/2018/01/21/go语言圣经_note_method/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-go语言圣经_note_interface"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-20 10:40:46 10:40:46" datetime="2018-01-20T02:40:46.000Z"  itemprop="datePublished">2018-01-20 10:40:46</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/20/go语言圣经_note_interface/">Go语言圣经 - 读书笔记 - 接口</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        接口类型不会和特定实现细节绑定在一起，都是其他类型实现了接口，而且实现接口也很灵活，只要实现了接口定义的方法即可。这样可以创建一个新的接口类型满足已经存在的具体类型，但是不会改变这些类型的定义，因为只需要定义新的接口的方法符合已经存在的具体类型已经实现的方法就可以了。
+接口约定具体类型可以通过它的方法提供额外的行为操作，当你得到一个具体类型就知道它是什么以及它可以干什么。
+但是接口类型是抽象...
+    
+
+        <a href="/2018/01/20/go语言圣经_note_interface/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-go语言圣经_note_1"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-01-12 07:59:46 07:59:46" datetime="2018-01-11T23:59:46.000Z"  itemprop="datePublished">2018-01-12 07:59:46</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/01/12/go语言圣经_note_1/">Go语言圣经 - 读书笔记(1)</a>
+    </h3>
+  
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        入门
+go run编译一个或者多个以.go结尾的源文件，链接库文件，并运行最终生成的可执行文件。
+go build会编译程序，并且保存编译结果。会生成可执行的二进制文件。
+每个源文件都以一条package声明语句开始。表示该文件属于哪个包。
+main包定义了一个独立可执行的程序而不是一个库。main函数是程序执行时候的入口。
+gofmt将代码格式化为标准格式。go fmt会对包，默认为当前目...
+    
+
+        <a href="/2018/01/12/go语言圣经_note_1/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+    </div>
+    
+</article>
+
+        </li>
+    
+    </ul>
+
+    
+<nav id="page-nav">
+    <div class="inner">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+    </div>
+</nav>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/&title=SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/&title=SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=SkyRover&url=http://skyrover.me/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAAAAAAZai4+AAABV0lEQVR42u3aQQ7DIAxE0dz/0nRbKSLM2GQR5rOKWgJPlRJc29clj3Eb/5/r8zcPWLAOYo3HMdv+/u1s/mzmgg4LViRr9oQ+X3fWWdwLCxYs8yFXzlxYsGDtYik4/diGBQtWLWh2Q2p9HViwYOlZnf71K/ktWLA+zhrmeD5c9fTuYhdYsMJYtZSuu/1sziJ0hgUrjFULnTuHvTEHFqwAlttAoCSY3LaDxS8EC1YMq5a0rSVwpcMbFqwwVr/JwC3J6OE1LFiZrFopRd/AffXAgpXG0t8ftSSRsqa9GSxYh7Lco1dvIyimiWHBCmbV2nE6d9n/rWHBOo71yoNdCpFhwUpm9fvian937ZQuLFgBrE6rgVs+0QszsGBlsjplErcAY7cdwIIFy0wh6S1BxZQuLFiw5PDXPfi3vbdgwfo4q7OQXiI1EsGwYIWxakGt0nzgJqFgwYpk/QCc5Je3h8xTBgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-70812759-1', 'auto');
-  ga('send', 'pageview');
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
 </script>
 
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
 
 
 <script>
-var _hmt = _hmt || [];
 (function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
 })();
 </script>
 
 
-</head>
-
- <body>  
-  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		<span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-	  <a class="navbar-brand" href="/">SkyRover</a>
-      <div class="collapse navbar-collapse nav-menu">
-		<ul class="nav navbar-nav">
-		  
-		  <li>
-			<a href="/archives" title="All the articles.">
-			  <i class=""></i>Archives
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/categories" title="All the categories.">
-			  <i class=""></i>Categories
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/tags" title="All the tags.">
-			  <i class=""></i>Tags
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/about" title="About me.">
-			  <i class=""></i>About
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/atom.xml" title="Subscribe me.">
-			  <i class=""></i>RSS
-			</a>
-		  </li>
-		  
-		</ul>
-      </div>
-    </div> <!-- container -->
-</nav>
-<div class="clearfix"></div>
-
-  <div class="container">
-  	<div class="content">
-    	 <div class="page-header logo">
-  <h1>靡不有初 鲜克有终<span class="blink-fast">∎</span></h1>
-</div>
-
-<div class="row page">
-
-	
-	<div class="col-md-9">
-	
-
-		<div class="slogan">
-      <i class="fa fa-heart blink-slow"></i>
-      Keep and carry on.
-</div>    
-		<div id="top_search"></div>
-		<div class="mypage">
-		
-		<!-- title and entry -->
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/02/14/mac_crontab/" >Mac 开启 Crontab</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-02-14 09:19:39  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<ul>
-<li><p>查看是否启动</p>
-<p>  <code>sudo launchctl list | grep cron</code></p>
-</li>
-<li><p>检查需要的文件</p>
-<p>  <code>ll /etc/crontab</code></p>
-</li>
-<li><p>没有的话，创建一个文件</p>
-<p>  <code>sudo touch /etc/crontab</code></p>
-</li>
-<li><p>crontab的参数</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">-u user：用来设定某个用户的crontab服务；</div><div class="line"></div><div class="line">file：file是命令文件的名字,表示将file做为crontab的任务列表文件并载入crontab。如果在命令行中没有指定这个文件，crontab命令将接受标准输入（键盘）上键入的命令，并将它们载入crontab。</div><div class="line"></div><div class="line">-e：编辑某个用户的crontab文件内容。如果不指定用户，则表示编辑当前用户的crontab文件。</div><div class="line"></div><div class="line">-l：显示某个用户的crontab文件内容，如果不指定用户，则表示显示当前用户的crontab文件内容。</div><div class="line"></div><div class="line">-r：从/var/spool/cron目录中删除某个用户的crontab文件，如果不指定用户，则默认删除当前用户的crontab文件。</div><div class="line"></div><div class="line">-i：在删除用户的crontab文件时给确认提示。</div></pre></td></tr></table></figure>
-</li>
-<li><p>crontab 格式</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">* 第1列分钟0～59</div><div class="line">* 第2列小时0～23（0表示子夜）</div><div class="line">* 第3列日1～31</div><div class="line">* 第4列月1～12</div><div class="line">* 第5列星期0～7（0和7表示星期天）</div><div class="line">* 第6列要运行的命令</div></pre></td></tr></table></figure>
-</li>
-<li><p>启动和停止</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo /usr/sbin/cron start</div><div class="line">sudo /usr/sbin/cron restart</div><div class="line">sudo /usr/sbin/cron stop</div></pre></td></tr></table></figure></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2018/02/14/mac_crontab/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/02/13/matplotlib_issue_solution/" >Mac系统下matplotlib相关问题和解决</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-02-13 11:00:35  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="中文显示方块"><a href="#中文显示方块" class="headerlink" title="中文显示方块"></a>中文显示方块</h1><h2 id="下载SimHei-ttf字体"><a href="#下载SimHei-ttf字体" class="headerlink" title="下载SimHei.ttf字体"></a>下载<code>SimHei.ttf</code>字体</h2><p>Mac需要先下载<code>SimHei.ttf</code>字体并安装，之后将<code>SimHei.ttf</code>拷贝到python安装路径<code>/site-packages/matplotlib/mpl-data/fonts/ttf</code>目录中</p>
-<h2 id="修改matplotlibrc"><a href="#修改matplotlibrc" class="headerlink" title="修改matplotlibrc"></a>修改<code>matplotlibrc</code></h2><p>修改~python安装路径<code>/site-packages/matplotlib/mpl-data/matplotlibrc</code>文件。根据实际情况修改，找到如下两项，去掉前面的#，并在font.sans-serif冒号后面加上SimHei，保存退出。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">font.family         : sans-serif       </div><div class="line"></div><div class="line">font.sans-serif     : SimHei, Bitstream Vera Sans, Lucida Grande,Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif</div></pre></td></tr></table></figure>
-<p>同时将找到<code>axes.unicode_minus</code>，将True改为False，作用就是解决负号’-‘显示为方块的问题</p>
-<h2 id="代码加入"><a href="#代码加入" class="headerlink" title="代码加入"></a>代码加入</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#matplotlib不会每次启动时都重新扫描所有的字体文件并创建字体索引列表，</div><div class="line"># 因此在复制完字体文件之后，需要运行下面的语句以重新创建字体索引列表</div><div class="line">import matplotlib as mpl</div><div class="line">from matplotlib.font_manager import _rebuild</div><div class="line">_rebuild()</div><div class="line">#防止中文乱码问题</div><div class="line">mpl.rcParams[&apos;font.sans-serif&apos;]=[u&apos;SimHei&apos;]</div><div class="line">mpl.rcParams[&apos;axes.unicode_minus&apos;]=False</div></pre></td></tr></table></figure>
-<p>在mac中的/Library/Fonts文件夹中，有很多种不同的字体，但是没有能够正确显示中文的SimHei.ttf，所以需要进行安装，那么需要按照上述方法下载后，就可以使得显示中文不会出现方格了。</p>
-<h1 id="RuntimeError-Python-is-not-installed-as-a-framework"><a href="#RuntimeError-Python-is-not-installed-as-a-framework" class="headerlink" title="RuntimeError: Python is not installed as a framework"></a>RuntimeError: Python is not installed as a framework</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">    from matplotlib.backends import _macosx  </div><div class="line">RuntimeError: Python is not installed as a framework. </div><div class="line">The Mac OS X backend will not be able to function correctly if Python is not installed as a framework. </div><div class="line">See the Python documentation for more information on installing Python as a framework on Mac OS X. </div><div class="line">Please either reinstall Python as a framework, or try one of the other backends. </div><div class="line">If you are using (Ana)Conda please install python.app and replace the use of &apos;python&apos; with &apos;pythonw&apos;. </div><div class="line">See &apos;Working with Matplotlib on OSX&apos; in the Matplotlib FAQ for more information.</div></pre></td></tr></table></figure>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vim ~/.matplotlib/matplotlibrc </div><div class="line"># 加入</div><div class="line">backend: TkAgg</div></pre></td></tr></table></figure>
-	
-	</div>
-  <a type="button" href="/2018/02/13/matplotlib_issue_solution/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/02/11/graph_in_golang/" >Golang 实现有向图</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-02-11 14:09:46  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>之前在项目中用 Golang 实现了一个图的数据结构，并且实现了相关的一些算法，比如 BFS, DFS以及检测是否有环等等。在这里就将实现的代码，过程和算法原理做一个总结。</p>
-<h1 id="基本数据结构"><a href="#基本数据结构" class="headerlink" title="基本数据结构"></a>基本数据结构</h1><p>有好几种数据结构可以实现图，比如邻接矩阵，邻接表和十字链表等，我这里使用的就是最常见的邻接矩阵的方法。</p>
-<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p>定义一个图需要定义图中节点(Node)的结构，节点是保存数据的最小部分，节点的定义基本上是需要根据实际情况来定，这里我定义的Node如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">type Node struct &#123;</div><div class="line">    Data       interface&#123;&#125;</div><div class="line">    InputTags  map[string]string</div><div class="line">    OutputTags map[string]string</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其中Data是任意的数据类型，而InputTags和OutputTags是一个map对象，定义了该节点输入和输出信息，使用map而不是使用数组的原因是我需要查找某一个tag是否存在，因此map效率更高点。</p>
-<h2 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h2><p>在Graph数据结构中需要包含以下信息：Node节点列表，邻接矩阵，图的大小以及目前拥有的节点数量。定义的结构如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">type Graph struct &#123;</div><div class="line">    NodeCount int</div><div class="line">    Size      int</div><div class="line">    NodeArray []Node</div><div class="line">    Matrix    []int</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>邻接矩阵使用int数组实现，如果需要第row行，第col列的矩阵值(row和col从0开始，因此row=1，即第二行)，则<code>g.Matrix[row*g.Size+col]</code>即可获得。</p>
-<h1 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h1><p>图的常用方法有以下：</p>
-<ul>
-<li>创建一个图</li>
-<li>向图中添加节点</li>
-<li>设置邻接矩阵</li>
-<li>深度优先遍历</li>
-<li>广度优先遍历</li>
-<li>判断是否有环</li>
-</ul>
-<h2 id="创建图"><a href="#创建图" class="headerlink" title="创建图"></a>创建图</h2><p>创建图即为图数据结构的各个元素进行初始化，设定其size：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">func MakeGraph(size int) Graph &#123;</div><div class="line">    g := Graph&#123;Size: size&#125;</div><div class="line">    g.NodeArray = make([]Node, size)</div><div class="line">    g.Matrix = make([]int, size*size)</div><div class="line">    return g</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="添加节点"><a href="#添加节点" class="headerlink" title="添加节点"></a>添加节点</h2><p>添加节点这里也比较简单，因为并没有在添加节点的时候定义各个节点的关系(即设置邻接矩阵)，当然也可以在添加节点的时候做。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">func (g *Graph) AddNode(node Node) &#123;</div><div class="line">    if g.NodeCount &gt;= g.Size &#123;</div><div class="line">        return</div><div class="line">    &#125;</div><div class="line">    g.NodeArray[g.NodeCount] = node</div><div class="line">    g.NodeCount++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里只是简单的判断了是否超过图的size，然后将该节点放入图的节点数组里，然后节点总数值加一。</p>
-<h2 id="设置邻接矩阵"><a href="#设置邻接矩阵" class="headerlink" title="设置邻接矩阵"></a>设置邻接矩阵</h2><p>具体到不同情况，如何设置邻接矩阵也不同，这主要依赖的是图中各个节点之间的关系。我这里是等到将所有节点添加到图中之后，对图的所有节点进行一次遍历，可以想象就是迭代邻接矩阵的每一行(一个节点)，然后去找对应其他节点的关系(可以包含当前节点，也可以不包含，看具体情况。我这里是包含的，因为如果有自身节点到自身的关系，则说明有环，那么这个节点就是非法的)。</p>
-<p>具体代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">func (g *Graph) SetValueToMatrixFromTags() bool &#123;</div><div class="line">    if len(g.NodeArray) != g.Size &#123;</div><div class="line">        return false</div><div class="line">    &#125;</div><div class="line">    for row := 0; row &lt; len(g.NodeArray); row++ &#123;</div><div class="line">        for col := 0; col &lt; len(g.NodeArray); col++ &#123;</div><div class="line">            outputTagsRow := g.NodeArray[row].OutputTags</div><div class="line">            inputTagsCol := g.NodeArray[col].InputTags</div><div class="line">            for tag, _ := range outputTagsRow &#123;</div><div class="line">                if _, ok := inputTagsCol[tag]; ok &#123;</div><div class="line">                    g.Matrix[row*g.Size+col] = 1</div><div class="line">                    break</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return true</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在我这个场景里就是判断当前节点的输出tag，是哪个节点的输入tag，如果有一个是，则将矩阵对应的值设为1。当然也可以设为其他值，表示有权重的，是具体情况而定，我这里只需要有向图就行了。</p>
-<h2 id="深度优先遍历"><a href="#深度优先遍历" class="headerlink" title="深度优先遍历"></a>深度优先遍历</h2><p>深度优先遍历可以按照递归的方法，也可以按照迭代的方法实现。递归的话本身就有一个栈，这样可以获取到相关的信息，迭代放啊就得自己模拟一个栈，实现难度是高于递归方法的。</p>
-<p>主要思想就是比如从一个节点a出发，找到了下一个节点b的路径，那么会继续从b去搜索下一层路径，直到最后无路可走。无路可走的时候就会返回上一层，以此类推就遍历完了。而且这里还涉及到一个检查是否有环的关键点，就是记录目前的路径上的节点，如果接下来搜索的下一个节点已经记录过了，那就说明有环。</p>
-<p>下面的代码将深度优先和检测有环结合在一起：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">func (g *Graph) Dfs(stack *list.List, onStack map[int]bool, visited map[int]bool) error &#123;</div><div class="line">    indexEle := stack.Back()</div><div class="line">    nodePos := indexEle.Value.(int)</div><div class="line">    onStack[nodePos] = true</div><div class="line">    visited[nodePos] = true</div><div class="line">    for col := 0; col &lt; g.NodeCount; col++ &#123;</div><div class="line">        if g.Matrix[nodePos*g.Size+col] != 0 &#123;</div><div class="line">            visit, ok := visited[col]</div><div class="line">            if !ok || !visit &#123;</div><div class="line">                ele := stack.PushBack(col)</div><div class="line">                err := g.Dfs(stack, onStack, visited)</div><div class="line">                if err != nil &#123;</div><div class="line">                    return err</div><div class="line">                &#125;</div><div class="line">                stack.Remove(ele)</div><div class="line">            &#125; else if nodeOnStack, ok := onStack[col]; ok &amp;&amp; nodeOnStack &#123;</div><div class="line">                return errors.New(&quot;have Cycle&quot;)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    onStack[nodePos] = false</div><div class="line">    return nil</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里stack是模拟出来的一个栈，用于记录目前遍历的路径上有哪些节点加入进来了，其实和onStack的意义是一样，但是List是有顺序的，因此代表的是调用节点的一个顺序。而onStack是一个map，更多的是判断某个节点是否存在于这个路径上。Golang是比较麻烦，如果对于Python，直接一个List即可，不过这样分开，效率也能高一点。visited表示的是对于全局来说有没有遍历过这个节点，如果遍历过，就不用再遍历了，要不然递归不完了。</p>
-<p>下来就是一个循环，用于找下一个要遍历的节点，然后再调用DFS，同时这里还对onStack进行了判断，如果已经存在，说明有环，则返回一个error，之后这个error会递归的返回，那么就会返回一个error栈。同时stack这个链表也记录了当前出现环的路径。</p>
-<h2 id="检测是否有环"><a href="#检测是否有环" class="headerlink" title="检测是否有环"></a>检测是否有环</h2><p>对于一个图，检测其是否有环，就需要从每个节点出发去DFS，因为图中可能会有子图是不联通的。代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">func (g *Graph) CheckCycle(checkEnd int) (bool, []int) &#123;</div><div class="line">    visited := make(map[int]bool)</div><div class="line">    onStack := make(map[int]bool)</div><div class="line">    var processIds []int</div><div class="line"></div><div class="line">    for index := 0; index &lt; checkEnd; index++ &#123;</div><div class="line">        stack := list.New()</div><div class="line">        ele := stack.PushBack(index)</div><div class="line">        err := g.Dfs(stack, onStack, visited)</div><div class="line">        if err != nil &#123;</div><div class="line">            for e := stack.Front(); e != nil; e = e.Next() &#123;</div><div class="line">                nodePos := e.Value.(int)</div><div class="line">                process := g.NodeArray[nodePos].Data.(Process)</div><div class="line">                processIds = append(processIds, process.ID)</div><div class="line">            &#125;</div><div class="line">            return true, processIds</div><div class="line">        &#125;</div><div class="line">        stack.Remove(ele)</div><div class="line">    &#125;</div><div class="line">    return false, nil</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>其实根据上面这个简单的图定义可以解决很多问题，稳定而又效率高。</p>
-
-	
-	</div>
-  <a type="button" href="/2018/02/11/graph_in_golang/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/01/27/arp地址解析协议/" >ARP 地址解析协议</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-01-27 08:59:30  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>当传送一个数据报的时候，会通过目的IP地址在IP路由表中进行选路，选择下一站的IP地址，但是在IP数据报中真正的目的IP地址不会变化，选出来的下一站IP地址只是会将数据报暂时的发送到这一站，而如何通过这个IP地址来发送数据呢。这就需要ARP地址解析协议了，通过ARP地址解析协议，就可以知道该IP地址对应的物理地址，这样就可以将IP数据报封装在一个以太网帧中，进而发送到下一站。</p>
-<p>所以地址解析为这两种不同的地址形式提供映射：32bit的IP地址和数据链路层使用的任何类型的地址(物理地址)。ARP为IP地址到对应的硬件地址之间提供了动态映射。因为内核(以太网驱动程序)必须知道目的端的硬件地址才能发送数据。</p>
-<h1 id="ARP高速缓存"><a href="#ARP高速缓存" class="headerlink" title="ARP高速缓存"></a>ARP高速缓存</h1><p>每个主机上都有一个ARP高速缓存，这个缓存存放了最近Internet地址到硬件地址之间的映射记录，每一项的生存时间一般是20分钟。执行<code>arp -a</code>查看所有的缓存记录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">? (192.168.1.1) at 6c:e8:73:ae:d0:1a on en0 ifscope [ethernet]</div><div class="line">? (224.0.0.251) at 1:0:5e:0:0:fb on en0 ifscope permanent [ethernet]</div></pre></td></tr></table></figure>
-<h1 id="ARP分组格式"><a href="#ARP分组格式" class="headerlink" title="ARP分组格式"></a>ARP分组格式</h1><ul>
-<li>以太网目的地址：一般是全1，表示广播地址，电缆上的所有以太网接口都要接收广播的数据帧。</li>
-<li>以太网源地址：</li>
-<li>以太网帧类型：表示后面数据的类型，是ARP还是RARP</li>
-<li>硬件类型：表示硬件地址的类型，1表示以太网地址</li>
-<li>协议类型：表示要映射的协议地址类型，比如IP地址</li>
-<li>硬件地址长度：以太网地址是6</li>
-<li>协议地址长度：IP地址是4 字节</li>
-<li>操作字段：1 ARP, 2 ARP应答, 3 RARP, 4 RARP应答</li>
-<li>发送端以太网地址：</li>
-<li>发送端IP地址</li>
-<li>目的以太网地址：发送请求时该字段没有值，当发送ARP应答的时候，这里是ARP请求中的发送端以太网地址，而发送端就是本机的以太网地址</li>
-<li>目的IP地址</li>
-</ul>
-<h1 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h1><p>如果ARP请求是从一个网络的主机发送到另一个网络的主机，那么链接这两个网络的路由器就可以回答这个请求，这个过程称为委托ARP或者ARP代理，路由器的功能就相当于目的主机的代理，把分组从其他主机转发给它。</p>
-<p>通过两个物理网络之间的路由器可以互相隐藏物理网络，在这种情况下，两个物理网络可以使用相同的网络号，只要把中间的路由器设置为一个ARP代理，以响应一个网络到另一个网络主机的ARP请求。</p>
-<h1 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h1><p>主机发送ARP查询自己的IP地址，发生在系统引导期间进行接口配置的时候。</p>
-<p>两个作用：</p>
-<ol>
-<li>可以通过它来确定另一个主机是否设置了相同的IP地址</li>
-<li>如果发送免费ARP的主机正好改变了硬件地址，那么这样的ARP请求可以使得其他主机上的高速缓存得以更新。</li>
-</ol>
-<h1 id="RARP-逆地址解析协议"><a href="#RARP-逆地址解析协议" class="headerlink" title="RARP 逆地址解析协议"></a>RARP 逆地址解析协议</h1><p>无盘系统的RAPR实现是从接口卡中读取硬件地址，然后发送一份RARP请求，请求某个RARP服务器来响应该无盘系统的IP地址。</p>
-<p>RARP请求是以广播方式发送，RARP应答是以单播方式发送。在请求的时候表明发送端的硬件地址，以请求IP地址的响应。因为RARP使用的是链路层广播，所以阻止了大多数路由器转发RARP请求，只返回很少的信息，只是系统的IP地址。</p>
-<h2 id="RARP服务器"><a href="#RARP服务器" class="headerlink" title="RARP服务器"></a>RARP服务器</h2><p>一个RARP服务器要为多个主机提供从硬件地址到IP地址的映射，映射一般存放在磁盘文件中，但是内核一般不读取和分析磁盘文件，因此RARP服务器的功能就由用户进程来实现，而不是作为内核的TCP/IP一部分。而且RARP请求是作为一个特殊类型的以太网数据帧来传送的，说明RARP服务器必须能够发送和接收这种类型的以太网数据帧。</p>
-
-	
-	</div>
-  <a type="button" href="/2018/01/27/arp地址解析协议/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/01/25/IP网际协议/" >IP 网际协议</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-01-25 21:03:30  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h1><p>首先说一说IP地址，IP地址由4字节32bit构成，可以分为5类，A,B,C,D,E</p>
-<p>其中</p>
-<ul>
-<li>A类地址：0 + 7位网络号 + 24位主机号</li>
-<li>B类地址：10 + 14位网络号 + 16位主机号。也就是<code>2^7-(2^7+2^6)</code>开头的IP地址，128-191</li>
-<li>C类地址：110 + 21位网络号 + 8位主机号。也就是<code>(2^7+2^6)-(2^7+2^6+2^5)</code>开头的IP地址，192-223</li>
-<li>D类地址：1110 + 28位多播组号。也就是<code>(2^7+2^6+2^5)-(2^7+2^6+2^5+2^4)</code>开头的IP地址，224-239</li>
-<li>E类地址：11110 + 27位。也就是240以上的IP地址</li>
-</ul>
-<h1 id="IP首部"><a href="#IP首部" class="headerlink" title="IP首部"></a>IP首部</h1><p>普通IP首部长为20个字节</p>
-<ul>
-<li><p>4位版本</p>
-<p>  网络字节序是以大端传输，即最高有效字节在前面的方式(10010000 01010001)</p>
-</li>
-<li><p>4位首部长度</p>
-<p>  指的是首部占32bit字的数目，所以首部最长是60个字节。普通IP数据报字段的值是5，即20字节。</p>
-</li>
-<li><p>8位服务类型(TOS)</p>
-<p>  3位的优先权子字段，4bit的TOS子字段和1bit未用位但是必须置于0</p>
-<p>  TOS字段分别代表最小时延，最大吞吐量，最高可靠性和最小费用</p>
-</li>
-<li><p>16位总长度(字节数)</p>
-<p>  所以IP数据报最长是65535字节，但是即使可以这么长，链路层也会对它进行分片，而且主机并不要求接收超过576字节的数据报。</p>
-</li>
-<li><p>16位标志字段</p>
-<p>  唯一的标识主机发送的每一份数据报，通常每发一份报文它的值就会加一</p>
-</li>
-<li><p>8位生存时间字段</p>
-<p>  设置了数据报可以经过的最多路由器数，每经过一个路由器，值就减一。如果值为0，报文就会被丢弃，并且发送ICMP报文通知源主机。</p>
-</li>
-<li><p>8位协议字段</p>
-</li>
-<li><p>16位首部检验和字段</p>
-<p>  根据IP首部计算的检验和，检验和字段首先置为全0，首部中每16bit进行二进制反码求和，存在检验和字段中。接收方同样对16bit进行二进制反码求和，如果结果是全1，说明没有问题，否则就丢弃。</p>
-<p>  路由器会修改TTL字段(减1)，因此路由器转发一次报文需要在检验和加1.</p>
-</li>
-<li><p>每一份IP数据报都包含32位源IP地址和32位目的IP地址。</p>
-</li>
-</ul>
-<h1 id="IP路由选择"><a href="#IP路由选择" class="headerlink" title="IP路由选择"></a>IP路由选择</h1><p>如果目的主机和源主机直接相连或者在一个共享网络上，那么IP数据报就直接送到目的主机上，因为已经知道了物理网卡地址。否则，主机将数据报发送到一个默认的路由器上，由路由器来转发该数据报。</p>
-<p>几乎所有的Unix系统，都可以配置成一个路由器。本质区别在于主机从不把数据报从一个接口转发到另一个接口，而路由器则要转发数据报。</p>
-<p>IP层可以从TCP, UDP, ICMP和IGMP来接收数据报并且进行发送，或者从一个网络接口来接收数据报并且进行发送。IP层在内存中有一个路由表，在收到一份数据报并且进行发送的时候，都要对该表搜索一次。</p>
-<p>路由表包含以下</p>
-<ul>
-<li>目的IP地址</li>
-<li>下一站路由器的IP地址，或者是直接连接的网络IP地址</li>
-<li>标志，指明目的IP地址是网络地址还是主机地址，另一个标志指明下一站路由器是否为真正的下一站路由器，还是一个直接相连的接口。</li>
-<li>为数据报传输指定一个网络接口</li>
-</ul>
-<p>所有IP路由选择只为数据报传输提供下一站路由器的IP地址。IP路由选择完成：</p>
-<ul>
-<li>搜索路由表，寻找能够与目的IP地址完全匹配的表目，网络号和主机号</li>
-<li>搜索路由表，寻找能够与目的网络号相匹配的表目</li>
-<li>寻找标为默认的表目</li>
-</ul>
-<p>子网寻址，IP地址会分成网络号，子网号和主机号。这样缩减了路由表的规模。</p>
-<p>子网掩码，值为1的比特留给网络号和子网号，为0的比特留给主机号。</p>
-
-	
-	</div>
-  <a type="button" href="/2018/01/25/IP网际协议/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/01/24/链路层/" >链路层</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-01-24 23:03:30  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>链路层主要有三个目的：</p>
-<ol>
-<li>为IP模块发送和接收IP数据报</li>
-<li>为ARP模块发送ARP请求和接收ARP应答</li>
-<li>为RARP发送RARP请求和接收RARP应答</li>
-</ol>
-<p>TCP/IP常用的链路层协议有：以太网，令牌环网等。并且大多数都实现了环回(loopback)驱动程序。</p>
-<h1 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h1><p>以太网是TCP/IP采用的主要局域网技术，采用称作CSMA/CD的媒体接入方法，意思是带冲突检测的载波侦听多路接入。</p>
-<p>以太网的封装格式：</p>
-<ul>
-<li>使用48bit(6字节)的目的地址 </li>
-<li>使用48bit(6字节)的源地址 - 硬件地址，ARP和RARP协议对32bit的IP地址和48bit的硬件地址进行映射。</li>
-<li>2字节的类型：定义了后续数据的类型</li>
-<li>数据字节：46到1500字节不等，最低46字节，不足的空间插入填充字节，最大受限于MTU</li>
-<li>CRC：用于帧内后续字节差错的循环冗余检验 4字节</li>
-</ul>
-<h2 id="为何是46字节"><a href="#为何是46字节" class="headerlink" title="为何是46字节"></a>为何是46字节</h2><p>最初协议标志定义的Ethernet Frame的最小值：Preamble + SFD + MAC destination + MAC source +  Ethertype + Payload + CRC = 7 + 1 + 6 + 6 + 2 + 46 + 4 = 72 Bytes = 576 bit</p>
-<p>576bit就是72字节，减去前导符和帧开始符，剩下64字节，再减去目的地址和源地址和类型以及CRC，就剩46字节。</p>
-<h1 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h1><p>以太网对数据帧的长度有一个限制，最大值是1500和1492字节，链路层的这个特性称作MTU，最大传输单元。(标准以太网接口缺省的MTU为1500，而现在的以太网接口普遍可以通过配置使得MTU远远大于1500。)</p>
-<p>如果IP层有一个数据报要传，而且数据的长度比链路层的MTU还大，那么IP层就要进行分片(fragmentation)。</p>
-<p>可以在系统上执行<code>netstat -in</code>查看本机的MTU</p>
-<p><img src="/img/mtu.png" alt=""></p>
-<h1 id="路径MTU"><a href="#路径MTU" class="headerlink" title="路径MTU"></a>路径MTU</h1><p>在网络上，每个网络的链路层可能有不同的MTU，所以重要的不是两台主机所在网络的MTU，而是两台通信主机路径中的最小MTU，被称为路径MTU。</p>
-<h1 id="环回接口"><a href="#环回接口" class="headerlink" title="环回接口"></a>环回接口</h1><p>允许运行在同一台主机上的客户端和服务器程序通过TCP/IP通信，A类网络号127就是为环回接口预留的。大多数系统把IP地址127.0.0.1分配给这个接口，并且命名为localhost。一个传给环回接口的IP数据报不能在任何网络上出现。</p>
-<p>一般在传输层检测到目的端地址是环回地址的时候就可以省略部分传输层和所有网络层的逻辑。但是目前大部分还是完成传输层和网络层的过程，在IP数据报在离开网路层的时候把它返回给自己。</p>
-<p>传回环回地址的数据都会被作为IP输入，放入IP输入队列中。环回接口可以看作网络层下面的另一个链路层，网络层将一份数据报传送给环回接口，就像传给其他链路层一样，只不过环回接口把它返回到IP的输入队列中。</p>
-<p>而且任何传给该主机IP地址的数据均送到环回接口。</p>
-<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><ol>
-<li><a href="https://zhuanlan.zhihu.com/p/21318925" target="_blank" rel="external">车小胖谈网络：Ethernet Frame</a></li>
-</ol>
-
-	
-	</div>
-  <a type="button" href="/2018/01/24/链路层/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/01/22/come_back_to_pycharm/" >弃坑VSCode 拥抱PyCharm</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-01-22 07:47:05  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>因为新鲜使用了一段VSCode，可是觉得还是有很多不如人意的地方，还是觉得PyCharm好用，失去了才知道珍惜么 = =! 哈哈，总结一下，VSCode有下面的一些问题：</p>
-<ol>
-<li>Git diff功能支持的不好，像PyCharm上可以查看某个Commit甚至多个Commit的diff，但是VSCode上装什么插件好像都没法这样看，只能一个文件一个文件的看，很麻烦，或许是我没找到怎么弄，但是毕竟我也读了一些git diff插件的文档，但是还没有找到，所以说明也不好用。</li>
-<li>Git插件已经add或者提交了，目录树上还是绿的黄的一片，不更新。。这个很蛋疼，强迫症的我总以为有东西还没提交。</li>
-<li>在大量debug模式下，有时候就没法跳转函数定义啦，自动补全也失效了，这个也很蛋疼，只能重新打开这个项目。</li>
-<li>没法Debug Celery的tasks，只能用rdb一行一行的看，效率很低。</li>
-</ol>
-<p>基于上面原因，VSCode实在没法继续用了，不过转投PyCharm有个硬伤，快捷键。。哎，只好苦练了。下面就是Mac下的PyCharm 快捷键总结。</p>
-<p>另外用Goland写Golang应该还是不错的，现在我就觉得，就应该使用专业工具，通用工具虽然吊，但是bug很多。老牌的专业工具还是稳定好用。</p>
-<p>Goland注册服务器：<code>http://idea.youbbs.org</code></p>
-<p><img src="https://pic3.zhimg.com/80/v2-cb058dde6f3580de6589eedc8193acee_hd.jpg" alt=""></p>
-
-	
-	</div>
-  <a type="button" href="/2018/01/22/come_back_to_pycharm/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/01/21/go语言圣经_note_method/" >Go语言圣经 - 读书笔记 - 方法</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-01-21 11:00:46  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>一个面向对象的程序会用方法来表达其属性和对应的操作，使用这个对象的用户就不需要直接去操作对象，而是借助方法来完成这些事情。</p>
-<p>OOP编程的关键点：封装和组合。</p>
-<h1 id="方法声明"><a href="#方法声明" class="headerlink" title="方法声明"></a>方法声明</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p Point)</span> <span class="title">Distance</span><span class="params">(q Point)</span> <span class="title">float64</span></span> &#123;</div><div class="line">     <span class="keyword">return</span> math.Hypot(q.X-p.X, q.Y-p.Y)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>函数名称之前的附加参数会将函数附加到这种类型上，即为该类型定义了一个独占方法。附加的参数p，是方法的接收器。</p>
-<p>Go中可以给任意类型定义方法，所以可以给字符串，数值等定义一些附加行为。方法可以被声明到任意类型，只要不是一个指针或者一个interface。</p>
-<p>为一个类型定义一个方法，比定义一个函数来的简便，因为从包外去调函数要写的代码要多点。。</p>
-<h1 id="基于指针对象的方法"><a href="#基于指针对象的方法" class="headerlink" title="基于指针对象的方法"></a>基于指针对象的方法</h1><p>调用一个函数的时候，会对其每一个参数值进行拷贝。所以Go语言中是按值传参的，但是对于切片，map这种是引用类型的，即使按值来传，它也是传的引用，而引用可以等同于指针。</p>
-<p>对应于方法的接收器来说，如果接受者变量本身比较大的时候，就可以用指针来声明方法。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Point)</span> <span class="title">ScaleBy</span><span class="params">(factor <span class="keyword">float64</span>)</span></span> &#123;</div><div class="line">    p.X *= factor</div><div class="line">    p.Y *= factor</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>一般实践中，只要这个类型有一个指针作为接收器的方法，其他的方法都应该使用指针接收器。如果类型本身是一个指针的话，是不允许出现在接收器中的。</p>
-<p>在调用的时候，即使用该类型变量来调用使用指针作为接收器的方法时候，也是可以的，因为编译器会隐式的去取变量的地址，然后用指针调用这个方法。</p>
-<p>而且如果接收器不是指针，那么通过指针调用方法，编译器会默认的解引用，然后去调用方法。</p>
-<h2 id="nil也是合法的接收器类型"><a href="#nil也是合法的接收器类型" class="headerlink" title="nil也是合法的接收器类型"></a>nil也是合法的接收器类型</h2><p>如果nil是对象来说是合法的零值的时候，比如map或者slice。</p>
-<p>IntList是一个结构体。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(list *IntList)</span> <span class="title">Sum</span><span class="params">()</span> <span class="title">int</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> list == <span class="literal">nil</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> list.Value + list.Tail.Sum()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="通过嵌入结构体来扩展类型"><a href="#通过嵌入结构体来扩展类型" class="headerlink" title="通过嵌入结构体来扩展类型"></a>通过嵌入结构体来扩展类型</h1><p>内嵌字段会指导编译器去生成额外的包装方法来委托已经声明好的方法。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p ColoredPoint)</span> <span class="title">Distance</span><span class="params">(q Point)</span> <span class="title">float64</span></span> &#123;</div><div class="line">     <span class="keyword">return</span> p.Point.Distance(q)</div><div class="line">&#125;</div><div class="line"> <span class="function"><span class="keyword">func</span> <span class="params">(p *ColoredPoint)</span> <span class="title">ScaleBy</span><span class="params">(factor <span class="keyword">float64</span>)</span></span> &#123;</div><div class="line">     p.Point.ScaleBy(factor)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>下面这种实现就是利用了嵌入结构体的方法访问机制</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> cache = <span class="keyword">struct</span> &#123;</div><div class="line">    sync.Mutex</div><div class="line">    mapping <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></div><div class="line"> &#125;&#123;</div><div class="line">    mapping: <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>),</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">Lookup</span><span class="params">(key <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</div><div class="line">cache.Lock()</div><div class="line">v := cache.mapping[key]</div><div class="line">cache.Unlock()</div><div class="line"><span class="keyword">return</span> v</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="方法值和方法表达式"><a href="#方法值和方法表达式" class="headerlink" title="方法值和方法表达式"></a>方法值和方法表达式</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">distanceFromP := p.Distance</div><div class="line">fmt.Println(distanceFromP(q))</div></pre></td></tr></table></figure>
-<p>方法值就是一个绑定对象的函数。</p>
-<p>方法表达式，调用方法的时候，需要用选择器来指定方法的接收器。T是一个类型的时候，方法表达式可能会写作<code>T.f</code>或者<code>(*T).f</code>，这样会返回一个函数值，这种函数会将其第一个参数用作接收器，因此可以用普通函数的形式调用它。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">distance := Point.Distance</div><div class="line">fmt.Println(distance(p, q))</div></pre></td></tr></table></figure>
-<p>哎函数是第一类公民嘛，说了这么多。。。</p>
-<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>一个对象的变量或者方法如果对调用方是不可见的话，就定义为封装。</p>
-
-	
-	</div>
-  <a type="button" href="/2018/01/21/go语言圣经_note_method/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/01/20/go语言圣经_note_interface/" >Go语言圣经 - 读书笔记 - 接口</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-01-20 10:40:46  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p>接口类型不会和特定实现细节绑定在一起，都是其他类型实现了接口，而且实现接口也很灵活，只要实现了接口定义的方法即可。这样可以创建一个新的接口类型满足已经存在的具体类型，但是不会改变这些类型的定义，因为只需要定义新的接口的方法符合已经存在的具体类型已经实现的方法就可以了。</p>
-<h1 id="接口约定"><a href="#接口约定" class="headerlink" title="接口约定"></a>接口约定</h1><p>具体类型可以通过它的方法提供额外的行为操作，当你得到一个具体类型就知道它是什么以及它可以干什么。</p>
-<p>但是接口类型是抽象的类型，因为你不知道它是什么，只知道它可以干什么，因为它自己定义了一系列的方法。</p>
-<p>接口类型定义了一种约定，约定需要调用者提供具体类型的值，但是这个具体类型实现了接口定义的方法，即满足这个接口。那么就可以正常工作，因为可以正常调用接口的方法。感觉和Python中很相似，就是不管你是什么，只要你有这个方法就行了，鸭子类型。走路看起来像鸭子，叫起来也像鸭子，那么就是个鸭子，因为我只需要走路和叫这两种方法。。</p>
-<h1 id="接口类型"><a href="#接口类型" class="headerlink" title="接口类型"></a>接口类型</h1><p>接口类型具体描述了一系列方法的集合，一个实现了这些方法的具体类型是接口类型的实例。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">type Reader interface &#123;</div><div class="line">     Read(p []byte) (n int, err error)</div><div class="line">&#125;</div><div class="line">type ReadWriter interface &#123;</div><div class="line">    Reader</div><div class="line">    Writer</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="实现接口的条件"><a href="#实现接口的条件" class="headerlink" title="实现接口的条件"></a>实现接口的条件</h1><p>一个类型如果有一个接口需要的所有方法，那么这个类型就实现了这个接口。</p>
-<p>对于每一个命名过的具体类型T，一些方法的接收者是类型T本身，一些是指针。那么对于T类型的变量上调用T的方法是可以的，因为编译器会隐式的获取它的地址。但是因为T类型的值没有<code>*T</code>指针的方法，因为它就只实现了更少的接口(缺少一部分方法的实现)。比如这样</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var _ fmt.Stringer = &amp;s // OK</div><div class="line">var _ fmt.Stringer = s  // compile error: IntSet lacks String method 因为类型T的值没有实现相应方法</div><div class="line">s.String() // 可以调用成功因为编译器隐式的获取它的地址</div></pre></td></tr></table></figure>
-<p>将一个具体类型赋值给接口，会导致只有接口类型暴露的方法可以被调用，所以接口类型封装和隐藏了具体类型和它的值。比如对于<code>interface{}</code>空接口来说，其没有定义任何方法，所以不能直接对它持有的值做操作，但是可以使用类型断言来获取<code>interface{}</code>中值的方法。</p>
-<p>接口实现取决于接口定义的方法和具体类型实现的方法是否匹配，所以没有必要定义具体类型和它实现接口之间的关系。只要实现了方法，就满足接口。</p>
-<p>同时对于<code>bytes.Buffer</code>来说是引用类型，因此其零值会是<code>nil</code>，即<code>nil</code>指针，类型是<code>bytes.Buffer</code>，而且通过<code>(*bytes.Buffer)(nil)</code>也可以进行显式的转换，那么这个<code>nil</code>也实现了<code>io.Writer</code>接口。</p>
-<p>同样除了指针类型满足接口，同样也可以被其他引用类型实现。比如<code>slice</code>, <code>map</code>都可以实现接口。</p>
-<h1 id="接口值"><a href="#接口值" class="headerlink" title="接口值"></a>接口值</h1><p>Go中，变量总会被一个定义明确的值初始化，一个接口的零值就是它的类型和值的部分是nil。一个接口值基于它的动态类型被描述为空或者非空，那么刚开始声明的接口值就是空的接口值，比如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var w io.Writer</div><div class="line">w == nil // true</div></pre></td></tr></table></figure>
-<p>如果执行了<code>w = os.Stdout</code>那么这个赋值过程调用了一个具体类型到接口类型的隐式转换，和<code>io.Writer(os.Stdout)</code>是等价的，而且都会刻画出操作的类型和值。那么接口值的动态类型就是<code>*os.File</code>，动态值是<code>os.Stdout</code>的拷贝。这样调用<code>w.Write()</code>就相当于<code>(*os.File).Write()</code></p>
-<p>两个接口值相等当且仅当它们都是nil值或者它们的动态类型相同并且值也根据动态类型来判断是相等的。如果两个值的动态类型是一样的，但是动态类型是不可比较的，那么就不能比较。</p>
-<p>可以使用反射来获取接口动态类型的名称。</p>
-<p>一个不包含值的nil接口值和一个刚好包含nil指针的接口值是不同的。因为包含nil指针的接口值是有类型的，只是包含空指针值的非空接口。</p>
-<h1 id="类型断言"><a href="#类型断言" class="headerlink" title="类型断言"></a>类型断言</h1><p>类型断言是一个使用在接口值上的操作，<code>x.(T)</code>，x表示一个接口的类型，T表示一个类型。一个类型断言检查它的操作对象的动态类型是否和断言的类型匹配。</p>
-<p>如果T是一个具体类型，那么检查x的动态类型是否和T相同，如果成功了，类型断言的结果是x的类型是T，就可以从操作对象中获取具体的值。</p>
-<p>如果T是一个接口类型，那么成功之后就会改变可以获取的方法集合，通常是更大。但是动态值没法获取到。</p>
-
-	
-	</div>
-  <a type="button" href="/2018/01/20/go语言圣经_note_interface/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2018/01/12/go语言圣经_note_1/" >Go语言圣经 - 读书笔记(1)</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2018-01-12 07:59:46  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><ul>
-<li><code>go run</code>编译一个或者多个以<code>.go</code>结尾的源文件，链接库文件，并运行最终生成的可执行文件。</li>
-<li><code>go build</code>会编译程序，并且保存编译结果。会生成可执行的二进制文件。</li>
-<li>每个源文件都以一条package声明语句开始。表示该文件属于哪个包。</li>
-<li>main包定义了一个独立可执行的程序而不是一个库。main函数是程序执行时候的入口。</li>
-<li><code>gofmt</code>将代码格式化为标准格式。<code>go fmt</code>会对包，默认为当前目录的<code>.go</code>源文件应用<code>gofmt</code>命令。</li>
-<li><code>goimports</code>可以根据代码需要, 自动地添加或删除import声明。</li>
-</ul>
-<h2 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h2><ul>
-<li>程序的命令行参数可从os包的Args变量获取，os.Args变量是一个字符串的切片</li>
-<li><code>os.Args[0]</code>, 是命令本身的名字</li>
-<li><code>s := &quot;&quot;</code> 短变量声明，只能用在函数内部，不能用于包变量。可以使用<code>var s string</code>, <code>var s = &quot;&quot;</code>, <code>var s string = &quot;&quot;</code></li>
-<li><code>strings</code>的<code>Join</code>函数: <code>strings.Join(os.Args[1:], &quot; &quot;)</code></li>
-</ul>
-<h2 id="查找重复的行"><a href="#查找重复的行" class="headerlink" title="查找重复的行"></a>查找重复的行</h2><ul>
-<li>map中的键，要能够用<code>==</code>运算符比较。map的迭代顺序不确定。</li>
-<li><code>%v</code> 变量的自然形式</li>
-<li><p>读取输入</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import &quot;bufio&quot;</div><div class="line">// func 下</div><div class="line">counts := make(map[string]int)</div><div class="line">input := bufio.NewScanner(os.Stdin)</div><div class="line">for input.Scan() &#123;</div><div class="line">    counts[input.Text()]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>函数参数为map的时候，map会以引用的拷贝来传递，被调用的函数对map的数据结构的修改，调用者函数的map也会相应变化。实际上传递的是目前map指针的拷贝，是另外一个指针，但是内部存储的值是指向同一块内存。</p>
-</li>
-<li><p>一行一行读取文件，以流模式读取输入</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">import &quot;os&quot;</div><div class="line">// func 下</div><div class="line">f, err := os.Open(filename)</div><div class="line">if err != nil &#123;</div><div class="line">    return</div><div class="line">&#125;</div><div class="line">input := bufio.NewScanner(f)</div><div class="line">for input.Scan() &#123;</div><div class="line">    counts[input.Text()]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>读取整个文件的数据</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import &quot;io/ioutil&quot;</div><div class="line">data, err := ioutil.ReadFile(filename)</div><div class="line">if err != nil &#123;</div><div class="line">    return</div><div class="line">&#125;</div><div class="line">// ReadFile返回字节切片，必须转换为String，才能用Split分割</div><div class="line">for _, line := range strings.Split(string(data), &quot;\n) &#123;</div><div class="line">    counts[line]++</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="获取URL"><a href="#获取URL" class="headerlink" title="获取URL"></a>获取URL</h2><ul>
-<li>struct是一组值或者叫字段的集合。</li>
-<li><p><code>http.Get</code>返回的<code>resp.Body</code>是一个可读的服务器响应流，使用<code>ioutil.ReadAll</code>函数从resp中读取到所有内容，然后使用<code>resp.Body.Close</code>关闭流。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">resp, err := http.Get(url)</div><div class="line">if err != nil &#123;</div><div class="line">    fmt.Fprintf(os.Stderr, &quot;fetch: %v\n&quot;, err)</div><div class="line">    os.Exit(1)</div><div class="line">&#125;</div><div class="line">b, err := ioutil.ReadAll(resp.Body)</div><div class="line">resp.Body.Close()</div><div class="line">if err != nil &#123;</div><div class="line">    fmt.Fprintf(os.Stderr, &quot;fetch: reading %s: %v\n&quot;, url, err)</div><div class="line">    os.Exit(1)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="并发获取多个URL"><a href="#并发获取多个URL" class="headerlink" title="并发获取多个URL"></a>并发获取多个URL</h2><ul>
-<li><code>nbytes, err := io.Copy(ioutil.Discard, resp.Body)</code> 会将响应的Body内容拷贝到<code>ioutil.Discard</code>输出流中，这个是一个垃圾桶。返回字节数。</li>
-<li>使用channel: <code>ch := make(chan string)</code></li>
-</ul>
-<h2 id="Web服务"><a href="#Web服务" class="headerlink" title="Web服务"></a>Web服务</h2><ul>
-<li>发送到这个服务的请求是一个<code>http.Request</code>类型的对象，这个对象中包含了请求中的一系列相关字段</li>
-<li>服务器每一次接收请求处理时都会另起一个goroutine，这样服务器就可以同一时间处理多个请求。</li>
-<li>共同的接口，被调用需要一个标准流输出时都可以满足。这个接口叫作<code>io.Writer</code></li>
-<li>方法是和命名类型关联的一类函数。Go语言里比较特殊的是方法可以被关联到任意一种命名类型。</li>
-<li>源代码文件或者函数开头之前写注释，可以被godoc检测到。</li>
-</ul>
-<h1 id="程序结构"><a href="#程序结构" class="headerlink" title="程序结构"></a>程序结构</h1><h2 id="命名，声明和变量"><a href="#命名，声明和变量" class="headerlink" title="命名，声明和变量"></a>命名，声明和变量</h2><ul>
-<li>驼峰式命名</li>
-<li><code>var</code>, <code>const</code>, <code>type</code>, <code>func</code>，type是类型</li>
-<li>包一级声明语句声明的名字可在整个包对应的每个源文件中访问。</li>
-<li><code>var 变量名字 类型 = 表达式</code>, <code>var i, j, k int</code></li>
-<li>接口或者引用类型变量对应的零值是nil。数组或者结构体聚合类型对应的零值是每个元素或者字段对应该类型的零值。</li>
-<li>指针对应的数据类型是<code>*int</code>，<code>*p</code>表示读取指针指向的变量的值。</li>
-<li>指针的零值是nil</li>
-<li>指针包含了变量地址，将指针作为参数调用函数，将来可以在函数中通过指针来更新变量的值。</li>
-<li><code>new(T)</code> 将创建一个T类型的匿名变量，初始化T类型的零值，然后返回变量地址，返回的指针类型为<code>*T</code></li>
-<li>从每个包级变量和每个当前运行函数的每一个局部变量开始，通过指针或者引用的访问路径遍历，是否可以找到该变量。</li>
-<li><p>在函数退出后，如果局部变量被全局变量引用了，那么该局部变量就是从函数中逃逸了，那么它将会被在堆中分配内存。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var global *int</div><div class="line"></div><div class="line">func f() &#123;</div><div class="line">    var x int</div><div class="line">    x = 1</div><div class="line">    global = &amp;x</div><div class="line">&#125;</div><div class="line"></div><div class="line">func g() &#123;</div><div class="line">    y := new(int)</div><div class="line">    *y = 1</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>如果将指向短生命周期对象的指针保存到具有长生命周期的对象中，特别是保存到全局变量时，会阻止对短生命周期对象的垃圾回收</p>
-</li>
-</ul>
-<h2 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h2><ul>
-<li><p>以下三个操作会返回ok</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">v, ok = m[key] // map</div><div class="line">v, ok = x.(string) // 类型断言</div><div class="line">v, ok = &lt;-ch // channel</div></pre></td></tr></table></figure>
-</li>
-<li><p>nil可以赋值给任何指针或者引用类型的变量。</p>
-</li>
-<li>两个值要想比较，那么第二个值必须是对第一个值类型对应的变量是可以赋值的。</li>
-</ul>
-<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><ul>
-<li>一个类型声明语句创建了一个新的类型名称，和现有类型具有相同的底层结构。比如<code>type Celsius float64</code>摄氏温度</li>
-<li>如果两个值有着不同的类型，那么就不能直接进行比较。</li>
-<li>使用fmt包的打印方法时候，将会优先使用该类型对应的String方法返回的结果。</li>
-</ul>
-<h2 id="包和文件"><a href="#包和文件" class="headerlink" title="包和文件"></a>包和文件</h2><ul>
-<li>每个包都有一个全局唯一的导入路径。比如<code>gopl.io/ch2/tempconv</code></li>
-<li>另外，每个包都有包名，一般是导入路径的最后一个字段。</li>
-<li>包的初始化首先是解决包级变量的依赖顺序，按照包级变量声明出现的顺序依次进行初始化。</li>
-<li>可以使用init函数来进行初始化函数，每个文件可以包含多个init初始化函数。按照声明的顺序被自动调用。</li>
-<li>导入的包，每个包只会被初始化一次。</li>
-<li>如果<code>for i := range pc</code>，是省略了第二个值，也可以是这样<code>for i, value := range pc</code></li>
-</ul>
-<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><ul>
-<li>作用域是一个编译时候的属性，生命周期是程序运行时候变量存在的有效时间段。</li>
-<li>语法块(花括弧包起来的)内部声明的名字是无法被外部语法块访问的。for循环的初始化，条件测试和循环后的部分都是隐式的词法域。</li>
-<li>导入的包是源文件级的作用域，只能在当前的文件中访问导入的包。</li>
-</ul>
-<h1 id="基础数据类型"><a href="#基础数据类型" class="headerlink" title="基础数据类型"></a>基础数据类型</h1><ol>
-<li>基础类型 - 数字，字符串和布尔</li>
-<li>复合类型 - 数组，结构体</li>
-<li>引用类型 - 指针，切片，字典，函数，通道</li>
-<li>接口类型</li>
-</ol>
-<h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><ul>
-<li>Unicode字符rune类型是和int32等价的类型，通常用于表示一个Unicode码点。</li>
-<li>byte是unit8的等价类型，用于强调数值是一个原始数据而不是小整数。</li>
-<li>无符号整数类型uintptr，容纳指针。</li>
-<li>需要将int当作int32类型的时候需要一个显式的类型转换。</li>
-<li><code>/</code>运算符的行为依赖操作数是否全为整数。</li>
-<li>许多整形数之间的相互转换并不会改变数值，它们只是告诉编译器如何解释这个值。</li>
-<li>字符面值通过单引号来包含对应字符。<code>%q</code>来打印单引号字符</li>
-<li>浮点数的相等比较是有问题的，切记</li>
-<li>数字到布尔型必须进行转换<code>i != 0</code></li>
-</ul>
-<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><ul>
-<li>文本字符串被解释为采用UTF8编码的Unicode码点(rune)序列</li>
-<li>如果试图访问超出字符串索引范围的字节会导致panic异常</li>
-<li>字符串的值是不可变的</li>
-<li>len函数回返回字符串中的字节数目，而非ASCII字符的UTF8编码会要两个或者多个字节。所以第i个字节并不一定是第i个字符。</li>
-<li></li>
-</ul>
-
-	
-	</div>
-  <a type="button" href="/2018/01/12/go语言圣经_note_1/#more" class="btn btn-default more">阅读此文</a>
-</div>
-
-		
-
-		</div>
-
-		<!-- pagination -->
-		<div>
-  		<center>
-		<div class="pagination">
-
-   
-    
-           <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>上一页</a>
-        
-
-        <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
- 
-       <a href="/page/2/" type="button" class="btn btn-default ">下一页<i class="fa fa-arrow-circle-o-right"></i></a>     
-        
-
-  
-</div>
-
-  		</center>
-		</div>
-
-		
-		
-	</div> <!-- col-md-9 -->
-
-	
-		<div class="col-md-3">
-	<div id="sidebar">
-	
-			
-  <div id="site_search">
-   <div class="form-group">
-    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="st-search-input st-default-search-input form-control"/>
-   </div>  
-  <div id="local-search-result"></div>
-  </div>
-
-
-		
-			
-	<div class="widget">
-		<h4>分类</h4>
-		<ul class="tag_box inline list-unstyled">
-		
-			<li><a href="/categories/Music/">Music<span>3</span></a></li>
-		
-			<li><a href="/categories/人生/">人生<span>4</span></a></li>
-		
-			<li><a href="/categories/历史/">历史<span>1</span></a></li>
-		
-			<li><a href="/categories/编程/">编程<span>80</span></a></li>
-		
-		</ul>
-	</div>
-
-		
-			
-	<div class="widget">
-		<h4>标签云</h4>
-		<ul class="tag_box inline list-unstyled">		
-		
-			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
-		
-			<li><a href="/tags/源码/">源码<span>6</span></a></li>
-		
-			<li><a href="/tags/Python/">Python<span>56</span></a></li>
-		
-			<li><a href="/tags/算法/">算法<span>14</span></a></li>
-		
-			<li><a href="/tags/LeetCode/">LeetCode<span>4</span></a></li>
-		
-			<li><a href="/tags/Go/">Go<span>4</span></a></li>
-		
-			<li><a href="/tags/Database/">Database<span>4</span></a></li>
-		
-			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
-		
-			<li><a href="/tags/读书笔记/">读书笔记<span>6</span></a></li>
-		
-			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
-		
-			<li><a href="/tags/计算机网络/">计算机网络<span>6</span></a></li>
-		
-			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
-		
-			<li><a href="/tags/interview/">interview<span>0</span></a></li>
-		
-			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
-		
-			<li><a href="/tags/日记/">日记<span>0</span></a></li>
-		
-			<li><a href="/tags/Song/">Song<span>3</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
-		
-			<li><a href="/tags/并发/">并发<span>5</span></a></li>
-		
-			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
-		
-			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
-		
-		
-		   <li><a href="/tags">...<span>48</span></a></li>
-		 
-		</ul>
-	</div>
-
-
-		
-			
-<div class="widget">
-  <h4>最新文章</h4>
-  <ul class="entry list-unstyled">
-    
-      <li>
-        <a href="/2018/02/14/mac_crontab/" ><i class="fa fa-file-o"></i>Mac 开启 Crontab</a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/13/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib相关问题和解决</a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/11/graph_in_golang/" ><i class="fa fa-file-o"></i>Golang 实现有向图</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
-      </li>
-    
-  </ul>
-</div>
-
-		
-			
-<div class="widget">
-	<h4>链接</h4>
-	<ul class="blogroll list-unstyled">
-	
-		<li><i class="fa fa-github"></i><a href="https://github.com/Microndgt" title="My Github account." target="_blank"]);">Github</a></li>
-	
-		<li><i class="fa fa-weibo"></i><a href="https://weibo.com/KevinDu2016" title="My weibo account." target="_blank"]);">My Weibo</a></li>
-	
-	</ul>
-</div>
-
-
-		
-	</div> <!-- sidebar -->
-</div> <!-- col-md-3 -->
-
-	
-	
-</div> <!-- row-fluid -->
-	</div>
-  </div>
-  <div class="container-narrow">
-  <footer> <p>
-  2016-2018
-  
-  &copy;  Kevin Du
-  
-    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
-    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
-</p>
- </footer>
-</div> <!-- container-narrow -->
-  
-
-
-  
-<a id="gotop" href="#">   
-  <span>⬆︎TOP</span>
-</a>
-
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/search.js"></script> 
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
-
-
-
-   <script type="text/javascript">      
-     var search_path = "search.xml";
-	 if (search_path.length == 0) {
-	 	search_path = "search.xml";
-	 }
-	 var path = "/" + search_path;
-     searchFunc(path, 'local-search-input', 'local-search-result');
-   </script>
 
 </body>
-   </html>
+</html>

@@ -1,334 +1,451 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="pragma" content="no-cache">
-  <meta http-equiv="cache-control" content="no-cache">
-  <meta http-equiv="expires" content="0">
-  
-  <title>协程 | SkyRover</title>
-  <meta name="author" content="Kevin Du">
-  
-  <meta name="description" content="仲夏夜之梦">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>标签: 协程 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,编程,算法,人生,博客">
+    <meta name="description" content="仲夏夜之梦">
+<meta name="keywords" content="Python,编程,算法,人生,博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SkyRover">
+<meta property="og:url" content="http://skyrover.me/tags/协程/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="仲夏夜之梦">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SkyRover">
+<meta name="twitter:description" content="仲夏夜之梦">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect active">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">标签: 协程</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header tags-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">标签: 协程</h1>
+        <h5 class="subtitle">
+            
+        </h5>
+    </div>
+
+    
+<div class="tabs-bar container">
+    <nav class="tags-list">
+        <a href="/tags" style="-webkit-order:-1;order:-1" class="tags-list-item waves-effect waves-button waves-light
+            ">全部</a>
+        
+            <a href="/tags/虾扯蛋/" style="-webkit-order:8;order:8" class="tags-list-item waves-effect waves-button waves-light">虾扯蛋</a>
+        
+            <a href="/tags/源码/" style="-webkit-order:9;order:9" class="tags-list-item waves-effect waves-button waves-light">源码</a>
+        
+            <a href="/tags/Python/" style="-webkit-order:10;order:10" class="tags-list-item waves-effect waves-button waves-light">Python</a>
+        
+            <a href="/tags/算法/" style="-webkit-order:11;order:11" class="tags-list-item waves-effect waves-button waves-light">算法</a>
+        
+            <a href="/tags/LeetCode/" style="-webkit-order:12;order:12" class="tags-list-item waves-effect waves-button waves-light">LeetCode</a>
+        
+            <a href="/tags/Go/" style="-webkit-order:13;order:13" class="tags-list-item waves-effect waves-button waves-light">Go</a>
+        
+            <a href="/tags/Database/" style="-webkit-order:14;order:14" class="tags-list-item waves-effect waves-button waves-light">Database</a>
+        
+            <a href="/tags/读书笔记/" style="-webkit-order:15;order:15" class="tags-list-item waves-effect waves-button waves-light">读书笔记</a>
+        
+            <a href="/tags/MySQL/" style="-webkit-order:16;order:16" class="tags-list-item waves-effect waves-button waves-light">MySQL</a>
+        
+            <a href="/tags/计算机网络/" style="-webkit-order:17;order:17" class="tags-list-item waves-effect waves-button waves-light">计算机网络</a>
+        
+            <a href="/tags/翻译/" style="-webkit-order:18;order:18" class="tags-list-item waves-effect waves-button waves-light">翻译</a>
+        
+            <a href="/tags/操作系统/" style="-webkit-order:19;order:19" class="tags-list-item waves-effect waves-button waves-light">操作系统</a>
+        
+            <a href="/tags/Song/" style="-webkit-order:20;order:20" class="tags-list-item waves-effect waves-button waves-light">Song</a>
+        
+            <a href="/tags/Linux/" style="-webkit-order:21;order:21" class="tags-list-item waves-effect waves-button waves-light">Linux</a>
+        
+            <a href="/tags/并发/" style="-webkit-order:22;order:22" class="tags-list-item waves-effect waves-button waves-light">并发</a>
+        
+            <a href="/tags/Celery/" style="-webkit-order:23;order:23" class="tags-list-item waves-effect waves-button waves-light">Celery</a>
+        
+            <a href="/tags/Flask/" style="-webkit-order:24;order:24" class="tags-list-item waves-effect waves-button waves-light">Flask</a>
+        
+            <a href="/tags/Pandas/" style="-webkit-order:25;order:25" class="tags-list-item waves-effect waves-button waves-light">Pandas</a>
+        
+            <a href="/tags/设计模式/" style="-webkit-order:26;order:26" class="tags-list-item waves-effect waves-button waves-light">设计模式</a>
+        
+            <a href="/tags/PyCharm/" style="-webkit-order:27;order:27" class="tags-list-item waves-effect waves-button waves-light">PyCharm</a>
+        
+            <a href="/tags/Docker/" style="-webkit-order:28;order:28" class="tags-list-item waves-effect waves-button waves-light">Docker</a>
+        
+            <a href="/tags/git/" style="-webkit-order:29;order:29" class="tags-list-item waves-effect waves-button waves-light">git</a>
+        
+            <a href="/tags/gevent/" style="-webkit-order:30;order:30" class="tags-list-item waves-effect waves-button waves-light">gevent</a>
+        
+            <a href="/tags/Jupyter/" style="-webkit-order:31;order:31" class="tags-list-item waves-effect waves-button waves-light">Jupyter</a>
+        
+            <a href="/tags/SQL学习指南/" style="-webkit-order:32;order:32" class="tags-list-item waves-effect waves-button waves-light">SQL学习指南</a>
+        
+            <a href="/tags/明朝/" style="-webkit-order:33;order:33" class="tags-list-item waves-effect waves-button waves-light">明朝</a>
+        
+            <a href="/tags/Python-Cookbook/" style="-webkit-order:34;order:34" class="tags-list-item waves-effect waves-button waves-light">Python_Cookbook</a>
+        
+            <a href="/tags/Web/" style="-webkit-order:35;order:35" class="tags-list-item waves-effect waves-button waves-light">Web</a>
+        
+            <a href="/tags/Shell/" style="-webkit-order:36;order:36" class="tags-list-item waves-effect waves-button waves-light">Shell</a>
+        
+            <a href="/tags/Thrift/" style="-webkit-order:37;order:37" class="tags-list-item waves-effect waves-button waves-light">Thrift</a>
+        
+            <a href="/tags/Mac/" style="-webkit-order:38;order:38" class="tags-list-item waves-effect waves-button waves-light">Mac</a>
+        
+            <a href="/tags/VSCode/" style="-webkit-order:39;order:39" class="tags-list-item waves-effect waves-button waves-light">VSCode</a>
+        
+            <a href="/tags/SQLAlchemy/" style="-webkit-order:40;order:40" class="tags-list-item waves-effect waves-button waves-light">SQLAlchemy</a>
+        
+            <a href="/tags/青海/" style="-webkit-order:41;order:41" class="tags-list-item waves-effect waves-button waves-light">青海</a>
+        
+            <a href="/tags/旅行/" style="-webkit-order:42;order:42" class="tags-list-item waves-effect waves-button waves-light">旅行</a>
+        
+            <a href="/tags/Traitlets/" style="-webkit-order:43;order:43" class="tags-list-item waves-effect waves-button waves-light">Traitlets</a>
+        
+            <a href="/tags/TED/" style="-webkit-order:44;order:44" class="tags-list-item waves-effect waves-button waves-light">TED</a>
+        
+            <a href="/tags/StackOverFlow/" style="-webkit-order:0;order:0" class="tags-list-item waves-effect waves-button waves-light">StackOverFlow</a>
+        
+            <a href="/tags/协程/" style="-webkit-order:1;order:1" class="tags-list-item waves-effect waves-button waves-light active">协程</a>
+        
+            <a href="/tags/pytest/" style="-webkit-order:2;order:2" class="tags-list-item waves-effect waves-button waves-light">pytest</a>
+        
+            <a href="/tags/unittest/" style="-webkit-order:3;order:3" class="tags-list-item waves-effect waves-button waves-light">unittest</a>
+        
+            <a href="/tags/宋词/" style="-webkit-order:4;order:4" class="tags-list-item waves-effect waves-button waves-light">宋词</a>
+        
+            <a href="/tags/R/" style="-webkit-order:5;order:5" class="tags-list-item waves-effect waves-button waves-light">R</a>
+        
+            <a href="/tags/金融/" style="-webkit-order:6;order:6" class="tags-list-item waves-effect waves-button waves-light">金融</a>
+        
+            <a href="/tags/matplotlib/" style="-webkit-order:7;order:7" class="tags-list-item waves-effect waves-button waves-light">matplotlib</a>
+        
+    </nav>
+    <!-- PC show more-->
+    <div class="tags-list-more">
+        <a href="javascript:;" onclick="BLOG.tabBar(this)" class="action tags-list-item waves-effect waves-circle waves-light"><i class="icon icon-ellipsis-h"></i></a>
+    </div>
+</div>
+
+
+
+</header>
+
+
+    <div class="container body-wrap fade">
+        
+            
+            
+            <h5>该标签文章数: 1</h5>
+            <div class="waterfall">
+            
+                <div class="waterfall-item">
+  <article class="article-card archive-article">
+    <div class="post-meta">
+      <time class="post-time" title="2017-08-16 10:14:27 10:14:27" datetime="2017-08-16T02:14:27.000Z"  itemprop="datePublished">2017-08-16 10:14:27</time>
+
+      
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+    </div>
+    
+
 
   
-  <meta property="og:site_name" content="SkyRover"/>
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/">翻译 - Testing (asyncio) coroutines with pytest</a>
+    </h3>
+  
 
-  
-    <meta property="og:image" content=""/>
-  
 
-  
-  
-    <link href="/favicon.png" rel="icon">
-  
-  
-  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
-  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytest/">pytest</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/协程/">协程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
 
-  <script src="/js/jquery-2.0.3.min.js"></script>
 
-  <!-- analytics -->
-  
+    </div>
+    
+  </article>
+</div>
+
+            
+            </div>
+        
+
+
+</div>
+
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/tags/协程/&title=SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/tags/协程/&title=SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/tags/协程/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=SkyRover&url=http://skyrover.me/tags/协程/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/tags/协程/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABx0lEQVR42u3aUa6DMAwEQO5/6b4DvELXNkmpNHxVVQsTPqxk7eOIr1fxOvvv/++PFRcuLu6Ymzy4ykqIyf3fLAkXF3cj96xiXH8+K1VnlOT+H2y4uLiP5F4TTwvQ5W9wcXF/nZsfWq5/iYuL+3xucvi5Lkx5mrHprIaLizvgVkvSis9L8l1cXNwWt9cgqcagvWe9eTouLu4Wbl5Q8hbL9TKq2xdcXNwncJMhid74RR6aFJqsuLi4C7hJeUro801MFI7g4uJu4fYKVq9pmmxrCnEtLi7uMm5SvKoN0aRl0nsduLi4+7m9tmjveNNr2+Di4u7hVgPTZBmTsDU6huHi4i7m9opUgsvvk7xRXFzc/dx5tDH5PoHi4uLu5CbHlXxzMxqqCMoiLi7uTu6kyZG3XqrDGR/Oari4uFu4vUJWHfCaLBUXF3c/t1rOqk3Tm3dhuLi4y7iv4lVtnVaXV7gdLi7uMm51JGIyZpFsniYBCi4u7r3cXvGaxx+FYc28+uLi4t7Knccc83i00ErBxcV9PLd6pKkGK9GEKS4u7le51YhkHnng4uJ+i5s3QvLSU41CopeCi4u7hVstJdWhzElEMsp3cXFxO9w/ScFSwabvpGEAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-70812759-1', 'auto');
-  ga('send', 'pageview');
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
 </script>
 
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
 
 
 <script>
-var _hmt = _hmt || [];
 (function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?cb5448498d7169c668b07c2b255d62c1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
 })();
 </script>
 
 
-</head>
-
- <body>  
-  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		<span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-	  <a class="navbar-brand" href="/">SkyRover</a>
-      <div class="collapse navbar-collapse nav-menu">
-		<ul class="nav navbar-nav">
-		  
-		  <li>
-			<a href="/archives" title="All the articles.">
-			  <i class=""></i>Archives
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/categories" title="All the categories.">
-			  <i class=""></i>Categories
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/tags" title="All the tags.">
-			  <i class=""></i>Tags
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/about" title="About me.">
-			  <i class=""></i>About
-			</a>
-		  </li>
-		  
-		  <li>
-			<a href="/atom.xml" title="Subscribe me.">
-			  <i class=""></i>RSS
-			</a>
-		  </li>
-		  
-		</ul>
-      </div>
-    </div> <!-- container -->
-</nav>
-<div class="clearfix"></div>
-
-  <div class="container">
-  	<div class="content">
-    	 
-
-<!-- title -->
-<div class="page-header">
-  <h1 class="archive-title-tag"><i class="fa fa-archive"></i> 协程</h1>
-</div>
-
-<div class="row page">
-  <!-- cols -->
-  
-  <div class="col-md-9">
-	
-
-	  <div id="top_search"></div>
-
-	  <div class="archive">
-		
-		
-		
-			
-			
-			<h4 class="archive-ul" data-toggle="collapse" data-target="#2017">2017<b class="caret"></b></h4>
-			<ul id="2017" class="collapse in">
-			
-		
-		<li class="listing-item">
-		<span class="date_class"> 2017-08-16 </span> &raquo;
-		
-		   <span class="title"><a href="/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/" >翻译 - Testing (asyncio) coroutines with pytest</a></span>
-		
-		</li>			
-		
-		</ul>
-		</div>
-
-</div> <!-- col-md-9/col-md-12 -->
-
-
-<div class="col-md-3">
-	<div id="sidebar">
-	
-			
-  <div id="site_search">
-   <div class="form-group">
-    <input type="text" id="local-search-input" name="q" results="0" placeholder="搜索" class="st-search-input st-default-search-input form-control"/>
-   </div>  
-  <div id="local-search-result"></div>
-  </div>
-
-
-		
-			
-	<div class="widget">
-		<h4>分类</h4>
-		<ul class="tag_box inline list-unstyled">
-		
-			<li><a href="/categories/Music/">Music<span>3</span></a></li>
-		
-			<li><a href="/categories/人生/">人生<span>4</span></a></li>
-		
-			<li><a href="/categories/历史/">历史<span>1</span></a></li>
-		
-			<li><a href="/categories/编程/">编程<span>80</span></a></li>
-		
-		</ul>
-	</div>
-
-		
-			
-	<div class="widget">
-		<h4>标签云</h4>
-		<ul class="tag_box inline list-unstyled">		
-		
-			<li><a href="/tags/虾扯蛋/">虾扯蛋<span>2</span></a></li>
-		
-			<li><a href="/tags/源码/">源码<span>6</span></a></li>
-		
-			<li><a href="/tags/Python/">Python<span>56</span></a></li>
-		
-			<li><a href="/tags/算法/">算法<span>14</span></a></li>
-		
-			<li><a href="/tags/LeetCode/">LeetCode<span>4</span></a></li>
-		
-			<li><a href="/tags/Go/">Go<span>4</span></a></li>
-		
-			<li><a href="/tags/Database/">Database<span>4</span></a></li>
-		
-			<li><a href="/tags/MongoDB/">MongoDB<span>0</span></a></li>
-		
-			<li><a href="/tags/读书笔记/">读书笔记<span>6</span></a></li>
-		
-			<li><a href="/tags/MySQL/">MySQL<span>3</span></a></li>
-		
-			<li><a href="/tags/计算机网络/">计算机网络<span>6</span></a></li>
-		
-			<li><a href="/tags/翻译/">翻译<span>16</span></a></li>
-		
-			<li><a href="/tags/interview/">interview<span>0</span></a></li>
-		
-			<li><a href="/tags/操作系统/">操作系统<span>4</span></a></li>
-		
-			<li><a href="/tags/日记/">日记<span>0</span></a></li>
-		
-			<li><a href="/tags/Song/">Song<span>3</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>3</span></a></li>
-		
-			<li><a href="/tags/并发/">并发<span>5</span></a></li>
-		
-			<li><a href="/tags/Celery/">Celery<span>4</span></a></li>
-		
-			<li><a href="/tags/Flask/">Flask<span>8</span></a></li>
-		
-		
-		   <li><a href="/tags">...<span>48</span></a></li>
-		 
-		</ul>
-	</div>
-
-
-		
-			
-<div class="widget">
-  <h4>最新文章</h4>
-  <ul class="entry list-unstyled">
-    
-      <li>
-        <a href="/2018/02/14/mac_crontab/" ><i class="fa fa-file-o"></i>Mac 开启 Crontab</a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/13/matplotlib_issue_solution/" ><i class="fa fa-file-o"></i>Mac系统下matplotlib相关问题和解决</a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/11/graph_in_golang/" ><i class="fa fa-file-o"></i>Golang 实现有向图</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/27/arp地址解析协议/" ><i class="fa fa-file-o"></i>ARP 地址解析协议</a>
-      </li>
-    
-      <li>
-        <a href="/2018/01/25/IP网际协议/" ><i class="fa fa-file-o"></i>IP 网际协议</a>
-      </li>
-    
-  </ul>
-</div>
-
-		
-			
-<div class="widget">
-	<h4>链接</h4>
-	<ul class="blogroll list-unstyled">
-	
-		<li><i class="fa fa-github"></i><a href="https://github.com/Microndgt" title="My Github account." target="_blank"]);">Github</a></li>
-	
-		<li><i class="fa fa-weibo"></i><a href="https://weibo.com/KevinDu2016" title="My weibo account." target="_blank"]);">My Weibo</a></li>
-	
-	</ul>
-</div>
-
-
-		
-	</div> <!-- sidebar -->
-</div> <!-- col-md-3 -->
-
-
-
-
-	</div>
-  </div>
-  <div class="container-narrow">
-  <footer> <p>
-  2016-2018
-  
-  &copy;  Kevin Du
-  
-    <br> Power by <a href="http://hexo.io/" target="_blank">Hexo</a> 
-    <br> Theme by <a href="http://github.com/wzpan/hexo-theme-freemind/">Freemind.386</a>.    
-</p>
- </footer>
-</div> <!-- container-narrow -->
-  
-
-
-  
-<a id="gotop" href="#">   
-  <span>⬆︎TOP</span>
-</a>
-
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/search.js"></script> 
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
-
-
-
-   <script type="text/javascript">      
-     var search_path = "search.xml";
-	 if (search_path.length == 0) {
-	 	search_path = "search.xml";
-	 }
-	 var path = "/" + search_path;
-     searchFunc(path, 'local-search-input', 'local-search-result');
-   </script>
 
 </body>
-   </html>
+</html>
