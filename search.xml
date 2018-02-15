@@ -6882,6 +6882,26 @@ code{
     
     <entry>
       <title></title>
+      <url>/css/vj.css</url>
+      <content type="html"><![CDATA[.problem_title{
+    color: blue;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.problem_des{
+    border-radius: 15px;
+    border-style: dotted;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(234, 235, 255);
+}
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
       <url>/css/black.css</url>
       <content type="html"><![CDATA[/*黑色主题*/
 /*主题*/
@@ -6968,26 +6988,6 @@ blockquote {
 .tag-cloud-tags a:hover{
     background: rgba(102,204,255,1);
 
-}
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>/css/vj.css</url>
-      <content type="html"><![CDATA[.problem_title{
-    color: blue;
-    font-weight: bolder;
-    font-size: 20px;
-}
-
-.problem_des{
-    border-radius: 15px;
-    border-style: dotted;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(234, 235, 255);
 }
 ]]></content>
     </entry>
