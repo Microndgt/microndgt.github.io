@@ -221,7 +221,13 @@
 <p>在运行一段程序时候，先执行导入，导入执行的代码，在运行时候就不会运行，因为已经绑定，直接使用。并且类装饰器不会对子类产生影响，除非子类调用了super()</p>
 <h1 id="元类"><a href="#元类" class="headerlink" title="元类"></a>元类</h1><p>元类是构建类的类，还是一种类，所以会被实例化等。因为类也是对象，所以类也会是另外一个类的实例。一般来说，Python中的类是type类的实例。type类是大部分类的元类。即<code>int.__class__</code>是<code>&lt;class &#39;type&#39;&gt;</code>。避免无限回溯，type是自身的实例。</p>
 <p>int是type类的实例，但是int是object的子类，而object类也是type类的实例。而object是大部分类的父类，所以type也是object的子类。</p>
-<p><img src="/img/metaclass1.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/metaclass1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>type和object的关系，还有type是自身的实例这两点都很神奇而且很难说明白。</p>
 <p>自己定义的元类，既是type的实例，也是type的子类，因为自己定义的元类从type继承了构建类的能力。元类可以实现<code>__init__</code>方法定制实例。</p>
 <p>在元类初始化的时候对类进行修改(也就是对实例进行修改)，因为类是元类的实例</p>

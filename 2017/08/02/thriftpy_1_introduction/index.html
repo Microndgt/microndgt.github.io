@@ -19,9 +19,9 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="源码,Python,Thrift">
+    <meta name="keywords" content="Python,源码,Thrift">
     <meta name="description" content="本文使用的工具是饿了么开发的thriftpy和gunicorn_thrift 简介thrift首先thrift是啥呢？thrift是一个软件框架，用来进行可扩展且跨语言的服务的开发。它结合了功能强大的软件堆栈和代码生成引擎，以构建在 C++, Java, Go,Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, JavaScript, Node">
-<meta name="keywords" content="源码,Python,Thrift">
+<meta name="keywords" content="Python,源码,Thrift">
 <meta property="og:type" content="article">
 <meta property="og:title" content="thriftpy源码解析(一) - 综述">
 <meta property="og:url" content="http://skyrover.me/2017/08/02/thriftpy_1_introduction/index.html">
@@ -211,8 +211,20 @@
 <h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>其实thrift是一种开源的跨语言的RPC服务框架，可以基于它进行RPC请求等的处理，而不用进行HTTP请求，减少资源消耗，提高效率。用于微服务是极好的，特别是数据量大的请求。</p>
 <h2 id="与HTTP的性能比较"><a href="#与HTTP的性能比较" class="headerlink" title="与HTTP的性能比较"></a>与HTTP的性能比较</h2><p>thrift 体积超小，使用起来比较麻烦，不如json容易，但是对于1.高并发、2.数据传输量大、3.多语言环境 比较适合。</p>
 <p>假定需要传输相同的内容，但使用不同的方式从 1、传输内容所产生的大小 2、传输过程中服务端和客户端所产生的开销，这2个方面进行比较，如下：</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt=""></p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><h2 id="thrift文件"><a href="#thrift文件" class="headerlink" title="thrift文件"></a>thrift文件</h2><p>首先定义thrift文件，这个文件相当于一个协议，在客户端和服务器都应该包含这个文件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring tdx_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue),</div><div class="line">truestring tdx_ability_status(),</div><div class="line">truestring tdx_increment(),</div><div class="line">truestring signal_ability(),</div><div class="line"></div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div><div class="line"></div><div class="line">service Read &#123;</div><div class="line">truestring summary(),</div><div class="line">truestring prices(),</div><div class="line">truestring ability()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>其中Calc和Read定义为两个服务，服务底下有多个函数，函数定义为返回值类型，函数名，函数参数</p>

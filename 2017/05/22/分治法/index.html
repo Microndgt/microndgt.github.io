@@ -257,10 +257,22 @@
 <p>节点：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Node:</div><div class="line">  lft = None</div><div class="line">truergt = None</div><div class="line">truelvl = 1</div><div class="line">truedef __init__(self, key, val):</div><div class="line">true  self.key = key</div><div class="line">truetrueself.val = val</div></pre></td></tr></table></figure>
 <p>偏斜即翻转操作</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def skew(node):</div><div class="line">  # 如果都没有左侧节点，说明不需要偏斜</div><div class="line">  if None in [node, node.left]: return node</div><div class="line">true# 左侧节点的level和现在节点不一样，说明不是一个内部节点</div><div class="line">trueif node.lft.lvl != node.lvl: return node</div><div class="line">true# 剩余情况就是既有左侧节点，而且level还一样</div><div class="line">true# 过程参考想象2-3树</div><div class="line">truelft = node.lft</div><div class="line">truenode.lft = lft.rgt</div><div class="line">truelft.rgt = node</div><div class="line">true# 将真正的节点返回给父节点进行索引</div><div class="line">truereturn lft</div></pre></td></tr></table></figure>
 <p>分割操作，溢出</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/split.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/split.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def split(node):</div><div class="line">  # 说明没有溢出的节点</div><div class="line">  if None in [node.rgt, node.rgt.rgt, node]: return node</div><div class="line">trueif node.rgt.rgt.lvl != node.lvl: return node</div><div class="line">true# 溢出操作，想象2-3节点</div><div class="line">truergt = node.rgt</div><div class="line">truenode.rgt = rgt.lft</div><div class="line">truergt.lft = node</div><div class="line">true# 将level上升，即上升到父节点</div><div class="line">truergt.lvl += 1</div><div class="line">truereturn rgt</div></pre></td></tr></table></figure>
 <p>插入操作，普通的二叉树剪枝操作加偏斜和溢出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def insert(node, key, val):</div><div class="line">  if node is None: return Node(key, val)</div><div class="line">trueif node.key == key: node.val = val</div><div class="line">trueelif key &lt; node.key:</div><div class="line">true  node.lft = insert(node.lft, key, val)</div><div class="line">trueelse:</div><div class="line">true  node.rgt = insert(node.rgt, key, val)</div><div class="line">true# 插入完成之后，对每一个节点进行偏斜和溢出（分割）操作</div><div class="line">true# 返回正确的node</div><div class="line">truenode = skew(node)</div><div class="line">truenode = split(node)</div><div class="line">truereturn node</div></pre></td></tr></table></figure>

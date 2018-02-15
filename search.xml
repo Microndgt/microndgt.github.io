@@ -277,7 +277,13 @@
 <h1 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h1><p>以太网对数据帧的长度有一个限制，最大值是1500和1492字节，链路层的这个特性称作MTU，最大传输单元。(标准以太网接口缺省的MTU为1500，而现在的以太网接口普遍可以通过配置使得MTU远远大于1500。)</p>
 <p>如果IP层有一个数据报要传，而且数据的长度比链路层的MTU还大，那么IP层就要进行分片(fragmentation)。</p>
 <p>可以在系统上执行<code>netstat -in</code>查看本机的MTU</p>
-<p><img src="/img/mtu.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/mtu.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <h1 id="路径MTU"><a href="#路径MTU" class="headerlink" title="路径MTU"></a>路径MTU</h1><p>在网络上，每个网络的链路层可能有不同的MTU，所以重要的不是两台主机所在网络的MTU，而是两台通信主机路径中的最小MTU，被称为路径MTU。</p>
 <h1 id="环回接口"><a href="#环回接口" class="headerlink" title="环回接口"></a>环回接口</h1><p>允许运行在同一台主机上的客户端和服务器程序通过TCP/IP通信，A类网络号127就是为环回接口预留的。大多数系统把IP地址127.0.0.1分配给这个接口，并且命名为localhost。一个传给环回接口的IP数据报不能在任何网络上出现。</p>
 <p>一般在传输层检测到目的端地址是环回地址的时候就可以省略部分传输层和所有网络层的逻辑。但是目前大部分还是完成传输层和网络层的过程，在IP数据报在离开网路层的时候把它返回给自己。</p>
@@ -316,8 +322,13 @@
 <p>基于上面原因，VSCode实在没法继续用了，不过转投PyCharm有个硬伤，快捷键。。哎，只好苦练了。下面就是Mac下的PyCharm 快捷键总结。</p>
 <p>另外用Goland写Golang应该还是不错的，现在我就觉得，就应该使用专业工具，通用工具虽然吊，但是bug很多。老牌的专业工具还是稳定好用。</p>
 <p>Goland注册服务器：<code>http://idea.youbbs.org</code></p>
-<p><img src="https://pic3.zhimg.com/80/v2-cb058dde6f3580de6589eedc8193acee_hd.jpg" alt=""></p>
-]]></content>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://pic3.zhimg.com/80/v2-cb058dde6f3580de6589eedc8193acee_hd.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>]]></content>
       
         <categories>
             
@@ -756,19 +767,49 @@
 <li><code>git push</code></li>
 </ul>
 <h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><p>一次提交会产生三种对象，一种是文件快照内容的blob对象，一种是记录目录树内容和对应文件blob对象索引的tree对象，以及包含tree对象和其他提交元数据的commit对象。</p>
-<p><img src="/img/git_2.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>再次提交之后，这次的commit对象就会包含上次提交对象的指针。</p>
 <p>分支，本质上是指向commit对象的可变指针。</p>
-<p><img src="/img/git_3.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_3.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p><code>git branch testing</code>或者<code>git checkout -b testing</code>会创建分支并且切换到这个分支。</p>
 <p>另外git还有一个HEAD指针，它指向正在工作的本地分支的指针，也就是当前分支的别名。</p>
-<p><img src="/img/git_4.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_4.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>经历一段时间的开发之后，就会是这个样子</p>
-<p><img src="/img/git_5.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_5.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p><code>git merge hotfix</code>将hotfix的分支合并到当前分支来。Fast forward的意思是可以直接顺着合并的分支走下去，也就是要合并的分支的直接祖先就是当前提交对象。</p>
 <p><code>git branch -d hotfix</code> 删除分支</p>
 <h2 id="分支的合并"><a href="#分支的合并" class="headerlink" title="分支的合并"></a>分支的合并</h2><p>如果要合并的分支的直接祖先不是当前提交对象，那么就会用两个分支的末端和它们的共同祖先来做三方合并计算。git会自动识别最佳同源合并点。然后对合并结果做新的快照，然后创建一个提交对象，这个提交对象有两个祖先。</p>
-<p><img src="/img/git_6.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/git_6.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>如果有冲突，手工解决冲突，并且将相关文件暂存，并且创建提交对象，然后完成合并。</p>
 <h2 id="分支的管理"><a href="#分支的管理" class="headerlink" title="分支的管理"></a>分支的管理</h2><ul>
 <li><code>git branch</code> 列出分支</li>
@@ -945,7 +986,13 @@
 <p>2017年，不像2016年去了很多地方玩，厦门，上海，武汉，桂林，广州，深圳，北京等等，2017年除了出差去了几次北京之外，就老老实实的在西安呆着。一个是自己工作也趋于稳定，另一个是女朋友也在西安，其实不需要到什么地方玩，两个人在一起去哪里都挺开心的。</p>
 <p>关于工作，今年主要做了三个系统，这两个系统都是公司主要的三个系统，然后做了两个工具库，目前呢，代码稳定，bug不多，还是比较满意的，这也是离职的一个原因，觉得在公司呆着，发展空间有限吧。另外看了几本书，流畅的Python，Python算法教程，其实看博客的文章，就知道自己这一年在做什么了，写博客从另一个角度来说，也是自己的一个成长和总结。然后看了不少源码。总之，今年学习了不少东西，想到这些，觉得今年还是蛮有收获的。</p>
 <p>关于感情，<code>得之我幸，失之我命</code>吧。不论如何，曾经的曾经都很开心，都有对未来的憧憬，都爱着对方，也许这就是最好的结局：想起曾经的过往也是冬日里的一丝温暖。谢谢。还记得那年的油菜花吗，也许我们只是迷失在花海之中了。关于未来，现在有一种失落感，希望能好起来吧。</p>
-<p><img src="/img/2017_summary_1.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2017_summary_1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>自己给自己做过很多承诺，后来没有几个完成的，比如健身，想起来就挺痛恨自己的—体重越来越高，希望2018年有所改变吧。</p>
 <p>加油。</p>
 ]]></content>
@@ -1137,7 +1184,13 @@
       <content type="html"><![CDATA[<p>翻译自：<a href="http://jupyter-client.readthedocs.io/en/latest/messaging.html" target="_blank" rel="external">Messaging in Jupyter</a></p>
 <p>这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。</p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>基本的设计可以用下图来解释：</p>
-<p><img src="/img/messaging_in_jupyter.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/messaging_in_jupyter.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>一个kernel可能同时连接一个或者多个前端。kernel有专注于以下功能的sockets:</p>
 <ol>
 <li>Shell: 这个单路由的socket允许从前端来的多个连接，这也是实现通过前端来对kernel来做代码运行请求，对象信息，提示符等功能的套接字。在这个套接字上的通信是一系列从每个前端到kernel的请求/回应的动作。</li>
@@ -1762,7 +1815,13 @@
 <p>在运行一段程序时候，先执行导入，导入执行的代码，在运行时候就不会运行，因为已经绑定，直接使用。并且类装饰器不会对子类产生影响，除非子类调用了super()</p>
 <h1 id="元类"><a href="#元类" class="headerlink" title="元类"></a>元类</h1><p>元类是构建类的类，还是一种类，所以会被实例化等。因为类也是对象，所以类也会是另外一个类的实例。一般来说，Python中的类是type类的实例。type类是大部分类的元类。即<code>int.__class__</code>是<code>&lt;class &#39;type&#39;&gt;</code>。避免无限回溯，type是自身的实例。</p>
 <p>int是type类的实例，但是int是object的子类，而object类也是type类的实例。而object是大部分类的父类，所以type也是object的子类。</p>
-<p><img src="/img/metaclass1.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/metaclass1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>type和object的关系，还有type是自身的实例这两点都很神奇而且很难说明白。</p>
 <p>自己定义的元类，既是type的实例，也是type的子类，因为自己定义的元类从type继承了构建类的能力。元类可以实现<code>__init__</code>方法定制实例。</p>
 <p>在元类初始化的时候对类进行修改(也就是对实例进行修改)，因为类是元类的实例</p>
@@ -2050,7 +2109,13 @@
       <url>/2017/10/21/ming_dynasty/</url>
       <content type="html"><![CDATA[<p>最近在看当代明月的<em>明朝那些事儿</em>，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了<em>历史通俗演义(前汉和后汉)</em>，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看<em>历史通俗演义(唐)</em>，最近看<em>明朝那些事</em>。读史你能感受到人之间的复杂，但是读着读着就能体会出来一个人的心理和历史规律，正所谓，<strong>鉴于往事，有资于治道</strong>，读史使人明智之意。</p>
 <p>从小学习的时候就喜欢形成一个框架，这样知识是被索引的，按照一条主线，将知识塞到框架的不同地方，记忆的会更牢固。其实更多的含义是自己能够一览全局。所以此处将明朝所读之处，按照皇帝的顺序塞进历史事件总结于此。不时根据自己的认识和理解进行更新。</p>
-<p><img src="/img/history/ming_history.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/history/ming_history.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>下面是基于这个明朝历史架构记录的大事件，也就是塞到框架里面的一个个组成部分。</p>
 <h1 id="朱元璋-明太祖"><a href="#朱元璋-明太祖" class="headerlink" title="朱元璋(明太祖)"></a>朱元璋(明太祖)</h1><ul>
 <li>与陈友琼鄱阳湖水战</li>
@@ -2503,7 +2568,13 @@
 <p>文件描述符表中每一项包含了文件描述符标志和指向文件表项的指针。</p>
 <p>文件表项是存在于内核中的文件表中的，内核为所有打开的文件维护了一个文件表。每个文件表项包含了 <strong>文件状态标志(读，写，同步，非阻塞等)</strong>，<strong>当前文件偏移量</strong>，<strong>指向该文件v节点表项的指针</strong>。</p>
 <p>每个打开文件都有一个v节点结构，v节点包含了 <strong>文件类型</strong> 以及对此文件进行 <strong>各种操作函数的指针</strong>。v节点还包含了该文件的i节点，即索引节点。这些信息是打开文件时候从磁盘上读入内存的，所以文件的所有信息都是随时可用的。比如i节点包含了文件所有者，文件长度，指向文件实际数据块在磁盘上所在位置的指针。</p>
-<p><img src="/img/WechatIMG44.jpeg" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/WechatIMG44.jpeg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>如果两个进程同时打开了一个文件，那么这两个进程分别有不同的文件表项，但是对一个给定的文件只有一个v节点表项，之所以每个进程获得自己的文件表项，因为这可以使得每个进程都有它自己的对该文件的偏移量。那么lseek这样的函数，修改的是文件表项中的文件偏移量。但是对于写入，修改的是i节点中的当前文件长度信息。</p>
 <p>可能有多个文件描述符项指向同一个文件表项，比如dup函数(复制一个文件描述符)，fork之后父进程，子进程各自的每一个打开文件描述符共享同一个文件表项。</p>
 <p>文件描述符标志，当前只定义了一个文件描述符标志<code>FD_CLOEXEC</code>，设置则表示当程序执行exec函数的时候，fd将被系统自动关闭。设置文件描述符标志只会影响一个文件描述符。</p>
@@ -2691,7 +2762,13 @@
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><code>pip install gprof2dot</code></p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>然后就可以使用gprof2dot来调取之前存储的分析结果来生成可视化数据了，相当好用，利用这张图，就可以看出你的程序哪里是性能瓶颈了，然后有目的的去优化，再分析！</p>
 <p><code>gprof2dot -f pstats mkm_run.prof | dot -Tpng -o mkm_run.png</code></p>
-<p><img src="/img/mkm_run.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/mkm_run.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>其中每个node的信息如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------------------------------+</div><div class="line">|        function name         |</div><div class="line">| total time % ( self time % ) |</div><div class="line">|         total calls          |</div><div class="line">+------------------------------+</div></pre></td></tr></table></figure>
 <p>每个edge的信息如下：</p>
@@ -2899,9 +2976,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
             <tag> Thrift </tag>
             
@@ -2935,7 +3012,13 @@
 <p>我们现在就可以在Flask应用中使用这个新的<code>self-signed</code>证书了，通过在<code>app.run()</code>中设置<code>ssl_context</code>参数，这个参数形式就是证书的文件名和私钥的文件名</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    return &quot;Hello World!&quot;</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.run(ssl_context=(&apos;cert.pem&apos;, &apos;key.pem&apos;))</div></pre></td></tr></table></figure>
 <p>浏览器仍然会继续就此证书进行询问，如果你检查这个证书，你就会发现当你创建这个证书时候填写的信息。</p>
-<p><img src="/img/flask_https/flask-ssl-03.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/flask_https/flask-ssl-03.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <h1 id="Using-Production-Web-Servers"><a href="#Using-Production-Web-Servers" class="headerlink" title="Using Production Web Servers"></a>Using Production Web Servers</h1><p>众所周知Flask的开发服务器只适合开发和测试，因此我们如何将SSL证书安装在一个生产服务器呢？</p>
 <p>如果你使用的gunicorn，你可以加上下面的命令行参数</p>
 <p><code>gunicorn --certfile cert.pem --keyfile key.pem -b 0.0.0.0:8000 hello:app</code></p>
@@ -3244,7 +3327,13 @@
 <blockquote>
 <p>When I see you<br>looking back at me<br>watching these eyes still<br>through your fingers<br>and your eyes<br>have told a thousand lights<br>but I cant tell this time<br>what you really mean it<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>I can sing another broken song<br>trying to hold on to your picture<br>out of face<br>you hide behind your face<br>it’s more than I can take<br>I know you run deeper<br>We’ve been crossing the wire<br>and still no spark<br>lost and tired, falling apart<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>you left me handing on the light<br>why you stealing all my time<br>you take a piss me<br>you’ve been driving too slow<br>so I gotta let you go<br>before you break me em~ yeah~<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>we’ve been together for forever tell me why why why<br>do we have to turn around and say goodbye bye bye<br>and the only thing that’s left to do is cry cry cry<br>nothing left for me to say to you but bye bye bye<br>Bye Bye</p>
 </blockquote>
-<p><img src="/img/byebyebye.jpeg" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/byebyebye.jpeg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 ]]></content>
       
         <categories>
@@ -3926,9 +4015,21 @@
 <blockquote>
 <p>我曾经跨过山和大海<br>也穿过人山人海<br>我曾经拥有着一切<br>转眼都飘散如烟<br>我曾经失落失望失掉所有方向<br>直到看见平凡才是唯一的答案<br>我曾经毁了我的一切<br>只想永远地离开<br>我曾经堕入无边黑暗<br>想挣扎无法自拔<br>我曾经像你像他像那野草野花<br>绝望着 也渴望着 也哭也笑平凡着</p>
 </blockquote>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai2.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>茶卡盐湖</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai1.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/qinghai1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 ]]></content>
       
         <categories>
@@ -4132,9 +4233,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
         </tags>
         
@@ -4238,7 +4339,13 @@
       <url>/2017/08/08/tqdm%20%E8%AF%A6%E8%A7%A3/</url>
       <content type="html"><![CDATA[<p>最近用到了一个库<a href="https://github.com/noamraph/tqdm" target="_blank" rel="external">tqdm</a>很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。</p>
 <p>以下是运行效果：</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" alt="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" alt="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" title="">
+                </div>
+                <div class="image-caption">http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png</div>
+            </figure>
 <p>那么就来看看这个库吧</p>
 <h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p>首先这个库的用法是这样的，很简单，这样运行后，就会有输出进度条了。简直丧心病狂的简单，那到底是怎么做到的呢！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from tqdm import tqdm</div><div class="line">for i in tqdm(range(10000)):</div><div class="line">    ...</div></pre></td></tr></table></figure>
@@ -4266,9 +4373,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
         </tags>
         
@@ -4324,9 +4431,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
             <tag> gevent </tag>
             
@@ -4384,9 +4491,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
             <tag> Thrift </tag>
             
@@ -4433,8 +4540,20 @@
 <h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>其实thrift是一种开源的跨语言的RPC服务框架，可以基于它进行RPC请求等的处理，而不用进行HTTP请求，减少资源消耗，提高效率。用于微服务是极好的，特别是数据量大的请求。</p>
 <h2 id="与HTTP的性能比较"><a href="#与HTTP的性能比较" class="headerlink" title="与HTTP的性能比较"></a>与HTTP的性能比较</h2><p>thrift 体积超小，使用起来比较麻烦，不如json容易，但是对于1.高并发、2.数据传输量大、3.多语言环境 比较适合。</p>
 <p>假定需要传输相同的内容，但使用不同的方式从 1、传输内容所产生的大小 2、传输过程中服务端和客户端所产生的开销，这2个方面进行比较，如下：</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt=""></p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/thrift_2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <h1 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h1><h2 id="thrift文件"><a href="#thrift文件" class="headerlink" title="thrift文件"></a>thrift文件</h2><p>首先定义thrift文件，这个文件相当于一个协议，在客户端和服务器都应该包含这个文件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">service Calc &#123;</div><div class="line">truestring tdx_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue),</div><div class="line">truestring tdx_ability_status(),</div><div class="line">truestring tdx_increment(),</div><div class="line">truestring signal_ability(),</div><div class="line"></div><div class="line">truestring sync_ability(</div><div class="line">truetrue1: string fundId,</div><div class="line">truetrue2: string assets,</div><div class="line">truetrue3: string flows,</div><div class="line">truetrue4: string stocks,</div><div class="line">truetrue5: string start,</div><div class="line">truetrue6: string stop,</div><div class="line">truetrue7: string calc_type,)</div><div class="line">&#125;</div><div class="line"></div><div class="line">service Read &#123;</div><div class="line">truestring summary(),</div><div class="line">truestring prices(),</div><div class="line">truestring ability()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>其中Calc和Read定义为两个服务，服务底下有多个函数，函数定义为返回值类型，函数名，函数参数</p>
@@ -4459,9 +4578,9 @@
         
         <tags>
             
-            <tag> 源码 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 源码 </tag>
             
             <tag> Thrift </tag>
             
@@ -4665,10 +4784,22 @@
 <p>节点：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Node:</div><div class="line">  lft = None</div><div class="line">truergt = None</div><div class="line">truelvl = 1</div><div class="line">truedef __init__(self, key, val):</div><div class="line">true  self.key = key</div><div class="line">truetrueself.val = val</div></pre></td></tr></table></figure>
 <p>偏斜即翻转操作</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/skew.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def skew(node):</div><div class="line">  # 如果都没有左侧节点，说明不需要偏斜</div><div class="line">  if None in [node, node.left]: return node</div><div class="line">true# 左侧节点的level和现在节点不一样，说明不是一个内部节点</div><div class="line">trueif node.lft.lvl != node.lvl: return node</div><div class="line">true# 剩余情况就是既有左侧节点，而且level还一样</div><div class="line">true# 过程参考想象2-3树</div><div class="line">truelft = node.lft</div><div class="line">truenode.lft = lft.rgt</div><div class="line">truelft.rgt = node</div><div class="line">true# 将真正的节点返回给父节点进行索引</div><div class="line">truereturn lft</div></pre></td></tr></table></figure>
 <p>分割操作，溢出</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/split.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/split.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def split(node):</div><div class="line">  # 说明没有溢出的节点</div><div class="line">  if None in [node.rgt, node.rgt.rgt, node]: return node</div><div class="line">trueif node.rgt.rgt.lvl != node.lvl: return node</div><div class="line">true# 溢出操作，想象2-3节点</div><div class="line">truergt = node.rgt</div><div class="line">truenode.rgt = rgt.lft</div><div class="line">truergt.lft = node</div><div class="line">true# 将level上升，即上升到父节点</div><div class="line">truergt.lvl += 1</div><div class="line">truereturn rgt</div></pre></td></tr></table></figure>
 <p>插入操作，普通的二叉树剪枝操作加偏斜和溢出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def insert(node, key, val):</div><div class="line">  if node is None: return Node(key, val)</div><div class="line">trueif node.key == key: node.val = val</div><div class="line">trueelif key &lt; node.key:</div><div class="line">true  node.lft = insert(node.lft, key, val)</div><div class="line">trueelse:</div><div class="line">true  node.rgt = insert(node.rgt, key, val)</div><div class="line">true# 插入完成之后，对每一个节点进行偏斜和溢出（分割）操作</div><div class="line">true# 返回正确的node</div><div class="line">truenode = skew(node)</div><div class="line">truenode = split(node)</div><div class="line">truereturn node</div></pre></td></tr></table></figure>
@@ -4749,7 +4880,13 @@
 <p>求2的指数的递归式：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def two_pow(i):</div><div class="line">    if i == 0: return 1</div><div class="line">truetruereturn two_pow(i-1) + two_pow(i-1)</div></pre></td></tr></table></figure>
 <p>如果引入memo函数，那么就很高效了，因为缓存会给第二次或者以上的调用直接返回值。这样就把递归调用的数量从2降到了1，从而将指数级的运行时间降为了线性级。666。当各级子问题之间存在重叠的时候，其带来的冗余运算就会变成指数级操作。如下图</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170520112910.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20170520112910.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>那么最开始的那个迭代版的最大子数组和的问题，转换成递归版就是这样：但是将这个代码在leetcode提交，爆栈~</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def maxSubArray(self, nums):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type nums: List[int]</div><div class="line">        :rtype: int</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        def dp_solution(i, max_num):</div><div class="line">            if i == 0:</div><div class="line">                return nums[0], nums[0]</div><div class="line">            dp_deep, max_num = dp_solution(i-1, max_num)</div><div class="line">            if dp_deep &gt; 0:</div><div class="line">                res = dp_deep + nums[i]</div><div class="line">            else:</div><div class="line">                res = nums[i]</div><div class="line">            max_num = max(max_num, res)</div><div class="line">            return res, max_num</div><div class="line">        return dp_solution(len(nums) - 1, 0)[1]</div></pre></td></tr></table></figure>
 <p>使用了记忆体来缓存，然后再用迭代的方式来逐个求值，这样就解决了上述问题，因为即使在做最大长度的时候，之前的值都已经缓存了，所以栈的深度就保持在1。</p>
@@ -4934,7 +5071,13 @@
 <p>前一段时间和官哥讲，突然有点想你了，官哥说，你不是想我了，你是在想过去。多长时间过去了，官哥依然是这么犀利。我是在怀念过去。讲真，大学的时光是我最开心的几年了。</p>
 <p>还记得高数老师的矫健身姿，记得6月份一个人在大教室复习高数的情景，当时一条说说是<code>借用官哥的说法：这是一个快速刷题的节奏～</code>，记得和官哥，健哥湖畔把酒，记得周至骑行130公里，记得骑行偶遇美景，记得秦岭野营看星星，记得秦岭河边烧烤，记得游戏开黑，记得看那本苏菲的世界，记得那一幕幕，在新校区的那两年真的，很美，很美好。</p>
 <p>还记得当时就对计算机有一种发自内心的兴趣，大一时候学C，学数据结构，学算法，看离散数学。可惜没有深入便止步于此！如果能坚持下来，就不是现在这个样子了。</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/sshuo.png" alt="当年的说说"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/sshuo.png" alt="当年的说说" title="">
+                </div>
+                <div class="image-caption">当年的说说</div>
+            </figure>
 <p>我都可以嘲笑自己了。时间过的飞快，转眼就毕业了，真希望生活可以重来。<code>If I Had My Life to Live Over</code>。</p>
 <p>昨晚，我梦见自己又回到了曼陀丽庄园。恍惚中，我站在那扇通往车道的大铁门前，好一会儿被挡在门外进不去。铁门上挂着把大锁，还系了根铁链。我在梦里大声叫唤看门人，却没人答应。于是我就凑近身子，隔着门上生锈的铁条朝里张望，这才明白曼陀丽已是座阒寂无人的空宅。</p>
 <p>那时有激情，有理想，有对未来的期待，有梦，关于文学，关于爱情，关于穿越世界的旅行，如今深夜饮酒，杯子掉下去，都是梦破碎的声音。如今却仍在说：我们看海去。。。</p>
@@ -6405,6 +6548,12 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Categories]]></title>
+      <url>/categories/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title></title>
       <url>/css/My.css</url>
       <content type="html"><![CDATA[/*@import "black.css";*/
@@ -6729,12 +6878,6 @@ code{
     padding: 10px;
 }
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Categories]]></title>
-      <url>/categories/index.html</url>
-      <content type="html"></content>
     </entry>
     
     <entry>

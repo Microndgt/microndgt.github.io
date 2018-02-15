@@ -225,7 +225,13 @@
 <h1 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h1><p>以太网对数据帧的长度有一个限制，最大值是1500和1492字节，链路层的这个特性称作MTU，最大传输单元。(标准以太网接口缺省的MTU为1500，而现在的以太网接口普遍可以通过配置使得MTU远远大于1500。)</p>
 <p>如果IP层有一个数据报要传，而且数据的长度比链路层的MTU还大，那么IP层就要进行分片(fragmentation)。</p>
 <p>可以在系统上执行<code>netstat -in</code>查看本机的MTU</p>
-<p><img src="/img/mtu.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/mtu.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <h1 id="路径MTU"><a href="#路径MTU" class="headerlink" title="路径MTU"></a>路径MTU</h1><p>在网络上，每个网络的链路层可能有不同的MTU，所以重要的不是两台主机所在网络的MTU，而是两台通信主机路径中的最小MTU，被称为路径MTU。</p>
 <h1 id="环回接口"><a href="#环回接口" class="headerlink" title="环回接口"></a>环回接口</h1><p>允许运行在同一台主机上的客户端和服务器程序通过TCP/IP通信，A类网络号127就是为环回接口预留的。大多数系统把IP地址127.0.0.1分配给这个接口，并且命名为localhost。一个传给环回接口的IP数据报不能在任何网络上出现。</p>
 <p>一般在传输层检测到目的端地址是环回地址的时候就可以省略部分传输层和所有网络层的逻辑。但是目前大部分还是完成传输层和网络层的过程，在IP数据报在离开网路层的时候把它返回给自己。</p>

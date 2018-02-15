@@ -19,20 +19,20 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="源码,Python">
-    <meta name="description" content="最近用到了一个库tqdm很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。 以下是运行效果：  那么就来看看这个库吧 用法首先这个库的用法是这样的，很简单，这样运行后，就会有输出进度条了。简直丧心病狂的简单，那到底是怎么做到的呢！ 123from tqdm import tqdmfor i in tqdm(range(10000)):    ... tqd">
-<meta name="keywords" content="源码,Python">
+    <meta name="keywords" content="Python,源码">
+    <meta name="description" content="最近用到了一个库tqdm很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。 以下是运行效果：                                                                                              http://7xq6lu.com1.z0.glb.clouddn.com/t">
+<meta name="keywords" content="Python,源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tqdm 详解">
 <meta property="og:url" content="http://skyrover.me/2017/08/08/tqdm 详解/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="最近用到了一个库tqdm很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。 以下是运行效果：  那么就来看看这个库吧 用法首先这个库的用法是这样的，很简单，这样运行后，就会有输出进度条了。简直丧心病狂的简单，那到底是怎么做到的呢！ 123from tqdm import tqdmfor i in tqdm(range(10000)):    ... tqd">
+<meta property="og:description" content="最近用到了一个库tqdm很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。 以下是运行效果：                                                                                              http://7xq6lu.com1.z0.glb.clouddn.com/t">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png">
 <meta property="og:updated_time" content="2017-09-01T06:35:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tqdm 详解">
-<meta name="twitter:description" content="最近用到了一个库tqdm很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。 以下是运行效果：  那么就来看看这个库吧 用法首先这个库的用法是这样的，很简单，这样运行后，就会有输出进度条了。简直丧心病狂的简单，那到底是怎么做到的呢！ 123from tqdm import tqdmfor i in tqdm(range(10000)):    ... tqd">
+<meta name="twitter:description" content="最近用到了一个库tqdm很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。 以下是运行效果：                                                                                              http://7xq6lu.com1.z0.glb.clouddn.com/t">
 <meta name="twitter:image" content="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
@@ -206,7 +206,13 @@
             
             <p>最近用到了一个库<a href="https://github.com/noamraph/tqdm" target="_blank" rel="external">tqdm</a>很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。</p>
 <p>以下是运行效果：</p>
-<p><img src="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" alt="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" alt="http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png" title="">
+                </div>
+                <div class="image-caption">http://7xq6lu.com1.z0.glb.clouddn.com/tqdm.png</div>
+            </figure>
 <p>那么就来看看这个库吧</p>
 <h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p>首先这个库的用法是这样的，很简单，这样运行后，就会有输出进度条了。简直丧心病狂的简单，那到底是怎么做到的呢！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from tqdm import tqdm</div><div class="line">for i in tqdm(range(10000)):</div><div class="line">    ...</div></pre></td></tr></table></figure>

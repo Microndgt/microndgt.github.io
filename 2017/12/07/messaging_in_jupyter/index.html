@@ -20,19 +20,19 @@
     
     
     <meta name="keywords" content="Python,翻译,Jupyter">
-    <meta name="description" content="翻译自：Messaging in Jupyter 这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。 介绍基本的设计可以用下图来解释：  一个kernel可能同时连接一个或者多个前端。kernel有专注于以下功能的sockets:  Shell: 这个单路由的socket允许从前端来的多个连接，这也是实现通过前端来对kernel">
+    <meta name="description" content="翻译自：Messaging in Jupyter 这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。 介绍基本的设计可以用下图来解释：">
 <meta name="keywords" content="Python,翻译,Jupyter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="翻译 - Messaging in Jupyter">
 <meta property="og:url" content="http://skyrover.me/2017/12/07/messaging_in_jupyter/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="翻译自：Messaging in Jupyter 这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。 介绍基本的设计可以用下图来解释：  一个kernel可能同时连接一个或者多个前端。kernel有专注于以下功能的sockets:  Shell: 这个单路由的socket允许从前端来的多个连接，这也是实现通过前端来对kernel">
+<meta property="og:description" content="翻译自：Messaging in Jupyter 这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。 介绍基本的设计可以用下图来解释：">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://skyrover.me/img/messaging_in_jupyter.png">
 <meta property="og:updated_time" content="2017-12-07T03:06:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="翻译 - Messaging in Jupyter">
-<meta name="twitter:description" content="翻译自：Messaging in Jupyter 这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。 介绍基本的设计可以用下图来解释：  一个kernel可能同时连接一个或者多个前端。kernel有专注于以下功能的sockets:  Shell: 这个单路由的socket允许从前端来的多个连接，这也是实现通过前端来对kernel">
+<meta name="twitter:description" content="翻译自：Messaging in Jupyter 这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。 介绍基本的设计可以用下图来解释：">
 <meta name="twitter:image" content="http://skyrover.me/img/messaging_in_jupyter.png">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
@@ -207,7 +207,13 @@
             <p>翻译自：<a href="http://jupyter-client.readthedocs.io/en/latest/messaging.html" target="_blank" rel="external">Messaging in Jupyter</a></p>
 <p>这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。</p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>基本的设计可以用下图来解释：</p>
-<p><img src="/img/messaging_in_jupyter.png" alt=""></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/messaging_in_jupyter.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
 <p>一个kernel可能同时连接一个或者多个前端。kernel有专注于以下功能的sockets:</p>
 <ol>
 <li>Shell: 这个单路由的socket允许从前端来的多个连接，这也是实现通过前端来对kernel来做代码运行请求，对象信息，提示符等功能的套接字。在这个套接字上的通信是一系列从每个前端到kernel的请求/回应的动作。</li>
