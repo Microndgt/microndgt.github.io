@@ -383,7 +383,7 @@
     <link href="http://skyrover.me/2018/01/27/arp%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE/"/>
     <id>http://skyrover.me/2018/01/27/arp地址解析协议/</id>
     <published>2018-01-27T00:59:30.000Z</published>
-    <updated>2018-01-27T01:29:24.000Z</updated>
+    <updated>2018-04-08T06:54:29.000Z</updated>
     
     <content type="html"><![CDATA[<p>当传送一个数据报的时候，会通过目的IP地址在IP路由表中进行选路，选择下一站的IP地址，但是在IP数据报中真正的目的IP地址不会变化，选出来的下一站IP地址只是会将数据报暂时的发送到这一站，而如何通过这个IP地址来发送数据呢。这就需要ARP地址解析协议了，通过ARP地址解析协议，就可以知道该IP地址对应的物理地址，这样就可以将IP数据报封装在一个以太网帧中，进而发送到下一站。</p>
 <p>所以地址解析为这两种不同的地址形式提供映射：32bit的IP地址和数据链路层使用的任何类型的地址(物理地址)。ARP为IP地址到对应的硬件地址之间提供了动态映射。因为内核(以太网驱动程序)必须知道目的端的硬件地址才能发送数据。</p>
@@ -422,10 +422,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="TCP-IP详解" scheme="http://skyrover.me/tags/TCP-IP%E8%AF%A6%E8%A7%A3/"/>
     
   </entry>
   
@@ -434,7 +438,7 @@
     <link href="http://skyrover.me/2018/01/25/IP%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE/"/>
     <id>http://skyrover.me/2018/01/25/IP网际协议/</id>
     <published>2018-01-25T13:03:30.000Z</published>
-    <updated>2018-01-25T14:58:47.000Z</updated>
+    <updated>2018-04-08T06:54:16.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h1><p>首先说一说IP地址，IP地址由4字节32bit构成，可以分为5类，A,B,C,D,E</p>
 <p>其中</p>
@@ -504,10 +508,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="TCP-IP详解" scheme="http://skyrover.me/tags/TCP-IP%E8%AF%A6%E8%A7%A3/"/>
     
   </entry>
   
@@ -516,7 +524,7 @@
     <link href="http://skyrover.me/2018/01/24/%E9%93%BE%E8%B7%AF%E5%B1%82/"/>
     <id>http://skyrover.me/2018/01/24/链路层/</id>
     <published>2018-01-24T15:03:30.000Z</published>
-    <updated>2018-01-24T15:03:21.000Z</updated>
+    <updated>2018-04-08T06:53:41.000Z</updated>
     
     <content type="html"><![CDATA[<p>链路层主要有三个目的：</p>
 <ol>
@@ -568,10 +576,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="TCP-IP详解" scheme="http://skyrover.me/tags/TCP-IP%E8%AF%A6%E8%A7%A3/"/>
     
   </entry>
   

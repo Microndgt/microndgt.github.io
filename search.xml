@@ -378,6 +378,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -386,6 +388,8 @@
         <tags>
             
             <tag> 计算机网络 </tag>
+            
+            <tag> TCP-IP详解 </tag>
             
         </tags>
         
@@ -455,6 +459,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -463,6 +469,8 @@
         <tags>
             
             <tag> 计算机网络 </tag>
+            
+            <tag> TCP-IP详解 </tag>
             
         </tags>
         
@@ -511,6 +519,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -519,6 +529,8 @@
         <tags>
             
             <tag> 计算机网络 </tag>
+            
+            <tag> TCP-IP详解 </tag>
             
         </tags>
         
