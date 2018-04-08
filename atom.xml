@@ -4480,7 +4480,7 @@
     <link href="http://skyrover.me/2017/08/20/%E5%90%8E%E4%BC%9A%E6%97%A0%E6%9C%9F/"/>
     <id>http://skyrover.me/2017/08/20/后会无期/</id>
     <published>2017-08-20T13:29:06.000Z</published>
-    <updated>2017-09-01T06:45:40.000Z</updated>
+    <updated>2018-04-08T12:22:11.000Z</updated>
     
     <content type="html"><![CDATA[<p>当天下午订票和租车，当天晚上赶火车，第二天到西宁，三天开了快800公里。</p>
 <blockquote>
@@ -4513,10 +4513,12 @@
     
       <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
     
+      <category term="旅行" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/%E6%97%85%E8%A1%8C/"/>
+    
+    
+      <category term="虾扯蛋" scheme="http://skyrover.me/tags/%E8%99%BE%E6%89%AF%E8%9B%8B/"/>
     
       <category term="青海" scheme="http://skyrover.me/tags/%E9%9D%92%E6%B5%B7/"/>
-    
-      <category term="旅行" scheme="http://skyrover.me/tags/%E6%97%85%E8%A1%8C/"/>
     
   </entry>
   
@@ -6826,7 +6828,7 @@
     <link href="http://skyrover.me/2017/01/05/%E7%BE%A4%E4%BD%93%E6%80%A7%E5%AD%A4%E7%8B%AC/"/>
     <id>http://skyrover.me/2017/01/05/群体性孤独/</id>
     <published>2017-01-05T10:52:38.000Z</published>
-    <updated>2017-09-01T06:01:32.000Z</updated>
+    <updated>2018-04-08T12:21:33.000Z</updated>
     
     <content type="html"><![CDATA[<p><code>you will rock!</code> 网易公开课</p>
 <p>Along Together</p>
@@ -6862,6 +6864,8 @@
     
       <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
     
+    
+      <category term="正经的" scheme="http://skyrover.me/tags/%E6%AD%A3%E7%BB%8F%E7%9A%84/"/>
     
       <category term="TED" scheme="http://skyrover.me/tags/TED/"/>
     
