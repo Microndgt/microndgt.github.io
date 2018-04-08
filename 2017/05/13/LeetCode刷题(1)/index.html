@@ -202,6 +202,7 @@
             
             
             
+            
             <p><strong><em> leetcode刷算法题已经全部迁移到这个项目下了：<a href="https://github.com/Microndgt/Algorithm-In-Leetcode" target="_blank" rel="external">Algorithm-In-Leetcode</a> </em></strong></p>
 <p><strong>终于刷完了leetcode入门篇，提高是可以看得见的，继续努力！</strong></p>
 <h1 id="Longest-Palindrome"><a href="#Longest-Palindrome" class="headerlink" title="Longest Palindrome"></a><a href="https://leetcode.com/problems/longest-palindrome/#/description" target="_blank" rel="external">Longest Palindrome</a></h1><p>其实这种题就是考察你能不能发现规律，硬来肯定不行，必须得找规律，然后解决就比较简单了，也不知道是不是我吃了药的缘故，很快就解决这道问题了，而且一击必中。规律就是出现次数为偶数的肯定是回文，然后下来就是最大的奇数肯定要记录的，如果奇数出现了大于1次，那么再出现奇数，就要将长度减一，这样就可以组成最大长度了。<code>Runtime: 42 ms Your runtime beats 95.32 % of python submissions.</code> 棒！</p>
@@ -342,7 +343,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def constructRectangle(self, area):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type area: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        import math</div><div class="line">        L_start = int(math.floor(math.sqrt(area)))</div><div class="line">        if L_start ** 2 == area:</div><div class="line">            return [L_start] * 2</div><div class="line">        for L in xrange(L_start, 0, -1):</div><div class="line">            if area % L:</div><div class="line">                continue</div><div class="line">            else:</div><div class="line">                return [int(area / L), L]</div></pre></td></tr></table></figure>
 <p>39ms版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class Solution(object):</div><div class="line">    def constructRectangle(self, area):</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        :type area: int</div><div class="line">        :rtype: List[int]</div><div class="line">        &quot;&quot;&quot;</div><div class="line">        import math</div><div class="line">        low = int(math.sqrt(area))</div><div class="line">        while low &gt; 0:</div><div class="line">            if area % low == 0:</div><div class="line">                return [int(area/low),int(low)]</div><div class="line">            low -= 1</div></pre></td></tr></table></figure>
-     
+
         </div>
 
         <blockquote class="post-copyright">

@@ -205,6 +205,7 @@
             
             
             
+            
             <p>本文使用的工具是饿了么开发的<a href="https://github.com/eleme/thriftpy" target="_blank" rel="external">thriftpy</a>和<a href="https://github.com/eleme/gunicorn_thrift" target="_blank" rel="external">gunicorn_thrift</a></p>
 <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="thrift"><a href="#thrift" class="headerlink" title="thrift"></a>thrift</h2><p>首先thrift是啥呢？thrift是一个软件框架，用来进行可扩展且跨语言的服务的开发。它结合了功能强大的软件堆栈和代码生成引擎，以构建在 C++, Java, Go,Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, JavaScript, Node.js, Smalltalk, and OCaml 这些编程语言间无缝结合的、高效的服务。</p>
 <h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>说thrift不得不提的是RPC, RPC(Remote Procedure Call Protocol) 远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。</p>
@@ -238,7 +239,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">import thriftpy</div><div class="line">from thriftpy.protocol import TJSONProtocolFactory, TMultiplexedProtocolFactory</div><div class="line">from thriftpy.transport import TBufferedTransportFactory</div><div class="line">from thriftpy.rpc import make_client</div><div class="line"></div><div class="line"></div><div class="line">ability_thrift = thriftpy.load(&quot;ability.thrift&quot;, module_name=&quot;ability_thrift&quot;)</div><div class="line">client = make_client(ability_thrift.Calc, &apos;127.0.0.1&apos;, 5004, proto_factory=TMultiplexedProtocolFactory(TJSONProtocolFactory(), &apos;ability_thrift.Calc&apos;), trans_factory=TBufferedTransportFactory())</div><div class="line">client.tdx_ability()</div></pre></td></tr></table></figure>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>thrift的使用是比直接HTTP请求要麻烦一点，并且如果服务器要改动函数签名，就需要更改thrift文件，并且客户端也需要同步，并且修改签名，但是这样的方式在微服务架构中带来的性能提升是很大的，值得作出这样的改变。</p>
 <h2 id="剧透"><a href="#剧透" class="headerlink" title="剧透"></a>剧透</h2><p>下一节将对thriftpy中的核心组件进行解析。</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

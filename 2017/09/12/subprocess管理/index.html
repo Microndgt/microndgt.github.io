@@ -202,6 +202,7 @@
             
             
             
+            
             <p>subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如<code>os.system</code>和<code>os.spawn*</code></p>
 <h1 id="使用subprocess模块"><a href="#使用subprocess模块" class="headerlink" title="使用subprocess模块"></a>使用subprocess模块</h1><h2 id="run函数"><a href="#run函数" class="headerlink" title="run函数"></a>run函数</h2><p>推荐的调用子进程的方式是使用<code>run()</code>函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的<code>Popen</code>接口。</p>
 <p><code>subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, shell=False, timeout=None, check=False)</code></p>
@@ -238,7 +239,7 @@
 <li><code>universal_newlines</code> 如果为False，stdin, stdout, stderr将会以二进制流的方式打开，并且没有行结束符。如果为True，将会以文本模式打开，并且使用<code>locale.getpreferredencoding(False)</code>返回的编码方式。对于stdin，<code>\n</code>将会被转换成默认的行分隔符<code>os.linesep</code>。对于stderr和stdout，所有的行结束都会被转换成<code>\n</code>。</li>
 <li><code>shell</code> 如果为True，指定的命令将会通过shell来执行，在你主要用Python来做控制，但是又想有shell的便利性的时候很有用，比如shell管道，文件名通配符，环境变量扩展，<code>~</code>用户家目录的扩展。然而，Python自己也实现了很多shell特性的东西，比如<code>glob</code>, <code>fnmatch</code>, <code>os.walk()</code>, <code>os.path.expandvars()</code>, <code>os.path.expanduser()</code>和<code>shutil</code></li>
 </ul>
-     
+
         </div>
 
         <blockquote class="post-copyright">

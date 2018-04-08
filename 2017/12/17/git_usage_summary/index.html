@@ -209,6 +209,7 @@
             
             
             
+            
             <h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p>Git会将变化的文件作快照后，记录在微型的文件系统中，保存一个指向这次快照的索引。在保存到git之前，所有数据都要进行内容的校验和(checksum)计算。使用SHA-1算法计算数据的校验和。</p>
 <h2 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h2><ul>
 <li>已提交 commited</li>
@@ -372,7 +373,7 @@
 <p>也可以加一个别名<code>git config --global alias.stash-unapply &#39;git stash show -p | git apply -R&#39;</code></p>
 <p>然后可以再<code>git stash apply</code>再恢复储藏</p>
 <h1 id="重写历史"><a href="#重写历史" class="headerlink" title="重写历史"></a>重写历史</h1><h2 id="改变最近一次提交"><a href="#改变最近一次提交" class="headerlink" title="改变最近一次提交"></a>改变最近一次提交</h2><p><code>git commit --amend</code>修改最近一次的提交说明，并且如果有文件在暂存区的时候，就会将其提交，作为新提交的快照。但是如果push上去了，就不要改上次的提交了。</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

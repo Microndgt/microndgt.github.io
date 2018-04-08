@@ -202,6 +202,7 @@
             
             
             
+            
             <p>翻译自: <a href="https://blog.miguelgrinberg.com/post/implementing-user-comments-with-sqlalchemy#" target="_blank" rel="external">Implementing User Comments with SQLAlchemy</a></p>
 <p>首先SQLAlchemy读音是<code>/ˈsiːkwəl/ /ˈælkəmi/</code>，alchemy的意思是<code>炼金术，改变事物的魔力</code></p>
 <p>一个在你的web应用中保持用户参与的基本方式是让他们可以写评论。现在有一些第三方服务提供了这些评论功能。Disqus和Facebook是可以在你的站点中提供评论最受欢迎的服务。</p>
@@ -262,7 +263,7 @@
 <p>但是改变点赞数的时候就比较麻烦，要给所有的回复更新点赞数</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Comment(db.Model):</div><div class="line">    def change_vote(vote):</div><div class="line">        for comment in Comment.query.filter(Comment.path.like(self.path + &apos;%&apos;)):</div><div class="line">            self.thread_vote = vote</div><div class="line">            db.session.add(self)</div><div class="line">        db.session.commit()</div></pre></td></tr></table></figure>
 <p>当然也可以直接使用update调用，而不是ORM。</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

@@ -202,6 +202,7 @@
             
             
             
+            
             <p>kennethreitz大神写的，<a href="https://github.com/kennethreitz/httpbin" target="_blank" rel="external">项目地址</a></p>
 <h1 id="MultiDict"><a href="#MultiDict" class="headerlink" title="MultiDict"></a><code>MultiDict</code></h1><p><code>MultiDict</code>是字典的一个子类用来为相同的key设置多个值，比如在wrappers中被解析函数。这是必要的因为一些HTML form表单会为同样的key设置多个值。</p>
 <p>它实现了多种标准的字典方法。本质上，它在一个key中将value放在一个list中作为值。但是标准字典的获取方法只会返回key中的第一个值。如果你想获取其他值，你必须使用如下所示的list方法。</p>
@@ -213,7 +214,7 @@
 <p>这里涉及到一个知识点，就是Python字典中的<code>keys()</code>, <code>values()</code>和<code>items()</code>方法返回的是view对象。它基于字典的实体提供了动态的view，意味着当字典改变的时候，view会表现这个改变。</p>
 <p>字典views会被迭代并且生成它们各自的数据，并且支持成员测试。</p>
 <p>keys和values会被以任意的顺序迭代，但是这个顺序不是随机的，而是基于不同的Python实现而不同，并且基于字典的插入和删除历史。如果keys，values和items views迭代过程中没有改变字典的话，它们之间的顺序将是一致的。因此可以使用<code>pair = zip(d.values(), d.keys())</code>，另外一种创建相同的列表的方法是<code>pair = [(v, k) for (k, v) in d.items()]</code></p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

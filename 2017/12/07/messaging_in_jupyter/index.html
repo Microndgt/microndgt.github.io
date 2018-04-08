@@ -204,6 +204,7 @@
             
             
             
+            
             <p>翻译自：<a href="http://jupyter-client.readthedocs.io/en/latest/messaging.html" target="_blank" rel="external">Messaging in Jupyter</a></p>
 <p>这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。</p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>基本的设计可以用下图来解释：</p>
@@ -304,7 +305,7 @@
 <p>消息类型：<code>display_data</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">content = &#123;</div><div class="line"></div><div class="line">    # 数据字典，key是MIME类型，值是以这种类型展现的原始数据</div><div class="line">    &apos;data&apos; : dict,</div><div class="line"></div><div class="line">    # 描述这个数据的所有元信息</div><div class="line">    &apos;metadata&apos; : dict,</div><div class="line"></div><div class="line">    # 临时数据</div><div class="line">    &apos;transient&apos;: dict,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>还有很多消息和消息类型，不过也都大同小异，等到真正要用到的时候再去看看吧。基本上前端和内核的通信原理和消息规范就是这样。</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

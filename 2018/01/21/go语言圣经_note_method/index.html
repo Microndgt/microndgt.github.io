@@ -202,6 +202,7 @@
             
             
             
+            
             <p>一个面向对象的程序会用方法来表达其属性和对应的操作，使用这个对象的用户就不需要直接去操作对象，而是借助方法来完成这些事情。</p>
 <p>OOP编程的关键点：封装和组合。</p>
 <h1 id="方法声明"><a href="#方法声明" class="headerlink" title="方法声明"></a>方法声明</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p Point)</span> <span class="title">Distance</span><span class="params">(q Point)</span> <span class="title">float64</span></span> &#123;</div><div class="line">     <span class="keyword">return</span> math.Hypot(q.X-p.X, q.Y-p.Y)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -227,7 +228,7 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">distance := Point.Distance</div><div class="line">fmt.Println(distance(p, q))</div></pre></td></tr></table></figure>
 <p>哎函数是第一类公民嘛，说了这么多。。。</p>
 <h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><p>一个对象的变量或者方法如果对调用方是不可见的话，就定义为封装。</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

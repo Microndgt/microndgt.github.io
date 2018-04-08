@@ -202,6 +202,7 @@
             
             
             
+            
             <p>Celery是一个实时处理和任务调度的分布式任务队列。任务就是消息，消息中的有效载荷中包含要执行任务需要的全部数据。</p>
 <p>这是其使用场景：</p>
 <ol>
@@ -273,7 +274,7 @@
 <h2 id="在Celery-tasks里面使用多进程"><a href="#在Celery-tasks里面使用多进程" class="headerlink" title="在Celery tasks里面使用多进程"></a>在Celery tasks里面使用多进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">from celery import Celery</div><div class="line">import time</div><div class="line">import multiprocessing as mp</div><div class="line">app = Celery(&apos;proj&apos;, broker=&apos;amqp://admin:admin@ip:5672&apos;, include=&quot;tasks&quot;)</div><div class="line">def test_func(i):</div><div class="line">    print &quot;beg...:&quot;, i</div><div class="line">    time.sleep(5)</div><div class="line">    print &quot;....end:&quot;, i</div><div class="line">    return i * 5</div><div class="line">@app.task</div><div class="line">def fun_1(n):</div><div class="line">    curr_proc = mp.current_process()</div><div class="line">    curr_proc.daemon = False</div><div class="line">    p = mp.Pool(mp.cpu_count())</div><div class="line">    curr_proc.daemon = True</div><div class="line">    for i in range(n):</div><div class="line">        p.apply_async(test_func, args=(i,))</div><div class="line">    p.close()</div><div class="line">    p.join()</div><div class="line">    return 1</div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    app.start()</div></pre></td></tr></table></figure>
 <p>直接启动多进程是肯定不可以的，因为是守候进程curr_proc.daemon=True，所以启多进程之前主动设置为非守候进程curr_proc.daemon=False，启动了以后再设为守候进程</p>
 <p><strong><em>参考自：Python Web 开发实战 – 董伟明</em></strong></p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

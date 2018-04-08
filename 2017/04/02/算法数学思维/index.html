@@ -202,6 +202,7 @@
             
             
             
+            
             <h1 id="两种求和式"><a href="#两种求和式" class="headerlink" title="两种求和式"></a>两种求和式</h1><h2 id="循环赛"><a href="#循环赛" class="headerlink" title="循环赛"></a>循环赛</h2><p>等价于，如果在一个有n个专家参加的会议中，需要和之间所有人互相握手，需要多少次握手。或者一个含有n个节点的完全图中应该有多少条边，都是一种整体对整体的计数问题。</p>
 <p>一种思维是这样的，每一位人都会跟别的人握手，这样就是<code>n*(n-1)</code>，然后每个人都握手了两次，所以除以2，<code>n*(n-1)/2</code>，这和<code>(n-1)+(n-2)+...+1</code>是等价的。</p>
 <h2 id="淘汰赛"><a href="#淘汰赛" class="headerlink" title="淘汰赛"></a>淘汰赛</h2><p>比赛合计为<code>k/2 + k/4 + k/8 + ... + 1</code>，也就是一个等比数列，<code>q=2, a1=1</code>，所以按公式<code>Sn=a1*(1-q^n)/(1-q)</code>计算下来是<code>2^n - 1</code>，但是在这里k和n是不相等的，k是总人数，n是序数，所以要有一个转换关系，查看关系可以知道<code>2^(n-1)=k/2</code>，所以<code>2^n=k</code>，<code>n=log2k</code>，代入<code>2^n - 1</code>计算可以得出最后结果是<code>n-1</code></p>
@@ -269,7 +270,7 @@
 <h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">def mergesort(seq):</div><div class="line">    mid = len(seq) / 2</div><div class="line">    lft, rgt = seq[:mid], seq[mid:]</div><div class="line">truetrueif len(lft) &gt; 1: lft = mergesort(lft)</div><div class="line">truetrueif len(rgt) &gt; 1: rgt = mergesort(rgt)</div><div class="line">truetrueres = []</div><div class="line">truetruewhile lft and rgt:</div><div class="line">truetrue    if lft[-1] &gt;= rgt[-1]:</div><div class="line">truetruetruetrue    # 默认移除最后一个元素</div><div class="line">truetruetruetrue    res.append(lft.pop())</div><div class="line">truetruetruetrueelse:</div><div class="line">truetruetruetrue    res.append(rgt.pop())</div><div class="line">truetrue# 由小到大排序</div><div class="line">truetrueres.reverse()</div><div class="line">truetruereturn (lft or rgt) + res</div></pre></td></tr></table></figure>
 <p>分析其时间复杂度：输入规模为n，有两重递归调用，每次子问题的规模为n/2，<code>res.reverse()</code>包含了一些操作，时间复杂度为Θ(n)，所以递归式为<code>T(n)=2T(n/2)+Θ(n)</code>，时间复杂度为<code>Θ(nlgn)</code></p>
 <p>参考自：<em>Python 算法教程</em> – <em>Magnus Lie Hetland</em></p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

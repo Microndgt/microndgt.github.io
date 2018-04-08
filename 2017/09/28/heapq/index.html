@@ -202,6 +202,7 @@
             
             
             
+            
             <p>翻译自<a href="https://docs.python.org/3/library/heapq.html" target="_blank" rel="external">heapq — Heap queue algorithm</a></p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>这个模块实现了堆队列算法，也被称为优先队列算法。</p>
 <p>堆是一个二叉树，其父节点比任何一个子节点都要小。这个实现使用了数组，对于所有大于0的k有<code>heap[k] &lt;= heap[2*k+1]</code>和<code>heap[k] &lt;= heap[2*k+2]</code>，对于第n层树，其有<code>2^(n-1)</code>个节点，比如第三层二叉树有四个节点。为了比较，不存在的元素将会被认为是无穷大的。堆中有意思的特性是最小的元素总是在树的根部，即heap[0]。</p>
@@ -241,7 +242,7 @@
 <p>对于n比较小的时候比较高效。如果比较大，使用<code>sorted()</code>函数更加高效，当n等于1的时候，使用min和max更高效。如果要重复使用这几个函数，那么考虑将其转换成heap。</p>
 <h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><p>堆排序可以通过向堆里push元素，然后每次pop出最小的元素来实现</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def heapsort(iterable):</div><div class="line">...     h = []</div><div class="line">...     for value in iterable:</div><div class="line">...         heappush(h, value)</div><div class="line">...     return [heappop(h) for i in range(len(h))]</div></pre></td></tr></table></figure>
-     
+
         </div>
 
         <blockquote class="post-copyright">

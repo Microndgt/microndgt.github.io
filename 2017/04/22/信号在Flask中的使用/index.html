@@ -202,6 +202,7 @@
             
             
             
+            
             <p>Blinker提供了信号支持，信号就是在框架核心功能或者一些Flask扩展发生动作时所发送的通知，用于解耦应用。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from blinker import signal</div><div class="line">started = signal(&apos;test-started&apos;)</div><div class="line">def each(round):</div><div class="line">  print(&quot;round &#123;&#125;&quot;.format(round))</div><div class="line">started.connect(each)</div><div class="line">started.send(1)</div></pre></td></tr></table></figure>
 <p>connect和send方法不再一个文件中的时候，通过started作为桥梁达到解耦的作用。</p>
@@ -240,7 +241,7 @@
 <p>signal定义和函数绑定如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from blinker import signal</div><div class="line">from weiboRobot import post_new</div><div class="line">new_post = signal(&apos;new_post&apos;)</div><div class="line">update_post = signal(&apos;update_post&apos;)</div><div class="line">new_history = signal(&apos;new_history&apos;)</div><div class="line">@new_post.connect</div><div class="line">def new_post_weibo(post):</div><div class="line">    status = &quot;SkyRover 发表了新的文章《&#123;&#125;》, 快来围观吧! http://skyrover.me/post/&#123;&#125;&quot;.format(post.title, post.id)</div><div class="line">    post_new(status)</div><div class="line">@update_post.connect</div><div class="line">def update_post_weibo(post):</div><div class="line">    status = &quot;SkyRover 更新文章《&#123;&#125;》, 快来围观吧! http://skyrover.me/post/&#123;&#125;&quot;.format(post.title, post.id)</div><div class="line">    post_new(status)</div><div class="line">@new_history.connect</div><div class="line">def new_history_weibo(history):</div><div class="line">    status = &apos;SkyRover 发布了新版本&lt;&#123;&#125;&gt;\n&#123;&#125;\n快来围观吧! http://skyrover.me&apos;.format(history.title, history.body)</div><div class="line">    post_new(status)</div></pre></td></tr></table></figure>
 <p><strong><em>参考自：Python Web 开发实战 – 董伟明</em></strong></p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

@@ -202,6 +202,7 @@
             
             
             
+            
             <p>今天用<code>nslookup</code>命令解析查看了<code>www.baidu.com</code>的IP地址，却意外发现百度的<code>CNAME</code>居然是<code>www.a.shifen.com</code></p>
 <h1 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">nslookup www.baidu.com</div><div class="line">&gt;&gt;&gt;</div><div class="line">Server:		119.29.29.29</div><div class="line">Address:	119.29.29.29#53</div><div class="line"></div><div class="line">Non-authoritative answer:</div><div class="line">www.baidu.com	canonical name = www.a.shifen.com.</div><div class="line">Name:	www.a.shifen.com</div><div class="line">Address: 220.181.111.188</div><div class="line">Name:	www.a.shifen.com</div><div class="line">Address: 220.181.112.244</div></pre></td></tr></table></figure>
 <p>接下来看看一个详细的baidu的dns解析过程</p>
@@ -222,7 +223,7 @@
 <p>直接访问之，正是百度的页面。</p>
 <h1 id="彩蛋-shifen-com由来"><a href="#彩蛋-shifen-com由来" class="headerlink" title="彩蛋-shifen.com由来"></a><code>彩蛋-shifen.com由来</code></h1><p><code>http://shifen.com</code>是百度当年为了竞价排名这个广告系统注册的，这个后台系统被命名为Shifen竞价排名，以前的销售系统现在还叫shifen销售系统。因为当年百度那个广告最低点击10分起价。为什么有这么一个奇怪的名字呢？在《相信中国》中，梁冬先生这样写道：“这个将来成就了百度80%收入的商业模式，最初的管理平台是由一个叫刘子正的实习生主持开发的。这也是唯一一个除<code>http://baidu.com</code>以外，外人所知的百度公司所拥有的国际域名。</p>
 <p>另外：大公司都跟“十分”有关系啊，比如腾讯——TenCent⋯⋯</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

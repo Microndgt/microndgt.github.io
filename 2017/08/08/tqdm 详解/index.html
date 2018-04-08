@@ -204,6 +204,7 @@
             
             
             
+            
             <p>最近用到了一个库<a href="https://github.com/noamraph/tqdm" target="_blank" rel="external">tqdm</a>很有意思，它可以直接在终端中输出百分比进度条，还有预计时间，很不错，今天特地来研究下这个库。</p>
 <p>以下是运行效果：</p>
 <figure class="image-bubble">
@@ -229,7 +230,7 @@
 <p>这里涉及一个<code>\r</code>和<code>\n</code>的区分，<code>\r</code>是回车，就是回到这一行的开始，<code>\n</code>是走纸，会到下一行，但是位置还在目前的列，所以<code>\r\n</code>就是到下一行的行首，但是Linux只用<code>\n</code>来换行，所以这里用<code>\r</code>来回到开头进行打印</p>
 <p>然后后面的就很好理解了，比如这一次打印长度80，下一次是50，那么多余的30就要用空白符来覆盖掉。</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这就是tqdm库的主要部分了，看起来挺简单的，要是自己做，需要控制很多细节问题，不过真的是学到了。</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

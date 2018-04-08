@@ -202,6 +202,7 @@
             
             
             
+            
             <p><code>unittest.mock</code> - mock object library</p>
 <p>翻译自<a href="https://docs.python.org/3/library/unittest.mock.html#" target="_blank" rel="external">unittest.mock — mock object library</a></p>
 <p><code>unittest.mock</code>是一个在Python中做测试的库，它允许你使用mock对象在测试中替换系统的的某些部分，并且假定它们是怎样使用的。</p>
@@ -244,7 +245,7 @@
 <p>如果使用错误，将会产生和生产代码一样的错误方式。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from unittest.mock import create_autospec</div><div class="line">def function(a, b, c):</div><div class="line">    pass</div><div class="line">mock_function = create_autospec(function, return_value=&apos;fishy&apos;)</div><div class="line">mock_function(1, 2, 3)  # &apos;fishy&apos;</div><div class="line">mock_function.assert_called_once_with(1, 2, 3)</div><div class="line">mock_function(&apos;wrong arguments&apos;)  # 异常TypeError</div></pre></td></tr></table></figure>
 <p><code>create_autospec</code>也可以使用在类中，它会赋值<code>__init__</code>方法的签名，在可调用对象中将会复制<code>__call__</code>方法的签名。</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

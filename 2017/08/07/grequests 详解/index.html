@@ -202,6 +202,7 @@
             
             
             
+            
             <p>前段时间看到这个grequests库，感觉还是蛮有意思的，所以今天来对这个库拆解拆解。这个库是崇拜的大神kennethreitz写的。Github地址：<a href="https://github.com/kennethreitz/grequests" target="_blank" rel="external">https://github.com/kennethreitz/grequests</a></p>
 <p>首先看到文档上给的示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">import grequests</div><div class="line"></div><div class="line">urls = [</div><div class="line">    &apos;http://www.heroku.com&apos;,</div><div class="line">    &apos;http://python-tablib.org&apos;,</div><div class="line">    &apos;http://httpbin.org&apos;,</div><div class="line">    &apos;http://python-requests.org&apos;,</div><div class="line">    &apos;http://fakedomain/&apos;,</div><div class="line">    &apos;http://kennethreitz.com&apos;</div><div class="line">]</div><div class="line"># 创建没有发送的request集合</div><div class="line">rs = (grequests.get(u) for u in urls)</div><div class="line"># 发送</div><div class="line">grequests.map(rs)</div><div class="line"></div><div class="line"># 为了防止超时和异常发生，可以指定一个异常处理器</div><div class="line">def exception_handler(request, exception):</div><div class="line">    print(&quot;Request failed&quot;)</div><div class="line"></div><div class="line">reqs = [</div><div class="line">   grequests.get(&apos;http://httpbin.org/delay/1&apos;, timeout=0.001),</div><div class="line">   grequests.get(&apos;http://fakedomain/&apos;),</div><div class="line">   grequests.get(&apos;http://httpbin.org/status/500&apos;)]</div><div class="line"></div><div class="line">grequests.map(reqs, exception_handler=exception_handler)</div><div class="line"></div><div class="line">另外，可以使用imap来提高性能</div></pre></td></tr></table></figure>
@@ -238,7 +239,7 @@
 <p>可以看到，如果不要求顺序的话，<code>imap_unordered</code>会比imap更加高效，同时imap版本肯定比map版本性能好，因为map版本必须全部运行完才能拿数据，但是imap版本只要有greenlet有结果就可以取出来。</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这个库就这么多内容，其实主要是使用gevent封装了一层requests，所以核心就是使用gevent，gevent怎么用，如何用，待我继续研究。</p>
 <p>不过通过看这个库，也了解到了简单的gevent的用法。</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

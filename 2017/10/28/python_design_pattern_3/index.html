@@ -202,6 +202,7 @@
             
             
             
+            
             <h1 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h1><p>责任链模式用于让多个对象来处理单个请求时，或者用于预先不知道应该由哪个对象来处理某个特定请求时候：</p>
 <ul>
 <li>一开始将请求发送给链中的第一个对象</li>
@@ -235,7 +236,7 @@
 <h1 id="模板模式"><a href="#模板模式" class="headerlink" title="模板模式"></a>模板模式</h1><p>模版设计模式关注的时消除代码冗余，无需改变算法结构就能重新定义一个算法的某些部分。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">from cowpy import cow</div><div class="line"></div><div class="line"></div><div class="line">def dots_style(msg):</div><div class="line">    msg = msg.capitalize()</div><div class="line">    msg = &apos;.&apos; * 10 + msg + &apos;.&apos; * 10</div><div class="line">    return msg</div><div class="line"></div><div class="line"></div><div class="line">def admire_style(msg):</div><div class="line">    msg = msg.upper()</div><div class="line">    return &apos;!&apos;.join(msg)</div><div class="line"></div><div class="line"></div><div class="line">def cow_style(msg):</div><div class="line">    msg = cow.milk_random_cow(msg)</div><div class="line">    return msg</div><div class="line"></div><div class="line"></div><div class="line">def generate_banner(msg, style=dots_style):</div><div class="line">    print(&apos;-- start of banner --&apos;)</div><div class="line">    print(style(msg))</div><div class="line">    print(&apos;-- end of banner --\n\n&apos;)</div><div class="line"></div><div class="line"></div><div class="line">def main():</div><div class="line">    msg = &apos;happy coding&apos;</div><div class="line">    [generate_banner(msg, style) for style in (dots_style, admire_style,</div><div class="line">                                            cow_style)]</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    main()</div></pre></td></tr></table></figure>
 <p>子类重写模版类的现有方法</p>
-     
+
         </div>
 
         <blockquote class="post-copyright">

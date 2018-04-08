@@ -202,6 +202,7 @@
             
             
             
+            
             <p>最近在Celery上折磨了好一阵子，最近终于差不多代码也比较稳定了，所以在这里把这几天踩的坑都写一写，不仅是方便自己，也是方便别人。</p>
 <h1 id="使用RabbitMQ而不是Redis做Broker"><a href="#使用RabbitMQ而不是Redis做Broker" class="headerlink" title="使用RabbitMQ而不是Redis做Broker"></a>使用RabbitMQ而不是Redis做Broker</h1><p>这是第一点，也是保证后面的一些程序正常运行的基础。使用Redis做Broker的时候，Celery的好些原语都不能正常起作用，至于为什么，并没有深究，这块就是作为经验而言吧。</p>
 <p>另外，使用RabbitMQ的时候，实例化celery的时候，Broker应该使用pyamqp: <code>celery = Celery(app.__name__, broker=&#39;pyamqp://{}:{}@{}:{}/{}&#39;.format(RM_USER, RM_PWD, RM_HOST, RM_PORT, RM_VHOST))</code></p>
@@ -279,7 +280,7 @@
 <p>实现的机理是：有一个循环任务不断的(间隔1秒)去检测group任务是否完成，当完成的时候调用signature回调。但是在Redis和 Memcached: 它们实现了一个计数器，在每个并行的任务完成后给计数器增加，直到计数器的数字等于并行任务的数目时候调用回调函数。</p>
 <p>另外：chord不能在redis 2.2版本以前正常工作，最好升级到2.2以上。</p>
 <p>尽可能的不要用chord因为它是一个同步操作，但是如果并行任务后面的同步操作是必须的，那么chord很有用，只有header里面的所有task任务被执行完成后并且返回，回调函数才可以被调用。header里面的每一步都是并行处理的，在不同的节点。然后header里面每个任务的返回值会传给回调函数，然后执行。返回的task id是回调函数的，所以可以等待最终的返回值。</p>
-<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><h2 id="starmap"><a href="#starmap" class="headerlink" title="starmap"></a>starmap</h2><h2 id="chunks"><a href="#chunks" class="headerlink" title="chunks"></a>chunks</h2><h1 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h1><h2 id="AsyncResult"><a href="#AsyncResult" class="headerlink" title="AsyncResult"></a>AsyncResult</h2><h2 id="GroupResult"><a href="#GroupResult" class="headerlink" title="GroupResult"></a>GroupResult</h2><h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1>     
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><h2 id="starmap"><a href="#starmap" class="headerlink" title="starmap"></a>starmap</h2><h2 id="chunks"><a href="#chunks" class="headerlink" title="chunks"></a>chunks</h2><h1 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h1><h2 id="AsyncResult"><a href="#AsyncResult" class="headerlink" title="AsyncResult"></a>AsyncResult</h2><h2 id="GroupResult"><a href="#GroupResult" class="headerlink" title="GroupResult"></a>GroupResult</h2><h1 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h1><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1>
         </div>
 
         <blockquote class="post-copyright">
