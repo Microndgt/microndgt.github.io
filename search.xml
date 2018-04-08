@@ -3,6 +3,33 @@
   
     
     <entry>
+      <title><![CDATA[江湖悠悠，饮一壶浊酒]]></title>
+      <url>/2018/04/08/%E6%B1%9F%E6%B9%96%E6%82%A0%E6%82%A0/</url>
+      <content type="html"><![CDATA[<p>2018年将不再更新朋友圈，微博。</p>
+<p>是时候与过去说再见，从此相忘于江湖。</p>
+<p>江湖悠悠，饮一壶浊酒</p>
+<p>醉里看百花深处愁</p>
+<p>梦里殇此情高几楼</p>
+<p>独在此做我想做的事情。</p>
+<p>再也不见。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 人生 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 虾扯蛋 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[文件系统]]></title>
       <url>/2018/04/07/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</url>
       <content type="html"><![CDATA[<p>进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-)</p>
@@ -3201,9 +3228,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
             <tag> Thrift </tag>
             
@@ -4460,9 +4487,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
         </tags>
         
@@ -4600,9 +4627,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
         </tags>
         
@@ -4658,9 +4685,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
             <tag> gevent </tag>
             
@@ -4718,9 +4745,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
             <tag> Thrift </tag>
             
@@ -4805,9 +4832,9 @@
         
         <tags>
             
-            <tag> Python </tag>
-            
             <tag> 源码 </tag>
+            
+            <tag> Python </tag>
             
             <tag> Thrift </tag>
             
@@ -6766,7 +6793,6 @@
 <li>每天都能坚持读书</li>
 <li>把这个博客改造一下</li>
 <li>健身减肥，体重下降5kg</li>
-<li>有一个女朋友</li>
 </ol>
 <h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><p>爱玩，爱旅行，不爱折腾了。。。</p>
 <p>经历过失学，失业，失身，失恋但是仍未成熟</p>
@@ -6789,39 +6815,6 @@
 <h2 id="友链"><a href="#友链" class="headerlink" title="友链"></a>友链</h2><ul>
 <li><a href="https://surmon.me" target="_blank" rel="external">「 Surmon 」</a>  <a href="http://jooger.me" target="_blank" rel="external">「 Jooger 」</a></li>
 </ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Categories]]></title>
-      <url>/categories/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>/css/My.css</url>
-      <content type="html"><![CDATA[/*@import "black.css";*/
-/*@import "next.css"*/
-
-@import "add-on.css";
-/*@import "spfk.css";*/
-
-/* 单行代码框 加粗 边距 */
-code,b,strong{
-    margin: 0px 5px 0px 5px;
-}
-
-.digit{
-    color: #fff;
-    background-color: #727272;
-
-    border-radius: 3px;
-    padding: 2px 5px;
-
-    vertical-align:super;
-    font-size: 10px;
-}
 ]]></content>
     </entry>
     
@@ -6864,6 +6857,12 @@ code,b,strong{
     list-style: none;
 }
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Categories]]></title>
+      <url>/categories/index.html</url>
+      <content type="html"></content>
     </entry>
     
     <entry>
@@ -7127,6 +7126,33 @@ code{
     
     <entry>
       <title></title>
+      <url>/css/My.css</url>
+      <content type="html"><![CDATA[/*@import "black.css";*/
+/*@import "next.css"*/
+
+@import "add-on.css";
+/*@import "spfk.css";*/
+
+/* 单行代码框 加粗 边距 */
+code,b,strong{
+    margin: 0px 5px 0px 5px;
+}
+
+.digit{
+    color: #fff;
+    background-color: #727272;
+
+    border-radius: 3px;
+    padding: 2px 5px;
+
+    vertical-align:super;
+    font-size: 10px;
+}
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
       <url>/css/black.css</url>
       <content type="html"><![CDATA[/*黑色主题*/
 /*主题*/
@@ -7239,38 +7265,6 @@ blockquote {
     
     <entry>
       <title></title>
-      <url>/js/My.js</url>
-      <content type="html"><![CDATA[//document.write("<script language="javascript" src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>");
-document.write("<script language="javascript" src="/js/jquery.js"></script>");
-document.write("<script language="javascript" src="/js/after_jquery.js"></script>");
-document.write("<script language="javascript" src="/js/spfk.js"></script>");
-
-
-//网站重定向
-host = window.location.host
-if(host=="ohyee.coding.me")
-    window.location.href = window.location.href.replace(/ohyee.coding.me/,"www.oyohyee.com")
-
-//to https
-protocol = window.location.protocol
-if(protocol == "http:" && host!="localhost:4000")
-  window.location.href = window.location.href.replace("http://","https://")
-
-//百度站长统计
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?c3c4a93be88257973d97af02f735ed4e";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
-
-//alert("加载完成");
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
       <url>/js/about.js</url>
       <content type="html"><![CDATA[//生成一个 Work 对象
 function Work(title,url,img,introduction,tag){
@@ -7302,6 +7296,38 @@ function ShowWork(){
 }
 
 ShowWork();
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>/js/My.js</url>
+      <content type="html"><![CDATA[//document.write("<script language="javascript" src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>");
+document.write("<script language="javascript" src="/js/jquery.js"></script>");
+document.write("<script language="javascript" src="/js/after_jquery.js"></script>");
+document.write("<script language="javascript" src="/js/spfk.js"></script>");
+
+
+//网站重定向
+host = window.location.host
+if(host=="ohyee.coding.me")
+    window.location.href = window.location.href.replace(/ohyee.coding.me/,"www.oyohyee.com")
+
+//to https
+protocol = window.location.protocol
+if(protocol == "http:" && host!="localhost:4000")
+  window.location.href = window.location.href.replace("http://","https://")
+
+//百度站长统计
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c3c4a93be88257973d97af02f735ed4e";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+
+//alert("加载完成");
 ]]></content>
     </entry>
     

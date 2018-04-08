@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-04-08T06:48:11.000Z</updated>
+  <updated>2018-04-08T12:19:31.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -16,11 +16,47 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>江湖悠悠，饮一壶浊酒</title>
+    <link href="http://skyrover.me/2018/04/08/%E6%B1%9F%E6%B9%96%E6%82%A0%E6%82%A0/"/>
+    <id>http://skyrover.me/2018/04/08/江湖悠悠/</id>
+    <published>2018-04-08T12:15:49.000Z</published>
+    <updated>2018-04-08T12:19:31.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>2018年将不再更新朋友圈，微博。</p>
+<p>是时候与过去说再见，从此相忘于江湖。</p>
+<p>江湖悠悠，饮一壶浊酒</p>
+<p>醉里看百花深处愁</p>
+<p>梦里殇此情高几楼</p>
+<p>独在此做我想做的事情。</p>
+<p>再也不见。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;2018年将不再更新朋友圈，微博。&lt;/p&gt;
+&lt;p&gt;是时候与过去说再见，从此相忘于江湖。&lt;/p&gt;
+&lt;p&gt;江湖悠悠，饮一壶浊酒&lt;/p&gt;
+&lt;p&gt;醉里看百花深处愁&lt;/p&gt;
+&lt;p&gt;梦里殇此情高几楼&lt;/p&gt;
+&lt;p&gt;独在此做我想做的事情。&lt;/p&gt;
+&lt;p&gt;再也不见。&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
+    
+    
+      <category term="虾扯蛋" scheme="http://skyrover.me/tags/%E8%99%BE%E6%89%AF%E8%9B%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>文件系统</title>
     <link href="http://skyrover.me/2018/04/07/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"/>
     <id>http://skyrover.me/2018/04/07/文件系统/</id>
     <published>2018-04-07T10:06:03.000Z</published>
-    <updated>2018-04-08T06:48:11.000Z</updated>
+    <updated>2018-04-08T06:55:01.000Z</updated>
     
     <content type="html"><![CDATA[<p>进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-)</p>
 <p>文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。</p>
@@ -1288,7 +1324,7 @@
     <link href="http://skyrover.me/2017/12/13/2017_summary/"/>
     <id>http://skyrover.me/2017/12/13/2017_summary/</id>
     <published>2017-12-13T12:42:46.000Z</published>
-    <updated>2017-12-13T14:29:28.000Z</updated>
+    <updated>2018-04-08T07:09:37.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近对公司的量化平台做了一个比较大的重构级别的操作，花了三个星期的时间，效果很好，我的感觉就是类似于将之前长歪的树给颁直的快感吧。看到现在代码稳定的运行着，自己也算是比较满意，然后这段时间也提了离职，觉得这对公司也算是一个交代吧。</p>
 <p>2017年，不像2016年去了很多地方玩，厦门，上海，武汉，桂林，广州，深圳，北京等等，2017年除了出差去了几次北京之外，就老老实实的在西安呆着。一个是自己工作也趋于稳定，另一个是女朋友也在西安，其实不需要到什么地方玩，两个人在一起去哪里都挺开心的。</p>
@@ -3356,9 +3392,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -4674,9 +4710,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
   </entry>
   
@@ -4821,9 +4857,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
   </entry>
   
@@ -4881,9 +4917,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="gevent" scheme="http://skyrover.me/tags/gevent/"/>
     
@@ -4943,9 +4979,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
@@ -5035,9 +5071,9 @@
       <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
       <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
       <category term="Thrift" scheme="http://skyrover.me/tags/Thrift/"/>
     
