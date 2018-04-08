@@ -19,16 +19,16 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="操作系统">
+    <meta name="keywords" content="操作系统,现代操作系统">
     <meta name="description" content="进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-) 文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。 文件 目录是管理文件系统结构的系统文件 字符特殊文件和输入/输出有关，用于串行I/O类设备 块特殊文件用于磁盘类设备 普通文">
-<meta name="keywords" content="操作系统">
+<meta name="keywords" content="操作系统,现代操作系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文件系统">
 <meta property="og:url" content="http://skyrover.me/2018/04/07/文件系统/index.html">
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-) 文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。 文件 目录是管理文件系统结构的系统文件 字符特殊文件和输入/输出有关，用于串行I/O类设备 块特殊文件用于磁盘类设备 普通文">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-08T00:17:56.000Z">
+<meta property="og:updated_time" content="2018-04-08T06:48:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文件系统">
 <meta name="twitter:description" content="进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-) 文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。 文件 目录是管理文件系统结构的系统文件 字符特殊文件和输入/输出有关，用于串行I/O类设备 块特殊文件用于磁盘类设备 普通文">
@@ -156,7 +156,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
 
 
             
@@ -188,7 +188,7 @@
             <time class="post-time" title="2018-04-07 18:06:03 18:06:03" datetime="2018-04-07T10:06:03.000Z"  itemprop="datePublished">2018-04-07 18:06:03</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
 
 
             
@@ -275,7 +275,10 @@
 </ul>
 </li>
 </ul>
-<h2 id="目录的实现"><a href="#目录的实现" class="headerlink" title="目录的实现"></a>目录的实现</h2>     
+<h2 id="目录的实现"><a href="#目录的实现" class="headerlink" title="目录的实现"></a>目录的实现</h2><p>打开文件时，操作系统利用路径名找到目录项，目录项中提供了查找文件磁盘块所需要的信息。目录系统的主要功能是把ASCII文件名映射为定位文件数据所需要的信息。</p>
+<p>对于简单目录，是将文件属性直接存放在目录项中，目录中有一个固定大小的目录项列表，每个文件对应一项，其中包含一个文件名，一个文件属性结构以及用以说明磁盘块位置的一个或者多个磁盘地址。</p>
+<p>i节点的系统，将文件属性放在i节点中，目录项因此只包含文件名和i节点号。</p>
+     
         </div>
 
         <blockquote class="post-copyright">
@@ -303,7 +306,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/现代操作系统/">现代操作系统</a></li></ul>
 
 
 
