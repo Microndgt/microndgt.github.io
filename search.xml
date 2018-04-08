@@ -336,7 +336,7 @@
             
             <tag> 算法 </tag>
             
-            <tag> Go </tag>
+            <tag> Golang </tag>
             
         </tags>
         
@@ -606,6 +606,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -613,9 +615,9 @@
         
         <tags>
             
-            <tag> Go </tag>
+            <tag> Go语言圣经 </tag>
             
-            <tag> 读书笔记 </tag>
+            <tag> Golang </tag>
             
         </tags>
         
@@ -650,6 +652,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -657,9 +661,9 @@
         
         <tags>
             
-            <tag> Go </tag>
+            <tag> Go语言圣经 </tag>
             
-            <tag> 读书笔记 </tag>
+            <tag> Golang </tag>
             
         </tags>
         
@@ -785,6 +789,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -792,9 +798,9 @@
         
         <tags>
             
-            <tag> Go </tag>
+            <tag> Go语言圣经 </tag>
             
-            <tag> 读书笔记 </tag>
+            <tag> Golang </tag>
             
         </tags>
         
@@ -878,6 +884,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -885,13 +893,9 @@
         
         <tags>
             
-            <tag> Database </tag>
-            
-            <tag> 读书笔记 </tag>
-            
-            <tag> MySQL </tag>
-            
             <tag> SQL学习指南 </tag>
+            
+            <tag> SQL </tag>
             
         </tags>
         
@@ -1278,6 +1282,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -1285,11 +1291,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> Traitlets </tag>
             
         </tags>
         
@@ -1388,6 +1390,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -1395,11 +1399,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> Jupyter </tag>
             
         </tags>
         
@@ -1512,6 +1512,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -1519,11 +1521,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> Jupyter </tag>
             
         </tags>
         
@@ -1756,6 +1754,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -1763,11 +1763,9 @@
         
         <tags>
             
-            <tag> Database </tag>
+            <tag> SQL </tag>
             
-            <tag> 读书笔记 </tag>
-            
-            <tag> MySQL </tag>
+            <tag> MySQL技术内幕 </tag>
             
         </tags>
         
@@ -1881,6 +1879,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -1890,9 +1890,7 @@
             
             <tag> Python </tag>
             
-            <tag> 读书笔记 </tag>
-            
-            <tag> Python_Cookbook </tag>
+            <tag> Python Cookbook </tag>
             
         </tags>
         
@@ -1919,14 +1917,14 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
         
         
         <tags>
-            
-            <tag> 翻译 </tag>
             
             <tag> Python </tag>
             
@@ -2003,6 +2001,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -2010,13 +2010,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> Database </tag>
-            
-            <tag> SQLAlchemy </tag>
             
         </tags>
         
@@ -2066,6 +2060,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -2074,6 +2070,8 @@
         <tags>
             
             <tag> Python </tag>
+            
+            <tag> 流畅的Python </tag>
             
         </tags>
         
@@ -2551,6 +2549,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -2558,11 +2558,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
-            <tag> Database </tag>
-            
-            <tag> MySQL </tag>
+            <tag> SQL </tag>
             
         </tags>
         
@@ -3069,14 +3065,14 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
         
         
         <tags>
-            
-            <tag> 翻译 </tag>
             
             <tag> Python </tag>
             
@@ -3273,14 +3269,14 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
         
         
         <tags>
-            
-            <tag> 翻译 </tag>
             
             <tag> Python </tag>
             
@@ -3398,14 +3394,14 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
         
         
         <tags>
-            
-            <tag> 翻译 </tag>
             
             <tag> Python </tag>
             
@@ -3460,6 +3456,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -3468,6 +3466,8 @@
         <tags>
             
             <tag> Python </tag>
+            
+            <tag> 流畅的Python </tag>
             
         </tags>
         
@@ -3538,6 +3538,8 @@
       
         <categories>
             
+            <category> 读书 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -3546,6 +3548,8 @@
         <tags>
             
             <tag> Python </tag>
+            
+            <tag> 流畅的Python </tag>
             
         </tags>
         
@@ -3829,6 +3833,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -3836,11 +3842,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> 并发 </tag>
             
         </tags>
         
@@ -4099,6 +4101,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -4106,11 +4110,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> StackOverFlow </tag>
             
         </tags>
         
@@ -4160,6 +4160,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -4167,11 +4169,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> pytest </tag>
             
         </tags>
         
@@ -4226,6 +4224,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -4233,11 +4233,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> unittest </tag>
             
         </tags>
         
@@ -4311,6 +4307,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -4318,13 +4316,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> 协程 </tag>
-            
-            <tag> pytest </tag>
             
         </tags>
         
@@ -4845,14 +4837,14 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
         
         
         <tags>
-            
-            <tag> 翻译 </tag>
             
             <tag> Python </tag>
             
@@ -6454,6 +6446,8 @@
       
         <categories>
             
+            <category> 翻译 </category>
+            
             <category> 编程 </category>
             
         </categories>
@@ -6461,13 +6455,7 @@
         
         <tags>
             
-            <tag> 翻译 </tag>
-            
             <tag> Python </tag>
-            
-            <tag> Celery </tag>
-            
-            <tag> Flask </tag>
             
         </tags>
         

@@ -323,7 +323,7 @@
     <link href="http://skyrover.me/2018/02/11/graph_in_golang/"/>
     <id>http://skyrover.me/2018/02/11/graph_in_golang/</id>
     <published>2018-02-11T06:09:46.000Z</published>
-    <updated>2018-02-11T07:07:03.000Z</updated>
+    <updated>2018-04-08T07:08:54.000Z</updated>
     
     <content type="html"><![CDATA[<p>之前在项目中用 Golang 实现了一个图的数据结构，并且实现了相关的一些算法，比如 BFS, DFS以及检测是否有环等等。在这里就将实现的代码，过程和算法原理做一个总结。</p>
 <h1 id="基本数据结构"><a href="#基本数据结构" class="headerlink" title="基本数据结构"></a>基本数据结构</h1><p>有好几种数据结构可以实现图，比如邻接矩阵，邻接表和十字链表等，我这里使用的就是最常见的邻接矩阵的方法。</p>
@@ -374,7 +374,7 @@
     
       <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+      <category term="Golang" scheme="http://skyrover.me/tags/Golang/"/>
     
   </entry>
   
@@ -634,7 +634,7 @@
     <link href="http://skyrover.me/2018/01/21/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_method/"/>
     <id>http://skyrover.me/2018/01/21/go语言圣经_note_method/</id>
     <published>2018-01-21T03:00:46.000Z</published>
-    <updated>2018-01-21T12:48:48.000Z</updated>
+    <updated>2018-04-08T06:59:40.000Z</updated>
     
     <content type="html"><![CDATA[<p>一个面向对象的程序会用方法来表达其属性和对应的操作，使用这个对象的用户就不需要直接去操作对象，而是借助方法来完成这些事情。</p>
 <p>OOP编程的关键点：封装和组合。</p>
@@ -671,12 +671,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+      <category term="Go语言圣经" scheme="http://skyrover.me/tags/Go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F/"/>
     
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+      <category term="Golang" scheme="http://skyrover.me/tags/Golang/"/>
     
   </entry>
   
@@ -685,7 +687,7 @@
     <link href="http://skyrover.me/2018/01/20/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_interface/"/>
     <id>http://skyrover.me/2018/01/20/go语言圣经_note_interface/</id>
     <published>2018-01-20T02:40:46.000Z</published>
-    <updated>2018-01-21T02:58:42.000Z</updated>
+    <updated>2018-04-08T06:59:35.000Z</updated>
     
     <content type="html"><![CDATA[<p>接口类型不会和特定实现细节绑定在一起，都是其他类型实现了接口，而且实现接口也很灵活，只要实现了接口定义的方法即可。这样可以创建一个新的接口类型满足已经存在的具体类型，但是不会改变这些类型的定义，因为只需要定义新的接口的方法符合已经存在的具体类型已经实现的方法就可以了。</p>
 <h1 id="接口约定"><a href="#接口约定" class="headerlink" title="接口约定"></a>接口约定</h1><p>具体类型可以通过它的方法提供额外的行为操作，当你得到一个具体类型就知道它是什么以及它可以干什么。</p>
@@ -717,12 +719,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+      <category term="Go语言圣经" scheme="http://skyrover.me/tags/Go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F/"/>
     
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+      <category term="Golang" scheme="http://skyrover.me/tags/Golang/"/>
     
   </entry>
   
@@ -731,7 +735,7 @@
     <link href="http://skyrover.me/2018/01/12/go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F_note_1/"/>
     <id>http://skyrover.me/2018/01/12/go语言圣经_note_1/</id>
     <published>2018-01-11T23:59:46.000Z</published>
-    <updated>2018-01-19T14:55:06.000Z</updated>
+    <updated>2018-04-08T06:59:21.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><ul>
 <li><code>go run</code>编译一个或者多个以<code>.go</code>结尾的源文件，链接库文件，并运行最终生成的可执行文件。</li>
@@ -855,12 +859,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Go" scheme="http://skyrover.me/tags/Go/"/>
+      <category term="Go语言圣经" scheme="http://skyrover.me/tags/Go%E8%AF%AD%E8%A8%80%E5%9C%A3%E7%BB%8F/"/>
     
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+      <category term="Golang" scheme="http://skyrover.me/tags/Golang/"/>
     
   </entry>
   
@@ -891,7 +897,7 @@
     <link href="http://skyrover.me/2018/01/01/learning_sql_note_1/"/>
     <id>http://skyrover.me/2018/01/01/learning_sql_note_1/</id>
     <published>2018-01-01T04:11:14.000Z</published>
-    <updated>2018-01-01T10:27:10.000Z</updated>
+    <updated>2018-04-08T07:01:16.000Z</updated>
     
     <content type="html"><![CDATA[<p>这段时间将SQL学习指南这本书翻完了，买这本书的时候是2016年9月21日，时隔一年多啊，终于读完了。不过觉得也正常的，以当时的水平以及工作内容，似乎就算当时看完，也是看的稀里糊涂吧。现在看完，可能不是说学习新知识，毕竟这本书的确是比较入门的书，而更多的是系统性的掌握SQL，以及对相关方面体会更加深刻吧。下面就记录下看这本书得到的一些体会和有意思的东西。</p>
 <h1 id="日期时间数据"><a href="#日期时间数据" class="headerlink" title="日期时间数据"></a>日期时间数据</h1><p>在数据库中存储时间数据，究竟存储哪种格式比较好呢。MySQL中有<code>date</code>, <code>datetime</code>, <code>timestamp</code>, <code>year</code>, <code>time</code>这几种类型，同时也还可以以字符串，数字的格式进行存储，那么究竟该如何选择呢。以前我是直接都用字符串，现在看来就有点太low了。这里就对这方面的东西做一个总结。</p>
@@ -952,16 +958,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
-    
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
     
       <category term="SQL学习指南" scheme="http://skyrover.me/tags/SQL%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/"/>
+    
+      <category term="SQL" scheme="http://skyrover.me/tags/SQL/"/>
     
   </entry>
   
@@ -1320,7 +1324,7 @@
     <link href="http://skyrover.me/2017/12/10/traitlets_guide/"/>
     <id>http://skyrover.me/2017/12/10/traitlets_guide/</id>
     <published>2017-12-10T13:59:33.000Z</published>
-    <updated>2018-01-26T02:23:46.000Z</updated>
+    <updated>2018-04-08T07:07:09.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自: <a href="http://traitlets.readthedocs.io/en/stable/using_traitlets.html" target="_blank" rel="external">Traitlets Guide</a></p>
 <h1 id="Using-Traitlets"><a href="#Using-Traitlets" class="headerlink" title="Using Traitlets"></a>Using Traitlets</h1><p>总而言之，traitlets可以让用户定义一个类有以下功能：</p>
@@ -1363,14 +1367,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="Traitlets" scheme="http://skyrover.me/tags/Traitlets/"/>
     
   </entry>
   
@@ -1379,7 +1381,7 @@
     <link href="http://skyrover.me/2017/12/07/making_kernels_for_jupyter/"/>
     <id>http://skyrover.me/2017/12/07/making_kernels_for_jupyter/</id>
     <published>2017-12-07T07:01:35.000Z</published>
-    <updated>2017-12-07T07:02:01.000Z</updated>
+    <updated>2018-04-08T07:08:27.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自: <a href="http://jupyter-client.readthedocs.io/en/latest/kernels.html" target="_blank" rel="external">Making kernels for Jupyter</a></p>
 <h1 id="Making-kernels-for-Jupyter"><a href="#Making-kernels-for-Jupyter" class="headerlink" title="Making kernels for Jupyter"></a>Making kernels for Jupyter</h1><p>一个内核是运行和解析用户代码的程序。IPython包含了一个运行和解析Python代码的内核，而且人们已经写了多种语言的内核。</p>
@@ -1475,14 +1477,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="Jupyter" scheme="http://skyrover.me/tags/Jupyter/"/>
     
   </entry>
   
@@ -1491,7 +1491,7 @@
     <link href="http://skyrover.me/2017/12/07/messaging_in_jupyter/"/>
     <id>http://skyrover.me/2017/12/07/messaging_in_jupyter/</id>
     <published>2017-12-07T01:46:35.000Z</published>
-    <updated>2017-12-07T03:06:27.000Z</updated>
+    <updated>2018-04-08T07:08:17.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自：<a href="http://jupyter-client.readthedocs.io/en/latest/messaging.html" target="_blank" rel="external">Messaging in Jupyter</a></p>
 <p>这篇文档解释了jupyter前端和内核通信的基本的设计和消息规范。ZeroMQ库提供了低层级的发送这些消息的传输层协议。</p>
@@ -1602,14 +1602,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="Jupyter" scheme="http://skyrover.me/tags/Jupyter/"/>
     
   </entry>
   
@@ -1618,7 +1616,7 @@
     <link href="http://skyrover.me/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_note/"/>
     <id>http://skyrover.me/2017/11/12/mysql_技术内幕_note/</id>
     <published>2017-11-12T13:22:14.000Z</published>
-    <updated>2017-11-12T13:17:29.000Z</updated>
+    <updated>2018-04-08T07:01:49.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="MySQL服务器的SQL模式"><a href="#MySQL服务器的SQL模式" class="headerlink" title="MySQL服务器的SQL模式"></a>MySQL服务器的SQL模式</h1><p>影响的行为包括在数据录入阶段如何处理非法数据，如何引用各种标识符等。</p>
 <p>查询一个数据库的会话级或者全局级的SQL模式的当前值：</p>
@@ -1848,14 +1846,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+      <category term="SQL" scheme="http://skyrover.me/tags/SQL/"/>
     
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
+      <category term="MySQL技术内幕" scheme="http://skyrover.me/tags/MySQL%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95/"/>
     
   </entry>
   
@@ -1912,7 +1910,7 @@
     <link href="http://skyrover.me/2017/11/05/python_cookbook_1/"/>
     <id>http://skyrover.me/2017/11/05/python_cookbook_1/</id>
     <published>2017-11-05T09:22:14.000Z</published>
-    <updated>2017-11-06T14:55:11.000Z</updated>
+    <updated>2018-04-08T07:04:19.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="实现单例的另一种方法"><a href="#实现单例的另一种方法" class="headerlink" title="实现单例的另一种方法"></a>实现单例的另一种方法</h1><p>上次实现单例用到了<code>__new__</code>，在创建实例的时候检测是否已经有创建过实例，如果有，则将其拿过来直接使用。这次是使用元类来实现，在之前的 <a href="http://skyrover.me/2017/10/28/%E7%B1%BB%E5%85%83%E7%BC%96%E7%A8%8B/">类元编程</a> 中提到过类是元类的实例，而type类是大部分类的元类，因此元类的<code>__call__</code>方法，就会在调用指定类(元类的实例)的实例化方法的时候被调用。</p>
 <p>比如：</p>
@@ -1977,14 +1975,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="Python_Cookbook" scheme="http://skyrover.me/tags/Python-Cookbook/"/>
+      <category term="Python Cookbook" scheme="http://skyrover.me/tags/Python-Cookbook/"/>
     
   </entry>
   
@@ -1993,7 +1991,7 @@
     <link href="http://skyrover.me/2017/11/05/flask_user_session_security/"/>
     <id>http://skyrover.me/2017/11/05/flask_user_session_security/</id>
     <published>2017-11-05T01:46:35.000Z</published>
-    <updated>2017-11-05T02:22:43.000Z</updated>
+    <updated>2018-04-08T07:09:09.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/how-secure-is-the-flask-user-session" target="_blank" rel="external">How Secure Is The Flask User Session?</a></p>
 <p>我已经很多次听过人们说在Flask中的用户session是加密过的，因此在里面写入隐私信息也是安全的。这是一个误解，而且可能会在应用中导致灾难性的后果，最重要的是，对你的用户。不相信我吗？下面你可以看到我数秒之内解析一个Flask用户session，根本不需要应用的secret key.</p>
@@ -2017,10 +2015,10 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
@@ -2033,7 +2031,7 @@
     <link href="http://skyrover.me/2017/10/31/user_comments_sqlalchemy/"/>
     <id>http://skyrover.me/2017/10/31/user_comments_sqlalchemy/</id>
     <published>2017-10-31T10:26:35.000Z</published>
-    <updated>2017-10-31T10:24:07.000Z</updated>
+    <updated>2018-04-08T07:07:03.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/implementing-user-comments-with-sqlalchemy#" target="_blank" rel="external">Implementing User Comments with SQLAlchemy</a></p>
 <p>首先SQLAlchemy读音是<code>/ˈsiːkwəl/ /ˈælkəmi/</code>，alchemy的意思是<code>炼金术，改变事物的魔力</code></p>
@@ -2103,16 +2101,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
-    
-      <category term="SQLAlchemy" scheme="http://skyrover.me/tags/SQLAlchemy/"/>
     
   </entry>
   
@@ -2121,7 +2115,7 @@
     <link href="http://skyrover.me/2017/10/28/%E7%B1%BB%E5%85%83%E7%BC%96%E7%A8%8B/"/>
     <id>http://skyrover.me/2017/10/28/类元编程/</id>
     <published>2017-10-28T15:03:46.000Z</published>
-    <updated>2017-10-28T15:14:14.000Z</updated>
+    <updated>2018-04-08T07:02:37.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>From <strong>流畅的Python 人民邮电出版社 21章类元编程</strong></p>
@@ -2172,10 +2166,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="流畅的Python" scheme="http://skyrover.me/tags/%E6%B5%81%E7%95%85%E7%9A%84Python/"/>
     
   </entry>
   
@@ -2547,7 +2545,7 @@
     <link href="http://skyrover.me/2017/10/19/mysql_interview_1/"/>
     <id>http://skyrover.me/2017/10/19/mysql_interview_1/</id>
     <published>2017-10-19T04:30:35.000Z</published>
-    <updated>2017-10-28T15:25:59.000Z</updated>
+    <updated>2018-04-08T07:08:07.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自：</p>
 <ul>
@@ -2677,14 +2675,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
-    
-      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
-    
-      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
+      <category term="SQL" scheme="http://skyrover.me/tags/SQL/"/>
     
   </entry>
   
@@ -3167,7 +3163,7 @@
     <link href="http://skyrover.me/2017/09/28/heapq/"/>
     <id>http://skyrover.me/2017/09/28/heapq/</id>
     <published>2017-09-28T04:01:46.000Z</published>
-    <updated>2017-09-28T06:36:37.000Z</updated>
+    <updated>2018-04-08T07:08:47.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自<a href="https://docs.python.org/3/library/heapq.html" target="_blank" rel="external">heapq — Heap queue algorithm</a></p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>这个模块实现了堆队列算法，也被称为优先队列算法。</p>
@@ -3217,10 +3213,10 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
@@ -3373,7 +3369,7 @@
     <link href="http://skyrover.me/2017/09/17/flask_https/"/>
     <id>http://skyrover.me/2017/09/17/flask_https/</id>
     <published>2017-09-17T01:31:30.000Z</published>
-    <updated>2017-09-17T01:36:48.000Z</updated>
+    <updated>2018-04-08T07:09:21.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自: <a href="https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https" target="_blank" rel="external">Running Your Flask Application Over HTTPS</a></p>
 <p>当你在写Flask应用的时候，你通常会使用web开发服务器，它提供了基本的WSGI HTTP服务器。但是当你准备在生产环境上部署应用的时候，需要考虑一件事：是否需要使用加密链接。</p>
@@ -3434,10 +3430,10 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
@@ -3518,7 +3514,7 @@
     <link href="http://skyrover.me/2017/09/12/subprocess%E7%AE%A1%E7%90%86/"/>
     <id>http://skyrover.me/2017/09/12/subprocess管理/</id>
     <published>2017-09-12T01:00:35.000Z</published>
-    <updated>2017-09-12T01:00:06.000Z</updated>
+    <updated>2018-04-08T07:07:37.000Z</updated>
     
     <content type="html"><![CDATA[<p>subprocess模块允许你创建新进程，链接到他们的输入/输出/错误 管道上，去获取他们的返回码。这个模块主要是为了替换一些旧的模块和函数，比如<code>os.system</code>和<code>os.spawn*</code></p>
 <h1 id="使用subprocess模块"><a href="#使用subprocess模块" class="headerlink" title="使用subprocess模块"></a>使用subprocess模块</h1><h2 id="run函数"><a href="#run函数" class="headerlink" title="run函数"></a>run函数</h2><p>推荐的调用子进程的方式是使用<code>run()</code>函数，它可以处理所有的情况，在一些更高级的用例中，可以直接使用底层的<code>Popen</code>接口。</p>
@@ -3565,10 +3561,10 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
@@ -3579,7 +3575,7 @@
     <link href="http://skyrover.me/2017/09/05/%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6/"/>
     <id>http://skyrover.me/2017/09/05/属性描述符/</id>
     <published>2017-09-05T13:40:46.000Z</published>
-    <updated>2017-09-09T06:44:01.000Z</updated>
+    <updated>2018-04-08T07:03:12.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>From <strong>流畅的Python 人民邮电出版社 20章属性描述符</strong></p>
@@ -3632,10 +3628,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="流畅的Python" scheme="http://skyrover.me/tags/%E6%B5%81%E7%95%85%E7%9A%84Python/"/>
     
   </entry>
   
@@ -3644,7 +3644,7 @@
     <link href="http://skyrover.me/2017/09/04/%E7%89%B9%E6%80%A7%E5%B1%9E%E6%80%A7%E5%92%8C%E7%89%B9%E6%AE%8A%E6%96%B9%E6%B3%95/"/>
     <id>http://skyrover.me/2017/09/04/特性属性和特殊方法/</id>
     <published>2017-09-04T10:21:46.000Z</published>
-    <updated>2017-09-09T06:44:25.000Z</updated>
+    <updated>2018-04-08T07:02:54.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>From <strong>流畅的Python 人民邮电出版社 19章动态属性和特性</strong></p>
@@ -3715,10 +3715,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="流畅的Python" scheme="http://skyrover.me/tags/%E6%B5%81%E7%95%85%E7%9A%84Python/"/>
     
   </entry>
   
@@ -3954,7 +3958,7 @@
     <link href="http://skyrover.me/2017/08/30/%E7%BF%BB%E8%AF%91%20-%20%20concurrent.futures%20%E2%80%94%20Launching%20parallel%20tasks/"/>
     <id>http://skyrover.me/2017/08/30/翻译 -  concurrent.futures — Launching parallel tasks/</id>
     <published>2017-08-30T01:46:35.000Z</published>
-    <updated>2017-10-16T06:50:05.000Z</updated>
+    <updated>2018-04-08T07:06:47.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自 <a href="https://docs.python.org/3/library/concurrent.futures.html" target="_blank" rel="external"><code>concurrent.futures</code> 运行并行任务</a></p>
 <p>估计今晚失眠，好烦啊。嗯，可以在战斗力的每个计算进程中调用多线程啊！加快速度。</p>
@@ -4021,14 +4025,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
     
   </entry>
   
@@ -4270,7 +4272,7 @@
     <link href="http://skyrover.me/2017/08/23/%E7%BF%BB%E8%AF%91%20-%20How%20to%20close%20a%20SQLAlchemy%20session/"/>
     <id>http://skyrover.me/2017/08/23/翻译 - How to close a SQLAlchemy session/</id>
     <published>2017-08-23T06:29:33.000Z</published>
-    <updated>2017-09-01T06:40:56.000Z</updated>
+    <updated>2018-04-08T07:06:22.000Z</updated>
     
     <content type="html"><![CDATA[<p>在StackOverFlow中看到这个问题，比较有意思<a href="https://stackoverflow.com/questions/21738944/how-to-close-a-sqlalchemy-session" target="_blank" rel="external">How to close a SQLAlchemy session?</a></p>
 <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>继续我们在<a href="https://stackoverflow.com/questions/8645250/how-to-close-sqlalchemy-connection-in-mysql/8705750?noredirect=1#comment32872652_8705750" target="_blank" rel="external">How to close sqlalchemy connection in MySQL</a>的讨论，我检查了SQLAlchemy创建的到数据库的连接，然后我发现我不能关闭它们，除非退出Python</p>
@@ -4300,14 +4302,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="StackOverFlow" scheme="http://skyrover.me/tags/StackOverFlow/"/>
     
   </entry>
   
@@ -4316,7 +4316,7 @@
     <link href="http://skyrover.me/2017/08/22/%E7%BF%BB%E8%AF%91%20-%20use%20pytest-asyncio%20to%20test%20your%20coroutines/"/>
     <id>http://skyrover.me/2017/08/22/翻译 - use pytest-asyncio to test your coroutines/</id>
     <published>2017-08-22T03:15:14.000Z</published>
-    <updated>2017-09-01T06:41:20.000Z</updated>
+    <updated>2018-04-08T07:06:08.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自 <a href="https://stefan.sofa-rockers.org/2016/03/10/advanced-asyncio-testing/" target="_blank" rel="external">Advanced asyncio testing</a></p>
 <p>其实就是这个库的使用:<a href="https://github.com/pytest-dev/pytest-asyncio" target="_blank" rel="external">pytest-asyncio</a></p>
@@ -4363,14 +4363,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="pytest" scheme="http://skyrover.me/tags/pytest/"/>
     
   </entry>
   
@@ -4379,7 +4377,7 @@
     <link href="http://skyrover.me/2017/08/21/%E7%BF%BB%E8%AF%91%20-%20unittest.mock%20%E2%80%94%20mock%20object%20library/"/>
     <id>http://skyrover.me/2017/08/21/翻译 - unittest.mock — mock object library/</id>
     <published>2017-08-21T03:18:30.000Z</published>
-    <updated>2017-09-01T06:41:16.000Z</updated>
+    <updated>2018-04-08T07:06:14.000Z</updated>
     
     <content type="html"><![CDATA[<p><code>unittest.mock</code> - mock object library</p>
 <p>翻译自<a href="https://docs.python.org/3/library/unittest.mock.html#" target="_blank" rel="external">unittest.mock — mock object library</a></p>
@@ -4432,14 +4430,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="unittest" scheme="http://skyrover.me/tags/unittest/"/>
     
   </entry>
   
@@ -4493,7 +4489,7 @@
     <link href="http://skyrover.me/2017/08/16/%E7%BF%BB%E8%AF%91%20-%20Testing%20(asyncio)%20coroutines%20with%20pytest/"/>
     <id>http://skyrover.me/2017/08/16/翻译 - Testing (asyncio) coroutines with pytest/</id>
     <published>2017-08-16T02:14:27.000Z</published>
-    <updated>2017-09-01T06:49:55.000Z</updated>
+    <updated>2018-04-08T07:06:18.000Z</updated>
     
     <content type="html"><![CDATA[<p>写的aiossdb库，需要对协程进行测试，但是pytest会默认将定义的函数就当成普通函数来测试，当然可以在一个测试函数里面定义要测试的部分，但是比较麻烦吧，每次都得写loop之类。这篇文章介绍了一种使用pytest对协程进行测试的优雅方法。</p>
 <p>翻译自：<a href="https://stefan.sofa-rockers.org/2015/04/22/testing-coroutines/" target="_blank" rel="external">Testing (asyncio) coroutines with pytest</a></p>
@@ -4524,16 +4520,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="协程" scheme="http://skyrover.me/tags/%E5%8D%8F%E7%A8%8B/"/>
-    
-      <category term="pytest" scheme="http://skyrover.me/tags/pytest/"/>
     
   </entry>
   
@@ -5056,7 +5048,7 @@
     <link href="http://skyrover.me/2017/08/01/%E7%BF%BB%E8%AF%91%20-%20Easy%20in-place%20file%20rewriting/"/>
     <id>http://skyrover.me/2017/08/01/翻译 - Easy in-place file rewriting/</id>
     <published>2017-08-01T10:20:18.000Z</published>
-    <updated>2017-09-01T06:29:00.000Z</updated>
+    <updated>2018-04-08T07:06:41.000Z</updated>
     
     <content type="html"><![CDATA[<p>原文：<a href="http://www.zopatista.com/python/2013/11/26/inplace-file-rewriting/" target="_blank" rel="external">http://www.zopatista.com/python/2013/11/26/inplace-file-rewriting/</a></p>
 <p>使用上下文管理器进行无痛的文件重写。</p>
@@ -5081,10 +5073,10 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
@@ -6666,7 +6658,7 @@
     <link href="http://skyrover.me/2017/03/01/Using-Celery-With-Flask/"/>
     <id>http://skyrover.me/2017/03/01/Using-Celery-With-Flask/</id>
     <published>2017-03-01T08:59:01.000Z</published>
-    <updated>2017-09-01T06:49:23.000Z</updated>
+    <updated>2018-04-08T07:07:16.000Z</updated>
     
     <content type="html"><![CDATA[<p>翻译自<a href="https://blog.miguelgrinberg.com/post/using-celery-with-flask" target="_blank" rel="external">https://blog.miguelgrinberg.com/post/using-celery-with-flask</a></p>
 <p><a href="http://www.cnblogs.com/jay54520/p/6212623.html" target="_blank" rel="external">http://www.cnblogs.com/jay54520/p/6212623.html</a></p>
@@ -6741,16 +6733,12 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="翻译" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/"/>
     
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BF%BB%E8%AF%91/%E7%BC%96%E7%A8%8B/"/>
     
-      <category term="翻译" scheme="http://skyrover.me/tags/%E7%BF%BB%E8%AF%91/"/>
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
-    
-      <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
-    
-      <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
     
   </entry>
   
