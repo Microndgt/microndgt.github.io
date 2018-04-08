@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-) 文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。 文件 目录是管理文件系统结构的系统文件 字符特殊文件和输入/输出有关，用于串行I/O类设备 块特殊文件用于磁盘类设备 普通文">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-08T06:55:01.000Z">
+<meta property="og:updated_time" content="2018-04-08T23:52:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文件系统">
 <meta name="twitter:description" content="进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-) 文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。 文件 目录是管理文件系统结构的系统文件 字符特殊文件和输入/输出有关，用于串行I/O类设备 块特殊文件用于磁盘类设备 普通文">
@@ -174,7 +174,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件"><span class="post-toc-number">1.</span> <span class="post-toc-text">文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件存取"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">文件存取</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件操作"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">文件操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#目录"><span class="post-toc-number">2.</span> <span class="post-toc-text">目录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目录操作"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">目录操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件系统的实现"><span class="post-toc-number">3.</span> <span class="post-toc-text">文件系统的实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件系统布局"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">文件系统布局</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件的实现"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">文件的实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目录的实现"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">目录的实现</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件"><span class="post-toc-number">1.</span> <span class="post-toc-text">文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件存取"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">文件存取</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件操作"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">文件操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#目录"><span class="post-toc-number">2.</span> <span class="post-toc-text">目录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目录操作"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">目录操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件系统的实现"><span class="post-toc-number">3.</span> <span class="post-toc-text">文件系统的实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件系统布局"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">文件系统布局</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件的实现"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">文件的实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目录的实现"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">目录的实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#共享文件"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">共享文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#日志结构文件系统"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">日志结构文件系统</span></a></li></ol></li></ol>
         </nav>
     </aside>
     
@@ -279,6 +279,33 @@
 <h2 id="目录的实现"><a href="#目录的实现" class="headerlink" title="目录的实现"></a>目录的实现</h2><p>打开文件时，操作系统利用路径名找到目录项，目录项中提供了查找文件磁盘块所需要的信息。目录系统的主要功能是把ASCII文件名映射为定位文件数据所需要的信息。</p>
 <p>对于简单目录，是将文件属性直接存放在目录项中，目录中有一个固定大小的目录项列表，每个文件对应一项，其中包含一个文件名，一个文件属性结构以及用以说明磁盘块位置的一个或者多个磁盘地址。</p>
 <p>i节点的系统，将文件属性放在i节点中，目录项因此只包含文件名和i节点号。</p>
+<ul>
+<li>目录项在行中实现<ul>
+<li>每个目录项有一个固定的部分，这个固定部分通常以目录项长度开始，后面是固定格式的文件属性数据，这个固定长度的头后面是实际文件名。</li>
+<li>缺点和连续磁盘文件一样，另外一个目录项可能会分布在多个页面，读取文件名的时候可能发生页面故障</li>
+</ul>
+</li>
+<li>目录项在堆中实现<ul>
+<li>目录项自身有固定长度，文件名放置在目录后面的堆中</li>
+</ul>
+</li>
+</ul>
+<p>目录项的查找：目前只能是从头到尾进行搜索，提高速度的方法是每个目录中使用散列表。如果散列表项没有使用，则将指向文件目录项的指针放入，文件目录项链接在散列表后面，如果散列表项被使用了，就构造一个链表，将该链表表头指针放在散列表项中，链接具有相同散列值的文件目录项。</p>
+<h2 id="共享文件"><a href="#共享文件" class="headerlink" title="共享文件"></a>共享文件</h2><p>文件系统本身将是一个有向无环图而不是一棵树。</p>
+<p>如果目录项包含磁盘地址，那么链接文件的时候，要将目录项中文件的磁盘地址也复制给要共享的目录中，那么随后新添加或者删除(导致增加了磁盘地址或者删除了磁盘地址)会导致被共享的其他目录并不能监测到改变，所以这样不行。</p>
+<ul>
+<li>i节点<ul>
+<li>磁盘块地址不列入目录，而使用i节点</li>
+<li>这样i节点知道目前有多少目录项指向这个文件，但是如果删除的话就有问题了，而且没有办法知道该文件的全部目录项</li>
+</ul>
+</li>
+<li>符号链接<ul>
+<li>系统建立一个类型为LINK的新文件，放在要共享的目录里，新的文件包含了要链接的文件的路径名，所以读取的时候，会去找要链接的文件的名字。</li>
+<li>删除符号链接不会影响本身的文件，问题是需要额外的开销，必须读取包含路径的文件，然后一个部分一个部分的扫描路径，直到找到i节点。</li>
+</ul>
+</li>
+</ul>
+<h2 id="日志结构文件系统"><a href="#日志结构文件系统" class="headerlink" title="日志结构文件系统"></a>日志结构文件系统</h2><p>log-structured File System 日志结构文件系统。系统对于一个大部分由零碎的随机写操作组成的任务，也能充分利用磁盘的带宽。基本思想是将整个磁盘结构化为一个日志。</p>
 
         </div>
 
