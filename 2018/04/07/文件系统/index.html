@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>文件系统 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="操作系统">
+    <meta name="description" content="进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-) 文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。 文件 目录是管理文件系统结构的系统文件 字符特殊文件和输入/输出有关，用于串行I/O类设备 块特殊文件用于磁盘类设备 普通文">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件系统">
+<meta property="og:url" content="http://skyrover.me/2018/04/07/文件系统/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-) 文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。 文件 目录是管理文件系统结构的系统文件 字符特殊文件和输入/输出有关，用于串行I/O类设备 块特殊文件用于磁盘类设备 普通文">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-08T00:17:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文件系统">
+<meta name="twitter:description" content="进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-) 文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。 文件 目录是管理文件系统结构的系统文件 字符特殊文件和输入/输出有关，用于串行I/O类设备 块特殊文件用于磁盘类设备 普通文">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">文件系统</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">文件系统</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-04-07T10:06:03.000Z" itemprop="datePublished" class="page-time">
+  2018-04-07 18:06:03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件"><span class="post-toc-number">1.</span> <span class="post-toc-text">文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件存取"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">文件存取</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件操作"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">文件操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#目录"><span class="post-toc-number">2.</span> <span class="post-toc-text">目录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目录操作"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">目录操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件系统的实现"><span class="post-toc-number">3.</span> <span class="post-toc-text">文件系统的实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件系统布局"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">文件系统布局</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件的实现"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">文件的实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目录的实现"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">目录的实现</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-文件系统"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">文件系统</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-04-07 18:06:03 18:06:03" datetime="2018-04-07T10:06:03.000Z"  itemprop="datePublished">2018-04-07 18:06:03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            <p>进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-)</p>
+<p>文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。</p>
+<h1 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h1><ul>
+<li>目录是管理文件系统结构的系统文件</li>
+<li>字符特殊文件和输入/输出有关，用于串行I/O类设备</li>
+<li>块特殊文件用于磁盘类设备</li>
+<li>普通文件分为ASCII文件和二进制文件</li>
+</ul>
+<h2 id="文件存取"><a href="#文件存取" class="headerlink" title="文件存取"></a>文件存取</h2><p>可以分为顺序存取和随机存取，read和seek</p>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><p>与文件有关的常用系统调用：</p>
+<ul>
+<li>create</li>
+<li>delete</li>
+<li>open</li>
+<li>close</li>
+<li>read</li>
+<li>write</li>
+<li>append</li>
+<li>seek</li>
+<li>get attributes</li>
+<li>set attributes</li>
+<li>rename</li>
+</ul>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><h2 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h2><p>不同系统之间的系统调用差别比较大，下面是 Unix 的系统调用：</p>
+<ul>
+<li>create</li>
+<li>delete 删除目录，只能删除空目录</li>
+<li>opendir</li>
+<li>closedir</li>
+<li>readdir</li>
+<li>rename</li>
+<li>link 指定一个存在的文件和一个路径名，并且建立从该文件到路径所指名字的链接，这样，可以在多个目录中出现同一个文件，这样的链接增加了该文件的i节点计数器的计数(记录含有该文件的目录项数目)，成为硬连接</li>
+<li><p>unlink 删除目录项，如果被解除链接的文件只出现在一个目录，则从文件系统中删除，如果出现多个目录，则只删除指定路径名的链接，依然保留其他路径名的链接，在 Unix 中，删除文件的系统调用就是 unlink</p>
+</li>
+<li><p>符号链接：硬连接是使用两个文件名指向同一个内部数据结构来代表一个文件。软连接是所建立的文件名指向了命名另一个文件的小文件。打开时候，文件系统沿着路径，找到末端的名字，使用新名字启动查找进程。</p>
+</li>
+</ul>
+<h1 id="文件系统的实现"><a href="#文件系统的实现" class="headerlink" title="文件系统的实现"></a>文件系统的实现</h1><h2 id="文件系统布局"><a href="#文件系统布局" class="headerlink" title="文件系统布局"></a>文件系统布局</h2><ul>
+<li>魔数：很多类型的文件，其起始的几个字节的内容是固定的（或是有意填充，或是本就如此）。根据这几个字节的内容就可以确定文件类型，因此这几个字节的内容被称为魔数</li>
+</ul>
+<p>多数磁盘划分为一个或者多个分区，每个分区中有一个独立的文件系统。磁盘的0号扇区称为主引导记录MBR，用来引导计算机。MBR结尾是分区表，给出了每个分区的起始和结束地址。表中的一个分区被标记为活动分区。计算机被引导时候，BIOS读入并且执行MBR，MBR做的第一件事情就是确定活动分区，读入它的第一个块，称为引导块，并且执行。引导块中的程序将装载该分区中的操作系统。每个分区都从一个启动块开始。</p>
+<ul>
+<li>超级块：包含文件系统的所有关键参数，确定文件系统类型用的魔数，文件系统中数据块的数量以及其他重要的管理信息</li>
+<li>空闲块，可以用位图或者指针列表的形式给出</li>
+<li>i节点，数据结构数组，每个文件一个，说明文件的各种信息</li>
+<li>根目录</li>
+<li>文件和目录</li>
+</ul>
+<h2 id="文件的实现"><a href="#文件的实现" class="headerlink" title="文件的实现"></a>文件的实现</h2><p>文件存储的实现关键问题是记录各个文件分别用到哪些磁盘块。</p>
+<ul>
+<li>连续分配<ul>
+<li>优点是简单且具有高的性能</li>
+<li>缺点是磁盘会变的零碎</li>
+</ul>
+</li>
+<li>链表分配<ul>
+<li>每个块的第一个字作为指向下一块的指针，块的其他部分存放数据</li>
+<li>优点是充分利用每个磁盘块，不会因为磁盘碎片而浪费空间</li>
+<li>但是随机读取非常慢，因为需要遍历链表</li>
+<li>而且因为指针占用了一些字节，导致磁盘块存储数据的字节数不再是2的整数次幂</li>
+</ul>
+</li>
+<li>在内存中采用表的链表分配<ul>
+<li>将磁盘块中的指针字放在内存中的一个表中，称为文件分配表FAT</li>
+<li>缺点是需要将整个表放在内存中，200GB和1KB大的块，需要600-800MB内存。。</li>
+</ul>
+</li>
+<li>i节点<ul>
+<li>给每个文件赋予一个i节点的数据结构，列出了文件属性和文件块的磁盘地址，给定i节点，就有可能找到文件的所有块。只有在对应文件打开的时候，i节点才在内存中。</li>
+<li>如果文件包含磁盘块的数目超过了i节点所能容纳的数目，则最后一个磁盘地址不指向数据块，而是指向包含附加磁盘地址的磁盘块的地址，所以说<strong>有可能</strong>找到文件的所有快。</li>
+</ul>
+</li>
+</ul>
+<h2 id="目录的实现"><a href="#目录的实现" class="headerlink" title="目录的实现"></a>目录的实现</h2>     
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/04/07/文件系统/" target="_blank" rel="external">http://skyrover.me/2018/04/07/文件系统/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/04/07/文件系统/&title=《文件系统》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/04/07/文件系统/&title=《文件系统》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/04/07/文件系统/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《文件系统》 — SkyRover&url=http://skyrover.me/2018/04/07/文件系统/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/04/07/文件系统/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/04/05/看历史通俗演义/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">读历史通俗演义之感</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/04/07/文件系统/&title=《文件系统》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/04/07/文件系统/&title=《文件系统》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/04/07/文件系统/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《文件系统》 — SkyRover&url=http://skyrover.me/2018/04/07/文件系统/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/04/07/文件系统/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNUlEQVR42u3awY7CMAxF0f7/TxdpVkgonfucFFHnZoUQUJ8sjB3nOPA6/9bna/L593dG3z0/1nHHkiFDxmMZ5+UaMUhY1+zas4bPlSFDxgaMNJTrtJhuyigpk9hkyJAh4/oBtUBrr2XIkCGDJ1xeFKZt6lf/N2TIkPFABkmgaVpcVTgu7sVlyJDxQMbMYOCb5eCN8w0ZMmT8MONctK5LRp40i0+XIUNGawZpStM2lZB4uRkkYhkyZLRm1EKZvyg2UyD+s/UyZMhoxAgKL7wftTEn+fxwC2TIkLENgwRRq8TIlbJ0tBlMPmXIkPFwxvxViVUXwvjYEpFkyJDRjjEfVnp1jCT0OAXLkCGjKYMcgc2c4ZFQ0rQrQ4aM3Rj8p9PkeEfKLla4MmTI2IDBT7fSxBqElY4NZMiQ0Y6xqiyrBUSO81CTLEOGjA0YtSsUPIi0JU5TuQwZMnozFlSUOBGTX0sTtwwZMnozeMuaDiODkg5f8hgmdxkyZLRmpE3p2pEkB6CULUOGjA0YtYN+8gs8yS67YCFDhoymjNpFCn6slh7hxUWqDBkyWjPSx5BCLR1Dzgw+ZciQ0ZtxhqvWuKYHbenWyJAhozeDrzS4mVZ5cegyZMhowUhLPU5ND/LShBv8e8iQIaMFI02yaUJMW1bSxKJzOBkyZGzJSNvXtBzk40wZMmTI4Ne8OH5+VLAg4cqQIeOxDH4liyTiqYDC1CxDhowdGOlggDeW5Fv8qivfIBkyZDRivADl09sZixTnMAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

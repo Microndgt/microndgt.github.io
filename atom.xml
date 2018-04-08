@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-04-05T06:59:03.000Z</updated>
+  <updated>2018-04-08T00:17:56.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,102 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>文件系统</title>
+    <link href="http://skyrover.me/2018/04/07/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"/>
+    <id>http://skyrover.me/2018/04/07/文件系统/</id>
+    <published>2018-04-07T10:06:03.000Z</published>
+    <updated>2018-04-08T00:17:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-)</p>
+<p>文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。</p>
+<h1 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h1><ul>
+<li>目录是管理文件系统结构的系统文件</li>
+<li>字符特殊文件和输入/输出有关，用于串行I/O类设备</li>
+<li>块特殊文件用于磁盘类设备</li>
+<li>普通文件分为ASCII文件和二进制文件</li>
+</ul>
+<h2 id="文件存取"><a href="#文件存取" class="headerlink" title="文件存取"></a>文件存取</h2><p>可以分为顺序存取和随机存取，read和seek</p>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><p>与文件有关的常用系统调用：</p>
+<ul>
+<li>create</li>
+<li>delete</li>
+<li>open</li>
+<li>close</li>
+<li>read</li>
+<li>write</li>
+<li>append</li>
+<li>seek</li>
+<li>get attributes</li>
+<li>set attributes</li>
+<li>rename</li>
+</ul>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><h2 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h2><p>不同系统之间的系统调用差别比较大，下面是 Unix 的系统调用：</p>
+<ul>
+<li>create</li>
+<li>delete 删除目录，只能删除空目录</li>
+<li>opendir</li>
+<li>closedir</li>
+<li>readdir</li>
+<li>rename</li>
+<li>link 指定一个存在的文件和一个路径名，并且建立从该文件到路径所指名字的链接，这样，可以在多个目录中出现同一个文件，这样的链接增加了该文件的i节点计数器的计数(记录含有该文件的目录项数目)，成为硬连接</li>
+<li><p>unlink 删除目录项，如果被解除链接的文件只出现在一个目录，则从文件系统中删除，如果出现多个目录，则只删除指定路径名的链接，依然保留其他路径名的链接，在 Unix 中，删除文件的系统调用就是 unlink</p>
+</li>
+<li><p>符号链接：硬连接是使用两个文件名指向同一个内部数据结构来代表一个文件。软连接是所建立的文件名指向了命名另一个文件的小文件。打开时候，文件系统沿着路径，找到末端的名字，使用新名字启动查找进程。</p>
+</li>
+</ul>
+<h1 id="文件系统的实现"><a href="#文件系统的实现" class="headerlink" title="文件系统的实现"></a>文件系统的实现</h1><h2 id="文件系统布局"><a href="#文件系统布局" class="headerlink" title="文件系统布局"></a>文件系统布局</h2><ul>
+<li>魔数：很多类型的文件，其起始的几个字节的内容是固定的（或是有意填充，或是本就如此）。根据这几个字节的内容就可以确定文件类型，因此这几个字节的内容被称为魔数</li>
+</ul>
+<p>多数磁盘划分为一个或者多个分区，每个分区中有一个独立的文件系统。磁盘的0号扇区称为主引导记录MBR，用来引导计算机。MBR结尾是分区表，给出了每个分区的起始和结束地址。表中的一个分区被标记为活动分区。计算机被引导时候，BIOS读入并且执行MBR，MBR做的第一件事情就是确定活动分区，读入它的第一个块，称为引导块，并且执行。引导块中的程序将装载该分区中的操作系统。每个分区都从一个启动块开始。</p>
+<ul>
+<li>超级块：包含文件系统的所有关键参数，确定文件系统类型用的魔数，文件系统中数据块的数量以及其他重要的管理信息</li>
+<li>空闲块，可以用位图或者指针列表的形式给出</li>
+<li>i节点，数据结构数组，每个文件一个，说明文件的各种信息</li>
+<li>根目录</li>
+<li>文件和目录</li>
+</ul>
+<h2 id="文件的实现"><a href="#文件的实现" class="headerlink" title="文件的实现"></a>文件的实现</h2><p>文件存储的实现关键问题是记录各个文件分别用到哪些磁盘块。</p>
+<ul>
+<li>连续分配<ul>
+<li>优点是简单且具有高的性能</li>
+<li>缺点是磁盘会变的零碎</li>
+</ul>
+</li>
+<li>链表分配<ul>
+<li>每个块的第一个字作为指向下一块的指针，块的其他部分存放数据</li>
+<li>优点是充分利用每个磁盘块，不会因为磁盘碎片而浪费空间</li>
+<li>但是随机读取非常慢，因为需要遍历链表</li>
+<li>而且因为指针占用了一些字节，导致磁盘块存储数据的字节数不再是2的整数次幂</li>
+</ul>
+</li>
+<li>在内存中采用表的链表分配<ul>
+<li>将磁盘块中的指针字放在内存中的一个表中，称为文件分配表FAT</li>
+<li>缺点是需要将整个表放在内存中，200GB和1KB大的块，需要600-800MB内存。。</li>
+</ul>
+</li>
+<li>i节点<ul>
+<li>给每个文件赋予一个i节点的数据结构，列出了文件属性和文件块的磁盘地址，给定i节点，就有可能找到文件的所有块。只有在对应文件打开的时候，i节点才在内存中。</li>
+<li>如果文件包含磁盘块的数目超过了i节点所能容纳的数目，则最后一个磁盘地址不指向数据块，而是指向包含附加磁盘地址的磁盘块的地址，所以说<strong>有可能</strong>找到文件的所有快。</li>
+</ul>
+</li>
+</ul>
+<h2 id="目录的实现"><a href="#目录的实现" class="headerlink" title="目录的实现"></a>目录的实现</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-)&lt;/p&gt;
+&lt;p&gt;文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>读历史通俗演义之感</title>
