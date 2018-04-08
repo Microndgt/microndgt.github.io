@@ -123,7 +123,7 @@
     <link href="http://skyrover.me/2018/04/05/%E7%9C%8B%E5%8E%86%E5%8F%B2%E9%80%9A%E4%BF%97%E6%BC%94%E4%B9%89/"/>
     <id>http://skyrover.me/2018/04/05/看历史通俗演义/</id>
     <published>2018-04-05T06:59:46.000Z</published>
-    <updated>2018-04-05T06:59:03.000Z</updated>
+    <updated>2018-04-08T06:51:33.000Z</updated>
     
     <content type="html"><![CDATA[<p>上大学的时候在图书馆无意间发现了<strong>中国历史通俗演义</strong>这套书，和三国演义的风格还蛮像的，自己特别喜欢读三国，三国演义前面部分读了好多遍，以至于高中写作文举例子总是引用三国的事情，高考语文可是我唯一能拿出来秀秀的事情了，考了140分，嘿嘿。</p>
 <p><strong>中国历史通俗演义</strong>从汉朝写到了民国，当然我就从汉朝开始看了，记得那时候迷上了看历史，上思想道德课的时候就坐在最后一排，一直看，基本上两节课能看个十回？反正那个夏天把汉朝(上册)看完了，也就是王莽之前的。后来还不过瘾，把电视剧大汉天子也给看完了，这时候看电视剧才有比较深刻的体会，才会去想除了情节更深的东西。因为汉朝毕竟因为刘邦，汉武帝啊，三国啊比较熟，所以读起来也比较顺畅，当然只要读通史就会有这样的感觉：有一种纵观海内，皆熟于胸的感觉，很棒。看到精彩之处不由得叫好，看到抑郁之处饭都吃不下，我看书就是代入感比较强 = =！</p>
@@ -140,8 +140,8 @@
     
       <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
     
+      <category term="历史" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E5%8E%86%E5%8F%B2/"/>
     
-      <category term="历史" scheme="http://skyrover.me/tags/%E5%8E%86%E5%8F%B2/"/>
     
       <category term="中国历史通俗演义" scheme="http://skyrover.me/tags/%E4%B8%AD%E5%9B%BD%E5%8E%86%E5%8F%B2%E9%80%9A%E4%BF%97%E6%BC%94%E4%B9%89/"/>
     
@@ -2435,7 +2435,7 @@
     <link href="http://skyrover.me/2017/10/21/ming_dynasty/"/>
     <id>http://skyrover.me/2017/10/21/ming_dynasty/</id>
     <published>2017-10-21T06:13:56.000Z</published>
-    <updated>2018-04-05T06:41:16.000Z</updated>
+    <updated>2018-04-08T06:50:56.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近在看当代明月的<em>明朝那些事儿</em>，把之前关于明朝的概念一一串了起来，通读历史就会有这种并容天下，包纳宇宙之感，让人有一种气势恢宏之感。一直比较喜欢历史，小时候看三国演义看了很多遍，以至于高中时候语文作文里面全是三国演义的例子，上大学又看了<em>历史通俗演义(前汉和后汉)</em>，看了大秦帝国，对战国时期的历史有了深入的了解，觉得战国时候百家争鸣才是读书人最好的时代。前段时间开始看<em>历史通俗演义(唐)</em>，最近看<em>明朝那些事</em>。读史你能感受到人之间的复杂，但是读着读着就能体会出来一个人的心理和历史规律，正所谓，<strong>鉴于往事，有资于治道</strong>，读史使人明智之意。</p>
 <p>从小学习的时候就喜欢形成一个框架，这样知识是被索引的，按照一条主线，将知识塞到框架的不同地方，记忆的会更牢固。其实更多的含义是自己能够一览全局。所以此处将明朝所读之处，按照皇帝的顺序塞进历史事件总结于此。不时根据自己的认识和理解进行更新。</p>
@@ -2487,8 +2487,8 @@
     
       <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
     
+      <category term="历史" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E5%8E%86%E5%8F%B2/"/>
     
-      <category term="历史" scheme="http://skyrover.me/tags/%E5%8E%86%E5%8F%B2/"/>
     
       <category term="明朝那些事" scheme="http://skyrover.me/tags/%E6%98%8E%E6%9C%9D%E9%82%A3%E4%BA%9B%E4%BA%8B/"/>
     
@@ -3440,7 +3440,7 @@
     <link href="http://skyrover.me/2017/09/14/%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6/"/>
     <id>http://skyrover.me/2017/09/14/进程的调度/</id>
     <published>2017-09-14T08:23:03.000Z</published>
-    <updated>2017-09-14T08:23:16.000Z</updated>
+    <updated>2018-04-08T06:49:46.000Z</updated>
     
     <content type="html"><![CDATA[<p>内核管理线程的时候，调度经常是按照线程级别的，与线程所属的进程基本没有关联。</p>
 <h1 id="调度"><a href="#调度" class="headerlink" title="调度"></a>调度</h1><h2 id="进程的切换"><a href="#进程的切换" class="headerlink" title="进程的切换"></a>进程的切换</h2><p>首先用户态必须切换到内核态，然后要保存当前进程的状态，包括在进程表中存储寄存器值以便以后重新装载。另外，内存映像也必须保存。接着，通过运行调度算法选定一个新进程，之后，应该将新进程的内存映像重新装入MMU(内存管理单元)，最后新进程开始运行。除此之外，进程切换还要使整个内存高速缓存失效，强迫缓存从内存中动态重新装入两次（进入内核一次，离开内核一次），所以每秒钟切换进程过多，会耗费大量CPU时间。</p>
@@ -3490,12 +3490,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
+      <category term="现代操作系统" scheme="http://skyrover.me/tags/%E7%8E%B0%E4%BB%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
@@ -3781,7 +3783,7 @@
     <link href="http://skyrover.me/2017/09/03/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"/>
     <id>http://skyrover.me/2017/09/03/进程间通信/</id>
     <published>2017-09-03T07:23:03.000Z</published>
-    <updated>2017-09-03T07:23:51.000Z</updated>
+    <updated>2018-04-08T06:49:41.000Z</updated>
     
     <content type="html"><![CDATA[<p>IPC(Inter Process Communication)</p>
 <p>同样的问题和解决办法也适用于线程。</p>
@@ -3865,12 +3867,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
+      <category term="现代操作系统" scheme="http://skyrover.me/tags/%E7%8E%B0%E4%BB%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
@@ -4021,7 +4025,7 @@
     <link href="http://skyrover.me/2017/08/27/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/"/>
     <id>http://skyrover.me/2017/08/27/进程与线程/</id>
     <published>2017-08-27T03:33:03.000Z</published>
-    <updated>2017-09-01T06:50:58.000Z</updated>
+    <updated>2018-04-08T06:49:50.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>多道程序设计系统中，CPU由一个进程快速切换至另外一个进程。在一瞬间，CPU只能运行一个进程，在某一段时间，可能运行多个进程。</p>
 <p>一个进程就是一个正在执行程序的实例，包括程序计数器，寄存器和变量的当前值。每个进程由自己的逻辑程序计数器。实际上，只有一个物理程序计数器，在每个程序执行的时候，逻辑程序计数器被装入实际的程序计数器中。程序暂停执行的时候，物理程序计数器被保存在内存中该进程的逻辑程序计数器中。</p>
@@ -4146,12 +4150,14 @@
     
     </summary>
     
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
     
     
       <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
-      <category term="并发" scheme="http://skyrover.me/tags/%E5%B9%B6%E5%8F%91/"/>
+      <category term="现代操作系统" scheme="http://skyrover.me/tags/%E7%8E%B0%E4%BB%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
