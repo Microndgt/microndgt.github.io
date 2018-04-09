@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="SkyRover">
 <meta property="og:description" content="在 Python3 中，即使一个文件夹中没有定义 __init__.py，也是可以被导入的，只不过它不是以 Python 包的形式导入，而是以命名空间包 (Namespace package) 的形式被导入，而这一特性是在 Python 3.3 被引入的。 比如下面的目录结构： 1234567.├── configs│   └── config.py├── depends├── tools">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-09T04:36:46.000Z">
+<meta property="og:updated_time" content="2018-04-09T04:37:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python3 中的命名空间包">
 <meta name="twitter:description" content="在 Python3 中，即使一个文件夹中没有定义 __init__.py，也是可以被导入的，只不过它不是以 Python 包的形式导入，而是以命名空间包 (Namespace package) 的形式被导入，而这一特性是在 Python 3.3 被引入的。 比如下面的目录结构： 1234567.├── configs│   └── config.py├── depends├── tools">
@@ -217,7 +217,7 @@
 <p><code>命名空间包</code>的关键是确保顶级目录中没有 <code>__init__.py</code> 文件来作为共同的命名空间。缺失 <code>__init__.py</code> 文件使得在导入包的时候会发生有趣的事情：这并没有产生错误，解释器创建了一个由所有包含匹配包名的目录组成的列表。特殊的包命名空间模块被创建，只读的目录列表副本被存储在其 <code>__path__</code> 变量中。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import spam</div><div class="line">&gt;&gt;&gt; spam.__path__</div><div class="line">_NamespacePath([&apos;foo-package/spam&apos;, &apos;bar-package/spam&apos;])</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
 <p>上面 configs 的例子其 <code>__path__</code> 变量如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import configs</div><div class="line">&gt;&gt;&gt; configs.__path__</div><div class="line">_NamespacePath([&apos;/Users/skyrover/customers/neeq/xbrl/configs&apos;])</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import configs</div><div class="line">&gt;&gt;&gt; configs.__path__</div><div class="line">_NamespacePath([&apos;/project/configs&apos;])</div></pre></td></tr></table></figure>
 <p>在定位包的子组件时，目录 <code>__path__</code> 将被用到(例如, 当导入 <code>spam.grok</code> 或者 <code>spam.blah</code> 的时候或者 <code>configs.config</code>).</p>
 <p>一个包是否被作为一个包命名空间的主要方法是检查其 <code>__file__</code> 属性。如果没有，那包是个命名空间。这也可以由其字符表现形式中的 namespace 这个词体现出来。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; configs.__file__</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">AttributeError: module &apos;configs&apos; has no attribute &apos;__file__&apos;</div><div class="line">&gt;&gt;&gt; import other</div><div class="line">&gt;&gt;&gt; other.__file__</div><div class="line">&apos;/other/__init__.py&apos;</div><div class="line">&gt;&gt;&gt; other</div><div class="line">&lt;module &apos;other&apos; from &apos;/other/__init__.py&apos;&gt;</div></pre></td></tr></table></figure>
