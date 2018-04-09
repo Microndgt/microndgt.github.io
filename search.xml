@@ -23,6 +23,10 @@
 <p>在定位包的子组件时，目录 <code>__path__</code> 将被用到(例如, 当导入 <code>spam.grok</code> 或者 <code>spam.blah</code> 的时候或者 <code>configs.config</code>).</p>
 <p>一个包是否被作为一个包命名空间的主要方法是检查其 <code>__file__</code> 属性。如果没有，那包是个命名空间。这也可以由其字符表现形式中的 namespace 这个词体现出来。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; configs.__file__</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">AttributeError: module &apos;configs&apos; has no attribute &apos;__file__&apos;</div><div class="line">&gt;&gt;&gt; import other</div><div class="line">&gt;&gt;&gt; other.__file__</div><div class="line">&apos;/other/__init__.py&apos;</div><div class="line">&gt;&gt;&gt; other</div><div class="line">&lt;module &apos;other&apos; from &apos;/other/__init__.py&apos;&gt;</div></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://python3-cookbook.readthedocs.io/zh_CN/latest/c10/p05_separate_directories_import_by_namespace.html" target="_blank" rel="external">Python Cookbook: 10.5 利用命名空间导入目录分散的代码</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0420/" target="_blank" rel="external">PEP 420</a></li>
+</ul>
 ]]></content>
       
         <categories>
