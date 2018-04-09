@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-04-08T12:19:31.000Z</updated>
+  <updated>2018-04-09T04:35:37.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,46 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python3 中的命名空间包</title>
+    <link href="http://skyrover.me/2018/04/09/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%8C%85/"/>
+    <id>http://skyrover.me/2018/04/09/命名空间包/</id>
+    <published>2018-04-09T04:20:46.000Z</published>
+    <updated>2018-04-09T04:35:37.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在 Python3 中，即使一个文件夹中没有定义 <code>__init__.py</code>，也是可以被导入的，只不过它不是以 Python 包的形式导入，而是以命名空间包 (Namespace package) 的形式被导入，而这一特性是在 Python 3.3 被引入的。</p>
+<p>比如下面的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── configs</div><div class="line">│   └── config.py</div><div class="line">├── depends</div><div class="line">├── tools</div><div class="line">    └── __init__.py</div><div class="line">│   └── tool.py</div></pre></td></tr></table></figure>
+<p>如果要在 <code>tools/tool.py</code> 导入 <code>configs/config.py</code> 中的内容，在 Python 3(3.3及之后) 中就可以直接使用 <code>from configs.config import *</code> 来导入，Python 2 中就不可以，如果一定要这样做，就需要给 configs 文件夹下加入 <code>__init__.py</code> 才可以。</p>
+<p>但是所谓的命名空间包提出的本意却不是说为了导入没有 <code>__init__.py</code> 的文件夹的 Python 模块，而是利用命名空间包这个技术来导入目录分散的代码。</p>
+<p>在不同的目录里有相同的命名空间，但是要删去用来将组件联合起来的 <code>__init__.py</code> 文件。假设你有Python代码的两个不同的目录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">foo-package/</div><div class="line">    spam/</div><div class="line">        blah.py</div><div class="line"></div><div class="line">bar-package/</div><div class="line">    spam/</div><div class="line">        grok.py</div></pre></td></tr></table></figure>
+<p>在这2个目录里，都有着共同的命名空间spam。在任何一个目录里都没有 <code>__init__.py</code> 文件。这时候再导入这两个包的时候：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">import sys</div><div class="line">sys.path.extend([&apos;foo-package&apos;, &apos;bar-package&apos;])</div><div class="line">import spam.blah</div><div class="line">import spam.grok</div></pre></td></tr></table></figure>
+<p>两个不同的包目录被合并到一起，你可以导入spam.blah和spam.grok，并且它们能够工作。</p>
+<p>在这里工作的机制被称为<code>命名空间包</code>的一个特征。从本质上讲，<code>命名空间包</code>是一种特殊的封装设计，为合并不同的目录的代码到一个共同的命名空间。</p>
+<p><code>命名空间包</code>的关键是确保顶级目录中没有 <code>__init__.py</code> 文件来作为共同的命名空间。缺失 <code>__init__.py</code> 文件使得在导入包的时候会发生有趣的事情：这并没有产生错误，解释器创建了一个由所有包含匹配包名的目录组成的列表。特殊的包命名空间模块被创建，只读的目录列表副本被存储在其 <code>__path__</code> 变量中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import spam</div><div class="line">&gt;&gt;&gt; spam.__path__</div><div class="line">_NamespacePath([&apos;foo-package/spam&apos;, &apos;bar-package/spam&apos;])</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>上面 configs 的例子其 <code>__path__</code> 变量如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import configs</div><div class="line">&gt;&gt;&gt; configs.__path__</div><div class="line">_NamespacePath([&apos;/Users/skyrover/customers/neeq/xbrl/configs&apos;])</div></pre></td></tr></table></figure>
+<p>在定位包的子组件时，目录 <code>__path__</code> 将被用到(例如, 当导入 <code>spam.grok</code> 或者 <code>spam.blah</code> 的时候或者 <code>configs.config</code>).</p>
+<p>一个包是否被作为一个包命名空间的主要方法是检查其 <code>__file__</code> 属性。如果没有，那包是个命名空间。这也可以由其字符表现形式中的 namespace 这个词体现出来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; configs.__file__</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">AttributeError: module &apos;configs&apos; has no attribute &apos;__file__&apos;</div><div class="line">&gt;&gt;&gt; import other</div><div class="line">&gt;&gt;&gt; other.__file__</div><div class="line">&apos;/other/__init__.py&apos;</div><div class="line">&gt;&gt;&gt; other</div><div class="line">&lt;module &apos;other&apos; from &apos;/other/__init__.py&apos;&gt;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在 Python3 中，即使一个文件夹中没有定义 &lt;code&gt;__init__.py&lt;/code&gt;，也是可以被导入的，只不过它不是以 Python 包的形式导入，而是以命名空间包 (Namespace package) 的形式被导入，而这一特性是在 Python 3.3 被
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>江湖悠悠，饮一壶浊酒</title>
