@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-04-09T04:37:19.000Z</updated>
+  <updated>2018-04-09T10:46:25.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,89 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LeetCode刷题中文版(1)</title>
+    <link href="http://skyrover.me/2018/04/09/Leetcode%E5%88%B7%E9%A2%98%E4%B8%AD%E6%96%87%E7%89%881/"/>
+    <id>http://skyrover.me/2018/04/09/Leetcode刷题中文版1/</id>
+    <published>2018-04-09T10:28:32.000Z</published>
+    <updated>2018-04-09T10:46:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>LeetCode也出中文版(<a href="https://leetcode-cn.com" target="_blank" rel="external">地址</a>)了，那就刷一波题吧！不过要吐槽一下翻译，本来leetcode英文叫着还可以，中文咋就成了<code>力扣信息科技</code>，一下low到不行，不过网页界面还可以～</p>
+<h1 id="两数之和"><a href="#两数之和" class="headerlink" title="两数之和"></a><a href="https://leetcode-cn.com/problems/two-sum/description/" target="_blank" rel="external">两数之和</a></h1><p>这道题用 <code>n2</code> 算法是可以解的，但是有可能超时，即使通过了，排名也很后，嗯，非常后。所以必须优化。其实主要矛盾在于知道一个元素的情况下你不知道另一个数的位置，或者在不在列表中，那么这就可以用字典进行速度优化，既可以判断有没有，也可以找到位置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">twoSum</span><span class="params">(self, nums, target)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        :type target: int</span></div><div class="line"><span class="string">        :rtype: List[int]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        value_pos = &#123;&#125;</div><div class="line">        <span class="keyword">for</span> idx, value <span class="keyword">in</span> enumerate(nums):</div><div class="line">            other_value = target - value</div><div class="line">            <span class="keyword">if</span> other_value <span class="keyword">in</span> value_pos:</div><div class="line">                <span class="keyword">return</span> [value_pos[other_value], idx]</div><div class="line">            value_pos[value] = idx</div></pre></td></tr></table></figure>
+<p>执行用时：56 ms 已经战胜 60.99 % 的 python3 提交记录</p>
+<h1 id="两数相加"><a href="#两数相加" class="headerlink" title="两数相加"></a><a href="https://leetcode-cn.com/problems/add-two-numbers/description/" target="_blank" rel="external">两数相加</a></h1><h2 id="solution-1"><a href="#solution-1" class="headerlink" title="solution 1"></a>solution 1</h2><p>第一反应就是读出链表的值，然后直接计算，将计算出来的值再构造成一个链表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Definition for singly-linked list.</span></div><div class="line"><span class="comment"># class ListNode:</span></div><div class="line"><span class="comment">#     def __init__(self, x):</span></div><div class="line"><span class="comment">#         self.val = x</span></div><div class="line"><span class="comment">#         self.next = None</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_number</span><span class="params">(self, link)</span>:</span></div><div class="line">        node = link</div><div class="line">        number = <span class="number">0</span></div><div class="line">        base = <span class="number">0</span></div><div class="line">        <span class="keyword">while</span> node:</div><div class="line">            number += node.val * (<span class="number">10</span> ** base)</div><div class="line">            base += <span class="number">1</span></div><div class="line">            node = node.next</div><div class="line">        <span class="keyword">return</span> number</div><div class="line">            </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addTwoNumbers</span><span class="params">(self, l1, l2)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type l1: ListNode</span></div><div class="line"><span class="string">        :type l2: ListNode</span></div><div class="line"><span class="string">        :rtype: ListNode</span></div><div class="line"><span class="string">        """</span></div><div class="line">        n1 = self.get_number(l1)</div><div class="line">        n2 = self.get_number(l2)</div><div class="line">        ans = str(n1 + n2)</div><div class="line">        head = ListNode(<span class="number">0</span>)</div><div class="line">        <span class="keyword">for</span> idx, val <span class="keyword">in</span> enumerate(ans):</div><div class="line">            ans_node = ListNode(val)</div><div class="line">            tmp = head.next</div><div class="line">            head.next = ans_node</div><div class="line">            ans_node.next = tmp</div><div class="line">        <span class="keyword">return</span> head.next</div></pre></td></tr></table></figure>
+<p>执行用时：168 ms 已经战胜 57.98 % 的 python3 提交记录</p>
+<h2 id="solution-2"><a href="#solution-2" class="headerlink" title="solution 2"></a>solution 2</h2><p>也可以同时遍历两个链表，然后在此过程中计算并且建立新链表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Definition for singly-linked list.</span></div><div class="line"><span class="comment"># class ListNode:</span></div><div class="line"><span class="comment">#     def __init__(self, x):</span></div><div class="line"><span class="comment">#         self.val = x</span></div><div class="line"><span class="comment">#         self.next = None</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addTwoNumbers</span><span class="params">(self, l1, l2)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type l1: ListNode</span></div><div class="line"><span class="string">        :type l2: ListNode</span></div><div class="line"><span class="string">        :rtype: ListNode</span></div><div class="line"><span class="string">        """</span></div><div class="line">        dummy = cur = ListNode(<span class="number">0</span>)</div><div class="line">        carry = <span class="number">0</span></div><div class="line">        <span class="keyword">while</span> l1 <span class="keyword">or</span> l2 <span class="keyword">or</span> carry:</div><div class="line">            <span class="keyword">if</span> l1:</div><div class="line">                carry += l1.val</div><div class="line">                l1 = l1.next</div><div class="line">            <span class="keyword">if</span> l2:</div><div class="line">                carry += l2.val</div><div class="line">                l2 = l2.next</div><div class="line">            cur.next = ListNode(carry%<span class="number">10</span>)</div><div class="line">            cur = cur.next</div><div class="line">            carry //= <span class="number">10</span></div><div class="line">        <span class="keyword">return</span> dummy.next</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;LeetCode也出中文版(&lt;a href=&quot;https://leetcode-cn.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;地址&lt;/a&gt;)了，那就刷一波题吧！不过要吐槽一下翻译，本来leetcode英文叫着还可以，中文咋就成了&lt;code&gt;力
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="LeetCode" scheme="http://skyrover.me/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>发现群组 聚类</title>
+    <link href="http://skyrover.me/2018/04/09/%E5%8F%91%E7%8E%B0%E7%BE%A4%E7%BB%84/"/>
+    <id>http://skyrover.me/2018/04/09/发现群组/</id>
+    <published>2018-04-09T09:53:14.000Z</published>
+    <updated>2018-04-09T07:48:20.000Z</updated>
+    
+    <content type="html"><![CDATA[<ul>
+<li>监督学习：利用样本输入和期望输出学习如何预测<ul>
+<li>神经网络</li>
+<li>决策树</li>
+<li>向量支持机</li>
+<li>贝叶斯过滤</li>
+</ul>
+</li>
+<li>无监督学习：在一组数据中找寻某种结构，而不是利用带有正确答案的样本数据进行训练<ul>
+<li>聚类</li>
+<li>非负矩阵因式分解</li>
+<li>自组织映射</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;监督学习：利用样本输入和期望输出学习如何预测&lt;ul&gt;
+&lt;li&gt;神经网络&lt;/li&gt;
+&lt;li&gt;决策树&lt;/li&gt;
+&lt;li&gt;向量支持机&lt;/li&gt;
+&lt;li&gt;贝叶斯过滤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;无监督学习：在一组数据中找寻某种结构，而不是利用带有正确答案的
+    
+    </summary>
+    
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="集体智慧编程" scheme="http://skyrover.me/tags/%E9%9B%86%E4%BD%93%E6%99%BA%E6%85%A7%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="机器学习" scheme="http://skyrover.me/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>Python3 中的命名空间包</title>
@@ -100,7 +183,7 @@
     <link href="http://skyrover.me/2018/04/07/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"/>
     <id>http://skyrover.me/2018/04/07/文件系统/</id>
     <published>2018-04-07T10:06:03.000Z</published>
-    <updated>2018-04-08T23:52:24.000Z</updated>
+    <updated>2018-04-10T00:27:54.000Z</updated>
     
     <content type="html"><![CDATA[<p>进程(与线程)，地址空间和文件，这是操作系统中最重要的概念，如果深入理解了这三个概念，那么就会成为一个操作系统专家 :-)</p>
 <p>文件是进程创建的信息逻辑单元，有关文件的构造，命名，存取，使用，保护，实现和管理方法都是操作系统设计的主要内容。操作系统中处理文件的部分称为文件系统。</p>
@@ -204,7 +287,28 @@
 </ul>
 </li>
 </ul>
-<h2 id="日志结构文件系统"><a href="#日志结构文件系统" class="headerlink" title="日志结构文件系统"></a>日志结构文件系统</h2><p>log-structured File System 日志结构文件系统。系统对于一个大部分由零碎的随机写操作组成的任务，也能充分利用磁盘的带宽。基本思想是将整个磁盘结构化为一个日志。</p>
+<h2 id="日志结构文件系统"><a href="#日志结构文件系统" class="headerlink" title="日志结构文件系统"></a>日志结构文件系统</h2><p>log-structured File System 日志结构文件系统。系统对于一个大部分由零碎的随机写操作组成的任务，也能充分利用磁盘的带宽。基本思想是将整个磁盘结构化为一个日志。每隔一段时间，被缓冲在内存中的所有未决的写操作都被放在一个单独的段中，作为日志末尾一个邻接段写入磁盘。一个单独的段可能会包含i节点，目录块，数据块或者都有。每一个段的开始都是该段的摘要，说明该段中都包含哪些内容。</p>
+<p>这样的话要找i节点就比较困难，所以维护了一个由i节点编号索引组成的i节点图。</p>
+<p>另外随着时间增长，空间将不够使用，比如出现文件覆盖，其i节点就会指向新的块，所以旧的磁盘块就没用了。</p>
+<p>这时候LFS有一个清理线程，周期的扫描日志进行磁盘压缩，首先读取日志的第一个段的摘要，检查有哪些i节点和文件，查看i节点图，判断该i节点是否有效以及文件块是否在使用，如果没有使用，则信息被丢弃，如果仍在使用，则i节点和块就进入内存等待写回到下一个段中。原来的段被标记为空闲，日志就可以用它来存放新的数据。</p>
+<h2 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h2><p>日志文件系统中，对于操作会先写一个日志项，然后日志项被写入磁盘，只有当日志项被写入，不同的操作才可以执行。</p>
+<p>一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同</p>
+<h1 id="文件系统管理和优化"><a href="#文件系统管理和优化" class="headerlink" title="文件系统管理和优化"></a>文件系统管理和优化</h1><h2 id="磁盘空间管理"><a href="#磁盘空间管理" class="headerlink" title="磁盘空间管理"></a>磁盘空间管理</h2><ul>
+<li>块大小</li>
+</ul>
+<p>大的块会造成空间浪费，但是小的块会导致时间浪费。</p>
+<p>根据一些调查表明 4KB 的块能更好的适配磁盘数据率(存取速度)和磁盘空间利用率(有无浪费)两个指标，现在磁盘超过了 1TB，将块大小提升到64KB接受磁盘浪费，但是会更快。</p>
+<ul>
+<li>记录空闲块</li>
+</ul>
+<ol>
+<li>使用磁盘块链表，每个块中包含尽可能多的空闲磁盘块号，1KB大小块和32位磁盘块号，每个块有255个空闲块的块号</li>
+<li>使用位图，n个块的磁盘需要n位位图</li>
+</ol>
+<ul>
+<li>磁盘配额</li>
+</ul>
+<p>系统管理员分给每个用户拥有文件和块的最大数量，操作系统确保每个用户不超过分给他们的配额。</p>
 ]]></content>
     
     <summary type="html">
