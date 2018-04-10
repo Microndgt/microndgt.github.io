@@ -3,45 +3,6 @@
   
     
     <entry>
-      <title><![CDATA[发现群组 聚类]]></title>
-      <url>/2018/04/09/%E5%8F%91%E7%8E%B0%E7%BE%A4%E7%BB%84/</url>
-      <content type="html"><![CDATA[<ul>
-<li>监督学习：利用样本输入和期望输出学习如何预测<ul>
-<li>神经网络</li>
-<li>决策树</li>
-<li>向量支持机</li>
-<li>贝叶斯过滤</li>
-</ul>
-</li>
-<li>无监督学习：在一组数据中找寻某种结构，而不是利用带有正确答案的样本数据进行训练<ul>
-<li>聚类</li>
-<li>非负矩阵因式分解</li>
-<li>自组织映射</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 读书 </category>
-            
-            <category> 编程 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 集体智慧编程 </tag>
-            
-            <tag> 机器学习 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Python3 中的命名空间包]]></title>
       <url>/2018/04/09/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%8C%85/</url>
       <content type="html"><![CDATA[<p>在 Python3 中，即使一个文件夹中没有定义 <code>__init__.py</code>，也是可以被导入的，只不过它不是以 Python 包的形式导入，而是以命名空间包 (Namespace package) 的形式被导入，而这一特性是在 Python 3.3 被引入的。</p>

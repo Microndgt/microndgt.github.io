@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-04-09T07:48:20.000Z</updated>
+  <updated>2018-04-09T04:37:19.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,55 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>发现群组 聚类</title>
-    <link href="http://skyrover.me/2018/04/09/%E5%8F%91%E7%8E%B0%E7%BE%A4%E7%BB%84/"/>
-    <id>http://skyrover.me/2018/04/09/发现群组/</id>
-    <published>2018-04-09T09:53:14.000Z</published>
-    <updated>2018-04-09T07:48:20.000Z</updated>
-    
-    <content type="html"><![CDATA[<ul>
-<li>监督学习：利用样本输入和期望输出学习如何预测<ul>
-<li>神经网络</li>
-<li>决策树</li>
-<li>向量支持机</li>
-<li>贝叶斯过滤</li>
-</ul>
-</li>
-<li>无监督学习：在一组数据中找寻某种结构，而不是利用带有正确答案的样本数据进行训练<ul>
-<li>聚类</li>
-<li>非负矩阵因式分解</li>
-<li>自组织映射</li>
-</ul>
-</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;ul&gt;
-&lt;li&gt;监督学习：利用样本输入和期望输出学习如何预测&lt;ul&gt;
-&lt;li&gt;神经网络&lt;/li&gt;
-&lt;li&gt;决策树&lt;/li&gt;
-&lt;li&gt;向量支持机&lt;/li&gt;
-&lt;li&gt;贝叶斯过滤&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;无监督学习：在一组数据中找寻某种结构，而不是利用带有正确答案的
-    
-    </summary>
-    
-      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
-    
-      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="集体智慧编程" scheme="http://skyrover.me/tags/%E9%9B%86%E4%BD%93%E6%99%BA%E6%85%A7%E7%BC%96%E7%A8%8B/"/>
-    
-      <category term="机器学习" scheme="http://skyrover.me/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
   
   <entry>
     <title>Python3 中的命名空间包</title>
