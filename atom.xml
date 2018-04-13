@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-04-09T04:37:19.000Z</updated>
+  <updated>2018-04-13T04:18:23.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,52 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在Postgres中使用SQLAlchemy更新JSON字段</title>
+    <link href="http://skyrover.me/2018/04/13/%E5%9C%A8postgres%E4%BD%BF%E7%94%A8sqlalchemy%E6%9B%B4%E6%96%B0json%E5%AD%97%E6%AE%B5/"/>
+    <id>http://skyrover.me/2018/04/13/在postgres使用sqlalchemy更新json字段/</id>
+    <published>2018-04-13T04:18:03.000Z</published>
+    <updated>2018-04-13T04:18:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。</p>
+<p>解决方案在<a href="https://bashelton.com/2014/03/updating-postgresql-json-fields-via-sqlalchemy/" target="_blank" rel="external">这里</a></p>
+<p>总结一下，有两种办法：</p>
+<h2 id="使用-flag-modified-标记"><a href="#使用-flag-modified-标记" class="headerlink" title="使用 flag_modified 标记"></a>使用 <code>flag_modified</code> 标记</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">config = session.query(Config).filter(Config.id==<span class="number">1</span>).one()</div><div class="line"><span class="keyword">from</span> sqlalchemy.orm.attributes <span class="keyword">import</span> flag_modified</div><div class="line">config.values[<span class="string">"do_something"</span>] = false</div><div class="line">flag_modified(config, <span class="string">"values"</span>)</div><div class="line">session.commit()</div></pre></td></tr></table></figure>
+<p>这种方法比较好用</p>
+<h2 id="直接update"><a href="#直接update" class="headerlink" title="直接update"></a>直接update</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">value[<span class="string">"do_something"</span>] = false</div><div class="line">session.query(Config).filter(Config.id == <span class="number">1</span>).update(&#123;<span class="string">"values"</span>: values&#125;)</div><div class="line">session.commit()</div></pre></td></tr></table></figure>
+<h2 id="具体原因"><a href="#具体原因" class="headerlink" title="具体原因"></a>具体原因</h2><p>在 PostgreSQL 9.5 添加了增量更新的功能，使用的是 JSONB 类型。在本质上，JSON类型是以文本形式存储的，而JSONB是预处理成二进制格式然后在内部存储。</p>
+<p>这样导致：</p>
+<ul>
+<li>jsonb通常比json占用更多的磁盘空间（有些情况不是）</li>
+<li>jsonb比json的写入更耗时间</li>
+<li>json的操作比jsonb的操作明显更耗时间（在操作一个json类型值时需要每次都去解析）</li>
+</ul>
+<p>如何选择：</p>
+<ul>
+<li>如果你的应用只用json表示，PostgreSQL只用于保存与获取时，你应该使用json.</li>
+<li>如果你需要在PostgreSQL中做比较多的json值的操作，或者在一些json字段上使用索引时，你应该使用jsonb</li>
+</ul>
+<p>官方文档上说：</p>
+<p>有两个JSON数据类型：json和jsonb。它们接受几乎相同的值作为输入。它们实际的主要差别是效率。json 数据类型存储输入文本的精确拷贝，处理函数必须在每个执行上重新解析；而jsonb数据以分解的二进制格式存储，这使得它由于添加了转换机制而在输入上稍微慢些，但是在处理上明显更快，因为不需要重新解析。jsonb也支持索引，这也是一个明显的优势。</p>
+<p>因为json类型存储输入文本的精确拷贝，它将保存语义上无关紧要的空格和JSON对象中键的顺序。另外，如果值中的一个JSON对象多次包含相同的键，那么保存所有的键/值对。（处理函数将最后一个值当做操作值。）相比之下， jsonb不保存空格，也不保存对象键的顺序，并且不保存重复对象键。如果在输入中指定了重复的键，那么只保存最后一个值。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。&lt;/p&gt;
+&lt;p&gt;解决方案在&lt;a href=&quot;https://bashelt
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="SQL" scheme="http://skyrover.me/tags/SQL/"/>
+    
+      <category term="Postgres" scheme="http://skyrover.me/tags/Postgres/"/>
+    
+  </entry>
   
   <entry>
     <title>Python3 中的命名空间包</title>
