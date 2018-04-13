@@ -20,18 +20,18 @@
     
     
     <meta name="keywords" content="SQL,Postgres">
-    <meta name="description" content="今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。 解决方案在这里 总结一下，有两种办法： 使用 flag_modified 标记12345config = session.query(Config).filter(Config.id==1).one">
+    <meta name="description" content="今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。 解决方案在这里 总结一下，有两种办法： 使用 flag_modified 标记标记之后SQLAlchemy才能知道这个字段改变了。 12345config = session.query(Confi">
 <meta name="keywords" content="SQL,Postgres">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在Postgres中使用SQLAlchemy更新JSON字段">
 <meta property="og:url" content="http://skyrover.me/2018/04/13/在postgres使用sqlalchemy更新json字段/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。 解决方案在这里 总结一下，有两种办法： 使用 flag_modified 标记12345config = session.query(Config).filter(Config.id==1).one">
+<meta property="og:description" content="今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。 解决方案在这里 总结一下，有两种办法： 使用 flag_modified 标记标记之后SQLAlchemy才能知道这个字段改变了。 12345config = session.query(Confi">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-13T04:18:23.000Z">
+<meta property="og:updated_time" content="2018-04-13T04:21:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Postgres中使用SQLAlchemy更新JSON字段">
-<meta name="twitter:description" content="今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。 解决方案在这里 总结一下，有两种办法： 使用 flag_modified 标记12345config = session.query(Config).filter(Config.id==1).one">
+<meta name="twitter:description" content="今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。 解决方案在这里 总结一下，有两种办法： 使用 flag_modified 标记标记之后SQLAlchemy才能知道这个字段改变了。 12345config = session.query(Confi">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
@@ -174,7 +174,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用-flag-modified-标记"><span class="post-toc-number">1.</span> <span class="post-toc-text">使用 flag_modified 标记</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直接update"><span class="post-toc-number">2.</span> <span class="post-toc-text">直接update</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#具体原因"><span class="post-toc-number">3.</span> <span class="post-toc-text">具体原因</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用-flag-modified-标记"><span class="post-toc-number">1.</span> <span class="post-toc-text">使用 flag_modified 标记</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直接update"><span class="post-toc-number">2.</span> <span class="post-toc-text">直接update</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JSON和JSONB"><span class="post-toc-number">3.</span> <span class="post-toc-text">JSON和JSONB</span></a></li></ol>
         </nav>
     </aside>
     
@@ -206,10 +206,11 @@
             <p>今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。</p>
 <p>解决方案在<a href="https://bashelton.com/2014/03/updating-postgresql-json-fields-via-sqlalchemy/" target="_blank" rel="external">这里</a></p>
 <p>总结一下，有两种办法：</p>
-<h2 id="使用-flag-modified-标记"><a href="#使用-flag-modified-标记" class="headerlink" title="使用 flag_modified 标记"></a>使用 <code>flag_modified</code> 标记</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">config = session.query(Config).filter(Config.id==<span class="number">1</span>).one()</div><div class="line"><span class="keyword">from</span> sqlalchemy.orm.attributes <span class="keyword">import</span> flag_modified</div><div class="line">config.values[<span class="string">"do_something"</span>] = false</div><div class="line">flag_modified(config, <span class="string">"values"</span>)</div><div class="line">session.commit()</div></pre></td></tr></table></figure>
+<h2 id="使用-flag-modified-标记"><a href="#使用-flag-modified-标记" class="headerlink" title="使用 flag_modified 标记"></a>使用 <code>flag_modified</code> 标记</h2><p>标记之后SQLAlchemy才能知道这个字段改变了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">config = session.query(Config).filter(Config.id==<span class="number">1</span>).one()</div><div class="line"><span class="keyword">from</span> sqlalchemy.orm.attributes <span class="keyword">import</span> flag_modified</div><div class="line">config.values[<span class="string">"do_something"</span>] = false</div><div class="line">flag_modified(config, <span class="string">"values"</span>)</div><div class="line">session.commit()</div></pre></td></tr></table></figure>
 <p>这种方法比较好用</p>
 <h2 id="直接update"><a href="#直接update" class="headerlink" title="直接update"></a>直接update</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">value[<span class="string">"do_something"</span>] = false</div><div class="line">session.query(Config).filter(Config.id == <span class="number">1</span>).update(&#123;<span class="string">"values"</span>: values&#125;)</div><div class="line">session.commit()</div></pre></td></tr></table></figure>
-<h2 id="具体原因"><a href="#具体原因" class="headerlink" title="具体原因"></a>具体原因</h2><p>在 PostgreSQL 9.5 添加了增量更新的功能，使用的是 JSONB 类型。在本质上，JSON类型是以文本形式存储的，而JSONB是预处理成二进制格式然后在内部存储。</p>
+<h2 id="JSON和JSONB"><a href="#JSON和JSONB" class="headerlink" title="JSON和JSONB"></a>JSON和JSONB</h2><p>在 PostgreSQL 9.5 添加了增量更新的功能，但必须使用 JSONB 类型。在本质上，JSON类型是以文本形式存储的，而JSONB是预处理成二进制格式然后在内部存储。</p>
 <p>这样导致：</p>
 <ul>
 <li>jsonb通常比json占用更多的磁盘空间（有些情况不是）</li>
