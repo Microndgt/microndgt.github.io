@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-04-13T04:21:10.000Z</updated>
+  <updated>2018-04-14T22:36:40.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,79 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>当浮一大白</title>
+    <link href="http://skyrover.me/2018/04/15/%E5%BC%A0%E8%A3%95%E9%85%92%E5%BA%84%E4%B8%80%E6%97%A5%E6%B8%B8/"/>
+    <id>http://skyrover.me/2018/04/15/张裕酒庄一日游/</id>
+    <published>2018-04-14T22:19:06.000Z</published>
+    <updated>2018-04-14T22:36:40.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天和妹子相约去张裕酒庄，一大早叫妹子起床，买早餐，然后去开我的小红车😋</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018_04_15_06_33_01.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>第一次去酒庄，到了之后有点落差，但是却也有不少意料之外的。落差是因为想象中酒庄城堡之类会很大很安静。意料之外的是城堡里面还算可以，其实玩的并不多，如果喜欢酒的来这里还会觉得有点意思。我一直比较喜欢喝酒，各种酒都尝试过，这次在这里认识了<code>冰酒</code>，准备回来尝一尝。不多说，上几张妹子的美图😜</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018_04_15_06_33_02.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018_04_15_06_33_03.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018_04_15_06_33_05.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018_04_15_06_33_06.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>后来去吃了妹子推荐的旗花面，浩浩荡荡12碗摆上来，简直气势磅礴，不过这面吃两口就完了，也不算多，妹子吃了5碗😂</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/2018_04_15_06_33_04.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>哈哈哈 开心 开心的时候当浮一大白！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天和妹子相约去张裕酒庄，一大早叫妹子起床，买早餐，然后去开我的小红车😋&lt;/p&gt;
+&lt;figure class=&quot;image-bubble&quot;&gt;
+                &lt;div class=&quot;img-lightbox&quot;&gt;
+                    &lt;d
+    
+    </summary>
+    
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
+    
+      <category term="旅行" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/%E6%97%85%E8%A1%8C/"/>
+    
+    
+      <category term="虾扯蛋" scheme="http://skyrover.me/tags/%E8%99%BE%E6%89%AF%E8%9B%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>在Postgres中使用SQLAlchemy更新JSON字段</title>
