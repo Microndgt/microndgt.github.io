@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>死锁 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="操作系统,现代操作系统">
+    <meta name="description" content="资源资源：需要排他性使用的对象，硬件设备或者一组信息 可抢占资源和不可抢占资源 可抢占：可以从拥有它的进程中抢占而不会产生副作用，比如存储器 不可抢占：在不引起相关计算失败的情况下，无法把它从占有它的进程处抢占过来，如刻录机  死锁和不可抢占资源有关  请求资源 使用资源 释放资源  请求资源不可用，请求进程将会被迫等待，或者阻塞 资源获取数据库系统记录这种资源，应该由用户进程来管理使用。使用信号">
+<meta name="keywords" content="操作系统,现代操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="死锁">
+<meta property="og:url" content="http://skyrover.me/2018/04/19/死锁/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="资源资源：需要排他性使用的对象，硬件设备或者一组信息 可抢占资源和不可抢占资源 可抢占：可以从拥有它的进程中抢占而不会产生副作用，比如存储器 不可抢占：在不引起相关计算失败的情况下，无法把它从占有它的进程处抢占过来，如刻录机  死锁和不可抢占资源有关  请求资源 使用资源 释放资源  请求资源不可用，请求进程将会被迫等待，或者阻塞 资源获取数据库系统记录这种资源，应该由用户进程来管理使用。使用信号">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-19T07:13:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="死锁">
+<meta name="twitter:description" content="资源资源：需要排他性使用的对象，硬件设备或者一组信息 可抢占资源和不可抢占资源 可抢占：可以从拥有它的进程中抢占而不会产生副作用，比如存储器 不可抢占：在不引起相关计算失败的情况下，无法把它从占有它的进程处抢占过来，如刻录机  死锁和不可抢占资源有关  请求资源 使用资源 释放资源  请求资源不可用，请求进程将会被迫等待，或者阻塞 资源获取数据库系统记录这种资源，应该由用户进程来管理使用。使用信号">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">死锁</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">死锁</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-04-19T00:06:03.000Z" itemprop="datePublished" class="page-time">
+  2018-04-19 08:06:03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#资源"><span class="post-toc-number">1.</span> <span class="post-toc-text">资源</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#可抢占资源和不可抢占资源"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">可抢占资源和不可抢占资源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#资源获取"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">资源获取</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#死锁概述"><span class="post-toc-number">2.</span> <span class="post-toc-text">死锁概述</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#资源死锁的条件"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">资源死锁的条件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#死锁建模"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">死锁建模</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#鸵鸟算法"><span class="post-toc-number">3.</span> <span class="post-toc-text">鸵鸟算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#死锁检测和死锁恢复"><span class="post-toc-number">4.</span> <span class="post-toc-text">死锁检测和死锁恢复</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#每种类型一个资源的死锁检测"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">每种类型一个资源的死锁检测</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#每种类型多个资源的死锁检测"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">每种类型多个资源的死锁检测</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#从死锁中恢复"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">从死锁中恢复</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#死锁避免"><span class="post-toc-number">5.</span> <span class="post-toc-text">死锁避免</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#资源轨迹图"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">资源轨迹图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安全状态和不安全状态"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">安全状态和不安全状态</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单个资源的银行家算法"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">单个资源的银行家算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多个资源的银行家算法"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">多个资源的银行家算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#死锁预防"><span class="post-toc-number">6.</span> <span class="post-toc-text">死锁预防</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#破坏互斥条件"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">破坏互斥条件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#破坏占有和等待条件"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">破坏占有和等待条件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#破坏不可抢占条件"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">破坏不可抢占条件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#破坏环路等待条件"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">破坏环路等待条件</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-死锁"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">死锁</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-04-19 08:06:03 08:06:03" datetime="2018-04-19T00:06:03.000Z"  itemprop="datePublished">2018-04-19 08:06:03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <h1 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h1><p>资源：需要排他性使用的对象，硬件设备或者一组信息</p>
+<h2 id="可抢占资源和不可抢占资源"><a href="#可抢占资源和不可抢占资源" class="headerlink" title="可抢占资源和不可抢占资源"></a>可抢占资源和不可抢占资源</h2><ul>
+<li>可抢占：可以从拥有它的进程中抢占而不会产生副作用，比如存储器</li>
+<li>不可抢占：在不引起相关计算失败的情况下，无法把它从占有它的进程处抢占过来，如刻录机</li>
+</ul>
+<p>死锁和不可抢占资源有关</p>
+<ul>
+<li>请求资源</li>
+<li>使用资源</li>
+<li>释放资源</li>
+</ul>
+<p>请求资源不可用，请求进程将会被迫等待，或者阻塞</p>
+<h2 id="资源获取"><a href="#资源获取" class="headerlink" title="资源获取"></a>资源获取</h2><p>数据库系统记录这种资源，应该由用户进程来管理使用。使用信号量或者互斥信号量，down和up操作。</p>
+<h1 id="死锁概述"><a href="#死锁概述" class="headerlink" title="死锁概述"></a>死锁概述</h1><p>如果一个进程集合中的每个进程都在等待只能由该进程集合中的其他进程才能引发的事件，那么，该进程集合就是死锁的。被称为资源死锁，因为进程数量以及占有或者请求的资源数量和种类都是无关紧要的。</p>
+<h2 id="资源死锁的条件"><a href="#资源死锁的条件" class="headerlink" title="资源死锁的条件"></a>资源死锁的条件</h2><ul>
+<li>互斥条件：每个资源要么已经分配给一个进程，要么就是可用的</li>
+<li>占有和等待条件：已经得到了某个资源的进程可以请求新的资源</li>
+<li>不可抢占条件：已经分配给一个进程的资源不能强制性的被抢占，只能由占有的进程显式释放</li>
+<li>环路等待条件：死锁发生的时候，一定有两个或者两个以上的进程组成环路</li>
+</ul>
+<p>死锁发生的时候，上面四个条件一定是同时满足的。</p>
+<h2 id="死锁建模"><a href="#死锁建模" class="headerlink" title="死锁建模"></a>死锁建模</h2><p>需要做出不会引起死锁的资源分配决策，如果资源分配图出现环路，则有死锁。</p>
+<p>处理死锁：</p>
+<ul>
+<li>忽略问题</li>
+<li>检测死锁并且恢复</li>
+<li>仔细对资源进行分配，动态避免死锁</li>
+<li>破环死锁四个必要条件，防止死锁的发生</li>
+</ul>
+<h1 id="鸵鸟算法"><a href="#鸵鸟算法" class="headerlink" title="鸵鸟算法"></a>鸵鸟算法</h1><p>把头埋到沙子里，假装根本没有问题发生。这也是算法= =!</p>
+<h1 id="死锁检测和死锁恢复"><a href="#死锁检测和死锁恢复" class="headerlink" title="死锁检测和死锁恢复"></a>死锁检测和死锁恢复</h1><h2 id="每种类型一个资源的死锁检测"><a href="#每种类型一个资源的死锁检测" class="headerlink" title="每种类型一个资源的死锁检测"></a>每种类型一个资源的死锁检测</h2><p>如果有了资源分配图，就可以通过检测有向图环路的方法来检测是否有环，即是否死锁。</p>
+<p>就是将每个节点作为起始节点，然后进行深度优先搜索，如果再次碰到已经碰到的节点，就是找到了一个环。</p>
+<p>参考: <a href="http://skyrover.me/2018/02/11/graph_in_golang/">Golang 实现有向图</a></p>
+<h2 id="每种类型多个资源的死锁检测"><a href="#每种类型多个资源的死锁检测" class="headerlink" title="每种类型多个资源的死锁检测"></a>每种类型多个资源的死锁检测</h2><p>使用基于矩阵的算法来检测死锁。</p>
+<ul>
+<li>E表示现有资源向量，即资源总数</li>
+<li>A表示可用资源向量，即剩余资源总数</li>
+<li>C表示当前分配矩阵，即给进程分配的资源情况</li>
+<li>R表示当前请求矩阵，即进程还需要的资源情况</li>
+</ul>
+<p>算法：</p>
+<ul>
+<li>找到可以运行完的进程，即可以A剩余资源可以满足该进程请求的资源</li>
+<li>然后标记该进程并完成运行，继续找</li>
+<li>直到结束</li>
+</ul>
+<p>最后没有标记的进程都是死锁进程</p>
+<h2 id="从死锁中恢复"><a href="#从死锁中恢复" class="headerlink" title="从死锁中恢复"></a>从死锁中恢复</h2><ol>
+<li>利用抢占恢复<ul>
+<li>临时将某个资源从它的当前所有者那里转移到另一个进程</li>
+</ul>
+</li>
+<li>利用回滚恢复<ul>
+<li>周期性地对进程进行检查点检查，将进程的状态写入一个文件以备以后重启。</li>
+</ul>
+</li>
+<li>通过杀死进程恢复</li>
+</ol>
+<h1 id="死锁避免"><a href="#死锁避免" class="headerlink" title="死锁避免"></a>死锁避免</h1><h2 id="资源轨迹图"><a href="#资源轨迹图" class="headerlink" title="资源轨迹图"></a>资源轨迹图</h2><p>避免死锁的主要算法是基于安全状态的概念。</p>
+<p>非阴影部分才是安全的，阴影部分是不安全的，阴影部分是同时要占用某个资源。</p>
+<h2 id="安全状态和不安全状态"><a href="#安全状态和不安全状态" class="headerlink" title="安全状态和不安全状态"></a>安全状态和不安全状态</h2><p>如果没有死锁发生，并且即使所有进程突然请求对资源的最大需求，也仍然存在某种调度次序能够使得每一个进程运行完毕，则称该状态是安全的。</p>
+<p>不安全状态并不是死锁，因为还有可能通过一些措施进入安全状态，比如某些进程释放了资源。两者的区别是，从安全状态出发，系统能够保证所有进程都能完成，从不安全状态出发，就没有这样的保证。</p>
+<h2 id="单个资源的银行家算法"><a href="#单个资源的银行家算法" class="headerlink" title="单个资源的银行家算法"></a>单个资源的银行家算法</h2><p>当银行家的剩余空闲资源不足以满足任何一个人，让其先完成并且释放资源的时候就进入了不安全状态。那么银行家算法就要对每一个请求进行检查，检查如果满足这一请求是否会达到安全状态，如果可以，则满足，否则，推迟这一请求的满足。</p>
+<h2 id="多个资源的银行家算法"><a href="#多个资源的银行家算法" class="headerlink" title="多个资源的银行家算法"></a>多个资源的银行家算法</h2><p>和上面多个资源的死锁检测差不多。</p>
+<ul>
+<li>查找R中矩阵，看是否有一行，其没有被满足的资源数均小于或者等于A，如果不存在，则死锁。</li>
+<li>如果存在，假设其获得资源并且结束，标记该进程，然后释放资源</li>
+<li>重复以上</li>
+</ul>
+<p>如果所有进程都被标记，说明初始状态是安全的。</p>
+<p>但是该算法缺乏使用价值，因为最大资源没法确定，进程数也没法确定。</p>
+<h1 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h1><h2 id="破坏互斥条件"><a href="#破坏互斥条件" class="headerlink" title="破坏互斥条件"></a>破坏互斥条件</h2><p>如果资源不被一个进程独占，那么死锁肯定不会发生。避免分配那些不是绝对必需的资源，尽量做到尽可能少的进程可以真正请求资源。假脱机技术。</p>
+<h2 id="破坏占有和等待条件"><a href="#破坏占有和等待条件" class="headerlink" title="破坏占有和等待条件"></a>破坏占有和等待条件</h2><p>禁止已经持有资源的进程再等待其他资源即可消除死锁。</p>
+<ul>
+<li>规定所有进程在开始执行前请求所需要的全部资源。</li>
+<li>当一个进程请求资源的时候，先暂时释放其当前占用的所有资源，然后再尝试一次获得所需要的全部资源。</li>
+</ul>
+<h2 id="破坏不可抢占条件"><a href="#破坏不可抢占条件" class="headerlink" title="破坏不可抢占条件"></a>破坏不可抢占条件</h2><p>一些资源可以通过虚拟化的方式来避免独占。比如打印机的假脱机打印机。</p>
+<h2 id="破坏环路等待条件"><a href="#破坏环路等待条件" class="headerlink" title="破坏环路等待条件"></a>破坏环路等待条件</h2><ul>
+<li>保证每一个进程在任何时刻只能占用一个资源，要请求另一个资源，需要释放第一个资源。</li>
+<li>所有资源统一编号，请求时候必须按照资源编号升序提出。（如果没有更高序号的资源怎么办）</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/04/19/死锁/" target="_blank" rel="external">http://skyrover.me/2018/04/19/死锁/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/现代操作系统/">现代操作系统</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/04/19/死锁/&title=《死锁》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/04/19/死锁/&title=《死锁》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/04/19/死锁/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《死锁》 — SkyRover&url=http://skyrover.me/2018/04/19/死锁/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/04/19/死锁/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/04/18/输入输出/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">输入/输出</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/04/19/死锁/&title=《死锁》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/04/19/死锁/&title=《死锁》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/04/19/死锁/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《死锁》 — SkyRover&url=http://skyrover.me/2018/04/19/死锁/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/04/19/死锁/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAByElEQVR42u3aQY7DIBBE0dz/0s42kmPyq4G2I31Wo8SB51m0oOjXC4/jY1x9e37y/DmZbcGQK1fuNPcYDvLMeOExmhvkypXbz02XOf/q6pO0zP2wyZUr98HccSkcP0nmlCtX7r9zya9IgZMrV+7TuOTwMw+qHa7kypXbz+Up5b6/t+S7cuXKLXGPcKQvVlvlcnW5cuW2cHlBISEpn2dqXbly5W7mpsceQucXJ+Tg9OX/Kleu3M3c9AKVL5C2WQThiFy5cjdza2WLX3vwRg10WStXrtwWLgfxAHS8Qak9L1eu3Lu4ZDp0OAHbpqkGDrly5d7KTV+JF6w0lEGFTK5cuUu5a/sc+AUtJ8qVK7eTyxssyHTpJobPI1eu3E5u7apjJuYINi788CNXrtzN3LQ9q7b14av/KGRy5crdzOUBBylqQaNVWkDlypXbziWHmTQATfcnQWYjV67cDdy1wSifmRc4uXLl9nP5SBertWjMBChy5cpdy+VFhx9UeItG/K1cuXIbuWkzVhqppOFsnO/KlSv3Vm7anLHq5eXKlfsvXHKZOh95LCtkcuXKDbnz4Wb62+KFrly5clu4aSmpxSW8/JENk1y5crdx32dxIB5iCamFAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
