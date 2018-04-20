@@ -3,6 +3,30 @@
   
     
     <entry>
+      <title><![CDATA[Crontab 中防止重复执行]]></title>
+      <url>/2018/04/20/crontab_sth/</url>
+      <content type="html"><![CDATA[<p>当crontab 里跑一个运行时间不确定的任务，如有时需要30秒完成，有时需要5分钟完成，而在定时任务里我是设定每1分钟运行一次。这样就容易引起上次任务还没跑完又开始跑了，导致一些问题。这时可以用进程锁来运行。如下面例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* * * * * /usr/bin/flock -xn /var/run/test.lock -c &quot;/home/root/tmp/gotest/gohl &gt;&gt; /home/root/tmp/logs/gotest.log&quot;</div></pre></td></tr></table></figure>
+<p>注意：-c 后面跟的命令要用双引号s</p>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Usage:</div><div class="line"> flock [options] &lt;file|directory&gt; &lt;command&gt; [command args]</div><div class="line"> flock [options] &lt;file|directory&gt; -c &lt;command&gt;</div><div class="line"> flock [options] &lt;file descriptor number&gt;</div><div class="line"></div><div class="line">Options:</div><div class="line"> -s  --shared             get a shared lock</div><div class="line"> -x  --exclusive          get an exclusive lock (default)</div><div class="line"> -u  --unlock             remove a lock</div><div class="line"> -n  --nonblock           fail rather than wait</div><div class="line"> -w  --timeout &lt;secs&gt;     wait for a limited amount of time</div><div class="line"> -E  --conflict-exit-code &lt;number&gt;  exit code after conflict or timeout</div><div class="line"> -o  --close              close file descriptor before running command</div><div class="line"> -c  --command &lt;command&gt;  run a single command string through the shell</div><div class="line"></div><div class="line"> -h, --help     display this help and exit</div><div class="line"> -V, --version  output version information and exit</div><div class="line"></div><div class="line">For more details see flock(1).</div></pre></td></tr></table></figure>]]></content>
+      
+        <categories>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[死锁]]></title>
       <url>/2018/04/19/%E6%AD%BB%E9%94%81/</url>
       <content type="html"><![CDATA[<h1 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h1><p>资源：需要排他性使用的对象，硬件设备或者一组信息</p>
