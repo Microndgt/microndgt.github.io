@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>输入/输出 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="操作系统,现代操作系统">
+    <meta name="description" content="操作系统应该控制计算机的所有I/O设备，必须向设备发送命令，捕捉中断，并处理设备的各种错误。在设备和系统的其他部分之间提供简单且易于使用的接口。 I/O硬件原理I/O硬件提供给软件的接口，比如硬件能够接受的命令，完成的功能。 I/O设备 块设备：信息存储在固定大小的块中，每个块有自己的地址，比如硬盘，块可寻址的设备。 字符设备：以字符为单位发送或者接收一个字符流，字符设备是不可寻址的，也没有寻道操">
+<meta name="keywords" content="操作系统,现代操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="输入&#x2F;输出">
+<meta property="og:url" content="http://skyrover.me/2018/04/18/os_io/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="操作系统应该控制计算机的所有I/O设备，必须向设备发送命令，捕捉中断，并处理设备的各种错误。在设备和系统的其他部分之间提供简单且易于使用的接口。 I/O硬件原理I/O硬件提供给软件的接口，比如硬件能够接受的命令，完成的功能。 I/O设备 块设备：信息存储在固定大小的块中，每个块有自己的地址，比如硬盘，块可寻址的设备。 字符设备：以字符为单位发送或者接收一个字符流，字符设备是不可寻址的，也没有寻道操">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-23T01:37:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="输入&#x2F;输出">
+<meta name="twitter:description" content="操作系统应该控制计算机的所有I/O设备，必须向设备发送命令，捕捉中断，并处理设备的各种错误。在设备和系统的其他部分之间提供简单且易于使用的接口。 I/O硬件原理I/O硬件提供给软件的接口，比如硬件能够接受的命令，完成的功能。 I/O设备 块设备：信息存储在固定大小的块中，每个块有自己的地址，比如硬盘，块可寻址的设备。 字符设备：以字符为单位发送或者接收一个字符流，字符设备是不可寻址的，也没有寻道操">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">输入/输出</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">输入/输出</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-04-18T00:33:03.000Z" itemprop="datePublished" class="page-time">
+  2018-04-18 08:33:03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#I-O硬件原理"><span class="post-toc-number">1.</span> <span class="post-toc-text">I/O硬件原理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#I-O设备"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">I/O设备</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设备控制器"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">设备控制器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存映射I-O"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">内存映射I/O</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直接存储器存取"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">直接存储器存取</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#重温中断"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">重温中断</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#I-O软件原理"><span class="post-toc-number">2.</span> <span class="post-toc-text">I/O软件原理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#I-O软件的目标"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">I/O软件的目标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#程序控制IO"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">程序控制IO</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中断驱动IO"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">中断驱动IO</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DMA的IO"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">DMA的IO</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#IO软件层次"><span class="post-toc-number">3.</span> <span class="post-toc-text">IO软件层次</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中断处理程序"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">中断处理程序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设备驱动程序"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">设备驱动程序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#与设备无关的IO软件"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">与设备无关的IO软件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#用户空间的IO软件"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">用户空间的IO软件</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-os_io"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">输入/输出</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-04-18 08:33:03 08:33:03" datetime="2018-04-18T00:33:03.000Z"  itemprop="datePublished">2018-04-18 08:33:03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <p>操作系统应该控制计算机的所有I/O设备，必须向设备发送命令，捕捉中断，并处理设备的各种错误。在设备和系统的其他部分之间提供简单且易于使用的接口。</p>
+<h1 id="I-O硬件原理"><a href="#I-O硬件原理" class="headerlink" title="I/O硬件原理"></a>I/O硬件原理</h1><p>I/O硬件提供给软件的接口，比如硬件能够接受的命令，完成的功能。</p>
+<h2 id="I-O设备"><a href="#I-O设备" class="headerlink" title="I/O设备"></a>I/O设备</h2><ul>
+<li>块设备：信息存储在固定大小的块中，每个块有自己的地址，比如硬盘，块可寻址的设备。</li>
+<li>字符设备：以字符为单位发送或者接收一个字符流，字符设备是不可寻址的，也没有寻道操作，比如打印机</li>
+</ul>
+<p>文件系统只处理抽象的块设备，而把与设备相关的部分留给较低层的软件。</p>
+<h2 id="设备控制器"><a href="#设备控制器" class="headerlink" title="设备控制器"></a>设备控制器</h2><p>I/O设备一般由机械部件和电子部件组成，电子部件称为设备控制器或者适配器。比如主板上的芯片，或者是插入扩展槽中的印刷电路板。</p>
+<p>控制器与设备之间的接口是一个低层次的接口，磁盘中从驱动器出来的事一个串行的位(比特流)，以一个前导符开始，接着是一个扇区的4096位，最后是一个校验和，为错误校正码。</p>
+<p>控制器的任务是把串行的位流转换成字节块，并进行必要的校正工作，再将它复制到主存中。</p>
+<h2 id="内存映射I-O"><a href="#内存映射I-O" class="headerlink" title="内存映射I/O"></a>内存映射I/O</h2><p>每个控制器有几个寄存器来和CPU进行通信，通过写入这些寄存器，操作系统可以命令设备发送，接收数据，开启或者关闭。有些设备还有一个操作系统可以读写的数据缓冲区。CPU和设备的控制寄存器，数据缓冲区通信有两个方法</p>
+<ul>
+<li>每个控制寄存器被分配一个I/O端口，而且I/O地址空间和内存地址空间是不同的。</li>
+<li>将所有控制寄存器映射到内存空间中。每个控制寄存器被分配唯一的内存地址，并且不会有内存被分配这一地址，被称为内存映射I/O。或者是既有内存映射I/O的数据缓冲区，控制寄存器则具有单独的I/O端口。</li>
+</ul>
+<p>CPU想要读入一个字的时候，要将需要的地址放在总线的地址线上，然后在总线的一条控制线上置起一个READ信号，使用第二条信号线来表明需要的是I/O空间还是内存空间。如果只有内存空间，那么每个内存模块和每个I/O设备都会将地址线和它所服务的地址范围进行比较，如果地址落在这一范围之内，它就会响应请求。</p>
+<p>优点</p>
+<ul>
+<li>使用内存映射I/O，可以使用其他高级语言来控制内存，而不需要汇编。</li>
+<li>不需要特殊的保护机制来阻止用户进程来执行I/O操作</li>
+<li>可以引用内存的每一条指令也可以引用控制寄存器。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>内存有高速缓存</li>
+<li>专用的高速内存总线，I/O设备没有办法查看内存地址，因为内存地址旁路到内存总线上，所以没有办法响应。</li>
+</ul>
+<h2 id="直接存储器存取"><a href="#直接存储器存取" class="headerlink" title="直接存储器存取"></a>直接存储器存取</h2><p>CPU需要寻址设备控制器以便与它们交换数据，CPU可以从I/O控制器每次请求一个字节的数据，但是这样会浪费CPU，所以使用直接存储器存取(DMA)，而且必须硬件有DMA控制器。</p>
+<p>DMA控制器可以独立于CPU访问系统总线，它包含若干个可以被CPU读写的寄存器，包括一个内存地址寄存器，一个字节计数寄存器和一个或多个控制寄存器。控制寄存器指定要使用的I/O端口，传送方向，传送单位以及在一次突发传送中要传送的字节数。</p>
+<ul>
+<li>无DMA控制器的读取过程</li>
+</ul>
+<p>控制器从磁盘驱动器串行的，一位一位的读一个块，直到将整块信息放入控制器的内部缓冲区，然后计算校验和，保证没有错误，然后控制器产生一个中断，然后操作系统将缓冲区的数据放入内存中。</p>
+<ul>
+<li>有DMA控制器的读取过程</li>
+</ul>
+<p>CPU通过设置DMA控制器的寄存器对它进行编程，DMA控制器就知道将什么数据传送到什么地方。DMA控制器接着向磁盘控制器发送命令，读取数据，检查校验和。</p>
+<p>一般情况，要写的内存地址在总线的地址线上，磁盘控制器在将数据写到内存操作完成后，在总线上发出一个应答信号到DMA控制器，DMA的字节计数为0的时候，DMA产生中断CPU。操作系统开始工作，这时候数据已经在内存中了。</p>
+<h2 id="重温中断"><a href="#重温中断" class="headerlink" title="重温中断"></a>重温中断</h2><p>当一个I/O设备完成它的工作时，就产生一个中断，是通过在分配给它的一条总线信号线上置起信号而产生中断的，该信号被主板上的中断控制器芯片检测到，由中断控制器芯片决定做什么。</p>
+<p>为了处理中断，中断控制器在地址线上放置一个数字表明哪个设备需要关注，并且置起一个中断CPU的信号。中断信号导致CPU停止当前的工作并且开始做其他事情，地址线上的数字被用做指向一个中断向量的表格的索引，读取一个新的程序计数器，这个程序计数器指向相应中断服务过程的开始。程序计数器保证了中断的进程可以重新开始，用于存放下一条指令所在单元的地址的地方。</p>
+<p>将机器留在一个明确状态的中断称为精确中断：</p>
+<ul>
+<li>PC(程序计数器)保存在一个已知的地方</li>
+<li>PC所指向的指令之前的所有指令已经完全执行</li>
+<li>PC指向的指令之后的所有指令都没有执行</li>
+<li>PC指向的指令的执行状态是已知的</li>
+</ul>
+<p>不符合上面条件的是不精确中断，通常需要将大量的内部状态放到堆栈总，从而使得操作系统有可能判断出正在发生什么事情，每次中断发生时候将大量的信息保存在内存中使得中断响应十分缓慢。</p>
+<h1 id="I-O软件原理"><a href="#I-O软件原理" class="headerlink" title="I/O软件原理"></a>I/O软件原理</h1><h2 id="I-O软件的目标"><a href="#I-O软件的目标" class="headerlink" title="I/O软件的目标"></a>I/O软件的目标</h2><p>设备独立性：IO软件可以访问任意IO设备而无需事先指定设备。</p>
+<ul>
+<li>统一命名</li>
+<li>错误处理</li>
+<li>同步和异步(中断驱动)传输，大部分物理I/O是异步的，CPU启动传输之后便转去做其他工作，直到中断发生。操作系统使得实际上是中断启动的操作变为在用户程序看来是阻塞式的操作</li>
+<li>缓冲</li>
+<li>共享设备和独占设备，可能死锁</li>
+</ul>
+<h2 id="程序控制IO"><a href="#程序控制IO" class="headerlink" title="程序控制IO"></a>程序控制IO</h2><p>IO最简单的形式是让CPU做全部工作，即程序控制IO。</p>
+<p>打印机可以使用时候，操作系统就复制第一个字符到打印机的数据寄存器中，这里使用了内存映射IO，这样将激活打印机。后面就要不断查询设备以了解它是否就绪准备接收另一个字符，这一操作被称为轮询或者忙等待。</p>
+<p>这样直到全部IO完成之前要占用CPU全部时间。</p>
+<h2 id="中断驱动IO"><a href="#中断驱动IO" class="headerlink" title="中断驱动IO"></a>中断驱动IO</h2><p>当打印机将字符打印完并且准备好接收下一个字符时候，将产生一个中断，中断会停止当前进程并且保存其状态，然后，打印机中断服务过程将运行。如果没有字符打印，中断处理程序将采取某个操作将用户进程接触阻塞，否则，输出字符，应答中断，并且返回到中断之前正在运行的进程。</p>
+<h2 id="DMA的IO"><a href="#DMA的IO" class="headerlink" title="DMA的IO"></a>DMA的IO</h2><p>让DMA控制器一次给打印机提供一个字符，而不必使用CPU。DMA是将中断的次数从打印每个字符一次减少到打印每个缓冲区一次。</p>
+<h1 id="IO软件层次"><a href="#IO软件层次" class="headerlink" title="IO软件层次"></a>IO软件层次</h1><ul>
+<li>用户级IO软件</li>
+<li>与设备无关的操作系统软件</li>
+<li>设备驱动程序</li>
+<li>中断处理程序</li>
+<li>硬件</li>
+</ul>
+<h2 id="中断处理程序"><a href="#中断处理程序" class="headerlink" title="中断处理程序"></a>中断处理程序</h2><p>隐藏中断的办法是将 <code>启动一个IO操作的驱动程序</code> 阻塞起来，直到IO操作完成且产生一个中断。驱动程序阻塞自己的手段有：在一个信号量上执行down操作，在一个条件变量上执行wait操作，在一个消息上执行receive操作或者某些类似的操作。</p>
+<p>中断发生的时候，中断处理程序将启动中断的驱动程序解除阻塞，比如在信号量上执行up操作，或者对管程中的条件变量执行signal操作，或者是向被阻塞的驱动程序发一个消息。最终结果是先前被阻塞的驱动程序现在继续运行。</p>
+<h2 id="设备驱动程序"><a href="#设备驱动程序" class="headerlink" title="设备驱动程序"></a>设备驱动程序</h2><p>每个连接到计算机上的IO设备都需要某些设备特定的代码来对其进行控制，即设备驱动程序。为了访问设备的硬件(设备控制器的寄存器)，设备驱动程序必须是操作系统内核的一部分。如果构造运行在用户空间的驱动程序，这样就可以防止驱动程序干扰内核。</p>
+<p>设备驱动程序接收上方与设备无关的软件所发出的抽象读写请求，或者对设备进行初始化，电源需求和日志事件进行管理。</p>
+<p>驱动程序必须是重入的。</p>
+<h2 id="与设备无关的IO软件"><a href="#与设备无关的IO软件" class="headerlink" title="与设备无关的IO软件"></a>与设备无关的IO软件</h2><p>与设备无关的软件的基本功能是执行对所有设备公共的IO功能，并且向用户层软件提供一个统一的接口。</p>
+<ol>
+<li>设备驱动程序的统一接口<ul>
+<li>与设备无关的软件要负责把符号化的设备名映射到适当的驱动程序中</li>
+</ul>
+</li>
+<li>缓冲<ul>
+<li>双缓冲(内核空间)</li>
+<li>循环缓冲区</li>
+<li>缓冲的复制操作会很大程序上降低传输速率，因为这些步骤需要有序的发生。</li>
+</ul>
+</li>
+<li>错误报告<ul>
+<li>编程错误：进程请求不可能的事情，提供了无效的缓冲区地址或者其他参数</li>
+<li>实际IO错误：比如试图写一个被破坏的磁盘块</li>
+</ul>
+</li>
+<li>分配与释放专用设备<ul>
+<li>对于请求和释放专用设备有特殊机制</li>
+</ul>
+</li>
+<li>与设备无关的块大小</li>
+</ol>
+<h2 id="用户空间的IO软件"><a href="#用户空间的IO软件" class="headerlink" title="用户空间的IO软件"></a>用户空间的IO软件</h2><p>系统调用(包括IO系统调用)通常由库过程实现，所有这些库过程的集合是IO系统的组成部分。标准IO库包含许多涉及IO的过程，它们都是作为用户程序的一部分运行的。</p>
+<p>另外一个类别假脱机系统，不是由库过程组成的。使用打印机需要创建一个守护进程和假脱机目录，通过保护特殊文件防止用户直接使用，可以解决某些进程不必要的长期空占打印机。</p>
+<ul>
+<li>层级<ul>
+<li><code>硬件 -&gt; 中断处理程序 -&gt; 设备驱动程序 -&gt; 与设备无关的软件 -&gt; 用户进程</code></li>
+</ul>
+</li>
+<li>请求：用户进程进行IO请求</li>
+<li>应答：<ul>
+<li><code>执行IO操作 -&gt; 当IO完成时候唤醒驱动程序 -&gt; 设置设备寄存器，检查状态 -&gt; 命名，保护，分块，缓冲，分配 -&gt; 产生IO请求，对IO进行格式化，假脱机</code></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/04/18/os_io/" target="_blank" rel="external">http://skyrover.me/2018/04/18/os_io/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/现代操作系统/">现代操作系统</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/04/18/os_io/&title=《输入/输出》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/04/18/os_io/&title=《输入/输出》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/04/18/os_io/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《输入/输出》 — SkyRover&url=http://skyrover.me/2018/04/18/os_io/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/04/18/os_io/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/04/19/死锁/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">死锁</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/04/15/life_travel_zhangyu/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">当浮一大白</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/04/18/os_io/&title=《输入/输出》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/04/18/os_io/&title=《输入/输出》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/04/18/os_io/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《输入/输出》 — SkyRover&url=http://skyrover.me/2018/04/18/os_io/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/04/18/os_io/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABzElEQVR42u3aSw7CMAwFQO5/aZBYIQHh2fmoSJNVVdpmwsKK7dxu8bg/x+v1+53q9eudxQMXF3eaex+O98m+vTWmJN8fP4OLi3ue2wte+Z08FP6w4eLiXow7XkYezsbXuLi4/8UdJy35NggXF/dfuDPJSW9h23M1XFzcCW6vYLr2ent9FxcXd1FXIg8o1Sebs+Pi4h7hjpOWKBWZSGN6JVRcXNwz3KT0mZdBe22YcljExcXdxk2OSvSCXfLN8ly4uLhHuL3pq4XOXloVxV1cXNxt3Dy4VINRvvUphD9cXNyD3FXomfZMOUvDxcXdzK0etMoPYyXLKCwVFxd3M7e6ycgLqXlzJdke/egJ4+LibuPmm55qW7Ra/sDFxb0Ct1rWTNKhPHEqFFNwcXGPcPMXqk9Wiy+Ft3BxcTdze83RXkk0PyP29U/BxcU9yE0KGdWJ89SoEP5wcXEPcvNR7XT07pdbKbi4uEu5qzYrM6Gw9ysuLu5ubrVImq94vtj6YRZcXNyD3Lw8kR/U6C2yUN/FxcW9ALe66cmPZRQOdeHi4l6S2ztsUX0LFxf3CtxewzUJQL3SyYKyCC4u7gS3WjDNtzK9RGhBgxYXF7fPfQCBi7R7RG50RgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

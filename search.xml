@@ -134,7 +134,7 @@
     
     <entry>
       <title><![CDATA[输入/输出]]></title>
-      <url>/2018/04/18/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/</url>
+      <url>/2018/04/18/os_io/</url>
       <content type="html"><![CDATA[<p>操作系统应该控制计算机的所有I/O设备，必须向设备发送命令，捕捉中断，并处理设备的各种错误。在设备和系统的其他部分之间提供简单且易于使用的接口。</p>
 <h1 id="I-O硬件原理"><a href="#I-O硬件原理" class="headerlink" title="I/O硬件原理"></a>I/O硬件原理</h1><p>I/O硬件提供给软件的接口，比如硬件能够接受的命令，完成的功能。</p>
 <h2 id="I-O设备"><a href="#I-O设备" class="headerlink" title="I/O设备"></a>I/O设备</h2><ul>
@@ -267,7 +267,7 @@
     
     <entry>
       <title><![CDATA[当浮一大白]]></title>
-      <url>/2018/04/15/%E5%BC%A0%E8%A3%95%E9%85%92%E5%BA%84%E4%B8%80%E6%97%A5%E6%B8%B8/</url>
+      <url>/2018/04/15/life_travel_zhangyu/</url>
       <content type="html"><![CDATA[<p>今天和妹子相约去张裕酒庄，一大早叫妹子起床，买早餐，然后去开我的小红车😋</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
@@ -335,7 +335,7 @@
     
     <entry>
       <title><![CDATA[在Postgres中使用SQLAlchemy更新JSON字段]]></title>
-      <url>/2018/04/13/%E5%9C%A8postgres%E4%BD%BF%E7%94%A8sqlalchemy%E6%9B%B4%E6%96%B0json%E5%AD%97%E6%AE%B5/</url>
+      <url>/2018/04/13/postgres_sqlalchemy_json/</url>
       <content type="html"><![CDATA[<p>今天遇到一个情况是对通过SQLAlchemy查询出来的对象更新其JSON字段，没有效果，百思不得其解，后来Google出来了原因，原来是Postgres的问题，并且引出了JSON和JSONB的概念。。</p>
 <p>解决方案在<a href="https://bashelton.com/2014/03/updating-postgresql-json-fields-via-sqlalchemy/" target="_blank" rel="external">这里</a></p>
 <p>总结一下，有两种办法：</p>
@@ -379,7 +379,7 @@
     
     <entry>
       <title><![CDATA[Python3 中的命名空间包]]></title>
-      <url>/2018/04/09/%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%8C%85/</url>
+      <url>/2018/04/09/python_namedspace/</url>
       <content type="html"><![CDATA[<p>在 Python3 中，即使一个文件夹中没有定义 <code>__init__.py</code>，也是可以被导入的，只不过它不是以 Python 包的形式导入，而是以命名空间包 (Namespace package) 的形式被导入，而这一特性是在 Python 3.3 被引入的。</p>
 <p>比如下面的目录结构：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── configs</div><div class="line">│   └── config.py</div><div class="line">├── depends</div><div class="line">├── tools</div><div class="line">    └── __init__.py</div><div class="line">│   └── tool.py</div></pre></td></tr></table></figure>
@@ -421,7 +421,7 @@
     
     <entry>
       <title><![CDATA[江湖悠悠，饮一壶浊酒]]></title>
-      <url>/2018/04/08/%E6%B1%9F%E6%B9%96%E6%82%A0%E6%82%A0/</url>
+      <url>/2018/04/08/life_feelings/</url>
       <content type="html"><![CDATA[<p>2018年将不再更新朋友圈，微博。</p>
 <p>是时候与过去说再见，从此相忘于江湖。</p>
 <p>江湖悠悠，饮一壶浊酒</p>
