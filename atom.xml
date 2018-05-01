@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-05-01T04:12:55.000Z</updated>
+  <updated>2018-05-01T04:31:33.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -19,8 +19,8 @@
     <title>贪心算法</title>
     <link href="http://skyrover.me/2018/05/01/greedy_alg/"/>
     <id>http://skyrover.me/2018/05/01/greedy_alg/</id>
-    <published>2018-05-01T04:12:03.000Z</published>
-    <updated>2018-05-01T04:12:55.000Z</updated>
+    <published>2018-05-01T04:31:03.000Z</published>
+    <updated>2018-05-01T04:31:33.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近有些浮躁，所以我决定从现在开始，就一件事我要坚持到底的去做。5月份就是:</p>
 <ol>
@@ -40,7 +40,10 @@
 <p>这就是一种贪心算法，只要满足当前字母的最后一次出现的位置即可，不断更新最优解，最后得到整体解</p>
 <p>代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">partitionLabels</span><span class="params">(self, S)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type S: str</span></div><div class="line"><span class="string">        :rtype: List[int]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 找到每个字母最后一次出现的位置</span></div><div class="line">        last_indexes = &#123;&#125;</div><div class="line">        <span class="keyword">for</span> index, ele <span class="keyword">in</span> enumerate(S):</div><div class="line">            last_indexes[ele] = index</div><div class="line">        </div><div class="line">        ret = []</div><div class="line">        first_index = <span class="number">0</span></div><div class="line">        <span class="keyword">while</span> first_index &lt; len(S):</div><div class="line">            <span class="comment"># 确定每个子串真正的last_index</span></div><div class="line">            idx = last_index = first_index</div><div class="line">            <span class="comment"># 遍历每个字母，可以找到这个字母的最后一次出现的位置，idx开始就是first_index的位置</span></div><div class="line">            <span class="comment"># 也就是说遍历这么长的子串，并且不断的动态更新真正最后的位置</span></div><div class="line">            <span class="keyword">while</span> idx &lt; len(S) <span class="keyword">and</span> idx &lt;= last_index:</div><div class="line">                dynamic_last_indexes = last_indexes[S[idx]]</div><div class="line">                <span class="keyword">if</span> dynamic_last_indexes &gt; last_index:</div><div class="line">                    last_index = dynamic_last_indexes</div><div class="line">                idx += <span class="number">1</span></div><div class="line">            <span class="comment"># 遍历完成之后，就找到了一个子串，其结尾位置就是last_index</span></div><div class="line">            ret.append(last_index - first_index + <span class="number">1</span>)</div><div class="line">            first_index = last_index + <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> ret</div></pre></td></tr></table></figure>
-<h2 id="根据身高重建队列"><a href="#根据身高重建队列" class="headerlink" title="根据身高重建队列"></a><a href="https://leetcode-cn.com/problems/queue-reconstruction-by-height/description/" target="_blank" rel="external">根据身高重建队列</a></h2>]]></content>
+<h2 id="根据身高重建队列"><a href="#根据身高重建队列" class="headerlink" title="根据身高重建队列"></a><a href="https://leetcode-cn.com/problems/queue-reconstruction-by-height/description/" target="_blank" rel="external">根据身高重建队列</a></h2><p>这道题主要理解了要在h相同的情况下先插入身高高的元素，这样身高矮的元素就是正确的位置，否则身高矮的元素就会被挤到后面，从而错误。</p>
+<p>按照身高降序，然后h升序，这样h就是它应该被插入的位置了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reconstructQueue</span><span class="params">(self, people)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type people: List[List[int]]</span></div><div class="line"><span class="string">        :rtype: List[List[int]]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 按照身高降序，h升序的方式进行，然后按照h插入，先插大的</span></div><div class="line">        people.sort(key=<span class="keyword">lambda</span> x: (-x[<span class="number">0</span>], x[<span class="number">1</span>]))</div><div class="line">        ret = []</div><div class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> people:</div><div class="line">            ret.insert(p[<span class="number">1</span>], p)</div><div class="line">        <span class="keyword">return</span> ret</div></pre></td></tr></table></figure>
+<h2 id="任务调度器"><a href="#任务调度器" class="headerlink" title="任务调度器"></a><a href="https://leetcode-cn.com/problems/task-scheduler/description/" target="_blank" rel="external">任务调度器</a></h2>]]></content>
     
     <summary type="html">
     
