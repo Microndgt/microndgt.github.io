@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-05-01T04:31:33.000Z</updated>
+  <updated>2018-05-01T04:52:24.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://skyrover.me/2018/05/01/greedy_alg/"/>
     <id>http://skyrover.me/2018/05/01/greedy_alg/</id>
     <published>2018-05-01T04:31:03.000Z</published>
-    <updated>2018-05-01T04:31:33.000Z</updated>
+    <updated>2018-05-01T04:52:24.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近有些浮躁，所以我决定从现在开始，就一件事我要坚持到底的去做。5月份就是:</p>
 <ol>
@@ -43,7 +43,16 @@
 <h2 id="根据身高重建队列"><a href="#根据身高重建队列" class="headerlink" title="根据身高重建队列"></a><a href="https://leetcode-cn.com/problems/queue-reconstruction-by-height/description/" target="_blank" rel="external">根据身高重建队列</a></h2><p>这道题主要理解了要在h相同的情况下先插入身高高的元素，这样身高矮的元素就是正确的位置，否则身高矮的元素就会被挤到后面，从而错误。</p>
 <p>按照身高降序，然后h升序，这样h就是它应该被插入的位置了。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reconstructQueue</span><span class="params">(self, people)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type people: List[List[int]]</span></div><div class="line"><span class="string">        :rtype: List[List[int]]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 按照身高降序，h升序的方式进行，然后按照h插入，先插大的</span></div><div class="line">        people.sort(key=<span class="keyword">lambda</span> x: (-x[<span class="number">0</span>], x[<span class="number">1</span>]))</div><div class="line">        ret = []</div><div class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> people:</div><div class="line">            ret.insert(p[<span class="number">1</span>], p)</div><div class="line">        <span class="keyword">return</span> ret</div></pre></td></tr></table></figure>
-<h2 id="任务调度器"><a href="#任务调度器" class="headerlink" title="任务调度器"></a><a href="https://leetcode-cn.com/problems/task-scheduler/description/" target="_blank" rel="external">任务调度器</a></h2>]]></content>
+<h2 id="任务调度器"><a href="#任务调度器" class="headerlink" title="任务调度器"></a><a href="https://leetcode-cn.com/problems/task-scheduler/description/" target="_blank" rel="external">任务调度器</a></h2><p>对tasks按照任务进行计数，记数目最多的任务为t，其个数为tmax</p>
+<p>问题转化为在tmax个任务之间的“槽”内尽可能安插别的任务，使idle最小化</p>
+<p>例如输入<code>tasks = [&#39;A&#39; * 5, &#39;B&#39; * 5, &#39;C&#39; * 4, &#39;D&#39; * 2, &#39;E&#39; * 1]， n = 5</code></p>
+<p>本例中，数目最多的任务t为’A’，其个数tmax = 5</p>
+<p><code>A o o o o o A o o o o o A o o o o o A o o o o o A x x x x x</code></p>
+<p>标记为‘o’的部分需要填充任务或者idle，‘o’安排完毕后，剩余任务放置在标记为‘x’的部分</p>
+<p>调度结果如下，答案为26：</p>
+<p><code>A B C D E i A B C D i i A B C i i i A B C i i i A B</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">leastInterval</span><span class="params">(self, tasks, n)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type tasks: List[str]</span></div><div class="line"><span class="string">        :type n: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 找到最多的那个任务，其他就是往这个任务中间填其他任务或者idle</span></div><div class="line">        <span class="comment"># 最后时间是所有任务的长度加上idle的时间</span></div><div class="line">        cnt = collections.Counter(tasks)</div><div class="line">        tmax = max(cnt.values())</div><div class="line">        slots = (tmax - <span class="number">1</span>) * n</div><div class="line">        tsum = len(tasks)</div><div class="line">        print(cnt.values())</div><div class="line">        <span class="comment"># 这里 n - (n == tmax) 是存在几个相同个数task的时候，这些任务会排在后面，而不会产生idle</span></div><div class="line">        <span class="comment"># 所以就是总长度排除掉最后面的任务，减去运行的任务，就是idle的长度</span></div><div class="line">        <span class="keyword">return</span> tsum + max(<span class="number">0</span>, slots + tmax - <span class="number">1</span> - sum(n - (n == tmax) <span class="keyword">for</span> n <span class="keyword">in</span> cnt.values()))</div></pre></td></tr></table></figure>
+]]></content>
     
     <summary type="html">
     
