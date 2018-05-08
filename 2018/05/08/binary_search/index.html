@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>二分查找 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法,LeetCode,二分查找">
+    <meta name="description" content="x 的平方根二分法 12345678910111213141516171819class Solution:    def mySqrt(self, x):        &quot;&quot;&quot;        :type x: int        :rtype: int        &quot;&quot;&quot;        l = 1        h = x        while l &amp;lt;= h:">
+<meta name="keywords" content="Python,算法,LeetCode,二分查找">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二分查找">
+<meta property="og:url" content="http://skyrover.me/2018/05/08/binary_search/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="x 的平方根二分法 12345678910111213141516171819class Solution:    def mySqrt(self, x):        &quot;&quot;&quot;        :type x: int        :rtype: int        &quot;&quot;&quot;        l = 1        h = x        while l &amp;lt;= h:">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-08T00:45:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二分查找">
+<meta name="twitter:description" content="x 的平方根二分法 12345678910111213141516171819class Solution:    def mySqrt(self, x):        &quot;&quot;&quot;        :type x: int        :rtype: int        &quot;&quot;&quot;        l = 1        h = x        while l &amp;lt;= h:">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">二分查找</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">二分查找</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-08T00:26:03.000Z" itemprop="datePublished" class="page-time">
+  2018-05-08 08:26:03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#x-的平方根"><span class="post-toc-number">1.</span> <span class="post-toc-text">x 的平方根</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#寻找比目标字母大的最小字母"><span class="post-toc-number">2.</span> <span class="post-toc-text">寻找比目标字母大的最小字母</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Single-Element-in-a-Sorted-Array"><span class="post-toc-number">3.</span> <span class="post-toc-text">Single Element in a Sorted Array</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第一个错误的版本"><span class="post-toc-number">4.</span> <span class="post-toc-text">第一个错误的版本</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-binary_search"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">二分查找</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-08 08:26:03 08:26:03" datetime="2018-05-08T00:26:03.000Z"  itemprop="datePublished">2018-05-08 08:26:03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <h2 id="x-的平方根"><a href="#x-的平方根" class="headerlink" title="x 的平方根"></a><a href="https://leetcode-cn.com/problems/sqrtx/description/" target="_blank" rel="external">x 的平方根</a></h2><p>二分法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mySqrt</span><span class="params">(self, x)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type x: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        l = <span class="number">1</span></div><div class="line">        h = x</div><div class="line">        <span class="keyword">while</span> l &lt;= h:</div><div class="line">            <span class="comment"># 防止整数溢出</span></div><div class="line">            mid = l + (h - l) // <span class="number">2</span></div><div class="line">            sqrt = x / mid</div><div class="line">            <span class="keyword">if</span> sqrt == mid:</div><div class="line">                <span class="keyword">return</span> mid</div><div class="line">            <span class="keyword">elif</span> sqrt &lt; mid:</div><div class="line">                h = mid - <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                l = mid + <span class="number">1</span>       </div><div class="line">        <span class="keyword">return</span> h</div></pre></td></tr></table></figure>
+<h2 id="寻找比目标字母大的最小字母"><a href="#寻找比目标字母大的最小字母" class="headerlink" title="寻找比目标字母大的最小字母"></a><a href="https://leetcode-cn.com/problems/find-smallest-letter-greater-than-target/description/" target="_blank" rel="external">寻找比目标字母大的最小字母</a></h2><p>第一行的判断确保了在进入循环查询的letters最后面肯定是比target大的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">nextGreatestLetter</span><span class="params">(self, letters, target)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type letters: List[str]</span></div><div class="line"><span class="string">        :type target: str</span></div><div class="line"><span class="string">        :rtype: str</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> target &gt;= letters[<span class="number">-1</span>]:</div><div class="line">            <span class="keyword">return</span> letters[<span class="number">0</span>]</div><div class="line">        lo = <span class="number">0</span></div><div class="line">        hi = len(letters)</div><div class="line">        <span class="comment"># a b c c c</span></div><div class="line">        <span class="keyword">while</span> lo &lt;= hi:</div><div class="line">            mid = lo + (hi - lo) // <span class="number">2</span></div><div class="line">            <span class="keyword">if</span> letters[mid] &lt;= target:</div><div class="line">                lo = mid + <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                hi = mid - <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> letters[lo]</div></pre></td></tr></table></figure>
+<h2 id="Single-Element-in-a-Sorted-Array"><a href="#Single-Element-in-a-Sorted-Array" class="headerlink" title="Single Element in a Sorted Array"></a><a href="https://leetcode.com/problems/single-element-in-a-sorted-array/description/" target="_blank" rel="external">Single Element in a Sorted Array</a></h2><p>主要是发现规律，因为有序，就会出现规律。规律就是在单个数字出现之前，偶数位和偶数位+1的数字是相等的，单个数字出现之后就不是这样了，因此可以通过此来判断是l往上增还是h往下降，所以算是二分法的一个变体，但是需要注意一些细节。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">singleNonDuplicate</span><span class="params">(self, nums)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 主要是判断规律</span></div><div class="line">        l = <span class="number">0</span></div><div class="line">        h = len(nums) - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> l &lt; h:</div><div class="line">            mid = l + (h - l) // <span class="number">2</span></div><div class="line">            <span class="comment"># 要使得l, h都为偶数位</span></div><div class="line">            <span class="keyword">if</span> mid % <span class="number">2</span> == <span class="number">1</span>:</div><div class="line">                mid -= <span class="number">1</span></div><div class="line">            <span class="keyword">if</span> nums[mid] != nums[mid+<span class="number">1</span>]:</div><div class="line">                h = mid</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                l = mid + <span class="number">2</span></div><div class="line">        <span class="keyword">return</span> nums[l]</div></pre></td></tr></table></figure>
+<h2 id="第一个错误的版本"><a href="#第一个错误的版本" class="headerlink" title="第一个错误的版本"></a><a href="https://leetcode-cn.com/problems/first-bad-version/description/" target="_blank" rel="external">第一个错误的版本</a></h2><p>标准的二分法，有几点需要注意：</p>
+<ol>
+<li><code>l &lt; h</code> 如果循环体中 <code>h = mid</code> 因为 h 和 l 可能相等，所以会导致没法退出循环的情况，所以</li>
+<li><code>h = mid</code> 因为推导出解可能在 <code>[l, m]</code> 闭区间中，所以需要 <code>h = mid</code></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># The isBadVersion API is already defined for you.</span></div><div class="line"><span class="comment"># @param version, an integer</span></div><div class="line"><span class="comment"># @return a bool</span></div><div class="line"><span class="comment"># def isBadVersion(version):</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">firstBadVersion</span><span class="params">(self, n)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type n: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        l = <span class="number">1</span></div><div class="line">        h = n</div><div class="line">        <span class="keyword">while</span> l &lt; h:</div><div class="line">            mid = l + (h - l) // <span class="number">2</span></div><div class="line">            <span class="keyword">if</span> isBadVersion(mid):</div><div class="line">                h = mid</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                l = mid + <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> l</div></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/05/08/binary_search/" target="_blank" rel="external">http://skyrover.me/2018/05/08/binary_search/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/二分查找/">二分查找</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/05/08/binary_search/&title=《二分查找》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/05/08/binary_search/&title=《二分查找》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/05/08/binary_search/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《二分查找》 — SkyRover&url=http://skyrover.me/2018/05/08/binary_search/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/05/08/binary_search/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/05/01/greedy_alg/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">贪心算法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/05/08/binary_search/&title=《二分查找》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/05/08/binary_search/&title=《二分查找》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/05/08/binary_search/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《二分查找》 — SkyRover&url=http://skyrover.me/2018/05/08/binary_search/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/05/08/binary_search/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3aQW7DMAwF0d7/0i7QVYHUyXxSKRBytAoMW/bTghFJfX3hcf0Mfs/j79+D33N4yJAh42MZ19Nxx3j+EWSG2hLcUmXIkLGAwad+fMHdFRIbyZzoD0CGDBkyQDAl19PQLEOGDBm1gFvb8NWuyJAhQ0aagpLNHLnON5dvycVlyJDxgYy0MfCfv9/Y35AhQ8aHMK7G6DQJSAkv+BIZMmSMZqQFfb7J4ykuaV6iQCxDhowFjFMJ7amGZboEMmTImMrgB7945ni2DYD+BmTIkLGAQQJircTf37mh+WXIkLGAgY4ytJPefuh/UTWUIUPGaAY54lALo2l5rngsQ4YMGQsY/SQ2PZzBFwiV6mTIkLGMkSaWpNCftgTSZZIhQ8ZsBq+xc14nKU3r/7dPyZAhYxzjAoNv7DqNTD7zH2wZMmQMZfDNXK15mS5HeqRMhgwZGxhpyOMFNf5ZaZlPhgwZOxnph5KnyEaTBH2+rDJkyNjD4NPVwm666QyOa8iQIWMZoxYESUit3RnsbWXIkDGakbYnTz3VSX1RC1OGDBkjGOkxrE4jgb+xeGZEhgwZ4xhXONIgyDeUtRaFDBkyNjD4OHtUIn1XLdDLkCFjEqOTlNYS3bToJkOGDBm1wxYksNau8CT2wJkRGTJkjGakCSpPhnkzVYYMGTJqpTTeYEjT4xehWYYMGQsYPICmpbd0nmLpX4YMGaMZ/cZAGjR5a4FsTGXIkDGa8Q3MEvAuTnbzowAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
