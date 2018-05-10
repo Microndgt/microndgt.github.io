@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>双指针 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法,LeetCode,双指针">
+    <meta name="description" content="两数之和 II - 输入有序数组双指针法解这种问题简直不能太赞！本来困的不行，做了这道题就觉得能清醒一点了！ 12345678910111213141516class Solution(object):    def twoSum(self, numbers, target):        &quot;&quot;&quot;        :type numbers: List[int]        :type targ">
+<meta name="keywords" content="Python,算法,LeetCode,双指针">
+<meta property="og:type" content="article">
+<meta property="og:title" content="双指针">
+<meta property="og:url" content="http://skyrover.me/2018/05/10/double_ptr/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="两数之和 II - 输入有序数组双指针法解这种问题简直不能太赞！本来困的不行，做了这道题就觉得能清醒一点了！ 12345678910111213141516class Solution(object):    def twoSum(self, numbers, target):        &quot;&quot;&quot;        :type numbers: List[int]        :type targ">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-10T02:47:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="双指针">
+<meta name="twitter:description" content="两数之和 II - 输入有序数组双指针法解这种问题简直不能太赞！本来困的不行，做了这道题就觉得能清醒一点了！ 12345678910111213141516class Solution(object):    def twoSum(self, numbers, target):        &quot;&quot;&quot;        :type numbers: List[int]        :type targ">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">双指针</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">双指针</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-10T00:26:03.000Z" itemprop="datePublished" class="page-time">
+  2018-05-10 08:26:03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#两数之和-II-输入有序数组"><span class="post-toc-number">1.</span> <span class="post-toc-text">两数之和 II - 输入有序数组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Sum-of-Square-Numbers"><span class="post-toc-number">2.</span> <span class="post-toc-text">Sum of Square Numbers</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#反转字符串中的元音字母"><span class="post-toc-number">3.</span> <span class="post-toc-text">反转字符串中的元音字母</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#680-Valid-Palindrome-II"><span class="post-toc-number">4.</span> <span class="post-toc-text">680. Valid Palindrome II</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#88-合并两个有序数组"><span class="post-toc-number">5.</span> <span class="post-toc-text">88. 合并两个有序数组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#141-环形链表"><span class="post-toc-number">6.</span> <span class="post-toc-text">141. 环形链表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#524-通过删除字母匹配到字典里最长单词"><span class="post-toc-number">7.</span> <span class="post-toc-text">524. 通过删除字母匹配到字典里最长单词</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-double_ptr"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">双指针</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-10 08:26:03 08:26:03" datetime="2018-05-10T00:26:03.000Z"  itemprop="datePublished">2018-05-10 08:26:03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <h2 id="两数之和-II-输入有序数组"><a href="#两数之和-II-输入有序数组" class="headerlink" title="两数之和 II - 输入有序数组"></a><a href="https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/description/" target="_blank" rel="external">两数之和 II - 输入有序数组</a></h2><p>双指针法解这种问题简直不能太赞！本来困的不行，做了这道题就觉得能清醒一点了！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">twoSum</span><span class="params">(self, numbers, target)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type numbers: List[int]</span></div><div class="line"><span class="string">        :type target: int</span></div><div class="line"><span class="string">        :rtype: List[int]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        i = <span class="number">0</span></div><div class="line">        j = len(numbers) - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> i &lt; j:</div><div class="line">            <span class="keyword">if</span> numbers[i] + numbers[j] &lt; target:</div><div class="line">                i += <span class="number">1</span></div><div class="line">            <span class="keyword">elif</span> numbers[i] + numbers[j] &gt; target:</div><div class="line">                j -= <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">return</span> [i+<span class="number">1</span>, j+<span class="number">1</span>]</div></pre></td></tr></table></figure>
+<h2 id="Sum-of-Square-Numbers"><a href="#Sum-of-Square-Numbers" class="headerlink" title="Sum of Square Numbers"></a><a href="https://leetcode.com/problems/sum-of-square-numbers/description/" target="_blank" rel="external">Sum of Square Numbers</a></h2><p>这道题需要考虑到j不可能大于<code>sqrt(c)</code>，毕竟平方和</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">judgeSquareSum</span><span class="params">(self, c)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type c: int</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        i = <span class="number">0</span></div><div class="line">        j = int(c ** <span class="number">0.5</span>)</div><div class="line">        <span class="keyword">while</span> i &lt;= j:</div><div class="line">            sum_of = i ** <span class="number">2</span> + j ** <span class="number">2</span></div><div class="line">            <span class="keyword">if</span> sum_of == c:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">            <span class="keyword">elif</span> sum_of &lt; c:</div><div class="line">                i += <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                j -= <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">False</span></div></pre></td></tr></table></figure>
+<h2 id="反转字符串中的元音字母"><a href="#反转字符串中的元音字母" class="headerlink" title="反转字符串中的元音字母"></a><a href="https://leetcode-cn.com/problems/reverse-vowels-of-a-string/description/" target="_blank" rel="external">反转字符串中的元音字母</a></h2><p>明显的双指针法，爽歪歪</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseVowels</span><span class="params">(self, s)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type s: str</span></div><div class="line"><span class="string">        :rtype: str</span></div><div class="line"><span class="string">        """</span></div><div class="line">        vowels = &#123;<span class="string">'a'</span>, <span class="string">'e'</span>, <span class="string">'i'</span>, <span class="string">'o'</span>, <span class="string">'u'</span>&#125;</div><div class="line">        i = <span class="number">0</span></div><div class="line">        j = len(s) - <span class="number">1</span></div><div class="line">        slist = list(s)</div><div class="line">        <span class="keyword">while</span> i &lt; j:</div><div class="line">            <span class="keyword">if</span> slist[i].lower() <span class="keyword">not</span> <span class="keyword">in</span> vowels:</div><div class="line">                i += <span class="number">1</span></div><div class="line">                <span class="keyword">continue</span></div><div class="line">            <span class="keyword">if</span> slist[j].lower() <span class="keyword">not</span> <span class="keyword">in</span> vowels:</div><div class="line">                j -= <span class="number">1</span></div><div class="line">                <span class="keyword">continue</span></div><div class="line">            slist[i], slist[j] = slist[j], slist[i]</div><div class="line">            i += <span class="number">1</span></div><div class="line">            j -= <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="string">""</span>.join(slist)</div></pre></td></tr></table></figure>
+<h2 id="680-Valid-Palindrome-II"><a href="#680-Valid-Palindrome-II" class="headerlink" title="680. Valid Palindrome II"></a><a href="https://leetcode.com/problems/valid-palindrome-ii/description/" target="_blank" rel="external">680. Valid Palindrome II</a></h2><p>这道题分为两步，首先双指针到两个元素不等的地方，然后再判断删除一个元素之后能不能回文，如果能，就为True，否则为False，所以可以直接返回。注意数组索引的结束界限。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validPalindrome</span><span class="params">(self, s)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type s: str</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 双指针判断，当出现不等的情况时，进行两种情况的判断，看是否通过删除一个元素可以形成回文</span></div><div class="line">        i = <span class="number">0</span></div><div class="line">        j = len(s) - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> i &lt; j:</div><div class="line">            <span class="keyword">if</span> s[i] != s[j]:</div><div class="line">                <span class="keyword">return</span> self.is_palindrome(s[i:j]) <span class="keyword">or</span> self.is_palindrome(s[i+<span class="number">1</span>:j+<span class="number">1</span>])</div><div class="line">            i += <span class="number">1</span></div><div class="line">            j -= <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_palindrome</span><span class="params">(self, s)</span>:</span></div><div class="line">        i = <span class="number">0</span></div><div class="line">        j = len(s) - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> i &lt; j:</div><div class="line">            <span class="keyword">if</span> s[i] != s[j]:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">            i += <span class="number">1</span></div><div class="line">            j -= <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
+<h2 id="88-合并两个有序数组"><a href="#88-合并两个有序数组" class="headerlink" title="88. 合并两个有序数组"></a><a href="https://leetcode-cn.com/problems/merge-sorted-array/description/" target="_blank" rel="external">88. 合并两个有序数组</a></h2><p>有时候反着想会更容易些，注意逻辑判断以及指针的更新。。。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(self, nums1, m, nums2, n)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums1: List[int]</span></div><div class="line"><span class="string">        :type m: int</span></div><div class="line"><span class="string">        :type nums2: List[int]</span></div><div class="line"><span class="string">        :type n: int</span></div><div class="line"><span class="string">        :rtype: void Do not return anything, modify nums1 in-place instead.</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 从后往前</span></div><div class="line">        i = m - <span class="number">1</span></div><div class="line">        j = n - <span class="number">1</span></div><div class="line">        index = m + n - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> i &gt;= <span class="number">0</span> <span class="keyword">or</span> j &gt;= <span class="number">0</span>:</div><div class="line">            <span class="keyword">if</span> j &lt; <span class="number">0</span>:</div><div class="line">                nums1[index] = nums1[i]</div><div class="line">                i -= <span class="number">1</span></div><div class="line">            <span class="keyword">elif</span> i &lt; <span class="number">0</span>:</div><div class="line">                nums1[index] = nums2[j]</div><div class="line">                j -= <span class="number">1</span></div><div class="line">            <span class="keyword">elif</span> nums1[i] &gt;= nums2[j]:</div><div class="line">                nums1[index] = nums1[i]</div><div class="line">                i -= <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                nums1[index] = nums2[j]</div><div class="line">                j -= <span class="number">1</span></div><div class="line">            index -= <span class="number">1</span></div></pre></td></tr></table></figure>
+<h2 id="141-环形链表"><a href="#141-环形链表" class="headerlink" title="141. 环形链表"></a><a href="https://leetcode-cn.com/problems/linked-list-cycle/description/" target="_blank" rel="external">141. 环形链表</a></h2><p>快慢指针法，一个指针走一步，一个指针走两步，如果出现相等，就是有环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Definition for singly-linked list.</span></div><div class="line"><span class="comment"># class ListNode(object):</span></div><div class="line"><span class="comment">#     def __init__(self, x):</span></div><div class="line"><span class="comment">#         self.val = x</span></div><div class="line"><span class="comment">#         self.next = None</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasCycle</span><span class="params">(self, head)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type head: ListNode</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        ptr1 = head</div><div class="line">        ptr2 = head.next</div><div class="line">        <span class="keyword">while</span> ptr1 <span class="keyword">and</span> ptr2 <span class="keyword">and</span> ptr2.next:</div><div class="line">            <span class="keyword">if</span> ptr1 == ptr2:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">            ptr1 = ptr1.next</div><div class="line">            ptr2 = ptr2.next.next</div><div class="line">        <span class="keyword">return</span> <span class="keyword">False</span></div></pre></td></tr></table></figure>
+<h2 id="524-通过删除字母匹配到字典里最长单词"><a href="#524-通过删除字母匹配到字典里最长单词" class="headerlink" title="524. 通过删除字母匹配到字典里最长单词"></a><a href="https://leetcode-cn.com/problems/longest-word-in-dictionary-through-deleting/description/" target="_blank" rel="external">524. 通过删除字母匹配到字典里最长单词</a></h2><p>双指针，一个指针遍历s，一个指针来遍历字典字符串，必须字典字符串的指针走完才算数，否则就是不合格。如果两个指针的字母不想等，则将s指针加一，直到匹配完成。另外输出需要以字典顺序，所以一开始需要对字典排序。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findLongestWord</span><span class="params">(self, s, d)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type s: str</span></div><div class="line"><span class="string">        :type d: List[str]</span></div><div class="line"><span class="string">        :rtype: str</span></div><div class="line"><span class="string">        """</span></div><div class="line">        d.sort()</div><div class="line">        res = <span class="string">''</span></div><div class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> d:</div><div class="line">            i = j = <span class="number">0</span></div><div class="line">            <span class="keyword">while</span> j &lt; len(word):</div><div class="line">                <span class="keyword">if</span> i &gt;= len(s):</div><div class="line">                    <span class="keyword">break</span></div><div class="line">                <span class="keyword">if</span> s[i] == word[j]:</div><div class="line">                    i += <span class="number">1</span></div><div class="line">                    j += <span class="number">1</span></div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    i += <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">if</span> len(word) &gt; len(res):</div><div class="line">                    res = word</div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/05/10/double_ptr/" target="_blank" rel="external">http://skyrover.me/2018/05/10/double_ptr/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/双指针/">双指针</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/05/10/double_ptr/&title=《双指针》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/05/10/double_ptr/&title=《双指针》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/05/10/double_ptr/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《双指针》 — SkyRover&url=http://skyrover.me/2018/05/10/double_ptr/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/05/10/double_ptr/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/05/08/binary_search/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">二分查找</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/05/10/double_ptr/&title=《双指针》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/05/10/double_ptr/&title=《双指针》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/05/10/double_ptr/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《双指针》 — SkyRover&url=http://skyrover.me/2018/05/10/double_ptr/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/05/10/double_ptr/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxElEQVR42u3aQY7DIBBEUd//0uQAlvGvBlqO9FlFkwl+eFGiG64Lj3Eb97+TGdJfFYdcuXKXuWM65lw+P/k8N8iVK7efyx/zFEZ8ntpv5cqV+31uGmE81OTKlfuP3PTzvH6RK1ful7mk+OE9Cl7eHKzV5MqVu8Dd29rYFXYb+rty5cotcUc4eKitPOXx6XLlym3h8kBJFzCn154rV67cTi5npdcy5k0QXlAV36JcuXIXuHy6NJh4+yNojsiVK/cwl8RW+i2fM45FuXLltnBrh6D8kIMEH38dcuXK7eHyTUxts5JetnjZNsmVK7eFm7ZC0nKotuCX0JQrV24Ll5cxnFU7fA2CT65cuce4pICpbWjS2VDrVq5cuS1ccqWStzt502SlsSJXrtxO7q5QS4nxwuTKldvIrR2rpIHIj1eDLq9cuXKPcWugXRcvgv+RK1fuYe4IB5mUHJnwgJMrV24/lw++DN7B4NEZL0auXLnLXH4Ngi9s5ZD15Vu5cuU2ctfbHLVrW8Xti1y5cj/G5e0S0naJyyG5cuV+mFtrs27ILrly5TZySfFDjlJIVJENEDpklStX7jFuGiWcyKONvya5cuUe5v4A4VzDQvT6vyYAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
