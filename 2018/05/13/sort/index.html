@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>排序 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,算法,LeetCode,排序">
+    <meta name="description" content="215. Kth Largest Element in an Array  Python的sortTim Sort 12345678class Solution:    def findKthLargest(self, nums, k):        &quot;&quot;&quot;        :type nums: List[int]        :type k: int        :rtype: int">
+<meta name="keywords" content="Python,算法,LeetCode,排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序">
+<meta property="og:url" content="http://skyrover.me/2018/05/13/sort/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="215. Kth Largest Element in an Array  Python的sortTim Sort 12345678class Solution:    def findKthLargest(self, nums, k):        &quot;&quot;&quot;        :type nums: List[int]        :type k: int        :rtype: int">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-13T01:57:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序">
+<meta name="twitter:description" content="215. Kth Largest Element in an Array  Python的sortTim Sort 12345678class Solution:    def findKthLargest(self, nums, k):        &quot;&quot;&quot;        :type nums: List[int]        :type k: int        :rtype: int">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">排序</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">排序</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-13T01:56:03.000Z" itemprop="datePublished" class="page-time">
+  2018-05-13 09:56:03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Python的sort"><span class="post-toc-number">1.</span> <span class="post-toc-text">Python的sort</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#冒泡排序"><span class="post-toc-number">2.</span> <span class="post-toc-text">冒泡排序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#快速排序"><span class="post-toc-number">3.</span> <span class="post-toc-text">快速排序</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#非原地排序"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">非原地排序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原地排序"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">原地排序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#算法导论中的快排"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">算法导论中的快排</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#快排迭代版"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">快排迭代版</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#归并排序"><span class="post-toc-number">4.</span> <span class="post-toc-text">归并排序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#选取算法"><span class="post-toc-number">5.</span> <span class="post-toc-text">选取算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#插入排序"><span class="post-toc-number">6.</span> <span class="post-toc-text">插入排序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#选择排序"><span class="post-toc-number">7.</span> <span class="post-toc-text">选择排序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#堆排序"><span class="post-toc-number">8.</span> <span class="post-toc-text">堆排序</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#具体方法的实现"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">具体方法的实现</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-sort"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">排序</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-13 09:56:03 09:56:03" datetime="2018-05-13T01:56:03.000Z"  itemprop="datePublished">2018-05-13 09:56:03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <ul>
+<li><a href="https://leetcode.com/problems/kth-largest-element-in-an-array/description/" target="_blank" rel="external">215. Kth Largest Element in an Array</a></li>
+</ul>
+<h1 id="Python的sort"><a href="#Python的sort" class="headerlink" title="Python的sort"></a>Python的sort</h1><p>Tim Sort</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self, nums, k)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        :type k: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">return</span> sorted(nums)[-k]</div></pre></td></tr></table></figure>
+<h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 冒泡排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(nums)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)<span class="number">-1</span>, <span class="number">0</span>, <span class="number">-1</span>):</div><div class="line">        <span class="comment"># 一次外部迭代会确定一个最大数</span></div><div class="line">        count = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i):</div><div class="line">            <span class="keyword">if</span> nums[j] &gt; nums[j+<span class="number">1</span>]:</div><div class="line">                nums[j], nums[j+<span class="number">1</span>] = nums[j+<span class="number">1</span>], nums[j]</div><div class="line">                count += <span class="number">1</span></div><div class="line">        <span class="comment"># 如果没有一次交换，则说明已经有序</span></div><div class="line">        <span class="keyword">if</span> count == <span class="number">0</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">return</span> nums</div></pre></td></tr></table></figure>
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="非原地排序"><a href="#非原地排序" class="headerlink" title="非原地排序"></a>非原地排序</h2><p>空间复杂度略高，刚才看到阮一峰的快排被怼了 😂</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(self, nums)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> nums:</div><div class="line">            <span class="keyword">return</span> []</div><div class="line">        less = [num <span class="keyword">for</span> num <span class="keyword">in</span> nums[<span class="number">1</span>:] <span class="keyword">if</span> num &lt;= nums[<span class="number">0</span>]]</div><div class="line">        more = [num <span class="keyword">for</span> num <span class="keyword">in</span> nums[<span class="number">1</span>:] <span class="keyword">if</span> num &gt; nums[<span class="number">0</span>]]</div><div class="line">        <span class="keyword">return</span> self.quick_sort(less) + [nums[<span class="number">0</span>]] + self.quick_sort(more)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self, nums, k)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        :type k: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">return</span> self.quick_sort(nums)[-k]</div></pre></td></tr></table></figure>
+<h2 id="原地排序"><a href="#原地排序" class="headerlink" title="原地排序"></a>原地排序</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(nums, low, high)</span>:</span></div><div class="line">    <span class="keyword">if</span> low &lt; high:</div><div class="line">        key_index = partition(nums, low, high)</div><div class="line">        quick_sort(nums, low, key_index)</div><div class="line">        quick_sort(nums, key_index+<span class="number">1</span>, high)</div><div class="line">    <span class="keyword">return</span> nums</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(array, low, high)</span>:</span></div><div class="line">    key = array[low]</div><div class="line">    <span class="comment"># 来回交换顺序</span></div><div class="line">    <span class="keyword">while</span> low &lt; high:</div><div class="line">        <span class="keyword">while</span> low &lt; high <span class="keyword">and</span> array[high] &gt;= key:</div><div class="line">            high -= <span class="number">1</span></div><div class="line">        <span class="keyword">if</span> low &lt; high:</div><div class="line">            array[low] = array[high]</div><div class="line">        <span class="keyword">while</span> low &lt; high <span class="keyword">and</span> array[low] &lt; key:</div><div class="line">            low += <span class="number">1</span></div><div class="line">        <span class="keyword">if</span> low &lt; high:</div><div class="line">            array[high] = array[low]</div><div class="line">    array[low] = key</div><div class="line">    <span class="keyword">return</span> low</div></pre></td></tr></table></figure>
+<h2 id="算法导论中的快排"><a href="#算法导论中的快排" class="headerlink" title="算法导论中的快排"></a>算法导论中的快排</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(array, l, r)</span>:</span>  </div><div class="line">    <span class="keyword">if</span> l &lt; r:  </div><div class="line">        q = partition(array, l, r)  </div><div class="line">        quick_sort(array, l, q - <span class="number">1</span>)  </div><div class="line">        quick_sort(array, q + <span class="number">1</span>, r)  </div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(array, l, r)</span>:</span>  </div><div class="line">    x = array[r]</div><div class="line">    i = l - <span class="number">1</span></div><div class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(l, r):</div><div class="line">        <span class="comment"># i记录的是上次比较大的元素</span></div><div class="line">        <span class="comment"># 所以出现小元素之后，就会将小元素和大元素交换位置</span></div><div class="line">        <span class="keyword">if</span> array[j] &lt;= x:</div><div class="line">            i += <span class="number">1</span></div><div class="line">            array[i], array[j] = array[j], array[i]</div><div class="line">    <span class="comment"># i+1就是当前切分元素，也就是i+1之前都是比x小的</span></div><div class="line">    <span class="comment"># i+1之后就是比x大的</span></div><div class="line">    array[i + <span class="number">1</span>], array[r] = array[r], array[i + <span class="number">1</span>]</div><div class="line">    <span class="keyword">return</span> i + <span class="number">1</span></div></pre></td></tr></table></figure>
+<h2 id="快排迭代版"><a href="#快排迭代版" class="headerlink" title="快排迭代版"></a>快排迭代版</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(array, l, r)</span>:</span>  </div><div class="line">    <span class="keyword">if</span> l &gt;= r:  </div><div class="line">        <span class="keyword">return</span>  </div><div class="line">    stack = []  </div><div class="line">    stack.append(l)  </div><div class="line">    stack.append(r)  </div><div class="line">    <span class="keyword">while</span> stack:  </div><div class="line">        low = stack.pop(<span class="number">0</span>)  </div><div class="line">        high = stack.pop(<span class="number">0</span>)  </div><div class="line">        <span class="keyword">if</span> high - low &lt;= <span class="number">0</span>:  </div><div class="line">            <span class="keyword">continue</span>  </div><div class="line">        x = array[high]  </div><div class="line">        i = low - <span class="number">1</span>  </div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(low, high):  </div><div class="line">            <span class="keyword">if</span> array[j] &lt;= x:  </div><div class="line">                i += <span class="number">1</span>  </div><div class="line">                array[i], array[j] = array[j], array[i]  </div><div class="line">        array[i + <span class="number">1</span>], array[high] = array[high], array[i + <span class="number">1</span>]  </div><div class="line">        stack.extend([low, i, i + <span class="number">2</span>, high])</div></pre></td></tr></table></figure>
+<h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(nums)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line"><span class="string">    归并排序</span></div><div class="line"><span class="string">    :param nums:</span></div><div class="line"><span class="string">    :return:</span></div><div class="line"><span class="string">    """</span></div><div class="line">    <span class="comment"># 切分数组</span></div><div class="line">    mid = len(nums) // <span class="number">2</span></div><div class="line">    lft, rgt = nums[:mid], nums[mid:]</div><div class="line">    <span class="keyword">if</span> len(lft) &gt; <span class="number">1</span>:</div><div class="line">        lft = merge_sort(lft)</div><div class="line">    <span class="keyword">if</span> len(rgt) &gt; <span class="number">1</span>:</div><div class="line">        rgt = merge_sort(rgt)</div><div class="line">    res = []</div><div class="line">    <span class="comment"># 归并的时候lft和rgt已经有序</span></div><div class="line">    <span class="keyword">while</span> lft <span class="keyword">and</span> rgt:</div><div class="line">        <span class="comment"># 先由大到小append</span></div><div class="line">        <span class="keyword">if</span> lft[<span class="number">-1</span>] &gt;= rgt[<span class="number">-1</span>]:</div><div class="line">            res.append(lft.pop())</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            res.append(rgt.pop())</div><div class="line">    res.reverse()</div><div class="line">    <span class="keyword">return</span> (lft <span class="keyword">or</span> rgt) + res</div></pre></td></tr></table></figure>
+<h1 id="选取算法"><a href="#选取算法" class="headerlink" title="选取算法"></a>选取算法</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 选择第k大的元素</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">select</span><span class="params">(nums, k)</span>:</span></div><div class="line">    pi, nums = nums[<span class="number">0</span>], nums[<span class="number">1</span>:]</div><div class="line">    lo = [num <span class="keyword">for</span> num <span class="keyword">in</span> nums <span class="keyword">if</span> num &lt;= pi]</div><div class="line">    hi = [num <span class="keyword">for</span> num <span class="keyword">in</span> nums <span class="keyword">if</span> num &gt; pi]</div><div class="line">    m = len(hi)</div><div class="line">    <span class="comment"># m+1是因为pi是处于第k大</span></div><div class="line">    <span class="keyword">if</span> m+<span class="number">1</span> == k:</div><div class="line">        <span class="keyword">return</span> pi</div><div class="line">    <span class="keyword">elif</span> m &lt; k:</div><div class="line">        <span class="comment"># 减1是因为要排除pi元素</span></div><div class="line">        <span class="keyword">return</span> select(lo, k - m - <span class="number">1</span>)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">return</span> select(hi, k)</div></pre></td></tr></table></figure>
+<h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p>主要思想就是从开始进行排序，遇到小的插入到前面，不断的插入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 插入排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert_sort</span><span class="params">(nums)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(nums)):</div><div class="line">        j = i</div><div class="line">        <span class="keyword">while</span> j &gt; <span class="number">0</span> <span class="keyword">and</span> nums[j] &lt; nums[j<span class="number">-1</span>]:</div><div class="line">            <span class="comment"># 将元素向前挪</span></div><div class="line">            nums[j], nums[j<span class="number">-1</span>] = nums[j<span class="number">-1</span>], nums[j]</div><div class="line">            j -= <span class="number">1</span></div><div class="line">    <span class="keyword">return</span> nums</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 递归版插入排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert_sort_rec</span><span class="params">(nums, i)</span>:</span></div><div class="line">    <span class="comment"># 一直递归到最开始</span></div><div class="line">    <span class="keyword">if</span> i == <span class="number">0</span>:</div><div class="line">        <span class="keyword">return</span></div><div class="line">    insert_sort_rec(nums, i<span class="number">-1</span>)</div><div class="line">    j = i</div><div class="line">    <span class="keyword">while</span> j &gt; <span class="number">0</span> <span class="keyword">and</span> nums[j] &lt; nums[j<span class="number">-1</span>]:</div><div class="line">        nums[j], nums[j<span class="number">-1</span>] = nums[j<span class="number">-1</span>], nums[j]</div><div class="line">        j -= <span class="number">1</span></div><div class="line">    <span class="keyword">return</span> nums</div></pre></td></tr></table></figure>
+<h1 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 选择排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">select_sort</span><span class="params">(nums)</span>:</span></div><div class="line">    <span class="comment"># 选择目前最大的数，放在右边，从右边向左边遍历</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)<span class="number">-1</span>, <span class="number">0</span>, <span class="number">-1</span>):</div><div class="line">        max_j = i</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i):</div><div class="line">            <span class="keyword">if</span> nums[j] &gt; nums[max_j]:</div><div class="line">                <span class="comment"># 记录当前最大的数，随时更新max_j</span></div><div class="line">                max_j = j</div><div class="line">        <span class="comment"># 最后得出就是整体最大的数</span></div><div class="line">        nums[i], nums[max_j] = nums[max_j], nums[i]</div><div class="line">    <span class="keyword">return</span> nums</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 递归版选择排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">select_sort_rec</span><span class="params">(nums, i)</span>:</span></div><div class="line">    <span class="keyword">if</span> i == <span class="number">0</span>:</div><div class="line">        <span class="keyword">return</span></div><div class="line">    max_j = i</div><div class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(i):</div><div class="line">        <span class="keyword">if</span> nums[j] &gt; nums[max_j]:</div><div class="line">            max_j = j</div><div class="line">    <span class="comment"># 将最大数放在i的位置</span></div><div class="line">    nums[i], nums[max_j] = nums[max_j], nums[i]</div><div class="line">    <span class="comment"># 递归去完成剩余的nums</span></div><div class="line">    select_sort_rec(nums, i<span class="number">-1</span>)</div><div class="line">    <span class="keyword">return</span> nums</div></pre></td></tr></table></figure>
+<h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><p>首先是使用 Python 的 <code>heapq</code> 包的实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 堆排序</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_sort</span><span class="params">(nums)</span>:</span></div><div class="line">    <span class="keyword">from</span> heapq <span class="keyword">import</span> heappush, heappop</div><div class="line">    h = []</div><div class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> nums:</div><div class="line">        heappush(h, num)</div><div class="line">    <span class="keyword">return</span> [heappop(h) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(h))]</div></pre></td></tr></table></figure>
+<h2 id="具体方法的实现"><a href="#具体方法的实现" class="headerlink" title="具体方法的实现"></a>具体方法的实现</h2><p>堆其实就是一棵树，root是最小或者最大元素，加入一个元素的时候将数据放在最后面，叶子节点，然后不断的根据大小将值往上浮动。从root取一个元素之后，会从当前heap最后一个元素拿到root，然后向下浮动，直到找到合适的位置。</p>
+<p>所以关键算法在向上浮动和向下浮动</p>
+<ul>
+<li>heappush</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">heappush</span><span class="params">(heap, item)</span>:</span></div><div class="line">    <span class="string">"""Push item onto heap, maintaining the heap invariant."""</span></div><div class="line">    heap.append(item)</div><div class="line">    _siftdown(heap, <span class="number">0</span>, len(heap)<span class="number">-1</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>heappop</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">heappop</span><span class="params">(heap)</span>:</span></div><div class="line">    <span class="string">"""Pop the smallest item off the heap, maintaining the heap invariant."""</span></div><div class="line">    lastelt = heap.pop()    <span class="comment"># raises appropriate IndexError if heap is empty</span></div><div class="line">    <span class="keyword">if</span> heap:</div><div class="line">        returnitem = heap[<span class="number">0</span>]</div><div class="line">        heap[<span class="number">0</span>] = lastelt</div><div class="line">        _siftup(heap, <span class="number">0</span>)</div><div class="line">        <span class="keyword">return</span> returnitem</div><div class="line">    <span class="keyword">return</span> lastelt</div></pre></td></tr></table></figure>
+<ul>
+<li>siftdown</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_siftdown</span><span class="params">(heap, startpos, pos)</span>:</span></div><div class="line">    newitem = heap[pos]</div><div class="line">    <span class="comment"># Follow the path to the root, moving parents down until finding a place</span></div><div class="line">    <span class="comment"># newitem fits.</span></div><div class="line">    <span class="keyword">while</span> pos &gt; startpos:</div><div class="line">        parentpos = (pos - <span class="number">1</span>) &gt;&gt; <span class="number">1</span></div><div class="line">        parent = heap[parentpos]</div><div class="line">        <span class="keyword">if</span> newitem &lt; parent:</div><div class="line">            heap[pos] = parent</div><div class="line">            pos = parentpos</div><div class="line">            <span class="keyword">continue</span></div><div class="line">        <span class="keyword">break</span></div><div class="line">    heap[pos] = newitem</div></pre></td></tr></table></figure>
+<ul>
+<li>siftup</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_siftup</span><span class="params">(heap, pos)</span>:</span></div><div class="line">    endpos = len(heap)</div><div class="line">    startpos = pos</div><div class="line">    newitem = heap[pos]</div><div class="line">    <span class="comment"># Bubble up the smaller child until hitting a leaf.</span></div><div class="line">    childpos = <span class="number">2</span>*pos + <span class="number">1</span>    <span class="comment"># leftmost child position</span></div><div class="line">    <span class="keyword">while</span> childpos &lt; endpos:</div><div class="line">        <span class="comment"># Set childpos to index of smaller child.</span></div><div class="line">        rightpos = childpos + <span class="number">1</span></div><div class="line">        <span class="keyword">if</span> rightpos &lt; endpos <span class="keyword">and</span> <span class="keyword">not</span> heap[childpos] &lt; heap[rightpos]:</div><div class="line">            childpos = rightpos</div><div class="line">        <span class="comment"># Move the smaller child up.</span></div><div class="line">        heap[pos] = heap[childpos]</div><div class="line">        pos = childpos</div><div class="line">        childpos = <span class="number">2</span>*pos + <span class="number">1</span></div><div class="line">    <span class="comment"># The leaf at pos is empty now.  Put newitem there, and bubble it up</span></div><div class="line">    <span class="comment"># to its final resting place (by sifting its parents down).</span></div><div class="line">    heap[pos] = newitem</div><div class="line">    _siftdown(heap, startpos, pos)</div></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/05/13/sort/" target="_blank" rel="external">http://skyrover.me/2018/05/13/sort/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/排序/">排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/05/13/sort/&title=《排序》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/05/13/sort/&title=《排序》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/05/13/sort/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《排序》 — SkyRover&url=http://skyrover.me/2018/05/13/sort/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/05/13/sort/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/05/11/20180511/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">20180511</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/05/13/sort/&title=《排序》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/05/13/sort/&title=《排序》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/05/13/sort/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《排序》 — SkyRover&url=http://skyrover.me/2018/05/13/sort/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/05/13/sort/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxUlEQVR42u3aSW7DMAwF0Nz/0u42QGv1kxqcAE+rIHasFy8IcXi94nW9rfdvxvf8vprcuWDh4uJOc6/hGt+TPOHuT+ZPwMXFfYqbhJ78npyVPx8XF/eTuVdxVf8eLi7uN3KnNotTKVxc3E/gVpOWamljJn3CxcU9z8032/d5S30XFxe3xe2lMclxZyZZut0dFxf3CDcPKL2SRy9l+qdxi4uLe5y7OyTlgxpRkxUXF3cD9y7QjANQdXhr1RgHLi7uSW61mZqkQOPvqyEMFxf3We78qMQ45OWv449n4uLiPsrN06GZEmq1bYOLi3uGWz2I9DaeGbmIajm4uLhLuflmvYNOfnyJAh8uLu5B7qojSFJU7UFxcXFPcqs5Ra+02iugRK8AFxd3G7d3HJkZqsjf3+0QBi4u7nHuqtAWzYVVG7q4uLgHuflpqFf6rA54lS/j4uIu4l7F1dsyb6WUqym4uLgbuPnqofNAOTPshYuLu4NbDV5586PXZI3mRHBxcY9wq83ULXlY8itcXNwv4VZbLDOlVVxc3M/kVmchVlU5cHFxz3PzYFRNdfLCazQMiouLe4RbDSXJkSUZtkhKJFP1XVxc3A73B6OTSOcHYuBlAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
