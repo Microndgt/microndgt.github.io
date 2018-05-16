@@ -3,6 +3,32 @@
   
     
     <entry>
+      <title><![CDATA[搜索]]></title>
+      <url>/2018/05/16/search/</url>
+      <content type="html"><![CDATA[<h1 id="广度优先遍历-BFS"><a href="#广度优先遍历-BFS" class="headerlink" title="广度优先遍历 BFS"></a>广度优先遍历 BFS</h1>]]></content>
+      
+        <categories>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> LeetCode </tag>
+            
+            <tag> 搜索 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[排序]]></title>
       <url>/2018/05/13/sort/</url>
       <content type="html"><![CDATA[<ul>
