@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>大型网站技术架构 读书笔记(1) | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="大型网站技术架构">
+    <meta name="description" content="高可用，高性能，易扩展，可伸缩和安全。 大型网站架构演化初始阶段的网站架构LAMP: Linux, Apache, MySQL, PHP 应用服务和数据服务分离应用和数据分离：应用服务器，文件服务器和数据库服务器 使用缓存改善网站性能使用缓存：缓存在应用服务器上的本地缓存和缓存在专门的分布式缓存服务器上的远程缓存 应用服务器集群改善网站的并发处理能力应用服务器实现集群来改善负载压力，以同样的方式持">
+<meta name="keywords" content="大型网站技术架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大型网站技术架构 读书笔记(1)">
+<meta property="og:url" content="http://skyrover.me/2017/05/28/software_architecture/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="高可用，高性能，易扩展，可伸缩和安全。 大型网站架构演化初始阶段的网站架构LAMP: Linux, Apache, MySQL, PHP 应用服务和数据服务分离应用和数据分离：应用服务器，文件服务器和数据库服务器 使用缓存改善网站性能使用缓存：缓存在应用服务器上的本地缓存和缓存在专门的分布式缓存服务器上的远程缓存 应用服务器集群改善网站的并发处理能力应用服务器实现集群来改善负载压力，以同样的方式持">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://skyrover.me/img/software_arch_01.png">
+<meta property="og:updated_time" content="2018-05-28T14:29:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大型网站技术架构 读书笔记(1)">
+<meta name="twitter:description" content="高可用，高性能，易扩展，可伸缩和安全。 大型网站架构演化初始阶段的网站架构LAMP: Linux, Apache, MySQL, PHP 应用服务和数据服务分离应用和数据分离：应用服务器，文件服务器和数据库服务器 使用缓存改善网站性能使用缓存：缓存在应用服务器上的本地缓存和缓存在专门的分布式缓存服务器上的远程缓存 应用服务器集群改善网站的并发处理能力应用服务器实现集群来改善负载压力，以同样的方式持">
+<meta name="twitter:image" content="http://skyrover.me/img/software_arch_01.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">大型网站技术架构 读书笔记(1)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">大型网站技术架构 读书笔记(1)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-28T11:45:04.000Z" itemprop="datePublished" class="page-time">
+  2017-05-28 19:45:04
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#大型网站架构演化"><span class="post-toc-number">1.</span> <span class="post-toc-text">大型网站架构演化</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#初始阶段的网站架构"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">初始阶段的网站架构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#应用服务和数据服务分离"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">应用服务和数据服务分离</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用缓存改善网站性能"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">使用缓存改善网站性能</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#应用服务器集群改善网站的并发处理能力"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">应用服务器集群改善网站的并发处理能力</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据库读写分离"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">数据库读写分离</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#反向代理和CDN加速网站响应"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">反向代理和CDN加速网站响应</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分布式文件系统和分布式数据库系统"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">分布式文件系统和分布式数据库系统</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用NoSQL和搜索引擎"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">使用NoSQL和搜索引擎</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#业务拆分"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">业务拆分</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分布式服务"><span class="post-toc-number">1.10.</span> <span class="post-toc-text">分布式服务</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#大型网站架构模式"><span class="post-toc-number">2.</span> <span class="post-toc-text">大型网站架构模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分层"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">分层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分割"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">分割</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分布式"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">分布式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#集群"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">集群</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#缓存"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">缓存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异步"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">异步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#冗余"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">冗余</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自动化"><span class="post-toc-number">2.8.</span> <span class="post-toc-text">自动化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安全"><span class="post-toc-number">2.9.</span> <span class="post-toc-text">安全</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-software_architecture"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">大型网站技术架构 读书笔记(1)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-05-28 19:45:04 19:45:04" datetime="2017-05-28T11:45:04.000Z"  itemprop="datePublished">2017-05-28 19:45:04</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <p>高可用，高性能，易扩展，可伸缩和安全。</p>
+<h1 id="大型网站架构演化"><a href="#大型网站架构演化" class="headerlink" title="大型网站架构演化"></a>大型网站架构演化</h1><h2 id="初始阶段的网站架构"><a href="#初始阶段的网站架构" class="headerlink" title="初始阶段的网站架构"></a>初始阶段的网站架构</h2><p>LAMP: Linux, Apache, MySQL, PHP</p>
+<h2 id="应用服务和数据服务分离"><a href="#应用服务和数据服务分离" class="headerlink" title="应用服务和数据服务分离"></a>应用服务和数据服务分离</h2><p>应用和数据分离：应用服务器，文件服务器和数据库服务器</p>
+<h2 id="使用缓存改善网站性能"><a href="#使用缓存改善网站性能" class="headerlink" title="使用缓存改善网站性能"></a>使用缓存改善网站性能</h2><p>使用缓存：缓存在应用服务器上的本地缓存和缓存在专门的分布式缓存服务器上的远程缓存</p>
+<h2 id="应用服务器集群改善网站的并发处理能力"><a href="#应用服务器集群改善网站的并发处理能力" class="headerlink" title="应用服务器集群改善网站的并发处理能力"></a>应用服务器集群改善网站的并发处理能力</h2><p>应用服务器实现集群来改善负载压力，以同样的方式持续增加服务器不断改善系统性能，从而实现系统的可伸缩性。通过负载均衡调度服务器。</p>
+<h2 id="数据库读写分离"><a href="#数据库读写分离" class="headerlink" title="数据库读写分离"></a>数据库读写分离</h2><p>大部分主流数据库提供主从热备功能，配置两台数据库主从关系，将一台数据库服务器的数据更新同步到另一台服务器上。实现数据库读写分离，从而改善数据库负载压力。</p>
+<p>应用服务器在写数据的时候，访问主数据库，主数据库通过主从复制机制将数据更新同步到从数据库，这样当应用服务器读数据的时候，可以通过从数据库获得数据。</p>
+<h2 id="反向代理和CDN加速网站响应"><a href="#反向代理和CDN加速网站响应" class="headerlink" title="反向代理和CDN加速网站响应"></a>反向代理和CDN加速网站响应</h2><p>CDN和反向代理的基本远离是缓存，CDN部署在网络提供商的机房，用户请求网站服务，可以从距离自己最近的网络提供商机房获取数据。</p>
+<p>反向代理部署在网站的中心机房，用户请求首先访问服务器反向代理服务器，如果反向代理服务器中缓存着用户请求的资源，就将其直接返回给用户。</p>
+<h2 id="分布式文件系统和分布式数据库系统"><a href="#分布式文件系统和分布式数据库系统" class="headerlink" title="分布式文件系统和分布式数据库系统"></a>分布式文件系统和分布式数据库系统</h2><p>分布式数据库是网站数据库拆分的最后手段，但是最常用的数据库拆分手段是业务分库，将不同业务的数据库部署在不同的物理服务器上。</p>
+<h2 id="使用NoSQL和搜索引擎"><a href="#使用NoSQL和搜索引擎" class="headerlink" title="使用NoSQL和搜索引擎"></a>使用NoSQL和搜索引擎</h2><p>两者对可伸缩的分布式特性具有更好的支持，应用服务器通过一个统一数据访问模块访问各种数据，减轻应用程序管理诸多数据源的麻烦。</p>
+<h2 id="业务拆分"><a href="#业务拆分" class="headerlink" title="业务拆分"></a>业务拆分</h2><p>将一个网站拆分成多个应用，每个应用独立部署维护。应用之间可以通过一个超链接建立关系，也可以通过消息队列进行数据分发，多数是通过访问同一个数据存储系统来构成一个关联的完整系统。</p>
+<h2 id="分布式服务"><a href="#分布式服务" class="headerlink" title="分布式服务"></a>分布式服务</h2><p>将公用的业务提取出来，独立部署，由这些可复用的业务链接数据库，提供公用业务服务。通过分布式服务调用公用业务服务来完成具体业务操作。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_arch_01.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li>大型网站架构技术的核心价值是随网站所需灵活应对</li>
+<li>驱动大型网站技术发展的主要力量是网站的业务发展</li>
+</ul>
+<h1 id="大型网站架构模式"><a href="#大型网站架构模式" class="headerlink" title="大型网站架构模式"></a>大型网站架构模式</h1><h2 id="分层"><a href="#分层" class="headerlink" title="分层"></a>分层</h2><p>系统在横向维度上切分成几个部分，每个部分负责一部分或者相对单一的职责，通过上层对下层的依赖和调用组成一个完整的系统。</p>
+<p>必须合理规划层次边界和接口，遵循分层架构的约束。</p>
+<p>最初目的是规划软件清晰的逻辑结构便于开发维护，分层结构对于网站支持高并发向分布式方向发展至关重要。</p>
+<h2 id="分割"><a href="#分割" class="headerlink" title="分割"></a>分割</h2><p>纵向方面对软件进行切分，不同的功能和服务分割开来。</p>
+<h2 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h2><p>大型网站里，分层和分割的主要目的是为了切分后的模块便于分布式部署，将不同模块部署在不同的服务器上，通过远程调用协同工作。</p>
+<ul>
+<li>分布式应用和服务</li>
+<li>分布式静态资源</li>
+<li>分布式数据和存储</li>
+<li>分布式计算</li>
+<li>分布式配置</li>
+<li>分布式锁</li>
+<li>分布式文件系统</li>
+</ul>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p>对于用户访问集中的模块，还需要将独立部署的服务器集群化，多台服务器部署相同应用构成一个集群，通过负载均衡设备共同对外提供服务。</p>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><ul>
+<li>CDN，内容分发网络</li>
+<li>反向代理</li>
+<li>本地缓存</li>
+<li>分布式缓存</li>
+</ul>
+<h2 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h2><p>计算机软件的一个重要目标是降低软件耦合性。异步是一个重要手段，业务之间的消息传递不是同步调用，而是将一个业务操作分成多个阶段，每个阶段之间通过共享数据的方式异步执行协作。</p>
+<ul>
+<li>多线程共享内存队列</li>
+<li>分布式系统中，通过分布式消息队列</li>
+</ul>
+<p>作用：</p>
+<ul>
+<li>提高系统可用性</li>
+<li>加快网站响应速度</li>
+<li>消除并发访问高峰</li>
+</ul>
+<h2 id="冗余"><a href="#冗余" class="headerlink" title="冗余"></a>冗余</h2><p>服务器冗余运行，数据冗余备份。两台服务器构成一个集群，目的就是通过冗余实现服务高可用。</p>
+<p>数据库定期备份，存档保存实现冷备份，为了保证在线业务高可用，需要对数据库进行主从分离，实时同步实现热备份。</p>
+<h2 id="自动化"><a href="#自动化" class="headerlink" title="自动化"></a>自动化</h2><ul>
+<li>发布过程自动化</li>
+<li>自动化代码管理</li>
+<li>自动化测试</li>
+<li>自动化安全检测</li>
+<li>自动化部署</li>
+<li>自动化监控</li>
+<li>自动化报警</li>
+<li>自动化失效转移</li>
+<li>自动化失效恢复</li>
+<li>自动化降级</li>
+<li>自动化分配资源</li>
+</ul>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><ul>
+<li>加密</li>
+<li>XSS攻击：XSS又叫CSS  (Cross Site Script) ，跨站脚本攻击。它指的是恶意攻击者往Web页面里插入恶意html代码，当用户浏览该页之时，嵌入其中Web里面的html代码会被执行，从而达到恶意用户的特殊目的。</li>
+<li>SQL注入</li>
+<li>风险控制</li>
+<li>过滤</li>
+</ul>
+<blockquote>
+<p>山寨和创新的最大区别不在于是否抄袭，是否模仿，而在于对于问题和需求是否真正理解和把握。</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/05/28/software_architecture/" target="_blank" rel="external">http://skyrover.me/2017/05/28/software_architecture/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大型网站技术架构/">大型网站技术架构</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/28/software_architecture/&title=《大型网站技术架构 读书笔记(1)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/28/software_architecture/&title=《大型网站技术架构 读书笔记(1)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/28/software_architecture/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(1)》 — SkyRover&url=http://skyrover.me/2017/05/28/software_architecture/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/28/software_architecture/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/13/LRUCache在Python中的实现/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">LRU Cache在Python中的实现</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/25/贪心算法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">贪心算法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/05/28/software_architecture/&title=《大型网站技术架构 读书笔记(1)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/05/28/software_architecture/&title=《大型网站技术架构 读书笔记(1)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/05/28/software_architecture/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(1)》 — SkyRover&url=http://skyrover.me/2017/05/28/software_architecture/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/05/28/software_architecture/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aS27DMAwFwNz/0inQVYvWyqNoFw09WgWII2uyIPjR4xGv5+f6+vnnOvr2aIf1zo8rFgYGxtsynsv182V7u60BR4zkbBgYGPdh5EE2f2W+2/rJ9TMYGBgYeWrYfz4P9BgYGBj98rIToDEwMDA6RWyS8CWlbJVxci2OgYHxhoy9wcDffL58voGBgfHvGc/iSoJvEharO7w4FQYGxmjGepQYlY5bJet6z2SfR3I4DAyMcYxq+OtfHcv/0ChZxMDAGMrIG1h5+6wagpOyuTwSwMDAGMS4otHWCcR5soiBgXFPxvrRpHztXLDI870XJAwMjHGMKxr0efXcx2NgYNyB0bl4sRdGq3vujUgxMDDmMfKmWFKOVpH9axkYGBj3YVRTujw56yOTvxsDA2M2I7/o0Ckj9/LTvPGHgYExlVFtlu0Fzb0mWl7WYmBgzGZ0Llic1Z7LxwnlcI+BgTGC0TlutXzNw2756hgGBsZoxl5DLW/WJwG0WkhjYGDcjZGUnZ1AedYg4cVvMTAwbsDoB80qoxOyXxSxGBgY4xj5cDFv/eeRsBOIMTAw7sN4FtcVRezeRbFv32JgYIxmVMeQSYCuNvfz5G/vYhkGBsYMxhUtszxEnpY+YmBg3IBxVpDNBwl718sOz4yBgYHRHhXkjf5qUY2BgYGRJ3BJeF2/qzpy+KWIxcDAGM3oNNGqA8j80IXkEgMDYzSjWkDmL+h8ro5LMTAwhjI+AP5I8C7sZgtEAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
