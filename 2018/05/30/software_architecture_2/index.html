@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>大型网站技术架构 读书笔记(2) | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="大型网站技术架构">
+    <meta name="description" content="大型网站核心架构要素软件架构：有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。 除了系统功能需求，还需要关注性能，可用性，伸缩性，扩展性和安全性这5个架构要素。 性能 浏览器端：浏览器缓存，页面压缩，合理布局页面，减少cookie传输 CDN：静态内容分发至离用户最近的网络服务商机房 反向代理服务器：缓存热点文件，加快请求响应速度 应用服务器端：服务器本地缓存和分布式缓存 异">
+<meta name="keywords" content="大型网站技术架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大型网站技术架构 读书笔记(2)">
+<meta property="og:url" content="http://skyrover.me/2018/05/30/software_architecture_2/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="大型网站核心架构要素软件架构：有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。 除了系统功能需求，还需要关注性能，可用性，伸缩性，扩展性和安全性这5个架构要素。 性能 浏览器端：浏览器缓存，页面压缩，合理布局页面，减少cookie传输 CDN：静态内容分发至离用户最近的网络服务商机房 反向代理服务器：缓存热点文件，加快请求响应速度 应用服务器端：服务器本地缓存和分布式缓存 异">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://skyrover.me/img/software_architecture_2.png">
+<meta property="og:updated_time" content="2018-05-30T11:16:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大型网站技术架构 读书笔记(2)">
+<meta name="twitter:description" content="大型网站核心架构要素软件架构：有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。 除了系统功能需求，还需要关注性能，可用性，伸缩性，扩展性和安全性这5个架构要素。 性能 浏览器端：浏览器缓存，页面压缩，合理布局页面，减少cookie传输 CDN：静态内容分发至离用户最近的网络服务商机房 反向代理服务器：缓存热点文件，加快请求响应速度 应用服务器端：服务器本地缓存和分布式缓存 异">
+<meta name="twitter:image" content="http://skyrover.me/img/software_architecture_2.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">大型网站技术架构 读书笔记(2)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">大型网站技术架构 读书笔记(2)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-30T09:41:04.000Z" itemprop="datePublished" class="page-time">
+  2018-05-30 17:41:04
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#大型网站核心架构要素"><span class="post-toc-number">1.</span> <span class="post-toc-text">大型网站核心架构要素</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">性能</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#可用性"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">可用性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#伸缩性"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">伸缩性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#扩展性"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">扩展性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安全性"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">安全性</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#瞬时响应：网站的高性能架构"><span class="post-toc-number">2.</span> <span class="post-toc-text">瞬时响应：网站的高性能架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网站性能测试"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">网站性能测试</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能测试指标"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">性能测试指标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能测试方法"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">性能测试方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能测试报告"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">性能测试报告</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能优化"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">性能优化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Web前端性能优化"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">Web前端性能优化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#应用服务器性能优化"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">应用服务器性能优化</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-software_architecture_2"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">大型网站技术架构 读书笔记(2)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-30 17:41:04 17:41:04" datetime="2018-05-30T09:41:04.000Z"  itemprop="datePublished">2018-05-30 17:41:04</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <h1 id="大型网站核心架构要素"><a href="#大型网站核心架构要素" class="headerlink" title="大型网站核心架构要素"></a>大型网站核心架构要素</h1><p>软件架构：有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。</p>
+<p>除了系统功能需求，还需要关注性能，可用性，伸缩性，扩展性和安全性这5个架构要素。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>浏览器端：浏览器缓存，页面压缩，合理布局页面，减少cookie传输</li>
+<li>CDN：静态内容分发至离用户最近的网络服务商机房</li>
+<li>反向代理服务器：缓存热点文件，加快请求响应速度</li>
+<li>应用服务器端：服务器本地缓存和分布式缓存</li>
+<li>异步操作：将用户请求发送至消息队列等待后续任务处理</li>
+<li>多台应用服务器组成集群</li>
+<li>代码方面，使用多线程，改善内存管理</li>
+<li>数据库服务器端，索引，缓存，SQL优化，NoSQL</li>
+</ul>
+<p>指标：</p>
+<ul>
+<li>响应时间</li>
+<li>TPS：Transaction per sec</li>
+<li>系统性能计数器</li>
+</ul>
+<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p><code>7*24</code>小时可用，高可用的设计目标是当服务器宕机的时候，服务或者应用依然可用，主要手段是冗余，应用部署在多台服务器上同时提供访问，数据存储在多台服务器上互相备份。</p>
+<p>多台应用服务器通过负载均衡设备组成一个集群共同对外提供服务，一台服务器宕机，请求切换到其他服务器就可以实现应用的高可用，但是应用服务器上不能保存请求的会话信息。</p>
+<p>存储服务器，需要对数据进行实时备份。</p>
+<h2 id="伸缩性"><a href="#伸缩性" class="headerlink" title="伸缩性"></a>伸缩性</h2><p>网站通过集群的方式将多台服务器组成一个整体共同提供服务，伸缩性即通过不断向集群中加入服务器的手段来缓解不断上升的用户并发访问压力和不断增长的数据存储需求。</p>
+<ul>
+<li>应用服务器集群</li>
+<li>缓存服务器集群，新加入的服务器可能导致缓存路由失效，需要改进缓存路由算法保证缓存数据的可访问性</li>
+<li>关系数据库，很难做到大规模集群的可伸缩性，其集群伸缩性方案必须在数据库之外实现，通过路由分区等手段</li>
+<li>NoSQL</li>
+</ul>
+<h2 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h2><p>功能需求，如何设计网站的架构使得其能够快速响应需求变化，是网站可扩展架构的主要目的。</p>
+<p>网站可伸缩架构的主要手段是事件驱动和分布式服务。</p>
+<p>事件驱动架构在网站通常用消息队列实现。</p>
+<p>分布式服务器是将业务和可复用服务分离开来，通过分布式服务框架调用。</p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>网站安全架构是保护网站不受恶意访问和攻击，保护网站重要数据不被窃取。</p>
+<h1 id="瞬时响应：网站的高性能架构"><a href="#瞬时响应：网站的高性能架构" class="headerlink" title="瞬时响应：网站的高性能架构"></a>瞬时响应：网站的高性能架构</h1><h2 id="网站性能测试"><a href="#网站性能测试" class="headerlink" title="网站性能测试"></a>网站性能测试</h2><p>常用优化手段：</p>
+<ul>
+<li>优化页面HTML样式，利用浏览器端的并发和异步特性，调整浏览器缓存策略，使用CDN服务，反向代理手段</li>
+<li>使用缓存加速数据读取，使用集群提高吞吐能力，使用异步消息加快请求响应以及削峰，使用代码优化手段改善程序性能</li>
+<li>优化骨干网，使用高性价比定制服务器，利用虚拟化技术优化资源利用</li>
+</ul>
+<h2 id="性能测试指标"><a href="#性能测试指标" class="headerlink" title="性能测试指标"></a>性能测试指标</h2><ul>
+<li>响应时间：应用执行一个操作需要的时间</li>
+<li>并发数：系统能够同时处理请求的数目，测试程序通过多线程模拟并发用户的办法测试系统的并发处理能力，两次请求之间增加随机等待时间，即思考时间</li>
+<li>吞吐量：单位时间内系统处理的请求数量，体现系统的整体处理能力，<code>请求数/秒</code>，<code>页面数/秒</code>，TPS, HPS(HTTP per sec), QPS(Query per sec)，系统并发数从小到大的过程中，系统吞吐量逐渐增加，到达极限时候，随着并发数的增加而下降，到达崩溃点后，系统资源耗尽，吞吐量为0</li>
+<li>性能计数器：系统负载，对象和线程数，CPU使用，内存使用，磁盘和网络IO指标。系统负载理想值是CPU数目，指当前正在被CPU执行和等待被CPU执行的进程数目总和。</li>
+</ul>
+<h2 id="性能测试方法"><a href="#性能测试方法" class="headerlink" title="性能测试方法"></a>性能测试方法</h2><ul>
+<li>性能测试</li>
+<li>负载测试，增加并发请求</li>
+<li>压力测试，超过安全负载，对系统继续施加压力</li>
+<li>稳定性测试</li>
+</ul>
+<h2 id="性能测试报告"><a href="#性能测试报告" class="headerlink" title="性能测试报告"></a>性能测试报告</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_architecture_2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><ul>
+<li>性能分析</li>
+</ul>
+<p>检查处理请求的日志，检查监控数据</p>
+<ul>
+<li>性能优化</li>
+</ul>
+<p>分为Web前端性能优化，应用服务器性能优化，存储服务器性能优化</p>
+<h2 id="Web前端性能优化"><a href="#Web前端性能优化" class="headerlink" title="Web前端性能优化"></a>Web前端性能优化</h2><p>浏览器加载，网站视图模型，图片服务，CDN服务，优化手段：优化浏览器访问，使用反向代理，CDN</p>
+<ol>
+<li>浏览器访问优化<ul>
+<li>减少http请求，合并CSS，JavaScript，图片</li>
+<li>使用浏览器缓存</li>
+<li>启用压缩</li>
+<li>CSS在页面上方，JS在下方，尽快渲染页面</li>
+<li>减少Cookie传输，静态资源使用独立域名访问，避免请求静态资源时候发送Cookie</li>
+</ul>
+</li>
+<li>CDN加速<ul>
+<li>缓存，将数据缓存存在了离用户最近的地方，使得用户以最快速度获取数据，即所谓网络访问第一跳</li>
+</ul>
+</li>
+<li>反向代理：缓存，负载均衡</li>
+</ol>
+<h2 id="应用服务器性能优化"><a href="#应用服务器性能优化" class="headerlink" title="应用服务器性能优化"></a>应用服务器性能优化</h2>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/05/30/software_architecture_2/" target="_blank" rel="external">http://skyrover.me/2018/05/30/software_architecture_2/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大型网站技术架构/">大型网站技术架构</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/05/30/software_architecture_2/&title=《大型网站技术架构 读书笔记(2)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/05/30/software_architecture_2/&title=《大型网站技术架构 读书笔记(2)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/05/30/software_architecture_2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(2)》 — SkyRover&url=http://skyrover.me/2018/05/30/software_architecture_2/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/05/30/software_architecture_2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/05/28/software_architecture/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">大型网站技术架构 读书笔记(1)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/05/30/software_architecture_2/&title=《大型网站技术架构 读书笔记(2)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/05/30/software_architecture_2/&title=《大型网站技术架构 读书笔记(2)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/05/30/software_architecture_2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(2)》 — SkyRover&url=http://skyrover.me/2018/05/30/software_architecture_2/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/05/30/software_architecture_2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3aQW7DMAwEwPz/0ynQW1FYWZJuAUujk4G4SkYHlhT5esXr/b3Wn/5+532xrv7qap/bFgYGxmMZ7+VK3kl2WB/N+jnaGQMD4wBG8jXrkJrstt5n/fzhN2NgYGC0ANXUEAMDA+NeRkJaU/OyFgMDAyMvYqsFZzVYV4tnDAyMcxjVxsB/Pv9hfwMDA+MhjHuv+HunOG8/YGBg7M2opnTVNK4KTg6ikOFiYGBswZgMVawL1PxyrXegl/83MDAwNmUkSVsSNPOL/nnL4cczBgbG1ox8qGJyDdcbOGv2NzAwMDZlVK/M8tGuZPArCfQ5GwMDYz9GdbRi8tOrxWqzFsfAwNiOkRSrvTCal7hJIhh9CwYGxqaMyTV9NYHLA3F1FAMDA2NvxmSEKw+11fcnn2JgYOzHmCdnveQyb09GY2QYGBhbM6o/rrrp5CKvdxWIgYGxHyMPapPLssn+hWkRDAyMTRl5QlZ9p3dYvaCMgYFxAiO5GrurDXBXcC/fGmJgYDyW0SsyJ5jJdd7lmxgYGIcxqtdeeXCcXORFuS0GBsamjEnO2Aumk+/FwMA4k/Eurl6hm4TsSSsCAwNjb0a+8uQvaSfMBzIwMDBOY1RL1rzpmIfIpDz+cIgYGBgHMHpBtjqQMU/yMDAwMP5inKJXEpcTTQwMDIy4kVkdCOu1IjAwMM5k9EYreg3O6uBFdFgYGBhbMyaNgRu2HrRFm5tiYGA8ifEFbXOOdJmAuL4AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

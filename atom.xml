@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-05-28T14:31:59.000Z</updated>
+  <updated>2018-05-30T11:16:03.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,112 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>大型网站技术架构 读书笔记(2)</title>
+    <link href="http://skyrover.me/2018/05/30/software_architecture_2/"/>
+    <id>http://skyrover.me/2018/05/30/software_architecture_2/</id>
+    <published>2018-05-30T09:41:04.000Z</published>
+    <updated>2018-05-30T11:16:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="大型网站核心架构要素"><a href="#大型网站核心架构要素" class="headerlink" title="大型网站核心架构要素"></a>大型网站核心架构要素</h1><p>软件架构：有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。</p>
+<p>除了系统功能需求，还需要关注性能，可用性，伸缩性，扩展性和安全性这5个架构要素。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>浏览器端：浏览器缓存，页面压缩，合理布局页面，减少cookie传输</li>
+<li>CDN：静态内容分发至离用户最近的网络服务商机房</li>
+<li>反向代理服务器：缓存热点文件，加快请求响应速度</li>
+<li>应用服务器端：服务器本地缓存和分布式缓存</li>
+<li>异步操作：将用户请求发送至消息队列等待后续任务处理</li>
+<li>多台应用服务器组成集群</li>
+<li>代码方面，使用多线程，改善内存管理</li>
+<li>数据库服务器端，索引，缓存，SQL优化，NoSQL</li>
+</ul>
+<p>指标：</p>
+<ul>
+<li>响应时间</li>
+<li>TPS：Transaction per sec</li>
+<li>系统性能计数器</li>
+</ul>
+<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p><code>7*24</code>小时可用，高可用的设计目标是当服务器宕机的时候，服务或者应用依然可用，主要手段是冗余，应用部署在多台服务器上同时提供访问，数据存储在多台服务器上互相备份。</p>
+<p>多台应用服务器通过负载均衡设备组成一个集群共同对外提供服务，一台服务器宕机，请求切换到其他服务器就可以实现应用的高可用，但是应用服务器上不能保存请求的会话信息。</p>
+<p>存储服务器，需要对数据进行实时备份。</p>
+<h2 id="伸缩性"><a href="#伸缩性" class="headerlink" title="伸缩性"></a>伸缩性</h2><p>网站通过集群的方式将多台服务器组成一个整体共同提供服务，伸缩性即通过不断向集群中加入服务器的手段来缓解不断上升的用户并发访问压力和不断增长的数据存储需求。</p>
+<ul>
+<li>应用服务器集群</li>
+<li>缓存服务器集群，新加入的服务器可能导致缓存路由失效，需要改进缓存路由算法保证缓存数据的可访问性</li>
+<li>关系数据库，很难做到大规模集群的可伸缩性，其集群伸缩性方案必须在数据库之外实现，通过路由分区等手段</li>
+<li>NoSQL</li>
+</ul>
+<h2 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h2><p>功能需求，如何设计网站的架构使得其能够快速响应需求变化，是网站可扩展架构的主要目的。</p>
+<p>网站可伸缩架构的主要手段是事件驱动和分布式服务。</p>
+<p>事件驱动架构在网站通常用消息队列实现。</p>
+<p>分布式服务器是将业务和可复用服务分离开来，通过分布式服务框架调用。</p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>网站安全架构是保护网站不受恶意访问和攻击，保护网站重要数据不被窃取。</p>
+<h1 id="瞬时响应：网站的高性能架构"><a href="#瞬时响应：网站的高性能架构" class="headerlink" title="瞬时响应：网站的高性能架构"></a>瞬时响应：网站的高性能架构</h1><h2 id="网站性能测试"><a href="#网站性能测试" class="headerlink" title="网站性能测试"></a>网站性能测试</h2><p>常用优化手段：</p>
+<ul>
+<li>优化页面HTML样式，利用浏览器端的并发和异步特性，调整浏览器缓存策略，使用CDN服务，反向代理手段</li>
+<li>使用缓存加速数据读取，使用集群提高吞吐能力，使用异步消息加快请求响应以及削峰，使用代码优化手段改善程序性能</li>
+<li>优化骨干网，使用高性价比定制服务器，利用虚拟化技术优化资源利用</li>
+</ul>
+<h2 id="性能测试指标"><a href="#性能测试指标" class="headerlink" title="性能测试指标"></a>性能测试指标</h2><ul>
+<li>响应时间：应用执行一个操作需要的时间</li>
+<li>并发数：系统能够同时处理请求的数目，测试程序通过多线程模拟并发用户的办法测试系统的并发处理能力，两次请求之间增加随机等待时间，即思考时间</li>
+<li>吞吐量：单位时间内系统处理的请求数量，体现系统的整体处理能力，<code>请求数/秒</code>，<code>页面数/秒</code>，TPS, HPS(HTTP per sec), QPS(Query per sec)，系统并发数从小到大的过程中，系统吞吐量逐渐增加，到达极限时候，随着并发数的增加而下降，到达崩溃点后，系统资源耗尽，吞吐量为0</li>
+<li>性能计数器：系统负载，对象和线程数，CPU使用，内存使用，磁盘和网络IO指标。系统负载理想值是CPU数目，指当前正在被CPU执行和等待被CPU执行的进程数目总和。</li>
+</ul>
+<h2 id="性能测试方法"><a href="#性能测试方法" class="headerlink" title="性能测试方法"></a>性能测试方法</h2><ul>
+<li>性能测试</li>
+<li>负载测试，增加并发请求</li>
+<li>压力测试，超过安全负载，对系统继续施加压力</li>
+<li>稳定性测试</li>
+</ul>
+<h2 id="性能测试报告"><a href="#性能测试报告" class="headerlink" title="性能测试报告"></a>性能测试报告</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_architecture_2.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><ul>
+<li>性能分析</li>
+</ul>
+<p>检查处理请求的日志，检查监控数据</p>
+<ul>
+<li>性能优化</li>
+</ul>
+<p>分为Web前端性能优化，应用服务器性能优化，存储服务器性能优化</p>
+<h2 id="Web前端性能优化"><a href="#Web前端性能优化" class="headerlink" title="Web前端性能优化"></a>Web前端性能优化</h2><p>浏览器加载，网站视图模型，图片服务，CDN服务，优化手段：优化浏览器访问，使用反向代理，CDN</p>
+<ol>
+<li>浏览器访问优化<ul>
+<li>减少http请求，合并CSS，JavaScript，图片</li>
+<li>使用浏览器缓存</li>
+<li>启用压缩</li>
+<li>CSS在页面上方，JS在下方，尽快渲染页面</li>
+<li>减少Cookie传输，静态资源使用独立域名访问，避免请求静态资源时候发送Cookie</li>
+</ul>
+</li>
+<li>CDN加速<ul>
+<li>缓存，将数据缓存存在了离用户最近的地方，使得用户以最快速度获取数据，即所谓网络访问第一跳</li>
+</ul>
+</li>
+<li>反向代理：缓存，负载均衡</li>
+</ol>
+<h2 id="应用服务器性能优化"><a href="#应用服务器性能优化" class="headerlink" title="应用服务器性能优化"></a>应用服务器性能优化</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;大型网站核心架构要素&quot;&gt;&lt;a href=&quot;#大型网站核心架构要素&quot; class=&quot;headerlink&quot; title=&quot;大型网站核心架构要素&quot;&gt;&lt;/a&gt;大型网站核心架构要素&lt;/h1&gt;&lt;p&gt;软件架构：有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设
+    
+    </summary>
+    
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="大型网站技术架构" scheme="http://skyrover.me/tags/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/"/>
+    
+  </entry>
   
   <entry>
     <title>大型网站技术架构 读书笔记(1)</title>
