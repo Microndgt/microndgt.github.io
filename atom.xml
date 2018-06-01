@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-05-30T11:16:03.000Z</updated>
+  <updated>2018-06-01T07:08:15.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://skyrover.me/2018/05/30/software_architecture_2/"/>
     <id>http://skyrover.me/2018/05/30/software_architecture_2/</id>
     <published>2018-05-30T09:41:04.000Z</published>
-    <updated>2018-05-30T11:16:03.000Z</updated>
+    <updated>2018-06-01T07:08:15.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="大型网站核心架构要素"><a href="#大型网站核心架构要素" class="headerlink" title="大型网站核心架构要素"></a>大型网站核心架构要素</h1><p>软件架构：有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。</p>
 <p>除了系统功能需求，还需要关注性能，可用性，伸缩性，扩展性和安全性这5个架构要素。</p>
@@ -104,7 +104,12 @@
 </li>
 <li>反向代理：缓存，负载均衡</li>
 </ol>
-<h2 id="应用服务器性能优化"><a href="#应用服务器性能优化" class="headerlink" title="应用服务器性能优化"></a>应用服务器性能优化</h2>]]></content>
+<h2 id="应用服务器性能优化"><a href="#应用服务器性能优化" class="headerlink" title="应用服务器性能优化"></a>应用服务器性能优化</h2><p>优化手段主要有: 缓存，集群，异步等</p>
+<ul>
+<li>分布式缓存</li>
+</ul>
+<p>网站优化第一定律：优先考虑使用缓存优化性能</p>
+]]></content>
     
     <summary type="html">
     
