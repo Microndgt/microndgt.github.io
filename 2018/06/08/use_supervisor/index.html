@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>使用 supervisor 管理进程(转载) | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="supervisor">
+    <meta name="description" content="转载自 liyangliang.me 的 《使用 supervisor 管理进程》 Supervisor 是一个用 Python 写的进程管理工具，可以很方便的用来启动、重启、关闭进程（不仅仅是 Python 进程）。除了对单个进程的控制，还可以同时启动、关闭多个进程，比如很不幸的服务器出问题导致所有应用程序都被杀死，此时可以用 supervisor 同时启动所有应用程序而不是一个一个地敲命令启动">
+<meta name="keywords" content="supervisor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 supervisor 管理进程(转载)">
+<meta property="og:url" content="http://skyrover.me/2018/06/08/use_supervisor/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="转载自 liyangliang.me 的 《使用 supervisor 管理进程》 Supervisor 是一个用 Python 写的进程管理工具，可以很方便的用来启动、重启、关闭进程（不仅仅是 Python 进程）。除了对单个进程的控制，还可以同时启动、关闭多个进程，比如很不幸的服务器出问题导致所有应用程序都被杀死，此时可以用 supervisor 同时启动所有应用程序而不是一个一个地敲命令启动">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-08T02:37:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 supervisor 管理进程(转载)">
+<meta name="twitter:description" content="转载自 liyangliang.me 的 《使用 supervisor 管理进程》 Supervisor 是一个用 Python 写的进程管理工具，可以很方便的用来启动、重启、关闭进程（不仅仅是 Python 进程）。除了对单个进程的控制，还可以同时启动、关闭多个进程，比如很不幸的服务器出问题导致所有应用程序都被杀死，此时可以用 supervisor 同时启动所有应用程序而不是一个一个地敲命令启动">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">使用 supervisor 管理进程(转载)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">使用 supervisor 管理进程(转载)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-08T02:31:04.000Z" itemprop="datePublished" class="page-time">
+  2018-06-08 10:31:04
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安装"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#supervisord-配置"><span class="post-toc-number">2.</span> <span class="post-toc-text">supervisord 配置</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#program-配置"><span class="post-toc-number">3.</span> <span class="post-toc-text">program 配置</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Tips-1-Python-环境"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Tips 1: Python 环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Tips-2-后台进程"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Tips 2: 后台进程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Tips-3-子进程"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Tips 3: 子进程</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用-supervisorctl"><span class="post-toc-number">4.</span> <span class="post-toc-text">使用 supervisorctl</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#其它"><span class="post-toc-number">5.</span> <span class="post-toc-text">其它</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-use_supervisor"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">使用 supervisor 管理进程(转载)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-08 10:31:04 10:31:04" datetime="2018-06-08T02:31:04.000Z"  itemprop="datePublished">2018-06-08 10:31:04</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <p>转载自 <code>liyangliang.me</code> 的 <a href="http://liyangliang.me/posts/2015/06/using-supervisor/" target="_blank" rel="external">《使用 supervisor 管理进程》</a></p>
+<p><a href="http://supervisord.org" target="_blank" rel="external">Supervisor</a> 是一个用 Python 写的进程管理工具，可以很方便的用来启动、重启、关闭进程（不仅仅是 Python 进程）。除了对单个进程的控制，还可以同时启动、关闭多个进程，比如很不幸的服务器出问题导致所有应用程序都被杀死，此时可以用 supervisor 同时启动所有应用程序而不是一个一个地敲命令启动。</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>Supervisor 可以运行在 Linux、Mac OS X 上。如前所述，supervisor 是 Python 编写的，所以安装起来也很方便，可以直接用 pip :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo pip install supervisor</div></pre></td></tr></table></figure>
+<p>如果是 Ubuntu 系统，还可以使用 apt-get 安装。</p>
+<h1 id="supervisord-配置"><a href="#supervisord-配置" class="headerlink" title="supervisord 配置"></a>supervisord 配置</h1><p>Supervisor 相当强大，提供了很丰富的功能，不过我们可能只需要用到其中一小部分。安装完成之后，可以编写配置文件，来满足自己的需求。为了方便，我们把配置分成两部分：supervisord（supervisor 是一个 C/S 模型的程序，这是 server 端，对应的有 client 端：supervisorctl）和应用程序（即我们要管理的程序）。</p>
+<p>首先来看 supervisord 的配置文件。安装完 supervisor 之后，可以运行echo_supervisord_conf 命令输出默认的配置项，也可以重定向到一个配置文件里：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo_supervisord_conf &gt; /etc/supervisord.conf</div></pre></td></tr></table></figure>
+<p>去除里面大部分注释和“不相关”的部分，我们可以先看这些配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">[unix_http_server]</div><div class="line">file=/tmp/supervisor.sock   ; UNIX socket 文件，supervisorctl 会使用</div><div class="line">;chmod=0700                 ; socket 文件的 mode，默认是 0700</div><div class="line">;chown=nobody:nogroup       ; socket 文件的 owner，格式： uid:gid</div><div class="line"></div><div class="line">;[inet_http_server]         ; HTTP 服务器，提供 web 管理界面</div><div class="line">;port=127.0.0.1:9001        ; Web 管理后台运行的 IP 和端口，如果开放到公网，需要注意安全性</div><div class="line">;username=user              ; 登录管理后台的用户名</div><div class="line">;password=123               ; 登录管理后台的密码</div><div class="line"></div><div class="line">[supervisord]</div><div class="line">logfile=/tmp/supervisord.log ; 日志文件，默认是 $CWD/supervisord.log</div><div class="line">logfile_maxbytes=50MB        ; 日志文件大小，超出会 rotate，默认 50MB</div><div class="line">logfile_backups=10           ; 日志文件保留备份数量默认 10</div><div class="line">loglevel=info                ; 日志级别，默认 info，其它: debug,warn,trace</div><div class="line">pidfile=/tmp/supervisord.pid ; pid 文件</div><div class="line">nodaemon=false               ; 是否在前台启动，默认是 false，即以 daemon 的方式启动</div><div class="line">minfds=1024                  ; 可以打开的文件描述符的最小值，默认 1024</div><div class="line">minprocs=200                 ; 可以打开的进程数的最小值，默认 200</div><div class="line"></div><div class="line">; the below section must remain in the config file for RPC</div><div class="line">; (supervisorctl/web interface) to work, additional interfaces may be</div><div class="line">; added by defining them in separate rpcinterface: sections</div><div class="line">[rpcinterface:supervisor]</div><div class="line">supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface</div><div class="line"></div><div class="line">[supervisorctl]</div><div class="line">serverurl=unix:///tmp/supervisor.sock ; 通过 UNIX socket 连接 supervisord，路径与 unix_http_server 部分的 file 一致</div><div class="line">;serverurl=http://127.0.0.1:9001 ; 通过 HTTP 的方式连接 supervisord</div><div class="line"></div><div class="line">; 包含其他的配置文件</div><div class="line">[include]</div><div class="line">files = relative/directory/*.ini    ; 可以是 *.conf 或 *.ini</div></pre></td></tr></table></figure>
+<p>我们把上面这部分配置保存到 /etc/supervisord.conf（或其他任意有权限访问的文件），然后启动 supervisord（通过 -c 选项指定配置文件路径，如果不指定会按照这个顺序查找配置文件：$CWD/supervisord.conf, $CWD/etc/supervisord.conf, /etc/supervisord.conf）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisord -c /etc/supervisord.conf</div></pre></td></tr></table></figure>
+<p>查看 supervisord 是否在运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux | grep supervisord</div></pre></td></tr></table></figure>
+<h1 id="program-配置"><a href="#program-配置" class="headerlink" title="program 配置"></a>program 配置</h1><p>上面我们已经把 supervisrod 运行起来了，现在可以添加我们要管理的进程的配置文件。这些配置可以都写到 supervisord.conf 文件里，如果应用程序很多，最好通过 include 的方式把不同的程序（组）写到不同的配置文件里。</p>
+<p>为了举例，我们新建一个目录 /etc/supervisor/ 用于存放这些配置文件，相应的，把 /etc/supervisord.conf 里 include 部分的的配置修改一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">[include]</div><div class="line">files = /etc/supervisor/*.conf</div><div class="line">假设有个用 Flask 开发的用户系统 usercenter, 生产环境使用 gunicorn 运行。项目代码位于 /home/leon/projects/usercenter，WSGI 对象位于 wsgi.py。在命令行启动的方式是这样的：</div><div class="line"></div><div class="line">cd /home/leon/projects/usercenter</div><div class="line">gunicorn -w 8 -b 0.0.0.0:17510 wsgi:app</div><div class="line">对应的配置文件可能是：</div><div class="line"></div><div class="line">[program:usercenter]</div><div class="line">directory = /home/leon/projects/usercenter ; 程序的启动目录</div><div class="line">command = gunicorn -w 8 -b 0.0.0.0:17510 wsgi:app  ; 启动命令</div><div class="line">autostart = true     ; 在 supervisord 启动的时候也自动启动</div><div class="line">startsecs = 5        ; 启动 5 秒后没有异常退出，就当作已经正常启动了</div><div class="line">autorestart = true   ; 程序异常退出后自动重启</div><div class="line">startretries = 3     ; 启动失败自动重试次数，默认是 3</div><div class="line">user = leon          ; 用哪个用户启动</div><div class="line">redirect_stderr = true  ; 把 stderr 重定向到 stdout，默认 false</div><div class="line">stdout_logfile_maxbytes = 20MB  ; stdout 日志文件大小，默认 50MB</div><div class="line">stdout_logfile_backups = 20     ; stdout 日志文件备份数</div><div class="line">; stdout 日志文件，需要注意当指定目录不存在时无法正常启动，所以需要手动创建目录（supervisord 会自动创建日志文件）</div><div class="line">stdout_logfile = /data/logs/usercenter_stdout.log</div></pre></td></tr></table></figure>
+<p>其中 [program:usercenter] 中的 usercenter 是应用程序的唯一标识，不能重复。对该程序的所有操作（start, restart 等）都通过名字来实现。</p>
+<h2 id="Tips-1-Python-环境"><a href="#Tips-1-Python-环境" class="headerlink" title="Tips 1: Python 环境"></a>Tips 1: Python 环境</h2><p>有两种方式指定程序使用的 Python 环境：</p>
+<ul>
+<li>command 使用绝对路径。假设使用 pyenv 来管理 Python 环境，上面例子中的 gunicorn 路径可以替换为 /home/leon/.pyenv/versions/usercenter/bin/gunicorn. 这种方式一目了然，推荐。</li>
+<li>通过 environment 配置 PYTHONPATH. environment=PYTHONPATH=$PYTHONPATH:/home/leon/.pyenv/versions/usercenter/bin/. environment 这个配置项非常有用，可以用来给程序传入环境变量。</li>
+</ul>
+<h2 id="Tips-2-后台进程"><a href="#Tips-2-后台进程" class="headerlink" title="Tips 2: 后台进程"></a>Tips 2: 后台进程</h2><p>Supervisor 只能管理在前台运行的程序，所以如果应用程序有后台运行的选项，需要关闭。</p>
+<h2 id="Tips-3-子进程"><a href="#Tips-3-子进程" class="headerlink" title="Tips 3: 子进程"></a>Tips 3: 子进程</h2><p>有时候用 Supervisor 托管的程序还会有子进程（如 Tornado），如果只杀死主进程，子进程就可能变成孤儿进程。通过这两项配置来确保所有子进程都能正确停止：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">stopasgroup=true</div><div class="line">killasgroup=true</div></pre></td></tr></table></figure>
+<h1 id="使用-supervisorctl"><a href="#使用-supervisorctl" class="headerlink" title="使用 supervisorctl"></a>使用 supervisorctl</h1><p>Supervisorctl 是 supervisord 的一个命令行客户端工具，启动时需要指定与 supervisord 使用同一份配置文件，否则与 supervisord 一样按照顺序查找配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisorctl -c /etc/supervisord.conf</div></pre></td></tr></table></figure>
+<p>上面这个命令会进入 supervisorctl 的 shell 界面，然后可以执行不同的命令了：</p>
+<blockquote>
+<p>status    # 查看程序状态<br>stop usercenter   # 关闭 usercenter 程序<br>start usercenter  # 启动 usercenter 程序<br>restart usercenter    # 重启 usercenter 程序<br>reread    ＃ 读取有更新（增加）的配置文件，不会启动新添加的程序<br>update    ＃ 重启配置文件修改过的程序</p>
+</blockquote>
+<p>上面这些命令都有相应的输出，除了进入 supervisorctl 的 shell 界面，也可以直接在 bash 终端运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ supervisorctl status</div><div class="line">$ supervisorctl stop usercenter</div><div class="line">$ supervisorctl start usercenter</div><div class="line">$ supervisorctl restart usercenter</div><div class="line">$ supervisorctl reread</div><div class="line">$ supervisorctl update</div></pre></td></tr></table></figure>
+<h1 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h1><p>除了 supervisorctl 之外，还可以配置 supervisrod 启动 web 管理界面，这个 web 后台使用 Basic Auth 的方式进行身份认证。</p>
+<p>除了单个进程的控制，还可以配置 group，进行分组管理。</p>
+<p>经常查看日志文件，包括 supervisord 的日志和各个 pragram 的日志文件，程序 crash 或抛出异常的信息一半会输出到 stderr，可以查看相应的日志文件来查找问题。</p>
+<p>Supervisor 有很丰富的功能，还有其他很多项配置，可以在官方文档获取更多信息：<a href="http://supervisord.org/index.html" target="_blank" rel="external">http://supervisord.org/index.html</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/06/08/use_supervisor/" target="_blank" rel="external">http://skyrover.me/2018/06/08/use_supervisor/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/supervisor/">supervisor</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/08/use_supervisor/&title=《使用 supervisor 管理进程(转载)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/08/use_supervisor/&title=《使用 supervisor 管理进程(转载)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/06/08/use_supervisor/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用 supervisor 管理进程(转载)》 — SkyRover&url=http://skyrover.me/2018/06/08/use_supervisor/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/06/08/use_supervisor/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/04/software_architecture_3/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">大型网站技术架构 读书笔记(3)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/08/use_supervisor/&title=《使用 supervisor 管理进程(转载)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/08/use_supervisor/&title=《使用 supervisor 管理进程(转载)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/06/08/use_supervisor/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用 supervisor 管理进程(转载)》 — SkyRover&url=http://skyrover.me/2018/06/08/use_supervisor/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/06/08/use_supervisor/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aQZLDIAwEwPz/09kHbDmZEd6tMjSnHGygfVAQ0usVj/evkTx/NcPvZ9r5hwMDA+OxjPfHkWwrGVeYK1K+NwwMjHMYn4Nmu5V6E0FQ/rJnDAwMjD94pv2NgYGBkSyfh9o8Ac6PiRgYGBh58pkskxwi84B7cy6OgYHxQEZ+6/7/v/+kvoGBgfEoxl2X++0lWnLsK3aFgYGxNWNWwsyv+NsgnhwiL1fBwMDYlNFek62ktStlg+LcioGBsSkjn2gl7LYfJW9Nw8DAOIGRp5ptQntXw9mXPwwMDIxjGPli60e9ewMxBgbGCYx20tm77fxFoxgGBsYBjM/LJE+uhOBZAfXL0RADA2M7Ro6595Y+SZijkgYGBsbWjPUmiZbdNpPlTWYYGBi7MorjV/A92ifbMkP0v4GBgbEdY3YRtn6AWw/KGBgY5zDyoDlrpJh90TZtxsDAOIHRtkTkyFmrWZ7EXhYGMDAwNmLkB7WVMmSbMA/xGBgYxzDaifKA2LaU5e0aGBgYpzFm7RErhYQ23A8v3TAwMB7OaNssWkybGCerX76LgYGxHeNdjnYrK22sSSh/5Zk0BgbGYxmzKuH6VVpewkzAGBgYJzDaa/1Zg9cscS0CLgYGxgGMJPC1IXKlmSzZbVSJxcDAOJjRtl/MDog3lAQwMDCOZER1hoU0dXYMxcDAOIExu1C7d56lcIyBgbE1o00dV6ZLPscsWGNgYGzK+AEHsv71iU8qRwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
