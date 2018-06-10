@@ -13,25 +13,25 @@
     
     
     
-    <title>大型网站技术架构 读书笔记(3) | SkyRover | 靡不有初 鲜克有终</title>
+    <title>大型网站技术架构 读书笔记(3) 高可用 | SkyRover | 靡不有初 鲜克有终</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
     <meta name="keywords" content="大型网站技术架构">
-    <meta name="description" content="高可用架构高可用架构设计的主要目的是保证服务器硬件故障时候服务依然可用，数据依然保存并且能够被访问。主要手段是数据和服务的冗余备份以及失效转移。">
+    <meta name="description" content="高可用架构高可用架构设计的主要目的是保证服务器硬件故障时候服务依然可用，数据依然保存并且能够被访问。主要手段是数据和服务的冗余备份以及失效转移。如果一些服务器宕机，则将服务切换到其他可用的服务器上，如果磁盘损坏，则从备份磁盘读取数据。 典型的网站设计：  应用层：主要负责具体业务逻辑（具体应用） 服务层：提供可复用的服务（账户，session，登陆） 数据层：负责数据的存储和访问，（数据库，文件，">
 <meta name="keywords" content="大型网站技术架构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大型网站技术架构 读书笔记(3)">
+<meta property="og:title" content="大型网站技术架构 读书笔记(3) 高可用">
 <meta property="og:url" content="http://skyrover.me/2018/06/04/software_architecture_3/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="高可用架构高可用架构设计的主要目的是保证服务器硬件故障时候服务依然可用，数据依然保存并且能够被访问。主要手段是数据和服务的冗余备份以及失效转移。">
+<meta property="og:description" content="高可用架构高可用架构设计的主要目的是保证服务器硬件故障时候服务依然可用，数据依然保存并且能够被访问。主要手段是数据和服务的冗余备份以及失效转移。如果一些服务器宕机，则将服务切换到其他可用的服务器上，如果磁盘损坏，则从备份磁盘读取数据。 典型的网站设计：  应用层：主要负责具体业务逻辑（具体应用） 服务层：提供可复用的服务（账户，session，登陆） 数据层：负责数据的存储和访问，（数据库，文件，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-08T02:30:40.000Z">
+<meta property="og:updated_time" content="2018-06-10T06:47:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大型网站技术架构 读书笔记(3)">
-<meta name="twitter:description" content="高可用架构高可用架构设计的主要目的是保证服务器硬件故障时候服务依然可用，数据依然保存并且能够被访问。主要手段是数据和服务的冗余备份以及失效转移。">
+<meta name="twitter:title" content="大型网站技术架构 读书笔记(3) 高可用">
+<meta name="twitter:description" content="高可用架构高可用架构设计的主要目的是保证服务器硬件故障时候服务依然可用，数据依然保存并且能够被访问。主要手段是数据和服务的冗余备份以及失效转移。如果一些服务器宕机，则将服务切换到其他可用的服务器上，如果磁盘损坏，则从备份磁盘读取数据。 典型的网站设计：  应用层：主要负责具体业务逻辑（具体应用） 服务层：提供可复用的服务（账户，session，登陆） 数据层：负责数据的存储和访问，（数据库，文件，">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
     
@@ -126,7 +126,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">大型网站技术架构 读书笔记(3)</div>
+        <div class="flex-col header-title ellipsis">大型网站技术架构 读书笔记(3) 高可用</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -148,7 +148,7 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">大型网站技术架构 读书笔记(3)</h1>
+        <h1 class="title">大型网站技术架构 读书笔记(3) 高可用</h1>
         <h5 class="subtitle">
             
                 <time datetime="2018-06-04T11:13:04.000Z" itemprop="datePublished" class="page-time">
@@ -174,7 +174,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#高可用架构"><span class="post-toc-number">1.</span> <span class="post-toc-text">高可用架构</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#高可用架构"><span class="post-toc-number">1.</span> <span class="post-toc-text">高可用架构</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#高可用的应用"><span class="post-toc-number"></span> <span class="post-toc-text">高可用的应用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#通过负载均衡进行无状态服务的失效转移"><span class="post-toc-number">1.</span> <span class="post-toc-text">通过负载均衡进行无状态服务的失效转移</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#应用服务器集群的session管理"><span class="post-toc-number">2.</span> <span class="post-toc-text">应用服务器集群的session管理</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#高可用的服务"><span class="post-toc-number"></span> <span class="post-toc-text">高可用的服务</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#高可用的数据"><span class="post-toc-number"></span> <span class="post-toc-text">高可用的数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CAP原理"><span class="post-toc-number">1.</span> <span class="post-toc-text">CAP原理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据备份"><span class="post-toc-number">2.</span> <span class="post-toc-text">数据备份</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#失效转移"><span class="post-toc-number">3.</span> <span class="post-toc-text">失效转移</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#高可用网站的软件质量保证"><span class="post-toc-number"></span> <span class="post-toc-text">高可用网站的软件质量保证</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网站发布"><span class="post-toc-number">1.</span> <span class="post-toc-text">网站发布</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自动化测试"><span class="post-toc-number">2.</span> <span class="post-toc-text">自动化测试</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预发布验证"><span class="post-toc-number">3.</span> <span class="post-toc-text">预发布验证</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代码控制"><span class="post-toc-number">4.</span> <span class="post-toc-text">代码控制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自动化发布"><span class="post-toc-number">5.</span> <span class="post-toc-text">自动化发布</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#灰度发布"><span class="post-toc-number">6.</span> <span class="post-toc-text">灰度发布</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网站运行监控"><span class="post-toc-number"></span> <span class="post-toc-text">网站运行监控</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#监控数据采集"><span class="post-toc-number">1.</span> <span class="post-toc-text">监控数据采集</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#监控管理"><span class="post-toc-number">2.</span> <span class="post-toc-text">监控管理</span></a></li></ol>
         </nav>
     </aside>
     
@@ -183,7 +183,7 @@
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">大型网站技术架构 读书笔记(3)</h1>
+        <h1 class="post-card-title">大型网站技术架构 读书笔记(3) 高可用</h1>
         <div class="post-meta">
             <time class="post-time" title="2018-06-04 19:13:04 19:13:04" datetime="2018-06-04T11:13:04.000Z"  itemprop="datePublished">2018-06-04 19:13:04</time>
 
@@ -203,7 +203,112 @@
             
             
             
-            <h2 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h2><p>高可用架构设计的主要目的是保证服务器硬件故障时候服务依然可用，数据依然保存并且能够被访问。主要手段是数据和服务的冗余备份以及失效转移。</p>
+            <h2 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h2><p>高可用架构设计的主要目的是保证服务器硬件故障时候服务依然可用，数据依然保存并且能够被访问。主要手段是数据和服务的冗余备份以及失效转移。如果一些服务器宕机，则将服务切换到其他可用的服务器上，如果磁盘损坏，则从备份磁盘读取数据。</p>
+<p>典型的网站设计：</p>
+<ul>
+<li>应用层：主要负责具体业务逻辑（具体应用）</li>
+<li>服务层：提供可复用的服务（账户，session，登陆）</li>
+<li>数据层：负责数据的存储和访问，（数据库，文件，缓存，搜索）</li>
+</ul>
+<p>不同的业务产品可以部署到不同的服务器集群上，然后依赖一些共同复用的服务，这些可复用的服务也各自部署在独立的服务器集群上。数据层等数据存储和访问服务也部署在各自独立的服务器集群上。</p>
+<p>应用层就是服务器集群来对外提供服务。</p>
+<p>服务层是通过应用层使用分布式服务调用框架访问，该框架会在应用层客户端程序中实现软件负载均衡。</p>
+<p>数据层需要在写入时候进行数据同步复制，将数据写入到多台服务器上，实现数据冗余备份。</p>
+<h1 id="高可用的应用"><a href="#高可用的应用" class="headerlink" title="高可用的应用"></a>高可用的应用</h1><p>应用层：无状态，所以多个服务器之间完全对等。</p>
+<h2 id="通过负载均衡进行无状态服务的失效转移"><a href="#通过负载均衡进行无状态服务的失效转移" class="headerlink" title="通过负载均衡进行无状态服务的失效转移"></a>通过负载均衡进行无状态服务的失效转移</h2><p>在网站应用中，当集群中的服务是无状态对等的时候，负载均衡可以起到事实上高可用的作用，提供失效转移功能。</p>
+<p>最主要的是无状态，比如session等信息存储在redis等地方，计算等放在服务层。</p>
+<h2 id="应用服务器集群的session管理"><a href="#应用服务器集群的session管理" class="headerlink" title="应用服务器集群的session管理"></a>应用服务器集群的session管理</h2><p>web应用中将这些多次请求修改使用的上下文对象称为会话，单机情况下，session可以由部署在服务器上的web容器(JBoss)管理，集群环境下，session管理有以下几种手段。</p>
+<ul>
+<li>session复制，在集群中的几台服务器之间同步session对象，每台服务器上都会保存用户的session信息。只适合小的集群。</li>
+<li>session绑定，利用负载均衡的源地址hash算法实现，将同一个IP请求分发到同一台服务器上，或者根据cookie信息将同一个用户请求总是分发到一个服务器上，这样session绑定在某台特定服务器上，保证session总在这台服务器上获取，称为会话粘滞。但是这样不符合高可用的需求。</li>
+<li>利用cookie记录session，将session记录在客户端，每次请求服务器时候，将session放在请求中发送给服务器，服务器处理完请求再将修改过的session响应给客户端，使用浏览器支持的cookie记录session。</li>
+<li>session服务器，利用独立部署的session服务器集群统一管理session，应用服务器每次读写session时候，都访问session服务器。应用服务器的状态分离，分为无状态的应用服务器和有状态的session服务器，针对这两种服务器的不同特性分别设计其架构。使用分布式缓存，数据库。单点登陆，则使用专门的session服务管理平台。</li>
+</ul>
+<h1 id="高可用的服务"><a href="#高可用的服务" class="headerlink" title="高可用的服务"></a>高可用的服务</h1><p>可复用的服务，基础公共服务，独立分布式部署，被具体应用远程调用，无状态，可以使用负载均衡的失效转移策略实现高可用。</p>
+<ul>
+<li>分级管理，优先级不同的服务</li>
+<li>超时设置，服务调用的超时时间，以便能迅速重试或者切换</li>
+<li>异步调用，消息队列，</li>
+<li>服务降级，拒绝服务，拒绝优先级低应用的调用，减少服务调用并发数，确保核心应用正常使用，或者随机拒绝部分请求调用。关闭功能，关闭部分不重要的服务。</li>
+<li>幂等性设计，服务重复调用，所以要在服务层保证服务重复调用和调用一次产生的结果相同，即服务具有幂等性。转账交易的话，需要通过交易编号等信息进行服务调用有效性验证。</li>
+</ul>
+<h1 id="高可用的数据"><a href="#高可用的数据" class="headerlink" title="高可用的数据"></a>高可用的数据</h1><p>保证数据存储高可用的手段主要是数据备份和失效转移机制，数据有多个副本，不会导致数据永久丢失。</p>
+<p>缓存服务的高可用，扩大缓存服务器集群规模的一个简单手段就是整个网站共享同一个分布式缓存集群，单独的应用和产品不需要部署自己的缓存服务器，只需要向共享缓存集群申请缓存资源即可。并且将每个应用的缓存部署在多台服务器上，任何一台服务器宕机引起的缓存失效只会影响应用缓存数据的一小部分。</p>
+<h2 id="CAP原理"><a href="#CAP原理" class="headerlink" title="CAP原理"></a>CAP原理</h2><p>为了保证数据的高可用，会牺牲数据一致性。</p>
+<p>高可用的数据有以下含义：</p>
+<ul>
+<li>数据持久性 持久化存储，多个副本</li>
+<li>数据可访问性 迅速切换副本</li>
+<li>数据一致性 副本数据不一致</li>
+</ul>
+<p>CAP原理认为，一个提供数据服务的存储系统无法同时满足数据一致性(Consistency)，数据可用性(Availibility)，分区耐受性(Patition Tolerance，跨网络分区的伸缩性，多个副本)</p>
+<p>P是必不可少的，因为数据在逐渐增多，而且会保证数据可用性，在某种程度上放弃一致性(C)</p>
+<p>一般，数据不一致出现在系统高并发写操作或者集群状态不稳的情况下。</p>
+<p>数据一致性：</p>
+<ul>
+<li>数据强一致</li>
+<li>数据用户一致，各副本数据可能不一致，但是终端访问时候，可以确定一个一致的且正确的数据返回</li>
+<li>数据最终一致，经过一段时间，系统的数据会达到一致</li>
+</ul>
+<p>一般会达到存储系统用户一致，保证最终用户访问数据的正确性。</p>
+<h2 id="数据备份"><a href="#数据备份" class="headerlink" title="数据备份"></a>数据备份</h2><p>数据冷备，缺点是不能保证数据最终一致，不能保证数据可用性。</p>
+<p>数据热备：</p>
+<ul>
+<li>异步热备：多分数据副本的写入操作异步完成，存储系统会异步的写其他副本，存储服务器分为主存储服务器和从存储服务器，应用程序正常情况下只连接主存储服务器，数据写入时，由主存储服务器的写操作代理模块将数据写入本机存储系统后立即返回写操作成功响应，通过异步线程将写操作同步到从存储服务器</li>
+<li>同步方式：多份数据副本的写入操作同步完成，应用程序收到数据服务系统的写成功响应时候，多份数据都已经写操作成功，可以让应用程序客户端并发的向多个存储服务器同时写入数据，这样提高性能。存储服务器完全对等，没有主从关系，便于管理和维护。</li>
+</ul>
+<p>关系数据库热备机制就是Master-Slave异步机制，实践中，使用读写分离方法访问slave和master，写操作访问master数据库，读操作访问slave数据库</p>
+<h2 id="失效转移"><a href="#失效转移" class="headerlink" title="失效转移"></a>失效转移</h2><ul>
+<li>失效确认<ul>
+<li>心跳检测</li>
+<li>应用程序访问失败报告</li>
+</ul>
+</li>
+<li>访问转移<ul>
+<li>将数据读写访问重新路由到其他服务器上</li>
+</ul>
+</li>
+<li>数据恢复<ul>
+<li>需要将数据副本的数据恢复到系统设定的值</li>
+</ul>
+</li>
+</ul>
+<h1 id="高可用网站的软件质量保证"><a href="#高可用网站的软件质量保证" class="headerlink" title="高可用网站的软件质量保证"></a>高可用网站的软件质量保证</h1><h2 id="网站发布"><a href="#网站发布" class="headerlink" title="网站发布"></a>网站发布</h2><p>发布过程中，每次关闭的服务器都是集群中的一小部分，并且在发布完成后丽姬可以访问，因此整个发布过程不影响用户使用。</p>
+<h2 id="自动化测试"><a href="#自动化测试" class="headerlink" title="自动化测试"></a>自动化测试</h2><p>每次发布新功能需要对网站进行全面的回归测试，所以web自动化测试，自动测试工具或者脚本完成，比如Selenium。</p>
+<h2 id="预发布验证"><a href="#预发布验证" class="headerlink" title="预发布验证"></a>预发布验证</h2><p>先部署到预发布服务器上，进行预发布验证。</p>
+<p>处理错误的理念是 快速失败，如果系统在启动时候发现问题就立刻抛出异常，而不是启动后执行错误的操作。</p>
+<h2 id="代码控制"><a href="#代码控制" class="headerlink" title="代码控制"></a>代码控制</h2><ul>
+<li>主干开发，分支发布：如果发现分支版本有bug，则继续在分支上修改发布，并且将修改合并到主干，直到下次主干发布</li>
+<li>分支开发，主干发布：分支开发并且测试通过，合并回主干</li>
+</ul>
+<p>主要使用分支开发，主干发布</p>
+<p>git对分布式开发，分支开发有更好的支持</p>
+<h2 id="自动化发布"><a href="#自动化发布" class="headerlink" title="自动化发布"></a>自动化发布</h2><p>火车发布模型，开发出自动发布的工具实现发布自动化，根据响应驱动流程，自动构造代码分支，进行代码合并，执行发布脚本。</p>
+<p><code>提交发布请求-&gt;QA确认，安全确认，DBA确认-&gt;代码合并-&gt;预发布验证-&gt;正式发布</code></p>
+<h2 id="灰度发布"><a href="#灰度发布" class="headerlink" title="灰度发布"></a>灰度发布</h2><p>大型网站的主要业务服务器集群太大，导致发布回滚也需要很长时间，所以采用灰度发布模式，即每次只发布一部分的服务器，持续几天才把整个集群全部发布完毕，如果有问题，只需要回滚已发布的一部分服务器即可。</p>
+<h1 id="网站运行监控"><a href="#网站运行监控" class="headerlink" title="网站运行监控"></a>网站运行监控</h1><h2 id="监控数据采集"><a href="#监控数据采集" class="headerlink" title="监控数据采集"></a>监控数据采集</h2><ul>
+<li>用户行为日志收集<ul>
+<li>服务器端日志收集</li>
+<li>客户端浏览器日志收集，嵌入特定的js脚本</li>
+<li>storm日志统计和分析工具</li>
+</ul>
+</li>
+<li>服务器性能监控<ul>
+<li>系统load，内存，磁盘，网络</li>
+<li>Ganglia</li>
+</ul>
+</li>
+<li>运行数据报告，缓存命中率，平均响应延迟时间，待处理的任务总数</li>
+</ul>
+<h2 id="监控管理"><a href="#监控管理" class="headerlink" title="监控管理"></a>监控管理</h2><p>系统性能评估，集群规模伸缩性预测，风险预警，服务器失效转移，自动负载调整，最大化利用集群所有机器的资源</p>
+<ul>
+<li>系统报警</li>
+<li>失效转移</li>
+<li>自动优雅降级</li>
+</ul>
+<blockquote>
+<p>事物总是先求生存，然后求发展<br>保证网站可用，万无一失，任重而道远</p>
+</blockquote>
 
         </div>
 
@@ -243,7 +348,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/04/software_architecture_3/&title=《大型网站技术架构 读书笔记(3)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/04/software_architecture_3/&title=《大型网站技术架构 读书笔记(3) 高可用》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -253,7 +358,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/04/software_architecture_3/&title=《大型网站技术架构 读书笔记(3)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/04/software_architecture_3/&title=《大型网站技术架构 读书笔记(3) 高可用》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -263,7 +368,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(3)》 — SkyRover&url=http://skyrover.me/2018/06/04/software_architecture_3/&via=http://skyrover.me" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(3) 高可用》 — SkyRover&url=http://skyrover.me/2018/06/04/software_architecture_3/&via=http://skyrover.me" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -301,7 +406,7 @@
     <div class="waves-block waves-effect next">
       <a href="/2018/05/30/software_architecture_2/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">大型网站技术架构 读书笔记(2)</h4>
+        <h4 class="title">大型网站技术架构 读书笔记(2) 高性能</h4>
       </a>
     </div>
   
@@ -414,7 +519,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/04/software_architecture_3/&title=《大型网站技术架构 读书笔记(3)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/04/software_architecture_3/&title=《大型网站技术架构 读书笔记(3) 高可用》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -424,7 +529,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/04/software_architecture_3/&title=《大型网站技术架构 读书笔记(3)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/04/software_architecture_3/&title=《大型网站技术架构 读书笔记(3) 高可用》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -434,7 +539,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(3)》 — SkyRover&url=http://skyrover.me/2018/06/04/software_architecture_3/&via=http://skyrover.me" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(3) 高可用》 — SkyRover&url=http://skyrover.me/2018/06/04/software_architecture_3/&via=http://skyrover.me" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
