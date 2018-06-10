@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-06-08T02:37:30.000Z</updated>
+  <updated>2018-06-10T10:58:02.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,57 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>大型网站技术架构 读书笔记(4) 伸缩性</title>
+    <link href="http://skyrover.me/2018/06/10/software_architecture_4/"/>
+    <id>http://skyrover.me/2018/06/10/software_architecture_4/</id>
+    <published>2018-06-10T10:44:04.000Z</published>
+    <updated>2018-06-10T10:58:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>伸缩性是指仅仅通过改变部署的服务器数量就可以扩大或者缩小网站的服务处理能力。</p>
+<p>在发展为大型网站的渐进式的演化过程中，最重要的手段就是使用服务器集群，这就是网站系统的伸缩性架构。</p>
+<h1 id="网站架构的伸缩性设计"><a href="#网站架构的伸缩性设计" class="headerlink" title="网站架构的伸缩性设计"></a>网站架构的伸缩性设计</h1><ul>
+<li>根据功能进行物理分离实现伸缩，不同服务器部署不同服务</li>
+<li>单一功能通过集群实现伸缩，集群多台服务器部署相同的任务</li>
+</ul>
+<h2 id="不同功能进行物理分离实现伸缩"><a href="#不同功能进行物理分离实现伸缩" class="headerlink" title="不同功能进行物理分离实现伸缩"></a>不同功能进行物理分离实现伸缩</h2><p>新增服务器从现有服务器中分离出功能和服务</p>
+<ul>
+<li>纵向分离：将业务处理流程上的不同部分分离部署</li>
+<li>横向分离：将不同业务模块分离部署</li>
+</ul>
+<h2 id="单一功能通过集群规模实现伸缩"><a href="#单一功能通过集群规模实现伸缩" class="headerlink" title="单一功能通过集群规模实现伸缩"></a>单一功能通过集群规模实现伸缩</h2><p>相同服务部署在多台服务器上构成一个集群整体对外进行服务</p>
+<blockquote>
+<p>当一头牛拉不动车的时候，不要去寻找一头更强壮的牛，而是用两头牛来拉车</p>
+</blockquote>
+<p>集群伸缩性可以分为：</p>
+<ul>
+<li>应用服务器集群伸缩性</li>
+<li>数据服务器集群的伸缩性<ul>
+<li>缓存数据服务器集群</li>
+<li>存储数据服务器集群</li>
+</ul>
+</li>
+</ul>
+<p>不同原因是因为对数据状态管理的不同</p>
+<h1 id="应用服务器集群的伸缩性设计"><a href="#应用服务器集群的伸缩性设计" class="headerlink" title="应用服务器集群的伸缩性设计"></a>应用服务器集群的伸缩性设计</h1>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;伸缩性是指仅仅通过改变部署的服务器数量就可以扩大或者缩小网站的服务处理能力。&lt;/p&gt;
+&lt;p&gt;在发展为大型网站的渐进式的演化过程中，最重要的手段就是使用服务器集群，这就是网站系统的伸缩性架构。&lt;/p&gt;
+&lt;h1 id=&quot;网站架构的伸缩性设计&quot;&gt;&lt;a href=&quot;#网站架构的伸缩
+    
+    </summary>
+    
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="大型网站技术架构" scheme="http://skyrover.me/tags/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 supervisor 管理进程(转载)</title>
