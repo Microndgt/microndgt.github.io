@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-06-10T13:31:15.000Z</updated>
+  <updated>2018-06-11T23:26:22.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://skyrover.me/2018/06/10/software_architecture_4/"/>
     <id>http://skyrover.me/2018/06/10/software_architecture_4/</id>
     <published>2018-06-10T10:44:04.000Z</published>
-    <updated>2018-06-10T13:31:15.000Z</updated>
+    <updated>2018-06-11T23:26:22.000Z</updated>
     
     <content type="html"><![CDATA[<p>伸缩性是指仅仅通过改变部署的服务器数量就可以扩大或者缩小网站的服务处理能力。</p>
 <p>在发展为大型网站的渐进式的演化过程中，最重要的手段就是使用服务器集群，这就是网站系统的伸缩性架构。</p>
@@ -80,7 +80,53 @@
 <li>加权最少链接</li>
 <li>源地址散列：根据请求来源的IP地址进行hash计算，来自同一个IP地址的请求总会在同一个服务器上处理，但是这样不符合高可用要求。</li>
 </ul>
-<h1 id="分布式缓存集群的伸缩性设计"><a href="#分布式缓存集群的伸缩性设计" class="headerlink" title="分布式缓存集群的伸缩性设计"></a>分布式缓存集群的伸缩性设计</h1>]]></content>
+<h1 id="分布式缓存集群的伸缩性设计"><a href="#分布式缓存集群的伸缩性设计" class="headerlink" title="分布式缓存集群的伸缩性设计"></a>分布式缓存集群的伸缩性设计</h1><p>分布式缓存服务器集群中不同服务器中缓存的数据各不相同，缓存访问请求不可以在缓存服务器集群中的任意一台处理，必须先找到缓存有需要数据的服务器，然后才能访问。</p>
+<p>分布式缓存集群伸缩性设计主要目标是，让新上线的缓存服务器对整个分布式缓存集群影响最小。</p>
+<h2 id="Memcached分布式缓存集群的访问模型"><a href="#Memcached分布式缓存集群的访问模型" class="headerlink" title="Memcached分布式缓存集群的访问模型"></a>Memcached分布式缓存集群的访问模型</h2><p>应用程序通过Memcached客户端访问Memcached服务器集群，Memcached客户端主要由一组API，Memcached服务器集群路由算法，Memcached服务器集群列表和通信模块组成。</p>
+<p>路由算法负责根据应用程序输入的缓存数据Key计算得到应该将数据写入到Memcached的哪台服务器上，或者从哪里读取。</p>
+<h2 id="伸缩性挑战"><a href="#伸缩性挑战" class="headerlink" title="伸缩性挑战"></a>伸缩性挑战</h2><p>hash路由算法，在扩容的时候就有问题。</p>
+<p>一种方法是在网站访问量最小的时候扩容缓存服务器集群，这样对数据库负载冲击最小。</p>
+<h2 id="分布式缓存的一致性hash算法"><a href="#分布式缓存的一致性hash算法" class="headerlink" title="分布式缓存的一致性hash算法"></a>分布式缓存的一致性hash算法</h2><p>一致性hash环实现了key到缓存服务器的hash映射</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_architecture_3.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li>先构造长度为0~2^32的整数环，一致性hash环</li>
+<li>根据节点名称的hash值将缓存服务器节点放置在这个hash环上</li>
+<li>缓存数据key计算hash值</li>
+<li>在hash环上顺时针查找距离离key的hash最近的缓存服务器节点</li>
+</ul>
+<p>这样加入新节点，就只会影响整个环中的一小段</p>
+<p>长度为2^32的一致性hash环通常用二叉查找树实现，hash查找过程是在二叉查找树中查找不小于查找树的最小数值。</p>
+<p>但是目前这种情况会导致，新加入节点之后，各个节点负载不均衡。</p>
+<blockquote>
+<p>计算机的任何问题都可以通过增加一个虚拟层来解决</p>
+</blockquote>
+<p>将每台物理缓存服务器虚拟为一组虚拟缓存服务器，将虚拟服务器的hash值放在hash环上，key在环上先找到虚拟服务器节点，再得到物理服务器的信息。</p>
+<p>这样，新加入一台缓存服务器，将会比较均匀的影响原来集群中已经存在的所有服务器。同时集群中每个物理节点受影响的数据为其节点缓存数据量的(x/(N+x)), N为原来物理节点数，x为新加入的物理节点数，与未使用虚拟节点的一致性hash算法结果相同。</p>
+<h1 id="数据存储服务器集群的伸缩性设计"><a href="#数据存储服务器集群的伸缩性设计" class="headerlink" title="数据存储服务器集群的伸缩性设计"></a>数据存储服务器集群的伸缩性设计</h1><p>数据的持久性和可用性，关系数据库集群的伸缩性和NoSQL数据库的伸缩性</p>
+<h2 id="关系数据库集群的伸缩性设计"><a href="#关系数据库集群的伸缩性设计" class="headerlink" title="关系数据库集群的伸缩性设计"></a>关系数据库集群的伸缩性设计</h2><ul>
+<li>数据库主从读写分离：主从复制，数据写操作在主服务器上，由主服务器将数据同步到集群中其他从服务器，数据读操作和数据分析等离线操作在从服务器上进行。</li>
+<li>数据分库：不同业务数据表部署在不同的数据库集群上</li>
+<li>数据分片：将一张表拆开分别存储在多个数据库中，Amoeba，Cobar</li>
+</ul>
+<p>Cobar是一个分布式关系数据库访问代理，介于应用服务器和数据库服务器之间，应用程序访问Cobar集群，Cobar服务器根据SQL和分库规则分解SQL，分发到MySQL集群不同数据库实例上执行，MySQL实例为主从结构</p>
+<p>Cobar服务器是无状态的，所以可以使用负载均衡手段实现。</p>
+<p>MySQL服务器集群伸缩需要做数据迁移，将集群中原来机器的数据迁移到新添加的机器中。</p>
+<p>Cobar路由模块可以使用一致性hash算法进行路由，这样可以使得要迁移的数据最少。但是需要遍历数据库并且进行路由计算查看其是否需要迁移。</p>
+<p>Cobar路由后只能在单一数据库实例上处理查询操作，因此无法执行跨库的JOIN操作，也不能执行跨库的事务处理。</p>
+<p>所以虽然关系数据库本身功能比较强大，但是各类分布式关系数据库解决方案都比较简陋。</p>
+<h2 id="NoSQL数据库的伸缩性设计"><a href="#NoSQL数据库的伸缩性设计" class="headerlink" title="NoSQL数据库的伸缩性设计"></a>NoSQL数据库的伸缩性设计</h2><p>NoSQL，非关系的，分布式的数据库设计模式。放弃了关系代数为基础的结构化查询语言SQL和事务一致性保证ACID，强化了高可用和伸缩性。</p>
+<p>HBase伸缩性依赖于可分裂的HRegion和可伸缩的分布式文件系统HDFS的实现。</p>
+<blockquote>
+<p>救世主定律：遇到问题，分析问题，最后总能解决问题 </p>
+<p>银弹：为具有极端有效性的解决方法，作为杀手锏、最强杀招、王牌等的代称。</p>
+</blockquote>
+]]></content>
     
     <summary type="html">
     
