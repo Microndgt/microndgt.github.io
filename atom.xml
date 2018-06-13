@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-06-11T23:26:22.000Z</updated>
+  <updated>2018-06-13T00:02:12.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,6 +14,96 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>大型网站技术架构 读书笔记(4) 扩展性</title>
+    <link href="http://skyrover.me/2018/06/12/software_architecture_5/"/>
+    <id>http://skyrover.me/2018/06/12/software_architecture_5/</id>
+    <published>2018-06-11T23:27:04.000Z</published>
+    <updated>2018-06-13T00:02:12.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>扩展性架构设计，在对现有系统影响最小的情况下，系统功能可持续扩展以及提升的能力。</p>
+<p>架构设计考虑未来功能扩展，当系统增加新功能时候，不需要对现有系统的结构和代码进行修改。</p>
+<p>伸缩性是指通过增加自身资源规模的方式增强自己处理计算处理事务的能力。</p>
+<p>开发低耦合系统是软件设计的终极目标之一，低耦合系统更容易扩展，低耦合的模块更容易复用。</p>
+<p>将一个大系统切分为N个低耦合子模块，横向的业务模块，纵向的基础技术模块。</p>
+<p>设计网站可扩展架构的核心思想是模块化，在此基础上，降低模块间的耦合性，提高模块的复用性。</p>
+<p>利用分层和分割的方式将软件分割程若干个低耦合的独立组件模块，这些组件模块以消息传递以及依赖调用的方式聚合程一个完整系统。</p>
+<p>大型网站中，模块通过分布式部署的方式，独立的模块部署在独立的服务器(集群)上，从物理上分离模块之间的耦合关系，进一步降低耦合性提高复用性。</p>
+<p>模块分布式部署之后具体聚合方式有分布式消息队列和分布式服务。</p>
+<h1 id="利用分布式消息队列降低系统耦合性"><a href="#利用分布式消息队列降低系统耦合性" class="headerlink" title="利用分布式消息队列降低系统耦合性"></a>利用分布式消息队列降低系统耦合性</h1><h2 id="事件驱动架构"><a href="#事件驱动架构" class="headerlink" title="事件驱动架构"></a>事件驱动架构</h2><p>事件驱动架构(Event Driven Architecture)：生产者消费者模式，最常用的是分布式消息队列</p>
+<p>消息队列利用发布-订阅模式工作</p>
+<h2 id="分布式消息队列"><a href="#分布式消息队列" class="headerlink" title="分布式消息队列"></a>分布式消息队列</h2><p>Apache ActiveMQ</p>
+<ul>
+<li>伸缩性：将新服务器加入分布式消息队列集群中</li>
+<li>可用性：如果内存队列已满，会将消息写入磁盘</li>
+</ul>
+<h1 id="利用分布式服务器打造可复用的业务平台"><a href="#利用分布式服务器打造可复用的业务平台" class="headerlink" title="利用分布式服务器打造可复用的业务平台"></a>利用分布式服务器打造可复用的业务平台</h1><p>分布式消息队列通过消息对象分解系统耦合性，分布式服务则通过接口分解系统耦合性，不同子系统通过相同的接口描述进行服务调用。</p>
+<ul>
+<li>纵向拆分：拆分为多个小应用，新增的可以直接设计部署为独立的web应用系统</li>
+<li>横向拆分，将复用的业务拆分出来，独立部署为分布式服务器</li>
+</ul>
+<p>分布式服务管理框架</p>
+<h2 id="Web-Service与企业级分布式服务"><a href="#Web-Service与企业级分布式服务" class="headerlink" title="Web Service与企业级分布式服务"></a>Web Service与企业级分布式服务</h2><p>整合异构系统以及构建分布式系统</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_arch_5.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>服务提供者通过WSDL(web services Description Language) web服务描述语言向注册中心(Service broker)描述自身提供的服务接口属性，注册中心使用UDDI(Universal Description, Discovery and Integration)统一描述，发现和集成发布服务提供者提供的服务，服务请求者从注册中心检索到信息之后，通过SOAP(Simple Object Access Protocol)简单对象访问协议和服务提供者通信，使用相关服务</p>
+<h2 id="大型网站分布式服务的需求和特点"><a href="#大型网站分布式服务的需求和特点" class="headerlink" title="大型网站分布式服务的需求和特点"></a>大型网站分布式服务的需求和特点</h2><ul>
+<li>负载均衡</li>
+<li>失效转移</li>
+<li>高效的远程通信</li>
+<li>整合异构系统，不同语言开发的系统</li>
+<li>对应用最少侵入，可随时选择分布式或者集中式部署</li>
+<li>版本管理，同时升级接口</li>
+<li>实时监控</li>
+</ul>
+<h2 id="分布式服务框架设计"><a href="#分布式服务框架设计" class="headerlink" title="分布式服务框架设计"></a>分布式服务框架设计</h2><p>SOA(Service Oriented Architecture)面向服务的体系架构</p>
+<p>Facebook基于Thrift的分布式服务框架，阿里巴巴的Dubbo</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_arch_4.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>服务消费者通过服务接口使用服务，服务接口通过代理加载具体服务，具体服务可以是本地的代码模块，也可以是远程服务，所以对应用侵入较少，应用程序只需要调用服务接口，服务框架根据配置自动调用本地或者远程实现。</p>
+<p>服务框架客户端通过服务注册中心加载服务提供者列表（服务提供者启动后自动向服务注册中心注册自己可以提供的服务接口列表），查找需要的服务接口，根据配置的负载均衡策略将服务调用请求发送到某台提供者服务器，如果服务调用失败，客户端会重新从列表找一个提供同样服务的服务器，重新请求，实现服务的自动失效转移，保证服务高可用。</p>
+<h1 id="可扩展的数据接口"><a href="#可扩展的数据接口" class="headerlink" title="可扩展的数据接口"></a>可扩展的数据接口</h1><p>数据库的字段</p>
+<h1 id="利用开发平台建设网站生态圈"><a href="#利用开发平台建设网站生态圈" class="headerlink" title="利用开发平台建设网站生态圈"></a>利用开发平台建设网站生态圈</h1><p>第三方调用平台</p>
+<ul>
+<li>API接口</li>
+<li>协议转换</li>
+<li>安全</li>
+<li>审计</li>
+<li>路由</li>
+<li>流程</li>
+</ul>
+<blockquote>
+<p>产品的内在价值在于劳动时间，劳动时间不在于个体付出的劳动时间，而在行业一般劳动时间。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;扩展性架构设计，在对现有系统影响最小的情况下，系统功能可持续扩展以及提升的能力。&lt;/p&gt;
+&lt;p&gt;架构设计考虑未来功能扩展，当系统增加新功能时候，不需要对现有系统的结构和代码进行修改。&lt;/p&gt;
+&lt;p&gt;伸缩性是指通过增加自身资源规模的方式增强自己处理计算处理事务的能力。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="读书" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/"/>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E8%AF%BB%E4%B9%A6/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="大型网站技术架构" scheme="http://skyrover.me/tags/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/"/>
+    
+  </entry>
   
   <entry>
     <title>大型网站技术架构 读书笔记(4) 伸缩性</title>

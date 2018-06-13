@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>大型网站技术架构 读书笔记(4) 扩展性 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="大型网站技术架构">
+    <meta name="description" content="扩展性架构设计，在对现有系统影响最小的情况下，系统功能可持续扩展以及提升的能力。 架构设计考虑未来功能扩展，当系统增加新功能时候，不需要对现有系统的结构和代码进行修改。 伸缩性是指通过增加自身资源规模的方式增强自己处理计算处理事务的能力。 开发低耦合系统是软件设计的终极目标之一，低耦合系统更容易扩展，低耦合的模块更容易复用。 将一个大系统切分为N个低耦合子模块，横向的业务模块，纵向的基础技术模块。">
+<meta name="keywords" content="大型网站技术架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大型网站技术架构 读书笔记(4) 扩展性">
+<meta property="og:url" content="http://skyrover.me/2018/06/12/software_architecture_5/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="扩展性架构设计，在对现有系统影响最小的情况下，系统功能可持续扩展以及提升的能力。 架构设计考虑未来功能扩展，当系统增加新功能时候，不需要对现有系统的结构和代码进行修改。 伸缩性是指通过增加自身资源规模的方式增强自己处理计算处理事务的能力。 开发低耦合系统是软件设计的终极目标之一，低耦合系统更容易扩展，低耦合的模块更容易复用。 将一个大系统切分为N个低耦合子模块，横向的业务模块，纵向的基础技术模块。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://skyrover.me/img/software_arch_5.png">
+<meta property="og:image" content="http://skyrover.me/img/software_arch_4.png">
+<meta property="og:updated_time" content="2018-06-13T00:02:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大型网站技术架构 读书笔记(4) 扩展性">
+<meta name="twitter:description" content="扩展性架构设计，在对现有系统影响最小的情况下，系统功能可持续扩展以及提升的能力。 架构设计考虑未来功能扩展，当系统增加新功能时候，不需要对现有系统的结构和代码进行修改。 伸缩性是指通过增加自身资源规模的方式增强自己处理计算处理事务的能力。 开发低耦合系统是软件设计的终极目标之一，低耦合系统更容易扩展，低耦合的模块更容易复用。 将一个大系统切分为N个低耦合子模块，横向的业务模块，纵向的基础技术模块。">
+<meta name="twitter:image" content="http://skyrover.me/img/software_arch_5.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">大型网站技术架构 读书笔记(4) 扩展性</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">大型网站技术架构 读书笔记(4) 扩展性</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-11T23:27:04.000Z" itemprop="datePublished" class="page-time">
+  2018-06-12 07:27:04
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#利用分布式消息队列降低系统耦合性"><span class="post-toc-number">1.</span> <span class="post-toc-text">利用分布式消息队列降低系统耦合性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#事件驱动架构"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">事件驱动架构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分布式消息队列"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">分布式消息队列</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#利用分布式服务器打造可复用的业务平台"><span class="post-toc-number">2.</span> <span class="post-toc-text">利用分布式服务器打造可复用的业务平台</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Web-Service与企业级分布式服务"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Web Service与企业级分布式服务</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#大型网站分布式服务的需求和特点"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">大型网站分布式服务的需求和特点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分布式服务框架设计"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">分布式服务框架设计</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#可扩展的数据接口"><span class="post-toc-number">3.</span> <span class="post-toc-text">可扩展的数据接口</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#利用开发平台建设网站生态圈"><span class="post-toc-number">4.</span> <span class="post-toc-text">利用开发平台建设网站生态圈</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-software_architecture_5"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">大型网站技术架构 读书笔记(4) 扩展性</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-12 07:27:04 07:27:04" datetime="2018-06-11T23:27:04.000Z"  itemprop="datePublished">2018-06-12 07:27:04</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <p>扩展性架构设计，在对现有系统影响最小的情况下，系统功能可持续扩展以及提升的能力。</p>
+<p>架构设计考虑未来功能扩展，当系统增加新功能时候，不需要对现有系统的结构和代码进行修改。</p>
+<p>伸缩性是指通过增加自身资源规模的方式增强自己处理计算处理事务的能力。</p>
+<p>开发低耦合系统是软件设计的终极目标之一，低耦合系统更容易扩展，低耦合的模块更容易复用。</p>
+<p>将一个大系统切分为N个低耦合子模块，横向的业务模块，纵向的基础技术模块。</p>
+<p>设计网站可扩展架构的核心思想是模块化，在此基础上，降低模块间的耦合性，提高模块的复用性。</p>
+<p>利用分层和分割的方式将软件分割程若干个低耦合的独立组件模块，这些组件模块以消息传递以及依赖调用的方式聚合程一个完整系统。</p>
+<p>大型网站中，模块通过分布式部署的方式，独立的模块部署在独立的服务器(集群)上，从物理上分离模块之间的耦合关系，进一步降低耦合性提高复用性。</p>
+<p>模块分布式部署之后具体聚合方式有分布式消息队列和分布式服务。</p>
+<h1 id="利用分布式消息队列降低系统耦合性"><a href="#利用分布式消息队列降低系统耦合性" class="headerlink" title="利用分布式消息队列降低系统耦合性"></a>利用分布式消息队列降低系统耦合性</h1><h2 id="事件驱动架构"><a href="#事件驱动架构" class="headerlink" title="事件驱动架构"></a>事件驱动架构</h2><p>事件驱动架构(Event Driven Architecture)：生产者消费者模式，最常用的是分布式消息队列</p>
+<p>消息队列利用发布-订阅模式工作</p>
+<h2 id="分布式消息队列"><a href="#分布式消息队列" class="headerlink" title="分布式消息队列"></a>分布式消息队列</h2><p>Apache ActiveMQ</p>
+<ul>
+<li>伸缩性：将新服务器加入分布式消息队列集群中</li>
+<li>可用性：如果内存队列已满，会将消息写入磁盘</li>
+</ul>
+<h1 id="利用分布式服务器打造可复用的业务平台"><a href="#利用分布式服务器打造可复用的业务平台" class="headerlink" title="利用分布式服务器打造可复用的业务平台"></a>利用分布式服务器打造可复用的业务平台</h1><p>分布式消息队列通过消息对象分解系统耦合性，分布式服务则通过接口分解系统耦合性，不同子系统通过相同的接口描述进行服务调用。</p>
+<ul>
+<li>纵向拆分：拆分为多个小应用，新增的可以直接设计部署为独立的web应用系统</li>
+<li>横向拆分，将复用的业务拆分出来，独立部署为分布式服务器</li>
+</ul>
+<p>分布式服务管理框架</p>
+<h2 id="Web-Service与企业级分布式服务"><a href="#Web-Service与企业级分布式服务" class="headerlink" title="Web Service与企业级分布式服务"></a>Web Service与企业级分布式服务</h2><p>整合异构系统以及构建分布式系统</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_arch_5.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>服务提供者通过WSDL(web services Description Language) web服务描述语言向注册中心(Service broker)描述自身提供的服务接口属性，注册中心使用UDDI(Universal Description, Discovery and Integration)统一描述，发现和集成发布服务提供者提供的服务，服务请求者从注册中心检索到信息之后，通过SOAP(Simple Object Access Protocol)简单对象访问协议和服务提供者通信，使用相关服务</p>
+<h2 id="大型网站分布式服务的需求和特点"><a href="#大型网站分布式服务的需求和特点" class="headerlink" title="大型网站分布式服务的需求和特点"></a>大型网站分布式服务的需求和特点</h2><ul>
+<li>负载均衡</li>
+<li>失效转移</li>
+<li>高效的远程通信</li>
+<li>整合异构系统，不同语言开发的系统</li>
+<li>对应用最少侵入，可随时选择分布式或者集中式部署</li>
+<li>版本管理，同时升级接口</li>
+<li>实时监控</li>
+</ul>
+<h2 id="分布式服务框架设计"><a href="#分布式服务框架设计" class="headerlink" title="分布式服务框架设计"></a>分布式服务框架设计</h2><p>SOA(Service Oriented Architecture)面向服务的体系架构</p>
+<p>Facebook基于Thrift的分布式服务框架，阿里巴巴的Dubbo</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_arch_4.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>服务消费者通过服务接口使用服务，服务接口通过代理加载具体服务，具体服务可以是本地的代码模块，也可以是远程服务，所以对应用侵入较少，应用程序只需要调用服务接口，服务框架根据配置自动调用本地或者远程实现。</p>
+<p>服务框架客户端通过服务注册中心加载服务提供者列表（服务提供者启动后自动向服务注册中心注册自己可以提供的服务接口列表），查找需要的服务接口，根据配置的负载均衡策略将服务调用请求发送到某台提供者服务器，如果服务调用失败，客户端会重新从列表找一个提供同样服务的服务器，重新请求，实现服务的自动失效转移，保证服务高可用。</p>
+<h1 id="可扩展的数据接口"><a href="#可扩展的数据接口" class="headerlink" title="可扩展的数据接口"></a>可扩展的数据接口</h1><p>数据库的字段</p>
+<h1 id="利用开发平台建设网站生态圈"><a href="#利用开发平台建设网站生态圈" class="headerlink" title="利用开发平台建设网站生态圈"></a>利用开发平台建设网站生态圈</h1><p>第三方调用平台</p>
+<ul>
+<li>API接口</li>
+<li>协议转换</li>
+<li>安全</li>
+<li>审计</li>
+<li>路由</li>
+<li>流程</li>
+</ul>
+<blockquote>
+<p>产品的内在价值在于劳动时间，劳动时间不在于个体付出的劳动时间，而在行业一般劳动时间。</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/06/12/software_architecture_5/" target="_blank" rel="external">http://skyrover.me/2018/06/12/software_architecture_5/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大型网站技术架构/">大型网站技术架构</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/12/software_architecture_5/&title=《大型网站技术架构 读书笔记(4) 扩展性》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/12/software_architecture_5/&title=《大型网站技术架构 读书笔记(4) 扩展性》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/06/12/software_architecture_5/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(4) 扩展性》 — SkyRover&url=http://skyrover.me/2018/06/12/software_architecture_5/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/06/12/software_architecture_5/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/10/software_architecture_4/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">大型网站技术架构 读书笔记(4) 伸缩性</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/12/software_architecture_5/&title=《大型网站技术架构 读书笔记(4) 扩展性》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/12/software_architecture_5/&title=《大型网站技术架构 读书笔记(4) 扩展性》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/06/12/software_architecture_5/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(4) 扩展性》 — SkyRover&url=http://skyrover.me/2018/06/12/software_architecture_5/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/06/12/software_architecture_5/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3a227CMBAFQP7/p6nUp0pRzFmvi8CePEXBJBkqbffixyM+nr/H3/Prleun1+Nu/d2dFx8YGBhfy6g++O5b4+tjwPgHGr8bBgbGOYw8yI7Xj189Caxj6u11DAwMjMaaZH0e6DEwMDDywrUaUqvJJQYGBsZcEZu81viec4zFtTgGBsYXMuYGA+85//f5BgYGxscznsWjWojONebKb4WBgbE1I0ny8utJKpmPDfKUFAMDY29GvmGiv8FrrokWlawYGBgHMKpht9Pcz4vVyckGBgbGdox+UVrdhDF3z3KGi4GBsR2jMwCYK2XzgDt5BwwMjI0Ya7dQdErivFWHgYFxGqMTKPPWWNIyy3/QFyNMDAyM7Rj5A6rt+zwd7G/LwMDAOIEx9yrJ9q9OQlkYkWJgYBzA6GyzqI4KcnxhsIqBgbE1o/qYnF0dG5Sba8lfBgMDYwtG/vhCotYYbU625DAwMLZmFDZatTeBdZLRwn8MDAyMrRmdojQfQ/ZHDhgYGKcxqina2nFm3jF78V0MDIwDGPmQci51qw4sJzuFGBgYmzL6RWwy5mwF0/e02zAwMD6YsTakVjdGdDaK3W4Lw8DA2I6RH9XhZb6mk1ZiYGCcw0iCbDIe6BSuC9JHDAyMAxhJkK2OJ3NMJ+hjYGBgrB0b5ElktajGwMDASIJvEl6TFLM6kMDAwDiHkQTKTg8vXz9XDGNgYOzNWFBAxmlffj43VMDAwNiO8QMWnQ8sSQxlZwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
