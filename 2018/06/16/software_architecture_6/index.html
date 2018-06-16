@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>大型网站技术架构 读书笔记(6) 安全架构 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="大型网站技术架构">
+    <meta name="description" content="XSS攻击和SQL注入攻击是网站应用攻击中最重要的两种手段，还有CSRF，Session劫持 网站攻击和防御XSS攻击跨站点脚本攻击(Cross site Script)，通过篡改网页，注入恶意HTML脚本，在用户浏览网页时候，控制用户浏览器进行恶意操作。  反射式，点击恶意URL，恶意脚本会执行 持久性XSS攻击，黑客提交含有恶意脚本的请求，保存在被攻击的web站点的数据库中，用户浏览网页的时候">
+<meta name="keywords" content="大型网站技术架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大型网站技术架构 读书笔记(6) 安全架构">
+<meta property="og:url" content="http://skyrover.me/2018/06/16/software_architecture_6/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="XSS攻击和SQL注入攻击是网站应用攻击中最重要的两种手段，还有CSRF，Session劫持 网站攻击和防御XSS攻击跨站点脚本攻击(Cross site Script)，通过篡改网页，注入恶意HTML脚本，在用户浏览网页时候，控制用户浏览器进行恶意操作。  反射式，点击恶意URL，恶意脚本会执行 持久性XSS攻击，黑客提交含有恶意脚本的请求，保存在被攻击的web站点的数据库中，用户浏览网页的时候">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-16T13:23:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大型网站技术架构 读书笔记(6) 安全架构">
+<meta name="twitter:description" content="XSS攻击和SQL注入攻击是网站应用攻击中最重要的两种手段，还有CSRF，Session劫持 网站攻击和防御XSS攻击跨站点脚本攻击(Cross site Script)，通过篡改网页，注入恶意HTML脚本，在用户浏览网页时候，控制用户浏览器进行恶意操作。  反射式，点击恶意URL，恶意脚本会执行 持久性XSS攻击，黑客提交含有恶意脚本的请求，保存在被攻击的web站点的数据库中，用户浏览网页的时候">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">大型网站技术架构 读书笔记(6) 安全架构</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">大型网站技术架构 读书笔记(6) 安全架构</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-16T12:06:04.000Z" itemprop="datePublished" class="page-time">
+  2018-06-16 20:06:04
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网站攻击和防御"><span class="post-toc-number">1.</span> <span class="post-toc-text">网站攻击和防御</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#XSS攻击"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">XSS攻击</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注入攻击"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">注入攻击</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CSRF攻击"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">CSRF攻击</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#其他攻击"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">其他攻击</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#web应用防火墙"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">web应用防火墙</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网站安全漏洞扫描"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">网站安全漏洞扫描</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#信息加密技术"><span class="post-toc-number">2.</span> <span class="post-toc-text">信息加密技术</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单向散列加密"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">单向散列加密</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对称加密"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">对称加密</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#非对称加密"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">非对称加密</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#密钥安全管理"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">密钥安全管理</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#信息过滤与反垃圾"><span class="post-toc-number">3.</span> <span class="post-toc-text">信息过滤与反垃圾</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文本匹配"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">文本匹配</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分类算法"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">分类算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#黑名单"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">黑名单</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#电子商务风险控制"><span class="post-toc-number">4.</span> <span class="post-toc-text">电子商务风险控制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#风险"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">风险</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#风控"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">风控</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-software_architecture_6"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">大型网站技术架构 读书笔记(6) 安全架构</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-16 20:06:04 20:06:04" datetime="2018-06-16T12:06:04.000Z"  itemprop="datePublished">2018-06-16 20:06:04</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <p>XSS攻击和SQL注入攻击是网站应用攻击中最重要的两种手段，还有CSRF，Session劫持</p>
+<h1 id="网站攻击和防御"><a href="#网站攻击和防御" class="headerlink" title="网站攻击和防御"></a>网站攻击和防御</h1><h2 id="XSS攻击"><a href="#XSS攻击" class="headerlink" title="XSS攻击"></a>XSS攻击</h2><p>跨站点脚本攻击(Cross site Script)，通过篡改网页，注入恶意HTML脚本，在用户浏览网页时候，控制用户浏览器进行恶意操作。</p>
+<ul>
+<li>反射式，点击恶意URL，恶意脚本会执行</li>
+<li>持久性XSS攻击，黑客提交含有恶意脚本的请求，保存在被攻击的web站点的数据库中，用户浏览网页的时候，恶意脚本被包含在正常页面中，达到攻击的目的。</li>
+</ul>
+<p>预防手段：</p>
+<ul>
+<li>消毒：对某些HTML危险字符转义，<code>&lt;</code> 转义为 <code>&amp;gt</code>，消毒是所有网站最必备的XSS防攻击手段</li>
+<li>HTTPOnly：禁止页面js访问带有httponly属性的cookie，防止xss攻击者窃取cookie，所以对于cookie可以添加httponly属性，避免被攻击脚本窃取</li>
+</ul>
+<h2 id="注入攻击"><a href="#注入攻击" class="headerlink" title="注入攻击"></a>注入攻击</h2><p>SQL注入攻击和OS注入攻击</p>
+<p>SQL注入在HTTP请求中注入恶意SQL命令，服务器用请求参数构造数据库SQL命令时候，恶意SQL被一起构造，并在数据库中执行。</p>
+<p>获取数据库表结构信息：</p>
+<ul>
+<li>开源</li>
+<li>错误回显</li>
+<li>盲注：攻击者根据页面变化判断SQL语句的执行情况，猜测数据库表结构</li>
+</ul>
+<p>防御SQL注入攻击首先要避免被攻击者猜测到表名等数据库表结构信息。</p>
+<p>预防：</p>
+<ul>
+<li>消毒：请求参数消毒，通过正则，过滤请求数据中可能注入的SQL</li>
+<li>参数绑定：使用预编译手段，绑定参数是最好的防SQL注入的方法，数据访问框架，通过SQL预编译和参数绑定，攻击者的恶意SQL会被当成SQL参数，而不是SQL命令被执行。</li>
+</ul>
+<h2 id="CSRF攻击"><a href="#CSRF攻击" class="headerlink" title="CSRF攻击"></a>CSRF攻击</h2><p>跨站请求伪造(Cross Site Request Forgery)，利用跨站请求，在用户不知情的情况下，以用户身份伪造请求，核心是利用了浏览器Cookie和服务器session策略，盗取用户身份。</p>
+<p>CSRF 的防御手段主要是识别请求者身份</p>
+<ul>
+<li>表单Token:Token在请求参数中增加随机数的办法阻止攻击者获得所有的请求参数</li>
+<li>验证码：提交的时候，需要用户输入验证码</li>
+<li>Referer check：Referer记录请求来源，验证其是否合法，防盗链功能。</li>
+</ul>
+<h2 id="其他攻击"><a href="#其他攻击" class="headerlink" title="其他攻击"></a>其他攻击</h2><ul>
+<li>Error Code</li>
+<li>HTML注释</li>
+<li>文件上传：只允许上传可靠的文件类型</li>
+<li>路径遍历：请求url中使用相对路径，遍历系统未开放的目录和文件，js，css资源文件部署在独立服务器，使用独立域名，其他文件不使用静态url访问，动态参数不包含文件路径信息。</li>
+</ul>
+<h2 id="web应用防火墙"><a href="#web应用防火墙" class="headerlink" title="web应用防火墙"></a>web应用防火墙</h2><p>统一拦截请求，过滤恶意参数，自动消毒，添加Token</p>
+<p>ModSecurity</p>
+<p>采用处理逻辑与攻击规则集合分离的架构模式，处理逻辑负责请求和响应的拦截过滤，规则加载执行。攻击规则集合负责描述对具体攻击的规则定义，模式识别，防御策略。这样就是一种可扩展的架构设计。</p>
+<h2 id="网站安全漏洞扫描"><a href="#网站安全漏洞扫描" class="headerlink" title="网站安全漏洞扫描"></a>网站安全漏洞扫描</h2><p>根据内置规则，构造具有攻击性的URL请求，模拟黑客攻击行为，发现网站安全漏洞。</p>
+<h1 id="信息加密技术"><a href="#信息加密技术" class="headerlink" title="信息加密技术"></a>信息加密技术</h1><p>信息加密技术：单项散列加密，对称加密和非对称加密</p>
+<h2 id="单向散列加密"><a href="#单向散列加密" class="headerlink" title="单向散列加密"></a>单向散列加密</h2><p>对不同输入长度的信息进行散列结算，得到固定长度的输出，但是是单向的。密码加密保存。</p>
+<p>但是可以使用彩虹表来对密码密文进行猜测式破解。</p>
+<p>为了加强单向散列计算的安全性，可以给散列算法加盐，salt相当于加密的密钥，增加破解难度(彩虹表)。</p>
+<p>常用单向散列算法有MD5，SHA等。</p>
+<h2 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h2><p>对称加密是加密和解密使用的同一个密钥，通常用在信息需要安全交换或者存储的场合，如Cookie加密，通信加密。</p>
+<p>DES算法，EC算法</p>
+<h2 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h2><p>加密和解密使用的不是一个密钥，一个是对外界公开的，公钥，另一个只有所有者知道，为私钥。公钥加密的信息必须用私钥才可以解开。私钥加密的信息只有公钥才可以解开。</p>
+<p>SSH之所以能够保证安全，原因在于它采用了公钥加密。</p>
+<p>整个过程是这样的：（1）远程主机收到用户的登录请求，把自己的公钥发给用户。（2）用户使用这个公钥，将登录密码加密后，发送回来。（3）远程主机用自己的私钥，解密登录密码，如果密码正确，就同意用户登录。</p>
+<p>这个过程本身是安全的，但是实施的时候存在一个风险：如果有人截获了登录请求，然后冒充远程主机，将伪造的公钥发给用户，那么用户很难辨别真伪。因为不像https协议，SSH协议的公钥是没有证书中心（CA）公证的，也就是说，都是自己签发的。</p>
+<p>可以设想，如果攻击者插在用户与远程主机之间（比如在公共的wifi区域），用伪造的公钥，获取用户的登录密码。再用这个密码登录远程主机，那么SSH的安全机制就荡然无存了。这种风险就是著名的”中间人攻击”（Man-in-the-middle attack）。</p>
+<p>HTTPS传输中浏览器使用的数字证书就是经过权威机构认证的非对称加密公钥。</p>
+<p>常用RSA算法。</p>
+<p>数字签名则是前名称用私钥进行加密，然后发送给对方，接收方用签名者公钥对信息解密，因为私钥只有签名者拥有，所以信息不可抵赖，具有签名的性质。</p>
+<h2 id="密钥安全管理"><a href="#密钥安全管理" class="headerlink" title="密钥安全管理"></a>密钥安全管理</h2><ul>
+<li>密钥和算法放在独立服务器上</li>
+<li>加密解密算法放在应用系统中，密钥在独立服务器中</li>
+</ul>
+<h1 id="信息过滤与反垃圾"><a href="#信息过滤与反垃圾" class="headerlink" title="信息过滤与反垃圾"></a>信息过滤与反垃圾</h1><h2 id="文本匹配"><a href="#文本匹配" class="headerlink" title="文本匹配"></a>文本匹配</h2><p>敏感词过滤，Trie树，双数组Trie算法</p>
+<p>确定一个有限状态自动机，根据输入数据进行状态转移。</p>
+<h2 id="分类算法"><a href="#分类算法" class="headerlink" title="分类算法"></a>分类算法</h2><p>垃圾邮件分类模型，然后进行识别，贝叶斯分类算法。</p>
+<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><h1 id="电子商务风险控制"><a href="#电子商务风险控制" class="headerlink" title="电子商务风险控制"></a>电子商务风险控制</h1><h2 id="风险"><a href="#风险" class="headerlink" title="风险"></a>风险</h2><ul>
+<li>账户风险</li>
+<li>买家风险</li>
+<li>卖家风险</li>
+<li>交易风险</li>
+</ul>
+<h2 id="风控"><a href="#风控" class="headerlink" title="风控"></a>风控</h2><ul>
+<li>规则引擎：业务规则和规则处理逻辑相分离的技术</li>
+<li>统计模型：机器学习</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/06/16/software_architecture_6/" target="_blank" rel="external">http://skyrover.me/2018/06/16/software_architecture_6/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大型网站技术架构/">大型网站技术架构</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/16/software_architecture_6/&title=《大型网站技术架构 读书笔记(6) 安全架构》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/16/software_architecture_6/&title=《大型网站技术架构 读书笔记(6) 安全架构》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/06/16/software_architecture_6/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(6) 安全架构》 — SkyRover&url=http://skyrover.me/2018/06/16/software_architecture_6/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/06/16/software_architecture_6/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/12/software_architecture_5/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">大型网站技术架构 读书笔记(5) 扩展性</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/16/software_architecture_6/&title=《大型网站技术架构 读书笔记(6) 安全架构》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/16/software_architecture_6/&title=《大型网站技术架构 读书笔记(6) 安全架构》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/06/16/software_architecture_6/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《大型网站技术架构 读书笔记(6) 安全架构》 — SkyRover&url=http://skyrover.me/2018/06/16/software_architecture_6/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/06/16/software_architecture_6/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACOUlEQVR42u3aS27DMAxF0ex/0yrQUYFE8n2UUsD01ShIHFvHA0L8vF54jd81+2b8We/XvK/Zv2b3ObZkyJBxW8ZYrtk1a8z6ytl/+T0/UGXIkPEAxjrI8tulL4KTLvYsQ4YMGTgg7hwNZciQIeMs4+xRcv2NDBkyZPBtpZWudfrK2YdzcRkyZNyQkTYG/vPzF/sbMmTIuAljhOsbb5GH1+muZMiQ0ZrBE04+frE+upFfeXR98Y6EDBkybstIH7kTgtPkNkiDZciQ8QBGbRiCl/VrpX9yvQwZMp7J4IW2nSSWjFwEjQEZMmS0ZpDNpa2CNHzz9Bjl4jJkyGjHSAe8eFMzHc5IWw5Bf0OGDBk3Z9Qajbwkx9PRdeTcP4zKkCGjByMds6gV908dCoN+rAwZMm7O4KMPvNx/KgEOfpUhQ0ZrRq1leHYT5FnxGJkMGTJaM9LCPUk4a0W0tCQnQ4aMroyzg1wDrLRJEOffMmTIaMqoDXWlJbmdhPnibjJkyGjNqI011I50pD3AX82H72XIkNGUkYZOPn7BWwhpW1SGDBkyeFZYw6cbDQ6FMmTIaMqojUSQQJk+jONlyJDxNMYIV+3oRkr/tVB+ccKVIUNGCwZfO6km33RtsEyGDBlPYPAgW2sP7BTpgiArQ4aMBzBqAxDpsXL/kCdDhgwZaTOSl+p4zS99fTJkyJBBxiZ48rkfai/aAzJkyGjNqCWxaTuhVrZDh04ZMmS0ZuwPQ8S3C8Mrbz/IkCGjHeMHQ/z1G0ygZMEAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
