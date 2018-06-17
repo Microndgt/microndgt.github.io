@@ -3,6 +3,96 @@
   
     
     <entry>
+      <title><![CDATA[大型网站技术架构 读书笔记(7) 大型网站架构技术一览]]></title>
+      <url>/2018/06/17/software_architecture_7/</url>
+      <content type="html"><![CDATA[<p>性能，可用性，伸缩性，扩展性，安全性。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/software_arch_6.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li>前端架构<ul>
+<li>浏览器优化技术，页面缓存，合并HTTP减少请求次数，使用页面压缩</li>
+<li>CDN</li>
+<li>动静分离，静态资源独立部署</li>
+<li>图片服务</li>
+<li>反向代理，在各个服务器之前，提供页面缓存服务</li>
+<li>DNS</li>
+</ul>
+</li>
+<li>应用层架构<ul>
+<li>开发框架</li>
+<li>页面渲染</li>
+<li>负载均衡</li>
+<li>session管理</li>
+<li>动态页面静态化</li>
+<li>业务拆分</li>
+<li>虚拟化服务器，将一台物理服务器虚拟化为多台虚拟服务器</li>
+</ul>
+</li>
+<li>服务层架构<ul>
+<li>分布式消息</li>
+<li>分布式服务，面向服务架构SOA</li>
+<li>分布式缓存</li>
+<li>分布式配置</li>
+</ul>
+</li>
+<li>存储层架构<ul>
+<li>分布式文件</li>
+<li>关系数据库，分布式访问</li>
+<li>NoSQL数据库，HBase</li>
+<li>数据同步</li>
+</ul>
+</li>
+<li>后台架构<ul>
+<li>搜索引擎</li>
+<li>数据仓库</li>
+<li>推荐系统</li>
+</ul>
+</li>
+<li>数据采集和监控<ul>
+<li>浏览器数据采集</li>
+<li>服务器业务数据采集</li>
+<li>服务器性能数据采集</li>
+<li>系统监控</li>
+<li>系统报警</li>
+</ul>
+</li>
+<li>安全架构<ul>
+<li>web攻击</li>
+<li>数据保护</li>
+</ul>
+</li>
+<li>数据中心机房架构<ul>
+<li>机房架构</li>
+<li>机柜架构</li>
+<li>服务器架构</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 读书 </category>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 大型网站技术架构 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[大型网站技术架构 读书笔记(6) 安全架构]]></title>
       <url>/2018/06/16/software_architecture_6/</url>
       <content type="html"><![CDATA[<p>XSS攻击和SQL注入攻击是网站应用攻击中最重要的两种手段，还有CSRF，Session劫持</p>
