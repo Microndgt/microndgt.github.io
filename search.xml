@@ -3,6 +3,80 @@
   
     
     <entry>
+      <title><![CDATA[Python 生成器 协程]]></title>
+      <url>/2018/06/18/python_coroutine/</url>
+      <content type="html"><![CDATA[<p>最近在用<code>tornado+peewee_async+aio系列</code>写异步的web后台，之前也深入的学习了Python的异步写法，曾经还写了一个库<code>aiossdb</code>，但是时间太长不用又有点遗忘了，于是这里再复习一遍，然后记下笔记，以后如果再忘还可以翻一下笔记🤣</p>
+<p>所有生成器都是迭代器，因为生成器完全实现了迭代器的接口。迭代器用于从集合中取出元素，而生成器用于凭空生成元素。</p>
+<p>在Python3中，内置的range()返回一个类似生成器的对象，而以前是返回完整的列表。</p>
+<p>解释器需要迭代对象x时候，会自动调用iter(x)</p>
+<ul>
+<li>检查对象是否实现了<code>__iter__()</code>方法，如果实现了就去调用它，获取一个迭代器</li>
+<li>否则，如果实现<code>__getitem__</code>方法，Python会创建一个迭代器，尝试按顺序获取元素</li>
+<li>否则，Python抛出TypeError异常，指明该对象不可迭代</li>
+</ul>
+<p>所以Python可以从可迭代的对象中获取迭代器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">'abc'</span></div><div class="line">it = iter(s)  <span class="comment"># 创建迭代器</span></div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        print(next(it))</div><div class="line">    <span class="keyword">except</span> StopIteration:</div><div class="line">        <span class="keyword">del</span> it</div><div class="line">        <span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>标准迭代器接口有两个方法:</p>
+<ul>
+<li><code>__next__</code></li>
+<li><code>__iter__</code></li>
+</ul>
+<p>所以迭代器是这样的对象：</p>
+<p>实现了无参数的<code>__next__</code>方法，返回序列中的下一个元素，如果没有元素了，抛出StopIteration异常，Python中的迭代器还实现了<code>__iter__</code>方法，因此迭代器也可以迭代，iter()函数会对序列做特殊处理，所以也可以迭代。</p>
+<p>可迭代对象有一个<code>__iter__</code>方法，每次都实例化了一个新的迭代器。而迭代器要实现<code>__next__</code>方法，返回单个元素，另外要实现<code>__iter__</code>方法，返回迭代器本身。</p>
+<p>所以迭代器可以迭代，但是可迭代的对象不是迭代器，关键在于<code>__next__</code>方法。</p>
+<p>可迭代对象一定不能是自身的迭代器，也就是说，可迭代对象必须实现<code>__iter__</code>方法，但是不能实现<code>__next__</code>方法。因为有可能要从同一个可迭代的实例中获取多个独立的迭代器，每个迭代器都能维护自身的内部状态，所以需要实现一个新的独立的迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"><span class="keyword">import</span> reprlib</div><div class="line">RE_WORD = re.compile(<span class="string">'\w+'</span>)</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></div><div class="line">        self.text = text</div><div class="line">        self.words = RE_WORD.findall(text)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'Sentence(%s)'</span> % reprlib.repr(self.text)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> SentenceIterator(self.words)</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SentenceIterator</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, words)</span>:</span></div><div class="line">        self.words = words</div><div class="line">        self.index = <span class="number">0</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            word = self.words[self.index]</div><div class="line">        <span class="keyword">except</span> IndexError:</div><div class="line">            <span class="keyword">raise</span> StopIteration()</div><div class="line">        self.index += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> word</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self</div></pre></td></tr></table></figure>
+<p>使用生成器函数来替代iterator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> self.words:</div><div class="line">            <span class="keyword">yield</span> word</div></pre></td></tr></table></figure>
+<p>在这里迭代器是生成器对象，每次调用<code>__iter__</code>方法都会自动创建，所以这里的<code>__iter__</code>方法是生成器函数，调用时会创建一个实现了迭代器接口的生成器对象，定义体含有yield关键字，所以生成器函数是生成器工厂。调用生成器函数返回生成器，生成器产生或者生成值。生成器中的return语句会出发生成器对象抛出StopIteration异常。</p>
+<p>在Python3.3之后，return后面的值可以使得调用方从异常对象中获取返回值，但是只有将生成器函数作为协程使用的时候，才有意义。</p>
+<p>列表推导是制造列表的工厂，生成器表达式就是制造生成器的工厂。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> (match.group() <span class="keyword">for</span> match <span class="keyword">in</span> RE_WORD.finditer(self.text))</div></pre></td></tr></table></figure>
+<p><code>__iter__</code>方法会得到一个生成器对象</p>
+<p>itertools.count 函数用于生成无穷等差数列</p>
+<p>把self.begin与self.step和index的乘积相加，而不是累加，这样可以降低处理浮点数时候累积效应致错的风险。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">aritprog_gen</span><span class="params">(begin, step, end=None)</span>:</span></div><div class="line">    result = type(begin + step)(begin)</div><div class="line">    forever = end <span class="keyword">is</span> <span class="keyword">None</span></div><div class="line">    index = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> forever <span class="keyword">or</span> result &lt; end:</div><div class="line">        <span class="keyword">yield</span> result</div><div class="line">        index += <span class="number">1</span></div><div class="line">        result = begin + step * index</div></pre></td></tr></table></figure>
+<blockquote>
+<p>插: </p>
+<p>当我们想所有环境下都统一显示的话，可以重构<code>__repr__</code>方法；当我们想在不同环境下支持不同的显示，例如终端用户显示使用<code>__str__</code>，而程序员在开发期间则使用底层的<code>__repr__</code>来显示，实际上<code>__str__</code>只是覆盖了<code>__repr__</code>以得到更友好的用户显示。 </p>
+</blockquote>
+<p>也就是说只写<code>__str__</code>方法可能在终端环境下就不能良好显示，只有print可以表现出来。</p>
+<h2 id="yield-from"><a href="#yield-from" class="headerlink" title="yield from "></a>yield from </h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">chain</span><span class="params">(*iterables)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> iterables:</div><div class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> i</div><div class="line">list(chain(s, t))</div></pre></td></tr></table></figure>
+<p>这个其实就是一个生成器，yield from代替了内存循环，本来是这个样子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">chain</span><span class="params">(*iterables)</span>:</span></div><div class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> iterables:</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> it:</div><div class="line">            <span class="keyword">yield</span> i</div><div class="line">list(chain(s, t))</div></pre></td></tr></table></figure>
+<p>yield from 除了代替循环之外，还可以创建通道，把内层生成器直接与外层生成器的客户端联系起来，把生成器当成协程使用的时候，这个通道比较重要，不仅能为客户端代码生成值，也能使用客户端代码提供的值。</p>
+<p>逐行读取文件，直到遇到空行或者到达文件末尾为止：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">'mydata.txt'</span>) <span class="keyword">as</span> fp:</div><div class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> iter(fp.readline, <span class="string">'\n'</span>):</div><div class="line">        process_line(line)</div></pre></td></tr></table></figure>
+<h2 id="把生成器当成协程"><a href="#把生成器当成协程" class="headerlink" title="把生成器当成协程"></a>把生成器当成协程</h2><p><code>.send()</code>方法使得生成器前进到下一个yield语句，还允许使用生成器的客户把数据发给自己，发送的参数都会成为生成器函数定义体中国年对应的yield表达式的值。<code>__next__()</code>方法只允许客户从生成器中获取数据</p>
+<ul>
+<li>生成器是用于生成供迭代的数据</li>
+<li>协程是数据消费者</li>
+<li>协程与迭代无关，虽然会用yield产出值</li>
+</ul>
+<h1 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h1><p>补充了上面的基础知识，开始协程的深入研究。。。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 读书 </category>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> 流畅的Python </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[大型网站技术架构 读书笔记(7) 大型网站架构技术一览]]></title>
       <url>/2018/06/17/software_architecture_7/</url>
       <content type="html"><![CDATA[<p>性能，可用性，伸缩性，扩展性，安全性。</p>

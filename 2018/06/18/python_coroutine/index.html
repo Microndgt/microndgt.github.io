@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Python 生成器 协程 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,流畅的Python">
+    <meta name="description" content="最近在用tornado+peewee_async+aio系列写异步的web后台，之前也深入的学习了Python的异步写法，曾经还写了一个库aiossdb，但是时间太长不用又有点遗忘了，于是这里再复习一遍，然后记下笔记，以后如果再忘还可以翻一下笔记🤣 所有生成器都是迭代器，因为生成器完全实现了迭代器的接口。迭代器用于从集合中取出元素，而生成器用于凭空生成元素。 在Python3中，内置的range">
+<meta name="keywords" content="Python,流畅的Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 生成器 协程">
+<meta property="og:url" content="http://skyrover.me/2018/06/18/python_coroutine/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="最近在用tornado+peewee_async+aio系列写异步的web后台，之前也深入的学习了Python的异步写法，曾经还写了一个库aiossdb，但是时间太长不用又有点遗忘了，于是这里再复习一遍，然后记下笔记，以后如果再忘还可以翻一下笔记🤣 所有生成器都是迭代器，因为生成器完全实现了迭代器的接口。迭代器用于从集合中取出元素，而生成器用于凭空生成元素。 在Python3中，内置的range">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-20T00:31:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 生成器 协程">
+<meta name="twitter:description" content="最近在用tornado+peewee_async+aio系列写异步的web后台，之前也深入的学习了Python的异步写法，曾经还写了一个库aiossdb，但是时间太长不用又有点遗忘了，于是这里再复习一遍，然后记下笔记，以后如果再忘还可以翻一下笔记🤣 所有生成器都是迭代器，因为生成器完全实现了迭代器的接口。迭代器用于从集合中取出元素，而生成器用于凭空生成元素。 在Python3中，内置的range">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Python 生成器 协程</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Python 生成器 协程</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-18T13:40:46.000Z" itemprop="datePublished" class="page-time">
+  2018-06-18 21:40:46
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#yield-from"><span class="post-toc-number">1.</span> <span class="post-toc-text">yield from </span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#把生成器当成协程"><span class="post-toc-number">2.</span> <span class="post-toc-text">把生成器当成协程</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#协程"><span class="post-toc-number"></span> <span class="post-toc-text">协程</span></a>
+        </nav>
+    </aside>
+    
+
+<article id="post-python_coroutine"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Python 生成器 协程</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-18 21:40:46 21:40:46" datetime="2018-06-18T13:40:46.000Z"  itemprop="datePublished">2018-06-18 21:40:46</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <p>最近在用<code>tornado+peewee_async+aio系列</code>写异步的web后台，之前也深入的学习了Python的异步写法，曾经还写了一个库<code>aiossdb</code>，但是时间太长不用又有点遗忘了，于是这里再复习一遍，然后记下笔记，以后如果再忘还可以翻一下笔记🤣</p>
+<p>所有生成器都是迭代器，因为生成器完全实现了迭代器的接口。迭代器用于从集合中取出元素，而生成器用于凭空生成元素。</p>
+<p>在Python3中，内置的range()返回一个类似生成器的对象，而以前是返回完整的列表。</p>
+<p>解释器需要迭代对象x时候，会自动调用iter(x)</p>
+<ul>
+<li>检查对象是否实现了<code>__iter__()</code>方法，如果实现了就去调用它，获取一个迭代器</li>
+<li>否则，如果实现<code>__getitem__</code>方法，Python会创建一个迭代器，尝试按顺序获取元素</li>
+<li>否则，Python抛出TypeError异常，指明该对象不可迭代</li>
+</ul>
+<p>所以Python可以从可迭代的对象中获取迭代器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">'abc'</span></div><div class="line">it = iter(s)  <span class="comment"># 创建迭代器</span></div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        print(next(it))</div><div class="line">    <span class="keyword">except</span> StopIteration:</div><div class="line">        <span class="keyword">del</span> it</div><div class="line">        <span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>标准迭代器接口有两个方法:</p>
+<ul>
+<li><code>__next__</code></li>
+<li><code>__iter__</code></li>
+</ul>
+<p>所以迭代器是这样的对象：</p>
+<p>实现了无参数的<code>__next__</code>方法，返回序列中的下一个元素，如果没有元素了，抛出StopIteration异常，Python中的迭代器还实现了<code>__iter__</code>方法，因此迭代器也可以迭代，iter()函数会对序列做特殊处理，所以也可以迭代。</p>
+<p>可迭代对象有一个<code>__iter__</code>方法，每次都实例化了一个新的迭代器。而迭代器要实现<code>__next__</code>方法，返回单个元素，另外要实现<code>__iter__</code>方法，返回迭代器本身。</p>
+<p>所以迭代器可以迭代，但是可迭代的对象不是迭代器，关键在于<code>__next__</code>方法。</p>
+<p>可迭代对象一定不能是自身的迭代器，也就是说，可迭代对象必须实现<code>__iter__</code>方法，但是不能实现<code>__next__</code>方法。因为有可能要从同一个可迭代的实例中获取多个独立的迭代器，每个迭代器都能维护自身的内部状态，所以需要实现一个新的独立的迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"><span class="keyword">import</span> reprlib</div><div class="line">RE_WORD = re.compile(<span class="string">'\w+'</span>)</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></div><div class="line">        self.text = text</div><div class="line">        self.words = RE_WORD.findall(text)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'Sentence(%s)'</span> % reprlib.repr(self.text)</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> SentenceIterator(self.words)</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SentenceIterator</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, words)</span>:</span></div><div class="line">        self.words = words</div><div class="line">        self.index = <span class="number">0</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            word = self.words[self.index]</div><div class="line">        <span class="keyword">except</span> IndexError:</div><div class="line">            <span class="keyword">raise</span> StopIteration()</div><div class="line">        self.index += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> word</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self</div></pre></td></tr></table></figure>
+<p>使用生成器函数来替代iterator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> self.words:</div><div class="line">            <span class="keyword">yield</span> word</div></pre></td></tr></table></figure>
+<p>在这里迭代器是生成器对象，每次调用<code>__iter__</code>方法都会自动创建，所以这里的<code>__iter__</code>方法是生成器函数，调用时会创建一个实现了迭代器接口的生成器对象，定义体含有yield关键字，所以生成器函数是生成器工厂。调用生成器函数返回生成器，生成器产生或者生成值。生成器中的return语句会出发生成器对象抛出StopIteration异常。</p>
+<p>在Python3.3之后，return后面的值可以使得调用方从异常对象中获取返回值，但是只有将生成器函数作为协程使用的时候，才有意义。</p>
+<p>列表推导是制造列表的工厂，生成器表达式就是制造生成器的工厂。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> (match.group() <span class="keyword">for</span> match <span class="keyword">in</span> RE_WORD.finditer(self.text))</div></pre></td></tr></table></figure>
+<p><code>__iter__</code>方法会得到一个生成器对象</p>
+<p>itertools.count 函数用于生成无穷等差数列</p>
+<p>把self.begin与self.step和index的乘积相加，而不是累加，这样可以降低处理浮点数时候累积效应致错的风险。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">aritprog_gen</span><span class="params">(begin, step, end=None)</span>:</span></div><div class="line">    result = type(begin + step)(begin)</div><div class="line">    forever = end <span class="keyword">is</span> <span class="keyword">None</span></div><div class="line">    index = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> forever <span class="keyword">or</span> result &lt; end:</div><div class="line">        <span class="keyword">yield</span> result</div><div class="line">        index += <span class="number">1</span></div><div class="line">        result = begin + step * index</div></pre></td></tr></table></figure>
+<blockquote>
+<p>插: </p>
+<p>当我们想所有环境下都统一显示的话，可以重构<code>__repr__</code>方法；当我们想在不同环境下支持不同的显示，例如终端用户显示使用<code>__str__</code>，而程序员在开发期间则使用底层的<code>__repr__</code>来显示，实际上<code>__str__</code>只是覆盖了<code>__repr__</code>以得到更友好的用户显示。 </p>
+</blockquote>
+<p>也就是说只写<code>__str__</code>方法可能在终端环境下就不能良好显示，只有print可以表现出来。</p>
+<h2 id="yield-from"><a href="#yield-from" class="headerlink" title="yield from "></a>yield from </h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">chain</span><span class="params">(*iterables)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> iterables:</div><div class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> i</div><div class="line">list(chain(s, t))</div></pre></td></tr></table></figure>
+<p>这个其实就是一个生成器，yield from代替了内存循环，本来是这个样子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">chain</span><span class="params">(*iterables)</span>:</span></div><div class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> iterables:</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> it:</div><div class="line">            <span class="keyword">yield</span> i</div><div class="line">list(chain(s, t))</div></pre></td></tr></table></figure>
+<p>yield from 除了代替循环之外，还可以创建通道，把内层生成器直接与外层生成器的客户端联系起来，把生成器当成协程使用的时候，这个通道比较重要，不仅能为客户端代码生成值，也能使用客户端代码提供的值。</p>
+<p>逐行读取文件，直到遇到空行或者到达文件末尾为止：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">with</span> open(<span class="string">'mydata.txt'</span>) <span class="keyword">as</span> fp:</div><div class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> iter(fp.readline, <span class="string">'\n'</span>):</div><div class="line">        process_line(line)</div></pre></td></tr></table></figure>
+<h2 id="把生成器当成协程"><a href="#把生成器当成协程" class="headerlink" title="把生成器当成协程"></a>把生成器当成协程</h2><p><code>.send()</code>方法使得生成器前进到下一个yield语句，还允许使用生成器的客户把数据发给自己，发送的参数都会成为生成器函数定义体中国年对应的yield表达式的值。<code>__next__()</code>方法只允许客户从生成器中获取数据</p>
+<ul>
+<li>生成器是用于生成供迭代的数据</li>
+<li>协程是数据消费者</li>
+<li>协程与迭代无关，虽然会用yield产出值</li>
+</ul>
+<h1 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h1><p>补充了上面的基础知识，开始协程的深入研究。。。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/06/18/python_coroutine/" target="_blank" rel="external">http://skyrover.me/2018/06/18/python_coroutine/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/流畅的Python/">流畅的Python</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/18/python_coroutine/&title=《Python 生成器 协程》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/18/python_coroutine/&title=《Python 生成器 协程》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/06/18/python_coroutine/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python 生成器 协程》 — SkyRover&url=http://skyrover.me/2018/06/18/python_coroutine/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/06/18/python_coroutine/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/17/software_architecture_7/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">大型网站技术架构 读书笔记(7) 大型网站架构技术一览</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/06/18/python_coroutine/&title=《Python 生成器 协程》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/06/18/python_coroutine/&title=《Python 生成器 协程》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/06/18/python_coroutine/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python 生成器 协程》 — SkyRover&url=http://skyrover.me/2018/06/18/python_coroutine/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/06/18/python_coroutine/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMklEQVR42u3ay07DMBAF0P7/TxcJsQBB0b3jBBHneFVFTeKThTWvxyNez/f1+ffn9ep6/s/v1x9nLAwMjMsy8hcnsPzK7zvJ94aBgXEfRn7Izu79fbv5vS+vY2BgYMSklaAQAwMD49gDd5aItmEoBgYGxspBGSWWo3tPz8UxMDAuyJg1Bv7m9+n9DQwMjH/PeJarDRPzBsBsPx9PwMDA2JqRtCfXC3BtayH5ZI8kr8XAwNiOkaSgeeh2VBGtaJ1iYGDcgNG+rA0c22S1aAlgYGBszZgNTORVr9mTk2Dxy28MDIytGUn5bJbWJrwkJC3eiIGBsTWjHQibDY217YThcBgGBsamjPMGJvLg8oDhMAwMjBswkrQzDyXboLMNEzEwMDDaQlgeOLatzbyxioGBcQfGUSNibcszaTZEoyEYGBibMtoDNC+rtQ3IJFh8+WQMDIytGflGZwNhbXEtH9eoJz4wMDA2Zaykte1A2EpTAQMD4w6MpKRVf5XykF25goGBsTcjSRTbdLQO5uK7Xj4HAwPjBox2i9GQVvCZZo3MA+baMDAwLsVYaVvmhbP1gz46vjEwMDZlPMtVHH9xaNh+iB92goGBsTWjTSxnAxltPf+UvgcGBsbFGUe1GPMC3OxzFO0BDAyMTRn5K1vS+qEcBYUYGBgYo7ZBW1xrPwoGBgbGLJmcFcjaY3opNMTAwLgsI9lcfgSvPGHYHMXAwNiasVK+T0pmbaCZX1nqb2BgYFyD8QbyGcdlWtw+8gAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
