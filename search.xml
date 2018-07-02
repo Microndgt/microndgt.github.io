@@ -3,10 +3,213 @@
   
     
     <entry>
+      <title><![CDATA[程序是怎么跑起来的 - 读书笔记(1)]]></title>
+      <url>/2018/06/30/dive_in_computer_system/</url>
+      <content type="html"><![CDATA[<h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1><h2 id="CPU内部结构解析"><a href="#CPU内部结构解析" class="headerlink" title="CPU内部结构解析"></a>CPU内部结构解析</h2><p>CPU中，负责保存指令和数据的寄存器，CPU和内存是由许多晶体管组成的电子部件，称为IC(集成电路)。</p>
+<p>CPU内部由寄存器，控制器，运算器和时钟四个部分组成。</p>
+<ul>
+<li>寄存器：暂存指令，数据，20-100个寄存器</li>
+<li>控制器：负责把内存上的指令和数据读入寄存器，并且根据指令的执行结果控制整个计算机</li>
+<li>运算器：负责运算从内存读入寄存器的数据</li>
+<li>时钟：负责发出CPU开始计时的时钟信号</li>
+</ul>
+<p>主存通过控制芯片等与CPU相连，主要负责存储指令和数据。主存由可写的元素构成，每个字节都带有一个地址编号，CPU可以通过该地址读取主存中的指令和数据。</p>
+<p>程序启动后，根据时钟信号，控制器会从内存中读取指令和数据，通过对这些指令加以解释和运行，运算器就会对数据进行运算，控制器根据运算结果来控制计算机。</p>
+<h2 id="CPU是寄存器的集合体"><a href="#CPU是寄存器的集合体" class="headerlink" title="CPU是寄存器的集合体"></a>CPU是寄存器的集合体</h2><p>程序是把寄存器作为对象来描述的</p>
+<p>汇编语言采用助记符来编写程序，每一个原本是电气信号的机器语言指令都会有一个相应的助记符，比如mov和add</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mov eax, dword ptr [ebp-8]</div><div class="line">add eax, dword ptr [ebp-0Ch]</div><div class="line">mov dword ptr [ebp-4], eax</div></pre></td></tr></table></figure>
+<p>其中eax和ebp都是寄存器，分别为累加寄存器和基址寄存器，内存的存储场所通过地址编号来区分，寄存器的种类通过名字来区分。</p>
+<p>机器语言级别的程序是通过寄存器来处理的，寄存器中存储的内容既可以是指令也可以是数据，数据分为用于计算的数值和表示内存地址的数值，用于运算的数值放在累加寄存器中存储，表示内存地址的数值放在基址寄存器和变址寄存器中存储。</p>
+<ul>
+<li>累加寄存器：存储执行计算的数据和运算后的数据</li>
+<li>标志寄存器：存储运算处理后CPU的状态</li>
+<li>程序计数器：存储下一条指令所在内存的地址</li>
+<li>基址寄存器：存储数据内存的起始地址</li>
+<li>变址寄存器：存储基址寄存器的相对地址</li>
+<li>通用寄存器：存储任意数据</li>
+<li>指令寄存器：存储指令，CPU内部使用</li>
+<li>栈寄存器：存储栈区域的起始地址</li>
+</ul>
+<p>程序计数器，累加寄存器，标志寄存器，指令寄存器和栈寄存器只有一个</p>
+<h2 id="决定程序流程的程序计数器"><a href="#决定程序流程的程序计数器" class="headerlink" title="决定程序流程的程序计数器"></a>决定程序流程的程序计数器</h2><h2 id="条件分支和循环机制"><a href="#条件分支和循环机制" class="headerlink" title="条件分支和循环机制"></a>条件分支和循环机制</h2><p>顺序执行时候，每执行一个指令程序计数器的值便自动加1，如果出现条件分支和循环，机器语言的指令就可以将程序计数器的值设定为任意地址。</p>
+<p>条件分支和循环中使用的跳转指令，会参照当前执行的运算结果来判断是否跳转，使用了标志寄存器，无论当前累加寄存器的运算结果是正，负还是0，标志寄存器都会将其保存。运算结果的正，零，负三种状态由标志寄存器的三个位表示。</p>
+<p>CPU执行比较的时候，会进行减法运算，结果保存在标志寄存器中(正，负或者0)</p>
+<h2 id="函数的调用机制"><a href="#函数的调用机制" class="headerlink" title="函数的调用机制"></a>函数的调用机制</h2><p>函数调用处理也是通过把程序计数器的值设定成函数的存储地址来实现的。函数原点和被调用函数之间的数据传递，通过内存或者寄存器实现。</p>
+<p>整个调用会使用call指令和return指令，在将函数的入口地址设定到程序计数器之前，call指令会将调用函数后要执行的指令地址存储在栈的主存里。函数处理完毕后，通过函数出口来执行return命令。return命令的功能是把存在栈中的地址设定到程序计数器中。</p>
+<h2 id="通过地址和索引实现数组"><a href="#通过地址和索引实现数组" class="headerlink" title="通过地址和索引实现数组"></a>通过地址和索引实现数组</h2><p>基址寄存器和变址寄存器可以对内存上特定的内存区域进行划分，从而实现数组的操作。</p>
+<p>对于4GB内存，可以用00000000-FFFFFFFF的地址将其划分出来，16进制，1位代表了4位二进制，总共32位，所以一个32位寄存器就可以查看全部的内存地址。</p>
+<p>但是如果要实现数组的话，需要两个寄存器。CPU会把基址寄存器+变址寄存器的值解释为实际查看的内存地址。</p>
+<h2 id="机器语言指令的主要类型"><a href="#机器语言指令的主要类型" class="headerlink" title="机器语言指令的主要类型"></a>机器语言指令的主要类型</h2><ul>
+<li>数据转送指令：寄存器和内存，内存和外存，寄存器和外围设备之间的数据读写操作</li>
+<li>运算指令：用累加寄存器执行算数运算，逻辑运算，比较运算和移位运算</li>
+<li>跳转指令：实现条件分支，循环，强制跳转等</li>
+<li>call/return指令：函数调用/返回调用前的地址</li>
+</ul>
+<h1 id="数据是用二进制表示的"><a href="#数据是用二进制表示的" class="headerlink" title="数据是用二进制表示的"></a>数据是用二进制表示的</h1><p>IC集成电路，微处理器，IC的所有引脚只有直流电压0V和5V两个状态，IC的一个引脚，只能表示两个状态。</p>
+<p>唉，现在才明白很多之前微机原理学到的东西。。之前怎么就荒废过去了，啥都没学到。</p>
+<p>IC的这个特性，决定了计算机的信息数据只能用二进制数来处理。计算机处理信息的最小单位-位bit(binary digit)，就相当于二进制中的一位。</p>
+<p>8位二进制数被称为一个字节，字节是最基本的信息计量单位，位是最小的单位，字节是基本单位。</p>
+<p>32位微处理器，具有32个引脚用于信息输入输出，所以一次可以处理32位4字节的二进制数信息。</p>
+<h2 id="二进制数"><a href="#二进制数" class="headerlink" title="二进制数"></a>二进制数</h2><p>位权，比如十进制数39，就是<code>3*10^1+9*10^0</code>，所以二进制数同理。一个是以10为基数，一个以2位基数。</p>
+<h2 id="移位运算和乘除运算"><a href="#移位运算和乘除运算" class="headerlink" title="移位运算和乘除运算"></a>移位运算和乘除运算</h2><p>移位运算将二进制数值的各位数进行左右移位，左移，右移。<code>&lt;&lt;</code> <code>&gt;&gt;</code>，然后左移右移就可以相当于乘除法。二进制数左移一位，就会扩大两倍。</p>
+<h2 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h2><p>二进制数中表示负数值时候，会把最高位作为符号位使用。符号位0是正数，1为负数。但是-1的二进制数是<code>11111111</code>。</p>
+<p>因为计算机做减法运算的时候其实是在做加法运算，所以表示负数的时候就需要使用二进制的补数。补数就是用正数来表示负数。</p>
+<p>首先将二进制数的各数位的数值全部取反，然后再将结果加1。比如1：<code>00000001</code> 取反是 <code>11111110</code>，再加1，就是<code>11111111</code>表示的就是-1</p>
+<p>补数求解的方法就是 <strong>取反+1</strong>。</p>
+<p>所以是用来进行负数的表示，比如3-5的结果是负数，进行的运算就是<code>00000011+11111011</code>的运算，结果是负数，所以也是补数<code>11111110</code>，根据补数和本体的运算之和为0，可以通过其补数来得到绝对值。<code>00000010</code>，所以<code>11111110</code>表示的结果就是-2</p>
+<h2 id="逻辑右移和算术右移"><a href="#逻辑右移和算术右移" class="headerlink" title="逻辑右移和算术右移"></a>逻辑右移和算术右移</h2><ul>
+<li>逻辑右移：当二进制数的值表示图形模式而非数值的时候，移位后需要在最高位补0</li>
+<li>算术右移：当二进制数作为带符号的数值进行运算时候，移位后在最高位填充移位前符号位的值(0或者1)</li>
+</ul>
+<p>负数运算要使用补数，比如-8应该是8求反+1，是<code>11111000</code>，所以算术右移2位，<code>11111110</code>，可以对这个值求补数为<code>00000010</code>是2，所以前者是-2，所以-8右移两位，相当于除以4，为-2.</p>
+<p>符号扩充：将8位二进制转换为16位二进制的时候，都只需要用符号位的值填充高位即可。</p>
+<h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><ul>
+<li>算术运算：加减乘除</li>
+<li>逻辑运算：对二进制数各数字位0和1进行处理的运算<ul>
+<li>非</li>
+<li>与</li>
+<li>或</li>
+<li>异或XOR</li>
+</ul>
+</li>
+</ul>
+<p>异或是排斥相同数值的运算，两个位数值不同则为1，相同则为0.</p>
+<h1 id="小数运算"><a href="#小数运算" class="headerlink" title="小数运算"></a>小数运算</h1><p>二进制数小数点后的第一位的位权是2^(-1)=0.5，所以<code>0.1 = 1*0.5=0.5</code></p>
+<h2 id="用二进制数表示小数"><a href="#用二进制数表示小数" class="headerlink" title="用二进制数表示小数"></a>用二进制数表示小数</h2><p><code>1011.0011=2^3+2^1+2^0.2^-3+2^-4=11.1875</code></p>
+<p>类比十进制</p>
+<p>将11.1875转为二进制则为：</p>
+<p>11不断的进行短除2，1875不断短乘2</p>
+<h2 id="计算机出错的原因"><a href="#计算机出错的原因" class="headerlink" title="计算机出错的原因"></a>计算机出错的原因</h2><p>出现运算错误的原因是有一些十进制数的小数无法转换为二进制数，比如0.1就无法正常表示。所以二进制数是连续的，但是十进制数是非连贯的。实际上，十进制数0.1表示为二进制数后，会变成<code>0.00011001100</code>循环小数。</p>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p><code>1011.0011</code>这种形式是纸面上的二进制数的形式，实际计算机内部存储不是这样。</p>
+<p>浮点数是指用符号，尾数，基数和指数这四部分来表示的小数：<code>0.12345*10^5</code>，二进制数，则基数为2.所以一般只需要符号，尾数，指数三部分就可以表示浮点数。</p>
+<p>IEEE标准，双精度浮点数和单精度浮点数在表示同一个数值时候使用的位数不同，双精度浮点数表示的数值范围大于单精度浮点数。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th style="text-align:center">符号部分</th>
+<th style="text-align:right">指数部分</th>
+<th>尾数部分 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单精度</td>
+<td style="text-align:center">1位</td>
+<td style="text-align:right">8位</td>
+<td>23位 </td>
+</tr>
+<tr>
+<td>双精度</td>
+<td style="text-align:center">1位</td>
+<td style="text-align:right">11位</td>
+<td>52位 </td>
+</tr>
+</tbody>
+</table>
+<p>数值大小通过尾数部分和指数部分来表示，尾数部分用的是将小数点前面的值固定为1的正则表达式，指数部分用的是EXCESS系统表现。</p>
+<h2 id="正则表达式和EXCESS系统"><a href="#正则表达式和EXCESS系统" class="headerlink" title="正则表达式和EXCESS系统"></a>正则表达式和EXCESS系统</h2><ul>
+<li>尾数部分使用正则表达式</li>
+</ul>
+<p>其实就是使用一定规则来确定表达小数的方式，在二进制中就是小数点前面的值固定为1的正则表达式，也就是将二进制表示的小数左移或者右移数次后，整数部分第一位为1，第二位之后都是0.</p>
+<ul>
+<li>指数部分使用EXCESS系统</li>
+</ul>
+<p>主要是为了表示负数的时候不使用符号位。通过将指数部分表示范围的中间值设为0，使得负号不需要用符号来表示。比如<code>11111111=255</code>的1/2，即<code>01111111=127</code>表示的是0</p>
+<p>比如十进制0.75用单精度浮点数表示就是<code>0-01111110-10000000000000000000000</code>，其中-是用来分割符号部分和指数部分的，可以看到符号位是0，为正数，指数部分是01111110，表示的是126，其中中间数是127，所以指数为<code>126-127=-1</code>，尾数部分其实是<code>1.1000..</code>，因为尾数部分使用了正则表达式。尾数部分转为十进制为：<code>1.5</code>，其中指数为-1，所以<code>1.5*2^-1=0.75</code></p>
+<h2 id="避免浮点数出错"><a href="#避免浮点数出错" class="headerlink" title="避免浮点数出错"></a>避免浮点数出错</h2><p>计算出错的原因就是用浮点数处理小数(也可能是位溢出导致的错误)</p>
+<ul>
+<li>回避，只需要近似值即可</li>
+<li>小数转换为整数，把计算结果再用小数表示出来即可。</li>
+<li>BCD(Binary Coded Decimal)，使用4位来表示0-9的1位数字的处理方法，所以会非常占内存</li>
+</ul>
+<p>在涉及财务计算的时候，将小数转成整数或者使用BCD方法</p>
+<h2 id="二进制数和十六进制数"><a href="#二进制数和十六进制数" class="headerlink" title="二进制数和十六进制数"></a>二进制数和十六进制数</h2><p>二进制4位，相当于十六进制的1位，比如二进制小数<code>1011.011</code>表示为16进制为：<code>B.6</code>。</p>
+<p>十六进制的位权是<code>16</code>，小数部分是<code>16^-1</code></p>
+<h1 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h1><p>高级编程语言中的数据类型表示的是占据内存区域的大小和存储在该内存区域的数据类型。物理内存是以字节为单位进行数据存储的。</p>
+<h2 id="内存的物理机制"><a href="#内存的物理机制" class="headerlink" title="内存的物理机制"></a>内存的物理机制</h2><p>内存是一种名为内存IC的电子元件，包括DRAM(动态随机存取存储器，需要经常刷新以保存数据),SRAM(静态随机存取存储器，不需要刷新电路即能保存数据),ROM等多种形式</p>
+<p>内存IC中有电源，地址信号，数据信号，控制信号等用于输入输出的引脚，通过为其指定地址，来进行数据的读写。</p>
+<p>比如一个IC，VCC和GND是电源，A0-A9是地址信号引脚，D0-D7是数据信号的引脚，RD和WT是控制信号的引脚。一般+5V直流电压表示1，0V表示0</p>
+<p>D0-D7表示一次可以输入或者输出8位(1字节)数据，A0-A9表示10位，所以可以有0000000000-1111111111共1024个地址，也就是1KB，就是1千字节</p>
+<p>现在大容量内存使用的IC就会有更多的地址信号引脚，一个IC就有更多容量，只需要几个IC，就可以达到需要的容量。</p>
+<p>写入的时候，介入电源，使用A0-A9指定存储地址，将数据按位使用电平输入到D0-D7，即可写入数据。</p>
+<p>内存IC内部有大量可以存储8位数据的地方，通过地址指定，可以进行数据的读写。</p>
+<h2 id="内存的逻辑模型-楼房"><a href="#内存的逻辑模型-楼房" class="headerlink" title="内存的逻辑模型 - 楼房"></a>内存的逻辑模型 - 楼房</h2><p>一层有一字节的数据！数据类型表示存储的是何种类型的数据，从内存上看，就是占用的内存大小，通过指令类型，可以实现以特定字节数为单位进行读写。</p>
+<ul>
+<li>char: 1字节</li>
+<li>short: 2字节</li>
+<li>long: 4字节</li>
+</ul>
+<p>如果数据低位存储在内存低位地址的话，叫做小端模式，即低字节序方式。比如short存123，123只需要8位就可以存储，那么内存地址低位存储123，高地址的那一字节存储0，这样就是小端模式。</p>
+<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>指针也是一种变量，所表示的不是数据值，而是存储着数据的内存的地址。一般计算机使用32位内存地址(4字节)，所以指针变量的长度也是32位的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> *d;</div><div class="line"><span class="keyword">short</span> *e;</div><div class="line"><span class="keyword">long</span> *f;</div></pre></td></tr></table></figure>
+<p>指针变量都是32位的，前面的char数据类型表示从指针存储的地址中一次能够读写的数据字节数。比如d指针中存放了32位的地址，但是地址索引到的数据需要读取1字节。</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>数组索引和内存地址的变换工作是由编译器自动实现的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> g[<span class="number">100</span>];</div><div class="line"><span class="keyword">short</span> h[<span class="number">100</span>];</div></pre></td></tr></table></figure>
+<p>数组的类型也表示一次能够读写的内存大小。数组和内存的物理构造是一样的，如果1字节类型的数组，就完全和内存一样了。</p>
+<p>虽然是通过指定索引来使用数组，但是和内存的物理读写没有什么差别，所以可以有栈，队列，链表和二叉查找树等。</p>
+<p>操作数组就类似于操作内存</p>
+<h2 id="栈，队列和环形缓冲区"><a href="#栈，队列和环形缓冲区" class="headerlink" title="栈，队列和环形缓冲区"></a>栈，队列和环形缓冲区</h2><p>队列一般是以环状缓冲区的方式实现的，使用数组来实现一个队列，可以从数组的起始位置开始有序的存储数据，然后再按照存储时的顺序把数据读出，在数组末尾写入数据后，后一个数据就会被写入到数组的起始位置(当然起始位置的数据需要被取出，否则环状缓冲区就满了)</p>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>使用链表，可以高效的对数组数据进行追加，插入和删除</p>
+<h2 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h2><p>使用二叉查找树，可以高效的对数组数据进行检索。考虑到数据的大小关系，可以将其分为左右两个方向的表现形式。</p>
+<p>数组是进行这些处理的基础。</p>
+<h1 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h1><p>磁盘在物理方面只能以扇区位单位进行读写，磁盘代替内存来使用的虚拟内存。</p>
+<p>使用内存来提高磁盘访问速度的机制是磁盘缓存，在windows中程序运行时，存储着可以动态加载调用的函数和数据的文件是dll文件。在exe程序文件中，静态加载函数的方式是静态链接。函数加载方式有静态链接和动态链接。</p>
+<p>windows中，一般磁盘的1个扇区是512字节。</p>
+<h2 id="读入内存"><a href="#读入内存" class="headerlink" title="读入内存"></a>读入内存</h2><p>磁盘中的程序需要读入内存才可以运行，因为负责解析和运行程序内容的CPU，需要通过内部程序计数器来指定内存地址，才能读出程序。</p>
+<h2 id="磁盘缓存"><a href="#磁盘缓存" class="headerlink" title="磁盘缓存"></a>磁盘缓存</h2><p>磁盘缓存是指把从磁盘中读出的数据存储在内存空间的方式，如果需要读取同样数据，即可直接从缓存中读取。</p>
+<p>把低速设备的数据保存在高速设备中，需要的时候从高速设备读取，缓存。</p>
+<h2 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h2><p>是指把磁盘的一部分作为假想的内存来使用。为了实现虚拟内存，必须把实际内存的内容，和磁盘上的虚拟内存的内容进行部分置换，并同时运行程序。</p>
+<p>虚拟内存的方法有分页式和分段式。</p>
+<ul>
+<li>分页：不考虑程序构造情况下，把运行的程序按照一定大小的页进行分割，以页为单位在内存和磁盘间进行置换。一般页的大小为4KB。page in or page out</li>
+</ul>
+<p>磁盘上提供了虚拟内存用的文件(页文件)，文件大小就是虚拟内存的大小。</p>
+<h2 id="节约内存"><a href="#节约内存" class="headerlink" title="节约内存"></a>节约内存</h2><ul>
+<li>通过DLL文件实现函数共有</li>
+</ul>
+<p>DLL(Dynamic Link Libaray) 动态链接库，程序运行时候动态加载(函数和数据的集合)的文件。多个应用可以共有一个DLL文件，从而节约内存。</p>
+<ul>
+<li>通过调用<code>_stdcall</code>减小程序文件大小</li>
+</ul>
+<p>本来在调用方执行的，放在了被调用方执行。</p>
+<p>C语言中，调用函数后，需要执行栈清理指令。这是程序编译的时候编译器自动附加到程序中的，编译器默认把该处理附加在函数调用方。</p>
+<p>同一个程序中，同样的函数可能会反复多次调用，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">push 1C8h</div><div class="line">push 7Bh</div><div class="line">call @LTD+15 (MyFunc)(00401014)</div><div class="line">add esp, 8</div></pre></td></tr></table></figure>
+<p><code>add esp, 8</code>即为栈清理，esp(栈指针寄存器)，使存储着栈数据的esp寄存器前进8位。栈清理处理在函数调用方通过附加一段程序进行清理，要比在被调用函数进行清理要显得臃肿和费内存，所以有<code>_stdcall</code>，使得栈清理变为在被调用函数一方进行。<code>int _stdcall MyFunc(int a, int b)</code></p>
+<h2 id="磁盘的物理结构"><a href="#磁盘的物理结构" class="headerlink" title="磁盘的物理结构"></a>磁盘的物理结构</h2><p>磁盘是通过把其物理表面划分为多个空间来使用的，划分的方式有扇区方式和可变长方式。前者是将磁盘划分为固定长度的空间，后者是划分为长度可变的空间。一般都是扇区方式，将磁盘表面分成若干个同心圆的空间就是磁道，把磁道按照固定大小划分成的空间就是扇区。</p>
+<p>扇区是对磁盘进行物理读写的最小单位，一般一个扇区为512字节。另外win中对磁盘进行读写的单位是扇区整倍簇，为了减少磁盘访问次数，加快读取速度。</p>
+<h1 id="数据压缩"><a href="#数据压缩" class="headerlink" title="数据压缩"></a>数据压缩</h1><p>半角英文数字是1个字节表示的，汉字等全角字符是2个字节表示的。</p>
+<p>BMP格式没有被压缩过，因此比JPEG等压缩图像大。</p>
+<h2 id="文件是字节数据的集合"><a href="#文件是字节数据的集合" class="headerlink" title="文件是字节数据的集合"></a>文件是字节数据的集合</h2><p>文件中的字节数据都是连续存储的</p>
+<h2 id="RLE算法"><a href="#RLE算法" class="headerlink" title="RLE算法"></a>RLE算法</h2><p><code>字符 * 重复次数</code> - RLE(Run Length Encoding) 行程长度编码</p>
+<p>一般用于传真图像的压缩，只有两种颜色，黑白，所以有利于这种算法的压缩。</p>
+<h2 id="哈夫曼算法"><a href="#哈夫曼算法" class="headerlink" title="哈夫曼算法"></a>哈夫曼算法</h2>]]></content>
+      
+        <categories>
+            
+            <category> 读书 </category>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 程序是怎么跑起来的 </tag>
+            
+            <tag> 计算机组成原理 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode Everyday]]></title>
       <url>/2018/06/30/leetcode_every_day/</url>
       <content type="html"><![CDATA[<p>坚持每天刷Leetcode，每日至少一题。</p>
-<h1 id="2018-06-30"><a href="#2018-06-30" class="headerlink" title="2018-06-30"></a>2018-06-30</h1><h1 id="2018-06-29"><a href="#2018-06-29" class="headerlink" title="2018-06-29"></a>2018-06-29</h1><h2 id="字符的最短距离"><a href="#字符的最短距离" class="headerlink" title="字符的最短距离"></a><a href="https://leetcode-cn.com/problems/shortest-distance-to-a-character/description/" target="_blank" rel="external">字符的最短距离</a></h2><p>采用了左右边界指针法，pos为当前遍历指针，<code>c_lft_pos</code>和<code>c_rgt_pos</code>分别为在S中的c值左右指针，当pos遍历的时候，在lft指针左边，就是lft指针位置减去当前位置，在lft和rgt中间，则取最小值，等于rgt的时候需要调整左右指针位置，大于rgt则为pos减去rgt指针的位置。即可得解。</p>
+<h1 id="2018-07-02"><a href="#2018-07-02" class="headerlink" title="2018-07-02"></a>2018-07-02</h1><h1 id="2018-07-01"><a href="#2018-07-01" class="headerlink" title="2018-07-01"></a>2018-07-01</h1><h1 id="2018-06-30"><a href="#2018-06-30" class="headerlink" title="2018-06-30"></a>2018-06-30</h1><h1 id="2018-06-29"><a href="#2018-06-29" class="headerlink" title="2018-06-29"></a>2018-06-29</h1><h2 id="字符的最短距离"><a href="#字符的最短距离" class="headerlink" title="字符的最短距离"></a><a href="https://leetcode-cn.com/problems/shortest-distance-to-a-character/description/" target="_blank" rel="external">字符的最短距离</a></h2><p>采用了左右边界指针法，pos为当前遍历指针，<code>c_lft_pos</code>和<code>c_rgt_pos</code>分别为在S中的c值左右指针，当pos遍历的时候，在lft指针左边，就是lft指针位置减去当前位置，在lft和rgt中间，则取最小值，等于rgt的时候需要调整左右指针位置，大于rgt则为pos减去rgt指针的位置。即可得解。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shortestToChar</span><span class="params">(self, S, C)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type S: str</span></div><div class="line"><span class="string">        :type C: str</span></div><div class="line"><span class="string">        :rtype: List[int]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        c_pos_in_S = []</div><div class="line">        <span class="keyword">for</span> idx, s <span class="keyword">in</span> enumerate(S):</div><div class="line">            <span class="keyword">if</span> s == C:</div><div class="line">                c_pos_in_S.append(idx)</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> c_pos_in_S:</div><div class="line">            <span class="keyword">return</span> []</div><div class="line">        c_lft_pos = c_pos_in_S.pop(<span class="number">0</span>)</div><div class="line">        c_rgt_pos = c_pos_in_S.pop(<span class="number">0</span>) <span class="keyword">if</span> c_pos_in_S <span class="keyword">else</span> c_lft_pos</div><div class="line">        pos = <span class="number">0</span></div><div class="line">        res = []</div><div class="line">        <span class="keyword">while</span> pos &lt; len(S):</div><div class="line">            <span class="keyword">if</span> pos &lt;= c_lft_pos:</div><div class="line">                res.append(c_lft_pos - pos)</div><div class="line">            <span class="keyword">elif</span> c_lft_pos &lt; pos &lt; c_rgt_pos:</div><div class="line">                res.append(min([c_rgt_pos - pos, pos - c_lft_pos]))</div><div class="line">            <span class="keyword">elif</span> pos == c_rgt_pos:</div><div class="line">                <span class="comment"># 在等于右边界的时候调整边界位置</span></div><div class="line">                res.append(c_rgt_pos - pos)</div><div class="line">                c_lft_pos = c_rgt_pos</div><div class="line">                c_rgt_pos = c_pos_in_S.pop(<span class="number">0</span>) <span class="keyword">if</span> c_pos_in_S <span class="keyword">else</span> c_lft_pos</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                res.append(pos - c_rgt_pos)</div><div class="line">            pos += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
 <h1 id="2018-06-28"><a href="#2018-06-28" class="headerlink" title="2018-06-28"></a>2018-06-28</h1><h2 id="唯一摩尔斯密码词"><a href="#唯一摩尔斯密码词" class="headerlink" title="唯一摩尔斯密码词"></a><a href="https://leetcode-cn.com/problems/unique-morse-code-words/description/" target="_blank" rel="external">唯一摩尔斯密码词</a></h2><p>最朴素的解法</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">uniqueMorseRepresentations</span><span class="params">(self, words)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type words: List[str]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        alphabet_morse = [<span class="string">".-"</span>, <span class="string">"-..."</span>, <span class="string">"-.-."</span>, <span class="string">"-.."</span>, <span class="string">"."</span>, <span class="string">"..-."</span>, <span class="string">"--."</span>, <span class="string">"...."</span>, <span class="string">".."</span>, <span class="string">".---"</span>, <span class="string">"-.-"</span>, <span class="string">".-.."</span>, <span class="string">"--"</span>,</div><div class="line">                          <span class="string">"-."</span>, <span class="string">"---"</span>, <span class="string">".--."</span>, <span class="string">"--.-"</span>, <span class="string">".-."</span>, <span class="string">"..."</span>, <span class="string">"-"</span>, <span class="string">"..-"</span>, <span class="string">"...-"</span>, <span class="string">".--"</span>, <span class="string">"-..-"</span>, <span class="string">"-.--"</span>, <span class="string">"--.."</span>]</div><div class="line">        alphabets = <span class="string">'abcdefghijklmnopqrstuvwxyz'</span></div><div class="line">        alphabet_morse_dict = &#123;alphabet: morse <span class="keyword">for</span> alphabet, morse <span class="keyword">in</span> zip(alphabets, alphabet_morse)&#125;</div><div class="line">        res = set()</div><div class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> words:</div><div class="line">            res.add(<span class="string">''</span>.join(alphabet_morse_dict[w] <span class="keyword">for</span> w <span class="keyword">in</span> word))</div><div class="line">        <span class="keyword">return</span> len(res)</div></pre></td></tr></table></figure>
