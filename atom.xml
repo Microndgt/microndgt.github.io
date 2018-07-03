@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-07-02T07:24:33.000Z</updated>
+  <updated>2018-07-03T02:03:49.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,11 +20,10 @@
     <link href="http://skyrover.me/2018/07/01/leetcode_every_day/"/>
     <id>http://skyrover.me/2018/07/01/leetcode_every_day/</id>
     <published>2018-07-01T11:11:32.000Z</published>
-    <updated>2018-07-02T07:24:33.000Z</updated>
+    <updated>2018-07-03T02:03:49.000Z</updated>
     
     <content type="html"><![CDATA[<p>坚持每天刷Leetcode，每日至少一题。</p>
-<h1 id="2018-07-02"><a href="#2018-07-02" class="headerlink" title="2018-07-02"></a>2018-07-02</h1><h1 id="2018-07-01"><a href="#2018-07-01" class="headerlink" title="2018-07-01"></a>2018-07-01</h1><p><a href="https://leetcode-cn.com/problems/subdomain-visit-count/description/" target="_blank" rel="external">子域名访问计数</a></p>
-<p>这道题没太多算法需要考虑，就是细节问题</p>
+<h1 id="2018-07-03"><a href="#2018-07-03" class="headerlink" title="2018-07-03"></a>2018-07-03</h1><h1 id="2018-07-02"><a href="#2018-07-02" class="headerlink" title="2018-07-02"></a>2018-07-02</h1><h1 id="2018-07-01"><a href="#2018-07-01" class="headerlink" title="2018-07-01"></a>2018-07-01</h1><h2 id="子域名访问计数"><a href="#子域名访问计数" class="headerlink" title="子域名访问计数"></a><a href="https://leetcode-cn.com/problems/subdomain-visit-count/description/" target="_blank" rel="external">子域名访问计数</a></h2><p>这道题没太多算法需要考虑，就是细节问题</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">subdomainVisits</span><span class="params">(self, cpdomains)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type cpdomains: List[str]</span></div><div class="line"><span class="string">        :rtype: List[str]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</div><div class="line">        counter = defaultdict(int)</div><div class="line">        <span class="keyword">for</span> cpdomain <span class="keyword">in</span> cpdomains:</div><div class="line">            times, domain = cpdomain.split(<span class="string">' '</span>)</div><div class="line">            elements = domain.split(<span class="string">'.'</span>)</div><div class="line">            idx = <span class="number">0</span></div><div class="line">            <span class="keyword">while</span> idx &lt; len(elements):</div><div class="line">                subdomain = <span class="string">'.'</span>.join(elements[idx:])</div><div class="line">                counter[subdomain] += int(times)</div><div class="line">                idx += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> [<span class="string">"&#123;&#125; &#123;&#125;"</span>.format(value, key) <span class="keyword">for</span> key, value <span class="keyword">in</span> counter.items()]</div></pre></td></tr></table></figure>
 <h1 id="2018-06-30"><a href="#2018-06-30" class="headerlink" title="2018-06-30"></a>2018-06-30</h1><h2 id="交替位二进制数"><a href="#交替位二进制数" class="headerlink" title="交替位二进制数"></a><a href="https://leetcode-cn.com/problems/binary-number-with-alternating-bits/description/" target="_blank" rel="external">交替位二进制数</a></h2><p>这道题比较简单，不过注意结束条件应该是<code>n!=0</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasAlternatingBits</span><span class="params">(self, n)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type n: int</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        last = <span class="keyword">None</span></div><div class="line">        <span class="keyword">while</span> n != <span class="number">0</span>:</div><div class="line">            n, remain = divmod(n, <span class="number">2</span>)</div><div class="line">            <span class="keyword">if</span> last <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">                <span class="keyword">if</span> remain == last:</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">            last = remain</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
@@ -51,7 +50,7 @@
     <summary type="html">
     
       &lt;p&gt;坚持每天刷Leetcode，每日至少一题。&lt;/p&gt;
-&lt;h1 id=&quot;2018-07-02&quot;&gt;&lt;a href=&quot;#2018-07-02&quot; class=&quot;headerlink&quot; title=&quot;2018-07-02&quot;&gt;&lt;/a&gt;2018-07-02&lt;/h1&gt;&lt;h1 id=&quot;2018
+&lt;h1 id=&quot;2018-07-03&quot;&gt;&lt;a href=&quot;#2018-07-03&quot; class=&quot;headerlink&quot; title=&quot;2018-07-03&quot;&gt;&lt;/a&gt;2018-07-03&lt;/h1&gt;&lt;h1 id=&quot;2018
     
     </summary>
     
@@ -71,7 +70,7 @@
     <link href="http://skyrover.me/2018/06/30/dive_in_computer_system/"/>
     <id>http://skyrover.me/2018/06/30/dive_in_computer_system/</id>
     <published>2018-06-30T01:36:46.000Z</published>
-    <updated>2018-07-02T01:37:07.000Z</updated>
+    <updated>2018-07-03T02:05:10.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1><h2 id="CPU内部结构解析"><a href="#CPU内部结构解析" class="headerlink" title="CPU内部结构解析"></a>CPU内部结构解析</h2><p>CPU中，负责保存指令和数据的寄存器，CPU和内存是由许多晶体管组成的电子部件，称为IC(集成电路)。</p>
 <p>CPU内部由寄存器，控制器，运算器和时钟四个部分组成。</p>
@@ -252,7 +251,26 @@
 <h2 id="文件是字节数据的集合"><a href="#文件是字节数据的集合" class="headerlink" title="文件是字节数据的集合"></a>文件是字节数据的集合</h2><p>文件中的字节数据都是连续存储的</p>
 <h2 id="RLE算法"><a href="#RLE算法" class="headerlink" title="RLE算法"></a>RLE算法</h2><p><code>字符 * 重复次数</code> - RLE(Run Length Encoding) 行程长度编码</p>
 <p>一般用于传真图像的压缩，只有两种颜色，黑白，所以有利于这种算法的压缩。</p>
-<h2 id="哈夫曼算法"><a href="#哈夫曼算法" class="headerlink" title="哈夫曼算法"></a>哈夫曼算法</h2>]]></content>
+<h2 id="哈夫曼算法"><a href="#哈夫曼算法" class="headerlink" title="哈夫曼算法"></a>哈夫曼算法</h2><p>哈夫曼算法关键在于多次出现的数据用小于8位的字节数来表示，不常用的数据则可以用超过8位的字节数来表示。</p>
+<p>莫尔斯编码就是字符种类不同，莫尔斯电码符号长度也是不同的，出现频率高的字符用短编码表示。</p>
+<p>为各压缩对象文件分别构造最佳的编码体系，并以该编码体系为基础进行压缩。因此，用什么样式编码对数据进行分割，需要视文件而定，用哈夫曼算法压缩过的文件中，存储着哈夫曼编码信息和压缩过的数据。</p>
+<p>在哈夫曼算法中，通过借助哈夫曼树构造编码体系，可以构建能够明确进行区分的编码体系。</p>
+<p>哈夫曼树是从叶生枝，再生根，先选最小频率数，层数最深编码最长。</p>
+<p>先选两个出现频率最小的数字，然后形成树，其根节点是两个数字的和。然后循环来做同样的事情，直到最后合并为一个树，这样从根部到底部，左侧为0，右侧为1，就可以对所有字符进行编码了。</p>
+<p>所以频率高的离根越近，这样编码短，频率小的离根远，编码长。</p>
+<p>读取数据的时候按位来读取，然后在哈夫曼树中寻找对应字符。</p>
+<h2 id="可逆压缩和非可逆压缩"><a href="#可逆压缩和非可逆压缩" class="headerlink" title="可逆压缩和非可逆压缩"></a>可逆压缩和非可逆压缩</h2><p>BMP格式是未压缩的(bitmap)，JPEG是压缩过的，而且是非可逆的，因为不需要完全还原，所以可能有部分数据丢失。</p>
+<p>能还原到压缩前状态的压缩为可逆压缩，不能还原的为非可逆压缩。</p>
+<h1 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h1><p>FreeBSD是一种Unix操作系统，通过在各个环境中编译Ports中公开的代码，就可以执行由此生成的本地代码。Java虚拟机用来运行Java应用的字节代码。</p>
+<h2 id="运行环境-操作系统-硬件"><a href="#运行环境-操作系统-硬件" class="headerlink" title="运行环境=操作系统+硬件"></a>运行环境=操作系统+硬件</h2><p>CPU有x86，MIPS，SPARC，PowerPC等几种类型，其各自的机器语言是不同的。机器语言的程序成为本地代码，文本文件中的代码为源代码，源代码进行编译为本地代码。</p>
+<p>在应用软件中，输入，显示，输出并不是直接向硬件发送指令，而是通过向操作系统来发送指令的，这样就不用注意内存和IO地址的不同了。</p>
+<p>但是不同操作系统的API也是由差异的，如果CPU不同，机器语言不同，就需要能够生成该CPU支持的本地代码的编译器对源代码重新进行编译。</p>
+<h2 id="FreeBSD-Port源代码"><a href="#FreeBSD-Port源代码" class="headerlink" title="FreeBSD Port源代码"></a>FreeBSD Port源代码</h2><p>Port机制是指FreeBSD根据当前系统运行的硬件环境编译源代码，从而生成适合当前运行环境的机器语言代码。porting移植</p>
+<h2 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h2><p>操作系统API</p>
+<h2 id="提供相同运行环境的Java虚拟机"><a href="#提供相同运行环境的Java虚拟机" class="headerlink" title="提供相同运行环境的Java虚拟机"></a>提供相同运行环境的Java虚拟机</h2><p>Java(作为程序运行环境)将Java代码编译，编译后形成字节代码，字节代码会通过Java虚拟机转换为本地代码运行，这样就可以形成可以移植的程序了。</p>
+<p>可以实现同样的字节代码在不同的环境下运行，如果有适合不同环境的虚拟机，同样字节码的应用就可以在任何环境下运行了。</p>
+<h2 id="BIOS和引导"><a href="#BIOS和引导" class="headerlink" title="BIOS和引导"></a>BIOS和引导</h2><p>BIOS(Basic input and output system)，存储在ROM中，是预先内置在计算机中的程序，键盘，磁盘和显卡的控制程序，引导程序。引导程序是存储在启动驱动器起始区域的小程序，一般是硬盘。功能是将硬盘等记录的OS加载到内存运行。</p>
+<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1>]]></content>
     
     <summary type="html">
     
