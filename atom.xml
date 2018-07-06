@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-07-06T04:37:56.000Z</updated>
+  <updated>2018-07-06T23:39:12.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>程序是怎么跑起来的 - 读书笔记</title>
-    <link href="http://skyrover.me/2018/07/06/dive_in_computer_system/"/>
-    <id>http://skyrover.me/2018/07/06/dive_in_computer_system/</id>
-    <published>2018-07-05T23:36:46.000Z</published>
-    <updated>2018-07-06T04:37:56.000Z</updated>
+    <link href="http://skyrover.me/2018/07/07/dive_in_computer_system/"/>
+    <id>http://skyrover.me/2018/07/07/dive_in_computer_system/</id>
+    <published>2018-07-06T23:36:46.000Z</published>
+    <updated>2018-07-06T23:39:12.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1><h2 id="CPU内部结构解析"><a href="#CPU内部结构解析" class="headerlink" title="CPU内部结构解析"></a>CPU内部结构解析</h2><p>CPU中，负责保存指令和数据的寄存器，CPU和内存是由许多晶体管组成的电子部件，称为IC(集成电路)。</p>
 <p>CPU内部由寄存器，控制器，运算器和时钟四个部分组成。</p>
@@ -362,7 +362,27 @@
 <p><code>_a1 label dword</code>定义了<code>_a1</code>标签，标签表示的是相对于段定义起始位置的位置，dd 1 表示的是define double word，申请了一个4字节的内存空间。</p>
 <p>db 4 dup(?)申请分配了4字节的内存，但是值没有确定，db - define byte</p>
 <p>汇编语言暂时学到这里，以后有时间再继续深入研究！</p>
-<h1 id="硬件控制方法"><a href="#硬件控制方法" class="headerlink" title="硬件控制方法"></a>硬件控制方法</h1>]]></content>
+<h1 id="硬件控制方法"><a href="#硬件控制方法" class="headerlink" title="硬件控制方法"></a>硬件控制方法</h1><p>汇编中使用IN指令来实现IO输入，OUT指令来实现IO输出。所有连接到计算机的外围设备都会分配一个IO地址编号。IRQ指的是用来执行硬件中断请求的编号。</p>
+<p>DMA是指不经过CPU中介处理，外围设备直接同计算机的主存进行数据传输，磁盘这种用来处理大量数据的外围设备都有DMA功能。</p>
+<p>操作系统提供了系统调用功能来实现对硬件的控制。各API就是应用调用的函数。</p>
+<h2 id="IN指令和OUT指令"><a href="#IN指令和OUT指令" class="headerlink" title="IN指令和OUT指令"></a>IN指令和OUT指令</h2><p>IN指令通过指定端口号的端口输入数据，并将其存储在CPU内部的寄存器中。OUT指令则是将CPU寄存器中存储的数据，输出到指定端口号的端口。</p>
+<p>与外围设备的连接器，其内部有用来交换计算机主机同外围设备之间电流特性的IC，称为IO控制器。IO控制器中有用于临时保存输入输出数据的内存，即端口。一个IC可能有多个端口，并且计算机可能有多个IO控制器。端口号也称为IO地址。IN指令和OUT指令在端口号指定的端口和CPU之间进行数据的输入和输出。</p>
+<p>蜂鸣器发声的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">man</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    _asm &#123;</div><div class="line">        IN EAX, <span class="number">61</span>H</div><div class="line">        OR EAX, <span class="number">03</span>H</div><div class="line">        OUT <span class="number">61</span>H, EAX</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt; <span class="number">1000</span>; i++);</div><div class="line"></div><div class="line">    _asm &#123;</div><div class="line">        IN EAX, <span class="number">61</span>H</div><div class="line">        AND EAX, <span class="number">0F</span>CH</div><div class="line">        OUT <span class="number">61</span>H, EAX</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="外围设备的中断请求"><a href="#外围设备的中断请求" class="headerlink" title="外围设备的中断请求"></a>外围设备的中断请求</h2><p>IRQ(Interrupt Request) 中断请求，用来暂停当前正在运行的程序，并且跳转到其他程序运行的机制，称为中断处理。</p>
+<p>实施中断请求处理的是连接外围设备的IO控制器，负责实施中断处理程序的是CPU。外围设备的中断请求会使用不同于IO端口号的其他编号，称为中断编号。</p>
+<p>操作系统及BIOS则会提供响应中断编号的中断处理程序。</p>
+<p>在IO控制器和CPU中间会有一个中断控制器进行缓冲，用来把从多个外围设备发出的中断有序的传递给CPU。</p>
+<p>CPU接收到中断控制器的中断请求后，会将当前运行的程序中断，并且切换到中断处理程序。首先将CPU所有寄存器的值保存到内存的栈中，在中断处理程序完成输入输出后，再将栈中保存的数值还原到CPU寄存器中。</p>
+<h2 id="中断实现实时处理"><a href="#中断实现实时处理" class="headerlink" title="中断实现实时处理"></a>中断实现实时处理</h2><p>不利用中断也可以从外围设备输入数据，这样的话，就需要不断检测外围设备是否有数据输入。</p>
+<p>所以通过中断，可以进行实时处理。</p>
+<h2 id="DMA短时间传送大量数据"><a href="#DMA短时间传送大量数据" class="headerlink" title="DMA短时间传送大量数据"></a>DMA短时间传送大量数据</h2><p>DMA(Direct Memeory Access)，不通过CPU的情况，外围设备直接和主存进行数据传送，这样大量数据就可以短时间存到内存。</p>
+<p>DMA通道，用于CPU识别哪一个外围设备使用了DMA。</p>
+<p>IO端口号，IRQ(中断编号)，DMA(DMA通道)识别外围设备的3点组合。</p>
+<h2 id="文字和图片的显示机制"><a href="#文字和图片的显示机制" class="headerlink" title="文字和图片的显示机制"></a>文字和图片的显示机制</h2><p>显示器中显示的信息一直储存在某内存中，称为VRAM，往VRAM写入数据，数据就会在显示器中显示。实现该功能的程序，由操作系统或者BIOS提供，借助中断来进行处理的。</p>
+<p>显卡一般配有与主存独立的VRAM和GPU(图形处理器)，提升图形的描绘速度。</p>
+<p>利用输入输出指令同外部设备进行输入输出处理。</p>
+]]></content>
     
     <summary type="html">
     
@@ -386,9 +406,10 @@
     <link href="http://skyrover.me/2018/07/05/leetcode_every_day/"/>
     <id>http://skyrover.me/2018/07/05/leetcode_every_day/</id>
     <published>2018-07-05T11:11:32.000Z</published>
-    <updated>2018-07-06T04:14:29.000Z</updated>
+    <updated>2018-07-06T23:39:25.000Z</updated>
     
     <content type="html"><![CDATA[<p>坚持每天刷Leetcode，每日至少一题。</p>
+<p>2018-07-07</p>
 <h1 id="2018-07-06"><a href="#2018-07-06" class="headerlink" title="2018-07-06"></a>2018-07-06</h1><h2 id="托普利茨矩阵"><a href="#托普利茨矩阵" class="headerlink" title="托普利茨矩阵"></a><a href="https://leetcode-cn.com/problems/toeplitz-matrix/description/" target="_blank" rel="external">托普利茨矩阵</a></h2><h1 id="2018-07-05"><a href="#2018-07-05" class="headerlink" title="2018-07-05"></a>2018-07-05</h1><h2 id="二进制表示中质数个计算置位"><a href="#二进制表示中质数个计算置位" class="headerlink" title="二进制表示中质数个计算置位"></a><a href="https://leetcode-cn.com/problems/prime-number-of-set-bits-in-binary-representation/description/" target="_blank" rel="external">二进制表示中质数个计算置位</a></h2><p>最大的数不超过100万，直接把二进制中小于100万的位数弄出来，这样二进制中最多的1，就是这个最大值了。所以直接遍历下，然后判断其中1的个数是不是在质数列表中即可。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countPrimeSetBits</span><span class="params">(self, L, R)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type L: int</span></div><div class="line"><span class="string">        :type R: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 2^19 == 524288</span></div><div class="line">        primes = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>&#125;</div><div class="line">        res = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> number <span class="keyword">in</span> range(L, R+<span class="number">1</span>):</div><div class="line">            count = bin(number).count(<span class="string">'1'</span>)</div><div class="line">            <span class="keyword">if</span> count <span class="keyword">in</span> primes:</div><div class="line">                res += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
 <h1 id="2018-07-04"><a href="#2018-07-04" class="headerlink" title="2018-07-04"></a>2018-07-04</h1><h2 id="棒球比赛"><a href="#棒球比赛" class="headerlink" title="棒球比赛"></a><a href="https://leetcode-cn.com/problems/baseball-game/description/" target="_blank" rel="external">棒球比赛</a></h2><p>题目复杂，说了一大堆，解法简单</p>
@@ -424,7 +445,8 @@
     <summary type="html">
     
       &lt;p&gt;坚持每天刷Leetcode，每日至少一题。&lt;/p&gt;
-&lt;h1 id=&quot;2018-07-06&quot;&gt;&lt;a href=&quot;#2018-07-06&quot; class=&quot;headerlink&quot; title=&quot;2018-07-06&quot;&gt;&lt;/a&gt;2018-07-06&lt;/h1&gt;&lt;h2 id=&quot;托普利茨
+&lt;p&gt;2018-07-07&lt;/p&gt;
+&lt;h1 id=&quot;2018-07-06&quot;&gt;&lt;a href=&quot;#2018-07-06&quot; class=&quot;headerlink&quot; title=&quot;2018-07-06&quot;&gt;&lt;/a&gt;2018-07-0
     
     </summary>
     
