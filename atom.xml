@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-07-04T08:37:06.000Z</updated>
+  <updated>2018-07-06T01:37:20.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://skyrover.me/2018/07/04/leetcode_every_day/"/>
     <id>http://skyrover.me/2018/07/04/leetcode_every_day/</id>
     <published>2018-07-04T11:11:32.000Z</published>
-    <updated>2018-07-04T08:37:06.000Z</updated>
+    <updated>2018-07-06T01:37:20.000Z</updated>
     
     <content type="html"><![CDATA[<p>坚持每天刷Leetcode，每日至少一题。</p>
-<h1 id="2018-07-04"><a href="#2018-07-04" class="headerlink" title="2018-07-04"></a>2018-07-04</h1><h2 id="棒球比赛"><a href="#棒球比赛" class="headerlink" title="棒球比赛"></a><a href="https://leetcode-cn.com/problems/baseball-game/description/" target="_blank" rel="external">棒球比赛</a></h2><p>题目复杂，说了一大堆，解法简单</p>
+<h1 id="2018-07-06"><a href="#2018-07-06" class="headerlink" title="2018-07-06"></a>2018-07-06</h1><h1 id="2018-07-05"><a href="#2018-07-05" class="headerlink" title="2018-07-05"></a>2018-07-05</h1><h1 id="2018-07-04"><a href="#2018-07-04" class="headerlink" title="2018-07-04"></a>2018-07-04</h1><h2 id="棒球比赛"><a href="#棒球比赛" class="headerlink" title="棒球比赛"></a><a href="https://leetcode-cn.com/problems/baseball-game/description/" target="_blank" rel="external">棒球比赛</a></h2><p>题目复杂，说了一大堆，解法简单</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calPoints</span><span class="params">(self, ops)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type ops: List[str]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        res = []</div><div class="line">        <span class="keyword">for</span> op <span class="keyword">in</span> ops:</div><div class="line">            <span class="keyword">if</span> op == <span class="string">'+'</span>:</div><div class="line">                res.append(sum(res[<span class="number">-2</span>:]))</div><div class="line">            <span class="keyword">elif</span> op == <span class="string">'D'</span>:</div><div class="line">                res.append(res[<span class="number">-1</span>] * <span class="number">2</span>)</div><div class="line">            <span class="keyword">elif</span> op == <span class="string">'C'</span>:</div><div class="line">                res.pop(<span class="number">-1</span>)</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                res.append(int(op))</div><div class="line">        <span class="keyword">return</span> sum(res)</div></pre></td></tr></table></figure>
 <h2 id="修剪二叉搜索树"><a href="#修剪二叉搜索树" class="headerlink" title="修剪二叉搜索树"></a><a href="https://leetcode-cn.com/problems/trim-a-binary-search-tree/description/" target="_blank" rel="external">修剪二叉搜索树</a></h2><p>递归递归递归</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Definition for a binary tree node.</span></div><div class="line"><span class="comment"># class TreeNode:</span></div><div class="line"><span class="comment">#     def __init__(self, x):</span></div><div class="line"><span class="comment">#         self.val = x</span></div><div class="line"><span class="comment">#         self.left = None</span></div><div class="line"><span class="comment">#         self.right = None</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">trimBST</span><span class="params">(self, root, L, R)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type root: TreeNode</span></div><div class="line"><span class="string">        :type L: int</span></div><div class="line"><span class="string">        :type R: int</span></div><div class="line"><span class="string">        :rtype: TreeNode</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</div><div class="line">            <span class="keyword">return</span></div><div class="line">        <span class="keyword">if</span> L &lt;= root.val &lt;= R:</div><div class="line">            root.left = self.trimBST(root.left, L, R)</div><div class="line">            root.right = self.trimBST(root.right, L, R)</div><div class="line">        <span class="keyword">elif</span> root.val &lt; L:</div><div class="line">            root = self.trimBST(root.right, L, R)</div><div class="line">        <span class="keyword">elif</span> root.val &gt; R:</div><div class="line">            root = self.trimBST(root.left, L, R)</div><div class="line">        <span class="keyword">return</span> root</div></pre></td></tr></table></figure>
@@ -56,7 +56,7 @@
     <summary type="html">
     
       &lt;p&gt;坚持每天刷Leetcode，每日至少一题。&lt;/p&gt;
-&lt;h1 id=&quot;2018-07-04&quot;&gt;&lt;a href=&quot;#2018-07-04&quot; class=&quot;headerlink&quot; title=&quot;2018-07-04&quot;&gt;&lt;/a&gt;2018-07-04&lt;/h1&gt;&lt;h2 id=&quot;棒球比赛
+&lt;h1 id=&quot;2018-07-06&quot;&gt;&lt;a href=&quot;#2018-07-06&quot; class=&quot;headerlink&quot; title=&quot;2018-07-06&quot;&gt;&lt;/a&gt;2018-07-06&lt;/h1&gt;&lt;h1 id=&quot;2018
     
     </summary>
     
@@ -76,7 +76,7 @@
     <link href="http://skyrover.me/2018/07/04/dive_in_computer_system/"/>
     <id>http://skyrover.me/2018/07/04/dive_in_computer_system/</id>
     <published>2018-07-03T23:36:46.000Z</published>
-    <updated>2018-07-04T01:35:48.000Z</updated>
+    <updated>2018-07-06T01:38:02.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1><h2 id="CPU内部结构解析"><a href="#CPU内部结构解析" class="headerlink" title="CPU内部结构解析"></a>CPU内部结构解析</h2><p>CPU中，负责保存指令和数据的寄存器，CPU和内存是由许多晶体管组成的电子部件，称为IC(集成电路)。</p>
 <p>CPU内部由寄存器，控制器，运算器和时钟四个部分组成。</p>
@@ -298,7 +298,127 @@
 <p>操作系统和高级编程语言使得硬件抽象化。</p>
 <h1 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h1><p>汇编语言是通过助记符来记述程序的。asm是assembler汇编器的缩写，在高级编程语言的源代码中，即使指令和数据在编写时候是分散的，编译后也会在段定义中集合汇总起来。在汇编语言中，通过跳转指令，可以实现循环和条件分支。</p>
 <p>使用助记符的编程语言-汇编语言。汇编，反汇编。编译，反编译。汇编语言中 ; 之后是注释。</p>
-]]></content>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">_TEXT segment dword public use32 &apos;CODE&apos;</div><div class="line">_TEXT ends</div><div class="line">_DATA segment dword public use32 &apos;DATA&apos;</div><div class="line">_DATA ends</div><div class="line">_BSS segment dword public use32 &apos;BSS&apos;</div><div class="line">_BSS ends</div><div class="line">DGROUP group _BSS, _DATA</div><div class="line">_TEXT segment dword public use32 &apos;CODE&apos;</div><div class="line">_AddNum         proc       near</div><div class="line">    push        ebp   ; 将ebp寄存器的值存入栈中</div><div class="line">    mov         ebp, esp</div><div class="line">    mov         eax, dword ptr [ebp+8]</div><div class="line">    add         eax, dword ptr [ebp+12]</div><div class="line">    pop         ebp</div><div class="line">    ret</div><div class="line">_AddNum         endp</div><div class="line">_MyFunc         proc        near</div><div class="line">    push        ebp</div><div class="line">    mov         ebp, esp</div><div class="line">    push        456</div><div class="line">    push        123</div><div class="line">    call        _AddNum</div><div class="line">    add         esp, 8</div><div class="line">    pop         ebp</div><div class="line">    ret</div><div class="line">_MyFunc         endp</div><div class="line">_TEXT           ends</div><div class="line">    end</div></pre></td></tr></table></figure>
+<h2 id="伪指令"><a href="#伪指令" class="headerlink" title="伪指令"></a>伪指令</h2><p>汇编语言的源代码，是由转换成本地代码的指令和针对汇编器的伪指令构成的。负责把程序的构造及汇编的方法指示给汇编器。</p>
+<p>segment和ends围起来的部分，给构成程序的命令和数据的集合体加上一个名字，称为段定义。一个程序由多个段定义构成。</p>
+<p>这里定义了三个<code>_TEXT</code>, <code>_DATA</code>, <code>_BSS</code>段定义。<code>_TEXT</code>是指令的段定义，<code>_DATA</code>是被初始化的数据的段定义，<code>_BSS</code>是尚未初始化的数据的段定义。</p>
+<p>group伪指令，表示的是将<code>_BSS</code>和<code>_DATA</code>两个段定义汇总为DGROUP的组。另外，栈和堆的内存空间会在程序运行时生成。</p>
+<p><code>_AddNum</code>和<code>_MyFunc</code>是属于<code>_TEXT</code>这一段定义的，proc和endp之间的是表示函数的范围，过程的范围，相当于C语言的函数的形式称为过程，end表示源代码结束。</p>
+<h2 id="汇编的语法是操作码-操作数"><a href="#汇编的语法是操作码-操作数" class="headerlink" title="汇编的语法是操作码+操作数"></a>汇编的语法是操作码+操作数</h2><p>1行表示对CPU的一个指令，操作码+操作数</p>
+<table>
+<thead>
+<tr>
+<th>操作码</th>
+<th style="text-align:center">操作数</th>
+<th style="text-align:right">功能 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mov</td>
+<td style="text-align:center">A, B</td>
+<td style="text-align:right">把B的值赋给A</td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align:center">A, B</td>
+<td style="text-align:right">把A同B的值相加，并将结果赋给A</td>
+</tr>
+<tr>
+<td>push</td>
+<td style="text-align:center">A</td>
+<td style="text-align:right">把A的值存在栈中</td>
+</tr>
+<tr>
+<td>pop</td>
+<td style="text-align:center">A</td>
+<td style="text-align:right">从栈中读取值，并将其赋给A</td>
+</tr>
+<tr>
+<td>call</td>
+<td style="text-align:center">A</td>
+<td style="text-align:right">调用函数A</td>
+</tr>
+<tr>
+<td>ret</td>
+<td style="text-align:center">无</td>
+<td style="text-align:right">将处理返回到函数的调用源</td>
+</tr>
+</tbody>
+</table>
+<p>内存中存储着构成本地代码的指令和数据，程序运行时，CPU会从内存中把指令和数据读出，然后再将其存储在CPU内部的寄存器中进行处理。</p>
+<table>
+<thead>
+<tr>
+<th>寄存器名</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:right">功能 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>eax</td>
+<td style="text-align:center">累加寄存器</td>
+<td style="text-align:right">运算</td>
+</tr>
+<tr>
+<td>ebx</td>
+<td style="text-align:center">基址寄存器</td>
+<td style="text-align:right">存储内存地址</td>
+</tr>
+<tr>
+<td>ecx</td>
+<td style="text-align:center">计数寄存器</td>
+<td style="text-align:right">计算循环次数</td>
+</tr>
+<tr>
+<td>edx</td>
+<td style="text-align:center">数据计数器</td>
+<td style="text-align:right">存储数据</td>
+</tr>
+<tr>
+<td>esi</td>
+<td style="text-align:center">源基址寄存器</td>
+<td style="text-align:right">存储数据发送源的内存地址</td>
+</tr>
+<tr>
+<td>edi</td>
+<td style="text-align:center">目标基址寄存器</td>
+<td style="text-align:right">存储数据发送目标的内存地址</td>
+</tr>
+<tr>
+<td>ebp</td>
+<td style="text-align:center">扩展基址指针寄存器</td>
+<td style="text-align:right">存储数据存储领域基点的内存地址</td>
+</tr>
+<tr>
+<td>esp</td>
+<td style="text-align:center">扩展栈指针寄存器</td>
+<td style="text-align:right">存储栈中最高位数据的内存地址</td>
+</tr>
+</tbody>
+</table>
+<h2 id="MOV指令"><a href="#MOV指令" class="headerlink" title="MOV指令"></a>MOV指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mov ebp, esp</div><div class="line">mov eax, dword ptr [ebp+8]</div></pre></td></tr></table></figure>
+<p>dword ptr(double word pointer)表示的是从指令内存地址读出4字节的数据。</p>
+<h2 id="对栈进行push和pop"><a href="#对栈进行push和pop" class="headerlink" title="对栈进行push和pop"></a>对栈进行push和pop</h2><p>数据在存储的时候从内存的下层(大的地址编号)逐渐往上层(小的地址编号)累积，读出时则按照从上往下顺序进行。</p>
+<p>32位CPU中，一次push或者pop可以处理32位的数据，对栈进行读写的内存地址是由esp寄存器(栈指针)进行管理的，push和pop指令运行后，esp寄存器的值会自动进行更新，(push减4，pop加4)</p>
+<h2 id="函数调用机制"><a href="#函数调用机制" class="headerlink" title="函数调用机制"></a>函数调用机制</h2><p>在汇编语言中，函数名表示的是函数所在的内存地址，并且push指令和pop指令必须以4字节为单位对数据进行入栈和出栈处理。</p>
+<p>call指令运行后，下一行指令的内存地址会自动push入栈，这样在调用函数之后，使用ret指令pop出栈，这样程序流程就可以返回到之前的地址上。</p>
+<p><code>add         esp, 8</code> 这个可以对栈中存储的两个参数进行销毁。</p>
+<h2 id="函数内部的处理"><a href="#函数内部的处理" class="headerlink" title="函数内部的处理"></a>函数内部的处理</h2><p>首先<code>push ebp</code>，ebp是基址寄存器，到最后<code>pop ebp</code>。这样是把函数中用到的ebp寄存器的内容恢复到函数调用之前的状态。所以需要暂时将其保存在栈中，然后在函数处理完毕之前出栈，返回到原来的状态。</p>
+<p>esp栈指针寄存器，<code>mov ebp, esp</code>，将负责管理栈地址的esp寄存器的值赋值到了ebp寄存器，因为mov指令中方括号的参数是不允许指令esp寄存器的。所以不直接通过esp，而是ebp来读写栈内容。而ebp的内容已经暂时保存在了栈中。</p>
+<p><code>mov eax, dword ptr [ebp+8]</code>，读取栈中存储的第一个参数123，将其读出到eax累加寄存器寄存器中。ebp现在是栈指针寄存器，即栈顶，而栈顶是要返回的指令地址，第二个就是参数123</p>
+<p><code>add eax, dword ptr [ebp+12]</code>，读取栈中存储的第一个参数456，然后和当前eax寄存器值相加，并且存储结果在eax寄存器中。</p>
+<p>函数的参数是通过栈来传递，返回值是通过寄存器来返回的。</p>
+<p>ret指令运行后，栈顶的目的地内存地址就会出栈。</p>
+<h2 id="始终确保全局变量用的内存空间"><a href="#始终确保全局变量用的内存空间" class="headerlink" title="始终确保全局变量用的内存空间"></a>始终确保全局变量用的内存空间</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a1 = <span class="number">1</span>;</div><div class="line"><span class="keyword">int</span> a2 = <span class="number">2</span>;</div><div class="line"><span class="keyword">int</span> b1, b2;</div></pre></td></tr></table></figure>
+<p>转换为汇编代码则是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">_DATA segment dword publish use32 &apos;DATA&apos;</div><div class="line">_a1 label dword</div><div class="line">    dd    1</div><div class="line">_a2 label dword</div><div class="line">    dd    2</div><div class="line">_DATA ends</div><div class="line"></div><div class="line">_BSS segment dword public use32 &apos;BSS&apos;</div><div class="line">_b1 label dword</div><div class="line">    db 4 dup(?)</div><div class="line">_b2 label dword</div><div class="line">    db 4 dup(?)</div><div class="line">_BSS ends</div></pre></td></tr></table></figure>
+<p>编译后的程序，会被归类到名为段定义的组，初始化的全局变量会归到<code>_DATA</code>中，没有初始化的全局变量，会归到<code>_BSS</code>的段定义中，指令会被归类到<code>_TEXT</code>中。</p>
+<p><code>_a1 label dword</code>定义了<code>_a1</code>标签，标签表示的是相对于段定义起始位置的位置，dd 1 表示的是define double word，申请了一个4字节的内存空间。</p>
+<p>db 4 dup(?)申请分配了4字节的内存，但是值没有确定，db - define byte</p>
+<p>汇编语言暂时学到这里，以后有时间再继续深入研究！</p>
+<h1 id="硬件控制方法"><a href="#硬件控制方法" class="headerlink" title="硬件控制方法"></a>硬件控制方法</h1>]]></content>
     
     <summary type="html">
     
