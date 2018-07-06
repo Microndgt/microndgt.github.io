@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>程序是怎么跑起来的 - 读书笔记 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="程序是怎么跑起来的,计算机组成原理">
+    <meta name="description" content="CPUCPU内部结构解析CPU中，负责保存指令和数据的寄存器，CPU和内存是由许多晶体管组成的电子部件，称为IC(集成电路)。 CPU内部由寄存器，控制器，运算器和时钟四个部分组成。  寄存器：暂存指令，数据，20-100个寄存器 控制器：负责把内存上的指令和数据读入寄存器，并且根据指令的执行结果控制整个计算机 运算器：负责运算从内存读入寄存器的数据 时钟：负责发出CPU开始计时的时钟信号  主存">
+<meta name="keywords" content="程序是怎么跑起来的,计算机组成原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序是怎么跑起来的 - 读书笔记">
+<meta property="og:url" content="http://skyrover.me/2018/07/06/dive_in_computer_system/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="CPUCPU内部结构解析CPU中，负责保存指令和数据的寄存器，CPU和内存是由许多晶体管组成的电子部件，称为IC(集成电路)。 CPU内部由寄存器，控制器，运算器和时钟四个部分组成。  寄存器：暂存指令，数据，20-100个寄存器 控制器：负责把内存上的指令和数据读入寄存器，并且根据指令的执行结果控制整个计算机 运算器：负责运算从内存读入寄存器的数据 时钟：负责发出CPU开始计时的时钟信号  主存">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-06T04:37:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="程序是怎么跑起来的 - 读书笔记">
+<meta name="twitter:description" content="CPUCPU内部结构解析CPU中，负责保存指令和数据的寄存器，CPU和内存是由许多晶体管组成的电子部件，称为IC(集成电路)。 CPU内部由寄存器，控制器，运算器和时钟四个部分组成。  寄存器：暂存指令，数据，20-100个寄存器 控制器：负责把内存上的指令和数据读入寄存器，并且根据指令的执行结果控制整个计算机 运算器：负责运算从内存读入寄存器的数据 时钟：负责发出CPU开始计时的时钟信号  主存">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">程序是怎么跑起来的 - 读书笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">程序是怎么跑起来的 - 读书笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-07-05T23:36:46.000Z" itemprop="datePublished" class="page-time">
+  2018-07-06 07:36:46
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CPU"><span class="post-toc-number">1.</span> <span class="post-toc-text">CPU</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU内部结构解析"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">CPU内部结构解析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CPU是寄存器的集合体"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">CPU是寄存器的集合体</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#决定程序流程的程序计数器"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">决定程序流程的程序计数器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#条件分支和循环机制"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">条件分支和循环机制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数的调用机制"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">函数的调用机制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#通过地址和索引实现数组"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">通过地址和索引实现数组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#机器语言指令的主要类型"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">机器语言指令的主要类型</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据是用二进制表示的"><span class="post-toc-number">2.</span> <span class="post-toc-text">数据是用二进制表示的</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二进制数"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">二进制数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#移位运算和乘除运算"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">移位运算和乘除运算</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#补码"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">补码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#逻辑右移和算术右移"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">逻辑右移和算术右移</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#逻辑运算"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">逻辑运算</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小数运算"><span class="post-toc-number">3.</span> <span class="post-toc-text">小数运算</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#用二进制数表示小数"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">用二进制数表示小数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算机出错的原因"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">计算机出错的原因</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#浮点数"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">浮点数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正则表达式和EXCESS系统"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">正则表达式和EXCESS系统</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#避免浮点数出错"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">避免浮点数出错</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二进制数和十六进制数"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">二进制数和十六进制数</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#内存"><span class="post-toc-number">4.</span> <span class="post-toc-text">内存</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存的物理机制"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">内存的物理机制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存的逻辑模型-楼房"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">内存的逻辑模型 - 楼房</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#指针"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">指针</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数组"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">数组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#栈，队列和环形缓冲区"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">栈，队列和环形缓冲区</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#链表"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">链表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二叉查找树"><span class="post-toc-number">4.7.</span> <span class="post-toc-text">二叉查找树</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#磁盘"><span class="post-toc-number">5.</span> <span class="post-toc-text">磁盘</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#读入内存"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">读入内存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#磁盘缓存"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">磁盘缓存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#虚拟内存"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">虚拟内存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#节约内存"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">节约内存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#磁盘的物理结构"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">磁盘的物理结构</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据压缩"><span class="post-toc-number">6.</span> <span class="post-toc-text">数据压缩</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件是字节数据的集合"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">文件是字节数据的集合</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#RLE算法"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">RLE算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#哈夫曼算法"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">哈夫曼算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#可逆压缩和非可逆压缩"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">可逆压缩和非可逆压缩</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#运行环境"><span class="post-toc-number">7.</span> <span class="post-toc-text">运行环境</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行环境-操作系统-硬件"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">运行环境=操作系统+硬件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#FreeBSD-Port源代码"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">FreeBSD Port源代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#虚拟机"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">虚拟机</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#提供相同运行环境的Java虚拟机"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">提供相同运行环境的Java虚拟机</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#BIOS和引导"><span class="post-toc-number">7.5.</span> <span class="post-toc-text">BIOS和引导</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#编译"><span class="post-toc-number">8.</span> <span class="post-toc-text">编译</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编译器"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">编译器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DLL文件及导入库"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">DLL文件及导入库</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#可执行文件运行"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">可执行文件运行</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#栈和堆"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">栈和堆</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#操作系统"><span class="post-toc-number">9.</span> <span class="post-toc-text">操作系统</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#汇编"><span class="post-toc-number">10.</span> <span class="post-toc-text">汇编</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#伪指令"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">伪指令</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#汇编的语法是操作码-操作数"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">汇编的语法是操作码+操作数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MOV指令"><span class="post-toc-number">10.3.</span> <span class="post-toc-text">MOV指令</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对栈进行push和pop"><span class="post-toc-number">10.4.</span> <span class="post-toc-text">对栈进行push和pop</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数调用机制"><span class="post-toc-number">10.5.</span> <span class="post-toc-text">函数调用机制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数内部的处理"><span class="post-toc-number">10.6.</span> <span class="post-toc-text">函数内部的处理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#始终确保全局变量用的内存空间"><span class="post-toc-number">10.7.</span> <span class="post-toc-text">始终确保全局变量用的内存空间</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#硬件控制方法"><span class="post-toc-number">11.</span> <span class="post-toc-text">硬件控制方法</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-dive_in_computer_system"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">程序是怎么跑起来的 - 读书笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-07-06 07:36:46 07:36:46" datetime="2018-07-05T23:36:46.000Z"  itemprop="datePublished">2018-07-06 07:36:46</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/">读书</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/读书/编程/">编程</a></li></ul></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1><h2 id="CPU内部结构解析"><a href="#CPU内部结构解析" class="headerlink" title="CPU内部结构解析"></a>CPU内部结构解析</h2><p>CPU中，负责保存指令和数据的寄存器，CPU和内存是由许多晶体管组成的电子部件，称为IC(集成电路)。</p>
+<p>CPU内部由寄存器，控制器，运算器和时钟四个部分组成。</p>
+<ul>
+<li>寄存器：暂存指令，数据，20-100个寄存器</li>
+<li>控制器：负责把内存上的指令和数据读入寄存器，并且根据指令的执行结果控制整个计算机</li>
+<li>运算器：负责运算从内存读入寄存器的数据</li>
+<li>时钟：负责发出CPU开始计时的时钟信号</li>
+</ul>
+<p>主存通过控制芯片等与CPU相连，主要负责存储指令和数据。主存由可写的元素构成，每个字节都带有一个地址编号，CPU可以通过该地址读取主存中的指令和数据。</p>
+<p>程序启动后，根据时钟信号，控制器会从内存中读取指令和数据，通过对这些指令加以解释和运行，运算器就会对数据进行运算，控制器根据运算结果来控制计算机。</p>
+<h2 id="CPU是寄存器的集合体"><a href="#CPU是寄存器的集合体" class="headerlink" title="CPU是寄存器的集合体"></a>CPU是寄存器的集合体</h2><p>程序是把寄存器作为对象来描述的</p>
+<p>汇编语言采用助记符来编写程序，每一个原本是电气信号的机器语言指令都会有一个相应的助记符，比如mov和add</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mov eax, dword ptr [ebp-8]</div><div class="line">add eax, dword ptr [ebp-0Ch]</div><div class="line">mov dword ptr [ebp-4], eax</div></pre></td></tr></table></figure>
+<p>其中eax和ebp都是寄存器，分别为累加寄存器和基址寄存器，内存的存储场所通过地址编号来区分，寄存器的种类通过名字来区分。</p>
+<p>机器语言级别的程序是通过寄存器来处理的，寄存器中存储的内容既可以是指令也可以是数据，数据分为用于计算的数值和表示内存地址的数值，用于运算的数值放在累加寄存器中存储，表示内存地址的数值放在基址寄存器和变址寄存器中存储。</p>
+<ul>
+<li>累加寄存器：存储执行计算的数据和运算后的数据</li>
+<li>标志寄存器：存储运算处理后CPU的状态</li>
+<li>程序计数器：存储下一条指令所在内存的地址</li>
+<li>基址寄存器：存储数据内存的起始地址</li>
+<li>变址寄存器：存储基址寄存器的相对地址</li>
+<li>通用寄存器：存储任意数据</li>
+<li>指令寄存器：存储指令，CPU内部使用</li>
+<li>栈寄存器：存储栈区域的起始地址</li>
+</ul>
+<p>程序计数器，累加寄存器，标志寄存器，指令寄存器和栈寄存器只有一个</p>
+<h2 id="决定程序流程的程序计数器"><a href="#决定程序流程的程序计数器" class="headerlink" title="决定程序流程的程序计数器"></a>决定程序流程的程序计数器</h2><h2 id="条件分支和循环机制"><a href="#条件分支和循环机制" class="headerlink" title="条件分支和循环机制"></a>条件分支和循环机制</h2><p>顺序执行时候，每执行一个指令程序计数器的值便自动加1，如果出现条件分支和循环，机器语言的指令就可以将程序计数器的值设定为任意地址。</p>
+<p>条件分支和循环中使用的跳转指令，会参照当前执行的运算结果来判断是否跳转，使用了标志寄存器，无论当前累加寄存器的运算结果是正，负还是0，标志寄存器都会将其保存。运算结果的正，零，负三种状态由标志寄存器的三个位表示。</p>
+<p>CPU执行比较的时候，会进行减法运算，结果保存在标志寄存器中(正，负或者0)</p>
+<h2 id="函数的调用机制"><a href="#函数的调用机制" class="headerlink" title="函数的调用机制"></a>函数的调用机制</h2><p>函数调用处理也是通过把程序计数器的值设定成函数的存储地址来实现的。函数原点和被调用函数之间的数据传递，通过内存或者寄存器实现。</p>
+<p>整个调用会使用call指令和return指令，在将函数的入口地址设定到程序计数器之前，call指令会将调用函数后要执行的指令地址存储在栈的主存里。函数处理完毕后，通过函数出口来执行return命令。return命令的功能是把存在栈中的地址设定到程序计数器中。</p>
+<h2 id="通过地址和索引实现数组"><a href="#通过地址和索引实现数组" class="headerlink" title="通过地址和索引实现数组"></a>通过地址和索引实现数组</h2><p>基址寄存器和变址寄存器可以对内存上特定的内存区域进行划分，从而实现数组的操作。</p>
+<p>对于4GB内存，可以用00000000-FFFFFFFF的地址将其划分出来，16进制，1位代表了4位二进制，总共32位，所以一个32位寄存器就可以查看全部的内存地址。</p>
+<p>但是如果要实现数组的话，需要两个寄存器。CPU会把基址寄存器+变址寄存器的值解释为实际查看的内存地址。</p>
+<h2 id="机器语言指令的主要类型"><a href="#机器语言指令的主要类型" class="headerlink" title="机器语言指令的主要类型"></a>机器语言指令的主要类型</h2><ul>
+<li>数据转送指令：寄存器和内存，内存和外存，寄存器和外围设备之间的数据读写操作</li>
+<li>运算指令：用累加寄存器执行算数运算，逻辑运算，比较运算和移位运算</li>
+<li>跳转指令：实现条件分支，循环，强制跳转等</li>
+<li>call/return指令：函数调用/返回调用前的地址</li>
+</ul>
+<h1 id="数据是用二进制表示的"><a href="#数据是用二进制表示的" class="headerlink" title="数据是用二进制表示的"></a>数据是用二进制表示的</h1><p>IC集成电路，微处理器，IC的所有引脚只有直流电压0V和5V两个状态，IC的一个引脚，只能表示两个状态。</p>
+<p>唉，现在才明白很多之前微机原理学到的东西。。之前怎么就荒废过去了，啥都没学到。</p>
+<p>IC的这个特性，决定了计算机的信息数据只能用二进制数来处理。计算机处理信息的最小单位-位bit(binary digit)，就相当于二进制中的一位。</p>
+<p>8位二进制数被称为一个字节，字节是最基本的信息计量单位，位是最小的单位，字节是基本单位。</p>
+<p>32位微处理器，具有32个引脚用于信息输入输出，所以一次可以处理32位4字节的二进制数信息。</p>
+<h2 id="二进制数"><a href="#二进制数" class="headerlink" title="二进制数"></a>二进制数</h2><p>位权，比如十进制数39，就是<code>3*10^1+9*10^0</code>，所以二进制数同理。一个是以10为基数，一个以2位基数。</p>
+<h2 id="移位运算和乘除运算"><a href="#移位运算和乘除运算" class="headerlink" title="移位运算和乘除运算"></a>移位运算和乘除运算</h2><p>移位运算将二进制数值的各位数进行左右移位，左移，右移。<code>&lt;&lt;</code> <code>&gt;&gt;</code>，然后左移右移就可以相当于乘除法。二进制数左移一位，就会扩大两倍。</p>
+<h2 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h2><p>二进制数中表示负数值时候，会把最高位作为符号位使用。符号位0是正数，1为负数。但是-1的二进制数是<code>11111111</code>。</p>
+<p>因为计算机做减法运算的时候其实是在做加法运算，所以表示负数的时候就需要使用二进制的补数。补数就是用正数来表示负数。</p>
+<p>首先将二进制数的各数位的数值全部取反，然后再将结果加1。比如1：<code>00000001</code> 取反是 <code>11111110</code>，再加1，就是<code>11111111</code>表示的就是-1</p>
+<p>补数求解的方法就是 <strong>取反+1</strong>。</p>
+<p>所以是用来进行负数的表示，比如3-5的结果是负数，进行的运算就是<code>00000011+11111011</code>的运算，结果是负数，所以也是补数<code>11111110</code>，根据补数和本体的运算之和为0，可以通过其补数来得到绝对值。<code>00000010</code>，所以<code>11111110</code>表示的结果就是-2</p>
+<h2 id="逻辑右移和算术右移"><a href="#逻辑右移和算术右移" class="headerlink" title="逻辑右移和算术右移"></a>逻辑右移和算术右移</h2><ul>
+<li>逻辑右移：当二进制数的值表示图形模式而非数值的时候，移位后需要在最高位补0</li>
+<li>算术右移：当二进制数作为带符号的数值进行运算时候，移位后在最高位填充移位前符号位的值(0或者1)</li>
+</ul>
+<p>负数运算要使用补数，比如-8应该是8求反+1，是<code>11111000</code>，所以算术右移2位，<code>11111110</code>，可以对这个值求补数为<code>00000010</code>是2，所以前者是-2，所以-8右移两位，相当于除以4，为-2.</p>
+<p>符号扩充：将8位二进制转换为16位二进制的时候，都只需要用符号位的值填充高位即可。</p>
+<h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><ul>
+<li>算术运算：加减乘除</li>
+<li>逻辑运算：对二进制数各数字位0和1进行处理的运算<ul>
+<li>非</li>
+<li>与</li>
+<li>或</li>
+<li>异或XOR</li>
+</ul>
+</li>
+</ul>
+<p>异或是排斥相同数值的运算，两个位数值不同则为1，相同则为0.</p>
+<h1 id="小数运算"><a href="#小数运算" class="headerlink" title="小数运算"></a>小数运算</h1><p>二进制数小数点后的第一位的位权是2^(-1)=0.5，所以<code>0.1 = 1*0.5=0.5</code></p>
+<h2 id="用二进制数表示小数"><a href="#用二进制数表示小数" class="headerlink" title="用二进制数表示小数"></a>用二进制数表示小数</h2><p><code>1011.0011=2^3+2^1+2^0.2^-3+2^-4=11.1875</code></p>
+<p>类比十进制</p>
+<p>将11.1875转为二进制则为：</p>
+<p>11不断的进行短除2，1875不断短乘2</p>
+<h2 id="计算机出错的原因"><a href="#计算机出错的原因" class="headerlink" title="计算机出错的原因"></a>计算机出错的原因</h2><p>出现运算错误的原因是有一些十进制数的小数无法转换为二进制数，比如0.1就无法正常表示。所以二进制数是连续的，但是十进制数是非连贯的。实际上，十进制数0.1表示为二进制数后，会变成<code>0.00011001100</code>循环小数。</p>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p><code>1011.0011</code>这种形式是纸面上的二进制数的形式，实际计算机内部存储不是这样。</p>
+<p>浮点数是指用符号，尾数，基数和指数这四部分来表示的小数：<code>0.12345*10^5</code>，二进制数，则基数为2.所以一般只需要符号，尾数，指数三部分就可以表示浮点数。</p>
+<p>IEEE标准，双精度浮点数和单精度浮点数在表示同一个数值时候使用的位数不同，双精度浮点数表示的数值范围大于单精度浮点数。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th style="text-align:center">符号部分</th>
+<th style="text-align:right">指数部分</th>
+<th>尾数部分 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单精度</td>
+<td style="text-align:center">1位</td>
+<td style="text-align:right">8位</td>
+<td>23位 </td>
+</tr>
+<tr>
+<td>双精度</td>
+<td style="text-align:center">1位</td>
+<td style="text-align:right">11位</td>
+<td>52位 </td>
+</tr>
+</tbody>
+</table>
+<p>数值大小通过尾数部分和指数部分来表示，尾数部分用的是将小数点前面的值固定为1的正则表达式，指数部分用的是EXCESS系统表现。</p>
+<h2 id="正则表达式和EXCESS系统"><a href="#正则表达式和EXCESS系统" class="headerlink" title="正则表达式和EXCESS系统"></a>正则表达式和EXCESS系统</h2><ul>
+<li>尾数部分使用正则表达式</li>
+</ul>
+<p>其实就是使用一定规则来确定表达小数的方式，在二进制中就是小数点前面的值固定为1的正则表达式，也就是将二进制表示的小数左移或者右移数次后，整数部分第一位为1，第二位之后都是0.</p>
+<ul>
+<li>指数部分使用EXCESS系统</li>
+</ul>
+<p>主要是为了表示负数的时候不使用符号位。通过将指数部分表示范围的中间值设为0，使得负号不需要用符号来表示。比如<code>11111111=255</code>的1/2，即<code>01111111=127</code>表示的是0</p>
+<p>比如十进制0.75用单精度浮点数表示就是<code>0-01111110-10000000000000000000000</code>，其中-是用来分割符号部分和指数部分的，可以看到符号位是0，为正数，指数部分是01111110，表示的是126，其中中间数是127，所以指数为<code>126-127=-1</code>，尾数部分其实是<code>1.1000..</code>，因为尾数部分使用了正则表达式。尾数部分转为十进制为：<code>1.5</code>，其中指数为-1，所以<code>1.5*2^-1=0.75</code></p>
+<h2 id="避免浮点数出错"><a href="#避免浮点数出错" class="headerlink" title="避免浮点数出错"></a>避免浮点数出错</h2><p>计算出错的原因就是用浮点数处理小数(也可能是位溢出导致的错误)</p>
+<ul>
+<li>回避，只需要近似值即可</li>
+<li>小数转换为整数，把计算结果再用小数表示出来即可。</li>
+<li>BCD(Binary Coded Decimal)，使用4位来表示0-9的1位数字的处理方法，所以会非常占内存</li>
+</ul>
+<p>在涉及财务计算的时候，将小数转成整数或者使用BCD方法</p>
+<h2 id="二进制数和十六进制数"><a href="#二进制数和十六进制数" class="headerlink" title="二进制数和十六进制数"></a>二进制数和十六进制数</h2><p>二进制4位，相当于十六进制的1位，比如二进制小数<code>1011.011</code>表示为16进制为：<code>B.6</code>。</p>
+<p>十六进制的位权是<code>16</code>，小数部分是<code>16^-1</code></p>
+<h1 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h1><p>高级编程语言中的数据类型表示的是占据内存区域的大小和存储在该内存区域的数据类型。物理内存是以字节为单位进行数据存储的。</p>
+<h2 id="内存的物理机制"><a href="#内存的物理机制" class="headerlink" title="内存的物理机制"></a>内存的物理机制</h2><p>内存是一种名为内存IC的电子元件，包括DRAM(动态随机存取存储器，需要经常刷新以保存数据),SRAM(静态随机存取存储器，不需要刷新电路即能保存数据),ROM等多种形式</p>
+<p>内存IC中有电源，地址信号，数据信号，控制信号等用于输入输出的引脚，通过为其指定地址，来进行数据的读写。</p>
+<p>比如一个IC，VCC和GND是电源，A0-A9是地址信号引脚，D0-D7是数据信号的引脚，RD和WT是控制信号的引脚。一般+5V直流电压表示1，0V表示0</p>
+<p>D0-D7表示一次可以输入或者输出8位(1字节)数据，A0-A9表示10位，所以可以有0000000000-1111111111共1024个地址，也就是1KB，就是1千字节</p>
+<p>现在大容量内存使用的IC就会有更多的地址信号引脚，一个IC就有更多容量，只需要几个IC，就可以达到需要的容量。</p>
+<p>写入的时候，介入电源，使用A0-A9指定存储地址，将数据按位使用电平输入到D0-D7，即可写入数据。</p>
+<p>内存IC内部有大量可以存储8位数据的地方，通过地址指定，可以进行数据的读写。</p>
+<h2 id="内存的逻辑模型-楼房"><a href="#内存的逻辑模型-楼房" class="headerlink" title="内存的逻辑模型 - 楼房"></a>内存的逻辑模型 - 楼房</h2><p>一层有一字节的数据！数据类型表示存储的是何种类型的数据，从内存上看，就是占用的内存大小，通过指令类型，可以实现以特定字节数为单位进行读写。</p>
+<ul>
+<li>char: 1字节</li>
+<li>short: 2字节</li>
+<li>long: 4字节</li>
+</ul>
+<p>如果数据低位存储在内存低位地址的话，叫做小端模式，即低字节序方式。比如short存123，123只需要8位就可以存储，那么内存地址低位存储123，高地址的那一字节存储0，这样就是小端模式。</p>
+<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>指针也是一种变量，所表示的不是数据值，而是存储着数据的内存的地址。一般计算机使用32位内存地址(4字节)，所以指针变量的长度也是32位的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> *d;</div><div class="line"><span class="keyword">short</span> *e;</div><div class="line"><span class="keyword">long</span> *f;</div></pre></td></tr></table></figure>
+<p>指针变量都是32位的，前面的char数据类型表示从指针存储的地址中一次能够读写的数据字节数。比如d指针中存放了32位的地址，但是地址索引到的数据需要读取1字节。</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>数组索引和内存地址的变换工作是由编译器自动实现的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> g[<span class="number">100</span>];</div><div class="line"><span class="keyword">short</span> h[<span class="number">100</span>];</div></pre></td></tr></table></figure>
+<p>数组的类型也表示一次能够读写的内存大小。数组和内存的物理构造是一样的，如果1字节类型的数组，就完全和内存一样了。</p>
+<p>虽然是通过指定索引来使用数组，但是和内存的物理读写没有什么差别，所以可以有栈，队列，链表和二叉查找树等。</p>
+<p>操作数组就类似于操作内存</p>
+<h2 id="栈，队列和环形缓冲区"><a href="#栈，队列和环形缓冲区" class="headerlink" title="栈，队列和环形缓冲区"></a>栈，队列和环形缓冲区</h2><p>队列一般是以环状缓冲区的方式实现的，使用数组来实现一个队列，可以从数组的起始位置开始有序的存储数据，然后再按照存储时的顺序把数据读出，在数组末尾写入数据后，后一个数据就会被写入到数组的起始位置(当然起始位置的数据需要被取出，否则环状缓冲区就满了)</p>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>使用链表，可以高效的对数组数据进行追加，插入和删除</p>
+<h2 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h2><p>使用二叉查找树，可以高效的对数组数据进行检索。考虑到数据的大小关系，可以将其分为左右两个方向的表现形式。</p>
+<p>数组是进行这些处理的基础。</p>
+<h1 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h1><p>磁盘在物理方面只能以扇区位单位进行读写，磁盘代替内存来使用的虚拟内存。</p>
+<p>使用内存来提高磁盘访问速度的机制是磁盘缓存，在windows中程序运行时，存储着可以动态加载调用的函数和数据的文件是dll文件。在exe程序文件中，静态加载函数的方式是静态链接。函数加载方式有静态链接和动态链接。</p>
+<p>windows中，一般磁盘的1个扇区是512字节。</p>
+<h2 id="读入内存"><a href="#读入内存" class="headerlink" title="读入内存"></a>读入内存</h2><p>磁盘中的程序需要读入内存才可以运行，因为负责解析和运行程序内容的CPU，需要通过内部程序计数器来指定内存地址，才能读出程序。</p>
+<h2 id="磁盘缓存"><a href="#磁盘缓存" class="headerlink" title="磁盘缓存"></a>磁盘缓存</h2><p>磁盘缓存是指把从磁盘中读出的数据存储在内存空间的方式，如果需要读取同样数据，即可直接从缓存中读取。</p>
+<p>把低速设备的数据保存在高速设备中，需要的时候从高速设备读取，缓存。</p>
+<h2 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h2><p>是指把磁盘的一部分作为假想的内存来使用。为了实现虚拟内存，必须把实际内存的内容，和磁盘上的虚拟内存的内容进行部分置换，并同时运行程序。</p>
+<p>虚拟内存的方法有分页式和分段式。</p>
+<ul>
+<li>分页：不考虑程序构造情况下，把运行的程序按照一定大小的页进行分割，以页为单位在内存和磁盘间进行置换。一般页的大小为4KB。page in or page out</li>
+</ul>
+<p>磁盘上提供了虚拟内存用的文件(页文件)，文件大小就是虚拟内存的大小。</p>
+<h2 id="节约内存"><a href="#节约内存" class="headerlink" title="节约内存"></a>节约内存</h2><ul>
+<li>通过DLL文件实现函数共有</li>
+</ul>
+<p>DLL(Dynamic Link Libaray) 动态链接库，程序运行时候动态加载(函数和数据的集合)的文件。多个应用可以共有一个DLL文件，从而节约内存。</p>
+<ul>
+<li>通过调用<code>_stdcall</code>减小程序文件大小</li>
+</ul>
+<p>本来在调用方执行的，放在了被调用方执行。</p>
+<p>C语言中，调用函数后，需要执行栈清理指令。这是程序编译的时候编译器自动附加到程序中的，编译器默认把该处理附加在函数调用方。</p>
+<p>同一个程序中，同样的函数可能会反复多次调用，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">push 1C8h</div><div class="line">push 7Bh</div><div class="line">call @LTD+15 (MyFunc)(00401014)</div><div class="line">add esp, 8</div></pre></td></tr></table></figure>
+<p><code>add esp, 8</code>即为栈清理，esp(栈指针寄存器)，使存储着栈数据的esp寄存器前进8位。栈清理处理在函数调用方通过附加一段程序进行清理，要比在被调用函数进行清理要显得臃肿和费内存，所以有<code>_stdcall</code>，使得栈清理变为在被调用函数一方进行。<code>int _stdcall MyFunc(int a, int b)</code></p>
+<h2 id="磁盘的物理结构"><a href="#磁盘的物理结构" class="headerlink" title="磁盘的物理结构"></a>磁盘的物理结构</h2><p>磁盘是通过把其物理表面划分为多个空间来使用的，划分的方式有扇区方式和可变长方式。前者是将磁盘划分为固定长度的空间，后者是划分为长度可变的空间。一般都是扇区方式，将磁盘表面分成若干个同心圆的空间就是磁道，把磁道按照固定大小划分成的空间就是扇区。</p>
+<p>扇区是对磁盘进行物理读写的最小单位，一般一个扇区为512字节。另外win中对磁盘进行读写的单位是扇区整倍簇，为了减少磁盘访问次数，加快读取速度。</p>
+<h1 id="数据压缩"><a href="#数据压缩" class="headerlink" title="数据压缩"></a>数据压缩</h1><p>半角英文数字是1个字节表示的，汉字等全角字符是2个字节表示的。</p>
+<p>BMP格式没有被压缩过，因此比JPEG等压缩图像大。</p>
+<h2 id="文件是字节数据的集合"><a href="#文件是字节数据的集合" class="headerlink" title="文件是字节数据的集合"></a>文件是字节数据的集合</h2><p>文件中的字节数据都是连续存储的</p>
+<h2 id="RLE算法"><a href="#RLE算法" class="headerlink" title="RLE算法"></a>RLE算法</h2><p><code>字符 * 重复次数</code> - RLE(Run Length Encoding) 行程长度编码</p>
+<p>一般用于传真图像的压缩，只有两种颜色，黑白，所以有利于这种算法的压缩。</p>
+<h2 id="哈夫曼算法"><a href="#哈夫曼算法" class="headerlink" title="哈夫曼算法"></a>哈夫曼算法</h2><p>哈夫曼算法关键在于多次出现的数据用小于8位的字节数来表示，不常用的数据则可以用超过8位的字节数来表示。</p>
+<p>莫尔斯编码就是字符种类不同，莫尔斯电码符号长度也是不同的，出现频率高的字符用短编码表示。</p>
+<p>为各压缩对象文件分别构造最佳的编码体系，并以该编码体系为基础进行压缩。因此，用什么样式编码对数据进行分割，需要视文件而定，用哈夫曼算法压缩过的文件中，存储着哈夫曼编码信息和压缩过的数据。</p>
+<p>在哈夫曼算法中，通过借助哈夫曼树构造编码体系，可以构建能够明确进行区分的编码体系。</p>
+<p>哈夫曼树是从叶生枝，再生根，先选最小频率数，层数最深编码最长。</p>
+<p>先选两个出现频率最小的数字，然后形成树，其根节点是两个数字的和。然后循环来做同样的事情，直到最后合并为一个树，这样从根部到底部，左侧为0，右侧为1，就可以对所有字符进行编码了。</p>
+<p>所以频率高的离根越近，这样编码短，频率小的离根远，编码长。</p>
+<p>读取数据的时候按位来读取，然后在哈夫曼树中寻找对应字符。</p>
+<h2 id="可逆压缩和非可逆压缩"><a href="#可逆压缩和非可逆压缩" class="headerlink" title="可逆压缩和非可逆压缩"></a>可逆压缩和非可逆压缩</h2><p>BMP格式是未压缩的(bitmap)，JPEG是压缩过的，而且是非可逆的，因为不需要完全还原，所以可能有部分数据丢失。</p>
+<p>能还原到压缩前状态的压缩为可逆压缩，不能还原的为非可逆压缩。</p>
+<h1 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h1><p>FreeBSD是一种Unix操作系统，通过在各个环境中编译Ports中公开的代码，就可以执行由此生成的本地代码。Java虚拟机用来运行Java应用的字节代码。</p>
+<h2 id="运行环境-操作系统-硬件"><a href="#运行环境-操作系统-硬件" class="headerlink" title="运行环境=操作系统+硬件"></a>运行环境=操作系统+硬件</h2><p>CPU有x86，MIPS，SPARC，PowerPC等几种类型，其各自的机器语言是不同的。机器语言的程序成为本地代码，文本文件中的代码为源代码，源代码进行编译为本地代码。</p>
+<p>在应用软件中，输入，显示，输出并不是直接向硬件发送指令，而是通过向操作系统来发送指令的，这样就不用注意内存和IO地址的不同了。</p>
+<p>但是不同操作系统的API也是由差异的，如果CPU不同，机器语言不同，就需要能够生成该CPU支持的本地代码的编译器对源代码重新进行编译。</p>
+<h2 id="FreeBSD-Port源代码"><a href="#FreeBSD-Port源代码" class="headerlink" title="FreeBSD Port源代码"></a>FreeBSD Port源代码</h2><p>Port机制是指FreeBSD根据当前系统运行的硬件环境编译源代码，从而生成适合当前运行环境的机器语言代码。porting移植</p>
+<h2 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h2><p>操作系统API</p>
+<h2 id="提供相同运行环境的Java虚拟机"><a href="#提供相同运行环境的Java虚拟机" class="headerlink" title="提供相同运行环境的Java虚拟机"></a>提供相同运行环境的Java虚拟机</h2><p>Java(作为程序运行环境)将Java代码编译，编译后形成字节代码，字节代码会通过Java虚拟机转换为本地代码运行，这样就可以形成可以移植的程序了。</p>
+<p>可以实现同样的字节代码在不同的环境下运行，如果有适合不同环境的虚拟机，同样字节码的应用就可以在任何环境下运行了。</p>
+<h2 id="BIOS和引导"><a href="#BIOS和引导" class="headerlink" title="BIOS和引导"></a>BIOS和引导</h2><p>BIOS(Basic input and output system)，存储在ROM中，是预先内置在计算机中的程序，键盘，磁盘和显卡的控制程序，引导程序。引导程序是存储在启动驱动器起始区域的小程序，一般是硬盘。功能是将硬盘等记录的OS加载到内存运行。</p>
+<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><p>CPU可以解析和运行的程序为机器语言代码(本地代码)，将多个目标文件结合成EXE文件的工具为链接器。扩展名为.obj的目标文件内容是本地代码。</p>
+<p>程序运行时候，用来动态申请分配的数据和对象的内存区域形式为堆。</p>
+<h2 id="编译器"><a href="#编译器" class="headerlink" title="编译器"></a>编译器</h2><p>语法解析，句法解析，语义解析。普通编译器，交叉编译器。</p>
+<p>编译之后需要进行链接，编译之后形成的是.obj目标文件。</p>
+<p>将多个目标文件结合，生成可执行文件的处理为链接。</p>
+<p>库文件：把多个目标文件集成保存到一个文件，链接器指定库文件之后，就会从中把需要的目标文件抽取出来，和其他目标文件一起链接成可执行文件。</p>
+<p>sprintf函数，不是通过源代码形式而是通过库文件形式和编译器一起提供的，这样的函数是标准函数。这样就不必提供源代码了。</p>
+<h2 id="DLL文件及导入库"><a href="#DLL文件及导入库" class="headerlink" title="DLL文件及导入库"></a>DLL文件及导入库</h2><p>windows中，API的目标文件，不是存储在通常的库文件中，而是在DLL文件的特殊库文件中。没有存储目标文件的实体，只是存储着dll文件的文件夹信息，这样的库文件为导入库，之后进行动态链接。相反的，存储着目标文件的实体，直接和可执行文件结合的库文件为静态链接库。</p>
+<h2 id="可执行文件运行"><a href="#可执行文件运行" class="headerlink" title="可执行文件运行"></a>可执行文件运行</h2><p>可执行文件中给变量和函数分配了虚拟的内存地址，运行时候，虚拟内存地址会转换成实际的内存地址。链接器在可执行文件开头，追加转换内存地址的必须信息，即再配置信息。这些信息就成为了变量和函数的相对地址，链接后的可执行文件里，变量和函数就会变成一个连续排列的组，各变量和函数就可以使用相对于基点的偏移量表示内存地址。</p>
+<h2 id="栈和堆"><a href="#栈和堆" class="headerlink" title="栈和堆"></a>栈和堆</h2><ul>
+<li>栈是用来存储函数内部临时使用的变量，局部变量，以及函数调用时所用的参数的内存区域。参考函数调用。。</li>
+<li>堆是用来存储程序运行时的任意数据以及对象的内存区域</li>
+</ul>
+<p>内存中的程序，由用于变量的内存空间，用于函数的内存空间，用于栈的内存空间，用于堆的内存空间构成的。</p>
+<p>栈中对数据的存储和舍弃的代码，是编译器自动生成的。每当函数被调用就会申请分配，函数处理完毕后就会自动释放。</p>
+<p>堆的空间，需要明确进行申请分配和释放。<code>malloc()</code>和<code>free()</code>，如果没有及时释放，就会导致内存泄漏。</p>
+<p>Build指的是编译和链接。</p>
+<h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><p>What you see is what you get</p>
+<p>在高级编程语言中，直接调用系统调用的语言，移植性不太好，太依赖于特定系统了。</p>
+<p>操作系统和高级编程语言使得硬件抽象化。</p>
+<h1 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h1><p>汇编语言是通过助记符来记述程序的。asm是assembler汇编器的缩写，在高级编程语言的源代码中，即使指令和数据在编写时候是分散的，编译后也会在段定义中集合汇总起来。在汇编语言中，通过跳转指令，可以实现循环和条件分支。</p>
+<p>使用助记符的编程语言-汇编语言。汇编，反汇编。编译，反编译。汇编语言中 ; 之后是注释。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">_TEXT segment dword public use32 &apos;CODE&apos;</div><div class="line">_TEXT ends</div><div class="line">_DATA segment dword public use32 &apos;DATA&apos;</div><div class="line">_DATA ends</div><div class="line">_BSS segment dword public use32 &apos;BSS&apos;</div><div class="line">_BSS ends</div><div class="line">DGROUP group _BSS, _DATA</div><div class="line">_TEXT segment dword public use32 &apos;CODE&apos;</div><div class="line">_AddNum         proc       near</div><div class="line">    push        ebp   ; 将ebp寄存器的值存入栈中</div><div class="line">    mov         ebp, esp</div><div class="line">    mov         eax, dword ptr [ebp+8]</div><div class="line">    add         eax, dword ptr [ebp+12]</div><div class="line">    pop         ebp</div><div class="line">    ret</div><div class="line">_AddNum         endp</div><div class="line">_MyFunc         proc        near</div><div class="line">    push        ebp</div><div class="line">    mov         ebp, esp</div><div class="line">    push        456</div><div class="line">    push        123</div><div class="line">    call        _AddNum</div><div class="line">    add         esp, 8</div><div class="line">    pop         ebp</div><div class="line">    ret</div><div class="line">_MyFunc         endp</div><div class="line">_TEXT           ends</div><div class="line">    end</div></pre></td></tr></table></figure>
+<h2 id="伪指令"><a href="#伪指令" class="headerlink" title="伪指令"></a>伪指令</h2><p>汇编语言的源代码，是由转换成本地代码的指令和针对汇编器的伪指令构成的。负责把程序的构造及汇编的方法指示给汇编器。</p>
+<p>segment和ends围起来的部分，给构成程序的命令和数据的集合体加上一个名字，称为段定义。一个程序由多个段定义构成。</p>
+<p>这里定义了三个<code>_TEXT</code>, <code>_DATA</code>, <code>_BSS</code>段定义。<code>_TEXT</code>是指令的段定义，<code>_DATA</code>是被初始化的数据的段定义，<code>_BSS</code>是尚未初始化的数据的段定义。</p>
+<p>group伪指令，表示的是将<code>_BSS</code>和<code>_DATA</code>两个段定义汇总为DGROUP的组。另外，栈和堆的内存空间会在程序运行时生成。</p>
+<p><code>_AddNum</code>和<code>_MyFunc</code>是属于<code>_TEXT</code>这一段定义的，proc和endp之间的是表示函数的范围，过程的范围，相当于C语言的函数的形式称为过程，end表示源代码结束。</p>
+<h2 id="汇编的语法是操作码-操作数"><a href="#汇编的语法是操作码-操作数" class="headerlink" title="汇编的语法是操作码+操作数"></a>汇编的语法是操作码+操作数</h2><p>1行表示对CPU的一个指令，操作码+操作数</p>
+<table>
+<thead>
+<tr>
+<th>操作码</th>
+<th style="text-align:center">操作数</th>
+<th style="text-align:right">功能 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mov</td>
+<td style="text-align:center">A, B</td>
+<td style="text-align:right">把B的值赋给A</td>
+</tr>
+<tr>
+<td>add</td>
+<td style="text-align:center">A, B</td>
+<td style="text-align:right">把A同B的值相加，并将结果赋给A</td>
+</tr>
+<tr>
+<td>push</td>
+<td style="text-align:center">A</td>
+<td style="text-align:right">把A的值存在栈中</td>
+</tr>
+<tr>
+<td>pop</td>
+<td style="text-align:center">A</td>
+<td style="text-align:right">从栈中读取值，并将其赋给A</td>
+</tr>
+<tr>
+<td>call</td>
+<td style="text-align:center">A</td>
+<td style="text-align:right">调用函数A</td>
+</tr>
+<tr>
+<td>ret</td>
+<td style="text-align:center">无</td>
+<td style="text-align:right">将处理返回到函数的调用源</td>
+</tr>
+</tbody>
+</table>
+<p>内存中存储着构成本地代码的指令和数据，程序运行时，CPU会从内存中把指令和数据读出，然后再将其存储在CPU内部的寄存器中进行处理。</p>
+<table>
+<thead>
+<tr>
+<th>寄存器名</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:right">功能 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>eax</td>
+<td style="text-align:center">累加寄存器</td>
+<td style="text-align:right">运算</td>
+</tr>
+<tr>
+<td>ebx</td>
+<td style="text-align:center">基址寄存器</td>
+<td style="text-align:right">存储内存地址</td>
+</tr>
+<tr>
+<td>ecx</td>
+<td style="text-align:center">计数寄存器</td>
+<td style="text-align:right">计算循环次数</td>
+</tr>
+<tr>
+<td>edx</td>
+<td style="text-align:center">数据计数器</td>
+<td style="text-align:right">存储数据</td>
+</tr>
+<tr>
+<td>esi</td>
+<td style="text-align:center">源基址寄存器</td>
+<td style="text-align:right">存储数据发送源的内存地址</td>
+</tr>
+<tr>
+<td>edi</td>
+<td style="text-align:center">目标基址寄存器</td>
+<td style="text-align:right">存储数据发送目标的内存地址</td>
+</tr>
+<tr>
+<td>ebp</td>
+<td style="text-align:center">扩展基址指针寄存器</td>
+<td style="text-align:right">存储数据存储领域基点的内存地址</td>
+</tr>
+<tr>
+<td>esp</td>
+<td style="text-align:center">扩展栈指针寄存器</td>
+<td style="text-align:right">存储栈中最高位数据的内存地址</td>
+</tr>
+</tbody>
+</table>
+<h2 id="MOV指令"><a href="#MOV指令" class="headerlink" title="MOV指令"></a>MOV指令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mov ebp, esp</div><div class="line">mov eax, dword ptr [ebp+8]</div></pre></td></tr></table></figure>
+<p>dword ptr(double word pointer)表示的是从指令内存地址读出4字节的数据。</p>
+<h2 id="对栈进行push和pop"><a href="#对栈进行push和pop" class="headerlink" title="对栈进行push和pop"></a>对栈进行push和pop</h2><p>数据在存储的时候从内存的下层(大的地址编号)逐渐往上层(小的地址编号)累积，读出时则按照从上往下顺序进行。</p>
+<p>32位CPU中，一次push或者pop可以处理32位的数据，对栈进行读写的内存地址是由esp寄存器(栈指针)进行管理的，push和pop指令运行后，esp寄存器的值会自动进行更新，(push减4，pop加4)</p>
+<h2 id="函数调用机制"><a href="#函数调用机制" class="headerlink" title="函数调用机制"></a>函数调用机制</h2><p>在汇编语言中，函数名表示的是函数所在的内存地址，并且push指令和pop指令必须以4字节为单位对数据进行入栈和出栈处理。</p>
+<p>call指令运行后，下一行指令的内存地址会自动push入栈，这样在调用函数之后，使用ret指令pop出栈，这样程序流程就可以返回到之前的地址上。</p>
+<p><code>add         esp, 8</code> 这个可以对栈中存储的两个参数进行销毁。</p>
+<h2 id="函数内部的处理"><a href="#函数内部的处理" class="headerlink" title="函数内部的处理"></a>函数内部的处理</h2><p>首先<code>push ebp</code>，ebp是基址寄存器，到最后<code>pop ebp</code>。这样是把函数中用到的ebp寄存器的内容恢复到函数调用之前的状态。所以需要暂时将其保存在栈中，然后在函数处理完毕之前出栈，返回到原来的状态。</p>
+<p>esp栈指针寄存器，<code>mov ebp, esp</code>，将负责管理栈地址的esp寄存器的值赋值到了ebp寄存器，因为mov指令中方括号的参数是不允许指令esp寄存器的。所以不直接通过esp，而是ebp来读写栈内容。而ebp的内容已经暂时保存在了栈中。</p>
+<p><code>mov eax, dword ptr [ebp+8]</code>，读取栈中存储的第一个参数123，将其读出到eax累加寄存器寄存器中。ebp现在是栈指针寄存器，即栈顶，而栈顶是要返回的指令地址，第二个就是参数123</p>
+<p><code>add eax, dword ptr [ebp+12]</code>，读取栈中存储的第一个参数456，然后和当前eax寄存器值相加，并且存储结果在eax寄存器中。</p>
+<p>函数的参数是通过栈来传递，返回值是通过寄存器来返回的。</p>
+<p>ret指令运行后，栈顶的目的地内存地址就会出栈。</p>
+<h2 id="始终确保全局变量用的内存空间"><a href="#始终确保全局变量用的内存空间" class="headerlink" title="始终确保全局变量用的内存空间"></a>始终确保全局变量用的内存空间</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a1 = <span class="number">1</span>;</div><div class="line"><span class="keyword">int</span> a2 = <span class="number">2</span>;</div><div class="line"><span class="keyword">int</span> b1, b2;</div></pre></td></tr></table></figure>
+<p>转换为汇编代码则是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">_DATA segment dword publish use32 &apos;DATA&apos;</div><div class="line">_a1 label dword</div><div class="line">    dd    1</div><div class="line">_a2 label dword</div><div class="line">    dd    2</div><div class="line">_DATA ends</div><div class="line"></div><div class="line">_BSS segment dword public use32 &apos;BSS&apos;</div><div class="line">_b1 label dword</div><div class="line">    db 4 dup(?)</div><div class="line">_b2 label dword</div><div class="line">    db 4 dup(?)</div><div class="line">_BSS ends</div></pre></td></tr></table></figure>
+<p>编译后的程序，会被归类到名为段定义的组，初始化的全局变量会归到<code>_DATA</code>中，没有初始化的全局变量，会归到<code>_BSS</code>的段定义中，指令会被归类到<code>_TEXT</code>中。</p>
+<p><code>_a1 label dword</code>定义了<code>_a1</code>标签，标签表示的是相对于段定义起始位置的位置，dd 1 表示的是define double word，申请了一个4字节的内存空间。</p>
+<p>db 4 dup(?)申请分配了4字节的内存，但是值没有确定，db - define byte</p>
+<p>汇编语言暂时学到这里，以后有时间再继续深入研究！</p>
+<h1 id="硬件控制方法"><a href="#硬件控制方法" class="headerlink" title="硬件控制方法"></a>硬件控制方法</h1>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/07/06/dive_in_computer_system/" target="_blank" rel="external">http://skyrover.me/2018/07/06/dive_in_computer_system/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/程序是怎么跑起来的/">程序是怎么跑起来的</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机组成原理/">计算机组成原理</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/07/06/dive_in_computer_system/&title=《程序是怎么跑起来的 - 读书笔记》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/07/06/dive_in_computer_system/&title=《程序是怎么跑起来的 - 读书笔记》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/07/06/dive_in_computer_system/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《程序是怎么跑起来的 - 读书笔记》 — SkyRover&url=http://skyrover.me/2018/07/06/dive_in_computer_system/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/07/06/dive_in_computer_system/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/07/05/leetcode_every_day/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Leetcode Everyday</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/07/06/dive_in_computer_system/&title=《程序是怎么跑起来的 - 读书笔记》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/07/06/dive_in_computer_system/&title=《程序是怎么跑起来的 - 读书笔记》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/07/06/dive_in_computer_system/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《程序是怎么跑起来的 - 读书笔记》 — SkyRover&url=http://skyrover.me/2018/07/06/dive_in_computer_system/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/07/06/dive_in_computer_system/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3aQW7DMAwFUd//0u42myjzSSeFqNEqSGxLzwVYUeR14XG/DH7l6/X8M5mlOGTIkLEt416O9QTricmTOWz9BBkyZJzAeLeId9fwoIkWsbx3vTYZMmTI4IxvbxxlyJAhI2U8y/u3gCtDhoytGCSJXU9Pfk1f2VdycRkyZGzI4KHw95+/Ut+QIUPGVow7HJzaOWiLVyVDhozRDB7gnurm4FvAeD0yZMgYyuAhst9U0Tm8Wx/qyZAhYzZjfRxPDtHSpXc2f+hvIkOGjHGMtEkrPazvt1ag0CxDhoxjGORxJCCm3zxQ7JQhQ8ZoBl90p4WrVouMj/lkyJAxmkG2YulkJCj3S6dvf5UhQ8YgRmcy3lSRbjp5EitDhozTGOmU68SSp6ApIKhsyJAhYxCDb+ZqhUlS/oxbK9J3I0OGjG0Z6SFXMTMuBfe4wClDhoyhjLT9K23CuNojPm6TIUPGMYy02aKW1vZLC1f6/0GGDBkbMnhg5ZtC3n5BjvNkyJAhgy8iPUrrJLG1VyZDhowTGJ32rFqxIS15fvhehgwZxzD6jRG1JjDymj7cJUOGjKGMOxy1ZotO8xm6S4YMGaMZaSmRJ6g8HPfDtwwZMk5gpCGydijGk+Fi6itDhowDGE8FSlKA7Gz1UH1DhgwZMsI+Dt58lrZixDUEGTJkHMNIk17ynLSQ+cDWUIYMGRsySBJb2+r1WysQW4YMGaMZtdSRp7K1RfAkWYYMGaMZfwSNS6m0JSMyAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
