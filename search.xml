@@ -3,6 +3,45 @@
   
     
     <entry>
+      <title><![CDATA[深入Linux内核架构]]></title>
+      <url>/2018/07/09/dive_into_linux_kernel/</url>
+      <content type="html"><![CDATA[<p>准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/dive_into_linux_kernel.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li>[] 简介和概述</li>
+<li>[] 进程管理和调度</li>
+<li>[] 内存管理</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 读书 </category>
+            
+            <category> 编程 </category>
+            
+            <category> 计划 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 操作系统 </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Leetcode Everyday]]></title>
       <url>/2018/07/08/leetcode_every_day/</url>
       <content type="html"><![CDATA[<p>坚持每天刷Leetcode，每日至少一题。</p>
