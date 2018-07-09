@@ -20,19 +20,19 @@
     
     
     <meta name="keywords" content="操作系统,Linux">
-    <meta name="description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                             [] 简介和概述 [] 进程管理和调度 [] 内存管理 [] 进程虚拟内存 [] 锁与进程间通信 [] 设备驱动程序">
+    <meta name="description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                              简介和概述  内核的任务 (2018-07-09)  实现策略 (2018-07-09)  内核的组成部分  进程">
 <meta name="keywords" content="操作系统,Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入Linux内核架构">
 <meta property="og:url" content="http://skyrover.me/2018/07/09/dive_into_linux_kernel/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                             [] 简介和概述 [] 进程管理和调度 [] 内存管理 [] 进程虚拟内存 [] 锁与进程间通信 [] 设备驱动程序">
+<meta property="og:description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                              简介和概述  内核的任务 (2018-07-09)  实现策略 (2018-07-09)  内核的组成部分  进程">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://skyrover.me/img/dive_into_linux_kernel.png">
-<meta property="og:updated_time" content="2018-07-09T14:13:20.000Z">
+<meta property="og:updated_time" content="2018-07-09T14:20:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入Linux内核架构">
-<meta name="twitter:description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                             [] 简介和概述 [] 进程管理和调度 [] 内存管理 [] 进程虚拟内存 [] 锁与进程间通信 [] 设备驱动程序">
+<meta name="twitter:description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                              简介和概述  内核的任务 (2018-07-09)  实现策略 (2018-07-09)  内核的组成部分  进程">
 <meta name="twitter:image" content="http://skyrover.me/img/dive_into_linux_kernel.png">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
@@ -207,25 +207,35 @@
                 <div class="image-caption"></div>
             </figure>
 <ul>
-<li>[] 简介和概述</li>
-<li>[] 进程管理和调度</li>
-<li>[] 内存管理</li>
-<li>[] 进程虚拟内存</li>
-<li>[] 锁与进程间通信</li>
-<li>[] 设备驱动程序</li>
-<li>[] 模块</li>
-<li>[] 虚拟文件系统</li>
-<li>[] Ext文件系统族</li>
-<li>[] 无持久存储的文件系统</li>
-<li>[] 扩展属性和访问控制表</li>
-<li>[] 网络</li>
-<li>[] 系统调用</li>
-<li>[] 内核活动</li>
-<li>[] 时间管理</li>
-<li>[] 页缓存和块缓存</li>
-<li>[] 数据同步</li>
-<li>[] 页面回收和页交换</li>
-<li>[] 审计</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 简介和概述<ul>
+<li><input type="checkbox" onclick="return false;" checked> 内核的任务 (2018-07-09)</li>
+<li><input type="checkbox" onclick="return false;" checked> 实现策略 (2018-07-09)</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 内核的组成部分<ul>
+<li><input type="checkbox" onclick="return false;" checked> 进程、进程切换、调度 (2018-07-09)</li>
+<li><input type="checkbox" onclick="return false;" checked> Unix进程 (2018-07-09)</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 地址空间与特权级别</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 进程管理和调度</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 内存管理</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 进程虚拟内存</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 锁与进程间通信</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 设备驱动程序</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 模块</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 虚拟文件系统</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> Ext文件系统族</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 无持久存储的文件系统</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 扩展属性和访问控制表</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 网络</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 系统调用</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 内核活动</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 时间管理</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 页缓存和块缓存</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 数据同步</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 页面回收和页交换</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 审计</li>
 </ul>
 
         </div>
