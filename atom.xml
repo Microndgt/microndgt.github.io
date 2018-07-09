@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-07-09T14:04:06.000Z</updated>
+  <updated>2018-07-09T14:13:20.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://skyrover.me/2018/07/09/dive_into_linux_kernel/"/>
     <id>http://skyrover.me/2018/07/09/dive_into_linux_kernel/</id>
     <published>2018-07-09T13:56:46.000Z</published>
-    <updated>2018-07-09T14:04:06.000Z</updated>
+    <updated>2018-07-09T14:13:20.000Z</updated>
     
     <content type="html"><![CDATA[<p>准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的</p>
 <figure class="image-bubble">
@@ -44,6 +44,12 @@
 <li>[] 扩展属性和访问控制表</li>
 <li>[] 网络</li>
 <li>[] 系统调用</li>
+<li>[] 内核活动</li>
+<li>[] 时间管理</li>
+<li>[] 页缓存和块缓存</li>
+<li>[] 数据同步</li>
+<li>[] 页面回收和页交换</li>
+<li>[] 审计</li>
 </ul>
 ]]></content>
     
@@ -74,7 +80,7 @@
     <link href="http://skyrover.me/2018/07/08/leetcode_every_day/"/>
     <id>http://skyrover.me/2018/07/08/leetcode_every_day/</id>
     <published>2018-07-08T11:11:32.000Z</published>
-    <updated>2018-07-09T04:29:17.000Z</updated>
+    <updated>2018-07-09T13:55:42.000Z</updated>
     
     <content type="html"><![CDATA[<p>坚持每天刷Leetcode，每日至少一题。</p>
 <h1 id="2018-07-09"><a href="#2018-07-09" class="headerlink" title="2018-07-09"></a>2018-07-09</h1><h2 id="最大三角形面积"><a href="#最大三角形面积" class="headerlink" title="最大三角形面积"></a><a href="https://leetcode-cn.com/problems/largest-triangle-area/description/" target="_blank" rel="external">最大三角形面积</a></h2><h1 id="2018-07-08"><a href="#2018-07-08" class="headerlink" title="2018-07-08"></a>2018-07-08</h1><h2 id="岛屿的最大面积"><a href="#岛屿的最大面积" class="headerlink" title="岛屿的最大面积"></a><a href="https://leetcode-cn.com/problems/max-area-of-island/description/" target="_blank" rel="external">岛屿的最大面积</a></h2><p>深度优先遍历，注意递归的结束条件</p>
@@ -744,7 +750,7 @@
     <link href="http://skyrover.me/2018/06/16/software_architecture_6/"/>
     <id>http://skyrover.me/2018/06/16/software_architecture_6/</id>
     <published>2018-06-16T12:06:04.000Z</published>
-    <updated>2018-06-16T13:23:02.000Z</updated>
+    <updated>2018-06-16T15:15:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>XSS攻击和SQL注入攻击是网站应用攻击中最重要的两种手段，还有CSRF，Session劫持</p>
 <h1 id="网站攻击和防御"><a href="#网站攻击和防御" class="headerlink" title="网站攻击和防御"></a>网站攻击和防御</h1><h2 id="XSS攻击"><a href="#XSS攻击" class="headerlink" title="XSS攻击"></a>XSS攻击</h2><p>跨站点脚本攻击(Cross site Script)，通过篡改网页，注入恶意HTML脚本，在用户浏览网页时候，控制用户浏览器进行恶意操作。</p>
@@ -7252,9 +7258,9 @@
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
     
-      <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
-    
       <category term="Flask" scheme="http://skyrover.me/tags/Flask/"/>
+    
+      <category term="Celery" scheme="http://skyrover.me/tags/Celery/"/>
     
   </entry>
   
@@ -7331,7 +7337,7 @@
 <p><code>fileinput</code>模块有一些问题，我觉得最大的就是模块非常依赖于全局变量。比如<code>fileinput.input()</code>创建了一个全局的<code>fileinput.FileInput()</code>对象，在这个模块的其他函数就可以使用它。你当然可以忽略这些并且直接去使用<code>fileinput.FileInput()</code>构造器，但是<code>fileinput.input()</code>却是主的API入口。</p>
 <p>其他的问题在于<code>in-place</code>方法劫持了<code>sys.stdout</code>，作为写回替换文件的方法。显然这可以方便的使用<code>print</code>语句来写回，但是你必须记得从以前的文件中读取的数据行中移除新的数据行。</p>
 <p>最后，也是很重要的，<code>fileinput</code>在Python3中的版本不支持指定编码方式，错误模式或者处理新数据行。你可以在二进制模式下打开文件，但是输出总是在文本模式下的。这些问题极大的降低了这个库的可用性。</p>
-<p>因此我写了一个替代方案，使用了非常棒的<code>@contextlib.contextmanager</code>装饰器，这个在Python2和Python3都可以使用，依赖于<code>io.open()</code>来在不同的Python版本中保持兼容性。</p>
+<p>因此我写了一个替代方案，使用了非常棒的<a href="mailto:`@contextlib.contextmanager" target="_blank" rel="external">`@contextlib.contextmanager</a><code>装饰器，这个在Python2和Python3都可以使用，依赖于</code>io.open()`来在不同的Python版本中保持兼容性。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">from contextlib import contextmanager</div><div class="line">import io</div><div class="line">import os</div><div class="line"></div><div class="line"></div><div class="line">@contextmanager</div><div class="line">def inplace(filename, mode=&apos;r&apos;, buffering=-1, encoding=None, errors=None,</div><div class="line">            newline=None, backup_extension=None):</div><div class="line">    &quot;&quot;&quot;允许使用新的内容来替换一个文件</div><div class="line">truetrue产生一个(readable, writable)文件对象元组，writable会替换readable</div><div class="line">truetrue异常发生的时候，原始文件会被重新保存，移除写入的数据</div><div class="line">truetrue模式不应该使用w a 或者 + 只支持只读模式</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    # move existing file to backup, create new file with same permissions</div><div class="line">    # borrowed extensively from the fileinput module</div><div class="line">    if set(mode).intersection(&apos;wa+&apos;):</div><div class="line">        raise ValueError(&apos;Only read-only file modes can be used&apos;)</div><div class="line"></div><div class="line">    backupfilename = filename + (backup_extension or os.extsep + &apos;bak&apos;)</div><div class="line">    try:</div><div class="line">truetruetruetrue# 删除文件</div><div class="line">        os.unlink(backupfilename)</div><div class="line">    except os.error:</div><div class="line">        pass</div><div class="line">    os.rename(filename, backupfilename)</div><div class="line">    readable = io.open(backupfilename, mode, buffering=buffering,</div><div class="line">                       encoding=encoding, errors=errors, newline=newline)</div><div class="line">    try:</div><div class="line">truetruetruetrue# 返回文件描述符fd的状态, st_mode文件信息的掩码，包含了文件的权限信息，文件的类型信息</div><div class="line">        perm = os.fstat(readable.fileno()).st_mode</div><div class="line">    except OSError:</div><div class="line">        writable = open(filename, &apos;w&apos; + mode.replace(&apos;r&apos;, &apos;&apos;),</div><div class="line">                        buffering=buffering, encoding=encoding, errors=errors,</div><div class="line">                        newline=newline)</div><div class="line">    else:</div><div class="line">        os_mode = os.O_CREAT | os.O_WRONLY | os.O_TRUNC</div><div class="line">        if hasattr(os, &apos;O_BINARY&apos;):</div><div class="line">            os_mode |= os.O_BINARY</div><div class="line">        fd = os.open(filename, os_mode, perm)</div><div class="line">        writable = io.open(fd, &quot;w&quot; + mode.replace(&apos;r&apos;, &apos;&apos;), buffering=buffering,</div><div class="line">                           encoding=encoding, errors=errors, newline=newline)</div><div class="line">        try:</div><div class="line">            if hasattr(os, &apos;chmod&apos;):</div><div class="line">                os.chmod(filename, perm)</div><div class="line">        except OSError:</div><div class="line">            pass</div><div class="line">    try:</div><div class="line">        yield readable, writable</div><div class="line">    except Exception:</div><div class="line">        # move backup back</div><div class="line">        try:</div><div class="line">            os.unlink(filename)</div><div class="line">        except os.error:</div><div class="line">            pass</div><div class="line">        os.rename(backupfilename, filename)</div><div class="line">        raise</div><div class="line">    finally:</div><div class="line">        readable.close()</div><div class="line">        writable.close()</div><div class="line">        try:</div><div class="line">            os.unlink(backupfilename)</div><div class="line">        except os.error:</div><div class="line">            pass</div></pre></td></tr></table></figure>
 <p>译者注：首先将原文件备份，然后<code>readable</code>是从备份文件中读取的，<code>writable</code>是读取了一个与原文件名相同的空文件，在<code>yield readable, writable</code>处相当于<code>__enter__</code>方法返回了一个元组，之后如果在上下文管理器中产生了异常就会删除已经写入的文件，然后将备份文件重命名为原文件名，即相当于执行了<code>__exit__</code>方法</p>
 <p>这个上下文管理器只关注于一个文件，并且忽略了<code>sys.stdin</code>，不像<code>fileinput</code>模块。它的目标就是只将一个文件原地替换。</p>
@@ -8312,7 +8318,7 @@
     <link href="http://skyrover.me/2017/04/13/%E9%81%8D%E5%8E%86/"/>
     <id>http://skyrover.me/2017/04/13/遍历/</id>
     <published>2017-04-13T03:22:46.000Z</published>
-    <updated>2018-05-21T00:33:28.000Z</updated>
+    <updated>2018-05-21T00:34:04.000Z</updated>
     
     <content type="html"><![CDATA[<p>对图中所有节点的探索及访问操作就是遍历，这是很多问题的万能钥匙。图中有两种基本的遍历策略：深度优先搜索和广度优先搜索。</p>
 <p>图中任意两点都是连通的，那么图就被称为连通图，连通也有可能是通过另外的节点连通。连通分量就是指的目标图中最大而且独立的连通子图。找出这种连通分量的方法之一就是从图中的某个部分开始，逐步的扩大其连通子图的确认范围，直到再也无法向外连通为止。</p>
