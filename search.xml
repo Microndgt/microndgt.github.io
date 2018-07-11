@@ -71,6 +71,17 @@
       <title><![CDATA[深入Linux内核架构]]></title>
       <url>/2018/07/09/dive_into_linux_kernel/</url>
       <content type="html"><![CDATA[<p>准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的</p>
+<p>2018-07-11更新，看了网上的一些建议，于是加入了下面这些书籍，准备啃一下</p>
+<ul>
+<li><input type="checkbox" onclick="return false;" unchecked=""> CSAPP 深入理解计算机系统</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> Linux内核设计与实现</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 深入理解Linux内核</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> Linux内核源代码情景分析</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> UNIX操作系统设计</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> Unix环境高级编程</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 深入Linux内核架构</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> LINUX设备驱动程序(第3版)</li>
+</ul>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -78,7 +89,11 @@
                 </div>
                 <div class="image-caption"></div>
             </figure>
+<h1 id="CSAPP-深入理解计算机系统"><a href="#CSAPP-深入理解计算机系统" class="headerlink" title="CSAPP 深入理解计算机系统"></a>CSAPP 深入理解计算机系统</h1><p>先啃这个，以linux为例，可以作为学习操作系统、软硬件基本原理的通识书。</p>
 <ul>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 计算机系统漫游</li>
+</ul>
+<h1 id="深入Linux内核架构"><a href="#深入Linux内核架构" class="headerlink" title="深入Linux内核架构"></a>深入Linux内核架构</h1><ul>
 <li><input type="checkbox" onclick="return false;" unchecked=""> 简介和概述<ul>
 <li><input type="checkbox" onclick="return false;" checked> 内核的任务 (2018-07-09)</li>
 <li><input type="checkbox" onclick="return false;" checked> 实现策略 (2018-07-09)</li>

@@ -20,19 +20,19 @@
     
     
     <meta name="keywords" content="操作系统,Linux">
-    <meta name="description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                              简介和概述  内核的任务 (2018-07-09)  实现策略 (2018-07-09)  内核的组成部分  进程">
+    <meta name="description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的 2018-07-11更新，看了网上的一些建议，于是加入了下面这些书籍，准备啃一下   CSAPP 深入理解计算机系统  Linux内核设计与实现  深入理解Linux内核  Linux内核源代码情景分析  UNIX操作系统设计  Unix环境高级编程  深入Linux内核架构  LINUX设备驱动程序(第3版)">
 <meta name="keywords" content="操作系统,Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入Linux内核架构">
 <meta property="og:url" content="http://skyrover.me/2018/07/09/dive_into_linux_kernel/index.html">
 <meta property="og:site_name" content="SkyRover">
-<meta property="og:description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                              简介和概述  内核的任务 (2018-07-09)  实现策略 (2018-07-09)  内核的组成部分  进程">
+<meta property="og:description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的 2018-07-11更新，看了网上的一些建议，于是加入了下面这些书籍，准备啃一下   CSAPP 深入理解计算机系统  Linux内核设计与实现  深入理解Linux内核  Linux内核源代码情景分析  UNIX操作系统设计  Unix环境高级编程  深入Linux内核架构  LINUX设备驱动程序(第3版)">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://skyrover.me/img/dive_into_linux_kernel.png">
-<meta property="og:updated_time" content="2018-07-09T14:20:01.000Z">
+<meta property="og:updated_time" content="2018-07-11T07:58:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入Linux内核架构">
-<meta name="twitter:description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的                                                                                                              简介和概述  内核的任务 (2018-07-09)  实现策略 (2018-07-09)  内核的组成部分  进程">
+<meta name="twitter:description" content="准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的 2018-07-11更新，看了网上的一些建议，于是加入了下面这些书籍，准备啃一下   CSAPP 深入理解计算机系统  Linux内核设计与实现  深入理解Linux内核  Linux内核源代码情景分析  UNIX操作系统设计  Unix环境高级编程  深入Linux内核架构  LINUX设备驱动程序(第3版)">
 <meta name="twitter:image" content="http://skyrover.me/img/dive_into_linux_kernel.png">
     
         <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
@@ -173,6 +173,13 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CSAPP-深入理解计算机系统"><span class="post-toc-number">1.</span> <span class="post-toc-text">CSAPP 深入理解计算机系统</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#深入Linux内核架构"><span class="post-toc-number">2.</span> <span class="post-toc-text">深入Linux内核架构</span></a></li></ol>
+        </nav>
+    </aside>
+    
 
 <article id="post-dive_into_linux_kernel"
   class="post-article article-type-post fade" itemprop="blogPost">
@@ -199,6 +206,17 @@
             
             
             <p>准备今年下半年研究一波Linux内核，下面是进度表，用来督促自己的</p>
+<p>2018-07-11更新，看了网上的一些建议，于是加入了下面这些书籍，准备啃一下</p>
+<ul>
+<li><input type="checkbox" onclick="return false;" unchecked=""> CSAPP 深入理解计算机系统</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> Linux内核设计与实现</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 深入理解Linux内核</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> Linux内核源代码情景分析</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> UNIX操作系统设计</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> Unix环境高级编程</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 深入Linux内核架构</li>
+<li><input type="checkbox" onclick="return false;" unchecked=""> LINUX设备驱动程序(第3版)</li>
+</ul>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -206,7 +224,11 @@
                 </div>
                 <div class="image-caption"></div>
             </figure>
+<h1 id="CSAPP-深入理解计算机系统"><a href="#CSAPP-深入理解计算机系统" class="headerlink" title="CSAPP 深入理解计算机系统"></a>CSAPP 深入理解计算机系统</h1><p>先啃这个，以linux为例，可以作为学习操作系统、软硬件基本原理的通识书。</p>
 <ul>
+<li><input type="checkbox" onclick="return false;" unchecked=""> 计算机系统漫游</li>
+</ul>
+<h1 id="深入Linux内核架构"><a href="#深入Linux内核架构" class="headerlink" title="深入Linux内核架构"></a>深入Linux内核架构</h1><ul>
 <li><input type="checkbox" onclick="return false;" unchecked=""> 简介和概述<ul>
 <li><input type="checkbox" onclick="return false;" checked> 内核的任务 (2018-07-09)</li>
 <li><input type="checkbox" onclick="return false;" checked> 实现策略 (2018-07-09)</li>
