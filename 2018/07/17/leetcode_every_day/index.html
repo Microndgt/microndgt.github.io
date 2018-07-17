@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Leetcode Everyday | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="算法,Python,LeetCode">
+    <meta name="description" content="坚持每天刷Leetcode，每日至少一题。 2018-07-17653. 两数之和 IV - 输入 BST哎，累了的时候就容易出小错误 12345678910111213141516171819202122232425262728293031323334class Solution:    def traverse(self, node):        if not node:">
+<meta name="keywords" content="算法,Python,LeetCode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode Everyday">
+<meta property="og:url" content="http://skyrover.me/2018/07/17/leetcode_every_day/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="坚持每天刷Leetcode，每日至少一题。 2018-07-17653. 两数之和 IV - 输入 BST哎，累了的时候就容易出小错误 12345678910111213141516171819202122232425262728293031323334class Solution:    def traverse(self, node):        if not node:">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-17T10:04:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode Everyday">
+<meta name="twitter:description" content="坚持每天刷Leetcode，每日至少一题。 2018-07-17653. 两数之和 IV - 输入 BST哎，累了的时候就容易出小错误 12345678910111213141516171819202122232425262728293031323334class Solution:    def traverse(self, node):        if not node:">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Leetcode Everyday</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Leetcode Everyday</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-07-17T11:11:32.000Z" itemprop="datePublished" class="page-time">
+  2018-07-17 19:11:32
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-17"><span class="post-toc-number">1.</span> <span class="post-toc-text">2018-07-17</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#653-两数之和-IV-输入-BST"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">653. 两数之和 IV - 输入 BST</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二进制间距"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">二进制间距</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Design-HashSet"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Design HashSet</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#690-员工的重要性"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">690. 员工的重要性</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-16"><span class="post-toc-number">2.</span> <span class="post-toc-text">2018-07-16</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#704-Binary-Search"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">704. Binary Search</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-15"><span class="post-toc-number">3.</span> <span class="post-toc-text">2018-07-15</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#709-转换成小写字母"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">709. 转换成小写字母</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-14"><span class="post-toc-number">4.</span> <span class="post-toc-text">2018-07-14</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#860-柠檬水找零"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">860.柠檬水找零</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-13"><span class="post-toc-number">5.</span> <span class="post-toc-text">2018-07-13</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#旋转数字"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">旋转数字</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-12"><span class="post-toc-number">6.</span> <span class="post-toc-text">2018-07-12</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计数二进制子串"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">计数二进制子串</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-11"><span class="post-toc-number">7.</span> <span class="post-toc-text">2018-07-11</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#区域和检索-数组不可变"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">区域和检索 - 数组不可变</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-10"><span class="post-toc-number">8.</span> <span class="post-toc-text">2018-07-10</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#山羊拉丁文"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">山羊拉丁文</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-09"><span class="post-toc-number">9.</span> <span class="post-toc-text">2018-07-09</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#最大三角形面积"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">最大三角形面积</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-08"><span class="post-toc-number">10.</span> <span class="post-toc-text">2018-07-08</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#岛屿的最大面积"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">岛屿的最大面积</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-07"><span class="post-toc-number">11.</span> <span class="post-toc-text">2018-07-07</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#转置矩阵"><span class="post-toc-number">11.1.</span> <span class="post-toc-text">转置矩阵</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-06"><span class="post-toc-number">12.</span> <span class="post-toc-text">2018-07-06</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#托普利茨矩阵"><span class="post-toc-number">12.1.</span> <span class="post-toc-text">托普利茨矩阵</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-05"><span class="post-toc-number">13.</span> <span class="post-toc-text">2018-07-05</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二进制表示中质数个计算置位"><span class="post-toc-number">13.1.</span> <span class="post-toc-text">二进制表示中质数个计算置位</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-04"><span class="post-toc-number">14.</span> <span class="post-toc-text">2018-07-04</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#棒球比赛"><span class="post-toc-number">14.1.</span> <span class="post-toc-text">棒球比赛</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#修剪二叉搜索树"><span class="post-toc-number">14.2.</span> <span class="post-toc-text">修剪二叉搜索树</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-03"><span class="post-toc-number">15.</span> <span class="post-toc-text">2018-07-03</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#罗马数字转整数"><span class="post-toc-number">15.1.</span> <span class="post-toc-text">罗马数字转整数</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-02"><span class="post-toc-number">16.</span> <span class="post-toc-text">2018-07-02</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#写字符串需要的行数"><span class="post-toc-number">16.1.</span> <span class="post-toc-text">写字符串需要的行数</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-07-01"><span class="post-toc-number">17.</span> <span class="post-toc-text">2018-07-01</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#子域名访问计数"><span class="post-toc-number">17.1.</span> <span class="post-toc-text">子域名访问计数</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-06-30"><span class="post-toc-number">18.</span> <span class="post-toc-text">2018-06-30</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#交替位二进制数"><span class="post-toc-number">18.1.</span> <span class="post-toc-text">交替位二进制数</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-06-29"><span class="post-toc-number">19.</span> <span class="post-toc-text">2018-06-29</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#字符的最短距离"><span class="post-toc-number">19.1.</span> <span class="post-toc-text">字符的最短距离</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2018-06-28"><span class="post-toc-number">20.</span> <span class="post-toc-text">2018-06-28</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#唯一摩尔斯密码词"><span class="post-toc-number">20.1.</span> <span class="post-toc-text">唯一摩尔斯密码词</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#山脉数组的峰顶索引"><span class="post-toc-number">20.2.</span> <span class="post-toc-text">山脉数组的峰顶索引</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#翻转图像"><span class="post-toc-number">20.3.</span> <span class="post-toc-text">翻转图像</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-leetcode_every_day"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Leetcode Everyday</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-07-17 19:11:32 19:11:32" datetime="2018-07-17T11:11:32.000Z"  itemprop="datePublished">2018-07-17 19:11:32</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <p>坚持每天刷Leetcode，每日至少一题。</p>
+<h1 id="2018-07-17"><a href="#2018-07-17" class="headerlink" title="2018-07-17"></a>2018-07-17</h1><h2 id="653-两数之和-IV-输入-BST"><a href="#653-两数之和-IV-输入-BST" class="headerlink" title="653. 两数之和 IV - 输入 BST"></a><a href="https://leetcode-cn.com/problems/two-sum-iv-input-is-a-bst/description/" target="_blank" rel="external">653. 两数之和 IV - 输入 BST</a></h2><p>哎，累了的时候就容易出小错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">traverse</span><span class="params">(self, node)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> node:</div><div class="line">            <span class="keyword">return</span> []</div><div class="line">        res = [node]</div><div class="line">        res += self.traverse(node.left)</div><div class="line">        res += self.traverse(node.right)</div><div class="line">        <span class="keyword">return</span> res</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, node, target)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> node:</div><div class="line">            <span class="keyword">return</span></div><div class="line">        <span class="keyword">if</span> node.val == target:</div><div class="line">            <span class="keyword">return</span> node</div><div class="line">        <span class="keyword">elif</span> node.val &lt; target:</div><div class="line">            <span class="keyword">return</span> self.search(node.right, target)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">return</span> self.search(node.left, target)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findTarget</span><span class="params">(self, root, k)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type root: TreeNode</span></div><div class="line"><span class="string">        :type k: int</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 遍历tree，随便拿一个元素，然后在bst中找另一个元素</span></div><div class="line">        <span class="keyword">for</span> ele <span class="keyword">in</span> self.traverse(root):</div><div class="line">            another = k - ele.val</div><div class="line">            node = self.search(root, another)</div><div class="line">            <span class="keyword">if</span> node <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> node == ele:</div><div class="line">                <span class="keyword">continue</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">False</span></div></pre></td></tr></table></figure>
+<h2 id="二进制间距"><a href="#二进制间距" class="headerlink" title="二进制间距"></a><a href="https://leetcode-cn.com/problems/binary-gap/description/" target="_blank" rel="external">二进制间距</a></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">binaryGap</span><span class="params">(self, N)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type N: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        i = <span class="number">0</span></div><div class="line">        binary = bin(N)[<span class="number">2</span>:]</div><div class="line">        res = <span class="number">0</span></div><div class="line">        <span class="keyword">while</span> i &lt; len(binary):</div><div class="line">            step = <span class="number">1</span></div><div class="line">            j = i + <span class="number">1</span></div><div class="line">            <span class="keyword">while</span> j &lt; len(binary) <span class="keyword">and</span> binary[j] != <span class="string">'1'</span>:</div><div class="line">                j += <span class="number">1</span></div><div class="line">                step += <span class="number">1</span></div><div class="line">            <span class="keyword">if</span> j == len(binary):</div><div class="line">                <span class="keyword">break</span></div><div class="line">            i = j</div><div class="line">            res = max(step, res)</div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
+<h2 id="Design-HashSet"><a href="#Design-HashSet" class="headerlink" title="Design HashSet"></a><a href="https://leetcode-cn.com/problems/design-hashset/description/" target="_blank" rel="external">Design HashSet</a></h2><p>哈希表？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHashSet</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        Initialize your data structure here.</span></div><div class="line"><span class="string">        """</span></div><div class="line">        self.table = [<span class="keyword">None</span>] * <span class="number">1000000</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, key)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type key: int</span></div><div class="line"><span class="string">        :rtype: void</span></div><div class="line"><span class="string">        """</span></div><div class="line">        self.table[key] = key</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, key)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type key: int</span></div><div class="line"><span class="string">        :rtype: void</span></div><div class="line"><span class="string">        """</span></div><div class="line">        self.table[key] = <span class="keyword">None</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">contains</span><span class="params">(self, key)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        Returns true if this set did not already contain the specified element</span></div><div class="line"><span class="string">        :type key: int</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">return</span> self.table[key] <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span></div><div class="line">        </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Your MyHashSet object will be instantiated and called as such:</span></div><div class="line"><span class="comment"># obj = MyHashSet()</span></div><div class="line"><span class="comment"># obj.add(key)</span></div><div class="line"><span class="comment"># obj.remove(key)</span></div><div class="line"><span class="comment"># param_3 = obj.contains(key)</span></div></pre></td></tr></table></figure>
+<h2 id="690-员工的重要性"><a href="#690-员工的重要性" class="headerlink" title="690. 员工的重要性"></a><a href="https://leetcode-cn.com/problems/employee-importance/description/" target="_blank" rel="external">690. 员工的重要性</a></h2><p>递归处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line"><span class="string"># Employee info</span></div><div class="line"><span class="string">class Employee:</span></div><div class="line"><span class="string">    def __init__(self, id, importance, subordinates):</span></div><div class="line"><span class="string">        # It's the unique id of each node.</span></div><div class="line"><span class="string">        # unique id of this employee</span></div><div class="line"><span class="string">        self.id = id</span></div><div class="line"><span class="string">        # the importance value of this employee</span></div><div class="line"><span class="string">        self.importance = importance</span></div><div class="line"><span class="string">        # the id of direct subordinates</span></div><div class="line"><span class="string">        self.subordinates = subordinates</span></div><div class="line"><span class="string">"""</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">traverse</span><span class="params">(self, employee_id)</span>:</span></div><div class="line">        employee = self.employees_dict[employee_id]</div><div class="line">        importance = employee.importance</div><div class="line">        <span class="keyword">for</span> subordinate <span class="keyword">in</span> employee.subordinates:</div><div class="line">            importance += self.traverse(subordinate)</div><div class="line">        <span class="keyword">return</span> importance</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getImportance</span><span class="params">(self, employees, id)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type employees: Employee</span></div><div class="line"><span class="string">        :type id: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        self.employees_dict = &#123;e.id: e <span class="keyword">for</span> e <span class="keyword">in</span> employees&#125;</div><div class="line">        <span class="keyword">return</span> self.traverse(id)</div></pre></td></tr></table></figure>
+<h1 id="2018-07-16"><a href="#2018-07-16" class="headerlink" title="2018-07-16"></a>2018-07-16</h1><h2 id="704-Binary-Search"><a href="#704-Binary-Search" class="headerlink" title="704. Binary Search"></a><a href="https://leetcode-cn.com/problems/binary-search/description/" target="_blank" rel="external">704. Binary Search</a></h2><p>确定边界条件的要点是，保证定义的区间规则和循环内部迭代的区间规则一致。比如下面的是左闭右闭区间，那么迭代的时候就可以使用<code>right=mid-1</code>，如果是左闭右开区间，那么<code>right=mid</code>，因为<code>mid-1</code>可能就是解，如果将<code>right=mid-1</code>那么就可能错过这个正解。循环结束条件也应该符合相同的区间规则。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, nums, target)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        :type target: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        left, right = <span class="number">0</span>, len(nums) - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> left &lt;= right:</div><div class="line">            mid = left + (right - left) // <span class="number">2</span></div><div class="line">            <span class="keyword">if</span> nums[mid] == target:</div><div class="line">                <span class="keyword">return</span> mid</div><div class="line">            <span class="keyword">elif</span> nums[mid] &lt; target:</div><div class="line">                left = mid + <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                right = mid - <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="number">-1</span></div></pre></td></tr></table></figure>
+<h1 id="2018-07-15"><a href="#2018-07-15" class="headerlink" title="2018-07-15"></a>2018-07-15</h1><h2 id="709-转换成小写字母"><a href="#709-转换成小写字母" class="headerlink" title="709. 转换成小写字母"></a><a href="https://leetcode-cn.com/problems/to-lower-case/description/" target="_blank" rel="external">709. 转换成小写字母</a></h2><p>直接调用python的方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">toLowerCase</span><span class="params">(self, str)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type str: str</span></div><div class="line"><span class="string">        :rtype: str</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">return</span> str.lower()</div></pre></td></tr></table></figure>
+<p>或者通过ASC码来转换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">toLowerCase</span><span class="params">(self, str)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type str: str</span></div><div class="line"><span class="string">        :rtype: str</span></div><div class="line"><span class="string">        """</span></div><div class="line">        res = []</div><div class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> str:</div><div class="line">            ord_s = ord(s)</div><div class="line">            <span class="keyword">if</span> <span class="number">65</span> &lt;= ord_s &lt;= <span class="number">90</span>:</div><div class="line">                res.append(chr(ord_s + <span class="number">32</span>))</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                res.append(s)</div><div class="line">        <span class="keyword">return</span> <span class="string">''</span>.join(res)</div></pre></td></tr></table></figure>
+<h1 id="2018-07-14"><a href="#2018-07-14" class="headerlink" title="2018-07-14"></a>2018-07-14</h1><h2 id="860-柠檬水找零"><a href="#860-柠檬水找零" class="headerlink" title="860.柠檬水找零"></a><a href="https://leetcode-cn.com/problems/lemonade-change/description/" target="_blank" rel="external">860.柠檬水找零</a></h2><p>贪心算法，优先拿大钞找零</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lemonadeChange</span><span class="params">(self, bills)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type bills: List[int]</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        five, ten, twenty = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> bill <span class="keyword">in</span> bills:</div><div class="line">            <span class="keyword">if</span> bill == <span class="number">5</span>:</div><div class="line">                five += <span class="number">1</span></div><div class="line">            <span class="keyword">elif</span> bill == <span class="number">10</span>:</div><div class="line">                <span class="keyword">if</span> five == <span class="number">0</span>:</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">                five -= <span class="number">1</span></div><div class="line">                ten += <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">if</span> ten != <span class="number">0</span> <span class="keyword">and</span> five != <span class="number">0</span>:</div><div class="line">                    ten -= <span class="number">1</span></div><div class="line">                    five -= <span class="number">1</span></div><div class="line">                    twenty += <span class="number">1</span></div><div class="line">                <span class="keyword">elif</span> five &gt;= <span class="number">3</span>:</div><div class="line">                    five -= <span class="number">3</span></div><div class="line">                    twenty += <span class="number">1</span></div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
+<h1 id="2018-07-13"><a href="#2018-07-13" class="headerlink" title="2018-07-13"></a>2018-07-13</h1><h2 id="旋转数字"><a href="#旋转数字" class="headerlink" title="旋转数字"></a><a href="https://leetcode-cn.com/problems/rotated-digits/description/" target="_blank" rel="external">旋转数字</a></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rotatedDigits</span><span class="params">(self, N)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type N: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        rotate_map = &#123;</div><div class="line">            <span class="string">'0'</span>: <span class="string">'0'</span>,</div><div class="line">            <span class="string">'1'</span>: <span class="string">'1'</span>,</div><div class="line">            <span class="string">'8'</span>: <span class="string">'8'</span>,</div><div class="line">            <span class="string">'5'</span>: <span class="string">'2'</span>,</div><div class="line">            <span class="string">'2'</span>: <span class="string">'5'</span>,</div><div class="line">            <span class="string">'6'</span>: <span class="string">'9'</span>,</div><div class="line">            <span class="string">'9'</span>: <span class="string">'6'</span></div><div class="line">        &#125;</div><div class="line">        count = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> range(N+<span class="number">1</span>):</div><div class="line">            n_list = []</div><div class="line">            <span class="keyword">for</span> d <span class="keyword">in</span> str(n):</div><div class="line">                <span class="keyword">if</span> d <span class="keyword">not</span> <span class="keyword">in</span> rotate_map:</div><div class="line">                    <span class="keyword">break</span></div><div class="line">                n_list.append(rotate_map[d])</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">if</span> n != int(<span class="string">''</span>.join(n_list)):</div><div class="line">                    count += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> count</div></pre></td></tr></table></figure>
+<h1 id="2018-07-12"><a href="#2018-07-12" class="headerlink" title="2018-07-12"></a>2018-07-12</h1><h2 id="计数二进制子串"><a href="#计数二进制子串" class="headerlink" title="计数二进制子串"></a><a href="https://leetcode-cn.com/problems/count-binary-substrings/description/" target="_blank" rel="external">计数二进制子串</a></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countBinarySubstrings</span><span class="params">(self, s)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type s: str</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 当前重复的数字种类的个数</span></div><div class="line">        cur = <span class="number">1</span></div><div class="line">        <span class="comment"># 上一种数字重复的次数</span></div><div class="line">        pre = <span class="number">0</span></div><div class="line">        res = <span class="number">0</span></div><div class="line">        idx = <span class="number">1</span></div><div class="line">        <span class="comment"># 遍历的时候如果和前一个数相等，则cur+1</span></div><div class="line">        <span class="comment"># 如果出现不等，则将cur赋值给pre</span></div><div class="line">        <span class="comment"># 只要pre大于等于cur的时候，count就自增1</span></div><div class="line">        <span class="comment"># 因为0011中的结果为2-&gt; 01 和 0011</span></div><div class="line">        <span class="keyword">while</span> idx &lt; len(s):</div><div class="line">            <span class="keyword">if</span> s[idx<span class="number">-1</span>] == s[idx]:</div><div class="line">                cur += <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                pre = cur</div><div class="line">                cur = <span class="number">1</span></div><div class="line">            <span class="keyword">if</span> pre &gt;= cur:</div><div class="line">                res += <span class="number">1</span></div><div class="line">            idx += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
+<h1 id="2018-07-11"><a href="#2018-07-11" class="headerlink" title="2018-07-11"></a>2018-07-11</h1><h2 id="区域和检索-数组不可变"><a href="#区域和检索-数组不可变" class="headerlink" title="区域和检索 - 数组不可变"></a><a href="https://leetcode-cn.com/problems/range-sum-query-immutable/description/" target="_blank" rel="external">区域和检索 - 数组不可变</a></h2><p>一道简单的题，却没想到动态规划可以如此高的效率</p>
+<ul>
+<li>普通方法(1416 ms)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumArray</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, nums)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        self.nums = nums</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumRange</span><span class="params">(self, i, j)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type i: int</span></div><div class="line"><span class="string">        :type j: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">return</span> sum(self.nums[i:j+<span class="number">1</span>])</div></pre></td></tr></table></figure>
+<ul>
+<li>动态规划(88 ms)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumArray</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, nums)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        self._dp = &#123;&#125;</div><div class="line">        sums = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> idx, num <span class="keyword">in</span> enumerate(nums):</div><div class="line">            sums += num</div><div class="line">            self._dp[idx] = sums</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumRange</span><span class="params">(self, i, j)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type i: int</span></div><div class="line"><span class="string">        :type j: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> i == <span class="number">0</span>:</div><div class="line">            <span class="keyword">return</span> self._dp[j]</div><div class="line">        <span class="keyword">return</span> self._dp[j] - self._dp[i<span class="number">-1</span>]</div></pre></td></tr></table></figure>
+<h1 id="2018-07-10"><a href="#2018-07-10" class="headerlink" title="2018-07-10"></a>2018-07-10</h1><h2 id="山羊拉丁文"><a href="#山羊拉丁文" class="headerlink" title="山羊拉丁文"></a><a href="https://leetcode-cn.com/problems/goat-latin/description/" target="_blank" rel="external">山羊拉丁文</a></h2><p>这是一道多么无聊的题啊！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">toGoatLatin</span><span class="params">(self, S)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type S: str</span></div><div class="line"><span class="string">        :rtype: str</span></div><div class="line"><span class="string">        """</span></div><div class="line">        res = []</div><div class="line">        d = &#123;<span class="string">'A'</span>, <span class="string">'E'</span>, <span class="string">'I'</span>, <span class="string">'O'</span>, <span class="string">'U'</span>&#125;</div><div class="line">        <span class="keyword">for</span> idx, word <span class="keyword">in</span> enumerate(S.split(<span class="string">' '</span>), <span class="number">1</span>):</div><div class="line">            <span class="keyword">if</span> word[<span class="number">0</span>].upper() <span class="keyword">in</span> d:</div><div class="line">                word += <span class="string">'ma'</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                first_alphabet = word[<span class="number">0</span>]</div><div class="line">                word = word[<span class="number">1</span>:] + first_alphabet + <span class="string">'ma'</span></div><div class="line"></div><div class="line">            word += <span class="string">'a'</span> * idx</div><div class="line">            res.append(word)</div><div class="line">        <span class="keyword">return</span> <span class="string">' '</span>.join(res)</div></pre></td></tr></table></figure>
+<h1 id="2018-07-09"><a href="#2018-07-09" class="headerlink" title="2018-07-09"></a>2018-07-09</h1><h2 id="最大三角形面积"><a href="#最大三角形面积" class="headerlink" title="最大三角形面积"></a><a href="https://leetcode-cn.com/problems/largest-triangle-area/description/" target="_blank" rel="external">最大三角形面积</a></h2><p>海伦公式：<code>A = sqrt(s*(s-a)*(s-b)*(s-c))</code> 其中 s 为周长的一半 <code>s = (a+b+c)/2</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">largestTriangleArea</span><span class="params">(self, points)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type points: List[List[int]]</span></div><div class="line"><span class="string">        :rtype: float</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">import</span> math</div><div class="line">        max_area = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(points)):</div><div class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>, len(points)):</div><div class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> range(j+<span class="number">1</span>, len(points)):</div><div class="line">                    point_i, point_j, point_k = points[i], points[j], points[k]</div><div class="line">                    distance_i_j = math.sqrt((point_i[<span class="number">0</span>] - point_j[<span class="number">0</span>]) ** <span class="number">2</span> + (point_i[<span class="number">1</span>] - point_j[<span class="number">1</span>]) ** <span class="number">2</span>)</div><div class="line">                    distance_i_k = math.sqrt((point_i[<span class="number">0</span>] - point_k[<span class="number">0</span>]) ** <span class="number">2</span> + (point_i[<span class="number">1</span>] - point_k[<span class="number">1</span>]) ** <span class="number">2</span>)</div><div class="line">                    distance_j_k = math.sqrt((point_k[<span class="number">0</span>] - point_j[<span class="number">0</span>]) ** <span class="number">2</span> + (point_k[<span class="number">1</span>] - point_j[<span class="number">1</span>]) ** <span class="number">2</span>)</div><div class="line">                    s = (distance_i_j + distance_i_k + distance_j_k) / <span class="number">2</span></div><div class="line">                    max_area = max(s * (s-distance_i_k) * (s-distance_i_j) * (s-distance_j_k), max_area)</div><div class="line">        <span class="keyword">return</span> math.sqrt(max_area)</div></pre></td></tr></table></figure>
+<h1 id="2018-07-08"><a href="#2018-07-08" class="headerlink" title="2018-07-08"></a>2018-07-08</h1><h2 id="岛屿的最大面积"><a href="#岛屿的最大面积" class="headerlink" title="岛屿的最大面积"></a><a href="https://leetcode-cn.com/problems/max-area-of-island/description/" target="_blank" rel="external">岛屿的最大面积</a></h2><p>深度优先遍历，注意递归的结束条件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">go_right</span><span class="params">(self, row, col)</span>:</span></div><div class="line">        <span class="keyword">if</span> col + <span class="number">1</span> &lt; self.cols:</div><div class="line">            <span class="keyword">return</span> row, col + <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">None</span>, <span class="keyword">None</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">go_up</span><span class="params">(self, row, col)</span>:</span></div><div class="line">        <span class="keyword">if</span> row - <span class="number">1</span> &gt;= <span class="number">0</span>:</div><div class="line">            <span class="keyword">return</span> row - <span class="number">1</span>, col</div><div class="line">        <span class="keyword">return</span> <span class="keyword">None</span>, <span class="keyword">None</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">go_down</span><span class="params">(self, row, col)</span>:</span></div><div class="line">        <span class="keyword">if</span> row + <span class="number">1</span> &lt; self.rows:</div><div class="line">            <span class="keyword">return</span> row + <span class="number">1</span>, col</div><div class="line">        <span class="keyword">return</span> <span class="keyword">None</span>, <span class="keyword">None</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">go_left</span><span class="params">(self, row, col)</span>:</span></div><div class="line">        <span class="keyword">if</span> col - <span class="number">1</span> &gt;= <span class="number">0</span>:</div><div class="line">            <span class="keyword">return</span> row, col - <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">None</span>, <span class="keyword">None</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">traverse_island</span><span class="params">(self, row, col)</span>:</span></div><div class="line">        <span class="keyword">if</span> row <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> col <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span></div><div class="line">        <span class="keyword">if</span> self.grid[row][col] != <span class="number">1</span>:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span></div><div class="line">        self.grid[row][col] = <span class="number">0</span></div><div class="line">        result = <span class="number">1</span></div><div class="line">        result += self.traverse_island(*self.go_right(row, col))</div><div class="line">        result += self.traverse_island(*self.go_down(row, col))</div><div class="line">        result += self.traverse_island(*self.go_left(row, col))</div><div class="line">        result += self.traverse_island(*self.go_up(row, col))</div><div class="line">        <span class="keyword">return</span> result</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxAreaOfIsland</span><span class="params">(self, grid)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type grid: List[List[int]]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> grid:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span></div><div class="line">        self.grid = grid</div><div class="line">        self.rows, self.cols = len(grid), len(grid[<span class="number">0</span>])</div><div class="line">        max_count = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> range(self.rows):</div><div class="line">            <span class="keyword">for</span> col <span class="keyword">in</span> range(self.cols):</div><div class="line">                <span class="keyword">if</span> grid[row][col] == <span class="number">0</span>:</div><div class="line">                    <span class="keyword">continue</span></div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    max_count = max(max_count, self.traverse_island(row, col))</div><div class="line">        <span class="keyword">return</span> max_count</div></pre></td></tr></table></figure>
+<h1 id="2018-07-07"><a href="#2018-07-07" class="headerlink" title="2018-07-07"></a>2018-07-07</h1><h2 id="转置矩阵"><a href="#转置矩阵" class="headerlink" title="转置矩阵"></a><a href="https://leetcode-cn.com/problems/transpose-matrix/description/" target="_blank" rel="external">转置矩阵</a></h2><p>对于方阵的话更简单，只需要考虑上半角矩阵，然后使用Python中的数字交换即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">transpose</span><span class="params">(self, A)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type A: List[List[int]]</span></div><div class="line"><span class="string">        :rtype: List[List[int]]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> A:</div><div class="line">            <span class="keyword">return</span> []</div><div class="line">        rows, cols = len(A), len(A[<span class="number">0</span>])</div><div class="line">        B = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(rows)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(cols)]</div><div class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> range(rows):</div><div class="line">            <span class="keyword">for</span> col <span class="keyword">in</span> range(cols):</div><div class="line">                <span class="keyword">if</span> row != col:</div><div class="line">                    B[col][row] = A[row][col]</div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    B[row][col] = A[row][col]</div><div class="line">        <span class="keyword">return</span> B</div></pre></td></tr></table></figure>
+<h1 id="2018-07-06"><a href="#2018-07-06" class="headerlink" title="2018-07-06"></a>2018-07-06</h1><h2 id="托普利茨矩阵"><a href="#托普利茨矩阵" class="headerlink" title="托普利茨矩阵"></a><a href="https://leetcode-cn.com/problems/toeplitz-matrix/description/" target="_blank" rel="external">托普利茨矩阵</a></h2><p>感觉不能再刷简单题了，要不废了。。。233333</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isToeplitzMatrix</span><span class="params">(self, matrix)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type matrix: List[List[int]]</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> matrix:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">        rows, cols = len(matrix), len(matrix[<span class="number">0</span>])</div><div class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> range(rows):</div><div class="line">            <span class="keyword">for</span> col <span class="keyword">in</span> range(cols):</div><div class="line">                <span class="keyword">if</span> row + <span class="number">1</span> &lt; rows <span class="keyword">and</span> col + <span class="number">1</span> &lt; cols:</div><div class="line">                    <span class="keyword">if</span> matrix[row][col] != matrix[row+<span class="number">1</span>][col+<span class="number">1</span>]:</div><div class="line">                        <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
+<h1 id="2018-07-05"><a href="#2018-07-05" class="headerlink" title="2018-07-05"></a>2018-07-05</h1><h2 id="二进制表示中质数个计算置位"><a href="#二进制表示中质数个计算置位" class="headerlink" title="二进制表示中质数个计算置位"></a><a href="https://leetcode-cn.com/problems/prime-number-of-set-bits-in-binary-representation/description/" target="_blank" rel="external">二进制表示中质数个计算置位</a></h2><p>最大的数不超过100万，直接把二进制中小于100万的位数弄出来，这样二进制中最多的1，就是这个最大值了。所以直接遍历下，然后判断其中1的个数是不是在质数列表中即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countPrimeSetBits</span><span class="params">(self, L, R)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type L: int</span></div><div class="line"><span class="string">        :type R: int</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 2^19 == 524288</span></div><div class="line">        primes = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>&#125;</div><div class="line">        res = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> number <span class="keyword">in</span> range(L, R+<span class="number">1</span>):</div><div class="line">            count = bin(number).count(<span class="string">'1'</span>)</div><div class="line">            <span class="keyword">if</span> count <span class="keyword">in</span> primes:</div><div class="line">                res += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
+<h1 id="2018-07-04"><a href="#2018-07-04" class="headerlink" title="2018-07-04"></a>2018-07-04</h1><h2 id="棒球比赛"><a href="#棒球比赛" class="headerlink" title="棒球比赛"></a><a href="https://leetcode-cn.com/problems/baseball-game/description/" target="_blank" rel="external">棒球比赛</a></h2><p>题目复杂，说了一大堆，解法简单</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calPoints</span><span class="params">(self, ops)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type ops: List[str]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        res = []</div><div class="line">        <span class="keyword">for</span> op <span class="keyword">in</span> ops:</div><div class="line">            <span class="keyword">if</span> op == <span class="string">'+'</span>:</div><div class="line">                res.append(sum(res[<span class="number">-2</span>:]))</div><div class="line">            <span class="keyword">elif</span> op == <span class="string">'D'</span>:</div><div class="line">                res.append(res[<span class="number">-1</span>] * <span class="number">2</span>)</div><div class="line">            <span class="keyword">elif</span> op == <span class="string">'C'</span>:</div><div class="line">                res.pop(<span class="number">-1</span>)</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                res.append(int(op))</div><div class="line">        <span class="keyword">return</span> sum(res)</div></pre></td></tr></table></figure>
+<h2 id="修剪二叉搜索树"><a href="#修剪二叉搜索树" class="headerlink" title="修剪二叉搜索树"></a><a href="https://leetcode-cn.com/problems/trim-a-binary-search-tree/description/" target="_blank" rel="external">修剪二叉搜索树</a></h2><p>递归递归递归</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Definition for a binary tree node.</span></div><div class="line"><span class="comment"># class TreeNode:</span></div><div class="line"><span class="comment">#     def __init__(self, x):</span></div><div class="line"><span class="comment">#         self.val = x</span></div><div class="line"><span class="comment">#         self.left = None</span></div><div class="line"><span class="comment">#         self.right = None</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">trimBST</span><span class="params">(self, root, L, R)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type root: TreeNode</span></div><div class="line"><span class="string">        :type L: int</span></div><div class="line"><span class="string">        :type R: int</span></div><div class="line"><span class="string">        :rtype: TreeNode</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</div><div class="line">            <span class="keyword">return</span></div><div class="line">        <span class="keyword">if</span> L &lt;= root.val &lt;= R:</div><div class="line">            root.left = self.trimBST(root.left, L, R)</div><div class="line">            root.right = self.trimBST(root.right, L, R)</div><div class="line">        <span class="keyword">elif</span> root.val &lt; L:</div><div class="line">            root = self.trimBST(root.right, L, R)</div><div class="line">        <span class="keyword">elif</span> root.val &gt; R:</div><div class="line">            root = self.trimBST(root.left, L, R)</div><div class="line">        <span class="keyword">return</span> root</div></pre></td></tr></table></figure>
+<h1 id="2018-07-03"><a href="#2018-07-03" class="headerlink" title="2018-07-03"></a>2018-07-03</h1><h2 id="罗马数字转整数"><a href="#罗马数字转整数" class="headerlink" title="罗马数字转整数"></a><a href="https://leetcode-cn.com/problems/roman-to-integer/description/" target="_blank" rel="external">罗马数字转整数</a></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">romanToInt</span><span class="params">(self, s)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type s: str</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        converter = &#123;</div><div class="line">            <span class="string">'I'</span>: <span class="number">1</span>,</div><div class="line">            <span class="string">"V"</span>: <span class="number">5</span>,</div><div class="line">            <span class="string">"X"</span>: <span class="number">10</span>,</div><div class="line">            <span class="string">"L"</span>: <span class="number">50</span>,</div><div class="line">            <span class="string">"C"</span>: <span class="number">100</span>,</div><div class="line">            <span class="string">"D"</span>: <span class="number">500</span>,</div><div class="line">            <span class="string">"M"</span>: <span class="number">1000</span></div><div class="line">        &#125;</div><div class="line">        s_list = list(s.upper())</div><div class="line">        res = idx = <span class="number">0</span></div><div class="line">        s_list_len = len(s_list)</div><div class="line">        <span class="keyword">while</span> idx &lt; s_list_len:</div><div class="line">            ele = s_list[idx]</div><div class="line">            <span class="keyword">if</span> idx &lt; s_list_len - <span class="number">1</span>:</div><div class="line">                next_ele = s_list[idx+<span class="number">1</span>]</div><div class="line">                <span class="keyword">if</span> converter[ele] &lt; converter[next_ele]:</div><div class="line">                    res += converter[next_ele] - converter[ele]</div><div class="line">                    idx += <span class="number">2</span></div><div class="line">                    <span class="keyword">continue</span></div><div class="line">            res += converter[ele]</div><div class="line">            idx += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
+<h1 id="2018-07-02"><a href="#2018-07-02" class="headerlink" title="2018-07-02"></a>2018-07-02</h1><h2 id="写字符串需要的行数"><a href="#写字符串需要的行数" class="headerlink" title="写字符串需要的行数"></a><a href="https://leetcode-cn.com/problems/number-of-lines-to-write-string/description/" target="_blank" rel="external">写字符串需要的行数</a></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numberOfLines</span><span class="params">(self, widths, S)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type widths: List[int]</span></div><div class="line"><span class="string">        :type S: str</span></div><div class="line"><span class="string">        :rtype: List[int]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        pos = &#123;alphabet: idx <span class="keyword">for</span> idx, alphabet <span class="keyword">in</span> enumerate(<span class="string">"abcdefghijklmnopqrstuvwxyz"</span>)&#125;</div><div class="line">        idx = row = col = <span class="number">0</span></div><div class="line">        <span class="keyword">while</span> idx &lt; len(S):</div><div class="line">            expected = col + widths[pos[S[idx]]]</div><div class="line">            <span class="keyword">if</span> expected &gt; <span class="number">100</span>:</div><div class="line">                row += <span class="number">1</span></div><div class="line">                col = <span class="number">0</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                col += widths[pos[S[idx]]]</div><div class="line">                idx += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> [row+<span class="number">1</span>, col]</div></pre></td></tr></table></figure>
+<h1 id="2018-07-01"><a href="#2018-07-01" class="headerlink" title="2018-07-01"></a>2018-07-01</h1><h2 id="子域名访问计数"><a href="#子域名访问计数" class="headerlink" title="子域名访问计数"></a><a href="https://leetcode-cn.com/problems/subdomain-visit-count/description/" target="_blank" rel="external">子域名访问计数</a></h2><p>这道题没太多算法需要考虑，就是细节问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">subdomainVisits</span><span class="params">(self, cpdomains)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type cpdomains: List[str]</span></div><div class="line"><span class="string">        :rtype: List[str]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</div><div class="line">        counter = defaultdict(int)</div><div class="line">        <span class="keyword">for</span> cpdomain <span class="keyword">in</span> cpdomains:</div><div class="line">            times, domain = cpdomain.split(<span class="string">' '</span>)</div><div class="line">            elements = domain.split(<span class="string">'.'</span>)</div><div class="line">            idx = <span class="number">0</span></div><div class="line">            <span class="keyword">while</span> idx &lt; len(elements):</div><div class="line">                subdomain = <span class="string">'.'</span>.join(elements[idx:])</div><div class="line">                counter[subdomain] += int(times)</div><div class="line">                idx += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> [<span class="string">"&#123;&#125; &#123;&#125;"</span>.format(value, key) <span class="keyword">for</span> key, value <span class="keyword">in</span> counter.items()]</div></pre></td></tr></table></figure>
+<h1 id="2018-06-30"><a href="#2018-06-30" class="headerlink" title="2018-06-30"></a>2018-06-30</h1><h2 id="交替位二进制数"><a href="#交替位二进制数" class="headerlink" title="交替位二进制数"></a><a href="https://leetcode-cn.com/problems/binary-number-with-alternating-bits/description/" target="_blank" rel="external">交替位二进制数</a></h2><p>这道题比较简单，不过注意结束条件应该是<code>n!=0</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasAlternatingBits</span><span class="params">(self, n)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type n: int</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        last = <span class="keyword">None</span></div><div class="line">        <span class="keyword">while</span> n != <span class="number">0</span>:</div><div class="line">            n, remain = divmod(n, <span class="number">2</span>)</div><div class="line">            <span class="keyword">if</span> last <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">                <span class="keyword">if</span> remain == last:</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">            last = remain</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
+<h1 id="2018-06-29"><a href="#2018-06-29" class="headerlink" title="2018-06-29"></a>2018-06-29</h1><h2 id="字符的最短距离"><a href="#字符的最短距离" class="headerlink" title="字符的最短距离"></a><a href="https://leetcode-cn.com/problems/shortest-distance-to-a-character/description/" target="_blank" rel="external">字符的最短距离</a></h2><p>采用了左右边界指针法，pos为当前遍历指针，<code>c_lft_pos</code>和<code>c_rgt_pos</code>分别为在S中的c值左右指针，当pos遍历的时候，在lft指针左边，就是lft指针位置减去当前位置，在lft和rgt中间，则取最小值，等于rgt的时候需要调整左右指针位置，大于rgt则为pos减去rgt指针的位置。即可得解。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shortestToChar</span><span class="params">(self, S, C)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type S: str</span></div><div class="line"><span class="string">        :type C: str</span></div><div class="line"><span class="string">        :rtype: List[int]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        c_pos_in_S = []</div><div class="line">        <span class="keyword">for</span> idx, s <span class="keyword">in</span> enumerate(S):</div><div class="line">            <span class="keyword">if</span> s == C:</div><div class="line">                c_pos_in_S.append(idx)</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> c_pos_in_S:</div><div class="line">            <span class="keyword">return</span> []</div><div class="line">        c_lft_pos = c_pos_in_S.pop(<span class="number">0</span>)</div><div class="line">        c_rgt_pos = c_pos_in_S.pop(<span class="number">0</span>) <span class="keyword">if</span> c_pos_in_S <span class="keyword">else</span> c_lft_pos</div><div class="line">        pos = <span class="number">0</span></div><div class="line">        res = []</div><div class="line">        <span class="keyword">while</span> pos &lt; len(S):</div><div class="line">            <span class="keyword">if</span> pos &lt;= c_lft_pos:</div><div class="line">                res.append(c_lft_pos - pos)</div><div class="line">            <span class="keyword">elif</span> c_lft_pos &lt; pos &lt; c_rgt_pos:</div><div class="line">                res.append(min([c_rgt_pos - pos, pos - c_lft_pos]))</div><div class="line">            <span class="keyword">elif</span> pos == c_rgt_pos:</div><div class="line">                <span class="comment"># 在等于右边界的时候调整边界位置</span></div><div class="line">                res.append(c_rgt_pos - pos)</div><div class="line">                c_lft_pos = c_rgt_pos</div><div class="line">                c_rgt_pos = c_pos_in_S.pop(<span class="number">0</span>) <span class="keyword">if</span> c_pos_in_S <span class="keyword">else</span> c_lft_pos</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                res.append(pos - c_rgt_pos)</div><div class="line">            pos += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
+<h1 id="2018-06-28"><a href="#2018-06-28" class="headerlink" title="2018-06-28"></a>2018-06-28</h1><h2 id="唯一摩尔斯密码词"><a href="#唯一摩尔斯密码词" class="headerlink" title="唯一摩尔斯密码词"></a><a href="https://leetcode-cn.com/problems/unique-morse-code-words/description/" target="_blank" rel="external">唯一摩尔斯密码词</a></h2><p>最朴素的解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">uniqueMorseRepresentations</span><span class="params">(self, words)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type words: List[str]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        alphabet_morse = [<span class="string">".-"</span>, <span class="string">"-..."</span>, <span class="string">"-.-."</span>, <span class="string">"-.."</span>, <span class="string">"."</span>, <span class="string">"..-."</span>, <span class="string">"--."</span>, <span class="string">"...."</span>, <span class="string">".."</span>, <span class="string">".---"</span>, <span class="string">"-.-"</span>, <span class="string">".-.."</span>, <span class="string">"--"</span>,</div><div class="line">                          <span class="string">"-."</span>, <span class="string">"---"</span>, <span class="string">".--."</span>, <span class="string">"--.-"</span>, <span class="string">".-."</span>, <span class="string">"..."</span>, <span class="string">"-"</span>, <span class="string">"..-"</span>, <span class="string">"...-"</span>, <span class="string">".--"</span>, <span class="string">"-..-"</span>, <span class="string">"-.--"</span>, <span class="string">"--.."</span>]</div><div class="line">        alphabets = <span class="string">'abcdefghijklmnopqrstuvwxyz'</span></div><div class="line">        alphabet_morse_dict = &#123;alphabet: morse <span class="keyword">for</span> alphabet, morse <span class="keyword">in</span> zip(alphabets, alphabet_morse)&#125;</div><div class="line">        res = set()</div><div class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> words:</div><div class="line">            res.add(<span class="string">''</span>.join(alphabet_morse_dict[w] <span class="keyword">for</span> w <span class="keyword">in</span> word))</div><div class="line">        <span class="keyword">return</span> len(res)</div></pre></td></tr></table></figure>
+<p>当然也可以这样，a的ascii码为97</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">uniqueMorseRepresentations</span><span class="params">(self, words)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type words: List[str]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        t = [<span class="string">".-"</span>,<span class="string">"-..."</span>,<span class="string">"-.-."</span>,<span class="string">"-.."</span>,<span class="string">"."</span>,<span class="string">"..-."</span>,<span class="string">"--."</span>,<span class="string">"...."</span>,<span class="string">".."</span>,\</div><div class="line">             <span class="string">".---"</span>,<span class="string">"-.-"</span>,<span class="string">".-.."</span>,<span class="string">"--"</span>,<span class="string">"-."</span>,<span class="string">"---"</span>,<span class="string">".--."</span>,<span class="string">"--.-"</span>,<span class="string">".-."</span>,<span class="string">"..."</span>,<span class="string">"-"</span>,<span class="string">"..-"</span>,<span class="string">"...-"</span>,<span class="string">".--"</span>,<span class="string">"-..-"</span>,<span class="string">"-.--"</span>,<span class="string">"--.."</span>]</div><div class="line">        <span class="keyword">return</span> len(set(<span class="string">""</span>.join(t[ord(a) - <span class="number">97</span>] <span class="keyword">for</span> a <span class="keyword">in</span> x) <span class="keyword">for</span> x <span class="keyword">in</span> words))</div></pre></td></tr></table></figure>
+<h2 id="山脉数组的峰顶索引"><a href="#山脉数组的峰顶索引" class="headerlink" title="山脉数组的峰顶索引"></a><a href="https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/description/" target="_blank" rel="external">山脉数组的峰顶索引</a></h2><p>二分法，主要确定循环条件，以及lo，hi值的确定</p>
+<ul>
+<li>慎重截止条件，根据指针移动条件来看，这里需要将数组判断到空为止，不能进入死循环。比如<code>lo=0;hi=len(A)-1;</code>则<code>lo&lt;=hi</code>，并且根据lo和hi指针的意义，比如判断数组等于key的位置，如果key存在于数组，lo==hi相等时已经得到解，所以是<code>lo&lt;hi</code></li>
+<li>hi的确定一定在mid为止的左边，并且不包含当前位置</li>
+<li>一定在mid位置的右边，并且不包括当前mid位置</li>
+</ul>
+<p>该题截止条件就是将数组判断为空为止，而且一般也不可能出现lo==hi这种情况，因为输入数组肯定是山峰数组，所以<code>lo=0;hi=len(A);lo&lt;hi</code>和<code>lo=0;hi=len(A)-1;lo&lt;=hi</code>都是可以的</p>
+<p>lo的确定，一定在mid位置的右边，并且不包括当前mid位置，因为在第一个if已经判断了，所以mid不是正解</p>
+<p>hi的确定，一定在mid为止的左边，并且不包含当前mid位置，因为在第一个if已经判断了，所以mid不是正解</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peakIndexInMountainArray</span><span class="params">(self, A)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type A: List[int]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        lo = <span class="number">0</span></div><div class="line">        hi = len(A) - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> lo &lt;= hi:</div><div class="line">            mid = lo + (hi - lo) // <span class="number">2</span></div><div class="line">            <span class="keyword">if</span> A[mid - <span class="number">1</span>] &lt; A[mid] &gt; A[mid + <span class="number">1</span>]:</div><div class="line">                <span class="keyword">return</span> mid</div><div class="line">            <span class="keyword">elif</span> A[mid] &gt;= A[mid - <span class="number">1</span>]:</div><div class="line">                lo = mid + <span class="number">1</span></div><div class="line">            <span class="keyword">elif</span> A[mid] &gt;= A[mid + <span class="number">1</span>]:</div><div class="line">                hi = mid - <span class="number">1</span></div></pre></td></tr></table></figure>
+<h2 id="翻转图像"><a href="#翻转图像" class="headerlink" title="翻转图像"></a><a href="https://leetcode-cn.com/problems/flipping-an-image/" target="_blank" rel="external">翻转图像</a></h2><p>比较简单，无须赘述。不过使用字典来取反，比使用异或运算<code>ele ^ 1</code>快点</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">flipAndInvertImage</span><span class="params">(self, A)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type A: List[List[int]]</span></div><div class="line"><span class="string">        :rtype: List[List[int]]</span></div><div class="line"><span class="string">        """</span></div><div class="line">        reverse = &#123;<span class="number">1</span>: <span class="number">0</span>, <span class="number">0</span>: <span class="number">1</span>&#125;</div><div class="line">        res = []</div><div class="line">        <span class="keyword">for</span> element <span class="keyword">in</span> A:</div><div class="line">            processed_element = [reverse[ele] <span class="keyword">for</span> ele <span class="keyword">in</span> element[::<span class="number">-1</span>]]</div><div class="line">            res.append(processed_element)</div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2018/07/17/leetcode_every_day/" target="_blank" rel="external">http://skyrover.me/2018/07/17/leetcode_every_day/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/07/17/leetcode_every_day/&title=《Leetcode Everyday》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/07/17/leetcode_every_day/&title=《Leetcode Everyday》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/07/17/leetcode_every_day/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Leetcode Everyday》 — SkyRover&url=http://skyrover.me/2018/07/17/leetcode_every_day/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/07/17/leetcode_every_day/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/07/09/dive_into_linux_kernel/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">深入Linux内核架构</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2018/07/17/leetcode_every_day/&title=《Leetcode Everyday》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2018/07/17/leetcode_every_day/&title=《Leetcode Everyday》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2018/07/17/leetcode_every_day/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Leetcode Everyday》 — SkyRover&url=http://skyrover.me/2018/07/17/leetcode_every_day/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2018/07/17/leetcode_every_day/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACOklEQVR42u3aS46DQAxFUfa/aXqSWQTcZ4eWynUZtQgNHAaWf8eBj/PiuP+VX/99/njjkCFDxrKMzoOv7vN9ngDI9ZfvIEOGjA0YV691dQ15XRKs7z8EeTcZMmTISIMmP5MGYhkyZMioBVxSdt5fSVJSGTJkyOBFbJomkrI2DcQ/qMVlyJCxIIN33f//71fmGzJkyFiKcYZHOgDgg8naQPTzXzJkyBjN4AGOl5fpPckQFI1LZciQMZrRWXGotfh5Ey0uWWXIkDGUkQbHNO1LxwPFhQ8ZMmQMZdTWKToPThttKAGVIUPGaAYvU8n48P48KYN/kGLKkCFjKKO2KkEGBrzoJSVxXMTKkCFjBKO2ndEfT/LPgdbLZMiQsQGjs1pBksU0KPM2nAwZMvZh9G/XD9bkzmghTIYMGeMYfOiYBl/+iumwIf58MmTIWJxRSwd5+4wPKVt3liFDxmgGD68dcJzMlRp5MmTImMrorGHxopcH0+JKmQwZMkYzOoGvsxzGUz2+UiZDhozZjNoyFl+VIMlipz0nQ4aMfRjpJKGzYNFJIh/GAzJkyNiA0QnB6ePTjPVhOCpDhoyhjDM80vBKUsNa4fqwbCFDhoxBjDeabhycLme0dtxkyJCxOIMvVZB1iqDsLDXyLj+KDBkyNmDwtYZaU6yWegYfQoYMGTLCRj8vcWuDBxkyZMio1cGdldPap2mlhjJkyFiQQYrYtNzlaV861JQhQ8ZujLR0rK1K1MJrf0VDhgwZizP+APZsA/H8Q3rbAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
