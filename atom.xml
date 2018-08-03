@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-07-31T08:38:41.000Z</updated>
+  <updated>2018-08-02T01:27:39.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -16,18 +16,64 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>20180802</title>
+    <link href="http://skyrover.me/2018/08/02/20180802/"/>
+    <id>http://skyrover.me/2018/08/02/20180802/</id>
+    <published>2018-08-02T00:26:49.000Z</published>
+    <updated>2018-08-02T01:27:39.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>想太多才是烦恼的根源，还是本身就充满了烦恼，迫不得已想太多。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;想太多才是烦恼的根源，还是本身就充满了烦恼，迫不得已想太多。&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
+    
+    
+      <category term="虾扯蛋" scheme="http://skyrover.me/tags/%E8%99%BE%E6%89%AF%E8%9B%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Leetcode Everyday</title>
     <link href="http://skyrover.me/2018/07/25/leetcode_every_day/"/>
     <id>http://skyrover.me/2018/07/25/leetcode_every_day/</id>
     <published>2018-07-24T23:11:32.000Z</published>
-    <updated>2018-07-31T08:38:41.000Z</updated>
+    <updated>2018-08-03T10:11:40.000Z</updated>
     
     <content type="html"><![CDATA[<p>坚持每天刷Leetcode，每日至少一题。</p>
 <ul>
 <li>20180628更新：开始刷Leetcode题，争取至少每日一道。</li>
 <li>20180728更新：已经在Leetcode上刷题200道，目前总数680道，还差480道。已经完成了29.4%。7月份刷题52道。</li>
-<li>20180828更新：</li>
+<li>20180802更新：已经在Leetcode上刷题221道，目前总数688道，还差467道。已经完成了32.1%。距上次统计平均每天刷题4.2道。</li>
 </ul>
+<h1 id="2018-08-03"><a href="#2018-08-03" class="headerlink" title="2018-08-03"></a>2018-08-03</h1><h2 id="700-二叉搜索树中的搜索"><a href="#700-二叉搜索树中的搜索" class="headerlink" title="700. 二叉搜索树中的搜索"></a><a href="https://leetcode-cn.com/problems/search-in-a-binary-search-tree/description/" target="_blank" rel="external">700. 二叉搜索树中的搜索</a></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Definition for a binary tree node.</span></div><div class="line"><span class="comment"># class TreeNode(object):</span></div><div class="line"><span class="comment">#     def __init__(self, x):</span></div><div class="line"><span class="comment">#         self.val = x</span></div><div class="line"><span class="comment">#         self.left = None</span></div><div class="line"><span class="comment">#         self.right = None</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">searchBST</span><span class="params">(self, root, val)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type root: TreeNode</span></div><div class="line"><span class="string">        :type val: int</span></div><div class="line"><span class="string">        :rtype: TreeNode</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</div><div class="line">            <span class="keyword">return</span></div><div class="line">        queue = [root]</div><div class="line">        <span class="keyword">while</span> queue:</div><div class="line">            node = queue.pop(<span class="number">0</span>)</div><div class="line">            <span class="keyword">if</span> node.val == val:</div><div class="line">                <span class="keyword">return</span> node</div><div class="line">            <span class="keyword">elif</span> val &lt; node.val <span class="keyword">and</span> node.left:</div><div class="line">                queue.append(node.left)</div><div class="line">            <span class="keyword">elif</span> val &gt; node.val <span class="keyword">and</span> node.right:</div><div class="line">                queue.append(node.right)</div></pre></td></tr></table></figure>
+<h1 id="2018-08-02"><a href="#2018-08-02" class="headerlink" title="2018-08-02"></a>2018-08-02</h1><h2 id="482-密钥格式化"><a href="#482-密钥格式化" class="headerlink" title="482. 密钥格式化"></a><a href="https://leetcode-cn.com/problems/license-key-formatting/description/" target="_blank" rel="external">482. 密钥格式化</a></h2><p>不优雅就不优雅了吧，脑子已经是一锅粥了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">licenseKeyFormatting</span><span class="params">(self, S, K)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type S: str</span></div><div class="line"><span class="string">        :type K: int</span></div><div class="line"><span class="string">        :rtype: str</span></div><div class="line"><span class="string">        """</span></div><div class="line">        S = <span class="string">''</span>.join(S.split(<span class="string">'-'</span>)).upper()</div><div class="line">        <span class="comment"># 从后面往前遍历，每到一组就将结果放入结果集</span></div><div class="line">        i = len(S) - <span class="number">1</span></div><div class="line">        j = len(S)</div><div class="line">        count = <span class="number">1</span></div><div class="line">        res = []</div><div class="line">        <span class="keyword">while</span> i &gt;= <span class="number">0</span>:</div><div class="line">            <span class="keyword">if</span> count % K == <span class="number">0</span>:</div><div class="line">                res.append(S[i:j])</div><div class="line">                j = i</div><div class="line">                count = <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                count += <span class="number">1</span></div><div class="line">            <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">and</span> S[i:j]:</div><div class="line">                res.append(S[i:j])</div><div class="line">            i -= <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="string">'-'</span>.join(res[::<span class="number">-1</span>])</div></pre></td></tr></table></figure>
+<h2 id="234-回文链表"><a href="#234-回文链表" class="headerlink" title="234. 回文链表"></a><a href="https://leetcode-cn.com/problems/palindrome-linked-list/description/" target="_blank" rel="external">234. 回文链表</a></h2><p>O(n)时间复杂度和O(1)的空间复杂度，击败98%的吃瓜群众</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution1</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPalindrome</span><span class="params">(self, head)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type head: ListNode</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line"></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        1-&gt;2-&gt;2-&gt;1-&gt;1</span></div><div class="line"><span class="string">        输出: true</span></div><div class="line"><span class="string">        """</span></div><div class="line">        slow = head</div><div class="line">        fast = head</div><div class="line">        <span class="keyword">while</span> fast <span class="keyword">and</span> fast.next:</div><div class="line">            slow = slow.next</div><div class="line">            fast = fast.next.next</div><div class="line"></div><div class="line">        <span class="comment"># slow 在中间位置(奇数) 或者 中间靠右(偶数)</span></div><div class="line">        <span class="comment"># 将slow右边的链表反转</span></div><div class="line">        node = slow</div><div class="line">        left = <span class="keyword">None</span></div><div class="line">        <span class="keyword">while</span> node:</div><div class="line">            right = node.next</div><div class="line">            node.next = left</div><div class="line">            left = node</div><div class="line">            node = right</div><div class="line">        <span class="keyword">while</span> left <span class="keyword">and</span> head:</div><div class="line">            <span class="keyword">if</span> head.val != left.val:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">            left = left.next</div><div class="line">            head = head.next</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
+<p>O(n)时间复杂度和空间复杂度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPalindrome</span><span class="params">(self, head)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type head: ListNode</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line"></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        1-&gt;2-&gt;2-&gt;1</span></div><div class="line"><span class="string">        输出: true</span></div><div class="line"><span class="string">        """</span></div><div class="line">        res = []</div><div class="line">        node = head</div><div class="line">        <span class="keyword">while</span> node:</div><div class="line">            res.append(node.val)</div><div class="line">            node = node.next</div><div class="line">        <span class="keyword">return</span> res == res[::<span class="number">-1</span>]</div></pre></td></tr></table></figure>
+<h1 id="2018-08-01"><a href="#2018-08-01" class="headerlink" title="2018-08-01"></a>2018-08-01</h1><h2 id="20-有效的括号"><a href="#20-有效的括号" class="headerlink" title="20. 有效的括号"></a><a href="https://leetcode-cn.com/problems/valid-parentheses/description/" target="_blank" rel="external">20. 有效的括号</a></h2><p>感觉脑子注意力无法集中了。。。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isValid</span><span class="params">(self, s)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type s: str</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> s:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">        s_map = &#123;</div><div class="line">            <span class="string">']'</span>: <span class="string">'['</span>,</div><div class="line">            <span class="string">')'</span>: <span class="string">'('</span>,</div><div class="line">            <span class="string">"&#125;"</span>: <span class="string">'&#123;'</span></div><div class="line">        &#125;</div><div class="line">        <span class="comment"># 栈 依次入栈 出栈</span></div><div class="line">        stack = [s[<span class="number">0</span>]]</div><div class="line">        i = <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> i &lt; len(s):</div><div class="line">            <span class="keyword">if</span> s[i] <span class="keyword">not</span> <span class="keyword">in</span> s_map:</div><div class="line">                stack.append(s[i])</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">if</span> <span class="keyword">not</span> stack <span class="keyword">or</span> s_map[s[i]] != stack.pop(<span class="number">-1</span>):</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">            i += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span> <span class="keyword">if</span> len(stack) == <span class="number">0</span> <span class="keyword">else</span> <span class="keyword">False</span></div></pre></td></tr></table></figure>
+<h2 id="674-最长连续递增序列"><a href="#674-最长连续递增序列" class="headerlink" title="674. 最长连续递增序列"></a><a href="https://leetcode-cn.com/problems/longest-continuous-increasing-subsequence/description/" target="_blank" rel="external">674. 最长连续递增序列</a></h2><p>注意细节啊</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findLengthOfLCIS</span><span class="params">(self, nums)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> nums:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span></div><div class="line">        i = <span class="number">1</span></div><div class="line">        count = <span class="number">1</span></div><div class="line">        res = <span class="number">0</span></div><div class="line">        <span class="keyword">while</span> i &lt; len(nums):</div><div class="line">            <span class="keyword">if</span> nums[i] &gt; nums[i<span class="number">-1</span>]:</div><div class="line">                count += <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                res = max(res, count)</div><div class="line">                count = <span class="number">1</span></div><div class="line">            i += <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            res = max(res, count)</div><div class="line">        <span class="keyword">return</span> res</div></pre></td></tr></table></figure>
+<h2 id="594-最长和谐子序列"><a href="#594-最长和谐子序列" class="headerlink" title="594. 最长和谐子序列"></a><a href="https://leetcode-cn.com/problems/longest-harmonious-subsequence/description/" target="_blank" rel="external">594. 最长和谐子序列</a></h2><p>这道题换一种思路会非常简单，直接统计各个元素的数量，然后去找和该元素相差1的元素数量，两者之和就是结果。另外规定只按照向右找，即2找3，3找4.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findLHS</span><span class="params">(self, nums)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type nums: List[int]</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">from</span> collections <span class="keyword">import</span> Counter</div><div class="line">        counter = Counter(nums)</div><div class="line">        max_len = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> counter.items():</div><div class="line">            <span class="keyword">if</span> key + <span class="number">1</span> <span class="keyword">in</span> counter:</div><div class="line">                max_len = max(max_len, value + counter[key+<span class="number">1</span>])</div><div class="line">        <span class="keyword">return</span> max_len</div></pre></td></tr></table></figure>
+<h2 id="836-矩形重叠"><a href="#836-矩形重叠" class="headerlink" title="836. 矩形重叠"></a><a href="https://leetcode-cn.com/problems/rectangle-overlap/description/" target="_blank" rel="external">836. 矩形重叠</a></h2><p>击败98.25%的提交</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isRectangleOverlap</span><span class="params">(self, rec1, rec2)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type rec1: List[int]</span></div><div class="line"><span class="string">        :type rec2: List[int]</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="comment"># 重叠的可能有多种多样，不重叠的可能只有4种</span></div><div class="line">        <span class="comment"># 以第二个矩形为中心，进行判断</span></div><div class="line">        <span class="keyword">if</span> rec1[<span class="number">2</span>] &lt;= rec2[<span class="number">0</span>] <span class="keyword">or</span> rec1[<span class="number">1</span>] &gt;= rec2[<span class="number">3</span>] <span class="keyword">or</span> rec1[<span class="number">0</span>] &gt;= rec2[<span class="number">2</span>] <span class="keyword">or</span> rec1[<span class="number">3</span>] &lt;= rec2[<span class="number">1</span>]:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
+<h2 id="111-二叉树的最小深度"><a href="#111-二叉树的最小深度" class="headerlink" title="111. 二叉树的最小深度"></a><a href="https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/description/" target="_blank" rel="external">111. 二叉树的最小深度</a></h2><p>击败95.72%的提交</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Definition for a binary tree node.</span></div><div class="line"><span class="comment"># class TreeNode(object):</span></div><div class="line"><span class="comment">#     def __init__(self, x):</span></div><div class="line"><span class="comment">#         self.val = x</span></div><div class="line"><span class="comment">#         self.left = None</span></div><div class="line"><span class="comment">#         self.right = None</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minDepth</span><span class="params">(self, root)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type root: TreeNode</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span></div><div class="line">        queue = [(root, <span class="number">1</span>)]</div><div class="line">        <span class="keyword">while</span> queue:</div><div class="line">            node, level = queue.pop(<span class="number">0</span>)</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.right:</div><div class="line">                <span class="keyword">return</span> level</div><div class="line">            <span class="keyword">if</span> node.left:</div><div class="line">                queue.append((node.left, level+<span class="number">1</span>))</div><div class="line">            <span class="keyword">if</span> node.right:</div><div class="line">                queue.append((node.right, level+<span class="number">1</span>))</div></pre></td></tr></table></figure>
+<h2 id="125-验证回文串"><a href="#125-验证回文串" class="headerlink" title="125. 验证回文串"></a><a href="https://leetcode-cn.com/problems/valid-palindrome/description/" target="_blank" rel="external">125. 验证回文串</a></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPalindrome</span><span class="params">(self, s)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type s: str</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        res = []</div><div class="line">        <span class="keyword">for</span> ele <span class="keyword">in</span> s:</div><div class="line">            <span class="keyword">if</span> ele.isalnum():</div><div class="line">                res.append(ele.lower())</div><div class="line">        <span class="keyword">return</span> res == res[::<span class="number">-1</span>]</div></pre></td></tr></table></figure>
+<p>不知道为啥，很慌，做错了好几次</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPalindrome</span><span class="params">(self, s)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type s: str</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> s:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">        s = s.lower()</div><div class="line">        i = <span class="number">0</span></div><div class="line">        j = len(s) - <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> i &lt; j:</div><div class="line">            <span class="keyword">while</span> i &lt; len(s) <span class="keyword">and</span> <span class="keyword">not</span> s[i].isalnum():   </div><div class="line">                i += <span class="number">1</span>                                 </div><div class="line">            <span class="keyword">while</span> j &gt; <span class="number">0</span> <span class="keyword">and</span> <span class="keyword">not</span> s[j].isalnum():        </div><div class="line">                j -= <span class="number">1</span></div><div class="line">            <span class="keyword">if</span> i &gt; j:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">            <span class="keyword">if</span> s[i] != s[j]:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">            i += <span class="number">1</span></div><div class="line">            j -= <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
+<h2 id="290-单词模式"><a href="#290-单词模式" class="headerlink" title="290. 单词模式"></a><a href="https://leetcode-cn.com/problems/word-pattern/description/" target="_blank" rel="external">290. 单词模式</a></h2><p>双向，完全匹配 233333</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wordPattern</span><span class="params">(self, pattern, str)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type pattern: str</span></div><div class="line"><span class="string">        :type str: str</span></div><div class="line"><span class="string">        :rtype: bool</span></div><div class="line"><span class="string">        """</span></div><div class="line">        strings = str.split(<span class="string">' '</span>)</div><div class="line">        <span class="keyword">if</span> len(strings) != len(pattern):</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        word_map = &#123;&#125;</div><div class="line">        used = set()</div><div class="line">        <span class="keyword">for</span> idx, ele <span class="keyword">in</span> enumerate(pattern):</div><div class="line">            <span class="keyword">if</span> ele <span class="keyword">not</span> <span class="keyword">in</span> word_map <span class="keyword">and</span> strings[idx] <span class="keyword">not</span> <span class="keyword">in</span> used:</div><div class="line">                word_map[ele] = strings[idx]</div><div class="line">                used.add(strings[idx])</div><div class="line">            <span class="keyword">if</span> word_map.get(ele) != strings[idx]:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
 <h1 id="2018-07-31"><a href="#2018-07-31" class="headerlink" title="2018-07-31"></a>2018-07-31</h1><h2 id="28-实现strStr"><a href="#28-实现strStr" class="headerlink" title="28. 实现strStr()"></a><a href="https://leetcode-cn.com/problems/implement-strstr/description/" target="_blank" rel="external">28. 实现strStr()</a></h2><p>需要注意一些细节问题</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">strStr</span><span class="params">(self, haystack, needle)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line"><span class="string">        :type haystack: str</span></div><div class="line"><span class="string">        :type needle: str</span></div><div class="line"><span class="string">        :rtype: int</span></div><div class="line"><span class="string">        """</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> needle:</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span></div><div class="line">        <span class="keyword">if</span> len(needle) &gt; len(haystack):</div><div class="line">            <span class="keyword">return</span> <span class="number">-1</span></div><div class="line">        i = j = <span class="number">0</span></div><div class="line">        <span class="keyword">while</span> i &lt; len(haystack) <span class="keyword">and</span> len(needle) &lt;= len(haystack) - i:</div><div class="line">            <span class="keyword">if</span> haystack[i] != needle[<span class="number">0</span>]:</div><div class="line">                i += <span class="number">1</span></div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                inner_i = i</div><div class="line">                <span class="keyword">while</span> j &lt; len(needle):</div><div class="line">                    <span class="keyword">if</span> haystack[inner_i] == needle[j]:</div><div class="line">                        inner_i += <span class="number">1</span></div><div class="line">                        j += <span class="number">1</span></div><div class="line">                    <span class="keyword">else</span>:</div><div class="line">                        j = <span class="number">0</span></div><div class="line">                        i += <span class="number">1</span></div><div class="line">                        <span class="keyword">break</span></div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    <span class="keyword">return</span> i</div><div class="line">        <span class="keyword">return</span> <span class="number">-1</span></div></pre></td></tr></table></figure>
 <h2 id="746-使用最小花费爬楼梯"><a href="#746-使用最小花费爬楼梯" class="headerlink" title="746. 使用最小花费爬楼梯"></a><a href="https://leetcode-cn.com/problems/min-cost-climbing-stairs/description/" target="_blank" rel="external">746. 使用最小花费爬楼梯</a></h2><p>明显一看就是动态规划，那么动态规划要求解最后一个问题，就要找出前面问题之间的关系。这道题可以上一个台阶，也可以上两个台阶，那么<code>dp[stop] = min(dp[stop-1]+cost[stop-1], dp[stop-2]+cost[stop-2])</code>就是说，到达stop的时候可以通过前一个台阶上来，也可以通过前两个台阶上来，所以问题就转换成两个子问题的求解了，以此类推，那么一开始的时候只要知道第一个和第二个台阶的cost值就可以完成求解。</p>
@@ -4032,6 +4078,106 @@
   </entry>
   
   <entry>
+    <title>笔记 - MySQL技术内幕(二)</title>
+    <link href="http://skyrover.me/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_2/"/>
+    <id>http://skyrover.me/2017/11/12/mysql_技术内幕_2/</id>
+    <published>2017-11-12T13:22:14.000Z</published>
+    <updated>2018-08-01T03:20:47.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="获取数据库的元数据"><a href="#获取数据库的元数据" class="headerlink" title="获取数据库的元数据"></a>获取数据库的元数据</h1><ul>
+<li><code>show columns from weiboes like &quot;%\_%&quot;;</code></li>
+<li><code>show index from weiboes;</code></li>
+<li><p><code>SHOW COLUMNS FROM student WHERE Field = &quot;student_id&quot;;</code></p>
+<p>  这一语句可以用来查询表中是否有相应的字段。</p>
+</li>
+<li><p><code>SELECT COUNT(*) FROM tbl_name;</code></p>
+</li>
+<li><code>select * from mydatabase.weiboes where false;</code> 如果表存在，则会执行成功，否则失败。</li>
+</ul>
+<h1 id="利用联结操作对多个数据表进行检索"><a href="#利用联结操作对多个数据表进行检索" class="headerlink" title="利用联结操作对多个数据表进行检索"></a>利用联结操作对多个数据表进行检索</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT select_list</div><div class="line">FROM table_list</div><div class="line">WHERE row_constraint</div><div class="line">GROUP BY grouping_columns</div><div class="line">ORDER BY sorting_columns</div><div class="line">HAVING group_constraint #  组必须满足的条件</div><div class="line">LIMIT count;</div></pre></td></tr></table></figure>
+<p>SELECT可以直接对表达式进行求值：<code>SELECT SQRT(POW(3, 2)+POW(4,2))</code></p>
+<h2 id="内联结"><a href="#内联结" class="headerlink" title="内联结"></a>内联结</h2><p>内联结会让一个数据表的数据行和另一个数据表里的数据行进行匹配来产生结果，也就是这个表的每一项都会跟另一个表的每一项进行匹配。即笛卡尔积。</p>
+<p>一般会使用WHERE语句来将数据联结操作只在某个数据列相等的情况进行。<code>select * from t1 inner join t2 where t1.i1 = t2.i2;</code></p>
+<p>另外<code>CROSS JOIN</code>和<code>JOIN</code>的联结类型类似于<code>INNER JOIN</code>。还有逗号关联操作符的效果与<code>INNER JOIN</code>也是相似的: <code>SELECT * FROM t1, t2 WHERE t1.i1 = t2.i2;</code>，不过应该避免逗号操作符。</p>
+<ul>
+<li>ON：<code>select * from t1 inner join t2 on t1.i1 = t2.i2;</code></li>
+<li>USING(): <code>select * from mytbl1 inner join mytbl2 using (b);</code> 其中两个表中都有b这一列。</li>
+</ul>
+<h2 id="避免数据列或者表名的歧义"><a href="#避免数据列或者表名的歧义" class="headerlink" title="避免数据列或者表名的歧义"></a>避免数据列或者表名的歧义</h2><ul>
+<li><code>select a, mytbl1.b, mytbl2.b, c from mytbl1 inner join mytbl2;</code></li>
+<li><code>select mytbl1.col1, m.col2 from mytbl inner join mytbl as m where mytbl.col1 &gt; m.col1;</code> 自联结</li>
+</ul>
+<h2 id="左联结和右联结"><a href="#左联结和右联结" class="headerlink" title="左联结和右联结"></a>左联结和右联结</h2><p>外联结会把其中一个数据表在另一个数据表里没有匹配的数据行也显示出来。左联结<code>LEFT JOIN</code>会把左数据表在右数据表里没有匹配的数据行也显示出来。而右联结<code>RIGHT JOIN</code>会将右数据表在左数据表里没有匹配的数据行也显示出来。</p>
+<p>原理就是从左表的数据行来和右表匹配的时候，如果匹配上的话，就输出。如果左表数据在右表没有找到匹配，就会假设一个全为NULL的右表数据行，这样左表的这行数据也匹配到了。也就是说左表的每一行都有一个对应的数据行，不管在右表有没有匹配。</p>
+<p>比如<code>select * from t1 left join t2 on t1.i1 = t2.i2;</code></p>
+<p>左联结可以让你找到在右数据表中没有匹配的左数据表的行。也就是查找哪些值没有出现过。</p>
+<p>这本书关于联结这块的例子讲的很好！</p>
+<h1 id="用子查询进行多数据表检索"><a href="#用子查询进行多数据表检索" class="headerlink" title="用子查询进行多数据表检索"></a>用子查询进行多数据表检索</h1><p>子查询与关系比较操作符</p>
+<ul>
+<li><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></li>
+<li><code>select * from president where birth = (select min(birth) from president);</code></li>
+<li><code>select last_name, first_name, city, state from president where (city, state) = (select city, state from president where last_name = &#39;Adams&#39; and first_name = &#39;john&#39;);</code></li>
+</ul>
+<h2 id="IN和NOT-IN子查询"><a href="#IN和NOT-IN子查询" class="headerlink" title="IN和NOT IN子查询"></a>IN和NOT IN子查询</h2><ul>
+<li><code>select * from student where student_id in (select student_id from absence);</code></li>
+<li><code>select last_name, first_name, city, state from president where (city, state) in (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
+</ul>
+<h2 id="all-any和some子查询"><a href="#all-any和some子查询" class="headerlink" title="all, any和some子查询"></a>all, any和some子查询</h2><ul>
+<li><code>select last_name, first_name, birth from president where birth &lt;= all (select birth from president);</code> 最小的</li>
+<li><code>select last_name, first_name, city, state from president where(city, state) = any (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
+<li><code>IN(= any)</code>和 <code>&lt; &gt; all(NOT IN)</code></li>
+</ul>
+<h2 id="exists和not-exists子查询"><a href="#exists和not-exists子查询" class="headerlink" title="exists和not exists子查询"></a>exists和not exists子查询</h2><ul>
+<li><code>select exists (select * from absence);</code></li>
+<li><code>select not exists (select * from absence);</code></li>
+</ul>
+<h2 id="from中的子查询"><a href="#from中的子查询" class="headerlink" title="from中的子查询"></a>from中的子查询</h2><ul>
+<li><code>select * from (select 1, 2) as t1 inner join (select 3, 4) as t2;</code></li>
+</ul>
+<h2 id="子查询改写成联结查询"><a href="#子查询改写成联结查询" class="headerlink" title="子查询改写成联结查询"></a>子查询改写成联结查询</h2><ul>
+<li><p><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></p>
+<ul>
+<li><code>select score.* from score inner join grade_event on score.event_id = grade_event.event_id where grade_event.category = &#39;T&#39;;</code></li>
+</ul>
+</li>
+<li><p><code>select * from student where student_id not in (select student_id from absence);</code></p>
+<ul>
+<li><code>select student.* from student left join absence on student.student_id = absence.student_id where absence.student_id is NULL;</code> 为NULL的时候则是学生表没有在absence表匹配到的记录，也就是没有缺席的学生</li>
+</ul>
+</li>
+</ul>
+<h1 id="UNION语句进行多数据表检索"><a href="#UNION语句进行多数据表检索" class="headerlink" title="UNION语句进行多数据表检索"></a>UNION语句进行多数据表检索</h1><ul>
+<li><code>select i from t1 union select i from t2 union select i from t3;</code></li>
+</ul>
+<p>默认UNION从结果集中剔除重复数据行，即<code>UNION DISTINCT == UNION</code>，如果保留重复行，<code>UNION ALL</code></p>
+<h1 id="使用视图"><a href="#使用视图" class="headerlink" title="使用视图"></a>使用视图</h1><p>视图是虚拟的数据表，提供查看数据表数据的另一种方法。</p>
+<ul>
+<li><code>create view vpres as select last_name, first_name, city, state from president;</code></li>
+<li><code>select * from vpress;</code></li>
+</ul>
+<p>但是只能引用在该视图的定义里列出的数据列。</p>
+<p>视图也是可以更新的，但是其必须直接映射到一个数据表上，选取的数据列是数据表数据列的简单引用。</p>
+<h1 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h1>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;获取数据库的元数据&quot;&gt;&lt;a href=&quot;#获取数据库的元数据&quot; class=&quot;headerlink&quot; title=&quot;获取数据库的元数据&quot;&gt;&lt;/a&gt;获取数据库的元数据&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;show columns from weiboes like
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+    
+      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
     <title>笔记 - MySQL技术内幕(一)</title>
     <link href="http://skyrover.me/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_note/"/>
     <id>http://skyrover.me/2017/11/12/mysql_技术内幕_note/</id>
@@ -4326,6 +4472,49 @@
   </entry>
   
   <entry>
+    <title>howdoi 源码解析</title>
+    <link href="http://skyrover.me/2017/11/11/howdoi%E6%BA%90%E7%A0%81/"/>
+    <id>http://skyrover.me/2017/11/11/howdoi源码/</id>
+    <published>2017-11-11T06:03:59.000Z</published>
+    <updated>2018-08-01T03:20:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近看到一个很有意思的库，直接在命令行中查询你想要的东西，就不用上百度，谷歌了，直接在命令行中搞，是不是很方便！项目地址：<a href="https://github.com/gleitz/howdoi" target="_blank" rel="external">https://github.com/gleitz/howdoi</a></p>
+<p>整个代码的逻辑就是根据命令行解析出参数和要查询的内容，然后向谷歌发起请求，默认是在<code>stackoverflow.com</code>查询= =!，然后处理获取到的内容。</p>
+<h2 id="设置请求的代理"><a href="#设置请求的代理" class="headerlink" title="设置请求的代理"></a>设置请求的代理</h2><p>在发起请求的时候，这里加入了获取代理的部分<code>get_proxies()</code>，用于获取请求的代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def _get_result(url):</div><div class="line">    try:</div><div class="line">        return requests.get(url, headers=&#123;&apos;User-Agent&apos;: random.choice(USER_AGENTS)&#125;, proxies=get_proxies(),</div><div class="line">                            verify=VERIFY_SSL_CERTIFICATE).text</div><div class="line">    except requests.exceptions.SSLError as e:</div><div class="line">        print(&apos;[ERROR] Encountered an SSL Error. Try using HTTP instead of &apos;</div><div class="line">              &apos;HTTPS by setting the environment variable &quot;HOWDOI_DISABLE_SSL&quot;.\n&apos;)</div><div class="line">        raise e</div></pre></td></tr></table></figure>
+<p>下面是<code>get_proxies()</code>函数，是对<code>urllib.request.getproxies()</code>的一个封装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def get_proxies():</div><div class="line">    proxies = getproxies()</div><div class="line">    filtered_proxies = &#123;&#125;</div><div class="line">    for key, value in proxies.items():</div><div class="line">        if key.startswith(&apos;http&apos;):</div><div class="line">            if not value.startswith(&apos;http&apos;):</div><div class="line">                filtered_proxies[key] = &apos;http://%s&apos; % value</div><div class="line">            else:</div><div class="line">                filtered_proxies[key] = value</div><div class="line">    return filtered_proxies</div></pre></td></tr></table></figure>
+<p>其中<code>urllib.request.getproxies()</code>是这样描述的：</p>
+<blockquote>
+<p>这个函数返回了一个协议名到代理服务器url的字典。它会以大小写不敏感的形式扫描名字为<code>&lt;scheme&gt;_proxy</code>的环境变量，对于所有的操作系统这都是第一步，当它找不到的时候，会去再Mac OSX系统配置和Windows注册表中寻找代理信息。如果同时出现了大写的配置和小写的配置，那么优先使用小写配置。</p>
+</blockquote>
+<p>如果环境变量<code>REQUEST_METHOD</code>已经设置，通常说明你的脚本是运行在一个CGI环境，那么环境变量<code>HTTP_PROXY</code>将会被忽略。这是因为那个变量会被客户端使用Proxy的HTTP头注入。如果你需要在一个CGI环境中使用HTTP代理，要么显式的使用ProxyHandler，或者是使用小写变量。</p>
+<p>所以对于howdoi的应用，要么你系统配置了全局的代理，要么是手动的在系统的环境变量设置<code>http_proxy</code>之类的环境变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">import requests</div><div class="line"></div><div class="line">proxies = &#123;</div><div class="line">  &quot;http&quot;: &quot;http://10.10.1.10:3128&quot;,</div><div class="line">  &quot;https&quot;: &quot;http://10.10.1.10:1080&quot;,</div><div class="line">&#125;</div><div class="line"></div><div class="line">requests.get(&quot;http://example.org&quot;, proxies=proxies)</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ export HTTP_PROXY=&quot;http://10.10.1.10:3128&quot;</div><div class="line">$ export HTTPS_PROXY=&quot;http://10.10.1.10:1080&quot;</div></pre></td></tr></table></figure>
+<p>但是我发现不论是我采用哪种方式，howdoi都不能正常运行。。会<code>Failed to establish network connection</code></p>
+<h2 id="使用pyquery处理请求的响应"><a href="#使用pyquery处理请求的响应" class="headerlink" title="使用pyquery处理请求的响应"></a>使用pyquery处理请求的响应</h2><p>pyquery是一个Python的类似jquery的库，允许你在xml文档中创造jquery查询的库。API尽可能的像jquery。pyquery使用lxml来实现xml和html的快速操纵。</p>
+<p>用法就是经过PyQuery类实例化的对象就像jquery的<code>$</code>一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from pyquery import PyQuery as pq</div><div class="line">d = pq(url=&apos;http://google.com/&apos;)</div><div class="line">d(&quot;#hello&quot;)</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近看到一个很有意思的库，直接在命令行中查询你想要的东西，就不用上百度，谷歌了，直接在命令行中搞，是不是很方便！项目地址：&lt;a href=&quot;https://github.com/gleitz/howdoi&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ht
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+      <category term="源码" scheme="http://skyrover.me/tags/%E6%BA%90%E7%A0%81/"/>
+    
+  </entry>
+  
+  <entry>
     <title>笔记 - 元编程</title>
     <link href="http://skyrover.me/2017/11/05/python_cookbook_1/"/>
     <id>http://skyrover.me/2017/11/05/python_cookbook_1/</id>
@@ -4527,6 +4716,51 @@
     
     
       <category term="Python" scheme="http://skyrover.me/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB 安装配置以及基本概念</title>
+    <link href="http://skyrover.me/2017/10/31/mongodb_1/"/>
+    <id>http://skyrover.me/2017/10/31/mongodb_1/</id>
+    <published>2017-10-31T01:37:14.000Z</published>
+    <updated>2018-08-01T03:19:55.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Mac上安装MongoDB"><a href="#Mac上安装MongoDB" class="headerlink" title="Mac上安装MongoDB"></a>Mac上安装MongoDB</h1><p><code>brew install mongodb</code>，brew是个好东西，安装好之后得<code>sudo mongod</code>才能启动服务器，然后使用<code>mongo</code>客户端进行链接。</p>
+<h2 id="可视化工具"><a href="#可视化工具" class="headerlink" title="可视化工具"></a>可视化工具</h2><p>使用<a href="https://robomongo.org/" target="_blank" rel="external">Robomongo</a>，进入官网下载即可。</p>
+<h1 id="MongoDB特性"><a href="#MongoDB特性" class="headerlink" title="MongoDB特性"></a>MongoDB特性</h1><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><ul>
+<li><code>show dbs</code> 命令可以显示所有数据的列表。</li>
+<li><code>db</code> 命令可以显示当前数据库对象或集合。</li>
+<li><code>use</code>命令，可以连接到一个指定的数据库或者创建数据库。</li>
+</ul>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p>文档是一组键值(key-value)对(即BSON)。MongoDB 的文档不需要设置相同的字段，并且相同的字段不需要相同的数据类型。</p>
+<ul>
+<li>文档中的键/值对是有序的。</li>
+<li>文档中的值不仅可以是在双引号里面的字符串，还可以是其他几种数据类型（甚至可以是整个嵌入的文档)。</li>
+</ul>
+<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><p>集合就是 MongoDB 文档组，类似于MySQL中的表，集合存在于数据库中，集合没有固定的结构，这意味着你在对集合可以插入不同格式和类型的数据，但通常情况下我们插入集合的数据都会有一定的关联性。</p>
+<p><code>db.chunkstores.findOne()</code> 查询该chunkstores集合中的一个文档</p>
+<h2 id="MongoDB链接字符串"><a href="#MongoDB链接字符串" class="headerlink" title="MongoDB链接字符串"></a>MongoDB链接字符串</h2><p><code>mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]</code></p>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><h2 id="散列索引"><a href="#散列索引" class="headerlink" title="散列索引"></a>散列索引</h2><p>散列索引维护索引字段值的散列。</p>
+<p>散列索引通过使用散列分片键支持分片。基于散列的分片使用了一个字段的散列索引作为分片的键将你的分片集群的数据切割。</p>
+<p>使用一个散列分片键来分片collection导致一个更加随机的数据分布。</p>
+<p><code>db.collection.createIndex( { _id: &quot;hashed&quot; } )</code></p>
+<p>MongoDB支持在任意单个字段上建立散列索引。散列函数展开嵌入的文档(documents)然后计算整个值的散列，但是它不支持<code>multi-key</code>的索引。</p>
+<p>你不能在有散列索引字段上创建一个组合索引，或者是在散列索引上指定一个独一无二的约束。然而，你可以在同一个字段上创建一个散列索引和自增(自减)非散列索引。MongoDB将使用标量索引进行范围查询。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Mac上安装MongoDB&quot;&gt;&lt;a href=&quot;#Mac上安装MongoDB&quot; class=&quot;headerlink&quot; title=&quot;Mac上安装MongoDB&quot;&gt;&lt;/a&gt;Mac上安装MongoDB&lt;/h1&gt;&lt;p&gt;&lt;code&gt;brew install mongodb
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+    
+      <category term="MongoDB" scheme="http://skyrover.me/tags/MongoDB/"/>
     
   </entry>
   

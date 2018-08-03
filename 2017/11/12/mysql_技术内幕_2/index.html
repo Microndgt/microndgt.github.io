@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>笔记 - MySQL技术内幕(二) | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Database,读书笔记,MySQL">
+    <meta name="description" content="获取数据库的元数据 show columns from weiboes like &amp;quot;%\_%&amp;quot;; show index from weiboes; SHOW COLUMNS FROM student WHERE Field = &amp;quot;student_id&amp;quot;;   这一语句可以用来查询表中是否有相应的字段。  SELECT COUNT(*) FROM tbl_na">
+<meta name="keywords" content="Database,读书笔记,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记 - MySQL技术内幕(二)">
+<meta property="og:url" content="http://skyrover.me/2017/11/12/mysql_技术内幕_2/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="获取数据库的元数据 show columns from weiboes like &amp;quot;%\_%&amp;quot;; show index from weiboes; SHOW COLUMNS FROM student WHERE Field = &amp;quot;student_id&amp;quot;;   这一语句可以用来查询表中是否有相应的字段。  SELECT COUNT(*) FROM tbl_na">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-01T03:20:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="笔记 - MySQL技术内幕(二)">
+<meta name="twitter:description" content="获取数据库的元数据 show columns from weiboes like &amp;quot;%\_%&amp;quot;; show index from weiboes; SHOW COLUMNS FROM student WHERE Field = &amp;quot;student_id&amp;quot;;   这一语句可以用来查询表中是否有相应的字段。  SELECT COUNT(*) FROM tbl_na">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">笔记 - MySQL技术内幕(二)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">笔记 - MySQL技术内幕(二)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-12T13:22:14.000Z" itemprop="datePublished" class="page-time">
+  2017-11-12 21:22:14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#获取数据库的元数据"><span class="post-toc-number">1.</span> <span class="post-toc-text">获取数据库的元数据</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#利用联结操作对多个数据表进行检索"><span class="post-toc-number">2.</span> <span class="post-toc-text">利用联结操作对多个数据表进行检索</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内联结"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">内联结</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#避免数据列或者表名的歧义"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">避免数据列或者表名的歧义</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#左联结和右联结"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">左联结和右联结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#用子查询进行多数据表检索"><span class="post-toc-number">3.</span> <span class="post-toc-text">用子查询进行多数据表检索</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#IN和NOT-IN子查询"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">IN和NOT IN子查询</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#all-any和some子查询"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">all, any和some子查询</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#exists和not-exists子查询"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">exists和not exists子查询</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#from中的子查询"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">from中的子查询</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#子查询改写成联结查询"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">子查询改写成联结查询</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#UNION语句进行多数据表检索"><span class="post-toc-number">4.</span> <span class="post-toc-text">UNION语句进行多数据表检索</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用视图"><span class="post-toc-number">5.</span> <span class="post-toc-text">使用视图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#事务处理"><span class="post-toc-number">6.</span> <span class="post-toc-text">事务处理</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-mysql_技术内幕_2"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">笔记 - MySQL技术内幕(二)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-12 21:22:14 21:22:14" datetime="2017-11-12T13:22:14.000Z"  itemprop="datePublished">2017-11-12 21:22:14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <h1 id="获取数据库的元数据"><a href="#获取数据库的元数据" class="headerlink" title="获取数据库的元数据"></a>获取数据库的元数据</h1><ul>
+<li><code>show columns from weiboes like &quot;%\_%&quot;;</code></li>
+<li><code>show index from weiboes;</code></li>
+<li><p><code>SHOW COLUMNS FROM student WHERE Field = &quot;student_id&quot;;</code></p>
+<p>  这一语句可以用来查询表中是否有相应的字段。</p>
+</li>
+<li><p><code>SELECT COUNT(*) FROM tbl_name;</code></p>
+</li>
+<li><code>select * from mydatabase.weiboes where false;</code> 如果表存在，则会执行成功，否则失败。</li>
+</ul>
+<h1 id="利用联结操作对多个数据表进行检索"><a href="#利用联结操作对多个数据表进行检索" class="headerlink" title="利用联结操作对多个数据表进行检索"></a>利用联结操作对多个数据表进行检索</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT select_list</div><div class="line">FROM table_list</div><div class="line">WHERE row_constraint</div><div class="line">GROUP BY grouping_columns</div><div class="line">ORDER BY sorting_columns</div><div class="line">HAVING group_constraint #  组必须满足的条件</div><div class="line">LIMIT count;</div></pre></td></tr></table></figure>
+<p>SELECT可以直接对表达式进行求值：<code>SELECT SQRT(POW(3, 2)+POW(4,2))</code></p>
+<h2 id="内联结"><a href="#内联结" class="headerlink" title="内联结"></a>内联结</h2><p>内联结会让一个数据表的数据行和另一个数据表里的数据行进行匹配来产生结果，也就是这个表的每一项都会跟另一个表的每一项进行匹配。即笛卡尔积。</p>
+<p>一般会使用WHERE语句来将数据联结操作只在某个数据列相等的情况进行。<code>select * from t1 inner join t2 where t1.i1 = t2.i2;</code></p>
+<p>另外<code>CROSS JOIN</code>和<code>JOIN</code>的联结类型类似于<code>INNER JOIN</code>。还有逗号关联操作符的效果与<code>INNER JOIN</code>也是相似的: <code>SELECT * FROM t1, t2 WHERE t1.i1 = t2.i2;</code>，不过应该避免逗号操作符。</p>
+<ul>
+<li>ON：<code>select * from t1 inner join t2 on t1.i1 = t2.i2;</code></li>
+<li>USING(): <code>select * from mytbl1 inner join mytbl2 using (b);</code> 其中两个表中都有b这一列。</li>
+</ul>
+<h2 id="避免数据列或者表名的歧义"><a href="#避免数据列或者表名的歧义" class="headerlink" title="避免数据列或者表名的歧义"></a>避免数据列或者表名的歧义</h2><ul>
+<li><code>select a, mytbl1.b, mytbl2.b, c from mytbl1 inner join mytbl2;</code></li>
+<li><code>select mytbl1.col1, m.col2 from mytbl inner join mytbl as m where mytbl.col1 &gt; m.col1;</code> 自联结</li>
+</ul>
+<h2 id="左联结和右联结"><a href="#左联结和右联结" class="headerlink" title="左联结和右联结"></a>左联结和右联结</h2><p>外联结会把其中一个数据表在另一个数据表里没有匹配的数据行也显示出来。左联结<code>LEFT JOIN</code>会把左数据表在右数据表里没有匹配的数据行也显示出来。而右联结<code>RIGHT JOIN</code>会将右数据表在左数据表里没有匹配的数据行也显示出来。</p>
+<p>原理就是从左表的数据行来和右表匹配的时候，如果匹配上的话，就输出。如果左表数据在右表没有找到匹配，就会假设一个全为NULL的右表数据行，这样左表的这行数据也匹配到了。也就是说左表的每一行都有一个对应的数据行，不管在右表有没有匹配。</p>
+<p>比如<code>select * from t1 left join t2 on t1.i1 = t2.i2;</code></p>
+<p>左联结可以让你找到在右数据表中没有匹配的左数据表的行。也就是查找哪些值没有出现过。</p>
+<p>这本书关于联结这块的例子讲的很好！</p>
+<h1 id="用子查询进行多数据表检索"><a href="#用子查询进行多数据表检索" class="headerlink" title="用子查询进行多数据表检索"></a>用子查询进行多数据表检索</h1><p>子查询与关系比较操作符</p>
+<ul>
+<li><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></li>
+<li><code>select * from president where birth = (select min(birth) from president);</code></li>
+<li><code>select last_name, first_name, city, state from president where (city, state) = (select city, state from president where last_name = &#39;Adams&#39; and first_name = &#39;john&#39;);</code></li>
+</ul>
+<h2 id="IN和NOT-IN子查询"><a href="#IN和NOT-IN子查询" class="headerlink" title="IN和NOT IN子查询"></a>IN和NOT IN子查询</h2><ul>
+<li><code>select * from student where student_id in (select student_id from absence);</code></li>
+<li><code>select last_name, first_name, city, state from president where (city, state) in (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
+</ul>
+<h2 id="all-any和some子查询"><a href="#all-any和some子查询" class="headerlink" title="all, any和some子查询"></a>all, any和some子查询</h2><ul>
+<li><code>select last_name, first_name, birth from president where birth &lt;= all (select birth from president);</code> 最小的</li>
+<li><code>select last_name, first_name, city, state from president where(city, state) = any (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
+<li><code>IN(= any)</code>和 <code>&lt; &gt; all(NOT IN)</code></li>
+</ul>
+<h2 id="exists和not-exists子查询"><a href="#exists和not-exists子查询" class="headerlink" title="exists和not exists子查询"></a>exists和not exists子查询</h2><ul>
+<li><code>select exists (select * from absence);</code></li>
+<li><code>select not exists (select * from absence);</code></li>
+</ul>
+<h2 id="from中的子查询"><a href="#from中的子查询" class="headerlink" title="from中的子查询"></a>from中的子查询</h2><ul>
+<li><code>select * from (select 1, 2) as t1 inner join (select 3, 4) as t2;</code></li>
+</ul>
+<h2 id="子查询改写成联结查询"><a href="#子查询改写成联结查询" class="headerlink" title="子查询改写成联结查询"></a>子查询改写成联结查询</h2><ul>
+<li><p><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></p>
+<ul>
+<li><code>select score.* from score inner join grade_event on score.event_id = grade_event.event_id where grade_event.category = &#39;T&#39;;</code></li>
+</ul>
+</li>
+<li><p><code>select * from student where student_id not in (select student_id from absence);</code></p>
+<ul>
+<li><code>select student.* from student left join absence on student.student_id = absence.student_id where absence.student_id is NULL;</code> 为NULL的时候则是学生表没有在absence表匹配到的记录，也就是没有缺席的学生</li>
+</ul>
+</li>
+</ul>
+<h1 id="UNION语句进行多数据表检索"><a href="#UNION语句进行多数据表检索" class="headerlink" title="UNION语句进行多数据表检索"></a>UNION语句进行多数据表检索</h1><ul>
+<li><code>select i from t1 union select i from t2 union select i from t3;</code></li>
+</ul>
+<p>默认UNION从结果集中剔除重复数据行，即<code>UNION DISTINCT == UNION</code>，如果保留重复行，<code>UNION ALL</code></p>
+<h1 id="使用视图"><a href="#使用视图" class="headerlink" title="使用视图"></a>使用视图</h1><p>视图是虚拟的数据表，提供查看数据表数据的另一种方法。</p>
+<ul>
+<li><code>create view vpres as select last_name, first_name, city, state from president;</code></li>
+<li><code>select * from vpress;</code></li>
+</ul>
+<p>但是只能引用在该视图的定义里列出的数据列。</p>
+<p>视图也是可以更新的，但是其必须直接映射到一个数据表上，选取的数据列是数据表数据列的简单引用。</p>
+<h1 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h1>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/11/12/mysql_技术内幕_2/" target="_blank" rel="external">http://skyrover.me/2017/11/12/mysql_技术内幕_2/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Database/">Database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/12/mysql_技术内幕_2/&title=《笔记 - MySQL技术内幕(二)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/12/mysql_技术内幕_2/&title=《笔记 - MySQL技术内幕(二)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/12/mysql_技术内幕_2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《笔记 - MySQL技术内幕(二)》 — SkyRover&url=http://skyrover.me/2017/11/12/mysql_技术内幕_2/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/12/mysql_技术内幕_2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/12/07/messaging_in_jupyter/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">翻译 - Messaging in Jupyter</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/11/12/mysql_技术内幕_note/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">笔记 - MySQL技术内幕(一)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/12/mysql_技术内幕_2/&title=《笔记 - MySQL技术内幕(二)》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/12/mysql_技术内幕_2/&title=《笔记 - MySQL技术内幕(二)》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/12/mysql_技术内幕_2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《笔记 - MySQL技术内幕(二)》 — SkyRover&url=http://skyrover.me/2017/11/12/mysql_技术内幕_2/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/12/mysql_技术内幕_2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMUlEQVR42u3azW6DMBBF4bz/S1Mp2xbn3Bk3EuPDClGg/lg48/d64eN6H3fXf//17gp5z909Gw4ZMmQ8lnEtjzWDLHq9dHK+XpsMGTLOYfB/QxZ6t5T1s/zzyZAhQwZZyjrsI+fpszJkyJCxa8NN01SyWcuQIUMGT2JRMtmojH0pF5chQ8YDGWlj4Jvn/9jfkCFDxkMYV+PgBTK+aRZXIkOGjNEMUkrjWzApz5GwL20SyJAhYzaDp5H9lHJXS+CPd8qQIeMYBi/r86XwEbHib0VtRkOGDBmPYvQrVzxMTANEPuohQ4aM2Yz169LNujYQxkfQPvRgZciQMZSxq3lZ+yg8oORUGTJkzGakqSy/n7Brn0yGDBnnMPjWlt7JG5zrK+QTyJAhYyqjtoF2ttFawvzhWRkyZBzG2NBbCBNjvmcGY2EyZMgYxOiknXx4gl9PmwQyZMg4gVEL43iZjL+hQ5UhQ8YJjNrYBC+Qbfgd4PVCGTJkjGOkaS0PDfe2OePxNRkyZIxj1EayeLOz1v6MC3wyZMg4gMGDuc5C+bBFHBTKkCFjNCN9EYfx0Y1+AU6GDBlTGVd4pIllbZON3yZDhozRjFqiWyux8cGLWnApQ4aM2Yw0HeWNAR7FpRtuHCDKkCFjBKPTXCTpaKvoT9qiMmTIkLEM4GpluzSVRXMiMmTIOJ6RjoilH4iHjDJkyDiTUWsGdDqJfIBjQyNThgwZD2d0GgNpMyCFFcNEGTJkzGH8AEeLiYdDWH9FAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

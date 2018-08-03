@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>howdoi 源码解析 | SkyRover | 靡不有初 鲜克有终</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,源码">
+    <meta name="description" content="最近看到一个很有意思的库，直接在命令行中查询你想要的东西，就不用上百度，谷歌了，直接在命令行中搞，是不是很方便！项目地址：https://github.com/gleitz/howdoi 整个代码的逻辑就是根据命令行解析出参数和要查询的内容，然后向谷歌发起请求，默认是在stackoverflow.com查询= =!，然后处理获取到的内容。 设置请求的代理在发起请求的时候，这里加入了获取代理的部分g">
+<meta name="keywords" content="Python,源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="howdoi 源码解析">
+<meta property="og:url" content="http://skyrover.me/2017/11/11/howdoi源码/index.html">
+<meta property="og:site_name" content="SkyRover">
+<meta property="og:description" content="最近看到一个很有意思的库，直接在命令行中查询你想要的东西，就不用上百度，谷歌了，直接在命令行中搞，是不是很方便！项目地址：https://github.com/gleitz/howdoi 整个代码的逻辑就是根据命令行解析出参数和要查询的内容，然后向谷歌发起请求，默认是在stackoverflow.com查询= =!，然后处理获取到的内容。 设置请求的代理在发起请求的时候，这里加入了获取代理的部分g">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-01T03:20:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="howdoi 源码解析">
+<meta name="twitter:description" content="最近看到一个很有意思的库，直接在命令行中查询你想要的东西，就不用上百度，谷歌了，直接在命令行中搞，是不是很方便！项目地址：https://github.com/gleitz/howdoi 整个代码的逻辑就是根据命令行解析出参数和要查询的内容，然后向谷歌发起请求，默认是在stackoverflow.com查询= =!，然后处理获取到的内容。 设置请求的代理在发起请求的时候，这里加入了获取代理的部分g">
+    
+        <link rel="alternate" type="application/atom+xml" title="SkyRover" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.1">
+    <link rel="stylesheet" href="/css/My.css?v=1.7.1">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg" style="background-color: rgba(255,255,255,1)">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Du</h5>
+          <a href="mailto:dgt_x@foxmail" title="dgt_x@foxmail" class="mail">dgt_x@foxmail</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-list"></i>
+
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-star"></i>
+
+                关于我
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/Microndgt" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">howdoi 源码解析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">howdoi 源码解析</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-11-11T06:03:59.000Z" itemprop="datePublished" class="page-time">
+  2017-11-11 14:03:59
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设置请求的代理"><span class="post-toc-number">1.</span> <span class="post-toc-text">设置请求的代理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用pyquery处理请求的响应"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用pyquery处理请求的响应</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<article id="post-howdoi源码"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">howdoi 源码解析</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-11-11 14:03:59 14:03:59" datetime="2017-11-11T06:03:59.000Z"  itemprop="datePublished">2017-11-11 14:03:59</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程/">编程</a></li></ul>
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            
+            
+            
+            <p>最近看到一个很有意思的库，直接在命令行中查询你想要的东西，就不用上百度，谷歌了，直接在命令行中搞，是不是很方便！项目地址：<a href="https://github.com/gleitz/howdoi" target="_blank" rel="external">https://github.com/gleitz/howdoi</a></p>
+<p>整个代码的逻辑就是根据命令行解析出参数和要查询的内容，然后向谷歌发起请求，默认是在<code>stackoverflow.com</code>查询= =!，然后处理获取到的内容。</p>
+<h2 id="设置请求的代理"><a href="#设置请求的代理" class="headerlink" title="设置请求的代理"></a>设置请求的代理</h2><p>在发起请求的时候，这里加入了获取代理的部分<code>get_proxies()</code>，用于获取请求的代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def _get_result(url):</div><div class="line">    try:</div><div class="line">        return requests.get(url, headers=&#123;&apos;User-Agent&apos;: random.choice(USER_AGENTS)&#125;, proxies=get_proxies(),</div><div class="line">                            verify=VERIFY_SSL_CERTIFICATE).text</div><div class="line">    except requests.exceptions.SSLError as e:</div><div class="line">        print(&apos;[ERROR] Encountered an SSL Error. Try using HTTP instead of &apos;</div><div class="line">              &apos;HTTPS by setting the environment variable &quot;HOWDOI_DISABLE_SSL&quot;.\n&apos;)</div><div class="line">        raise e</div></pre></td></tr></table></figure>
+<p>下面是<code>get_proxies()</code>函数，是对<code>urllib.request.getproxies()</code>的一个封装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def get_proxies():</div><div class="line">    proxies = getproxies()</div><div class="line">    filtered_proxies = &#123;&#125;</div><div class="line">    for key, value in proxies.items():</div><div class="line">        if key.startswith(&apos;http&apos;):</div><div class="line">            if not value.startswith(&apos;http&apos;):</div><div class="line">                filtered_proxies[key] = &apos;http://%s&apos; % value</div><div class="line">            else:</div><div class="line">                filtered_proxies[key] = value</div><div class="line">    return filtered_proxies</div></pre></td></tr></table></figure>
+<p>其中<code>urllib.request.getproxies()</code>是这样描述的：</p>
+<blockquote>
+<p>这个函数返回了一个协议名到代理服务器url的字典。它会以大小写不敏感的形式扫描名字为<code>&lt;scheme&gt;_proxy</code>的环境变量，对于所有的操作系统这都是第一步，当它找不到的时候，会去再Mac OSX系统配置和Windows注册表中寻找代理信息。如果同时出现了大写的配置和小写的配置，那么优先使用小写配置。</p>
+</blockquote>
+<p>如果环境变量<code>REQUEST_METHOD</code>已经设置，通常说明你的脚本是运行在一个CGI环境，那么环境变量<code>HTTP_PROXY</code>将会被忽略。这是因为那个变量会被客户端使用Proxy的HTTP头注入。如果你需要在一个CGI环境中使用HTTP代理，要么显式的使用ProxyHandler，或者是使用小写变量。</p>
+<p>所以对于howdoi的应用，要么你系统配置了全局的代理，要么是手动的在系统的环境变量设置<code>http_proxy</code>之类的环境变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">import requests</div><div class="line"></div><div class="line">proxies = &#123;</div><div class="line">  &quot;http&quot;: &quot;http://10.10.1.10:3128&quot;,</div><div class="line">  &quot;https&quot;: &quot;http://10.10.1.10:1080&quot;,</div><div class="line">&#125;</div><div class="line"></div><div class="line">requests.get(&quot;http://example.org&quot;, proxies=proxies)</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ export HTTP_PROXY=&quot;http://10.10.1.10:3128&quot;</div><div class="line">$ export HTTPS_PROXY=&quot;http://10.10.1.10:1080&quot;</div></pre></td></tr></table></figure>
+<p>但是我发现不论是我采用哪种方式，howdoi都不能正常运行。。会<code>Failed to establish network connection</code></p>
+<h2 id="使用pyquery处理请求的响应"><a href="#使用pyquery处理请求的响应" class="headerlink" title="使用pyquery处理请求的响应"></a>使用pyquery处理请求的响应</h2><p>pyquery是一个Python的类似jquery的库，允许你在xml文档中创造jquery查询的库。API尽可能的像jquery。pyquery使用lxml来实现xml和html的快速操纵。</p>
+<p>用法就是经过PyQuery类实例化的对象就像jquery的<code>$</code>一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from pyquery import PyQuery as pq</div><div class="line">d = pq(url=&apos;http://google.com/&apos;)</div><div class="line">d(&quot;#hello&quot;)</div></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        转载时必须以链接形式注明作者和原始出处及本声明 <a href="/2017/11/11/howdoi源码/" target="_blank" rel="external">http://skyrover.me/2017/11/11/howdoi源码/</a>
+        
+    </div>
+    <footer>
+        <a href="http://skyrover.me">
+            <img src="/img/avatar.jpg" alt="Kevin Du">
+            Kevin Du
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码/">源码</a></li></ul>
+
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/11/howdoi源码/&title=《howdoi 源码解析》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/11/howdoi源码/&title=《howdoi 源码解析》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/11/howdoi源码/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《howdoi 源码解析》 — SkyRover&url=http://skyrover.me/2017/11/11/howdoi源码/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/11/howdoi源码/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/11/11/session_and_cookie/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">session和数据存储</h4>
+      </a>
+    </div>
+  
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/11/05/python_cookbook_1/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">笔记 - 元编程</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'Microndgt',
+            repo: 'microndgt.github.io',
+            oauth: {
+                client_id: 'f54490fb6635a5c3c3ba',
+                client_secret: '457f235de33ee61bb4615d202b5620b985cef00a',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        您是本站的第<span id="busuanzi_value_site_uv"></span>位访客
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>欢迎订阅</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Du &copy; 2016 - 2018</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备17010640号</a><br>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://skyrover.me/2017/11/11/howdoi源码/&title=《howdoi 源码解析》 — SkyRover&pic=http://skyrover.me/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://skyrover.me/2017/11/11/howdoi源码/&title=《howdoi 源码解析》 — SkyRover&source=仲夏夜之梦" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://skyrover.me/2017/11/11/howdoi源码/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《howdoi 源码解析》 — SkyRover&url=http://skyrover.me/2017/11/11/howdoi源码/&via=http://skyrover.me" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://skyrover.me/2017/11/11/howdoi源码/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3aS5KDQAwEUd//0kzEbB3QWRL2DOpk5cAfeCzKrZZeL3wcv8f76/TM+/n3d88+c8MhQ4aMxzKOy+OMwWHprZ9da0GVIUPGBgwesuhHL6O284BOz8uQIUPGye3y0Oy/liFDhoxa4KIL4DL1z/43ZMiQ8RAGKWKDkrK0M/alWlyGDBkPZHQaA99cDn6wvyFDhox/zDhKR7po46FZvB8ZMmSMZpCitBPEpLXZbxLIkCFjNoMMTFwXtDVwuuhcPHoZMmRswOgMTPARsfSTQUErQ4aMDRi1QKwt+NJCF0W8DBkyRjN4qPEFXK0NwKN80YmVIUPGloxa/KVDYGSZuHhXhgwZQxlp0cjbkLVoroWyDBkyZjP4iEO/tZkWt/xhyZAhYwdGulzj4cu/xR8W+pYMGTLGMW6rhsM4TkO5ON0mQ4aMEYxO1PZbnmlDdPELMmTIGM3ob7HxBkA/yuO4lyFDxiAGDzgyyNUP0NaImAwZMsYx+PZ9ramQtgdaw2EyZMgYx+BBmbYn0zZkZwEqQ4aMHRh8kceLUj5akQ5wyJAhYzfGXZe5LjvTBgNvG8iQIWM24wiPdDijttGWlrsyZMiYzbgtrcOo5bB7w1qGDBnPZfCQvb7YJwYp+EORIUPGDow0ZNMUJ0heHi9amDJkyNiekY5HpMtB3hxtBa4MGTKGMsiZ/gPiVBkyZOzGSMdG+2Ut38JDGBkyZIxmpI2BTgTXNvj4IJoMGTLGMX4AZ7yTYVR8ePgAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.1"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.1" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)喜欢你!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
