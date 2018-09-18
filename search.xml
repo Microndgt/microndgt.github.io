@@ -3,6 +3,89 @@
   
     
     <entry>
+      <title></title>
+      <url>/2018/09/18/python-interview/</url>
+      <content type="html"><![CDATA[<h1 id="Python-相关"><a href="#Python-相关" class="headerlink" title="Python 相关"></a>Python 相关</h1><h2 id="Python中列表与元组的异同"><a href="#Python中列表与元组的异同" class="headerlink" title="Python中列表与元组的异同"></a>Python中列表与元组的异同</h2><p>相同： 列表和元组都是容器并且是可迭代对象，二者可以包含任意类型的对象。<br>不同：列表是可变的， 元组是不可变。</p>
+<h2 id="Python中的列表是如何实现的？"><a href="#Python中的列表是如何实现的？" class="headerlink" title="Python中的列表是如何实现的？"></a>Python中的列表是如何实现的？</h2><p>Python中的列表使用了分离式技术实现的动态顺序表。</p>
+<h2 id="Python中列表的索引查询的时间复杂度是多少？"><a href="#Python中列表的索引查询的时间复杂度是多少？" class="headerlink" title="Python中列表的索引查询的时间复杂度是多少？"></a>Python中列表的索引查询的时间复杂度是多少？</h2><p>O(1)</p>
+<h2 id="Python字典的实现原理？"><a href="#Python字典的实现原理？" class="headerlink" title="Python字典的实现原理？"></a>Python字典的实现原理？</h2><p>Python的字典使用了哈希表来储存key、value,当添加一个数据时首先会把key通过哈希函数转换成一个数字， 然后将该数字对存放value的数组长度取余并将取余结果当做数组的下标， 将value存放在该取余结果为下标的数组中。数据查询时将key转换为对应的数组下标，并定位到数组的位置获取value。</p>
+<h2 id="Python的参数传递是值传递还是引用传递？"><a href="#Python的参数传递是值传递还是引用传递？" class="headerlink" title="Python的参数传递是值传递还是引用传递？"></a>Python的参数传递是值传递还是引用传递？</h2><p>可变对象使用引用传递， 不可变对象使用值传递</p>
+<h2 id="字符串逆序"><a href="#字符串逆序" class="headerlink" title="字符串逆序"></a>字符串逆序</h2><h2 id="python中is和-的区别"><a href="#python中is和-的区别" class="headerlink" title="python中is和==的区别"></a>python中is和==的区别</h2><p>is比较的是对象在内存的地址， ==比较的对象中的值</p>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>在函数中可以（嵌套）定义另一个函数时，如果内部的函数引用了外部的函数的变量，则可能产生闭包。运行时，一旦外部的 函数被执行，一个闭包就形成了，闭包中包含了内部函数的代码，以及所需外部函数中的变量的引用。其中所引用的变量称作上值(upvalue)。</p>
+<p>Python 中通俗一点来说，如果在一个函数内部，嵌套了函数，这个内部函数对（非全局作用域）外部作用域的变量进行引用，那么这个内部函数称为闭包。闭包每次运行是能记住引用的外部作用域的变量的值。</p>
+<p>内层函数引用了其外部作用域的变量，然后返回内层函数的情况，称为闭包，创建一个闭包必须满足以下几点:        1. 必须有一个内嵌函数        2. 内嵌函数必须引用外部函数中的变量，外层空间中被引用的变量叫做层函数的环境变量        3. 外部函数的返回值必须是内嵌函数        4. 环境变量和内层非全局函数一起构成了闭包</p>
+<h2 id="谈一谈Python中的装饰器"><a href="#谈一谈Python中的装饰器" class="headerlink" title="谈一谈Python中的装饰器"></a>谈一谈Python中的装饰器</h2><p>Python中的装饰器其实也是一种函数， 它可以在不修改原函数代码情况下扩展原函数功能。装饰器函数与普通函数不同之处就在于装饰器函数返回了一个函数对象，装饰器利用了闭包的原理来实现。主要用于日志插入，权限管理等等。</p>
+<h2 id="Python-中的多线程是如何实现的，有什么特点"><a href="#Python-中的多线程是如何实现的，有什么特点" class="headerlink" title="Python 中的多线程是如何实现的，有什么特点?"></a>Python 中的多线程是如何实现的，有什么特点?</h2><p>GIL</p>
+<p>Python中多线程由于有GIL的影响， 导致在任意时间内只有一个线程在运行，所以Python的多线程在处理计算密集型任务上效果反而不如单线程， 只有在处理IO密集型任务上多线程才能发挥实力，在等待IO过程中Python C源码会释放GIL， 最终会导致线程在等待IO过程中会被暂停去执行其他的线程。python中GIL主要是由于历史原因导致Cpython虚拟机中的GIL难以移除，同时GIL的存在保证了多线程之间数据完整性以及状态同步。</p>
+<h2 id="Python中的内存管理是什么样的"><a href="#Python中的内存管理是什么样的" class="headerlink" title="Python中的内存管理是什么样的?"></a>Python中的内存管理是什么样的?</h2><p>Python private heap space</p>
+<p>Python在内存中存储了每个对象的引用计数（reference count）。如果计数值变成0，那么相应的对象就会小时，分配给该对象的内存就会释放出来用作他用。</p>
+<p>偶尔也会出现引用循环（reference cycle）。垃圾回收器会定时寻找这个循环，并将其回收。举个例子，假设有两个对象o1和o2，而且符合o1.x == o2和o2.x == o1这两个条件。如果o1和o2没有其他代码引用，那么它们就不应该继续存在。但它们的引用计数都是1。</p>
+<p>Python中使用了某些启发式算法（heuristics）来加速垃圾回收。例如，越晚创建的对象更有可能被回收。对象被创建之后，垃圾回收器会分配它们所属的代（generation）。每个对象都会被分配一个代，而被分配更年轻代的对象是优先被处理的。</p>
+<h2 id="“猴子补丁”（monkey-patching）指的是什么？"><a href="#“猴子补丁”（monkey-patching）指的是什么？" class="headerlink" title="“猴子补丁”（monkey patching）指的是什么？"></a>“猴子补丁”（monkey patching）指的是什么？</h2><h2 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h2><p>Python中拷贝分为深拷贝、浅拷贝。浅拷贝只拷贝父级对象， 不会拷贝对象内部的子对象，使用copy模块中的copy。深拷贝则会完全拷贝父对象以及子对象， 使用copy模块中的deepcopy。</p>
+<h2 id="new-和-init-的区别。"><a href="#new-和-init-的区别。" class="headerlink" title="__new__和__init__的区别。"></a><code>__new__</code>和<code>__init__</code>的区别。</h2><p><code>__new__</code>负责构建一个类对象并将其返回，<code>__init__</code>则负责初始化一些变量，不返回任何对象。在实例化一个类时， <code>__new__</code>方法将会先被运行， 其次才运行<code>__init__</code>方法。</p>
+<h2 id="python中协程？"><a href="#python中协程？" class="headerlink" title="python中协程？"></a>python中协程？</h2><p>Python中协程最初使用yield来实现， 当程序运行到yield语句时就会将控制权交出来去执行其他的函数， 在Python3之前只能通过原生yield、greenlet以及Gevent第三方库来实现协程， 在Python3 之后引入了yield from， yield from 用于重构生成器。在Python3.5之后引用了async和await， 其作为yield from， yield的完美替身来实现协程。</p>
+<h2 id="classmethod，staticmethod，实例方法"><a href="#classmethod，staticmethod，实例方法" class="headerlink" title="classmethod，staticmethod，实例方法"></a>classmethod，staticmethod，实例方法</h2><h2 id="property是什么"><a href="#property是什么" class="headerlink" title="property是什么"></a>property是什么</h2><p>classmethod，staticmethod，property都是装饰器， 他们都作用在类的方法上。classmethod：使得被装饰的方法成为一个类方法既不需要实例化类就可以直接调用的方法，第一个参数为cls。<br>staticmethod： 使得被装饰的方法成为一个静态函数既与普通的函数无区别。<br>property: 将一个方法变成一个属性来使用。</p>
+<h2 id="python中的绑定方法和未绑定方法是什么"><a href="#python中的绑定方法和未绑定方法是什么" class="headerlink" title="python中的绑定方法和未绑定方法是什么"></a>python中的绑定方法和未绑定方法是什么</h2><p>绑定方法：绑定了实例化的方法既第一个参数是self<br>未绑定方法：没有绑定实例化的方法既类方法、静态方法</p>
+<h2 id="python上下文管理器是什么？"><a href="#python上下文管理器是什么？" class="headerlink" title="python上下文管理器是什么？"></a>python上下文管理器是什么？</h2><p>Python中上下文管理器使用with来调用主要用于数据库连接，文件操作， 网络操作。其作用是： 如果在进行一些打开资源操作时出现了异常，上下文管理器将会自动的执行一些资源清理操作。在进入上下文管理器时， Python会先调用对象的<strong>enter</strong>方法， 该方法返回一个对象用于进行一些操作，如果在进行一些操作时发生了异常Python则调用<strong>exit</strong>该对象接受三个参数第一个参数异常类，第二个参数异常提示字符串， 第三个参数traceback对象。</p>
+<h2 id="请说一说ORM实现原理"><a href="#请说一说ORM实现原理" class="headerlink" title="请说一说ORM实现原理"></a>请说一说ORM实现原理</h2><p>生成器时一种特殊的迭代器， 生成器自动实现了迭代器协议， 不需要手动的实现<strong>iter</strong>以及next方法，生成器在迭代的过程中可以改变当前的迭代值， 而普通的迭代器改变当前值时往往会发生错。迭代器必须实现<strong>iter</strong>以及next方法。</p>
+<h2 id="描述一下type-的作用"><a href="#描述一下type-的作用" class="headerlink" title="描述一下type()的作用"></a>描述一下type()的作用</h2><p>当type只传入一个参数时将返回该参数的类型，如果传入了三个参数则返回一个类对象，同时Python中的所有类的基类都是type</p>
+<h2 id="Flask中的应用上下文和请求上下文"><a href="#Flask中的应用上下文和请求上下文" class="headerlink" title="Flask中的应用上下文和请求上下文"></a>Flask中的应用上下文和请求上下文</h2><h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><h2 id="进程与线程的区别。"><a href="#进程与线程的区别。" class="headerlink" title="进程与线程的区别。"></a>进程与线程的区别。</h2><p>进程是资源分配的最小单位，线程是程序执行的最小单位。进程有自己的独立的地址空间， 线程共享进程中的数据，使用相同的地址空间。进程自己通信方式主要使用特别的方式来进行通信。线程之间的通信非常的方便， 同一进程下的线程共享全局变量、静态变量等数据。多进程程序更加的健壮，其中一个进程死掉了并不影响其他的进程，多线程中只要有一个线程死掉，那么整个进程也死掉了。</p>
+<h2 id="进程通信的几种方式。"><a href="#进程通信的几种方式。" class="headerlink" title="进程通信的几种方式。"></a>进程通信的几种方式。</h2><p>进程之间进行通信常用的有几种方式：管道，消息队列， 信号量， 共享内存</p>
+<p>管道通常指无名管道， 他的特点包括：    </p>
+<ol>
+<li>半双工：数据只能在一个方向流动，一端为读端，一端为写端    </li>
+<li>有关系进程通信： 管道只能在具有亲缘关系的进程之间进行通信，如父子进程、兄弟进程</li>
+<li>文件： 管道是一种特殊的文件它有着像普通文件读写一样的API， 它只存在于内存中。</li>
+</ol>
+<p>消息队列存放在内核中， 一个消息队列有一个标识符来标识， 它的特点：     1.消息队列是面向记录的， 其中消息具有特定的格式和特点的优先级     2.消息队列独立于发送方和接受方，即使进程终止，消息队列中的消息并不会被删除。所以它可以用于无关进程之间通信     3.消息队列可以对消息实现随机读取， 不需要按在特定的顺序来读取。信号量属于系统层面， linux系统也是通过信号量来管理进程，进程一旦接收到信号就会打断原来的程序执行流程来处理信号。</p>
+<p>共享内存是最简单的通信方式， 他允许多个进程（无关进程， 有关进程）访问同一片内存， 一个进程改变其中的数据后， 其他的进程也能看见数据的变化。共享内存特点：    1.进程共享同一块内存    2. 访问共享内存和访问私有内存一样快    3.不需要系统调用和内核入口    4.不造成不必要的内存复制Python可以使用multiprocessing中Value、Array、Manager等等实现</p>
+<h2 id="线程同步几种方式"><a href="#线程同步几种方式" class="headerlink" title="线程同步几种方式"></a>线程同步几种方式</h2><p>线程同步通常有4中方式： 临界区、事件、互斥量、信号量。</p>
+<p>临界区：拥有临界区的线程可以访问被保护起来的资源或者代码段， 其他线程如果想访问则被挂起， 直到拥有临界区对象放弃临界区为止。Python中使用：threading.Lock()实现。</p>
+<p>事件：可以自定义一个事件， 如果这个事件一直不发生， 则这些线程将会阻塞， 直到事件发生。 Python中使用threading.Event()实现 。</p>
+<p>互斥量：互斥量为资源引入了状态：锁定/非锁定， 某个线程要更改共享数据时， 先将其锁定， 此时其他线程不能对该资源进行操作， 直到资源被释放。Python中使用threading.Lock()实现 。</p>
+<h2 id="用户线程与内核线程的区别"><a href="#用户线程与内核线程的区别" class="headerlink" title="用户线程与内核线程的区别"></a>用户线程与内核线程的区别</h2><p>用户线程的优点：    </p>
+<ol>
+<li>线程切换不需要内核态特权， 进程不需要为了线程管理而切换到内核态。    </li>
+<li>可以为应用程序量身定做调度算法而不影响系统调度程序。    </li>
+<li>用户级线程可以再多个平台上运行， 不需要对内核进行修改以支持用户级线程。用户线程的</li>
+</ol>
+<p>缺点：    </p>
+<p>1.当一个用户级线程执行一个系统调用时， 不仅这个线程会被阻塞， 进程中的所有线程都会被阻塞。    2.在用户级线程策略中， 一个多线程应用程序不能利用多处理技术。内核级线程优点：    1.线程切换由内核控制，可以很好的利用多核CPU。    2.由操作系统内核创建和撤销， 一个内核级线程阻塞并不影响其他的线程运行。内核级线程缺点：    1.由内核进行调度。不能跨平台。用户级线程和内核级线程的区别：    1.内核线程是内核可感知的， 用户级线程是内核不可感知的。    2.用户级线程创建，撤销等等不需要内核的支持， 内核级线程创建，撤销等等都需要内核的支持。    3.用户级线程在调用系统指令是会导致其所属的进程被中断， 内核级线程在调用系统指令时， 只会导致该线程被中断， 与其他线程无关。    4.用户级线程CPU调度以进程为单位， 用户程序进行线程的控制， 内核级线程CPU以线程为调度单位， 由系统的线程调度程序负责线程的调度工作。    5.用户级线程的程序实体运行在用户态下程序， 而内核级线程的程序则可以运行在任何状态上。</p>
+<h2 id="进程为什么会产生死锁？"><a href="#进程为什么会产生死锁？" class="headerlink" title="进程为什么会产生死锁？"></a>进程为什么会产生死锁？</h2><p>导致死锁的原因：    1.因为系统资源不足    2.进程运行推进顺序不合适    3.资源分配不当导致死锁的四个必要条件：    1.一次一个进程只能访问一个资源， 其他进程不能访问已分配的资源。    2.当一个进程等待其他进程时， 继续占有已分配的资源时    3.不能强行抢占进程已有的资源    4.存在一个封闭的进程链， 导致每一个进程都占有下一个进程所需的资源</p>
+<h1 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h1><h2 id="TCP和UDP有什么区别？"><a href="#TCP和UDP有什么区别？" class="headerlink" title="TCP和UDP有什么区别？"></a>TCP和UDP有什么区别？</h2><p>tcp是传输控制协议，其提供面向连接、可靠的字节流服务，通信双方必须依照三次握手协议连接之后才能传输数据， tcp提供了超时重传、 丢弃重复数据、检验数据流量控制等功能。UDP是用户数据包协议， 它提供了一个简单的不可靠的面向无连接的服务，在双方未连接时也能传输数据因而速度特别快。</p>
+<h2 id="TCP-IP的流量控制？"><a href="#TCP-IP的流量控制？" class="headerlink" title="TCP/IP的流量控制？"></a>TCP/IP的流量控制？</h2><p>利用滑动窗口实现流量控制</p>
+<h2 id="HTTP的长连接和短连接"><a href="#HTTP的长连接和短连接" class="headerlink" title="HTTP的长连接和短连接?"></a>HTTP的长连接和短连接?</h2><p>短连接： 客户端与服务端每进行一次HTTP操作就建立一次连接，请求结束就断开连接。<br>长连接：客户端与服务器进行第一次HTTP操作后， TCP连接并不会断开连接， 下次请求将复用这条TCP通道</p>
+<h2 id="IO中同步与异步，阻塞与非阻塞区别"><a href="#IO中同步与异步，阻塞与非阻塞区别" class="headerlink" title="IO中同步与异步，阻塞与非阻塞区别"></a>IO中同步与异步，阻塞与非阻塞区别</h2><p>同步和异步关注的是消息通信机制。同步：发出一个调用时， 在没有得到结果之前这个调用不会返回结果， 如果调用返回那么说明得到结果了。异步：发出一个调用后立刻返回， 但是返回时没有结果的。阻塞与非阻塞关注的是程序在等待调用的结果阻塞：调用结果被返回前该线程被挂起， 直到得到结果后，该线程继续运行。非阻塞：不能立刻得到结果之前， 该函数不会阻塞当前线程， 会立刻返回。</p>
+<h2 id="Cookies-和-Session的区别"><a href="#Cookies-和-Session的区别" class="headerlink" title="Cookies 和 Session的区别"></a>Cookies 和 Session的区别</h2><p>cookies是一种保存在客户端上的字符串用于用户与服务端会话持久的保持数据<br>Session是一种保存在服务器的字符串， 其功能与cookies相同， 但是session是在cookies基础上实现的。</p>
+<h2 id="一次完整的浏览器请求流程"><a href="#一次完整的浏览器请求流程" class="headerlink" title="一次完整的浏览器请求流程"></a>一次完整的浏览器请求流程</h2><p><a href="https://blog.csdn.net/shubao0071/article/details/77844352" target="_blank" rel="external">参考</a></p>
+<h2 id="HTTP请求报文格式"><a href="#HTTP请求报文格式" class="headerlink" title="HTTP请求报文格式"></a>HTTP请求报文格式</h2><h2 id="HTTP常用请求方法，常见请求头"><a href="#HTTP常用请求方法，常见请求头" class="headerlink" title="HTTP常用请求方法，常见请求头"></a>HTTP常用请求方法，常见请求头</h2><h2 id="POST上传文件的数据格式"><a href="#POST上传文件的数据格式" class="headerlink" title="POST上传文件的数据格式"></a>POST上传文件的数据格式</h2><h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h2 id="数据库索引使用了什么数据结构？"><a href="#数据库索引使用了什么数据结构？" class="headerlink" title="数据库索引使用了什么数据结构？"></a>数据库索引使用了什么数据结构？</h2><p>数据库索引对于非主键索引使用B树， 对于主键索引使用B+树</p>
+<h2 id="数据库优化的思路"><a href="#数据库优化的思路" class="headerlink" title="数据库优化的思路"></a>数据库优化的思路</h2><p>SQL语句优化：    1. 尽量避免在where语句后面使用 !=、&lt;&gt;操作符以及对NULL值得判断， 否则引擎将放弃索引而使用全表扫描。    2. 使用exists替换in。    3. 尽量放弃使用select *， 需要什么数据就取出什么数据。    4. 使用join代替子查询。    5. 设置合适的字段属性：例如尽量把字段设置为NOT NULL， 这样引擎就不要对比NULL值</p>
+<h2 id="Redis支持的数据类型"><a href="#Redis支持的数据类型" class="headerlink" title="Redis支持的数据类型"></a>Redis支持的数据类型</h2><p>字符串，集合， 有序集合，哈希， 列表</p>
+<h2 id="primary-key和unique的区别？"><a href="#primary-key和unique的区别？" class="headerlink" title="primary key和unique的区别？"></a>primary key和unique的区别？</h2><p>一个表只能有一个primary key， 一个表可以有多个unique key。<br>unique key约束只针对非主键列， 可以为空值， primary key约束针对主键列， 不允许有空值。</p>
+<h2 id="group-by"><a href="#group-by" class="headerlink" title="group by"></a>group by</h2><h2 id="inner-left-right-join"><a href="#inner-left-right-join" class="headerlink" title="inner, left, right join"></a>inner, left, right join</h2><h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="git-add作用是什么"><a href="#git-add作用是什么" class="headerlink" title="git add作用是什么"></a>git add作用是什么</h2><p>在回答这个问题之前需要先了解 git 仓库的三个组成部分：工作区（Working Directory）、暂存区（Stage）和历史记录区（History）：</p>
+<p>工作区：在 git 管理下的正常目录都算是工作区，我们平时的编辑工作都是在工作区完成。 暂存区：临时区域。里面存放将要提交文件的快照。 历史记录区：git commit 后的记录区。<br>然后是这三个区的转换关系以及转换所使用的命令：</p>
+<h2 id="fetch-pull"><a href="#fetch-pull" class="headerlink" title="fetch, pull"></a>fetch, pull</h2><h2 id="reset"><a href="#reset" class="headerlink" title="reset"></a>reset</h2><h2 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h2><h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="查看系统负载有两个常用的命令，是哪两个？这三个数值表示什么含义呢？"><a href="#查看系统负载有两个常用的命令，是哪两个？这三个数值表示什么含义呢？" class="headerlink" title="查看系统负载有两个常用的命令，是哪两个？这三个数值表示什么含义呢？"></a>查看系统负载有两个常用的命令，是哪两个？这三个数值表示什么含义呢？</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@centos6 ~ 10:56 #37]# w</div><div class="line">10:57:38 up 14 min,  1 user,  load average: 0.00, 0.00, 0.00</div><div class="line">USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU WHAT</div><div class="line">root     pts/0    192.168.147.1    18:44    0.00s  0.10s  0.00s w</div><div class="line">[root@centos6 ~ 10:57 #38]# uptime</div><div class="line">10:57:47 up 14 min,  1 user,  load average: 0.00, 0.00, 0.00</div></pre></td></tr></table></figure>
+<p>其中load average即系统负载，三个数值分别表示一分钟、五分钟、十五分钟内系统的平均负载，即平均任务数。</p>
+<h2 id="linux系统里，您知道buffer和cache如何区分吗？"><a href="#linux系统里，您知道buffer和cache如何区分吗？" class="headerlink" title="linux系统里，您知道buffer和cache如何区分吗？"></a>linux系统里，您知道buffer和cache如何区分吗？</h2><p>buffer和cache都是内存中的一块区域，当CPU需要写数据到磁盘时，由于磁盘速度比较慢，所以CPU先把数据存进buffer，然后CPU去执行其他任务，buffer中的数据会定期写入磁盘；当CPU需要从磁盘读入数据时，由于磁盘速度比较慢，可以把即将用到的数据提前存入cache，CPU直接从Cache中拿数据要快的多。</p>
+<h2 id="如何查看当前系统都有哪些进程？"><a href="#如何查看当前系统都有哪些进程？" class="headerlink" title="如何查看当前系统都有哪些进程？"></a>如何查看当前系统都有哪些进程？</h2><p>ps -aux 或者ps -elf</p>
+<h2 id="如何查看网络连接状况？"><a href="#如何查看网络连接状况？" class="headerlink" title="如何查看网络连接状况？"></a>如何查看网络连接状况？</h2><p>netstat -an</p>
+<h2 id="任务计划格式中，前面5个数字分表表示什么含义？"><a href="#任务计划格式中，前面5个数字分表表示什么含义？" class="headerlink" title="任务计划格式中，前面5个数字分表表示什么含义？"></a>任务计划格式中，前面5个数字分表表示什么含义？</h2><p>依次表示：分、时、日、月、周</p>
+<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><h2 id="LRU-cache"><a href="#LRU-cache" class="headerlink" title="LRU cache"></a>LRU cache</h2><p><a href="http://skyrover.me/2017/07/13/LRUCache%E5%9C%A8Python%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0/">参考</a></p>
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><h2 id="判断图中是否有环"><a href="#判断图中是否有环" class="headerlink" title="判断图中是否有环"></a>判断图中是否有环</h2><p>无向图：深度优先遍历</p>
+<p>有向图拓扑排序</p>
+<h1 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h1><h2 id="朴素贝叶斯的基础假设是什么"><a href="#朴素贝叶斯的基础假设是什么" class="headerlink" title="朴素贝叶斯的基础假设是什么"></a>朴素贝叶斯的基础假设是什么</h2><p>贝叶斯定律</p>
+<p>已知某条件概率，如何得到两个事件交换后的概率，也就是在已知P(A|B)的情况下如何求得P(B|A)。这里先解释什么是条件概率：</p>
+<p>表示事件B已经发生的前提下，事件A发生的概率，叫做事件B发生下事件A的条件概率。其基本求解公式为：P(A|B)=P(AB)/P(B)。</p>
+<p>贝叶斯定理之所以有用，是因为我们在生活中经常遇到这种情况：我们可以很容易直接得出P(A|B)，P(B|A)则很难直接得出，但我们更关心P(B|A)，贝叶斯定理就为我们打通从P(A|B)获得P(B|A)的道路。</p>
+<p>下面不加证明地直接给出贝叶斯定理：</p>
+<h2 id="svm和LR的区别"><a href="#svm和LR的区别" class="headerlink" title="svm和LR的区别"></a>svm和LR的区别</h2><p><a href="http://www.cnblogs.com/zhizhan/p/5038747.html" target="_blank" rel="external">参考</a></p>
+<p><a href="https://blog.csdn.net/haolexiao/article/details/70191667" target="_blank" rel="external">参考</a></p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[九色甘南国庆自驾]]></title>
       <url>/2018/08/24/travel_to_gansu/</url>
       <content type="html"><![CDATA[<h1 id="目的地"><a href="#目的地" class="headerlink" title="目的地"></a>目的地</h1><h2 id="拉卜愣寺"><a href="#拉卜愣寺" class="headerlink" title="拉卜愣寺"></a>拉卜愣寺</h2><p>此番行程，注定是一场灵魂的皈依与洗礼</p>
@@ -4223,103 +4306,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[笔记 - MySQL技术内幕(二)]]></title>
-      <url>/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_2/</url>
-      <content type="html"><![CDATA[<h1 id="获取数据库的元数据"><a href="#获取数据库的元数据" class="headerlink" title="获取数据库的元数据"></a>获取数据库的元数据</h1><ul>
-<li><code>show columns from weiboes like &quot;%\_%&quot;;</code></li>
-<li><code>show index from weiboes;</code></li>
-<li><p><code>SHOW COLUMNS FROM student WHERE Field = &quot;student_id&quot;;</code></p>
-<p>  这一语句可以用来查询表中是否有相应的字段。</p>
-</li>
-<li><p><code>SELECT COUNT(*) FROM tbl_name;</code></p>
-</li>
-<li><code>select * from mydatabase.weiboes where false;</code> 如果表存在，则会执行成功，否则失败。</li>
-</ul>
-<h1 id="利用联结操作对多个数据表进行检索"><a href="#利用联结操作对多个数据表进行检索" class="headerlink" title="利用联结操作对多个数据表进行检索"></a>利用联结操作对多个数据表进行检索</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT select_list</div><div class="line">FROM table_list</div><div class="line">WHERE row_constraint</div><div class="line">GROUP BY grouping_columns</div><div class="line">ORDER BY sorting_columns</div><div class="line">HAVING group_constraint #  组必须满足的条件</div><div class="line">LIMIT count;</div></pre></td></tr></table></figure>
-<p>SELECT可以直接对表达式进行求值：<code>SELECT SQRT(POW(3, 2)+POW(4,2))</code></p>
-<h2 id="内联结"><a href="#内联结" class="headerlink" title="内联结"></a>内联结</h2><p>内联结会让一个数据表的数据行和另一个数据表里的数据行进行匹配来产生结果，也就是这个表的每一项都会跟另一个表的每一项进行匹配。即笛卡尔积。</p>
-<p>一般会使用WHERE语句来将数据联结操作只在某个数据列相等的情况进行。<code>select * from t1 inner join t2 where t1.i1 = t2.i2;</code></p>
-<p>另外<code>CROSS JOIN</code>和<code>JOIN</code>的联结类型类似于<code>INNER JOIN</code>。还有逗号关联操作符的效果与<code>INNER JOIN</code>也是相似的: <code>SELECT * FROM t1, t2 WHERE t1.i1 = t2.i2;</code>，不过应该避免逗号操作符。</p>
-<ul>
-<li>ON：<code>select * from t1 inner join t2 on t1.i1 = t2.i2;</code></li>
-<li>USING(): <code>select * from mytbl1 inner join mytbl2 using (b);</code> 其中两个表中都有b这一列。</li>
-</ul>
-<h2 id="避免数据列或者表名的歧义"><a href="#避免数据列或者表名的歧义" class="headerlink" title="避免数据列或者表名的歧义"></a>避免数据列或者表名的歧义</h2><ul>
-<li><code>select a, mytbl1.b, mytbl2.b, c from mytbl1 inner join mytbl2;</code></li>
-<li><code>select mytbl1.col1, m.col2 from mytbl inner join mytbl as m where mytbl.col1 &gt; m.col1;</code> 自联结</li>
-</ul>
-<h2 id="左联结和右联结"><a href="#左联结和右联结" class="headerlink" title="左联结和右联结"></a>左联结和右联结</h2><p>外联结会把其中一个数据表在另一个数据表里没有匹配的数据行也显示出来。左联结<code>LEFT JOIN</code>会把左数据表在右数据表里没有匹配的数据行也显示出来。而右联结<code>RIGHT JOIN</code>会将右数据表在左数据表里没有匹配的数据行也显示出来。</p>
-<p>原理就是从左表的数据行来和右表匹配的时候，如果匹配上的话，就输出。如果左表数据在右表没有找到匹配，就会假设一个全为NULL的右表数据行，这样左表的这行数据也匹配到了。也就是说左表的每一行都有一个对应的数据行，不管在右表有没有匹配。</p>
-<p>比如<code>select * from t1 left join t2 on t1.i1 = t2.i2;</code></p>
-<p>左联结可以让你找到在右数据表中没有匹配的左数据表的行。也就是查找哪些值没有出现过。</p>
-<p>这本书关于联结这块的例子讲的很好！</p>
-<h1 id="用子查询进行多数据表检索"><a href="#用子查询进行多数据表检索" class="headerlink" title="用子查询进行多数据表检索"></a>用子查询进行多数据表检索</h1><p>子查询与关系比较操作符</p>
-<ul>
-<li><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></li>
-<li><code>select * from president where birth = (select min(birth) from president);</code></li>
-<li><code>select last_name, first_name, city, state from president where (city, state) = (select city, state from president where last_name = &#39;Adams&#39; and first_name = &#39;john&#39;);</code></li>
-</ul>
-<h2 id="IN和NOT-IN子查询"><a href="#IN和NOT-IN子查询" class="headerlink" title="IN和NOT IN子查询"></a>IN和NOT IN子查询</h2><ul>
-<li><code>select * from student where student_id in (select student_id from absence);</code></li>
-<li><code>select last_name, first_name, city, state from president where (city, state) in (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
-</ul>
-<h2 id="all-any和some子查询"><a href="#all-any和some子查询" class="headerlink" title="all, any和some子查询"></a>all, any和some子查询</h2><ul>
-<li><code>select last_name, first_name, birth from president where birth &lt;= all (select birth from president);</code> 最小的</li>
-<li><code>select last_name, first_name, city, state from president where(city, state) = any (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
-<li><code>IN(= any)</code>和 <code>&lt; &gt; all(NOT IN)</code></li>
-</ul>
-<h2 id="exists和not-exists子查询"><a href="#exists和not-exists子查询" class="headerlink" title="exists和not exists子查询"></a>exists和not exists子查询</h2><ul>
-<li><code>select exists (select * from absence);</code></li>
-<li><code>select not exists (select * from absence);</code></li>
-</ul>
-<h2 id="from中的子查询"><a href="#from中的子查询" class="headerlink" title="from中的子查询"></a>from中的子查询</h2><ul>
-<li><code>select * from (select 1, 2) as t1 inner join (select 3, 4) as t2;</code></li>
-</ul>
-<h2 id="子查询改写成联结查询"><a href="#子查询改写成联结查询" class="headerlink" title="子查询改写成联结查询"></a>子查询改写成联结查询</h2><ul>
-<li><p><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></p>
-<ul>
-<li><code>select score.* from score inner join grade_event on score.event_id = grade_event.event_id where grade_event.category = &#39;T&#39;;</code></li>
-</ul>
-</li>
-<li><p><code>select * from student where student_id not in (select student_id from absence);</code></p>
-<ul>
-<li><code>select student.* from student left join absence on student.student_id = absence.student_id where absence.student_id is NULL;</code> 为NULL的时候则是学生表没有在absence表匹配到的记录，也就是没有缺席的学生</li>
-</ul>
-</li>
-</ul>
-<h1 id="UNION语句进行多数据表检索"><a href="#UNION语句进行多数据表检索" class="headerlink" title="UNION语句进行多数据表检索"></a>UNION语句进行多数据表检索</h1><ul>
-<li><code>select i from t1 union select i from t2 union select i from t3;</code></li>
-</ul>
-<p>默认UNION从结果集中剔除重复数据行，即<code>UNION DISTINCT == UNION</code>，如果保留重复行，<code>UNION ALL</code></p>
-<h1 id="使用视图"><a href="#使用视图" class="headerlink" title="使用视图"></a>使用视图</h1><p>视图是虚拟的数据表，提供查看数据表数据的另一种方法。</p>
-<ul>
-<li><code>create view vpres as select last_name, first_name, city, state from president;</code></li>
-<li><code>select * from vpress;</code></li>
-</ul>
-<p>但是只能引用在该视图的定义里列出的数据列。</p>
-<p>视图也是可以更新的，但是其必须直接映射到一个数据表上，选取的数据列是数据表数据列的简单引用。</p>
-<h1 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h1>]]></content>
-      
-        <categories>
-            
-            <category> 编程 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Database </tag>
-            
-            <tag> 读书笔记 </tag>
-            
-            <tag> MySQL </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[笔记 - MySQL技术内幕(一)]]></title>
       <url>/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_note/</url>
       <content type="html"><![CDATA[<h1 id="MySQL服务器的SQL模式"><a href="#MySQL服务器的SQL模式" class="headerlink" title="MySQL服务器的SQL模式"></a>MySQL服务器的SQL模式</h1><p>影响的行为包括在数据录入阶段如何处理非法数据，如何引用各种标识符等。</p>
@@ -4558,6 +4544,103 @@
             <tag> SQL </tag>
             
             <tag> MySQL技术内幕 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[笔记 - MySQL技术内幕(二)]]></title>
+      <url>/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_2/</url>
+      <content type="html"><![CDATA[<h1 id="获取数据库的元数据"><a href="#获取数据库的元数据" class="headerlink" title="获取数据库的元数据"></a>获取数据库的元数据</h1><ul>
+<li><code>show columns from weiboes like &quot;%\_%&quot;;</code></li>
+<li><code>show index from weiboes;</code></li>
+<li><p><code>SHOW COLUMNS FROM student WHERE Field = &quot;student_id&quot;;</code></p>
+<p>  这一语句可以用来查询表中是否有相应的字段。</p>
+</li>
+<li><p><code>SELECT COUNT(*) FROM tbl_name;</code></p>
+</li>
+<li><code>select * from mydatabase.weiboes where false;</code> 如果表存在，则会执行成功，否则失败。</li>
+</ul>
+<h1 id="利用联结操作对多个数据表进行检索"><a href="#利用联结操作对多个数据表进行检索" class="headerlink" title="利用联结操作对多个数据表进行检索"></a>利用联结操作对多个数据表进行检索</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT select_list</div><div class="line">FROM table_list</div><div class="line">WHERE row_constraint</div><div class="line">GROUP BY grouping_columns</div><div class="line">ORDER BY sorting_columns</div><div class="line">HAVING group_constraint #  组必须满足的条件</div><div class="line">LIMIT count;</div></pre></td></tr></table></figure>
+<p>SELECT可以直接对表达式进行求值：<code>SELECT SQRT(POW(3, 2)+POW(4,2))</code></p>
+<h2 id="内联结"><a href="#内联结" class="headerlink" title="内联结"></a>内联结</h2><p>内联结会让一个数据表的数据行和另一个数据表里的数据行进行匹配来产生结果，也就是这个表的每一项都会跟另一个表的每一项进行匹配。即笛卡尔积。</p>
+<p>一般会使用WHERE语句来将数据联结操作只在某个数据列相等的情况进行。<code>select * from t1 inner join t2 where t1.i1 = t2.i2;</code></p>
+<p>另外<code>CROSS JOIN</code>和<code>JOIN</code>的联结类型类似于<code>INNER JOIN</code>。还有逗号关联操作符的效果与<code>INNER JOIN</code>也是相似的: <code>SELECT * FROM t1, t2 WHERE t1.i1 = t2.i2;</code>，不过应该避免逗号操作符。</p>
+<ul>
+<li>ON：<code>select * from t1 inner join t2 on t1.i1 = t2.i2;</code></li>
+<li>USING(): <code>select * from mytbl1 inner join mytbl2 using (b);</code> 其中两个表中都有b这一列。</li>
+</ul>
+<h2 id="避免数据列或者表名的歧义"><a href="#避免数据列或者表名的歧义" class="headerlink" title="避免数据列或者表名的歧义"></a>避免数据列或者表名的歧义</h2><ul>
+<li><code>select a, mytbl1.b, mytbl2.b, c from mytbl1 inner join mytbl2;</code></li>
+<li><code>select mytbl1.col1, m.col2 from mytbl inner join mytbl as m where mytbl.col1 &gt; m.col1;</code> 自联结</li>
+</ul>
+<h2 id="左联结和右联结"><a href="#左联结和右联结" class="headerlink" title="左联结和右联结"></a>左联结和右联结</h2><p>外联结会把其中一个数据表在另一个数据表里没有匹配的数据行也显示出来。左联结<code>LEFT JOIN</code>会把左数据表在右数据表里没有匹配的数据行也显示出来。而右联结<code>RIGHT JOIN</code>会将右数据表在左数据表里没有匹配的数据行也显示出来。</p>
+<p>原理就是从左表的数据行来和右表匹配的时候，如果匹配上的话，就输出。如果左表数据在右表没有找到匹配，就会假设一个全为NULL的右表数据行，这样左表的这行数据也匹配到了。也就是说左表的每一行都有一个对应的数据行，不管在右表有没有匹配。</p>
+<p>比如<code>select * from t1 left join t2 on t1.i1 = t2.i2;</code></p>
+<p>左联结可以让你找到在右数据表中没有匹配的左数据表的行。也就是查找哪些值没有出现过。</p>
+<p>这本书关于联结这块的例子讲的很好！</p>
+<h1 id="用子查询进行多数据表检索"><a href="#用子查询进行多数据表检索" class="headerlink" title="用子查询进行多数据表检索"></a>用子查询进行多数据表检索</h1><p>子查询与关系比较操作符</p>
+<ul>
+<li><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></li>
+<li><code>select * from president where birth = (select min(birth) from president);</code></li>
+<li><code>select last_name, first_name, city, state from president where (city, state) = (select city, state from president where last_name = &#39;Adams&#39; and first_name = &#39;john&#39;);</code></li>
+</ul>
+<h2 id="IN和NOT-IN子查询"><a href="#IN和NOT-IN子查询" class="headerlink" title="IN和NOT IN子查询"></a>IN和NOT IN子查询</h2><ul>
+<li><code>select * from student where student_id in (select student_id from absence);</code></li>
+<li><code>select last_name, first_name, city, state from president where (city, state) in (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
+</ul>
+<h2 id="all-any和some子查询"><a href="#all-any和some子查询" class="headerlink" title="all, any和some子查询"></a>all, any和some子查询</h2><ul>
+<li><code>select last_name, first_name, birth from president where birth &lt;= all (select birth from president);</code> 最小的</li>
+<li><code>select last_name, first_name, city, state from president where(city, state) = any (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
+<li><code>IN(= any)</code>和 <code>&lt; &gt; all(NOT IN)</code></li>
+</ul>
+<h2 id="exists和not-exists子查询"><a href="#exists和not-exists子查询" class="headerlink" title="exists和not exists子查询"></a>exists和not exists子查询</h2><ul>
+<li><code>select exists (select * from absence);</code></li>
+<li><code>select not exists (select * from absence);</code></li>
+</ul>
+<h2 id="from中的子查询"><a href="#from中的子查询" class="headerlink" title="from中的子查询"></a>from中的子查询</h2><ul>
+<li><code>select * from (select 1, 2) as t1 inner join (select 3, 4) as t2;</code></li>
+</ul>
+<h2 id="子查询改写成联结查询"><a href="#子查询改写成联结查询" class="headerlink" title="子查询改写成联结查询"></a>子查询改写成联结查询</h2><ul>
+<li><p><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></p>
+<ul>
+<li><code>select score.* from score inner join grade_event on score.event_id = grade_event.event_id where grade_event.category = &#39;T&#39;;</code></li>
+</ul>
+</li>
+<li><p><code>select * from student where student_id not in (select student_id from absence);</code></p>
+<ul>
+<li><code>select student.* from student left join absence on student.student_id = absence.student_id where absence.student_id is NULL;</code> 为NULL的时候则是学生表没有在absence表匹配到的记录，也就是没有缺席的学生</li>
+</ul>
+</li>
+</ul>
+<h1 id="UNION语句进行多数据表检索"><a href="#UNION语句进行多数据表检索" class="headerlink" title="UNION语句进行多数据表检索"></a>UNION语句进行多数据表检索</h1><ul>
+<li><code>select i from t1 union select i from t2 union select i from t3;</code></li>
+</ul>
+<p>默认UNION从结果集中剔除重复数据行，即<code>UNION DISTINCT == UNION</code>，如果保留重复行，<code>UNION ALL</code></p>
+<h1 id="使用视图"><a href="#使用视图" class="headerlink" title="使用视图"></a>使用视图</h1><p>视图是虚拟的数据表，提供查看数据表数据的另一种方法。</p>
+<ul>
+<li><code>create view vpres as select last_name, first_name, city, state from president;</code></li>
+<li><code>select * from vpress;</code></li>
+</ul>
+<p>但是只能引用在该视图的定义里列出的数据列。</p>
+<p>视图也是可以更新的，但是其必须直接映射到一个数据表上，选取的数据列是数据表数据列的简单引用。</p>
+<h1 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h1>]]></content>
+      
+        <categories>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Database </tag>
+            
+            <tag> 读书笔记 </tag>
+            
+            <tag> MySQL </tag>
             
         </tags>
         
