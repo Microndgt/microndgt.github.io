@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-09-17T07:11:56.000Z</updated>
+  <updated>2018-08-24T14:21:48.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,60 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Linux C 编程一站式学习</title>
-    <link href="http://skyrover.me/2018/09/16/c_and_linux/"/>
-    <id>http://skyrover.me/2018/09/16/c_and_linux/</id>
-    <published>2018-09-16T06:17:35.000Z</published>
-    <updated>2018-09-17T07:11:56.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Linux-C-编程一站式学习"><a href="#Linux-C-编程一站式学习" class="headerlink" title="Linux C 编程一站式学习"></a><a href="https://akaedu.github.io/book/index.html" target="_blank" rel="external">Linux C 编程一站式学习</a></h1><p>最近发现了一个很好的了解C以及Linux编程的教程网站！学习之！</p>
-<p>其实世界上只有两种编程语言，一种是C，一种是LISP，前者是imperative的，是对计算机模型的抽象，后者是functional的，是对数学函数模型的抽象。</p>
-<h1 id="7-结构体"><a href="#7-结构体" class="headerlink" title="7 结构体"></a>7 结构体</h1><h2 id="1-复合类型与结构体"><a href="#1-复合类型与结构体" class="headerlink" title="1. 复合类型与结构体"></a><a href="https://akaedu.github.io/book/ch07s01.html" target="_blank" rel="external">1. 复合类型与结构体</a></h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">complex_struct</span> &#123;</span> <span class="keyword">double</span> x, y; &#125; z;</div><div class="line">    <span class="keyword">double</span> x = <span class="number">3.0</span>;    </div><div class="line">    z.x = x;</div><div class="line">    z.y = <span class="number">4.0</span>;</div><div class="line">    <span class="keyword">if</span> (z.y &lt; <span class="number">0</span>)</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"z=%f%fi\n"</span>, z.x, z.y);</div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="built_in">printf</span>(<span class="string">"z=%f+%fi\n"</span>, z.x, z.y);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在 c 中，左值指的是既能够出现在等号左边也能出现在等号右边的变量(或表达式)，右值指的则是只能出现在等号右边的变量(或表达式).主要在于能不能被赋值。</p>
-<h2 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a><a href="https://akaedu.github.io/book/ch07s02.html" target="_blank" rel="external">数据抽象</a></h2><p>这里是一种抽象的思想。其实“抽象”这个概念并没有那么抽象，简单地说就是“提取公因式”：ab+ac=a(b+c)。如果a变了，ab和ac这两项都需要改，但如果写成a(b+c)的形式就只需要改其中一个因子。</p>
-<p>组合使得系统可以任意复杂，而抽象使得系统的复杂性是可以控制的，任何改动都只局限在某一层，而不会波及整个系统。</p>
-<p>All problems in computer science can be solved by another level of indirection.</p>
-<h2 id="数据类型标志"><a href="#数据类型标志" class="headerlink" title="数据类型标志"></a><a href="https://akaedu.github.io/book/ch07s03.html" target="_blank" rel="external">数据类型标志</a></h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">enum</span> coordinate_type &#123; RECTANGULAR, POLAR &#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">complex_struct</span> &#123;</span></div><div class="line">    <span class="keyword">enum</span> coordinate_type t;</div><div class="line">    <span class="keyword">double</span> a, b;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>但枚举的成员名却和变量名在同一命名空间中</p>
-<h2 id="嵌套结构体"><a href="#嵌套结构体" class="headerlink" title="嵌套结构体"></a><a href="https://akaedu.github.io/book/ch07s04.html" target="_blank" rel="external">嵌套结构体</a></h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">segment</span> &#123;</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">complex_struct</span> <span class="title">start</span>;</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">complex_struct</span> <span class="title">end</span>;</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">segment</span> <span class="title">s</span> = &#123;</span>&#123; <span class="number">1.0</span>, <span class="number">2.0</span> &#125;, &#123; <span class="number">4.0</span>, <span class="number">6.0</span> &#125;&#125;;</div></pre></td></tr></table></figure>
-<h1 id="8-数组"><a href="#8-数组" class="headerlink" title="8 数组"></a>8 数组</h1><h2 id="数组的基本概念"><a href="#数组的基本概念" class="headerlink" title="数组的基本概念"></a><a href="https://akaedu.github.io/book/ch08s01.html" target="_blank" rel="external">数组的基本概念</a></h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">complex_struct</span> &#123;</span></div><div class="line">    <span class="keyword">double</span> x, y;</div><div class="line">&#125; a[<span class="number">4</span>];</div></pre></td></tr></table></figure>
-<p>数组不能相互赋值或初始化，不能用数组类型作为函数的参数或返回值。数组类型做右值使用时，自动转换成指向数组首元素的指针。</p>
-<p>所以下面相当于将指针赋值给数组类型，所以是错误的</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a[<span class="number">5</span>] = &#123; <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span> &#125;;</div><div class="line"><span class="keyword">int</span> b[<span class="number">5</span>] = a;</div></pre></td></tr></table></figure>
-<h2 id="数组应用实例：统计随机数"><a href="#数组应用实例：统计随机数" class="headerlink" title="数组应用实例：统计随机数"></a><a href="https://akaedu.github.io/book/ch08s02.html" target="_blank" rel="external">数组应用实例：统计随机数</a></h2><p><code>#include</code>和<code>#define</code>这种以<code>#</code>号开头的行称为预处理指示（Preprocessing Directive）</p>
-<h2 id="数组应用实例：直方图"><a href="#数组应用实例：直方图" class="headerlink" title="数组应用实例：直方图"></a><a href="https://akaedu.github.io/book/ch08s03.html" target="_blank" rel="external">数组应用实例：直方图</a></h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> i, histogram[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</div><div class="line"></div><div class="line">    gen_random(<span class="number">10</span>);</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)</div><div class="line">        histogram[a[i]]++;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a><a href="https://akaedu.github.io/book/ch08s04.html" target="_blank" rel="external">字符串</a></h2><p>每个字符末尾都有一个字符’\0’做结束符，这里的\0是ASCII码的八进制表示，也就是ASCII码为0的Null字符，在C语言中这种字符串也称为以零结尾的字符串（Null-terminated String）</p>
-<p>字符串字面值还有一点和数组名类似，做右值使用时自动转换成指向首元素的指针</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> str[] = <span class="string">"Hello, world.\n"</span>;</div></pre></td></tr></table></figure>
-<p>如果数组str中没有Null字符，那么printf函数就会访问数组越界</p>
-<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a><a href="https://akaedu.github.io/book/ch08s05.html" target="_blank" rel="external">多维数组</a></h2><p>除了第一维的长度可以由编译器自动计算而不需要指定，其余各维都必须明确指定长度。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a[][<span class="number">2</span>] = &#123; &#123; <span class="number">1</span>, <span class="number">2</span> &#125;,</div><div class="line">        &#123; <span class="number">3</span>, <span class="number">4</span> &#125;,</div><div class="line">        &#123; <span class="number">5</span>, &#125; &#125;;</div></pre></td></tr></table></figure>
-<p>写代码最重要的是选择正确的数据结构来组织信息，设计控制流程和算法尚在其次，只要数据结构选择得正确，其它代码自然而然就变得容易理解和维护了</p>
-<p>Show me your flowcharts and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won’t usually need your flowcharts; they’ll be obvious.</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">char</span> gesture[<span class="number">3</span>][<span class="number">10</span>] = &#123; <span class="string">"scissor"</span>, <span class="string">"stone"</span>, <span class="string">"cloth"</span> &#125;;</div><div class="line">    <span class="keyword">int</span> man, computer, result, ret;</div><div class="line"></div><div class="line">    srand(time(<span class="literal">NULL</span>));</div><div class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</div><div class="line">        computer = rand() % <span class="number">3</span>;</div><div class="line">          <span class="built_in">printf</span>(<span class="string">"\nInput your gesture (0-scissor 1-stone 2-cloth):\n"</span>);</div><div class="line">        ret = <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;man);</div><div class="line">          <span class="keyword">if</span> (ret != <span class="number">1</span> || man &lt; <span class="number">0</span> || man &gt; <span class="number">2</span>) &#123;</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"Invalid input! Please input 0, 1 or 2.\n"</span>);</div><div class="line">            <span class="keyword">continue</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"Your gesture: %s\tComputer's gesture: %s\n"</span>, </div><div class="line">            gesture[man], gesture[computer]);</div><div class="line"></div><div class="line">        result = (man - computer + <span class="number">4</span>) % <span class="number">3</span> - <span class="number">1</span>;</div><div class="line">        <span class="keyword">if</span> (result &gt; <span class="number">0</span>)</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"You win!\n"</span>);</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (result == <span class="number">0</span>)</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"Draw!\n"</span>);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            <span class="built_in">printf</span>(<span class="string">"You lose!\n"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Linux-C-编程一站式学习&quot;&gt;&lt;a href=&quot;#Linux-C-编程一站式学习&quot; class=&quot;headerlink&quot; title=&quot;Linux C 编程一站式学习&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://akaedu.github.io/book/in
-    
-    </summary>
-    
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="算法" scheme="http://skyrover.me/tags/%E7%AE%97%E6%B3%95/"/>
-    
-      <category term="操作系统" scheme="http://skyrover.me/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
-      <category term="计算机网络" scheme="http://skyrover.me/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
-    
-      <category term="Linux" scheme="http://skyrover.me/tags/Linux/"/>
-    
-      <category term="C" scheme="http://skyrover.me/tags/C/"/>
-    
-  </entry>
   
   <entry>
     <title>九色甘南国庆自驾</title>
@@ -4449,6 +4395,106 @@
   </entry>
   
   <entry>
+    <title>笔记 - MySQL技术内幕(二)</title>
+    <link href="http://skyrover.me/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_2/"/>
+    <id>http://skyrover.me/2017/11/12/mysql_技术内幕_2/</id>
+    <published>2017-11-12T13:22:14.000Z</published>
+    <updated>2018-08-01T03:20:47.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="获取数据库的元数据"><a href="#获取数据库的元数据" class="headerlink" title="获取数据库的元数据"></a>获取数据库的元数据</h1><ul>
+<li><code>show columns from weiboes like &quot;%\_%&quot;;</code></li>
+<li><code>show index from weiboes;</code></li>
+<li><p><code>SHOW COLUMNS FROM student WHERE Field = &quot;student_id&quot;;</code></p>
+<p>  这一语句可以用来查询表中是否有相应的字段。</p>
+</li>
+<li><p><code>SELECT COUNT(*) FROM tbl_name;</code></p>
+</li>
+<li><code>select * from mydatabase.weiboes where false;</code> 如果表存在，则会执行成功，否则失败。</li>
+</ul>
+<h1 id="利用联结操作对多个数据表进行检索"><a href="#利用联结操作对多个数据表进行检索" class="headerlink" title="利用联结操作对多个数据表进行检索"></a>利用联结操作对多个数据表进行检索</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT select_list</div><div class="line">FROM table_list</div><div class="line">WHERE row_constraint</div><div class="line">GROUP BY grouping_columns</div><div class="line">ORDER BY sorting_columns</div><div class="line">HAVING group_constraint #  组必须满足的条件</div><div class="line">LIMIT count;</div></pre></td></tr></table></figure>
+<p>SELECT可以直接对表达式进行求值：<code>SELECT SQRT(POW(3, 2)+POW(4,2))</code></p>
+<h2 id="内联结"><a href="#内联结" class="headerlink" title="内联结"></a>内联结</h2><p>内联结会让一个数据表的数据行和另一个数据表里的数据行进行匹配来产生结果，也就是这个表的每一项都会跟另一个表的每一项进行匹配。即笛卡尔积。</p>
+<p>一般会使用WHERE语句来将数据联结操作只在某个数据列相等的情况进行。<code>select * from t1 inner join t2 where t1.i1 = t2.i2;</code></p>
+<p>另外<code>CROSS JOIN</code>和<code>JOIN</code>的联结类型类似于<code>INNER JOIN</code>。还有逗号关联操作符的效果与<code>INNER JOIN</code>也是相似的: <code>SELECT * FROM t1, t2 WHERE t1.i1 = t2.i2;</code>，不过应该避免逗号操作符。</p>
+<ul>
+<li>ON：<code>select * from t1 inner join t2 on t1.i1 = t2.i2;</code></li>
+<li>USING(): <code>select * from mytbl1 inner join mytbl2 using (b);</code> 其中两个表中都有b这一列。</li>
+</ul>
+<h2 id="避免数据列或者表名的歧义"><a href="#避免数据列或者表名的歧义" class="headerlink" title="避免数据列或者表名的歧义"></a>避免数据列或者表名的歧义</h2><ul>
+<li><code>select a, mytbl1.b, mytbl2.b, c from mytbl1 inner join mytbl2;</code></li>
+<li><code>select mytbl1.col1, m.col2 from mytbl inner join mytbl as m where mytbl.col1 &gt; m.col1;</code> 自联结</li>
+</ul>
+<h2 id="左联结和右联结"><a href="#左联结和右联结" class="headerlink" title="左联结和右联结"></a>左联结和右联结</h2><p>外联结会把其中一个数据表在另一个数据表里没有匹配的数据行也显示出来。左联结<code>LEFT JOIN</code>会把左数据表在右数据表里没有匹配的数据行也显示出来。而右联结<code>RIGHT JOIN</code>会将右数据表在左数据表里没有匹配的数据行也显示出来。</p>
+<p>原理就是从左表的数据行来和右表匹配的时候，如果匹配上的话，就输出。如果左表数据在右表没有找到匹配，就会假设一个全为NULL的右表数据行，这样左表的这行数据也匹配到了。也就是说左表的每一行都有一个对应的数据行，不管在右表有没有匹配。</p>
+<p>比如<code>select * from t1 left join t2 on t1.i1 = t2.i2;</code></p>
+<p>左联结可以让你找到在右数据表中没有匹配的左数据表的行。也就是查找哪些值没有出现过。</p>
+<p>这本书关于联结这块的例子讲的很好！</p>
+<h1 id="用子查询进行多数据表检索"><a href="#用子查询进行多数据表检索" class="headerlink" title="用子查询进行多数据表检索"></a>用子查询进行多数据表检索</h1><p>子查询与关系比较操作符</p>
+<ul>
+<li><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></li>
+<li><code>select * from president where birth = (select min(birth) from president);</code></li>
+<li><code>select last_name, first_name, city, state from president where (city, state) = (select city, state from president where last_name = &#39;Adams&#39; and first_name = &#39;john&#39;);</code></li>
+</ul>
+<h2 id="IN和NOT-IN子查询"><a href="#IN和NOT-IN子查询" class="headerlink" title="IN和NOT IN子查询"></a>IN和NOT IN子查询</h2><ul>
+<li><code>select * from student where student_id in (select student_id from absence);</code></li>
+<li><code>select last_name, first_name, city, state from president where (city, state) in (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
+</ul>
+<h2 id="all-any和some子查询"><a href="#all-any和some子查询" class="headerlink" title="all, any和some子查询"></a>all, any和some子查询</h2><ul>
+<li><code>select last_name, first_name, birth from president where birth &lt;= all (select birth from president);</code> 最小的</li>
+<li><code>select last_name, first_name, city, state from president where(city, state) = any (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
+<li><code>IN(= any)</code>和 <code>&lt; &gt; all(NOT IN)</code></li>
+</ul>
+<h2 id="exists和not-exists子查询"><a href="#exists和not-exists子查询" class="headerlink" title="exists和not exists子查询"></a>exists和not exists子查询</h2><ul>
+<li><code>select exists (select * from absence);</code></li>
+<li><code>select not exists (select * from absence);</code></li>
+</ul>
+<h2 id="from中的子查询"><a href="#from中的子查询" class="headerlink" title="from中的子查询"></a>from中的子查询</h2><ul>
+<li><code>select * from (select 1, 2) as t1 inner join (select 3, 4) as t2;</code></li>
+</ul>
+<h2 id="子查询改写成联结查询"><a href="#子查询改写成联结查询" class="headerlink" title="子查询改写成联结查询"></a>子查询改写成联结查询</h2><ul>
+<li><p><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></p>
+<ul>
+<li><code>select score.* from score inner join grade_event on score.event_id = grade_event.event_id where grade_event.category = &#39;T&#39;;</code></li>
+</ul>
+</li>
+<li><p><code>select * from student where student_id not in (select student_id from absence);</code></p>
+<ul>
+<li><code>select student.* from student left join absence on student.student_id = absence.student_id where absence.student_id is NULL;</code> 为NULL的时候则是学生表没有在absence表匹配到的记录，也就是没有缺席的学生</li>
+</ul>
+</li>
+</ul>
+<h1 id="UNION语句进行多数据表检索"><a href="#UNION语句进行多数据表检索" class="headerlink" title="UNION语句进行多数据表检索"></a>UNION语句进行多数据表检索</h1><ul>
+<li><code>select i from t1 union select i from t2 union select i from t3;</code></li>
+</ul>
+<p>默认UNION从结果集中剔除重复数据行，即<code>UNION DISTINCT == UNION</code>，如果保留重复行，<code>UNION ALL</code></p>
+<h1 id="使用视图"><a href="#使用视图" class="headerlink" title="使用视图"></a>使用视图</h1><p>视图是虚拟的数据表，提供查看数据表数据的另一种方法。</p>
+<ul>
+<li><code>create view vpres as select last_name, first_name, city, state from president;</code></li>
+<li><code>select * from vpress;</code></li>
+</ul>
+<p>但是只能引用在该视图的定义里列出的数据列。</p>
+<p>视图也是可以更新的，但是其必须直接映射到一个数据表上，选取的数据列是数据表数据列的简单引用。</p>
+<h1 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h1>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;获取数据库的元数据&quot;&gt;&lt;a href=&quot;#获取数据库的元数据&quot; class=&quot;headerlink&quot; title=&quot;获取数据库的元数据&quot;&gt;&lt;/a&gt;获取数据库的元数据&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;show columns from weiboes like
+    
+    </summary>
+    
+      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
+    
+      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
     <title>笔记 - MySQL技术内幕(一)</title>
     <link href="http://skyrover.me/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_note/"/>
     <id>http://skyrover.me/2017/11/12/mysql_技术内幕_note/</id>
@@ -4691,106 +4737,6 @@
       <category term="SQL" scheme="http://skyrover.me/tags/SQL/"/>
     
       <category term="MySQL技术内幕" scheme="http://skyrover.me/tags/MySQL%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>笔记 - MySQL技术内幕(二)</title>
-    <link href="http://skyrover.me/2017/11/12/mysql_%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95_2/"/>
-    <id>http://skyrover.me/2017/11/12/mysql_技术内幕_2/</id>
-    <published>2017-11-12T13:22:14.000Z</published>
-    <updated>2018-08-01T03:20:47.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="获取数据库的元数据"><a href="#获取数据库的元数据" class="headerlink" title="获取数据库的元数据"></a>获取数据库的元数据</h1><ul>
-<li><code>show columns from weiboes like &quot;%\_%&quot;;</code></li>
-<li><code>show index from weiboes;</code></li>
-<li><p><code>SHOW COLUMNS FROM student WHERE Field = &quot;student_id&quot;;</code></p>
-<p>  这一语句可以用来查询表中是否有相应的字段。</p>
-</li>
-<li><p><code>SELECT COUNT(*) FROM tbl_name;</code></p>
-</li>
-<li><code>select * from mydatabase.weiboes where false;</code> 如果表存在，则会执行成功，否则失败。</li>
-</ul>
-<h1 id="利用联结操作对多个数据表进行检索"><a href="#利用联结操作对多个数据表进行检索" class="headerlink" title="利用联结操作对多个数据表进行检索"></a>利用联结操作对多个数据表进行检索</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SELECT select_list</div><div class="line">FROM table_list</div><div class="line">WHERE row_constraint</div><div class="line">GROUP BY grouping_columns</div><div class="line">ORDER BY sorting_columns</div><div class="line">HAVING group_constraint #  组必须满足的条件</div><div class="line">LIMIT count;</div></pre></td></tr></table></figure>
-<p>SELECT可以直接对表达式进行求值：<code>SELECT SQRT(POW(3, 2)+POW(4,2))</code></p>
-<h2 id="内联结"><a href="#内联结" class="headerlink" title="内联结"></a>内联结</h2><p>内联结会让一个数据表的数据行和另一个数据表里的数据行进行匹配来产生结果，也就是这个表的每一项都会跟另一个表的每一项进行匹配。即笛卡尔积。</p>
-<p>一般会使用WHERE语句来将数据联结操作只在某个数据列相等的情况进行。<code>select * from t1 inner join t2 where t1.i1 = t2.i2;</code></p>
-<p>另外<code>CROSS JOIN</code>和<code>JOIN</code>的联结类型类似于<code>INNER JOIN</code>。还有逗号关联操作符的效果与<code>INNER JOIN</code>也是相似的: <code>SELECT * FROM t1, t2 WHERE t1.i1 = t2.i2;</code>，不过应该避免逗号操作符。</p>
-<ul>
-<li>ON：<code>select * from t1 inner join t2 on t1.i1 = t2.i2;</code></li>
-<li>USING(): <code>select * from mytbl1 inner join mytbl2 using (b);</code> 其中两个表中都有b这一列。</li>
-</ul>
-<h2 id="避免数据列或者表名的歧义"><a href="#避免数据列或者表名的歧义" class="headerlink" title="避免数据列或者表名的歧义"></a>避免数据列或者表名的歧义</h2><ul>
-<li><code>select a, mytbl1.b, mytbl2.b, c from mytbl1 inner join mytbl2;</code></li>
-<li><code>select mytbl1.col1, m.col2 from mytbl inner join mytbl as m where mytbl.col1 &gt; m.col1;</code> 自联结</li>
-</ul>
-<h2 id="左联结和右联结"><a href="#左联结和右联结" class="headerlink" title="左联结和右联结"></a>左联结和右联结</h2><p>外联结会把其中一个数据表在另一个数据表里没有匹配的数据行也显示出来。左联结<code>LEFT JOIN</code>会把左数据表在右数据表里没有匹配的数据行也显示出来。而右联结<code>RIGHT JOIN</code>会将右数据表在左数据表里没有匹配的数据行也显示出来。</p>
-<p>原理就是从左表的数据行来和右表匹配的时候，如果匹配上的话，就输出。如果左表数据在右表没有找到匹配，就会假设一个全为NULL的右表数据行，这样左表的这行数据也匹配到了。也就是说左表的每一行都有一个对应的数据行，不管在右表有没有匹配。</p>
-<p>比如<code>select * from t1 left join t2 on t1.i1 = t2.i2;</code></p>
-<p>左联结可以让你找到在右数据表中没有匹配的左数据表的行。也就是查找哪些值没有出现过。</p>
-<p>这本书关于联结这块的例子讲的很好！</p>
-<h1 id="用子查询进行多数据表检索"><a href="#用子查询进行多数据表检索" class="headerlink" title="用子查询进行多数据表检索"></a>用子查询进行多数据表检索</h1><p>子查询与关系比较操作符</p>
-<ul>
-<li><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></li>
-<li><code>select * from president where birth = (select min(birth) from president);</code></li>
-<li><code>select last_name, first_name, city, state from president where (city, state) = (select city, state from president where last_name = &#39;Adams&#39; and first_name = &#39;john&#39;);</code></li>
-</ul>
-<h2 id="IN和NOT-IN子查询"><a href="#IN和NOT-IN子查询" class="headerlink" title="IN和NOT IN子查询"></a>IN和NOT IN子查询</h2><ul>
-<li><code>select * from student where student_id in (select student_id from absence);</code></li>
-<li><code>select last_name, first_name, city, state from president where (city, state) in (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
-</ul>
-<h2 id="all-any和some子查询"><a href="#all-any和some子查询" class="headerlink" title="all, any和some子查询"></a>all, any和some子查询</h2><ul>
-<li><code>select last_name, first_name, birth from president where birth &lt;= all (select birth from president);</code> 最小的</li>
-<li><code>select last_name, first_name, city, state from president where(city, state) = any (select city, state from president where last_name = &#39;Roosevelt&#39;);</code></li>
-<li><code>IN(= any)</code>和 <code>&lt; &gt; all(NOT IN)</code></li>
-</ul>
-<h2 id="exists和not-exists子查询"><a href="#exists和not-exists子查询" class="headerlink" title="exists和not exists子查询"></a>exists和not exists子查询</h2><ul>
-<li><code>select exists (select * from absence);</code></li>
-<li><code>select not exists (select * from absence);</code></li>
-</ul>
-<h2 id="from中的子查询"><a href="#from中的子查询" class="headerlink" title="from中的子查询"></a>from中的子查询</h2><ul>
-<li><code>select * from (select 1, 2) as t1 inner join (select 3, 4) as t2;</code></li>
-</ul>
-<h2 id="子查询改写成联结查询"><a href="#子查询改写成联结查询" class="headerlink" title="子查询改写成联结查询"></a>子查询改写成联结查询</h2><ul>
-<li><p><code>select * from score where event_id in (select event_id from grade_event where category = &#39;T&#39;);</code></p>
-<ul>
-<li><code>select score.* from score inner join grade_event on score.event_id = grade_event.event_id where grade_event.category = &#39;T&#39;;</code></li>
-</ul>
-</li>
-<li><p><code>select * from student where student_id not in (select student_id from absence);</code></p>
-<ul>
-<li><code>select student.* from student left join absence on student.student_id = absence.student_id where absence.student_id is NULL;</code> 为NULL的时候则是学生表没有在absence表匹配到的记录，也就是没有缺席的学生</li>
-</ul>
-</li>
-</ul>
-<h1 id="UNION语句进行多数据表检索"><a href="#UNION语句进行多数据表检索" class="headerlink" title="UNION语句进行多数据表检索"></a>UNION语句进行多数据表检索</h1><ul>
-<li><code>select i from t1 union select i from t2 union select i from t3;</code></li>
-</ul>
-<p>默认UNION从结果集中剔除重复数据行，即<code>UNION DISTINCT == UNION</code>，如果保留重复行，<code>UNION ALL</code></p>
-<h1 id="使用视图"><a href="#使用视图" class="headerlink" title="使用视图"></a>使用视图</h1><p>视图是虚拟的数据表，提供查看数据表数据的另一种方法。</p>
-<ul>
-<li><code>create view vpres as select last_name, first_name, city, state from president;</code></li>
-<li><code>select * from vpress;</code></li>
-</ul>
-<p>但是只能引用在该视图的定义里列出的数据列。</p>
-<p>视图也是可以更新的，但是其必须直接映射到一个数据表上，选取的数据列是数据表数据列的简单引用。</p>
-<h1 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h1>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;获取数据库的元数据&quot;&gt;&lt;a href=&quot;#获取数据库的元数据&quot; class=&quot;headerlink&quot; title=&quot;获取数据库的元数据&quot;&gt;&lt;/a&gt;获取数据库的元数据&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;show columns from weiboes like
-    
-    </summary>
-    
-      <category term="编程" scheme="http://skyrover.me/categories/%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="Database" scheme="http://skyrover.me/tags/Database/"/>
-    
-      <category term="读书笔记" scheme="http://skyrover.me/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="MySQL" scheme="http://skyrover.me/tags/MySQL/"/>
     
   </entry>
   
