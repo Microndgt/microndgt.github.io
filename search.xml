@@ -3,36 +3,6 @@
   
     
     <entry>
-      <title><![CDATA[悲观主义]]></title>
-      <url>/2018/09/24/some_thoughts/</url>
-      <content type="html"><![CDATA[<p>生命是什么，人生是什么，死亡又是什么？</p>
-<p>人这一生是为了追求什么呢？亲情，爱情，钱，权力？我不知道，因为现在我一无所求。</p>
-<p>想起来以前种种，也有很多感动的事情，曾也有一个像林月如一样的女生在爱我，曾经自己也是充满能量，为了梦想。</p>
-<p>现在不知道梦想是什么，因为现在一无所求。</p>
-<p>我是个悲观主义者，最大的最可怕的是我一直在逃避。</p>
-<p>死亡之后自己会去哪里呢？我经历过快死掉的瞬间，就是两眼一黑，什么也不知道了，醒来就在医院的手术台上，大概死亡就是再也醒不过来吧。</p>
-<p>我才不会自杀，冥冥之中我觉得好像有一件事情要做，但是我现在不知道是什么，所以我会坚持下去。</p>
-<p>我会努力，</p>
-<p>不过这个博客到此为止了。</p>
-<p>再见，也是向以前再见。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 人生 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 虾扯蛋 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Interview Problems]]></title>
       <url>/2018/09/19/python-interview/</url>
       <content type="html"><![CDATA[<h1 id="Python-相关"><a href="#Python-相关" class="headerlink" title="Python 相关"></a>Python 相关</h1><h2 id="Python中列表与元组的异同"><a href="#Python中列表与元组的异同" class="headerlink" title="Python中列表与元组的异同"></a>Python中列表与元组的异同</h2><p>相同： 列表和元组都是容器并且是可迭代对象，二者可以包含任意类型的对象。<br>不同：列表是可变的， 元组是不可变。</p>
