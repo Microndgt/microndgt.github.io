@@ -3,6 +3,31 @@
   
     
     <entry>
+      <title><![CDATA[Mac OS 遇到的问题]]></title>
+      <url>/2018/10/15/mac_os_problems/</url>
+      <content type="html"><![CDATA[<p>装lxml时候遇到的问题，简直了</p>
+<p><code>ld: file not found: /usr/lib/system/libsystem_darwin.dylib for architecture x86_64</code></p>
+<p>解决办法(具体原因不知道)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo rm -rf /Library/Developer/CommandLineTools</div><div class="line">xcode-select --install</div><div class="line">xcode-select -s /Library/Developer/CommandLineTools</div></pre></td></tr></table></figure>
+<p>再安装lxml，问题解决 <code>pip install lxml</code></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 编程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Mac </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Interview Problems]]></title>
       <url>/2018/09/19/python-interview/</url>
       <content type="html"><![CDATA[<h1 id="Python-相关"><a href="#Python-相关" class="headerlink" title="Python 相关"></a>Python 相关</h1><h2 id="Python中列表与元组的异同"><a href="#Python中列表与元组的异同" class="headerlink" title="Python中列表与元组的异同"></a>Python中列表与元组的异同</h2><p>相同： 列表和元组都是容器并且是可迭代对象，二者可以包含任意类型的对象。<br>不同：列表是可变的， 元组是不可变。</p>
