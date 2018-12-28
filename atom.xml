@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-12-28T08:43:17.000Z</updated>
+  <updated>2018-12-28T08:44:45.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>2018年回顾</title>
+    <title>Hello 2019</title>
     <link href="http://skyrover.me/2018/12/28/hello_2019/"/>
     <id>http://skyrover.me/2018/12/28/hello_2019/</id>
     <published>2018-12-28T08:06:49.000Z</published>
-    <updated>2018-12-28T08:43:17.000Z</updated>
+    <updated>2018-12-28T08:44:45.000Z</updated>
     
     <content type="html"><![CDATA[<p>好久没有写博客了，没想到再次提笔就已经是2018年的尾声了。hello 2019! 哈，挺俗的，程序员嘛！</p>
 <p>2018年自己做了什么事？是<code>cat 2017_todo.txt</code>嘛？2019年的计划是什么呢？是<code>cat 2017_todo.txt 2018_todo.txt &gt;&gt; 2019_todo.txt</code>嘛？当然不是！</p>
