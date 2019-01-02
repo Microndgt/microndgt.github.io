@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://skyrover.me/"/>
-  <updated>2018-12-28T08:44:45.000Z</updated>
+  <updated>2018-10-15T05:51:38.000Z</updated>
   <id>http://skyrover.me/</id>
   
   <author>
@@ -14,113 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Hello 2019</title>
-    <link href="http://skyrover.me/2018/12/28/hello_2019/"/>
-    <id>http://skyrover.me/2018/12/28/hello_2019/</id>
-    <published>2018-12-28T08:06:49.000Z</published>
-    <updated>2018-12-28T08:44:45.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>好久没有写博客了，没想到再次提笔就已经是2018年的尾声了。hello 2019! 哈，挺俗的，程序员嘛！</p>
-<p>2018年自己做了什么事？是<code>cat 2017_todo.txt</code>嘛？2019年的计划是什么呢？是<code>cat 2017_todo.txt 2018_todo.txt &gt;&gt; 2019_todo.txt</code>嘛？当然不是！</p>
-<p>嗯，认真想想，2018年也发生了不少事情：比如：</p>
-<ul>
-<li><p>买车</p>
-<p>  2018年3月份入手了MG6轿跑，当时觉得人生无趣，最后一个希望，买车玩玩，看来看去，被这台车的颜值还有动力吸引了，买的时候对比的是高尔夫，从小对两厢车有一种特别的情怀，后来看到MG6，一看颜值不错嘛，最重要的是卧槽输出功率128kw，128很情怀，哈哈，所以当时心一狠，把股票卖了买车！当时不卖股票的话还能继续涨个10%吧，说到这里，2018年股票收益率应该在15%左右。现在股市跌成熊了，2019年应该是一个机会。</p>
-</li>
-<li>谈恋爱走到结婚，后天去见家长了。</li>
-</ul>
-<p>这是两件大事情，2018年没有出去玩，身体不舒服，腰疼，估计是开车开的，难过！要开始养生了，今天体检了下，轻度脂肪肝，还是要坚持健身和减肥啊。说到减肥，今年的体重曲线竟然是个深V，一股心累！</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/hello_2019_1.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<p>计算机和互联网的发展对于个人来说从一个方面讲真的是件很好的事情，比如说现在很多事情都可以依赖手机完成，生活的数据都可以保存在手机里，对于我这种热衷于看历史数据的人来说，真是爽！平时我会记体重，记账(推荐挖财，用了快5年了)，最近又发现了一款记录平时活动的软件叫做<code>aTimeLogger</code>，我主要用来记录自己每天的健身时间的，这是这几天的时间记录。</p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="/img/hello_2019_2.png" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<p>em…不是推荐软件的，但是微信阅读真的不错，阅读加上社交属性，赞！可以知道朋友们在读什么书，有时候就会去翻翻，有了从更多角度看世界的机会，目前我的总阅读时间为121小时55分钟。今年读完了这几本书：</p>
-<ul>
-<li><p>书剑恩仇录</p>
-<p>  这本书是之前听我爸讲他高中的时候3天就看完了，另外最近金庸先生去世了，于是翻开了他的第一本书，不过我花了2个星期才看完，2333</p>
-</li>
-<li><p>假面饭店</p>
-<p>  东野圭吾写的，还是觉得白夜行和解忧杂货店是最好看的</p>
-</li>
-<li><p>程序是怎样跑起来的</p>
-<p>  后悔大学没有好好学，上汇编语言课的时候居然在聊游戏！</p>
-</li>
-<li><p>图解HTTP</p>
-<p>  小白入门书，一般般</p>
-</li>
-<li><p>读懂金融的第一本书</p>
-<p>  读完了，觉得更不懂了！书前面还行，后面干巴巴的</p>
-</li>
-<li><p>天意</p>
-<p>  扯淡的伪科幻小说，后面都飞升了！</p>
-</li>
-<li><p>极简中国史</p>
-<p>  不推荐看，写的不好，真想读历史，去看中国历史通俗演义，大学上思修课常备书，不过我也就看完了汉朝，唐朝的一部分，写的真不错</p>
-</li>
-<li><p>年少荒唐</p>
-<p>  大师兄的体验，记得最深刻的一句话就是 <code>改变自己是非常，非常，非常痛苦的，我能看出来你一腔热血的优点，自然知道你孤僻懒散自以为是的缺点，方法很多，不过我不确定你吃不吃得了苦，我和你共勉吧。在成为最厉害最厉害最厉害的道路上。</code> 出自 <a href="https://www.zhihu.com/question/22921426" target="_blank" rel="external">要怎样努力，才能成为很厉害的人？</a></p>
-</li>
-<li><p>三少爷的剑</p>
-<p>  当时看朋友都在看，于是翻完了，好像是当时有电视剧。后来便有好多诸如三少爷的面的名字</p>
-</li>
-</ul>
-<p>嗯实体书好像只看完了<code>现代操作系统</code>，曾经妄想两个月看完<code>深入理解计算机系统</code>，无奈到现在还只看了前三章，说到计算机方面，我正在完成重新构建对计算机的深刻理解这一计划：</p>
-<ul>
-<li><code>汇编语言</code></li>
-<li><code>计算机组成原理</code></li>
-<li><code>计算机操作系统+实验</code></li>
-<li><code>计算机网络</code></li>
-<li><code>编译原理</code></li>
-</ul>
-<p>目前在前三个上踽踽而行，曾经还有一个妄想是考过雅思，后来工作太忙，忘了。。。说实话最近工作是太饱和了，上班的时候喝口水的时间都不好挤出来，= =!</p>
-<p>2018年过去的就不管了，那么就到了最关键的时候：2019年的计划！</p>
-<ul>
-<li>健身健身！减肥：目标减10kg</li>
-<li><p>完成<code>重新构建对计算机的深刻理解</code>计划</p>
-<p>  简要的讲就是完成以下课程的学习</p>
-<ul>
-<li>汇编语言</li>
-<li>组成原理</li>
-<li>操作系统</li>
-<li>看Linux源码</li>
-<li>编译原理</li>
-<li>Golang刷算法</li>
-</ul>
-</li>
-<li>看更多的书，了解更多的世界</li>
-<li>完成一次自驾长途旅行</li>
-<li>考过雅思！</li>
-<li>结婚可能是2020年的计划吧，哈哈</li>
-</ul>
-<p>最后 <strong><em>愛你所擇，永保熱情</em></strong></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;好久没有写博客了，没想到再次提笔就已经是2018年的尾声了。hello 2019! 哈，挺俗的，程序员嘛！&lt;/p&gt;
-&lt;p&gt;2018年自己做了什么事？是&lt;code&gt;cat 2017_todo.txt&lt;/code&gt;嘛？2019年的计划是什么呢？是&lt;code&gt;cat 2017_t
-    
-    </summary>
-    
-      <category term="人生" scheme="http://skyrover.me/categories/%E4%BA%BA%E7%94%9F/"/>
-    
-    
-      <category term="虾扯蛋" scheme="http://skyrover.me/tags/%E8%99%BE%E6%89%AF%E8%9B%8B/"/>
-    
-  </entry>
   
   <entry>
     <title>Mac OS 遇到的问题</title>
