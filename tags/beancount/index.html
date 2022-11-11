@@ -27,15 +27,15 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/default/favicon.png" alt="SkyRover" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a><a class="navbar-item" href="/funds">FIRE 基金</a><a class="navbar-item" href="/funds-for-old">FIRE 基金养老版</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Microndgt"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">标签</a></li><li class="is-active"><a href="#" aria-current="page">beancount</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-11-11T10:30:26.000Z" title="11/11/2022, 6:30:26 PM">2022-11-11</time>发表</span><span class="level-item"><time dateTime="2022-11-11T10:38:48.102Z" title="11/11/2022, 6:38:48 PM">2022-11-11</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E6%8A%95%E8%B5%84/">投资</a></span><span class="level-item">13 分钟读完 (大约2000个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/11/11/%E6%8A%8A%E8%87%AA%E5%B7%B1%E5%BD%93%E5%81%9A%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%EF%BC%9A%E4%BD%BF%E7%94%A8-beancount-%E8%AE%B0%E8%B4%A6/">把自己当做一家公司：使用 beancount 记账</a></h1><div class="content"><p>之前一直用挖财记账，从大学开始，断断续续的记账，到现在差不多快10年了。是什么让我放弃挖财转向beancount了呢：</p>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/default/favicon.png" alt="SkyRover" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">首页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a><a class="navbar-item" href="/funds">FIRE 基金</a><a class="navbar-item" href="/funds-for-old">FIRE 基金养老版</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Microndgt"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">标签</a></li><li class="is-active"><a href="#" aria-current="page">beancount</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2022-11-11T10:30:26.000Z" title="11/11/2022, 6:30:26 PM">2022-11-11</time>发表</span><span class="level-item"><time dateTime="2022-11-11T10:45:23.258Z" title="11/11/2022, 6:45:23 PM">2022-11-11</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E6%8A%95%E8%B5%84/">投资</a></span><span class="level-item">13 分钟读完 (大约2000个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2022/11/11/%E6%8A%8A%E8%87%AA%E5%B7%B1%E5%BD%93%E5%81%9A%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%EF%BC%9A%E4%BD%BF%E7%94%A8-beancount-%E8%AE%B0%E8%B4%A6/">把自己当做一家公司：使用 beancount 记账</a></h1><div class="content"><p>之前一直用挖财记账，从大学开始，断断续续的记账，到现在差不多快 10 年了。是什么让我放弃挖财转向 beancount 了呢：</p>
 <ol>
 <li>隐私问题，这是一直比较担心的问题</li>
-<li>挖财数据导出现在得VIP会员才行</li>
-<li>看到关注的一个博主介绍beancount的文章，感觉很有意思</li>
-<li>beancount是开源的，数据都在本地，比较安全</li>
+<li>挖财数据导出现在得 VIP 会员才行</li>
+<li>看到关注的一个博主介绍 beancount 的文章，感觉很有意思</li>
+<li>beancount 是开源的，数据都在本地，比较安全</li>
 </ol>
-<h3 id="为什么要用-beancount-记账"><a href="#为什么要用-beancount-记账" class="headerlink" title="为什么要用 beancount 记账"></a>为什么要用 beancount 记账</h3><h4 id="为什么要记账"><a href="#为什么要记账" class="headerlink" title="为什么要记账"></a>为什么要记账</h4><p>首先是为什么要记账，以我个人这快10年的记账经验来讲，记账可以让你更好的把控你的财务能力，在我断断续续记账的时间里，记账的时候对自己财务非常清晰，该怎么花钱，花多少钱心里都会有数；而不记账的时候，就感觉没有把控力，对自己财务也非常模糊，花钱花的也有点失控。</p>
-<p>通过记账不仅可以加深对自己的财务的了解，也可以根据支出的数据针对性的进行优化。如果要达到财务自由，需要达到三点要求，对支出的预期，对资产和收入的了解，和对寿命的期望。而记账可以解决前两点。</p>
+<h3 id="为什么要用-beancount-记账"><a href="#为什么要用-beancount-记账" class="headerlink" title="为什么要用 beancount 记账"></a>为什么要用 beancount 记账</h3><h4 id="为什么要记账"><a href="#为什么要记账" class="headerlink" title="为什么要记账"></a>为什么要记账</h4><p>首先是为什么要记账，以我个人这快 10 年的记账经验来讲，记账可以让你更好的把控你的财务能力，在我断断续续记账的时间里，记账的时候对自己财务非常清晰，该怎么花钱，花多少钱心里都会有数；而不记账的时候，就感觉没有把控力，对自己财务也非常模糊，花钱花的也有点失控。</p>
+<p>通过记账不仅可以加深对自己的财务的了解，也可以根据支出的数据针对性的进行优化。如果要达到财务自由，需要达到三点要求，<strong>对支出的预期，对资产和收入的了解，和对寿命的期望</strong>。而记账可以解决前两点。</p>
 <p>当你开始记账，你就会发现自己离自己的财务自由目标就更近了。</p>
 <p>试想一下，假设把你作为一家公司，如果对自己的财务状况和自己的财务能力都不了解，谈何发展？</p>
 <h4 id="为什么要用-beancount"><a href="#为什么要用-beancount" class="headerlink" title="为什么要用 beancount"></a>为什么要用 beancount</h4><ol>
@@ -45,7 +45,7 @@
 <li>复式记账，更加强大。复式记账会记录每笔交易的资金流动，各账户变化「有正有负，正负相等」。这便是复式记账的基本原理，称之为「会计恒等式」。这种方式能够保证记账准确无误，也能提供更详细的财务分析。</li>
 </ol>
 <p>嗯，大概就是这么些点，说服了我从挖财转向了 beancount。</p>
-<h3 id="beancount-安装"><a href="#beancount-安装" class="headerlink" title="beancount 安装"></a>beancount 安装</h3><p>昨晚上搞了一晚上，搞清楚了beancount怎么安装，怎么配置，最终搞好了自己的一套beancount：</p>
+<h3 id="beancount-安装"><a href="#beancount-安装" class="headerlink" title="beancount 安装"></a>beancount 安装</h3><p>昨晚上搞了一晚上，搞清楚了 beancount 怎么安装，怎么配置，最终搞好了自己的一套 beancount：</p>
 <p><img src="/images/2022/11/11/278952af-baf1-4f29-bf62-a7a707d59087.png" alt="image.png"></p>
 <p>在这里我不会记录怎么安装，配置的细节，而是介绍一些我自己实际搭建的时候遇到的一些坑，以及其他一些教程中没有写的但是又比较关键的点</p>
 <h3 id="参考教程"><a href="#参考教程" class="headerlink" title="参考教程"></a>参考教程</h3><ul>
@@ -72,7 +72,7 @@
 <p>重新开始就遇到一个问题，如何新建账户，并且初始化各个账户的初始金额呢？昨天搞了半天，终于弄明白了，有几个关键点昨天一直没弄明白，所以一直有问题：</p>
 <ol>
 <li>配好上一节的 VSCode 插件，我就是因为没有把插件配置好，所以编辑器一直提醒导入错误，但是其实没有问题。。。</li>
-<li>初始化账户的时间一定要是最早的，至少是比你用这个账户的时间要早，要不然就会报错。比如今天11月11号，那么我可以把账户初始化时间放到月初</li>
+<li>初始化账户的时间一定要是最早的，至少是比你用这个账户的时间要早，要不然就会报错。比如今天 11 月 11 号，那么我可以把账户初始化时间放到月初</li>
 </ol>
 <p>然后 accounts 文件夹下的这几个文件分别代表以下含义：</p>
 <ul>
